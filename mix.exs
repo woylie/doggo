@@ -75,7 +75,11 @@ defmodule Doggo.MixProject do
       main: "readme",
       extras: ["README.md", "CHANGELOG.md"],
       source_ref: @version,
-      skip_undefined_reference_warnings_on: ["CHANGELOG.md"]
+      skip_undefined_reference_warnings_on: ["CHANGELOG.md"],
+      groups_for_functions: [
+        Components: &(&1[:type] == :component),
+        Layouts: &(&1[:type] == :layout)
+      ]
     ]
   end
 end

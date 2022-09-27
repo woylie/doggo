@@ -30,6 +30,7 @@ defmodule Doggo do
 
       <.icon name="arrow-left" text={gettext("back")} icon_position={:right} />
   """
+  @doc type: :component
 
   attr :name, :string, required: true, doc: "Icon name as used in the sprite."
   attr :class, :string, default: nil, doc: "Additional CSS classes."
@@ -100,6 +101,8 @@ defmodule Doggo do
         <:prop label={gettext("Age")}>42</:prop>
       </.property_list>
   """
+  @doc type: :component
+
   slot :prop, doc: "A property to be rendered." do
     attr :key, :string, required: true
   end
