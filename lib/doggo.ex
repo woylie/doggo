@@ -32,6 +32,7 @@ defmodule Doggo do
   """
 
   attr :name, :string, required: true, doc: "Icon name as used in the sprite."
+  attr :class, :string, default: nil, doc: "Additional CSS classes."
 
   attr :size, :atom,
     default: :normal,
@@ -48,6 +49,8 @@ defmodule Doggo do
     default: "/assets/icons/sprite.svg",
     doc: "The URL of the SVG sprite."
 
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
   def icon(assigns) do
     unless assigns.icon_position in [:left, :right] do
       raise """
@@ -60,7 +63,7 @@ defmodule Doggo do
     end
 
     ~H"""
-    <span class={["icon", icon_size_class(@size)]} aria-label={@label}>
+    <span class={["icon", icon_size_class(@size), @class]} aria-label={@label} {@rest}>
       <%= if @text && @icon_position == :right do %>
         <span><%= @text %></span>
       <% end %>
