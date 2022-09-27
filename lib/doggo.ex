@@ -5,6 +5,8 @@ defmodule Doggo do
 
   use Phoenix.Component
 
+  ## Components
+
   @doc """
   Renders an icon from an SVG sprite.
 
@@ -64,7 +66,11 @@ defmodule Doggo do
     end
 
     ~H"""
-    <span class={["icon", icon_size_class(@size), @class]} aria-label={@label} {@rest}>
+    <span
+      class={["icon", icon_size_class(@size), @class]}
+      aria-label={@label}
+      {@rest}
+    >
       <%= if @text && @icon_position == :right do %>
         <span><%= @text %></span>
       <% end %>
@@ -120,6 +126,49 @@ defmodule Doggo do
         </div>
       <% end %>
     </dl>
+    """
+  end
+
+  ## Layouts
+
+  @doc """
+  Applies a vertical margin between the child elements.
+
+  ## Example
+
+      <.stack>
+        <div>some block</div>
+        <div>some other block</div>
+      </.stack>
+
+  To apply a vertical margin on nested elements as well, set `recursive` to
+  `true`.
+
+      <.stack recursive={true}>
+        <div>
+          <div>some nested block</div>
+          <div>another nested block</div>
+        </div>
+        <div>some other block</div>
+      </.stack>
+  """
+  @doc type: :layout
+
+  slot :inner_block, required: true
+
+  attr :recursive, :boolean,
+    default: false,
+    doc:
+      "If `true`, the stack margins will be applied to nested elements as well."
+
+  attr :class, :string, default: nil, doc: "Additional CSS classes."
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  def stack(assigns) do
+    ~H"""
+    <div class={["stack", @class, if(@recursive, do: "is-recursive")]} {@rest}>
+      <%= render_slot(@inner_block) %>
+    </div>
     """
   end
 end
