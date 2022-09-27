@@ -89,4 +89,34 @@ defmodule Doggo do
     Got: #{inspect(size)}
     """
   end
+
+  @doc """
+  Renders a list of properties, i.e. key/value pairs.
+
+  ## Example
+
+      <.property_list>
+        <:prop label={gettext("Name")}>George</:prop>
+        <:prop label={gettext("Age")}>42</:prop>
+      </.property_list>
+  """
+  slot :prop, doc: "A property to be rendered." do
+    attr :key, :string, required: true
+  end
+
+  attr :class, :string, default: nil, doc: "Additional CSS classes."
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  def property_list(assigns) do
+    ~H"""
+    <dl class={["property-list", @class]} {@rest}>
+      <%= for prop <- @prop do %>
+        <div>
+          <dt><%= prop.key %></dt>
+          <dd><%= render_slot(prop) %></dd>
+        </div>
+      <% end %>
+    </dl>
+    """
+  end
 end
