@@ -110,7 +110,7 @@ defmodule Doggo do
   @doc type: :component
 
   slot :prop, doc: "A property to be rendered." do
-    attr :key, :string, required: true
+    attr :label, :string, required: true
   end
 
   attr :class, :string, default: nil, doc: "Additional CSS classes."
@@ -121,7 +121,7 @@ defmodule Doggo do
     <dl class={["property-list", @class]} {@rest}>
       <%= for prop <- @prop do %>
         <div>
-          <dt><%= prop.key %></dt>
+          <dt><%= prop.label %></dt>
           <dd><%= render_slot(prop) %></dd>
         </div>
       <% end %>
