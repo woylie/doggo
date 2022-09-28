@@ -39,14 +39,15 @@ defmodule Doggo do
 
   attr :size, :atom,
     default: :normal,
-    doc: "Icon size (`:small`, `:normal`, `:medium`, `:large`)."
+    values: [:small, :normal, :medium, :large]
 
   attr :label, :string, default: nil, doc: "Assistive label."
   attr :text, :string, default: nil, doc: "Text to render next to the icon."
 
   attr :icon_position, :atom,
     default: :left,
-    doc: "Position of the icon relative to the text (`:left`, `:right`)."
+    values: [:left, :right],
+    doc: "Position of the icon relative to the text."
 
   attr :sprite_url, :string,
     default: "/assets/icons/sprite.svg",
