@@ -46,7 +46,7 @@ defmodule Doggo.MixProject do
       {:credo, "~> 1.6", runtime: false, only: [:dev, :test]},
       {:dialyxir, "~> 1.2", runtime: false, only: [:dev, :test]},
       {:ex_doc, "~> 0.21", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.14.6", runtime: false, only: [:test]},
+      {:excoveralls, "~> 0.15.0", runtime: false, only: [:test]},
       {:floki, ">= 0.30.0", only: :test},
       {:jason, "~> 1.0", only: [:dev, :test]},
       {:phoenix_live_view, "~> 0.18.0"}
