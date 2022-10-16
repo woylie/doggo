@@ -1,0 +1,9 @@
+/* 
+ * This is your custom storybook stylesheet.
+ * Put your component styling under ."demo-web" scope. 
+ * See the https://hexdocs.pm/phx_live_storybook/sandboxing.html guide for more info.
+ */
+
+.demo-web {
+  font-family: ui-sans-serif, system-ui;
+}

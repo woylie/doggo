@@ -1,0 +1,11 @@
+.elixir_ls
+_build
+assets/node_modules
+assets/vendor
+cover
+demo/_build
+demo/assets/vendor
+demo/deps
+demo/priv/static
+deps
+doc
