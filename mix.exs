@@ -49,7 +49,7 @@ defmodule Doggo.MixProject do
       {:excoveralls, "~> 0.17.0", runtime: false, only: [:test]},
       {:floki, ">= 0.30.0", only: :test},
       {:jason, "~> 1.0", only: [:dev, :test]},
-      {:phoenix_live_view, "~> 0.19.0"}
+      {:phoenix_live_view, "~> 0.20.0"}
     ]
   end
 
