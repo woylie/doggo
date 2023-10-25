@@ -126,29 +126,15 @@ defmodule Doggo do
   attr :rest, :global, doc: "Any additional HTML attributes."
 
   def icon(assigns) do
-    unless assigns.icon_position in [:left, :right] do
-      raise """
-      Invalid icon position
-
-      Allowed values: :left, :right
-
-      Got: #{inspect(assigns.icon_position)}
-      """
-    end
-
     ~H"""
     <span
       class={["icon", icon_size_class(@size), @class]}
       aria-label={@label}
       {@rest}
     >
-      <%= if @text && @icon_position == :right do %>
-        <span><%= @text %></span>
-      <% end %>
+      <span :if={@text && @icon_position == :right}><%= @text %></span>
       <svg aria-hidden="true"><use xlink:href={"#{@sprite_url}##{@name}"} /></svg>
-      <%= if @text && @icon_position == :left do %>
-        <span><%= @text %></span>
-      <% end %>
+      <span :if={@text && @icon_position == :left}><%= @text %></span>
     </span>
     """
   end
@@ -156,17 +142,7 @@ defmodule Doggo do
   defp icon_size_class(:medium), do: "is-medium"
   defp icon_size_class(:small), do: "is-small"
   defp icon_size_class(:large), do: "is-large"
-  defp icon_size_class(:normal), do: nil
-
-  defp icon_size_class(size) do
-    raise """
-    Invalid icon size
-
-    Allowed sizes: :small, :normal, :medium, :large
-
-    Got: #{inspect(size)}
-    """
-  end
+  defp icon_size_class(:normal), do: "is-normal"
 
   @doc """
   Renders a list of properties, i.e. key/value pairs.
