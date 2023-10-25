@@ -5,7 +5,77 @@ defmodule Doggo do
 
   use Phoenix.Component
 
+  alias Phoenix.LiveView.JS
+
   ## Components
+
+  @doc """
+  The alert component serves as a notification mechanism to provide feedback to
+  the user.
+  """
+  attr :id, :string, required: true
+
+  attr :level, :atom,
+    values: [:info, :success, :warning, :error],
+    default: :info,
+    doc: "Semantic level of the alert."
+
+  attr :show_close_button, :boolean, default: true
+
+  attr :close_button_label, :string,
+    default: "close",
+    doc: """
+    This value will be used as aria label. Consider overriding it in case your
+    app is served in different languages.
+    """
+
+  attr :clear_flash, :boolean,
+    default: false,
+    doc: """
+    If you use this component to render flash messages, set this attribute to
+    `true` in order to clear them when clicking the close button.
+    """
+
+  slot :title, default: nil, doc: "An optional title."
+  slot :inner_block, required: true, doc: "The main content of the alert."
+
+  def alert(assigns) do
+    ~H"""
+    <div id={@id} role="alert" class={["alert", alert_level_class(@level)]}>
+      <div class="alert-icon"><.icon name={alert_icon(@level)} /></div>
+      <div class="alert-body">
+        <div :if={@title != []} class="alert-title">
+          <%= render_slot(@title) %>
+        </div>
+        <div class="alert-message"><%= render_slot(@inner_block) %></div>
+      </div>
+      <button
+        :if={@show_close_button}
+        on_click={maybe_clear_flash(@clear_flash, @level) |> JS.hide(to: "##{@id}")}
+        aria-label={@close_button_label}
+        class="alert-close"
+      >
+        <.icon name="x" />
+      </button>
+    </div>
+    """
+  end
+
+  defp alert_level_class(:info), do: "is-info"
+  defp alert_level_class(:success), do: "is-success"
+  defp alert_level_class(:warning), do: "is-warning"
+  defp alert_level_class(:error), do: "is-error"
+
+  defp alert_icon(:info), do: "info"
+  defp alert_icon(:success), do: "check-circle"
+  defp alert_icon(:warning), do: "alert-circle"
+  defp alert_icon(:error), do: "x-octagon"
+
+  defp maybe_clear_flash(true, level) do
+    JS.push("lv:clear-flash", value: %{key: level})
+  end
+
+  defp maybe_clear_flash(false, _), do: %JS{}
 
   @doc """
   Renders an icon from an SVG sprite.
