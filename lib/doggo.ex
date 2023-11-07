@@ -381,7 +381,7 @@ defmodule Doggo do
 
   def stack(assigns) do
     ~H"""
-    <div class={["stack", @class, if(@recursive, do: "is-recursive")]} {@rest}>
+    <div class={["stack", @class, @recursive && "is-recursive"]} {@rest}>
       <%= render_slot(@inner_block) %>
     </div>
     """
