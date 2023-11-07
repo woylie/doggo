@@ -42,18 +42,18 @@ defmodule Doggo do
   def alert(assigns) do
     ~H"""
     <div id={@id} role="alert" class={["alert", alert_level_class(@level)]}>
-      <div class="alert-icon"><.icon name={alert_icon(@level)} /></div>
-      <div class="alert-body">
-        <div :if={@title != []} class="alert-title">
+      <div class="dg-alert-icon"><.icon name={alert_icon(@level)} /></div>
+      <div class="dg-alert-body">
+        <div :if={@title != []} class="dg-alert-title">
           <%= render_slot(@title) %>
         </div>
-        <div class="alert-message"><%= render_slot(@inner_block) %></div>
+        <div class="dg-alert-message"><%= render_slot(@inner_block) %></div>
       </div>
       <button
         :if={@show_close_button}
         on_click={maybe_clear_flash(@clear_flash, @level) |> JS.hide(to: "##{@id}")}
         aria-label={@close_button_label}
-        class="alert-close"
+        class="dg-alert-close"
       >
         <.icon name="x" />
       </button>
