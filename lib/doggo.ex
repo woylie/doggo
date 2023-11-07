@@ -325,9 +325,6 @@ defmodule Doggo do
 
   slot :prop, doc: "A property to be rendered." do
     attr :label, :string, required: true
-
-    attr :show, :boolean,
-      doc: "Set to `false` to hide the property. Defaults to `true`."
   end
 
   attr :class, :string, default: nil, doc: "Additional CSS classes."
@@ -335,15 +332,11 @@ defmodule Doggo do
 
   def property_list(assigns) do
     ~H"""
-    <dl class={["property-list", @class]} {@rest}>
-      <%= for prop <- @prop do %>
-        <%= if Map.get(prop, :show, true) do %>
-          <div>
-            <dt><%= prop.label %></dt>
-            <dd><%= render_slot(prop) %></dd>
-          </div>
-        <% end %>
-      <% end %>
+    <dl class={["dg-property-list", @class]} {@rest}>
+      <div :for={prop <- @prop}>
+        <dt><%= prop.label %></dt>
+        <dd><%= render_slot(prop) %></dd>
+      </div>
     </dl>
     """
   end
