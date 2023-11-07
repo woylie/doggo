@@ -238,18 +238,21 @@ defmodule Doggo do
     doc: "The content for the 'close' link. Defaults to the word 'close'."
 
   slot :footer
+  attr :class, :string, default: nil, doc: "Additional CSS classes."
+  attr :rest, :global, doc: "Any additional HTML attributes."
 
   def modal(assigns) do
     ~H"""
     <dialog
       id={@id}
-      class="dg-modal"
+      class={["dg-modal", @class]}
       aria-modal={(@open && "true") || "false"}
       aria-labelledby={"#{@id}-title"}
       open={@open}
       phx-mounted={@open && show_modal(@id)}
       phx-remove={hide_modal(@id)}
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
+      {@rest}
     >
       <.focus_wrap
         id={"#{@id}-container"}
