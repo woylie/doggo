@@ -13,6 +13,8 @@ defmodule Doggo do
   The alert component serves as a notification mechanism to provide feedback to
   the user.
   """
+  @doc type: :component
+
   attr :id, :string, required: true
 
   attr :level, :atom,
@@ -224,8 +226,8 @@ defmodule Doggo do
   to control visibility. This approach is chosen to eliminate the need for
   library consumers to add additional JavaScript code. To ensure proper
   modal semantics, the `aria-modal` attribute is added to the dialog element.
-
   """
+  @doc type: :component
 
   attr :id, :string, required: true
   attr :open, :boolean, default: false, doc: "Initializes the modal as open."
