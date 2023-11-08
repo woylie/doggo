@@ -44,20 +44,20 @@ defmodule Doggo do
   def alert(assigns) do
     ~H"""
     <div id={@id} role="alert" class={["alert", alert_level_class(@level)]}>
-      <div class="dg-alert-icon">
+      <div class="alert-icon">
         <.icon_sprite name={alert_icon(@level)} />
       </div>
-      <div class="dg-alert-body">
-        <div :if={@title != []} class="dg-alert-title">
+      <div class="alert-body">
+        <div :if={@title != []} class="alert-title">
           <%= render_slot(@title) %>
         </div>
-        <div class="dg-alert-message"><%= render_slot(@inner_block) %></div>
+        <div class="alert-message"><%= render_slot(@inner_block) %></div>
       </div>
       <button
         :if={@show_close_button}
         on_click={maybe_clear_flash(@clear_flash, @level) |> JS.hide(to: "##{@id}")}
         aria-label={@close_button_label}
-        class="dg-alert-close"
+        class="alert-close"
       >
         <.icon_sprite name="x" />
       </button>
@@ -135,7 +135,7 @@ defmodule Doggo do
     ~H"""
     <span
       class={[
-        "dg-icon",
+        "icon",
         icon_size_class(@size),
         label_placement_class(@label_placement),
         @class
@@ -201,7 +201,7 @@ defmodule Doggo do
     ~H"""
     <span
       class={[
-        "dg-icon",
+        "icon",
         icon_size_class(@size),
         label_placement_class(@label_placement),
         @class
@@ -283,8 +283,8 @@ defmodule Doggo do
   To hide the modal when the `open` attribute is not set, use the following CSS
   styles:
 
-      dialog.dg-modal:not([open]),
-      dialog.dg-modal[open="false"] {
+      dialog.modal:not([open]),
+      dialog.modal[open="false"] {
         display: none;
       }
 
@@ -316,7 +316,7 @@ defmodule Doggo do
     ~H"""
     <dialog
       id={@id}
-      class={["dg-modal", @class]}
+      class={["modal", @class]}
       aria-modal={(@open && "true") || "false"}
       aria-labelledby={"#{@id}-title"}
       open={@open}
@@ -327,7 +327,7 @@ defmodule Doggo do
     >
       <.focus_wrap
         id={"#{@id}-container"}
-        class="dg-modal-container"
+        class="modal-container"
         phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
         phx-key="escape"
         phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
@@ -336,7 +336,7 @@ defmodule Doggo do
           <header>
             <.link
               href="#"
-              class="dg-modal-close"
+              class="modal-close"
               aria-label="Close"
               phx-click={JS.exec("data-cancel", to: "##{@id}")}
             >
@@ -345,7 +345,7 @@ defmodule Doggo do
             </.link>
             <h2 id={"#{@id}-title"}><%= render_slot(@title) %></h2>
           </header>
-          <div id={"#{@id}-content"} class="dg-modal-content">
+          <div id={"#{@id}-content"} class="modal-content">
             <%= render_slot(@inner_block) %>
           </div>
           <footer :if={@footer != []}>
@@ -406,7 +406,7 @@ defmodule Doggo do
 
   def property_list(assigns) do
     ~H"""
-    <dl class={["dg-property-list", @class]} {@rest}>
+    <dl class={["property-list", @class]} {@rest}>
       <div :for={prop <- @prop}>
         <dt><%= prop.label %></dt>
         <dd><%= render_slot(prop) %></dd>
