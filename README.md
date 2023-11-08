@@ -26,7 +26,5 @@ end
   classes named `.is-*` or `.has-*`.
 - Provide a base CSS class for each component to support unstyled or
   alternatively styled variations of the same HTML elements.
-- Prefix CSS class names with a library-specific shorthand (`dg-`) to avoid
-  conflicts and aid in recognition.
 - The library is designed without default styles and does not prefer any
   particular CSS framework.
