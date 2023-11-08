@@ -44,7 +44,9 @@ defmodule Doggo do
   def alert(assigns) do
     ~H"""
     <div id={@id} role="alert" class={["alert", alert_level_class(@level)]}>
-      <div class="dg-alert-icon"><.icon name={alert_icon(@level)} /></div>
+      <div class="dg-alert-icon">
+        <.icon_sprite name={alert_icon(@level)} />
+      </div>
       <div class="dg-alert-body">
         <div :if={@title != []} class="dg-alert-title">
           <%= render_slot(@title) %>
@@ -57,7 +59,7 @@ defmodule Doggo do
         aria-label={@close_button_label}
         class="dg-alert-close"
       >
-        <.icon name="x" />
+        <.icon_sprite name="x" />
       </button>
     </div>
     """
@@ -80,71 +82,138 @@ defmodule Doggo do
   defp maybe_clear_flash(false, _), do: %JS{}
 
   @doc """
-  Renders an icon from an SVG sprite.
+  Renders a customizable icon using a slot for SVG content.
+
+  This component does not bind you to a specific set of icons. Instead, it
+  provides a slot for inserting SVG content from any icon library you choose
+
+  The `label` attribute is used to describe the icon and is by default applied
+  as an `aria-label` for accessibility. If `label_placement` is set to
+  `:left` or `:right`, the text becomes visible alongside the icon.
 
   ## Examples
 
-  Minimal example:
+  Render an icon with text as `aria-label` using the `heroicons` library:
 
-      <.icon name="arrow-left" />
+      <.icon label="report bug"><Heroicons.bug_ant /></icon>
 
-  With assistive label:
+  To display the text visibly:
 
-      <.icon name="arrow-left" label={gettext("back")} />
+      <.icon label="report bug" label_placement={:right}>
+        <Heroicons.bug_ant />
+      </icon>
 
-  Specifiying the size:
-
-      <.icon name="arrow-left" label={gettext("back")} size={:small} />
-
-  With visible text:
-
-      <.icon name="arrow-left" text={gettext("back")} />
-
-  Icon right of the text:
-
-      <.icon name="arrow-left" text={gettext("back")} icon_position={:right} />
+  > #### aria-hidden {: .info}
+  >
+  > Not all icon libraries set the `aria-hidden` attribute by default. Always
+  > make sure that it is set on the `<svg>` element that the library renders.
   """
   @doc type: :component
 
-  attr :name, :string, required: true, doc: "Icon name as used in the sprite."
+  slot :inner_block, doc: "Slot for the SVG element."
+
+  attr :label, :string,
+    default: nil,
+    doc: """
+    Text that describes the icon. If `label_placement` is set to `:hidden`,
+    this text is set as `aria-label` attribute.
+    """
+
+  attr :label_placement, :atom,
+    default: :hidden,
+    values: [:left, :right, :hidden],
+    doc: """
+    Position of the label relative to the icon. If set to `:hidden`, the
+    `label` text is used as `aria-label` attribute.
+    """
+
+  attr :size, :atom, default: :medium, values: [:small, :medium, :large]
   attr :class, :string, default: nil, doc: "Additional CSS classes."
-
-  attr :size, :atom,
-    default: :normal,
-    values: [:small, :normal, :medium, :large]
-
-  attr :label, :string, default: nil, doc: "Assistive label."
-  attr :text, :string, default: nil, doc: "Text to render next to the icon."
-
-  attr :icon_position, :atom,
-    default: :left,
-    values: [:left, :right],
-    doc: "Position of the icon relative to the text."
-
-  attr :sprite_url, :string,
-    default: "/assets/icons/sprite.svg",
-    doc: "The URL of the SVG sprite."
-
   attr :rest, :global, doc: "Any additional HTML attributes."
 
   def icon(assigns) do
     ~H"""
     <span
-      class={["icon", icon_size_class(@size), @class]}
-      aria-label={@label}
+      class={[
+        "dg-icon",
+        icon_size_class(@size),
+        label_placement_class(@label_placement),
+        @class
+      ]}
+      aria-label={if @label && @label_placement == :hidden, do: @label}
       {@rest}
     >
-      <span :if={@text && @icon_position == :right}><%= @text %></span>
-      <svg aria-hidden="true"><use xlink:href={"#{@sprite_url}##{@name}"} /></svg>
-      <span :if={@text && @icon_position == :left}><%= @text %></span>
+      <%= render_slot(@inner_block) %>
+      <span :if={@label && @label_placement != :hidden}><%= @label %></span>
     </span>
     """
   end
 
-  defp icon_size_class(:medium), do: "is-medium"
+  defp label_placement_class(:hidden), do: nil
+  defp label_placement_class(:left), do: "has-text-left"
+  defp label_placement_class(:right), do: "has-text-right"
+
   defp icon_size_class(:small), do: "is-small"
+  defp icon_size_class(:medium), do: "is-medium"
   defp icon_size_class(:large), do: "is-large"
-  defp icon_size_class(:normal), do: "is-normal"
+
+  @doc """
+  Renders an icon using an SVG sprite.
+
+  ## Examples
+
+  Render an icon with text as `aria-label`:
+
+      <.icon name="arrow-left" label="Go back" />
+
+  To display the text visibly:
+
+      <.icon name="arrow-left" label="Go back" label_placement={:right} />
+  """
+  @doc type: :component
+
+  attr :name, :string, required: true, doc: "Icon name as used in the sprite."
+
+  attr :sprite_url, :string,
+    default: "/assets/icons/sprite.svg",
+    doc: "The URL of the SVG sprite."
+
+  attr :label, :string,
+    default: nil,
+    doc: """
+    Text that describes the icon. If `label_placement` is set to `:hidden`, this
+    text is set as `aria-label` attribute.
+    """
+
+  attr :label_placement, :atom,
+    default: :hidden,
+    values: [:left, :right, :hidden],
+    doc: """
+    Position of the label relative to the icon. If set to `:hidden`, the
+    `label` text is used as `aria-label` attribute.
+    """
+
+  attr :size, :atom, default: :medium, values: [:small, :medium, :large]
+  attr :class, :string, default: nil, doc: "Additional CSS classes."
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  def icon_sprite(assigns) do
+    ~H"""
+    <span
+      class={[
+        "dg-icon",
+        icon_size_class(@size),
+        label_placement_class(@label_placement),
+        @class
+      ]}
+      aria-label={if @label && @label_placement == :hidden, do: @label}
+      {@rest}
+    >
+      <svg aria-hidden="true"><use href={"#{@sprite_url}##{@name}"} /></svg>
+      <span :if={@label && @label_placement != :hidden}><%= @label %></span>
+    </span>
+    """
+  end
 
   @doc """
   Renders a modal.
