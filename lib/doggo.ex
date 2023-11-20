@@ -103,7 +103,10 @@ defmodule Doggo do
       </Doggo.card>
   """
 
-  attr :class, :string, default: nil, doc: "Additional CSS classes."
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
   attr :rest, :global, doc: "Any additional HTML attributes."
 
   slot :image,
@@ -128,7 +131,7 @@ defmodule Doggo do
 
   def card(assigns) do
     ~H"""
-    <article class={["card", @class]} {@rest}>
+    <article class={["card" | List.wrap(@class)]} {@rest}>
       <figure :if={@image != []}><%= render_slot(@image) %></figure>
       <header :if={@header != []}><%= render_slot(@header) %></header>
       <main :if={@main != []}><%= render_slot(@main) %></main>
@@ -184,18 +187,23 @@ defmodule Doggo do
     """
 
   attr :size, :atom, default: :medium, values: [:small, :medium, :large]
-  attr :class, :string, default: nil, doc: "Additional CSS classes."
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
   attr :rest, :global, doc: "Any additional HTML attributes."
 
   def icon(assigns) do
     ~H"""
     <span
-      class={[
-        "icon",
-        icon_size_class(@size),
-        label_placement_class(@label_placement),
-        @class
-      ]}
+      class={
+        [
+          "icon",
+          icon_size_class(@size),
+          label_placement_class(@label_placement)
+        ] ++ List.wrap(@class)
+      }
       aria-label={if @label && @label_placement == :hidden, do: @label}
       {@rest}
     >
@@ -250,18 +258,23 @@ defmodule Doggo do
     """
 
   attr :size, :atom, default: :medium, values: [:small, :medium, :large]
-  attr :class, :string, default: nil, doc: "Additional CSS classes."
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
   attr :rest, :global, doc: "Any additional HTML attributes."
 
   def icon_sprite(assigns) do
     ~H"""
     <span
-      class={[
-        "icon",
-        icon_size_class(@size),
-        label_placement_class(@label_placement),
-        @class
-      ]}
+      class={
+        [
+          "icon",
+          icon_size_class(@size),
+          label_placement_class(@label_placement)
+        ] ++ List.wrap(@class)
+      }
       aria-label={if @label && @label_placement == :hidden, do: @label}
       {@rest}
     >
@@ -365,14 +378,18 @@ defmodule Doggo do
     doc: "The content for the 'close' link. Defaults to the word 'close'."
 
   slot :footer
-  attr :class, :string, default: nil, doc: "Additional CSS classes."
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
   attr :rest, :global, doc: "Any additional HTML attributes."
 
   def modal(assigns) do
     ~H"""
     <dialog
       id={@id}
-      class={["modal", @class]}
+      class={["modal" | List.wrap(@class)]}
       aria-modal={(@open && "true") || "false"}
       aria-labelledby={"#{@id}-title"}
       open={@open}
@@ -463,11 +480,11 @@ defmodule Doggo do
 
       <Doggo.navbar>
         <:brand><.link navigate={~p"/"}>Pet Clinic</.link></:brand>
-        <Doggo.navbar_items classes={["navbar-main-links"]}>
+        <Doggo.navbar_items class="navbar-main-links">
           <:item><.link navigate={~p"/about"}>About</.link></:item>
           <:item><.link navigate={~p"/services"}>Services</.link></:item>
         </Doggo.navbar_items>
-        <Doggo.navbar_items classes={["navbar-user-menu"]}>
+        <Doggo.navbar_items class="navbar-user-menu">
           <:item>
             <.link navigate={~p"/login"} class="button">Log in</.link>
           </:item>
@@ -482,7 +499,10 @@ defmodule Doggo do
       </Doggo.navbar>
   """
 
-  attr :classes, :list, default: [], doc: "Additional CSS classes."
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
   attr :rest, :global, doc: "Any additional HTML attributes."
 
   slot :brand, doc: "Slot for the brand name or logo."
@@ -495,7 +515,7 @@ defmodule Doggo do
 
   def navbar(assigns) do
     ~H"""
-    <nav class={["navbar" | @classes]} {@rest}>
+    <nav class={["navbar" | List.wrap(@class)]} {@rest}>
       <div :if={@brand != []} class="navbar-brand">
         <%= render_slot(@brand) %>
       </div>
@@ -520,7 +540,10 @@ defmodule Doggo do
       </Doggo.navbar_items>
   """
 
-  attr :classes, :list, default: [], doc: "Additional CSS classes."
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
   attr :rest, :global, doc: "Any additional HTML attributes."
 
   slot :item,
@@ -529,7 +552,7 @@ defmodule Doggo do
 
   def navbar_items(assigns) do
     ~H"""
-    <ul class={["navbar-items" | @classes]} {@rest}>
+    <ul class={["navbar-items" | List.wrap(@class)]} {@rest}>
       <li :for={item <- @item}><%= render_slot(item) %></li>
     </ul>
     """
@@ -551,12 +574,15 @@ defmodule Doggo do
     attr :label, :string, required: true
   end
 
-  attr :class, :string, default: nil, doc: "Additional CSS classes."
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
   attr :rest, :global, doc: "Any additional HTML attributes."
 
   def property_list(assigns) do
     ~H"""
-    <dl class={["property-list", @class]} {@rest}>
+    <dl class={["property-list" | List.wrap(@class)]} {@rest}>
       <div :for={prop <- @prop}>
         <dt><%= prop.label %></dt>
         <dd><%= render_slot(prop) %></dd>
@@ -597,12 +623,18 @@ defmodule Doggo do
     doc:
       "If `true`, the stack margins will be applied to nested elements as well."
 
-  attr :class, :string, default: nil, doc: "Additional CSS classes."
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
   attr :rest, :global, doc: "Any additional HTML attributes."
 
   def stack(assigns) do
     ~H"""
-    <div class={["stack", @class, @recursive && "is-recursive"]} {@rest}>
+    <div
+      class={["stack", @recursive && "is-recursive"] ++ List.wrap(@class)}
+      {@rest}
+    >
       <%= render_slot(@inner_block) %>
     </div>
     """
