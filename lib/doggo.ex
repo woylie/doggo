@@ -442,6 +442,100 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders a navigation bar.
+
+  ## Usage
+
+      <Doggo.navbar>
+        <:brand><.link navigate={~p"/"}>Pet Clinic</.link></:brand>
+        <Doggo.navbar_items>
+          <:item><.link navigate={~p"/about"}>About</.link></:item>
+          <:item><.link navigate={~p"/services"}>Services</.link></:item>
+          <:item>
+            <.link navigate={~p"/login"} class="button">Log in</.link>
+          </:item>
+        </Doggo.navbar_items>
+      </Doggo.navbar>
+
+  You can place multiple navigation item lists in the inner block. If the
+  `.navbar` is styled as a flex box, you can use the CSS `order` property to
+  control the display order of the brand and lists.
+
+      <Doggo.navbar>
+        <:brand><.link navigate={~p"/"}>Pet Clinic</.link></:brand>
+        <Doggo.navbar_items classes={["navbar-main-links"]}>
+          <:item><.link navigate={~p"/about"}>About</.link></:item>
+          <:item><.link navigate={~p"/services"}>Services</.link></:item>
+        </Doggo.navbar_items>
+        <Doggo.navbar_items classes={["navbar-user-menu"]}>
+          <:item>
+            <.link navigate={~p"/login"} class="button">Log in</.link>
+          </:item>
+        </Doggo.navbar_items>
+      </Doggo.navbar>
+
+  If you have multiple `<nav>` elements on your page, it is recommended to set
+  the `aria-label` attribute.
+
+      <Doggo.navbar aria-label="main navigation">
+        <!-- ... -->
+      </Doggo.navbar>
+  """
+
+  attr :classes, :list, default: [], doc: "Additional CSS classes."
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :brand, doc: "Slot for the brand name or logo."
+
+  slot :inner_block,
+    doc: """
+    Slot for navbar items. Use the `navbar_items` component here to render
+    navigation links or other controls.
+    """
+
+  def navbar(assigns) do
+    ~H"""
+    <nav class={["navbar" | @classes]} {@rest}>
+      <div :if={@brand != []} class="navbar-brand">
+        <%= render_slot(@brand) %>
+      </div>
+      <%= render_slot(@inner_block) %>
+    </nav>
+    """
+  end
+
+  @doc """
+  Renders a list of navigation items.
+
+  Meant to be used in the inner block of the `navbar` component.
+
+  ## Usage
+
+      <Doggo.navbar_items>
+        <:item><.link navigate={~p"/about"}>About</.link></:item>
+        <:item><.link navigate={~p"/services"}>Services</.link></:item>
+        <:item>
+          <.link navigate={~p"/login"} class="button">Log in</.link>
+        </:item>
+      </Doggo.navbar_items>
+  """
+
+  attr :classes, :list, default: [], doc: "Additional CSS classes."
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :item,
+    required: true,
+    doc: "A navigation item, usually a link or a button."
+
+  def navbar_items(assigns) do
+    ~H"""
+    <ul class={["navbar-items" | @classes]} {@rest}>
+      <li :for={item <- @item}><%= render_slot(item) %></li>
+    </ul>
+    """
+  end
+
+  @doc """
   Renders a list of properties, i.e. key/value pairs.
 
   ## Example
