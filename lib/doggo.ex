@@ -524,7 +524,7 @@ defmodule Doggo do
   def field_errors(assigns) do
     ~H"""
     <ul :if={@errors != []} id={field_errors_id(@for)} class="field-errors">
-      <li><%= render_slot(@inner_block) %></li>
+      <li :for={error <- @errors}><%= error %></li>
     </ul>
     """
   end
