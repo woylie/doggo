@@ -5,6 +5,7 @@ defmodule Doggo do
 
   use Phoenix.Component
 
+  alias Phoenix.HTML.Form
   alias Phoenix.LiveView.JS
 
   ## Components
@@ -282,6 +283,282 @@ defmodule Doggo do
       <span :if={@label && @label_placement != :hidden}><%= @label %></span>
     </span>
     """
+  end
+
+  @doc """
+  Renders a form field including input, label, errors, and description.
+
+  A `Phoenix.HTML.FormField` may be passed as argument,
+  which is used to retrieve the input name, id, and values.
+  Otherwise all attributes may be passed explicitly.
+
+  ## Types
+
+  In addition to all HTML input types, the following type values are also
+  supported:
+
+  - `"select"` - For `<select>` elements.
+
+  ## Examples
+
+      <.input field={@form[:name]} />
+
+      <.input field={@form[:email]} type="email" />
+  """
+  attr :id, :any, default: nil
+  attr :name, :any
+  attr :label, :string, default: nil
+  attr :value, :any
+
+  attr :type, :string,
+    default: "text",
+    values: ~w(checkbox color date datetime-local email file hidden month number
+         password range radio search select tel text textarea time url week)
+
+  attr :field, Phoenix.HTML.FormField,
+    doc: "A form field struct, for example: @form[:name]"
+
+  attr :errors, :list, default: []
+
+  attr :validations, :list,
+    doc: """
+    A list of HTML input validation attributes (`required`, `minlength`,
+    `maxlength`, `min`, `max`, `pattern`). The attributes are derived
+    automatically from the form.
+    """
+
+  attr :checked_value, :string,
+    default: "true",
+    doc: "The value that is sent when the checkbox is checked."
+
+  attr :checked, :boolean, doc: "The checked attribute for checkboxes."
+
+  attr :prompt, :string,
+    default: nil,
+    doc: "An optional prompt for select elements."
+
+  attr :options, :list,
+    doc: """
+    A list of options for a select element. See
+    `Phoenix.HTML.Form.options_for_select/2`.
+    """
+
+  attr :multiple, :boolean,
+    default: false,
+    doc: """
+    Sets the `multiple` attribute on a select element to allow selecting
+    multiple options.
+    """
+
+  attr :rest, :global,
+    include:
+      ~w(accept autocomplete capture cols disabled form list max maxlength min
+         minlength multiple passwordrules pattern placeholder readonly required
+         rows size step)
+
+  slot :description, doc: "A field description to render underneath the input."
+
+  def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
+    assigns
+    |> assign(field: nil, id: assigns.id || field.id)
+    |> assign(:errors, Enum.map(field.errors, &translate_error(&1)))
+    |> assign_new(:validations, fn ->
+      Form.input_validations(field.form, field.field)
+    end)
+    |> assign_new(:name, fn ->
+      if assigns.multiple, do: field.name <> "[]", else: field.name
+    end)
+    |> assign_new(:value, fn -> field.value end)
+    |> input()
+  end
+
+  def input(%{type: "checkbox"} = assigns) do
+    assigns =
+      assign_new(assigns, :checked, fn ->
+        Form.normalize_value("checkbox", assigns[:value])
+      end)
+
+    ~H"""
+    <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
+      <.label required={@validations[:required] || false} class="checkbox">
+        <input type="hidden" name={@name} value="false" />
+        <input
+          type="checkbox"
+          name={@name}
+          id={@id}
+          value={@checked_value}
+          checked={@checked}
+          aria-describedby={input_aria_describedby(@id, @errors, @description)}
+          {@validations}
+          {@rest}
+        />
+        <%= @label %>
+      </.label>
+      <.field_errors for={@id} errors={@errors} />
+      <.field_description for={@id} description={@description} />
+    </div>
+    """
+  end
+
+  def input(%{type: "select"} = assigns) do
+    ~H"""
+    <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
+      <.label for={@id} required={@validations[:required] || false}>
+        <%= @label %>
+      </.label>
+      <div class={["select", @multiple && "is-multiple"]}>
+        <select
+          name={@name}
+          id={@id}
+          multiple={@multiple}
+          aria-describedby={input_aria_describedby(@id, @errors, @description)}
+          {@validations}
+          {@rest}
+        >
+          <option :if={@prompt} value=""><%= @prompt %></option>
+          <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
+        </select>
+      </div>
+      <.field_errors for={@id} errors={@errors} />
+      <.field_description for={@id} description={@description} />
+    </div>
+    """
+  end
+
+  def input(%{type: "textarea"} = assigns) do
+    ~H"""
+    <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
+      <.label for={@id} required={@validations[:required] || false}>
+        <%= @label %>
+      </.label>
+      <textarea
+        name={@name}
+        id={@id}
+        aria-describedby={input_aria_describedby(@id, @errors, @description)}
+        {@validations}
+        {@rest}
+      ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
+      <.field_errors for={@id} errors={@errors} />
+      <.field_description for={@id} description={@description} />
+    </div>
+    """
+  end
+
+  def input(%{type: "hidden", value: values} = assigns) when is_list(values) do
+    ~H"""
+    <input :for={value <- @value} type="hidden" name={@name <> "[]"} value={value} />
+    """
+  end
+
+  def input(%{type: "hidden"} = assigns) do
+    ~H"""
+    <input type="hidden" name={@name} value={@value} />
+    """
+  end
+
+  def input(assigns) do
+    ~H"""
+    <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
+      <.label for={@id} required={@validations[:required] || false}>
+        <%= @label %>
+      </.label>
+      <input
+        name={@name}
+        id={@id}
+        type={@type}
+        value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+        aria-describedby={input_aria_describedby(@id, @errors, @description)}
+        {@validations}
+        {@rest}
+      />
+      <.field_errors for={@id} errors={@errors} />
+      <.field_description for={@id} description={@description} />
+    </div>
+    """
+  end
+
+  defp input_aria_describedby(_, [], []), do: nil
+  defp input_aria_describedby(id, _, []), do: field_errors_id(id)
+  defp input_aria_describedby(id, [], _), do: field_description_id(id)
+
+  defp input_aria_describedby(id, _, _),
+    do: "#{field_errors_id(id)} #{field_description_id(id)}"
+
+  defp field_error_class([]), do: nil
+  defp field_error_class(_), do: "has-errors"
+
+  @doc """
+  Renders the label for an input.
+  """
+
+  attr :for, :string, default: nil, doc: "The ID of the input."
+
+  attr :required, :boolean,
+    default: false,
+    doc: "If set to `true`, a 'required' mark is rendered."
+
+  attr :rest, :global
+  slot :inner_block, required: true
+
+  def label(assigns) do
+    ~H"""
+    <label for={@for} {@rest}>
+      <%= render_slot(@inner_block) %>
+      <.required_mark :if={@required} />
+    </label>
+    """
+  end
+
+  defp required_mark(assigns) do
+    ~H"""
+    <abbr class="label-required" aria-hidden="true" title="required">*</abbr>
+    """
+  end
+
+  @doc """
+  Renders the errors for an input.
+  """
+  attr :for, :string, required: true, doc: "The ID of the input."
+  attr :errors, :list, required: true, doc: "A list of errors as strings."
+
+  def field_errors(assigns) do
+    ~H"""
+    <ul :if={@errors != []} id={field_errors_id(@for)} class="field-errors">
+      <li><%= render_slot(@inner_block) %></li>
+    </ul>
+    """
+  end
+
+  defp field_errors_id(id) when is_binary(id), do: "#{id}_errors"
+
+  @doc """
+  Renders the description of an input.
+  """
+  attr :for, :string, required: true, doc: "The ID of the input."
+  attr :description, :any
+
+  def field_description(assigns) do
+    ~H"""
+    <div
+      :if={@description != []}
+      id={field_description_id(@for)}
+      class="field-description"
+    >
+      <li><%= render_slot(@description) %></li>
+    </div>
+    """
+  end
+
+  defp field_description_id(id) when is_binary(id), do: "#{id}_description"
+
+  def translate_error({msg, opts}) do
+    Enum.reduce(opts, msg, fn {key, value}, acc ->
+      String.replace(acc, "%{#{key}}", fn _ -> to_string(value) end)
+    end)
+  end
+
+  def translate_errors(errors, field) when is_list(errors) do
+    for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
 
   @doc """
