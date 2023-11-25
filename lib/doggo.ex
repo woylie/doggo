@@ -18,14 +18,6 @@ defmodule Doggo do
       <.flash_group flash={@flash} />
   """
   attr :flash, :map, required: true, doc: "The map of flash messages."
-
-  attr :disconnected_alert, :boolean,
-    default: false,
-    doc: """
-    If `true`, the component renders an alert when the client is disconnected
-    and trying to reconnect.
-    """
-
   attr :info_title, :string, default: "Success"
   attr :error_title, :string, default: "Error"
   attr :id, :string, default: nil, doc: "An optional ID for the container."
@@ -52,7 +44,6 @@ defmodule Doggo do
         <%= msg %>
       </.alert>
       <.alert
-        :if={@disconnected_alert}
         id="client-error"
         level={:error}
         title="Disconnected"
