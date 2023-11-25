@@ -11,56 +11,131 @@ defmodule Doggo do
   ## Components
 
   @doc """
+  Shows the flash messages as alerts.
+
+  ## Examples
+
+      <.flash_group flash={@flash} />
+  """
+  attr :flash, :map, required: true, doc: "The map of flash messages."
+
+  attr :disconnected_alert, :boolean,
+    default: false,
+    doc: """
+    If `true`, the component renders an alert when the client is disconnected
+    and trying to reconnect.
+    """
+
+  attr :info_title, :string, default: "Success"
+  attr :error_title, :string, default: "Error"
+  attr :id, :string, default: nil, doc: "An optional ID for the container."
+  attr :class, :any, default: "stack", doc: "An optional class name."
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  def flash_group(assigns) do
+    ~H"""
+    <div id={@id} class={@class} {@rest}>
+      <.alert
+        :if={msg = Phoenix.Flash.get(@flash, :info)}
+        level={:info}
+        title={@info_title}
+        on_close={clear_flash(:info)}
+      >
+        <%= msg %>
+      </.alert>
+      <.alert
+        :if={msg = Phoenix.Flash.get(@flash, :error)}
+        level={:error}
+        title={@error_title}
+        on_close={clear_flash(:error)}
+      >
+        <%= msg %>
+      </.alert>
+      <.alert
+        :if={@disconnected_alert}
+        id="client-error"
+        level={:error}
+        title="Disconnected"
+        phx-disconnected={JS.show(to: ".phx-client-error #client-error")}
+        phx-connected={JS.hide(to: "#client-error")}
+        hidden
+      >
+        Attempting to reconnect.
+      </.alert>
+      <.alert
+        id="server-error"
+        level={:error}
+        title="Error"
+        phx-disconnected={JS.show(to: ".phx-server-error #server-error")}
+        phx-connected={JS.hide(to: "#server-error")}
+        hidden
+      >
+        Please wait while we get back on track.
+      </.alert>
+    </div>
+    """
+  end
+
+  defp clear_flash(level) do
+    JS.push("lv:clear-flash", value: %{key: level})
+  end
+
+  @doc """
   The alert component serves as a notification mechanism to provide feedback to
   the user.
   """
   @doc type: :component
 
-  attr :id, :string, required: true
+  attr :id, :string, default: nil
 
   attr :level, :atom,
     values: [:info, :success, :warning, :error],
     default: :info,
     doc: "Semantic level of the alert."
 
-  attr :show_close_button, :boolean, default: true
+  attr :title, :string, default: nil, doc: "An optional title."
 
-  attr :close_button_label, :string,
+  attr :on_close, JS,
+    default: nil,
+    doc: """
+    JS command to run when the close button is clicked. If not set, no close
+    button is rendered.
+    """
+
+  attr :close_label, :any,
     default: "close",
     doc: """
     This value will be used as aria label. Consider overriding it in case your
     app is served in different languages.
     """
 
-  attr :clear_flash, :boolean,
-    default: false,
-    doc: """
-    If you use this component to render flash messages, set this attribute to
-    `true` in order to clear them when clicking the close button.
-    """
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
 
-  slot :title, default: nil, doc: "An optional title."
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
   slot :inner_block, required: true, doc: "The main content of the alert."
+  slot :icon, doc: "Optional slot to render an icon."
 
   def alert(assigns) do
     ~H"""
-    <div id={@id} role="alert" class={["alert", alert_level_class(@level)]}>
-      <div class="alert-icon">
-        <.icon_sprite name={alert_icon(@level)} />
+    <div
+      phx-click={@on_close}
+      id={@id}
+      role="alert"
+      class={["alert", alert_level_class(@level)] ++ List.wrap(@class)}
+      {@rest}
+    >
+      <div :if={@icon != []} class="alert-icon">
+        <%= render_slot(@icon) %>
       </div>
       <div class="alert-body">
-        <div :if={@title != []} class="alert-title">
-          <%= render_slot(@title) %>
-        </div>
+        <div :if={@title} class="alert-title"><%= @title %></div>
         <div class="alert-message"><%= render_slot(@inner_block) %></div>
       </div>
-      <button
-        :if={@show_close_button}
-        on_click={maybe_clear_flash(@clear_flash, @level) |> JS.hide(to: "##{@id}")}
-        aria-label={@close_button_label}
-        class="alert-close"
-      >
-        <.icon_sprite name="x" />
+      <button :if={@on_close} phx-click={@on_close} class="alert-close">
+        <%= @close_label %>
       </button>
     </div>
     """
@@ -70,17 +145,6 @@ defmodule Doggo do
   defp alert_level_class(:success), do: "is-success"
   defp alert_level_class(:warning), do: "is-warning"
   defp alert_level_class(:error), do: "is-error"
-
-  defp alert_icon(:info), do: "info"
-  defp alert_icon(:success), do: "check-circle"
-  defp alert_icon(:warning), do: "alert-circle"
-  defp alert_icon(:error), do: "x-octagon"
-
-  defp maybe_clear_flash(true, level) do
-    JS.push("lv:clear-flash", value: %{key: level})
-  end
-
-  defp maybe_clear_flash(false, _), do: %JS{}
 
   @doc """
   Renders a card in an `article` tag, typically used repetitively in a grid or
