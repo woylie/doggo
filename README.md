@@ -1,7 +1,6 @@
 # Doggo
 
-Collection of Phoenix components with semantic CSS classes. No CSS styles
-included at the moment.
+Collection of unstyled Phoenix components with semantic CSS classes.
 
 ## Installation
 
@@ -16,7 +15,7 @@ def deps do
 end
 ```
 
-## Design decision
+## Design decisions
 
 - Favor semantic HTML elements over CSS classes for structure and clarity.
 - Adhere to accessibility guidelines with appropriate ARIA attributes and roles.

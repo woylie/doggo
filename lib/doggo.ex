@@ -13,10 +13,26 @@ defmodule Doggo do
   @doc """
   Shows the flash messages as alerts.
 
+  ## Hidden attribute
+
+  This component uses the `hidden` attribute to hide alerts related to
+  disconnections. If you explicitly set the CSS `display` property for the
+  `alert/1` component, it may override the default browser behavior for the
+  `hidden` attribute, in which case you will see these alerts flashing on each
+  page load. To prevent this, add the following lines to your CSS styles:
+
+  ```css
+  [hidden] {
+    display: none !important;
+  }
+  ```
+
   ## Examples
 
       <.flash_group flash={@flash} />
   """
+  @doc type: :component
+
   attr :flash, :map, required: true, doc: "The map of flash messages."
   attr :info_title, :string, default: "Success"
   attr :error_title, :string, default: "Error"
@@ -158,6 +174,7 @@ defmodule Doggo do
         </:footer>
       </Doggo.card>
   """
+  @doc type: :component
 
   attr :class, :any,
     default: [],
@@ -360,6 +377,8 @@ defmodule Doggo do
 
       <.input field={@form[:email]} type="email" />
   """
+  @doc type: :component
+
   attr :id, :any, default: nil
   attr :name, :any
   attr :label, :string, default: nil
@@ -545,6 +564,7 @@ defmodule Doggo do
   @doc """
   Renders the label for an input.
   """
+  @doc type: :component
 
   attr :for, :string, default: nil, doc: "The ID of the input."
 
@@ -573,6 +593,8 @@ defmodule Doggo do
   @doc """
   Renders the errors for an input.
   """
+  @doc type: :component
+
   attr :for, :string, required: true, doc: "The ID of the input."
   attr :errors, :list, required: true, doc: "A list of errors as strings."
 
@@ -589,6 +611,8 @@ defmodule Doggo do
   @doc """
   Renders the description of an input.
   """
+  @doc type: :component
+
   attr :for, :string, required: true, doc: "The ID of the input."
   attr :description, :any
 
@@ -831,6 +855,7 @@ defmodule Doggo do
         <!-- ... -->
       </Doggo.navbar>
   """
+  @doc type: :component
 
   attr :class, :any,
     default: [],
@@ -872,6 +897,7 @@ defmodule Doggo do
         </:item>
       </Doggo.navbar_items>
   """
+  @doc type: :component
 
   attr :class, :any,
     default: [],
@@ -970,6 +996,7 @@ defmodule Doggo do
         </:bottom>
       </.drawer>
   """
+  @doc type: :component
 
   attr :class, :any,
     default: [],
@@ -1038,6 +1065,7 @@ defmodule Doggo do
         </:item>
       </.drawer_nav>
   """
+  @doc type: :component
 
   attr :rest, :global, doc: "Any additional HTML attributes."
 
@@ -1085,6 +1113,7 @@ defmodule Doggo do
         </:item>
       </.drawer_nav>
   """
+  @doc type: :component
 
   slot :title, doc: "An optional slot for the title of the nested menu section."
 
@@ -1121,6 +1150,7 @@ defmodule Doggo do
         <:item><input type="search" placeholder="Search" /></:item>
       </.drawer_section>
   """
+  @doc type: :component
 
   attr :class, :any,
     default: [],
