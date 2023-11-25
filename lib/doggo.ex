@@ -868,6 +868,233 @@ defmodule Doggo do
     """
   end
 
+  @doc """
+  Renders a sidebar with a `brand`, `top`, and `bottom` slot.
+
+  Within the slots, you can use the `sidebar_nav/1` and `sidebar_section/1`
+  components.
+
+  ## Example
+
+      <.sidebar>
+        <:brand>
+          <.link navigate={~p"/"}>App</.link>
+        </:brand>
+        <:top>
+          <.sidebar_nav aria-label="Main navigation">
+            <:item>
+              <.link navigate={~p"/dashboard"}>Dashboard</.link>
+            </:item>
+            <:item>
+              <.sidebar_nested_nav>
+                <:title>Content</:title>
+                <:item current_page>
+                  <.link navigate={~p"/posts"}>Posts</.link>
+                </:item>
+                <:item>
+                  <.link navigate={~p"/comments"}>Comments</.link>
+                </:item>
+              </.sidebar_nested_nav>
+            </:item>
+          </.sidebar_nav>
+          <.sidebar_section>
+            <:title>Search</:title>
+            <:item><input type="search" placeholder="Search" /></:item>
+          </.sidebar_section>
+        </:top>
+        <:bottom>
+          <.sidebar_nav aria-label="User menu">
+            <:item>
+              <.link navigate={~p"/settings"}>Settings</.link>
+            </:item>
+            <:item>
+              <.link navigate={~p"/logout"}>Logout</.link>
+            </:item>
+          </.sidebar_nav>
+        </:bottom>
+      </.sidebar>
+  """
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :brand, doc: "Optional slot for the brand name or logo."
+
+  slot :top,
+    doc: """
+    Slot for content that is rendered after the brand, at the start of the
+    side bar.
+    """
+
+  slot :bottom,
+    doc: """
+    Slot for content that is rendered at the end of the sidebar, pinned to the
+    bottom, if there is enough room.
+    """
+
+  def sidebar(assigns) do
+    ~H"""
+    <aside class={["sidebar" | List.wrap(@class)]} {@rest}>
+      <div :if={@brand != []} class="sidebar-brand">
+        <%= render_slot(@brand) %>
+      </div>
+      <div :if={@top != []} class="sidebar-top">
+        <%= render_slot(@top) %>
+      </div>
+      <div :if={@bottom != []} class="sidebar-bottom">
+        <%= render_slot(@bottom) %>
+      </div>
+    </aside>
+    """
+  end
+
+  @doc """
+  Renders a navigation menu as a sidebar section.
+
+  This component must be placed within the `:top` or `:bottom` slot of the
+  `sidebar/1` component.
+
+  To nest the navigation, use the `sidebar_nested_nav/1` component within the
+  `:item` slot.
+
+  To render a sidebar section that is not a navigation menu, use
+  `sidebar_section/1` instead.
+
+  ## Example
+
+      <.sidebar_nav aria-label="Main navigation">
+        <:item>
+          <.link navigate={~p"/dashboard"}>Dashboard</.link>
+        </:item>
+        <:item>
+          <.sidebar_nested_nav>
+            <:title>Content</:title>
+            <:item current_page>
+              <.link navigate={~p"/posts"}>Posts</.link>
+            </:item>
+            <:item>
+              <.link navigate={~p"/comments"}>Comments</.link>
+            </:item>
+          </.sidebar_nested_nav>
+        </:item>
+      </.sidebar_nav>
+  """
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :title, doc: "An optional slot for the title of the menu."
+
+  slot :item, required: true, doc: "Items" do
+    attr :current_page, :boolean
+  end
+
+  def sidebar_nav(assigns) do
+    ~H"""
+    <nav {@rest}>
+      <div :if={@title != []} class="sidebar-nav-title">
+        <%= render_slot(@title) %>
+      </div>
+      <ul>
+        <li
+          :for={item <- @item}
+          aria-current={Map.get(item, :current_page, false) && "page"}
+        >
+          <%= render_slot(item) %>
+        </li>
+      </ul>
+    </nav>
+    """
+  end
+
+  @doc """
+  Renders nested navigation items within the `:item` slot of the `sidebar_nav/1`
+  component.
+
+  ## Example
+
+      <.sidebar_nav aria-label="Main navigation">
+        <:item>
+          <.sidebar_nested_nav>
+            <:title>Content</:title>
+            <:item current_page>
+              <.link navigate={~p"/posts"}>Posts</.link>
+            </:item>
+            <:item>
+              <.link navigate={~p"/comments"}>Comments</.link>
+            </:item>
+          </.sidebar_nested_nav>
+        </:item>
+      </.sidebar_nav>
+  """
+
+  slot :title, doc: "An optional slot for the title of the nested menu section."
+
+  slot :item, required: true, doc: "Items" do
+    attr :current_page, :boolean
+  end
+
+  def sidebar_nested_nav(assigns) do
+    ~H"""
+    <div :if={@title != []} class="sidebar-nav-title">
+      <%= render_slot(@title) %>
+    </div>
+    <ul>
+      <li
+        :for={item <- @item}
+        aria-current={Map.get(item, :current_page, false) && "page"}
+      >
+        <%= render_slot(item) %>
+      </li>
+    </ul>
+    """
+  end
+
+  @doc """
+  Renders a section in a sidebar that contains one or more items, which are not
+  navigation links.
+
+  To render a sidebar navigation, use `sidebar_nav/1` instead.
+
+  ## Example
+
+      <.sidebar_section>
+        <:title>Search</:title>
+        <:item><input type="search" placeholder="Search" /></:item>
+      </.sidebar_section>
+  """
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :title, doc: "An optional slot for the title of the section."
+
+  slot :item, required: true, doc: "Items" do
+    attr :class, :any,
+      doc: "Additional CSS classes. Can be a string or a list of strings."
+  end
+
+  def sidebar_section(assigns) do
+    ~H"""
+    <div class={["sidebar-section" | List.wrap(@class)]} {@rest}>
+      <div :if={@title != []} class="sidebar-section-title">
+        <%= render_slot(@title) %>
+      </div>
+      <div
+        :for={item <- @item}
+        class={["sidebar-item" | item |> Map.get(:class, []) |> List.wrap()]}
+      >
+        <%= render_slot(item) %>
+      </div>
+    </div>
+    """
+  end
+
   ## Layouts
 
   @doc """
