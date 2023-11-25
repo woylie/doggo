@@ -870,24 +870,24 @@ defmodule Doggo do
   end
 
   @doc """
-  Renders a sidebar with a `brand`, `top`, and `bottom` slot.
+  Renders a drawer with a `brand`, `top`, and `bottom` slot.
 
-  Within the slots, you can use the `sidebar_nav/1` and `sidebar_section/1`
+  Within the slots, you can use the `drawer_nav/1` and `drawer_section/1`
   components.
 
   ## Example
 
-      <.sidebar>
+      <.drawer>
         <:brand>
           <.link navigate={~p"/"}>App</.link>
         </:brand>
         <:top>
-          <.sidebar_nav aria-label="Main navigation">
+          <.drawer_nav aria-label="Main navigation">
             <:item>
               <.link navigate={~p"/dashboard"}>Dashboard</.link>
             </:item>
             <:item>
-              <.sidebar_nested_nav>
+              <.drawer_nested_nav>
                 <:title>Content</:title>
                 <:item current_page>
                   <.link navigate={~p"/posts"}>Posts</.link>
@@ -895,25 +895,25 @@ defmodule Doggo do
                 <:item>
                   <.link navigate={~p"/comments"}>Comments</.link>
                 </:item>
-              </.sidebar_nested_nav>
+              </.drawer_nested_nav>
             </:item>
-          </.sidebar_nav>
-          <.sidebar_section>
+          </.drawer_nav>
+          <.drawer_section>
             <:title>Search</:title>
             <:item><input type="search" placeholder="Search" /></:item>
-          </.sidebar_section>
+          </.drawer_section>
         </:top>
         <:bottom>
-          <.sidebar_nav aria-label="User menu">
+          <.drawer_nav aria-label="User menu">
             <:item>
               <.link navigate={~p"/settings"}>Settings</.link>
             </:item>
             <:item>
               <.link navigate={~p"/logout"}>Logout</.link>
             </:item>
-          </.sidebar_nav>
+          </.drawer_nav>
         </:bottom>
-      </.sidebar>
+      </.drawer>
   """
 
   attr :class, :any,
@@ -932,20 +932,20 @@ defmodule Doggo do
 
   slot :bottom,
     doc: """
-    Slot for content that is rendered at the end of the sidebar, pinned to the
+    Slot for content that is rendered at the end of the drawer, pinned to the
     bottom, if there is enough room.
     """
 
-  def sidebar(assigns) do
+  def drawer(assigns) do
     ~H"""
-    <aside class={["sidebar" | List.wrap(@class)]} {@rest}>
-      <div :if={@brand != []} class="sidebar-brand">
+    <aside class={["drawer" | List.wrap(@class)]} {@rest}>
+      <div :if={@brand != []} class="drawer-brand">
         <%= render_slot(@brand) %>
       </div>
-      <div :if={@top != []} class="sidebar-top">
+      <div :if={@top != []} class="drawer-top">
         <%= render_slot(@top) %>
       </div>
-      <div :if={@bottom != []} class="sidebar-bottom">
+      <div :if={@bottom != []} class="drawer-bottom">
         <%= render_slot(@bottom) %>
       </div>
     </aside>
@@ -953,25 +953,25 @@ defmodule Doggo do
   end
 
   @doc """
-  Renders a navigation menu as a sidebar section.
+  Renders a navigation menu as a drawer section.
 
   This component must be placed within the `:top` or `:bottom` slot of the
-  `sidebar/1` component.
+  `drawer/1` component.
 
-  To nest the navigation, use the `sidebar_nested_nav/1` component within the
+  To nest the navigation, use the `drawer_nested_nav/1` component within the
   `:item` slot.
 
-  To render a sidebar section that is not a navigation menu, use
-  `sidebar_section/1` instead.
+  To render a drawer section that is not a navigation menu, use
+  `drawer_section/1` instead.
 
   ## Example
 
-      <.sidebar_nav aria-label="Main navigation">
+      <.drawer_nav aria-label="Main navigation">
         <:item>
           <.link navigate={~p"/dashboard"}>Dashboard</.link>
         </:item>
         <:item>
-          <.sidebar_nested_nav>
+          <.drawer_nested_nav>
             <:title>Content</:title>
             <:item current_page>
               <.link navigate={~p"/posts"}>Posts</.link>
@@ -979,9 +979,9 @@ defmodule Doggo do
             <:item>
               <.link navigate={~p"/comments"}>Comments</.link>
             </:item>
-          </.sidebar_nested_nav>
+          </.drawer_nested_nav>
         </:item>
-      </.sidebar_nav>
+      </.drawer_nav>
   """
 
   attr :rest, :global, doc: "Any additional HTML attributes."
@@ -992,10 +992,10 @@ defmodule Doggo do
     attr :current_page, :boolean
   end
 
-  def sidebar_nav(assigns) do
+  def drawer_nav(assigns) do
     ~H"""
     <nav {@rest}>
-      <div :if={@title != []} class="sidebar-nav-title">
+      <div :if={@title != []} class="drawer-nav-title">
         <%= render_slot(@title) %>
       </div>
       <ul>
@@ -1011,14 +1011,14 @@ defmodule Doggo do
   end
 
   @doc """
-  Renders nested navigation items within the `:item` slot of the `sidebar_nav/1`
+  Renders nested navigation items within the `:item` slot of the `drawer_nav/1`
   component.
 
   ## Example
 
-      <.sidebar_nav aria-label="Main navigation">
+      <.drawer_nav aria-label="Main navigation">
         <:item>
-          <.sidebar_nested_nav>
+          <.drawer_nested_nav>
             <:title>Content</:title>
             <:item current_page>
               <.link navigate={~p"/posts"}>Posts</.link>
@@ -1026,9 +1026,9 @@ defmodule Doggo do
             <:item>
               <.link navigate={~p"/comments"}>Comments</.link>
             </:item>
-          </.sidebar_nested_nav>
+          </.drawer_nested_nav>
         </:item>
-      </.sidebar_nav>
+      </.drawer_nav>
   """
 
   slot :title, doc: "An optional slot for the title of the nested menu section."
@@ -1037,9 +1037,9 @@ defmodule Doggo do
     attr :current_page, :boolean
   end
 
-  def sidebar_nested_nav(assigns) do
+  def drawer_nested_nav(assigns) do
     ~H"""
-    <div :if={@title != []} class="sidebar-nav-title">
+    <div :if={@title != []} class="drawer-nav-title">
       <%= render_slot(@title) %>
     </div>
     <ul>
@@ -1054,17 +1054,17 @@ defmodule Doggo do
   end
 
   @doc """
-  Renders a section in a sidebar that contains one or more items, which are not
+  Renders a section in a drawer that contains one or more items, which are not
   navigation links.
 
-  To render a sidebar navigation, use `sidebar_nav/1` instead.
+  To render a drawer navigation, use `drawer_nav/1` instead.
 
   ## Example
 
-      <.sidebar_section>
+      <.drawer_section>
         <:title>Search</:title>
         <:item><input type="search" placeholder="Search" /></:item>
-      </.sidebar_section>
+      </.drawer_section>
   """
 
   attr :class, :any,
@@ -1080,15 +1080,15 @@ defmodule Doggo do
       doc: "Additional CSS classes. Can be a string or a list of strings."
   end
 
-  def sidebar_section(assigns) do
+  def drawer_section(assigns) do
     ~H"""
-    <div class={["sidebar-section" | List.wrap(@class)]} {@rest}>
-      <div :if={@title != []} class="sidebar-section-title">
+    <div class={["drawer-section" | List.wrap(@class)]} {@rest}>
+      <div :if={@title != []} class="drawer-section-title">
         <%= render_slot(@title) %>
       </div>
       <div
         :for={item <- @item}
-        class={["sidebar-item" | item |> Map.get(:class, []) |> List.wrap()]}
+        class={["drawer-item" | item |> Map.get(:class, []) |> List.wrap()]}
       >
         <%= render_slot(item) %>
       </div>
