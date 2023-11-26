@@ -11,6 +11,49 @@ defmodule Doggo do
   ## Components
 
   @doc """
+  The action bar offers users quick access to primary actions within the
+  application.
+
+  It is typically positioned to float above other content.
+
+  ## Example
+
+      <.action_bar>
+        <:item label="Edit" on_click={JS.push("edit")}>
+          <.icon size={:small}><Lucideicons.pencil aria-hidden /></Doggo.icon>
+        </:item>
+        <:item label="Move" on_click={JS.push("move")}>
+          <.icon size={:small}><Lucideicons.move aria-hidden /></Doggo.icon>
+        </:item>
+        <:item label="Archive" on_click={JS.push("archive")}>
+          <.icon size={:small}><Lucideicons.archive aria-hidden /></Doggo.icon>
+        </:item>
+      </.action_bar>
+  """
+  @doc type: :component
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :item do
+    attr :label, :string, required: true
+    attr :on_click, JS, required: true
+  end
+
+  def action_bar(assigns) do
+    ~H"""
+    <div class={["action-bar" | List.wrap(@class)]} {@rest}>
+      <.link :for={item <- @item} phx-click={item.on_click} title={item.label}>
+        <%= render_slot(item) %>
+      </.link>
+    </div>
+    """
+  end
+
+  @doc """
   Shows the flash messages as alerts.
 
   ## Hidden attribute
