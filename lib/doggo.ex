@@ -87,7 +87,10 @@ defmodule Doggo do
     doc: """
     Slot for a single button left of the title, typically used for a menu button
     that toggles a drawer, or for a back link.
-    """
+    """ do
+    attr :label, :string, required: true
+    attr :on_click, JS, required: true
+  end
 
   slot :action, doc: "Slot for action buttons right of the title." do
     attr :label, :string, required: true
