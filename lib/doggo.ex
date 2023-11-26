@@ -89,7 +89,10 @@ defmodule Doggo do
     that toggles a drawer, or for a back link.
     """
 
-  slot :action, doc: "Slot for action buttons right of the title."
+  slot :action, doc: "Slot for action buttons right of the title." do
+    attr :label, :string, required: true
+    attr :on_click, JS, required: true
+  end
 
   def app_bar(assigns) do
     ~H"""
