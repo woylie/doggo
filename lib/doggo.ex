@@ -54,6 +54,70 @@ defmodule Doggo do
   end
 
   @doc """
+  The app bar is typically located at the top of the interface and provides
+  access to key features and navigation options.
+
+  ## Usage
+
+      <.app_bar title="Page title">
+        <:navigation label="Open menu" on_click={JS.push("toggle-menu")}>
+          <.icon><Lucideicons.menu aria-hidden /></.icon>
+        </:navigation>
+        <:action label="Search" on_click={JS.push("search")}>
+          <.icon><Lucideicons.search aria-hidden /></.icon>
+        </:action>
+        <:action label="Like" on_click={JS.push("like")}>
+          <.icon><Lucideicons.heart aria-hidden /></.icon>
+        </:action>
+      </.app_bar>
+  """
+  @doc type: :component
+
+  attr :title, :string,
+    required: true,
+    doc: "The page title. Will be set as `h1`."
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :navigation,
+    doc: """
+    Slot for a single button left of the title, typically used for a menu button
+    that toggles a drawer, or for a back link.
+    """
+
+  slot :action, doc: "Slot for action buttons right of the title."
+
+  def app_bar(assigns) do
+    ~H"""
+    <header class={["app-bar" | List.wrap(@class)]} {@rest}>
+      <div :if={@navigation != []} class="app-bar-navigation">
+        <.link
+          :for={navigation <- @navigation}
+          phx-click={navigation.on_click}
+          title={navigation.label}
+        >
+          <%= render_slot(navigation) %>
+        </.link>
+      </div>
+      <h1><%= @title %></h1>
+      <div :if={@action != []} class="app-bar-actions">
+        <.link
+          :for={action <- @action}
+          phx-click={action.on_click}
+          title={action.label}
+        >
+          <%= render_slot(action) %>
+        </.link>
+      </div>
+    </header>
+    """
+  end
+
+  @doc """
   Shows the flash messages as alerts.
 
   ## Hidden attribute
