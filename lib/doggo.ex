@@ -20,13 +20,13 @@ defmodule Doggo do
 
       <.action_bar>
         <:item label="Edit" on_click={JS.push("edit")}>
-          <.icon size={:small}><Lucideicons.pencil aria-hidden /></Doggo.icon>
+          <.icon size={:small}><Lucideicons.pencil aria-hidden /></.icon>
         </:item>
         <:item label="Move" on_click={JS.push("move")}>
-          <.icon size={:small}><Lucideicons.move aria-hidden /></Doggo.icon>
+          <.icon size={:small}><Lucideicons.move aria-hidden /></.icon>
         </:item>
         <:item label="Archive" on_click={JS.push("archive")}>
-          <.icon size={:small}><Lucideicons.archive aria-hidden /></Doggo.icon>
+          <.icon size={:small}><Lucideicons.archive aria-hidden /></.icon>
         </:item>
       </.action_bar>
   """
