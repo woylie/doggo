@@ -7,20 +7,23 @@
 # General application configuration
 import Config
 
+config :demo,
+  generators: [timestamp_type: :utc_datetime]
+
 # Configures the endpoint
 config :demo, DemoWeb.Endpoint,
   url: [host: "localhost"],
+  adapter: Phoenix.Endpoint.Cowboy2Adapter,
   render_errors: [
-    view: DemoWeb.ErrorView,
-    accepts: ~w(html json),
+    formats: [html: DemoWeb.ErrorHTML, json: DemoWeb.ErrorJSON],
     layout: false
   ],
   pubsub_server: Demo.PubSub,
-  live_view: [signing_salt: "njO9CwWg"]
+  live_view: [signing_salt: "hha5Qn8m"]
 
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.14.29",
+  version: "0.17.11",
   default: [
     args:
       ~w(js/app.js js/storybook.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
