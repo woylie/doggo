@@ -74,7 +74,7 @@ defmodule Doggo do
   @doc type: :component
 
   attr :title, :string,
-    required: true,
+    default: nil,
     doc: "The page title. Will be set as `h1`."
 
   attr :class, :any,
@@ -109,7 +109,7 @@ defmodule Doggo do
           <%= render_slot(navigation) %>
         </.link>
       </div>
-      <h1><%= @title %></h1>
+      <h1 :if={@title}><%= @title %></h1>
       <div :if={@action != []} class="app-bar-actions">
         <.link
           :for={action <- @action}
