@@ -515,7 +515,7 @@ defmodule Doggo do
       aria-label={if @label && @label_placement == :hidden, do: @label}
       {@rest}
     >
-      <span class="icon-svg"><%= render_slot(@inner_block) %></span>
+      <%= render_slot(@inner_block) %>
       <span :if={@label && @label_placement != :hidden}><%= @label %></span>
     </span>
     """
@@ -582,9 +582,7 @@ defmodule Doggo do
       aria-label={if @label && @label_placement == :hidden, do: @label}
       {@rest}
     >
-      <span class="icon-svg">
-        <svg aria-hidden="true"><use href={"#{@sprite_url}##{@name}"} /></svg>
-      </span>
+      <svg aria-hidden="true"><use href={"#{@sprite_url}##{@name}"} /></svg>
       <span :if={@label && @label_placement != :hidden}><%= @label %></span>
     </span>
     """
