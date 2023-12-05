@@ -130,13 +130,13 @@ defmodule Doggo do
 
       <.button>Confirm</.button>
 
-      <.button type="submit" kind={:secondary} size={:medium} shape={:pill}>
+      <.button type="submit" variant={:secondary} size={:medium} shape={:pill}>
         Submit
       </.button>
   """
   attr :type, :string, values: ["button", "reset", "submit"], default: "button"
 
-  attr :kind, :atom,
+  attr :variant, :atom,
     values: [:primary, :secondary, :info, :success, :warning, :danger],
     default: :primary
 
@@ -179,7 +179,7 @@ defmodule Doggo do
 
       <.button_link
         navigate={~p"/registration"}
-        kind={:primary}
+        variant={:primary}
         shape={:pill}>
         Submit
       </.button>
@@ -191,7 +191,7 @@ defmodule Doggo do
   attr :method, :string, default: "get"
   attr :csrf_token, :any, default: true
 
-  attr :kind, :atom,
+  attr :variant, :atom,
     values: [:primary, :secondary, :info, :success, :warning, :danger],
     default: :primary
 
