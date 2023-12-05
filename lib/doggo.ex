@@ -124,6 +124,131 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders a button.
+
+  ## Examples
+
+      <.button>Confirm</.button>
+
+      <.button type="submit" kind={:secondary} size={:medium} shape={:pill}>
+        Submit
+      </.button>
+  """
+  attr :type, :string, values: ["button", "reset", "submit"], default: "button"
+
+  attr :kind, :atom,
+    values: [:primary, :secondary, :info, :success, :warning, :danger],
+    default: :primary
+
+  attr :fill, :atom, values: [:solid, :outline, :text], default: :solid
+
+  attr :size, :atom,
+    values: [:small, :normal, :medium, :large],
+    default: :normal
+
+  attr :shape, :atom, values: [nil, :circle, :pill], default: nil
+  attr :disabled, :boolean, default: nil
+  attr :rest, :global, include: ~w(autofocus form name value)
+
+  slot :inner_block, required: true
+
+  def button(assigns) do
+    ~H"""
+    <button
+      type={@type}
+      class={[
+        variant_class(@variant),
+        size_class(@size),
+        shape_class(@shape),
+        fill_class(@fill)
+      ]}
+      disabled={@disabled}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </button>
+    """
+  end
+
+  @doc """
+  Renders a link (`<a>`) that has the role and style of a button.
+
+  ## Examples
+
+      <.button_link patch={~p"/confirm"}>Confirm</.button>
+
+      <.button_link
+        navigate={~p"/registration"}
+        kind={:primary}
+        shape={:pill}>
+        Submit
+      </.button>
+  """
+  attr :navigate, :string, default: nil
+  attr :patch, :string, default: nil
+  attr :href, :any, default: nil
+  attr :replace, :boolean, default: false
+  attr :method, :string, default: "get"
+  attr :csrf_token, :any, default: true
+
+  attr :kind, :atom,
+    values: [:primary, :secondary, :info, :success, :warning, :danger],
+    default: :primary
+
+  attr :fill, :atom, values: [:solid, :outline, :text], default: :solid
+
+  attr :size, :atom,
+    values: [:small, :normal, :medium, :large],
+    default: :normal
+
+  attr :shape, :atom, values: [nil, :circle, :pill], default: nil
+
+  attr :disabled, :boolean,
+    default: false,
+    doc: """
+    Since `<a>` tags cannot have a `disabled` attribute, this attribute toggles
+    the `"is-disabled"` class.
+    """
+
+  attr :rest, :global,
+    include: [
+      # HTML attributes
+      "download",
+      "hreflang",
+      "referrerpolicy",
+      "rel",
+      "target",
+      "type",
+      # Phoenix.LiveView.Component.link/1 attributes
+      "navigate",
+      "patch",
+      "href",
+      "replace",
+      "method",
+      "csrf_token"
+    ]
+
+  slot :inner_block, required: true
+
+  def button_link(assigns) do
+    ~H"""
+    <.link
+      role="button"
+      class={[
+        variant_class(@variant),
+        size_class(@size),
+        shape_class(@shape),
+        fill_class(@fill),
+        @disabled && "is-disabled"
+      ]}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </.link>
+    """
+  end
+
+  @doc """
   Shows the flash messages as alerts.
 
   ## Hidden attribute
@@ -244,7 +369,7 @@ defmodule Doggo do
       phx-click={@on_close}
       id={@id}
       role="alert"
-      class={["alert", alert_level_class(@level)] ++ List.wrap(@class)}
+      class={["alert", variant_class(@level)] ++ List.wrap(@class)}
       {@rest}
     >
       <div :if={@icon != []} class="alert-icon">
@@ -260,11 +385,6 @@ defmodule Doggo do
     </div>
     """
   end
-
-  defp alert_level_class(:info), do: "is-info"
-  defp alert_level_class(:success), do: "is-success"
-  defp alert_level_class(:warning), do: "is-warning"
-  defp alert_level_class(:error), do: "is-error"
 
   @doc """
   Renders a card in an `article` tag, typically used repetitively in a grid or
@@ -372,7 +492,9 @@ defmodule Doggo do
     `label` text is used as `aria-label` attribute.
     """
 
-  attr :size, :atom, default: :medium, values: [:small, :medium, :large]
+  attr :size, :atom,
+    default: :normal,
+    values: [:small, :normal, :medium, :large]
 
   attr :class, :any,
     default: [],
@@ -386,7 +508,7 @@ defmodule Doggo do
       class={
         [
           "icon",
-          icon_size_class(@size),
+          size_class(@size),
           label_placement_class(@label_placement)
         ] ++ List.wrap(@class)
       }
@@ -402,10 +524,6 @@ defmodule Doggo do
   defp label_placement_class(:hidden), do: nil
   defp label_placement_class(:left), do: "has-text-left"
   defp label_placement_class(:right), do: "has-text-right"
-
-  defp icon_size_class(:small), do: "is-small"
-  defp icon_size_class(:medium), do: "is-medium"
-  defp icon_size_class(:large), do: "is-large"
 
   @doc """
   Renders an icon using an SVG sprite.
@@ -457,7 +575,7 @@ defmodule Doggo do
       class={
         [
           "icon",
-          icon_size_class(@size),
+          size_class(@size),
           label_placement_class(@label_placement)
         ] ++ List.wrap(@class)
       }
@@ -1342,4 +1460,28 @@ defmodule Doggo do
     </div>
     """
   end
+
+  ## Modifier classes
+
+  defp fill_class(:solid), do: "is-solid"
+  defp fill_class(:outline), do: "is-outline"
+  defp fill_class(:text), do: "is-text"
+
+  defp size_class(:small), do: "is-small"
+  defp size_class(:normal), do: nil
+  defp size_class(:medium), do: "is-medium"
+  defp size_class(:large), do: "is-large"
+
+  defp shape_class(:circle), do: "is-circle"
+  defp shape_class(:pill), do: "is-pill"
+  defp shape_class(nil), do: nil
+
+  defp variant_class(:primary), do: "is-primary"
+  defp variant_class(:secondary), do: "is-secondary"
+  defp variant_class(:info), do: "is-info"
+  defp variant_class(:success), do: "is-success"
+  defp variant_class(:warning), do: "is-warning"
+  defp variant_class(:danger), do: "is-danger"
+  defp variant_class(:error), do: "is-danger"
+  defp variant_class(_), do: nil
 end
