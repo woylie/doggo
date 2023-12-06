@@ -1552,6 +1552,7 @@ defmodule Doggo do
         phx-click="toggle-subscription"
       />
   """
+  @doc type: :component
 
   attr :label, :string, required: true
   attr :on_text, :string, default: "On"
