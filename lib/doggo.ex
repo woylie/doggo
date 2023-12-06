@@ -929,7 +929,8 @@ defmodule Doggo do
   attr :type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file hidden month number
-         password range radio search select tel text textarea time url week)
+         password range radio search select switch tel text textarea time url
+         week)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "A form field struct, for example: @form[:name]"
@@ -1009,6 +1010,47 @@ defmodule Doggo do
           {@rest}
         />
         <%= @label %>
+      </.label>
+      <.field_errors for={@id} errors={@errors} />
+      <.field_description for={@id} description={@description} />
+    </div>
+    """
+  end
+
+  def input(%{type: "switch"} = assigns) do
+    assigns =
+      assign_new(assigns, :checked, fn ->
+        Form.normalize_value("checkbox", assigns[:value])
+      end)
+
+    ~H"""
+    <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
+      <.label required={@validations[:required] || false} class="switch">
+        <span class="switch-label"><%= @label %></span>
+        <input type="hidden" name={@name} value="false" />
+        <input
+          type="checkbox"
+          role="switch"
+          name={@name}
+          id={@id}
+          value={@checked_value}
+          checked={@checked}
+          aria-describedby={input_aria_describedby(@id, @errors, @description)}
+          {@validations}
+          {@rest}
+        />
+        <span class="switch-state">
+          <span
+            class={if @checked, do: "switch-state-on", else: "switch-state-off"}
+            aria-hidden="true"
+          >
+            <%= if @checked do %>
+              On
+            <% else %>
+              Off
+            <% end %>
+          </span>
+        </span>
       </.label>
       <.field_errors for={@id} errors={@errors} />
       <.field_description for={@id} description={@description} />
