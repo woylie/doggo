@@ -134,6 +134,8 @@ defmodule Doggo do
         Submit
       </.button>
   """
+  @doc type: :component
+
   attr :type, :string, values: ["button", "reset", "submit"], default: "button"
 
   attr :variant, :atom,
@@ -184,6 +186,8 @@ defmodule Doggo do
         Submit
       </.button>
   """
+  @doc type: :component
+
   attr :navigate, :string, default: nil
   attr :patch, :string, default: nil
   attr :href, :any, default: nil
@@ -278,6 +282,7 @@ defmodule Doggo do
         Feb 2, 2023, 14:22:06 PM
       </time>
   """
+  @doc type: :component
 
   attr :value, :any,
     required: true,
@@ -404,6 +409,7 @@ defmodule Doggo do
         Feb 2, 2023
       </time>
   """
+  @doc type: :component
 
   attr :value, :any,
     required: true,
@@ -491,6 +497,7 @@ defmodule Doggo do
         14:22:06 PM
       </time>
   """
+  @doc type: :component
 
   attr :value, :any,
     required: true,
