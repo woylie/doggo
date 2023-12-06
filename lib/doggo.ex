@@ -1535,6 +1535,52 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders a switch as a button.
+
+  If you want to render a switch as part of a form, use the `input/1` component
+  with the type `"switch"` instead.
+
+  Note that this component only renders a button with a label, a state, and
+  `<span>` with the class `switch-control`. You will need to style the switch
+  control span with CSS in order to give it the appearance of a switch.
+
+  ## Examples
+
+      <.switch
+        label="Subscribe"
+        checked={true}
+        phx-click="toggle-subscription"
+      />
+  """
+
+  attr :label, :string, required: true
+  attr :on_text, :string, default: "On"
+  attr :off_text, :string, default: "Off"
+  attr :checked, :boolean, required: true
+  attr :rest, :global
+
+  def switch(assigns) do
+    ~H"""
+    <button type="button" role="switch" aria-checked={to_string(@checked)} {@rest}>
+      <span class="switch-label"><%= @label %></span>
+      <span class="switch-control"><span></span></span>
+      <span class="switch-state">
+        <span
+          class={if @checked, do: "switch-state-on", else: "switch-state-off"}
+          aria-hidden="true"
+        >
+          <%= if @checked do %>
+            <%= @on_text %>
+          <% else %>
+            <%= @off_text %>
+          <% end %>
+        </span>
+      </span>
+    </button>
+    """
+  end
+
+  @doc """
   Renders a drawer with a `brand`, `top`, and `bottom` slot.
 
   Within the slots, you can use the `drawer_nav/1` and `drawer_section/1`
