@@ -188,13 +188,6 @@ defmodule Doggo do
   """
   @doc type: :component
 
-  attr :navigate, :string, default: nil
-  attr :patch, :string, default: nil
-  attr :href, :any, default: nil
-  attr :replace, :boolean, default: false
-  attr :method, :string, default: "get"
-  attr :csrf_token, :any, default: true
-
   attr :variant, :atom,
     values: [:primary, :secondary, :info, :success, :warning, :danger],
     default: :primary
