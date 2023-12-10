@@ -1169,22 +1169,6 @@ defmodule Doggo do
   defp field_error_class([]), do: nil
   defp field_error_class(_), do: "has-errors"
 
-  defp radio(%{option: {option_label, option_value}} = assigns) do
-    assigns
-    |> assign(label: option_label, option_value: option_value, option: nil)
-    |> radio()
-  end
-
-  defp radio(%{option: option_value} = assigns) do
-    assigns
-    |> assign(
-      label: Form.humanize(option_value),
-      option_value: option_value,
-      option: nil
-    )
-    |> radio()
-  end
-
   defp radio(%{option_value: _} = assigns) do
     ~H"""
     <.label>
@@ -1199,6 +1183,22 @@ defmodule Doggo do
       <%= @label %>
     </.label>
     """
+  end
+
+  defp radio(%{option: {option_label, option_value}} = assigns) do
+    assigns
+    |> assign(label: option_label, option_value: option_value, option: nil)
+    |> radio()
+  end
+
+  defp radio(%{option: option_value} = assigns) do
+    assigns
+    |> assign(
+      label: Form.humanize(option_value),
+      option_value: option_value,
+      option: nil
+    )
+    |> radio()
   end
 
   defp checked?(option, value) when is_list(value) do
