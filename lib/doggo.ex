@@ -918,6 +918,31 @@ defmodule Doggo do
       <.input field={@form[:name]} />
 
       <.input field={@form[:email]} type="email" />
+
+  ### Radio group and checkbox group
+
+  The `radio-group` and `checkbox-group` types allow you to easily render groups
+  of radio buttons or checkboxes with a single component invocation. The
+  `options` attribute is required for these types and has the same format as
+  the options for the `select` type, except that options may not be nested.
+
+      <.input
+        field={@form[:email]}
+        type="checkbox-group"
+        label="Cuisine"
+        options={[
+          {"Mexican", "mexican"},
+          {"Japanese", "japanese"},
+          {"Libanese", "libanese"}
+        ]}
+      />
+
+  Note that the `checkbox-group` type renders an additional hidden input with
+  an empty value before the checkboxes. This ensures that a value exists in case
+  all checkboxes are unchecked. Consequently, the resulting list value includes
+  an extra empty string. While `Ecto.Changeset.cast/3` filters out empty strings
+  in array fields by default, you may need to handle the additional empty string
+  manual in other contexts.
   """
   @doc type: :component
 
@@ -928,9 +953,9 @@ defmodule Doggo do
 
   attr :type, :string,
     default: "text",
-    values: ~w(checkbox color date datetime-local email file hidden month number
-         password range radio radio-group search select switch tel text textarea
-         time url week)
+    values: ~w(checkbox checkbox-group color date datetime-local email file
+         hidden month number password range radio radio-group search select
+         switch tel text textarea time url week)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "A form field struct, for example: @form[:name]"
@@ -957,8 +982,8 @@ defmodule Doggo do
   attr :options, :list,
     doc: """
     A list of options for a select element or a radio group. See
-    `Phoenix.HTML.Form.options_for_select/2`. Note that the radio group does
-    not support nesting.
+    `Phoenix.HTML.Form.options_for_select/2`. Note that the checkbox group and
+    radio group do not support nesting.
     """
 
   attr :multiple, :boolean,
@@ -1018,11 +1043,41 @@ defmodule Doggo do
     """
   end
 
+  def input(%{type: "checkbox-group"} = assigns) do
+    ~H"""
+    <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
+      <fieldset class="checkbox-group">
+        <legend>
+          <%= @label %>
+          <.required_mark required={@validations[:required] || false} />
+        </legend>
+        <div>
+          <input type="hidden" name={@name <> "[]"} value="" />
+          <.checkbox
+            :for={option <- @options}
+            option={option}
+            name={@name}
+            id={@id}
+            value={@value}
+            errors={@errors}
+            description={@description}
+          />
+        </div>
+      </fieldset>
+      <.field_errors for={@id} errors={@errors} />
+      <.field_description for={@id} description={@description} />
+    </div>
+    """
+  end
+
   def input(%{type: "radio-group"} = assigns) do
     ~H"""
     <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
       <fieldset class="radio-group">
-        <legend><%= @label %></legend>
+        <legend>
+          <%= @label %>
+          <.required_mark required={@validations[:required] || false} />
+        </legend>
         <div>
           <.radio
             :for={option <- @options}
@@ -1168,6 +1223,38 @@ defmodule Doggo do
 
   defp field_error_class([]), do: nil
   defp field_error_class(_), do: "has-errors"
+
+  defp checkbox(%{option_value: _} = assigns) do
+    ~H"""
+    <.label class="checkbox">
+      <input
+        type="checkbox"
+        name={@name <> "[]"}
+        id={@id <> "_#{@option_value}"}
+        value={@option_value}
+        checked={checked?(@option_value, @value)}
+        aria-describedby={input_aria_describedby(@id, @errors, @description)}
+      />
+      <%= @label %>
+    </.label>
+    """
+  end
+
+  defp checkbox(%{option: {option_label, option_value}} = assigns) do
+    assigns
+    |> assign(label: option_label, option_value: option_value, option: nil)
+    |> checkbox()
+  end
+
+  defp checkbox(%{option: option_value} = assigns) do
+    assigns
+    |> assign(
+      label: Form.humanize(option_value),
+      option_value: option_value,
+      option: nil
+    )
+    |> checkbox()
+  end
 
   defp radio(%{option_value: _} = assigns) do
     ~H"""
