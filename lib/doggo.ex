@@ -929,8 +929,8 @@ defmodule Doggo do
   attr :type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file hidden month number
-         password range radio search select switch tel text textarea time url
-         week)
+         password range radio radio-group search select switch tel text textarea
+         time url week)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "A form field struct, for example: @form[:name]"
@@ -956,8 +956,9 @@ defmodule Doggo do
 
   attr :options, :list,
     doc: """
-    A list of options for a select element. See
-    `Phoenix.HTML.Form.options_for_select/2`.
+    A list of options for a select element or a radio group. See
+    `Phoenix.HTML.Form.options_for_select/2`. Note that the radio group does
+    not support nesting.
     """
 
   attr :multiple, :boolean,
@@ -1011,6 +1012,29 @@ defmodule Doggo do
         />
         <%= @label %>
       </.label>
+      <.field_errors for={@id} errors={@errors} />
+      <.field_description for={@id} description={@description} />
+    </div>
+    """
+  end
+
+  def input(%{type: "radio-group"} = assigns) do
+    ~H"""
+    <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
+      <fieldset class="radio-group">
+        <legend><%= @label %></legend>
+        <div>
+          <.radio
+            :for={option <- @options}
+            option={option}
+            name={@name}
+            id={@id}
+            value={@value}
+            errors={@errors}
+            description={@description}
+          />
+        </div>
+      </fieldset>
       <.field_errors for={@id} errors={@errors} />
       <.field_description for={@id} description={@description} />
     </div>
@@ -1144,6 +1168,35 @@ defmodule Doggo do
 
   defp field_error_class([]), do: nil
   defp field_error_class(_), do: "has-errors"
+
+  defp radio(%{option: {option_label, option_value}} = assigns) do
+    assigns = assign(assigns, label: option_label, option_value: option_value)
+
+    ~H"""
+    <.label>
+      <input
+        type="radio"
+        name={@name}
+        id={@id <> "_#{@option_value}"}
+        value={@option_value}
+        checked={checked?(@option_value, @value)}
+        aria-describedby={input_aria_describedby(@id, @errors, @description)}
+      />
+      <%= @label %>
+    </.label>
+    """
+  end
+
+  defp checked?(option, value) when is_list(value) do
+    Phoenix.HTML.html_escape(option) in Enum.map(
+      value,
+      &Phoenix.HTML.html_escape/1
+    )
+  end
+
+  defp checked?(option, value) do
+    Phoenix.HTML.html_escape(option) == Phoenix.HTML.html_escape(value)
+  end
 
   @doc """
   Renders the label for an input.
