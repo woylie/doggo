@@ -27,3 +27,8 @@ end
   alternatively styled variations of the same HTML elements.
 - The library is designed without default styles and does not prefer any
   particular CSS framework.
+
+## Status
+
+The library is actively developed. Being in its early stages, the library may
+undergo significant changes, leading to potential breaking changes.
