@@ -1170,8 +1170,22 @@ defmodule Doggo do
   defp field_error_class(_), do: "has-errors"
 
   defp radio(%{option: {option_label, option_value}} = assigns) do
-    assigns = assign(assigns, label: option_label, option_value: option_value)
+    assigns
+    |> assign(label: option_label, option_value: option_value, option: nil)
+    |> radio()
+  end
 
+  defp radio(%{option: option_value} = assigns) do
+    assigns
+    |> assign(
+      label: Form.humanize(option_value),
+      option_value: option_value,
+      option: nil
+    )
+    |> radio()
+  end
+
+  defp radio(%{option_value: _} = assigns) do
     ~H"""
     <.label>
       <input
