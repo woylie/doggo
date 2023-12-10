@@ -1203,7 +1203,7 @@ defmodule Doggo do
         name={@name}
         id={@id}
         type={@type}
-        value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+        value={normalize_value(@type, @value)}
         aria-describedby={input_aria_describedby(@id, @errors, @description)}
         {@validations}
         {@rest}
@@ -1213,6 +1213,19 @@ defmodule Doggo do
     </div>
     """
   end
+
+  defp normalize_value("date", %struct{} = value)
+       when struct in [Date, NaiveDateTime, DateTime] do
+    <<date::10-binary, _::binary>> = struct.to_string(value)
+    {:safe, date}
+  end
+
+  defp normalize_value("date", <<date::10-binary, _::binary>>) do
+    {:safe, date}
+  end
+
+  defp normalize_value("date", _), do: ""
+  defp normalize_value(type, value), do: Form.normalize_value(type, value)
 
   defp input_aria_describedby(_, [], []), do: nil
   defp input_aria_describedby(id, _, []), do: field_errors_id(id)
