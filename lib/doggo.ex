@@ -1468,6 +1468,12 @@ defmodule Doggo do
 
   defp field_description_id(id) when is_binary(id), do: "#{id}_description"
 
+  defp translate_error({msg, opts}, nil) do
+    Enum.reduce(opts, msg, fn {key, value}, acc ->
+      String.replace(acc, "%{#{key}}", fn _ -> to_string(value) end)
+    end)
+  end
+
   defp translate_error({msg, opts}, gettext_module)
        when is_atom(gettext_module) do
     if count = opts[:count] do
@@ -1475,12 +1481,6 @@ defmodule Doggo do
     else
       Gettext.dgettext(gettext_module, "errors", msg, opts)
     end
-  end
-
-  defp translate_error({msg, opts}, nil) do
-    Enum.reduce(opts, msg, fn {key, value}, acc ->
-      String.replace(acc, "%{#{key}}", fn _ -> to_string(value) end)
-    end)
   end
 
   @doc """
