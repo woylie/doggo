@@ -1,7 +1,7 @@
 defmodule Storybook.MyPage do
-  # See https://hexdocs.pm/phx_live_storybook/PhxLiveStorybook.Story.html for full story
-  # documentation.
-  use PhxLiveStorybook.Story, :page
+  # See https://hexdocs.pm/phoenix_storybook/PhoenixStorybook.Story.html for
+  # full story documentation.
+  use PhoenixStorybook.Story, :page
 
   def description, do: "Your very first steps into using Phoenix Storybook"
 

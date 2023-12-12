@@ -1,5 +1,5 @@
 defmodule Storybook.Components.Icon do
-  use PhxLiveStorybook.Story, :component
+  use PhoenixStorybook.Story, :component
 
   def function, do: &Doggo.property_list/1
 
