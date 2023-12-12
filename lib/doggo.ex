@@ -988,6 +988,13 @@ defmodule Doggo do
 
   - `"select"` - For `<select>` elements.
 
+  ## Gettext
+
+  To translate field errors using Gettext, configure your Gettext module in
+  `config/config.exs`.
+
+      config :doggo, gettext: MyApp.Gettext
+
   ## Examples
 
       <.input field={@form[:name]} />
@@ -1077,9 +1084,14 @@ defmodule Doggo do
   slot :description, doc: "A field description to render underneath the input."
 
   def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
+    gettext_module = Application.get_env(:doggo, :gettext)
+
     assigns
     |> assign(field: nil, id: assigns.id || field.id)
-    |> assign(:errors, Enum.map(field.errors, &translate_error(&1)))
+    |> assign(
+      :errors,
+      Enum.map(field.errors, &translate_error(&1, gettext_module))
+    )
     |> assign_new(:validations, fn ->
       Form.input_validations(field.form, field.field)
     end)
@@ -1456,14 +1468,19 @@ defmodule Doggo do
 
   defp field_description_id(id) when is_binary(id), do: "#{id}_description"
 
-  def translate_error({msg, opts}) do
+  defp translate_error({msg, opts}, gettext_module)
+       when is_atom(gettext_module) do
+    if count = opts[:count] do
+      Gettext.dngettext(gettext_module, "errors", msg, msg, count, opts)
+    else
+      Gettext.dgettext(gettext_module, "errors", msg, opts)
+    end
+  end
+
+  defp translate_error({msg, opts}, nil) do
     Enum.reduce(opts, msg, fn {key, value}, acc ->
       String.replace(acc, "%{#{key}}", fn _ -> to_string(value) end)
     end)
-  end
-
-  def translate_errors(errors, field) when is_list(errors) do
-    for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
 
   @doc """
