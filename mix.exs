@@ -75,6 +75,7 @@ defmodule Doggo.MixProject do
     [
       main: "readme",
       extras: ["README.md", "CHANGELOG.md"],
+      logo: "doggo.png",
       source_ref: @version,
       skip_undefined_reference_warnings_on: ["CHANGELOG.md"],
       groups_for_functions: [
