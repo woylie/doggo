@@ -758,6 +758,81 @@ defmodule Doggo do
   end
 
   @doc """
+  The fallback component renders a given value unless it is empty, in which case
+  it renders a fallback value instead.
+
+  The values `nil`, `""`, `[]` and `%{}` are treated as empty values.
+
+  This component optionally applies a formatter function to non-empty values.
+
+  The primary purpose of this component is to enhance accessibility. In
+  situations where a value in a table column or property list is set to be
+  invisible or not displayed, it's crucial to provide an alternative text for
+  screen readers.
+
+  ## Examples
+
+  Render the value of `@some_value` if it's available, or display the
+  default placeholder otherwise:
+
+      <.fallback value={@some_value} />
+
+  Apply a formatter function to `@some_value` if it is not `nil`:
+
+      <.fallback value={@some_value} formatter={&format_date/1} />
+
+  Set a custom placeholder and text for screen readers:
+
+      <.fallback
+        value={@some_value}
+        placeholder="n/a"
+        accessibility_text="not available"
+      />
+  """
+  @doc type: :component
+
+  attr :value, :any,
+    required: true,
+    doc: """
+    The value to display. If the value is `nil`, `""`, `[]` or `%{}`, the
+    placeholder is rendered instead.
+    """
+
+  attr :formatter, :any,
+    default: nil,
+    doc: """
+    A 1-arity function that takes the value and returns the value for display.
+    The formatter function is only applied if `value` is not an empty value.
+    """
+
+  attr :placeholder, :any,
+    default: "-",
+    doc: """
+    The placeholder to render if the `value` is empty.
+    """
+
+  attr :accessibility_text, :string,
+    default: "not set",
+    doc: """
+    The text for the `aria-label` attribute in case the `value` is empty.
+    """
+
+  def fallback(%{value: value} = assigns) when value in [nil, "", [], %{}] do
+    ~H"""
+    <span aria-label={@accessibility_text}><%= @placeholder %></span>
+    """
+  end
+
+  def fallback(%{formatter: formatter} = assigns)
+      when is_function(formatter, 1) do
+    ~H"<%= @formatter.(@value) %>"
+  end
+
+  def fallback(%{formatter: nil} = assigns) do
+    ~H"<%= @value %>"
+  end
+
+  @doc """
   Renders a customizable icon using a slot for SVG content.
 
   This component does not bind you to a specific set of icons. Instead, it
