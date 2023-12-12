@@ -15,10 +15,52 @@ def deps do
 end
 ```
 
+### Gettext
+
 To allow Doggo to translate certain strings such as form field errors with
 Gettext, set your Gettext module in `config/config.exs`:
 
     config :doggo, gettext: MyApp.Gettext
+
+### Storybook
+
+The library is equipped with story modules for
+[Phoenix Storybook](https://hex.pm/packages/phoenix_storybook). After you
+followed the installation instructions of Phoenix Storybook, you can configure a
+storybook module for Doggo in your application as follows:
+
+```elixir
+defmodule MyAppWeb.Storybook.Doggo do
+  use PhoenixStorybook,
+    otp_app: :my_app_web,
+    content_path: Path.join(:code.priv_dir(:doggo), "/storybook"),
+    title: "Doggo Storybook",
+    css_path: "/assets/storybook.css",
+    js_path: "/assets/storybook.js",
+    sandbox_class: "my-app-web"
+end
+```
+
+The important option here is `content_path`, which points to the storybook
+directory in the `priv` folder of Doggo. Adjust the rest of the option to the
+needs of your application.
+
+In your router, add the Doggo storybook as a second storybook and change the
+path of your application storybook to avoid path conflicts.
+
+```elixir
+scope "/", MyAppWeb do
+  pipe_through :browser
+
+  live_storybook("/storybook/app", backend_module: MyAppWeb.Storybook)
+
+  live_storybook("/storybook/doggo",
+    backend_module: MyAppWeb.Storybook.Doggo,
+    session_name: :live_storybook_doggo,
+    pipeline: false
+  )
+end
+```
 
 ## Design decisions
 
