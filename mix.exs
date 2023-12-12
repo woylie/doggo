@@ -48,6 +48,7 @@ defmodule Doggo.MixProject do
       {:ex_doc, "~> 0.21", only: :dev, runtime: false},
       {:excoveralls, "~> 0.18.0", runtime: false, only: [:test]},
       {:floki, ">= 0.30.0", only: :test},
+      {:gettext, "~> 0.20", optional: true},
       {:jason, "~> 1.0", only: [:dev, :test]},
       {:phoenix_live_view, "~> 0.20.0"}
     ]

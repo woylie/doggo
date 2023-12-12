@@ -15,6 +15,11 @@ def deps do
 end
 ```
 
+To allow Doggo to translate certain strings such as form field errors with
+Gettext, set your Gettext module in `config/config.exs`:
+
+    config :doggo, gettext: MyApp.Gettext
+
 ## Design decisions
 
 - Favor semantic HTML elements over CSS classes for structure and clarity.
