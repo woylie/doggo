@@ -31,4 +31,4 @@ end
 ## Status
 
 The library is actively developed. Being in its early stages, the library may
-undergo significant changes, leading to potential breaking changes.
+still undergo significant changes, potentially leading to breaking changes.
