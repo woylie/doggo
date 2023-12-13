@@ -56,7 +56,7 @@ defmodule Doggo.MixProject do
 
   defp description do
     """
-    Collection of generic Phoenix components
+    Collection of unstyled Phoenix components
     """
   end
 
