@@ -48,7 +48,7 @@ defmodule Storybook.Components.ButtonLink do
             id: :danger_button,
             attributes: %{variant: :danger},
             slots: ["danger"]
-          },
+          }
         ]
       },
       %VariationGroup{

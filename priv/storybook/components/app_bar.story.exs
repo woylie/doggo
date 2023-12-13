@@ -15,21 +15,21 @@ defmodule Storybook.Components.AppBar do
           title: "Page title"
         },
         slots: [
-        """
-        <:navigation label="Open menu" on_click={JS.push("toggle-menu")}>
-          <Doggo.icon>Menu</Doggo.icon>
-        </:navigation>
-        """,
-        """
-        <:action label="Search" on_click={JS.push("search")}>
-          <Doggo.icon>Search</Doggo.icon>
-        </:action>
-        """,
-        """
-        <:action label="Like" on_click={JS.push("like")}>
-          <Doggo.icon>Like</Doggo.icon>
-        </:action>
-        """
+          """
+          <:navigation label="Open menu" on_click={JS.push("toggle-menu")}>
+            <Doggo.icon>Menu</Doggo.icon>
+          </:navigation>
+          """,
+          """
+          <:action label="Search" on_click={JS.push("search")}>
+            <Doggo.icon>Search</Doggo.icon>
+          </:action>
+          """,
+          """
+          <:action label="Like" on_click={JS.push("like")}>
+            <Doggo.icon>Like</Doggo.icon>
+          </:action>
+          """
         ]
       }
     ]

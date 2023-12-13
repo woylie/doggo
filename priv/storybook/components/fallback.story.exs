@@ -32,7 +32,8 @@ defmodule Storybook.Components.Fallback do
             id: :with_nil,
             attributes: %{
               value: nil,
-              formatter: &DateTime.to_unix/1}
+              formatter: &DateTime.to_unix/1
+            }
           }
         ]
       },

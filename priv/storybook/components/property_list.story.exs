@@ -8,8 +8,8 @@ defmodule Storybook.Components.Icon do
       %Variation{
         id: :default,
         slots: [
-        ~s(<:prop label="Name">George</:prop>),
-        ~s(<:prop label="Age">42</:prop>)
+          ~s(<:prop label="Name">George</:prop>),
+          ~s(<:prop label="Age">42</:prop>)
         ]
       }
     ]

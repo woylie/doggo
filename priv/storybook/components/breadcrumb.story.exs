@@ -8,9 +8,9 @@ defmodule Storybook.Components.Breadcrumb do
       %Variation{
         id: :default,
         slots: [
-        ~s(<:item patch="/categories">Categories</:item>),
-        ~s(<:item patch="/categories/1">Reviews</:item>),
-        ~s(<:item patch="/categories/1/articles/1">The Movie</:item>)
+          ~s(<:item patch="/categories">Categories</:item>),
+          ~s(<:item patch="/categories/1">Reviews</:item>),
+          ~s(<:item patch="/categories/1/articles/1">The Movie</:item>)
         ]
       }
     ]

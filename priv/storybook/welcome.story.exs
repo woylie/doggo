@@ -21,9 +21,12 @@ defmodule Storybook.MyPage do
     <div class="lsb-welcome-page">
       <p>
         We generated your storybook with an example of a page and a component.
-        Feel free to explore the generated <code class="inline">*.story.exs</code> files generated into your
-        project folder, and start adding yours: <strong>just drop new story & index files into your
-        </strong><code class="inline">/storybook</code> <strong>folder</strong> and refresh your storybook.
+        Feel free to explore the generated <code class="inline">*.story.exs</code>
+        files generated into your
+        project folder, and start adding yours:
+        <strong>just drop new story & index files into your </strong><code class="inline">/storybook</code>
+        <strong>folder</strong>
+        and refresh your storybook.
       </p>
 
       <p>
@@ -34,18 +37,18 @@ defmodule Storybook.MyPage do
         {"Stories overview", doc_link("Story")},
         {"Describe components with Variations", doc_link("Stories.Variation")},
         {"And stack them with VariationGroups", doc_link("Stories.VariationGroup")},
-        {"Pimp your sidebar with Index files", doc_link("Index")},
-      ]}/>
+        {"Pimp your sidebar with Index files", doc_link("Index")}
+      ]} />
 
       <p>
-        This should be enough to get you started but you might also <strong>checkout advanced guides
-        </strong>(tabs in the upper-right corner of this page).
+        This should be enough to get you started but you might also <strong>checkout advanced guides </strong>(tabs in the upper-right corner of this page).
       </p>
     </div>
     """
   end
 
-  def render(assigns = %{tab: guide}) when guide in ~w(components sandboxing icons)a do
+  def render(assigns = %{tab: guide})
+      when guide in ~w(components sandboxing icons)a do
     assigns =
       assign(assigns,
         guide: guide,
@@ -54,7 +57,11 @@ defmodule Storybook.MyPage do
 
     ~H"""
     <p class="md:lsb-text-lg lsb-leading-relaxed lsb-text-slate-400 lsb-w-full lsb-text-left lsb-mb-4 lsb-mt-2 lsb-italic">
-      <a class="hover:text-indigo-700" href={"https://hexdocs.pm/phx_live_storybook/#{@guide}.html"} target="_blank">
+      <a
+        class="hover:text-indigo-700"
+        href={"https://hexdocs.pm/phx_live_storybook/#{@guide}.html"}
+        target="_blank"
+      >
         This guide is also available on Hexdocs among others.
       </a>
     </p>
@@ -75,7 +82,12 @@ defmodule Storybook.MyPage do
                 <%= dt %>
               </dt>
               <dd class="lsb-mt-1 lsb-text-base lsb-text-slate-400 sm:lsb-col-span-2 sm:lsb-mt-0 lsb-group lsb-cursor-pointer lsb-max-w-full">
-                <a class="group-hover:lsb-text-indigo-700 lsb-max-w-full lsb-inline-block lsb-truncate" href={link} target="_blank" %>
+                <a
+                  class="group-hover:lsb-text-indigo-700 lsb-max-w-full lsb-inline-block lsb-truncate"
+                  href={link}
+                  target="_blank"
+                  %
+                >
                   <%= link %>
                 </a>
               </dd>

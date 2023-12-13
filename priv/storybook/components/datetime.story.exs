@@ -30,7 +30,7 @@ defmodule Storybook.Components.Datetime do
           value: ~U[2023-02-05 12:22:06.003Z],
           precision: :minute
         }
-      },
+      }
     ]
   end
 end

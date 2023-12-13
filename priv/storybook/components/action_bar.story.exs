@@ -12,21 +12,21 @@ defmodule Storybook.Components.ActionBar do
         since Doggo does not ship with a default icon library.
         """,
         slots: [
-        """
-        <:item label="Edit" on_click={JS.push("edit")}>
-          <Doggo.icon size={:small}>Edit</Doggo.icon>
-        </:item>
-        """,
-        """
-        <:item label="Move" on_click={JS.push("move")}>
-          <Doggo.icon size={:small}>Move</Doggo.icon>
-        </:item>
-        """,
-        """
-        <:item label="Archive" on_click={JS.push("archive")}>
-          <Doggo.icon size={:small}>Archive</Doggo.icon>
-        </:item>
-        """
+          """
+          <:item label="Edit" on_click={JS.push("edit")}>
+            <Doggo.icon size={:small}>Edit</Doggo.icon>
+          </:item>
+          """,
+          """
+          <:item label="Move" on_click={JS.push("move")}>
+            <Doggo.icon size={:small}>Move</Doggo.icon>
+          </:item>
+          """,
+          """
+          <:item label="Archive" on_click={JS.push("archive")}>
+            <Doggo.icon size={:small}>Archive</Doggo.icon>
+          </:item>
+          """
         ]
       }
     ]

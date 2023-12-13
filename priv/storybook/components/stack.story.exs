@@ -8,24 +8,24 @@ defmodule Storybook.Components.Stack do
       %Variation{
         id: :default,
         slots: [
-        """
-        <div>Hello!</div>
-        <div>Bye!</div>
-        """
-      ]
+          """
+          <div>Hello!</div>
+          <div>Bye!</div>
+          """
+        ]
       },
       %Variation{
         id: :recursive,
         attributes: %{recursive: true},
         slots: [
-        """
-        <div>
-          <div>Hello!</div>
-          <div>Are you good boy?</div>
-        </div>
-        <div>Bye!</div>
-        """
-      ]
+          """
+          <div>
+            <div>Hello!</div>
+            <div>Are you good boy?</div>
+          </div>
+          <div>Bye!</div>
+          """
+        ]
       }
     ]
   end
