@@ -12,7 +12,7 @@ The package can be installed by adding `doggo` to your list of dependencies in
 ```elixir
 def deps do
   [
-    {:doggo, github: "woylie/doggo", branch: "main"}
+    {:doggo, "~> 0.1.0"}
   ]
 end
 ```
