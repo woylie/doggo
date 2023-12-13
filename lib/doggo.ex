@@ -503,9 +503,10 @@ defmodule Doggo do
     """
 
   def date(%{value: value, timezone: timezone} = assigns) do
-    value
-    |> shift_zone(timezone)
-    |> to_date()
+    value =
+      value
+      |> shift_zone(timezone)
+      |> to_date()
 
     assigns =
       assigns
