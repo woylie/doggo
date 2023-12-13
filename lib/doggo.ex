@@ -436,7 +436,8 @@ defmodule Doggo do
     NaiveDateTime.to_iso8601(dt)
   end
 
-  defp time_title_attr(v, nil), do: v
+  # don't add title attribute if no title formatter is set
+  defp time_title_attr(_, nil), do: nil
   defp time_title_attr(v, fun) when is_function(fun, 1), do: fun.(v)
 
   @doc """
