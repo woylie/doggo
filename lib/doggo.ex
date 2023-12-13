@@ -134,6 +134,8 @@ defmodule Doggo do
     <:item patch="/categories/1/articles/1">The Movie</:item>
   </.breadcrumb>
   """
+  @doc type: :component
+
   attr :aria_label, :string, default: "breadcrumb"
 
   attr :class, :any,
