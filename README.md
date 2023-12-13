@@ -1,5 +1,7 @@
 # Doggo
 
+[![Hex](https://img.shields.io/hexpm/v/doggo)](https://hex.pm/packages/doggo)
+
 <img src="https://github.com/woylie/doggo/raw/main/doggo.png" alt="Illustration of a happy Shiba Inu dog wearing a traditional Japanese kimono. The dog is centered within a circular frame, adorned with decorative patterns that include waves and stripes, indicative of a Japanese aesthetic. The Shiba Inu is smiling with its tongue out, suggesting a cheerful and playful demeanor. The kimono features bold red and white accents, complementing the dog's tan and white fur." width="200"/>
 
 Collection of unstyled Phoenix components with semantic CSS classes.
