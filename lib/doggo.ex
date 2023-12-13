@@ -1919,6 +1919,8 @@ defmodule Doggo do
         <:col :let={p} label="age"><%= p.age %></:col>
       </.table>
   """
+  @doc type: :component
+
   attr :id, :string, required: true
 
   attr :items, :list,
