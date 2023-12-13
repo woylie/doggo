@@ -128,11 +128,11 @@ defmodule Doggo do
 
   ## Example
 
-  <.breadcrumb>
-    <:item patch="/categories">Categories</:item>
-    <:item patch="/categories/1">Reviews</:item>
-    <:item patch="/categories/1/articles/1">The Movie</:item>
-  </.breadcrumb>
+      <.breadcrumb>
+        <:item patch="/categories">Categories</:item>
+        <:item patch="/categories/1">Reviews</:item>
+        <:item patch="/categories/1/articles/1">The Movie</:item>
+      </.breadcrumb>
   """
   @doc type: :component
 
