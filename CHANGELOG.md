@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.1.2] - 2023-12-14
+
 ### Changed
 
 - Added more storybook stories.
