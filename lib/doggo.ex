@@ -1914,7 +1914,7 @@ defmodule Doggo do
 
   ## Examples
 
-      <.table id="pets" items={@pets}>
+      <.table id="pets" rows={@pets}>
         <:col :let={p} label="name"><%= p.name %></:col>
         <:col :let={p} label="age"><%= p.age %></:col>
       </.table>
