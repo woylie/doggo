@@ -1923,7 +1923,7 @@ defmodule Doggo do
 
   attr :id, :string, required: true
 
-  attr :items, :list,
+  attr :rows, :list,
     required: true,
     doc: "The list of items to be displayed in rows."
 
