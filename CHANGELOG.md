@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## [0.1.3] - 2023-12-15
+
+### Fixed
+
+- Added `priv/storybook` folder to package configuration.
+
 ## [0.1.2] - 2023-12-14
 
 ### Changed
