@@ -1118,7 +1118,7 @@ defmodule Doggo do
   attr :field, Phoenix.HTML.FormField,
     doc: "A form field struct, for example: @form[:name]"
 
-  attr :errors, :list, default: []
+  attr :errors, :list
 
   attr :validations, :list,
     doc: """
