@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+### Added
+
+- Added storybook stories for the remaining components.
+
+### Fixed
+
+- Errors passed as an attribute to the `input/1` component were overridden.
+- The `field_description/1` component had a stray `<li>` tag.
+
 ## [0.1.3] - 2023-12-15
 
 ### Fixed
