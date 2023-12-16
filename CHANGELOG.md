@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.1.4] - 2023-12-16
+
 ### Added
 
 - Added storybook stories for the remaining components.
