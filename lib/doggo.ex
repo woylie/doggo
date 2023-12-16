@@ -1530,7 +1530,7 @@ defmodule Doggo do
       id={field_description_id(@for)}
       class="field-description"
     >
-      <li><%= render_slot(@description) %></li>
+      <%= render_slot(@description) %>
     </div>
     """
   end
