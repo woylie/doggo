@@ -16,6 +16,14 @@ defmodule Storybook.Components.Button do
         },
         slots: ["click me"]
       },
+      %Variation{
+        id: :busy,
+        attributes: %{
+          "aria-busy": true,
+          "aria-label": "Saving..."
+        },
+        slots: ["click me"]
+      },
       %VariationGroup{
         id: :variants,
         variations: [

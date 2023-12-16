@@ -200,6 +200,13 @@ defmodule Doggo do
       <.button type="submit" variant={:secondary} size={:medium} shape={:pill}>
         Submit
       </.button>
+
+  To indicate a loading state, for example when submitting a form, use the
+  `aria-busy` attribute:
+
+      <.button aria-label="Saving..." aria-busy={true}>
+        click me
+      </.button>
   """
   @doc type: :component
 
