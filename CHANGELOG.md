@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.1.5] - 2023-12-16
+
 ### Fixed
 
 - Remove default value for `errors` attribute on `input` component.
