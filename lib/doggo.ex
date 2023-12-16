@@ -1157,9 +1157,9 @@ defmodule Doggo do
 
     assigns
     |> assign(field: nil, id: assigns.id || field.id)
-    |> assign(
+    |> assign_new(
       :errors,
-      Enum.map(field.errors, &translate_error(&1, gettext_module))
+      fn -> Enum.map(field.errors, &translate_error(&1, gettext_module)) end
     )
     |> assign_new(:validations, fn ->
       Form.input_validations(field.form, field.field)
