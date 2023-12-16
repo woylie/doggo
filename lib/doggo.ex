@@ -1755,7 +1755,7 @@ defmodule Doggo do
         </Doggo.navbar_items>
         <Doggo.navbar_items class="navbar-user-menu">
           <:item>
-            <.link navigate={~p"/login"} class="button">Log in</.link>
+            <.button_link navigate={~p"/login"}>Log in</button_link>
           </:item>
         </Doggo.navbar_items>
       </Doggo.navbar>
