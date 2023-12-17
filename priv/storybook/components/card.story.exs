@@ -10,7 +10,10 @@ defmodule Storybook.Components.Card do
         slots: [
           """
           <:image>
-            <img src="https://github.com/woylie/doggo/blob/main/dog_poncho.jpg?raw=true" alt="Picture of a dog dressed in a poncho." />
+            <img
+              src="https://github.com/woylie/doggo/blob/main/dog_poncho.jpg?raw=true"
+              alt="A dog wearing a colorful poncho walks down a fashion show runway."
+            />
           </:image>
           """,
           """

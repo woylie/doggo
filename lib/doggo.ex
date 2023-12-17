@@ -909,6 +909,54 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders a frame with an aspect ratio for images or videos.
+
+  This component is used within the `image/1` component.
+
+  ## Example
+
+  Rendering an image with the aspect ratio 4:3.
+
+      <.frame ratio={{4, 3}}>
+        <img src="image.png" alt="An example image illustrating the usage." />
+      </.frame>
+
+  Rendering an image as a circle.
+
+      <.frame circle>
+        <img src="image.png" alt="An example image illustrating the usage." />
+      </.frame>
+  """
+  @doc type: :component
+
+  attr :ratio, :any,
+    values: [
+      nil,
+      {1, 1},
+      {3, 2},
+      {2, 3},
+      {4, 3},
+      {3, 4},
+      {5, 4},
+      {4, 5},
+      {16, 9},
+      {9, 16}
+    ],
+    default: nil
+
+  attr :circle, :boolean, default: false
+
+  slot :inner_block
+
+  def frame(assigns) do
+    ~H"""
+    <div class={["frame", ratio_class(@ratio), @circle && shape_class(:circle)]}>
+      <%= render_slot(@inner_block) %>
+    </div>
+    """
+  end
+
+  @doc """
   Renders a customizable icon using a slot for SVG content.
 
   This component does not bind you to a specific set of icons. Instead, it
@@ -1048,6 +1096,115 @@ defmodule Doggo do
       <span :if={@label && @label_placement != :hidden}><%= @label %></span>
     </span>
     """
+  end
+
+  @doc """
+  Renders an image with an optional caption.
+
+  ## Example
+
+      <.image
+        src="https://github.com/woylie/doggo/blob/main/dog_poncho.jpg?raw=true"
+        alt="A dog wearing a colorful poncho walks down a fashion show runway."
+        ratio={{16, 9}}
+      >
+        <:caption>
+          Spotlight on canine couture: A dog fashion show where four-legged models
+          dazzle the runway with the latest in pet apparel.
+        </:caption>
+      </.image>
+  """
+  @doc type: :component
+
+  attr :src, :string, required: true, doc: "The URL of the image to render."
+
+  attr :srcset, :any,
+    default: nil,
+    doc: """
+    A set of image URLs in different sizes. Can be passed as a string or a map.
+
+    For example, this map:
+
+        %{
+          "1x" => "images/image-1x.jpg",
+          "2x" => "images/image-2x.jpg"
+        }
+
+    Will result in this `srcset`:
+
+        "images/image-1x.jpg 1x, images/image-2x.jpg 2x"
+
+    See https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/srcset.
+    """
+
+  attr :sizes, :string,
+    default: nil,
+    doc: """
+    Specifies media conditions for the image widths, if the `srcset` attribute
+    uses intrinsic widths.
+
+    See https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/sizes.
+    """
+
+  attr :alt, :string,
+    required: true,
+    doc: """
+    A text description of the image for screen reader users and those with slow
+    internet. Effective alt text should concisely capture the image's essence
+    and function, considering its context within the content. Aim for clarity
+    and inclusivity without repeating information already conveyed by
+    surrounding text, and avoid starting with "Image of" as screen readers
+    automatically announce image presence.
+    """
+
+  attr :width, :integer, default: nil
+  attr :height, :integer, default: nil
+  attr :loading, :string, values: ["eager", "lazy"], default: "lazy"
+
+  attr :ratio, :any,
+    values: [
+      nil,
+      {1, 1},
+      {3, 2},
+      {2, 3},
+      {4, 3},
+      {3, 4},
+      {5, 4},
+      {4, 5},
+      {16, 9},
+      {9, 16}
+    ],
+    default: nil
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+  slot :caption
+
+  def image(assigns) do
+    ~H"""
+    <figure {@rest}>
+      <.frame ratio={@ratio}>
+        <img
+          src={@src}
+          width={@width}
+          height={@height}
+          alt={@alt}
+          loading={@loading}
+          srcset={build_srcset(@srcset)}
+          sizes={@sizes}
+        />
+      </.frame>
+      <figcaption :if={@caption != []}><%= render_slot(@caption) %></figcaption>
+    </figure>
+    """
+  end
+
+  defp build_srcset(nil), do: nil
+  defp build_srcset(srcset) when is_binary(srcset), do: srcset
+
+  defp build_srcset(%{} = srcset) do
+    Enum.map_join(srcset, ", ", fn {width_or_density, url} ->
+      "#{url} #{width_or_density}"
+    end)
   end
 
   @doc """
@@ -2433,6 +2590,17 @@ defmodule Doggo do
   defp fill_class(:solid), do: "is-solid"
   defp fill_class(:outline), do: "is-outline"
   defp fill_class(:text), do: "is-text"
+
+  defp ratio_class({1, 1}), do: "is-1-to-1"
+  defp ratio_class({3, 2}), do: "is-3-to-2"
+  defp ratio_class({2, 3}), do: "is-2-to-3"
+  defp ratio_class({4, 3}), do: "is-4-to-3"
+  defp ratio_class({3, 4}), do: "is-3-to-4"
+  defp ratio_class({5, 4}), do: "is-5-to-4"
+  defp ratio_class({4, 5}), do: "is-4-to-5"
+  defp ratio_class({16, 9}), do: "is-16-to-9"
+  defp ratio_class({9, 16}), do: "is-9-to-16"
+  defp ratio_class(nil), do: nil
 
   defp size_class(:small), do: "is-small"
   defp size_class(:normal), do: nil
