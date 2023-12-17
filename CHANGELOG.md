@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- New `tab_navigation/1` component.
+
 ## [0.1.5] - 2023-12-16
 
 ### Fixed
