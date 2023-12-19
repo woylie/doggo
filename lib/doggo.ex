@@ -1582,7 +1582,7 @@ defmodule Doggo do
   defp checkbox(%{option: option_value} = assigns) do
     assigns
     |> assign(
-      label: Form.humanize(option_value),
+      label: humanize(option_value),
       option_value: option_value,
       option: nil
     )
@@ -1614,7 +1614,7 @@ defmodule Doggo do
   defp radio(%{option: option_value} = assigns) do
     assigns
     |> assign(
-      label: Form.humanize(option_value),
+      label: humanize(option_value),
       option_value: option_value,
       option: nil
     )
@@ -2583,6 +2583,28 @@ defmodule Doggo do
       <%= render_slot(@inner_block) %>
     </div>
     """
+  end
+
+  ## Helpers
+
+  defp humanize(atom) when is_atom(atom) do
+    atom
+    |> Atom.to_string()
+    |> humanize()
+  end
+
+  defp humanize(s) when is_binary(s) do
+    if String.ends_with?(s, "_id") do
+      s |> binary_part(0, byte_size(s) - 3) |> to_titlecase()
+    else
+      to_titlecase(s)
+    end
+  end
+
+  defp to_titlecase(s) do
+    s
+    |> String.replace("_", " ")
+    |> :string.titlecase()
   end
 
   ## Modifier classes
