@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.2.1] - 2023-12-19
+
 ### Changed
 
 - Ensure compatibility with Phoenix.HTML 4.0.
