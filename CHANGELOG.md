@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Added
+
+- Added `gettext` attribute to `Doggo.input/1`, giving you the choice to
+  set the Gettext module locally.
+
 ## [0.2.1] - 2023-12-19
 
 ### Changed
