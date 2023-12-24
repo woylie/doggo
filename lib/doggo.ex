@@ -1228,6 +1228,10 @@ defmodule Doggo do
 
       config :doggo, gettext: MyApp.Gettext
 
+  Alternatively, pass the Gettext module as an attribute:
+
+      <.input field={@form[:name]} gettext={MyApp.Gettext} />
+
   ## Examples
 
       <.input field={@form[:name]} />
@@ -1314,10 +1318,17 @@ defmodule Doggo do
          minlength multiple passwordrules pattern placeholder readonly required
          rows size step)
 
+  attr :gettext, :atom,
+    doc: """
+    The Gettext module to use for translating error messages. This option can
+    also be set globally, see above.
+    """
+
   slot :description, doc: "A field description to render underneath the input."
 
   def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
-    gettext_module = Application.get_env(:doggo, :gettext)
+    gettext_module =
+      Map.get(assigns, :gettext, Application.get_env(:doggo, :gettext))
 
     assigns
     |> assign(field: nil, id: assigns.id || field.id)
