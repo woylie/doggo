@@ -5,6 +5,11 @@ updates:
     schedule:
       interval: weekly
       day: saturday
+  - package-ecosystem: mix
+    directory: "/demo"
+    schedule:
+      interval: weekly
+      day: saturday
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
