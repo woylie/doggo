@@ -79,6 +79,21 @@ end
 - The library is designed without default styles and does not prefer any
   particular CSS framework.
 
+## Demo app
+
+The repository contains a demo application that renders the plain storybook.
+Note that it doesn't come with any CSS, so all components will be rendered with
+default browser styles.
+
+```bash
+git clone git@github.com:woylie/doggo.git
+cd doggo/demo
+mix setup
+mix phx.server
+```
+
+The storybook can be accessed at http://localhost:4000.
+
 ## Status
 
 The library is actively developed. Being in its early stages, the library may
