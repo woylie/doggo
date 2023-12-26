@@ -124,6 +124,78 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders a box for a section on the page.
+
+  ## Example
+
+  Minimal example with only a box body:
+
+    <.box>
+      <p>This is a box.</p>
+    </.box>
+
+  With title, banner, action, and footer:
+
+    <.box>
+      <:title>Profile</:title>
+      <:banner>
+        <img src="banner-image.png" alt="" />
+      </:banner>
+      <:action>
+        <.button_link patch={~p"/profiles/\#{@profile}/edit}>Edit</.button_link>
+      </:action>
+
+      <p>This is a profile.</p>
+
+      <:footer>
+        <p>Last edited: <%= @profile.updated_at %></p>
+      </:footer>
+    </.box>
+  """
+  @doc type: :component
+
+  slot :title, doc: "The title for the box."
+
+  slot :inner_block,
+    required: true,
+    doc: "Slot for the content of the box body."
+
+  slot :action, doc: "A slot for action buttons related to the box."
+
+  slot :banner,
+    doc: "A slot that can be used to render a banner image in the header."
+
+  slot :footer, doc: "An optional slot for the footer."
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  def box(assigns) do
+    ~H"""
+    <section class={["box" | List.wrap(@class)]} {@rest}>
+      <header :if={@title != [] || @banner != []}>
+        <h2 :if={@title != []}><%= render_slot(@title) %></h2>
+        <div :if={@action != []} class="box-actions">
+          <%= for action <- @action do %>
+            <%= render_slot(action) %>
+          <% end %>
+        </div>
+        <div :if={@banner != []} class="box-banner">
+          <%= render_slot(@banner) %>
+        </div>
+      </header>
+      <%= render_slot(@inner_block) %>
+      <footer :if={@footer != []}>
+        <%= render_slot(@footer) %>
+      </footer>
+    </section>
+    """
+  end
+
+  @doc """
   Renders a breadcrumb navigation.
 
   ## Example
