@@ -708,6 +708,237 @@ defmodule Doggo do
   defp to_time(nil), do: nil
 
   @doc """
+  Renders a drawer with a `brand`, `top`, and `bottom` slot.
+
+  Within the slots, you can use the `drawer_nav/1` and `drawer_section/1`
+  components.
+
+  ## Example
+
+      <.drawer>
+        <:brand>
+          <.link navigate={~p"/"}>App</.link>
+        </:brand>
+        <:top>
+          <.drawer_nav aria-label="Main">
+            <:item>
+              <.link navigate={~p"/dashboard"}>Dashboard</.link>
+            </:item>
+            <:item>
+              <.drawer_nested_nav>
+                <:title>Content</:title>
+                <:item current_page>
+                  <.link navigate={~p"/posts"}>Posts</.link>
+                </:item>
+                <:item>
+                  <.link navigate={~p"/comments"}>Comments</.link>
+                </:item>
+              </.drawer_nested_nav>
+            </:item>
+          </.drawer_nav>
+          <.drawer_section>
+            <:title>Search</:title>
+            <:item><input type="search" placeholder="Search" /></:item>
+          </.drawer_section>
+        </:top>
+        <:bottom>
+          <.drawer_nav aria-label="User menu">
+            <:item>
+              <.link navigate={~p"/settings"}>Settings</.link>
+            </:item>
+            <:item>
+              <.link navigate={~p"/logout"}>Logout</.link>
+            </:item>
+          </.drawer_nav>
+        </:bottom>
+      </.drawer>
+  """
+  @doc type: :component
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :brand, doc: "Optional slot for the brand name or logo."
+
+  slot :top,
+    doc: """
+    Slot for content that is rendered after the brand, at the start of the
+    side bar.
+    """
+
+  slot :bottom,
+    doc: """
+    Slot for content that is rendered at the end of the drawer, pinned to the
+    bottom, if there is enough room.
+    """
+
+  def drawer(assigns) do
+    ~H"""
+    <aside class={["drawer" | List.wrap(@class)]} {@rest}>
+      <div :if={@brand != []} class="drawer-brand">
+        <%= render_slot(@brand) %>
+      </div>
+      <div :if={@top != []} class="drawer-top">
+        <%= render_slot(@top) %>
+      </div>
+      <div :if={@bottom != []} class="drawer-bottom">
+        <%= render_slot(@bottom) %>
+      </div>
+    </aside>
+    """
+  end
+
+  @doc """
+  Renders a navigation menu as a drawer section.
+
+  This component must be placed within the `:top` or `:bottom` slot of the
+  `drawer/1` component.
+
+  To nest the navigation, use the `drawer_nested_nav/1` component within the
+  `:item` slot.
+
+  To render a drawer section that is not a navigation menu, use
+  `drawer_section/1` instead.
+
+  ## Example
+
+      <.drawer_nav aria-label="Main">
+        <:item>
+          <.link navigate={~p"/dashboard"}>Dashboard</.link>
+        </:item>
+        <:item>
+          <.drawer_nested_nav>
+            <:title>Content</:title>
+            <:item current_page>
+              <.link navigate={~p"/posts"}>Posts</.link>
+            </:item>
+            <:item>
+              <.link navigate={~p"/comments"}>Comments</.link>
+            </:item>
+          </.drawer_nested_nav>
+        </:item>
+      </.drawer_nav>
+  """
+  @doc type: :component
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :title, doc: "An optional slot for the title of the menu."
+
+  slot :item, required: true, doc: "Items" do
+    attr :current_page, :boolean
+  end
+
+  def drawer_nav(assigns) do
+    ~H"""
+    <nav {@rest}>
+      <div :if={@title != []} class="drawer-nav-title">
+        <%= render_slot(@title) %>
+      </div>
+      <ul>
+        <li
+          :for={item <- @item}
+          aria-current={Map.get(item, :current_page, false) && "page"}
+        >
+          <%= render_slot(item) %>
+        </li>
+      </ul>
+    </nav>
+    """
+  end
+
+  @doc """
+  Renders nested navigation items within the `:item` slot of the `drawer_nav/1`
+  component.
+
+  ## Example
+
+      <.drawer_nav aria-label="Main">
+        <:item>
+          <.drawer_nested_nav>
+            <:title>Content</:title>
+            <:item current_page>
+              <.link navigate={~p"/posts"}>Posts</.link>
+            </:item>
+            <:item>
+              <.link navigate={~p"/comments"}>Comments</.link>
+            </:item>
+          </.drawer_nested_nav>
+        </:item>
+      </.drawer_nav>
+  """
+  @doc type: :component
+
+  slot :title, doc: "An optional slot for the title of the nested menu section."
+
+  slot :item, required: true, doc: "Items" do
+    attr :current_page, :boolean
+  end
+
+  def drawer_nested_nav(assigns) do
+    ~H"""
+    <div :if={@title != []} class="drawer-nav-title">
+      <%= render_slot(@title) %>
+    </div>
+    <ul>
+      <li
+        :for={item <- @item}
+        aria-current={Map.get(item, :current_page, false) && "page"}
+      >
+        <%= render_slot(item) %>
+      </li>
+    </ul>
+    """
+  end
+
+  @doc """
+  Renders a section in a drawer that contains one or more items, which are not
+  navigation links.
+
+  To render a drawer navigation, use `drawer_nav/1` instead.
+
+  ## Example
+
+      <.drawer_section>
+        <:title>Search</:title>
+        <:item><input type="search" placeholder="Search" /></:item>
+      </.drawer_section>
+  """
+  @doc type: :component
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :title, doc: "An optional slot for the title of the section."
+
+  slot :item, required: true, doc: "Items" do
+    attr :class, :any,
+      doc: "Additional CSS classes. Can be a string or a list of strings."
+  end
+
+  def drawer_section(assigns) do
+    ~H"""
+    <div class={["drawer-section" | List.wrap(@class)]} {@rest}>
+      <div :if={@title != []} class="drawer-section-title">
+        <%= render_slot(@title) %>
+      </div>
+      <div
+        :for={item <- @item}
+        class={["drawer-item" | item |> Map.get(:class, []) |> List.wrap()]}
+      >
+        <%= render_slot(item) %>
+      </div>
+    </div>
+    """
+  end
+
+  @doc """
   Shows the flash messages as alerts.
 
   ## Hidden attribute
@@ -2438,237 +2669,6 @@ defmodule Doggo do
         </li>
       </ul>
     </nav>
-    """
-  end
-
-  @doc """
-  Renders a drawer with a `brand`, `top`, and `bottom` slot.
-
-  Within the slots, you can use the `drawer_nav/1` and `drawer_section/1`
-  components.
-
-  ## Example
-
-      <.drawer>
-        <:brand>
-          <.link navigate={~p"/"}>App</.link>
-        </:brand>
-        <:top>
-          <.drawer_nav aria-label="Main">
-            <:item>
-              <.link navigate={~p"/dashboard"}>Dashboard</.link>
-            </:item>
-            <:item>
-              <.drawer_nested_nav>
-                <:title>Content</:title>
-                <:item current_page>
-                  <.link navigate={~p"/posts"}>Posts</.link>
-                </:item>
-                <:item>
-                  <.link navigate={~p"/comments"}>Comments</.link>
-                </:item>
-              </.drawer_nested_nav>
-            </:item>
-          </.drawer_nav>
-          <.drawer_section>
-            <:title>Search</:title>
-            <:item><input type="search" placeholder="Search" /></:item>
-          </.drawer_section>
-        </:top>
-        <:bottom>
-          <.drawer_nav aria-label="User menu">
-            <:item>
-              <.link navigate={~p"/settings"}>Settings</.link>
-            </:item>
-            <:item>
-              <.link navigate={~p"/logout"}>Logout</.link>
-            </:item>
-          </.drawer_nav>
-        </:bottom>
-      </.drawer>
-  """
-  @doc type: :component
-
-  attr :class, :any,
-    default: [],
-    doc: "Additional CSS classes. Can be a string or a list of strings."
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-
-  slot :brand, doc: "Optional slot for the brand name or logo."
-
-  slot :top,
-    doc: """
-    Slot for content that is rendered after the brand, at the start of the
-    side bar.
-    """
-
-  slot :bottom,
-    doc: """
-    Slot for content that is rendered at the end of the drawer, pinned to the
-    bottom, if there is enough room.
-    """
-
-  def drawer(assigns) do
-    ~H"""
-    <aside class={["drawer" | List.wrap(@class)]} {@rest}>
-      <div :if={@brand != []} class="drawer-brand">
-        <%= render_slot(@brand) %>
-      </div>
-      <div :if={@top != []} class="drawer-top">
-        <%= render_slot(@top) %>
-      </div>
-      <div :if={@bottom != []} class="drawer-bottom">
-        <%= render_slot(@bottom) %>
-      </div>
-    </aside>
-    """
-  end
-
-  @doc """
-  Renders a navigation menu as a drawer section.
-
-  This component must be placed within the `:top` or `:bottom` slot of the
-  `drawer/1` component.
-
-  To nest the navigation, use the `drawer_nested_nav/1` component within the
-  `:item` slot.
-
-  To render a drawer section that is not a navigation menu, use
-  `drawer_section/1` instead.
-
-  ## Example
-
-      <.drawer_nav aria-label="Main">
-        <:item>
-          <.link navigate={~p"/dashboard"}>Dashboard</.link>
-        </:item>
-        <:item>
-          <.drawer_nested_nav>
-            <:title>Content</:title>
-            <:item current_page>
-              <.link navigate={~p"/posts"}>Posts</.link>
-            </:item>
-            <:item>
-              <.link navigate={~p"/comments"}>Comments</.link>
-            </:item>
-          </.drawer_nested_nav>
-        </:item>
-      </.drawer_nav>
-  """
-  @doc type: :component
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-
-  slot :title, doc: "An optional slot for the title of the menu."
-
-  slot :item, required: true, doc: "Items" do
-    attr :current_page, :boolean
-  end
-
-  def drawer_nav(assigns) do
-    ~H"""
-    <nav {@rest}>
-      <div :if={@title != []} class="drawer-nav-title">
-        <%= render_slot(@title) %>
-      </div>
-      <ul>
-        <li
-          :for={item <- @item}
-          aria-current={Map.get(item, :current_page, false) && "page"}
-        >
-          <%= render_slot(item) %>
-        </li>
-      </ul>
-    </nav>
-    """
-  end
-
-  @doc """
-  Renders nested navigation items within the `:item` slot of the `drawer_nav/1`
-  component.
-
-  ## Example
-
-      <.drawer_nav aria-label="Main">
-        <:item>
-          <.drawer_nested_nav>
-            <:title>Content</:title>
-            <:item current_page>
-              <.link navigate={~p"/posts"}>Posts</.link>
-            </:item>
-            <:item>
-              <.link navigate={~p"/comments"}>Comments</.link>
-            </:item>
-          </.drawer_nested_nav>
-        </:item>
-      </.drawer_nav>
-  """
-  @doc type: :component
-
-  slot :title, doc: "An optional slot for the title of the nested menu section."
-
-  slot :item, required: true, doc: "Items" do
-    attr :current_page, :boolean
-  end
-
-  def drawer_nested_nav(assigns) do
-    ~H"""
-    <div :if={@title != []} class="drawer-nav-title">
-      <%= render_slot(@title) %>
-    </div>
-    <ul>
-      <li
-        :for={item <- @item}
-        aria-current={Map.get(item, :current_page, false) && "page"}
-      >
-        <%= render_slot(item) %>
-      </li>
-    </ul>
-    """
-  end
-
-  @doc """
-  Renders a section in a drawer that contains one or more items, which are not
-  navigation links.
-
-  To render a drawer navigation, use `drawer_nav/1` instead.
-
-  ## Example
-
-      <.drawer_section>
-        <:title>Search</:title>
-        <:item><input type="search" placeholder="Search" /></:item>
-      </.drawer_section>
-  """
-  @doc type: :component
-
-  attr :class, :any,
-    default: [],
-    doc: "Additional CSS classes. Can be a string or a list of strings."
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-
-  slot :title, doc: "An optional slot for the title of the section."
-
-  slot :item, required: true, doc: "Items" do
-    attr :class, :any,
-      doc: "Additional CSS classes. Can be a string or a list of strings."
-  end
-
-  def drawer_section(assigns) do
-    ~H"""
-    <div class={["drawer-section" | List.wrap(@class)]} {@rest}>
-      <div :if={@title != []} class="drawer-section-title">
-        <%= render_slot(@title) %>
-      </div>
-      <div
-        :for={item <- @item}
-        class={["drawer-item" | item |> Map.get(:class, []) |> List.wrap()]}
-      >
-        <%= render_slot(item) %>
-      </div>
-    </div>
     """
   end
 
