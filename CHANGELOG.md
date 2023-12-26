@@ -4,7 +4,8 @@
 
 ### Added
 
-- New `page_header` component.
+- New `Doggo.page_header/1` component.
+- New `Doggo.box/1` component.
 - Added `gettext` attribute to `Doggo.input/1`, giving you the choice to
   set the Gettext module locally.
 
