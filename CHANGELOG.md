@@ -10,6 +10,7 @@
 - New component: `Doggo.page_header/1`.
 - New component: `Doggo.skeleton/1`.
 - New component: `Doggo.tag/1`.
+- Allow to visually hide labels.
 - Added `gettext` attribute to `Doggo.input/1`, giving you the choice to
   set the Gettext module locally.
 

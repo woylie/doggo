@@ -13,6 +13,11 @@ defmodule Storybook.Components.Label do
         id: :required,
         attributes: %{required: true},
         slots: ["E-mail"]
+      },
+      %Variation{
+        id: :visually_hidden,
+        attributes: %{visually_hidden: true},
+        slots: ["E-mail"]
       }
     ]
   end
