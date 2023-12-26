@@ -2382,7 +2382,7 @@ defmodule Doggo do
           <.link navigate={~p"/"}>App</.link>
         </:brand>
         <:top>
-          <.drawer_nav aria-label="Main navigation">
+          <.drawer_nav aria-label="Main">
             <:item>
               <.link navigate={~p"/dashboard"}>Dashboard</.link>
             </:item>
@@ -2467,7 +2467,7 @@ defmodule Doggo do
 
   ## Example
 
-      <.drawer_nav aria-label="Main navigation">
+      <.drawer_nav aria-label="Main">
         <:item>
           <.link navigate={~p"/dashboard"}>Dashboard</.link>
         </:item>
@@ -2518,7 +2518,7 @@ defmodule Doggo do
 
   ## Example
 
-      <.drawer_nav aria-label="Main navigation">
+      <.drawer_nav aria-label="Main">
         <:item>
           <.drawer_nested_nav>
             <:title>Content</:title>
