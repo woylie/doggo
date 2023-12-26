@@ -1562,6 +1562,28 @@ defmodule Doggo do
 
       <.input field={@form[:name]} gettext={MyApp.Gettext} />
 
+  ## Label positioning
+
+  The component does not provide an attribute to modify label positioning
+  directly. Instead, label positioning should be handled with CSS. If your
+  application requires different label positions, such as horizontal and
+  vertical layouts, it is recommended to add a modifier class to the form.
+
+  For example, the default style could position labels above inputs. To place
+  labels to the left of the inputs in a horizontal form layout, you can add an
+  `is-horizontal` class to the form:
+
+      <.form class="is-horizontal">
+        <!-- inputs -->
+      </.form>
+
+  Then, in your CSS, apply the necessary styles to the `.field` class within
+  forms having the `is-horizontal` class:
+
+      form.is-horizontal .field {
+        // styles to position label left of the input
+      }
+
   ## Examples
 
       <.input field={@form[:name]} />
