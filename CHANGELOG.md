@@ -4,8 +4,10 @@
 
 ### Added
 
-- New `Doggo.page_header/1` component.
-- New `Doggo.box/1` component.
+- New component: `Doggo.badge/1`.
+- New component: `Doggo.box/1`.
+- New component: `Doggo.page_header/1`.
+- New component: `Doggo.tag/1`.
 - Added `gettext` attribute to `Doggo.input/1`, giving you the choice to
   set the Gettext module locally.
 
