@@ -131,6 +131,7 @@ defmodule Doggo do
 
       <.badge>8</.badge>
   """
+  @doc type: :component
 
   attr :size, :atom,
     values: [:small, :normal, :medium, :large],
@@ -1117,19 +1118,19 @@ defmodule Doggo do
 
   Standard callout:
 
-    <.callout title="Dog Care Tip">
-      <p>Regular exercise is essential for keeping your dog healthy and happy.</p>
-    </.callout>
+      <.callout title="Dog Care Tip">
+        <p>Regular exercise is essential for keeping your dog healthy and happy.</p>
+      </.callout>
 
   Callout with an icon:
 
-    <.callout title="Fun Dog Fact">
-      <:icon><Heroicons.information_circle /></:icon>
-      <p>
-        Did you know? Dogs have a sense of time and can get upset when their
-        routine is changed.
-      </p>
-    </.callout>
+      <.callout title="Fun Dog Fact">
+        <:icon><Heroicons.information_circle /></:icon>
+        <p>
+          Did you know? Dogs have a sense of time and can get upset when their
+          routine is changed.
+        </p>
+      </.callout>
   """
   @doc type: :component
 
@@ -2981,7 +2982,7 @@ defmodule Doggo do
         <div>some other block</div>
       </.stack>
   """
-  @doc type: :layout
+  @doc type: :component
 
   slot :inner_block, required: true
 
@@ -3036,6 +3037,7 @@ defmodule Doggo do
         </button>
       </.tag>
   """
+  @doc type: :component
 
   attr :size, :atom,
     values: [:small, :normal, :medium, :large],
