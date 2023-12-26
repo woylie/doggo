@@ -124,6 +124,33 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders a badge, typically used for drawing attention to elements like
+  notification counts.
+
+  ## Examples
+
+      <.badge>8</.badge>
+  """
+
+  attr :size, :atom,
+    values: [:small, :normal, :medium, :large],
+    default: :normal
+
+  attr :variant, :atom,
+    values: [nil, :primary, :secondary, :info, :success, :warning, :danger],
+    default: nil
+
+  slot :inner_block, required: true
+
+  def badge(assigns) do
+    ~H"""
+    <span class={["badge", size_class(@size), variant_class(@variant)]}>
+      <%= render_slot(@inner_block) %>
+    </span>
+    """
+  end
+
+  @doc """
   Renders a box for a section on the page.
 
   ## Example
