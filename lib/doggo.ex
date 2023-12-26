@@ -2058,6 +2058,48 @@ defmodule Doggo do
   end
 
   @doc """
+  Use the field group component to visually group multiple inputs in a form.
+
+  This component is intended for styling purposes and does not provide semantic
+  grouping. For semantic grouping of related form elements, use the `<fieldset>`
+  and `<legend>` HTML elements instead.
+
+  ## Examples
+
+  Visual grouping of inputs:
+
+      <.field_group>
+        <.input field={@form[:given_name]} label="Given name" />
+        <.input field={@form[:family_name]} label="Family name"/>
+      </.field_group>
+
+  Semantic grouping (for reference):
+
+      <fieldset>
+        <legend>Personal Information</legend>
+        <.input field={@form[:given_name]} label="Given name" />
+        <.input field={@form[:family_name]} label="Family name"/>
+      </fieldset>
+  """
+  @doc type: :component
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :inner_block, required: true
+
+  def field_group(assigns) do
+    ~H"""
+    <div class={["field-group" | List.wrap(@class)]} {@rest}>
+      <%= render_slot(@inner_block) %>
+    </div>
+    """
+  end
+
+  @doc """
   Renders a modal.
 
   ## Usage
