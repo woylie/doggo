@@ -2721,6 +2721,61 @@ defmodule Doggo do
     """
   end
 
+  @doc """
+  Renders a tag, typically used for displaying labels, categories, or keywords.
+
+  ## Examples
+
+  Plain tag:
+
+      <.tag>Well-Trained</.tag>
+
+  With icon:
+
+      <.tag>
+        Puppy
+        <.icon><Heroicons.edit /></icon>
+      </.tag>
+
+  With delete button:
+
+      <.tag>
+        High Energy
+        <button
+          phx-click="remove-tag"
+          phx-value-tag="high-energy"
+          aria-label="Remove tag"
+        >
+          <.icon><Heroicons.x /></icon>
+        </button>
+      </.tag>
+  """
+
+  attr :size, :atom,
+    values: [:small, :normal, :medium, :large],
+    default: :normal
+
+  attr :variant, :atom,
+    values: [nil, :primary, :secondary, :info, :success, :warning, :danger],
+    default: nil
+
+  attr :shape, :atom, values: [nil, :pill], default: nil
+
+  slot :inner_block, required: true
+
+  def tag(assigns) do
+    ~H"""
+    <span class={[
+      "tag",
+      size_class(@size),
+      variant_class(@variant),
+      shape_class(@shape)
+    ]}>
+      <%= render_slot(@inner_block) %>
+    </span>
+    """
+  end
+
   ## Helpers
 
   defp humanize(atom) when is_atom(atom) do
