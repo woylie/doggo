@@ -1045,6 +1045,9 @@ defmodule Doggo do
   @doc """
   The alert component serves as a notification mechanism to provide feedback to
   the user.
+
+  For supplementary information that doesn't require the user's immediate
+  attention, use `callout/1` instead.
   """
   @doc type: :component
 
@@ -1100,6 +1103,71 @@ defmodule Doggo do
         <%= @close_label %>
       </button>
     </div>
+    """
+  end
+
+  @doc """
+  Use the callout to highlight supplementary information related to the main
+  content.
+
+  For information that needs immediate attention of the user, use `alert/1`
+  instead.
+
+  ## Example
+
+  Standard callout:
+
+    <.callout title="Dog Care Tip">
+      <p>Regular exercise is essential for keeping your dog healthy and happy.</p>
+    </.callout>
+
+  Callout with an icon:
+
+    <.callout title="Fun Dog Fact">
+      <:icon><Heroicons.information_circle /></:icon>
+      <p>
+        Did you know? Dogs have a sense of time and can get upset when their
+        routine is changed.
+      </p>
+    </.callout>
+  """
+  @doc type: :component
+
+  attr :id, :string, default: nil
+
+  attr :variant, :atom,
+    values: [:info, :success, :warning, :error],
+    default: :info
+
+  attr :title, :string, default: nil, doc: "An optional title."
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :inner_block, required: true, doc: "The main content of the alert."
+  slot :icon, doc: "Optional slot to render an icon."
+
+  def callout(assigns) do
+    ~H"""
+    <aside
+      id={@id}
+      class={["callout", variant_class(@variant)] ++ List.wrap(@class)}
+      aria-labelledby={@title && "#{@id}-title"}
+      {@rest}
+    >
+      <div :if={@icon != []} class="callout-icon">
+        <%= render_slot(@icon) %>
+      </div>
+      <div class="callout-body">
+        <div :if={@title} id={"#{@id}-title"} class="callout-title">
+          <%= @title %>
+        </div>
+        <div class="callout-message"><%= render_slot(@inner_block) %></div>
+      </div>
+    </aside>
     """
   end
 
