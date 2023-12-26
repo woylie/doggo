@@ -2421,6 +2421,86 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders a skeleton loader, a placeholder for content that is in the process of
+  loading.
+
+  It mimics the layout of the actual content, providing a better user experience
+  during loading phases.
+
+  ## Usage
+
+  Render one of several primitive types:
+
+      <.skeleton type={:text_line} />
+
+  Combine primitives for complex layouts:
+
+      <div class="card-skeleton" aria-busy="true">
+        <.skeleton type={:image} />
+        <.skeleton type={:text_line} />
+        <.skeleton type={:text_line} />
+        <.skeleton type={:text_line} />
+        <.skeleton type={:rectangle} />
+      </div>
+
+  To modify the primitives for your use cases, you can use custom classes or CSS
+  properties:
+
+      <.skeleton type={:text_line} class="header" />
+
+      <.skeleton type={:image} style="--aspect-ratio: 75%;" />
+
+  ## Aria-busy attribute
+
+  When using skeleton loaders, apply `aria-busy="true"` to the container element
+  that contains the skeleton layout. For standalone use, add the attribute
+  directly to the individual skeleton loader.
+
+  ## Async result component
+
+  The easiest way to load data asynchronously and render a skeleton loader is
+  to use LiveView's
+  [async operations](`m:Phoenix.LiveView#module-async-operations`)
+  and `Phoenix.Component.async_result/1`.
+
+  Assuming you defined a card skeleton component as described above:
+
+      <.async_result :let={puppy} assign={@puppy}>
+        <:loading><.card_skeleton /></:loading>
+        <:failed :let={_reason}>There was an error loading the puppy.</:failed>
+        <!-- Card for loaded content -->
+      </.async_result>
+  """
+  @doc type: :component
+
+  attr :type, :atom,
+    required: true,
+    values: [
+      :text_line,
+      :text_block,
+      :image,
+      :circle,
+      :rectangle,
+      :square
+    ]
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  def skeleton(assigns) do
+    ~H"""
+    <div
+      class={["skeleton", skeleton_type_class(@type)] ++ List.wrap(@class)}
+      {@rest}
+    >
+    </div>
+    """
+  end
+
+  @doc """
   Renders a switch as a button.
 
   If you want to render a switch as part of a form, use the `input/1` component
@@ -2850,6 +2930,13 @@ defmodule Doggo do
   defp shape_class(:circle), do: "is-circle"
   defp shape_class(:pill), do: "is-pill"
   defp shape_class(nil), do: nil
+
+  defp skeleton_type_class(:text_line), do: "is-text-line"
+  defp skeleton_type_class(:text_block), do: "is-text-block"
+  defp skeleton_type_class(:image), do: "is-image"
+  defp skeleton_type_class(:circle), do: "is-circle"
+  defp skeleton_type_class(:rectangle), do: "is-rectangle"
+  defp skeleton_type_class(:square), do: "is-square"
 
   defp variant_class(:primary), do: "is-primary"
   defp variant_class(:secondary), do: "is-secondary"
