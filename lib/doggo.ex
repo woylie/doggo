@@ -1584,6 +1584,18 @@ defmodule Doggo do
         // styles to position label left of the input
       }
 
+  The component has a `hide_label` attribute to visually hide labels while still
+  making them accessible to screen readers. If all labels within a form need to
+  be visually hidden, it may be more convenient to define a
+  `.has-visually-hidden-labels` modifier class for the `<form>`.
+
+      <.form class="has-visually-hidden-labels">
+        <!-- inputs -->
+      </.form>
+
+  Ensure to take checkbox and radio labels into consideration when writing the
+  CSS styles.
+
   ## Examples
 
       <.input field={@form[:name]} />
@@ -1620,6 +1632,14 @@ defmodule Doggo do
   attr :id, :any, default: nil
   attr :name, :any
   attr :label, :string, default: nil
+
+  attr :hide_label, :boolean,
+    default: false,
+    doc: """
+    Adds an "is-visually-hidden" class to the `<label>`. This option does not
+    apply to checkbox and radio inputs.
+    """
+
   attr :value, :any
 
   attr :type, :string,
@@ -1823,7 +1843,11 @@ defmodule Doggo do
   def input(%{type: "select"} = assigns) do
     ~H"""
     <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
-      <.label for={@id} required={@validations[:required] || false}>
+      <.label
+        for={@id}
+        required={@validations[:required] || false}
+        visually_hidden={@hide_label}
+      >
         <%= @label %>
       </.label>
       <div class={["select", @multiple && "is-multiple"]}>
@@ -1848,7 +1872,11 @@ defmodule Doggo do
   def input(%{type: "textarea"} = assigns) do
     ~H"""
     <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
-      <.label for={@id} required={@validations[:required] || false}>
+      <.label
+        for={@id}
+        required={@validations[:required] || false}
+        visually_hidden={@hide_label}
+      >
         <%= @label %>
       </.label>
       <textarea
@@ -1879,7 +1907,11 @@ defmodule Doggo do
   def input(assigns) do
     ~H"""
     <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
-      <.label for={@id} required={@validations[:required] || false}>
+      <.label
+        for={@id}
+        required={@validations[:required] || false}
+        visually_hidden={@hide_label}
+      >
         <%= @label %>
       </.label>
       <input
@@ -2006,12 +2038,27 @@ defmodule Doggo do
     default: false,
     doc: "If set to `true`, a 'required' mark is rendered."
 
-  attr :rest, :global
+  attr :visually_hidden, :boolean,
+    default: false,
+    doc: """
+    Adds an "is-visually-hidden" class to the `<label>`.
+    """
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
   slot :inner_block, required: true
 
   def label(assigns) do
     ~H"""
-    <label for={@for} {@rest}>
+    <label
+      for={@for}
+      class={[@visually_hidden && "is-visually-hidden" | List.wrap(@class)]}
+      {@rest}
+    >
       <%= render_slot(@inner_block) %>
       <.required_mark :if={@required} />
     </label>
