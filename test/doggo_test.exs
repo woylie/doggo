@@ -81,6 +81,45 @@ defmodule DoggoTest do
     end
   end
 
+  describe "badge/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.badge>value</Doggo.badge>
+        """)
+
+      span = Floki.find(html, "span")
+      assert Floki.attribute(span, "class") == ["badge "]
+      assert text(span) == "value"
+    end
+
+    test "with size" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.badge size={:large}>value</Doggo.badge>
+        """)
+
+      span = Floki.find(html, "span")
+      assert Floki.attribute(span, "class") == ["badge is-large"]
+    end
+
+    test "with variant" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.badge variant={:secondary}>value</Doggo.badge>
+        """)
+
+      span = Floki.find(html, "span")
+      assert Floki.attribute(span, "class") == ["badge is-secondary"]
+    end
+  end
+
   describe "date/1" do
     test "with Date" do
       assigns = %{}
@@ -522,6 +561,57 @@ defmodule DoggoTest do
 
       div = Floki.find(html, "div")
       assert Floki.attribute(div, "data-what") == ["ever"]
+    end
+  end
+
+  describe "tag/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.tag>value</Doggo.tag>
+        """)
+
+      span = Floki.find(html, "span")
+      assert Floki.attribute(span, "class") == ["tag "]
+      assert text(span) == "value"
+    end
+
+    test "with size" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.tag size={:medium}>value</Doggo.tag>
+        """)
+
+      span = Floki.find(html, "span")
+      assert Floki.attribute(span, "class") == ["tag is-medium"]
+    end
+
+    test "with variant" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.tag variant={:primary}>value</Doggo.tag>
+        """)
+
+      span = Floki.find(html, "span")
+      assert Floki.attribute(span, "class") == ["tag is-primary"]
+    end
+
+    test "with shape" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.tag shape={:pill}>value</Doggo.tag>
+        """)
+
+      span = Floki.find(html, "span")
+      assert Floki.attribute(span, "class") == ["tag is-pill"]
     end
   end
 
