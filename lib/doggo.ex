@@ -3385,6 +3385,87 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders content with a tooltip.
+
+  There are different ways to render a tooltip. This component renders a `<div>`
+  with the `tooltip` role, which is hidden unless the element is hovered on or
+  focused. For example CSS for this kind of tooltip, refer to
+  [ARIA: tooltip role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tooltip_role).
+
+  A simpler alternative for styled text-only tooltips is to use a data attribute
+  and the [`attr` CSS function](https://developer.mozilla.org/en-US/docs/Web/CSS/attr).
+  Doggo does not provide a component for that kind of tooltip, since it is
+  controlled by attributes only. You can check
+  [Pico.CSS](https://v2.picocss.com/docs/tooltip) for an example implementation.
+
+  ## Example
+
+  With an inline text:
+
+      <p>
+        Did you know that the
+        <.tooltip id="labrador-info">
+          Labrador Retriever
+          <:tooltip>
+            <p><strong>Labrador Retriever</strong></p>
+            <p>
+              Labradors are known for their friendly nature and excellent
+              swimming abilities.
+            </p>
+          </:tooltip>
+        </.tooltip>
+        is one of the most popular dog breeds in the world?
+      </p>
+
+  If the inner block contains a link, add the `:contains_link` attribute:
+
+      <p>
+        Did you know that the
+        <.tooltip id="labrador-info" contains_link>
+          <.link navigate={~p"/labradors"}>Labrador Retriever</.link>
+          <:tooltip>
+            <p><strong>Labrador Retriever</strong></p>
+            <p>
+              Labradors are known for their friendly nature and excellent
+              swimming abilities.
+            </p>
+          </:tooltip>
+        </.tooltip>
+        is one of the most popular dog breeds in the world?
+      </p>
+  """
+  @doc type: :component
+
+  attr :id, :string, required: true
+
+  attr :contains_link, :boolean,
+    default: false,
+    doc: """
+    If `false`, the component sets `tabindex="0"` on the element wrapping the
+    inner block, so that the tooltip can be made visible by focusing the
+    element.
+
+    If the inner block already contains an element that is focusable, such as
+    a link or a button, set this attribute to `true`.
+    """
+
+  slot :inner_block, required: true
+  slot :tooltip, required: true
+
+  def tooltip(assigns) do
+    ~H"""
+    <span aria-describedby={"#{@id}-tooltip"} data-aria-tooltip>
+      <span tabindex={!@contains_link && "0"}>
+        <%= render_slot(@inner_block) %>
+      </span>
+      <div role="tooltip" id={"#{@id}-tooltip"}>
+        <%= render_slot(@tooltip) %>
+      </div>
+    </span>
+    """
+  end
+
+  @doc """
   Applies a vertical margin between the child elements.
 
   ## Example
