@@ -2948,6 +2948,109 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders a navigation for form steps.
+
+  ## Examples
+
+  With patch navigation:
+
+      <.steps current_index={0}>
+        <:step on_click={JS.patch(to: ~p"/form/step/personal-information")}>
+          Profile
+        </:step>
+        <:step on_click={JS.patch(to: ~p"/form/step/delivery")}>
+          Delivery
+        </:step>
+        <:step on_click={JS.patch(to: ~p"/form/step/confirmation")}>
+          Confirmation
+        </:step>
+      </.steps>
+
+  With push events:
+
+      <.steps current_index={0}>
+        <:step on_click={JS.push("go-to-step", value: %{step: "profile"})}>
+          Profile
+        </:step>
+        <:step on_click={JS.push("go-to-step", value: %{step: "delivery"})}>
+          Delivery
+        </:step>
+        <:step on_click={JS.push("go-to-step", value: %{step: "confirmation"})}>
+          Confirmation
+        </:step>
+      </.steps>
+  """
+  @doc type: :component
+
+  attr :label, :string, default: "Form steps"
+
+  attr :current_step, :integer,
+    required: true,
+    doc: """
+    The current form step, zero-based index.
+    """
+
+  attr :completed_label, :string,
+    default: "Completed: ",
+    doc: """
+    Visually hidden text that is rendered for screen readers for completed
+    steps.
+    """
+
+  attr :linear, :boolean,
+    default: false,
+    doc: """
+    If `true`, clickable links are only rendered for completed steps.
+
+    If `false`, also upcoming steps are clickable.
+
+    If you don't want any clickable links to be rendered, omit the `on_click`
+    attribute on the `:step` slots.
+    """
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :step, required: true do
+    attr :on_click, JS,
+      doc: """
+      `Phoenix.LiveView.JS` command to execute when clicking on the step.
+      """
+  end
+
+  def steps(assigns) do
+    ~H"""
+    <nav aria-label={@label} class={["steps" | List.wrap(@class)]} {@rest}>
+      <ol>
+        <li
+          :for={{step, index} <- Enum.with_index(@step)}
+          class={step_class(index, @current_step)}
+          aria-current={index == @current_step && "step"}
+        >
+          <span :if={index < @current_step} class="is-visually-hidden">
+            <%= @completed_label %>
+          </span>
+          <%= if on_click = step[:on_click] && ((@linear && index < @current_step) || (!@linear && index != @current_step)) do %>
+            <.link phx-click={on_click}>
+              <%= render_slot(step) %>
+            </.link>
+          <% else %>
+            <span><%= render_slot(step) %></span>
+          <% end %>
+        </li>
+      </ol>
+    </nav>
+    """
+  end
+
+  defp step_class(index, index), do: "is-current"
+  defp step_class(index, current) when index < current, do: "is-completed"
+  defp step_class(index, current) when index > current, do: "is-upcoming"
+
+  @doc """
   Renders a switch as a button.
 
   If you want to render a switch as part of a form, use the `input/1` component
@@ -3225,8 +3328,6 @@ defmodule Doggo do
     </nav>
     """
   end
-
-  ## Layouts
 
   @doc """
   Applies a vertical margin between the child elements.
