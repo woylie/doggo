@@ -15,6 +15,7 @@
 - New component: `Doggo.skeleton/1`.
 - New component: `Doggo.steps/1`.
 - New component: `Doggo.tag/1`.
+- New component: `Doggo.tooltip/1`.
 - Allow to visually hide labels.
 - Support autocomplete via `<datalist>` in `input/1` component.
 - Add `addon_left` and `addon_right` slots to `input/1` component.
