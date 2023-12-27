@@ -326,4 +326,274 @@ defmodule DoggoTest do
       assert text(time) == "2023-12-28 03:30:21+09:00 JST Asia/Tokyo"
     end
   end
+
+  describe "time/1" do
+    test "with Time" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~T[18:30:21]} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:21"]
+      assert text(time) == "18:30:21"
+    end
+
+    test "with DateTime" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~U[2023-12-27T18:30:21Z]} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:21"]
+      assert text(time) == "18:30:21"
+    end
+
+    test "with NaiveDateTime" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~N[2023-12-27 18:30:21]} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:21"]
+      assert text(time) == "18:30:21"
+    end
+
+    test "with nil" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time
+          value={nil}
+          formatter={& &1}
+          title_formatter={& &1}
+          precision={:minute}
+          timezone="Asia/Tokyo"
+        />
+        """)
+
+      assert html == []
+    end
+
+    test "with formatter" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~T[18:30:21]} formatter={&"#{&1.hour}h #{&1.minute}m"} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:21"]
+      assert text(time) == "18h 30m"
+    end
+
+    test "with title formatter" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~T[18:30:21]} title_formatter={&"#{&1.hour}h #{&1.minute}m"} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "title") == ["18h 30m"]
+    end
+
+    test "with Time and microsecond precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~T[18:30:21.107074]} precision={:microsecond} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:21.107074"]
+      assert text(time) == "18:30:21.107074"
+    end
+
+    test "with Time and millisecond precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~T[18:30:21.107074]} precision={:millisecond} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:21.107"]
+      assert text(time) == "18:30:21.107"
+    end
+
+    test "with Time and second precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~T[18:30:21.107074]} precision={:second} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:21"]
+      assert text(time) == "18:30:21"
+    end
+
+    test "with Time and minute precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~T[18:30:21.107074]} precision={:minute} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:00"]
+      assert text(time) == "18:30:00"
+    end
+
+    test "with DateTime and microsecond precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~U[2023-12-27T18:30:21.107074Z]} precision={:microsecond} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:21.107074"]
+      assert text(time) == "18:30:21.107074"
+    end
+
+    test "with DateTime and millisecond precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~U[2023-12-27T18:30:21.107074Z]} precision={:millisecond} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:21.107"]
+      assert text(time) == "18:30:21.107"
+    end
+
+    test "with DateTime and second precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~U[2023-12-27T18:30:21.107074Z]} precision={:second} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:21"]
+      assert text(time) == "18:30:21"
+    end
+
+    test "with DateTime and minute precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~U[2023-12-27T18:30:21.107074Z]} precision={:minute} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:00"]
+      assert text(time) == "18:30:00"
+    end
+
+    test "with NaiveDateTime and microsecond precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~N[2023-12-27T18:30:21.107074]} precision={:microsecond} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:21.107074"]
+      assert text(time) == "18:30:21.107074"
+    end
+
+    test "with NaiveDateTime and millisecond precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~N[2023-12-27T18:30:21.107074]} precision={:millisecond} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:21.107"]
+      assert text(time) == "18:30:21.107"
+    end
+
+    test "with NaiveDateTime and second precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~N[2023-12-27T18:30:21.107074]} precision={:second} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:21"]
+      assert text(time) == "18:30:21"
+    end
+
+    test "with NaiveDateTime and minute precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~N[2023-12-27T18:30:21.107074]} precision={:minute} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["18:30:00"]
+      assert text(time) == "18:30:00"
+    end
+
+    test "with DateTime and time zone" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.time value={~U[2023-12-27T18:30:21Z]} timezone="Asia/Tokyo" />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["03:30:21"]
+      assert text(time) == "03:30:21"
+    end
+  end
 end
