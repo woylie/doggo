@@ -4,6 +4,114 @@ defmodule DoggoTest do
 
   import Doggo.TestHelpers
 
+  describe "date/1" do
+    test "with Date" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.date value={~D[2023-12-27]} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["2023-12-27"]
+      assert text(time) == "2023-12-27"
+    end
+
+    test "with DateTime" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.date value={~U[2023-12-27T18:30:21Z]} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["2023-12-27"]
+      assert text(time) == "2023-12-27"
+    end
+
+    test "with NaiveDateTime" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.date value={~N[2023-12-27T18:30:21]} />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["2023-12-27"]
+      assert text(time) == "2023-12-27"
+    end
+
+    test "with nil" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.date
+          value={nil}
+          formatter={& &1}
+          title_formatter={& &1}
+          timezone="Asia/Tokyo"
+        />
+        """)
+
+      assert html == []
+    end
+
+    test "with formatter" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.date
+          value={~N[2023-12-27 18:30:21]}
+          formatter={&"#{&1.year}/#{&1.month}/#{&1.day}"}
+        />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["2023-12-27"]
+      assert text(time) == "2023/12/27"
+    end
+
+    test "with title formatter" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.date
+          value={~N[2023-12-27 18:30:21]}
+          title_formatter={&"#{&1.year}/#{&1.month}/#{&1.day}"}
+        />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "title") == ["2023/12/27"]
+      assert text(time) == "2023-12-27"
+    end
+
+    test "with DateTime and time zone" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.date value={~U[2023-12-27T18:30:21Z]} timezone="Asia/Tokyo" />
+        """)
+
+      time = Floki.find(html, "time")
+
+      assert Floki.attribute(time, "datetime") == ["2023-12-28"]
+      assert text(time) == "2023-12-28"
+    end
+  end
+
   describe "datetime/1" do
     test "with DateTime" do
       assigns = %{}
