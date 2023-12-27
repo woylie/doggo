@@ -89,12 +89,18 @@ defmodule Doggo do
     that toggles a drawer, or for a back link.
     """ do
     attr :label, :string, required: true
-    attr :on_click, JS, required: true
+
+    attr :on_click, :any,
+      required: true,
+      doc: "Event name or `Phoenix.LiveView.JS` command."
   end
 
   slot :action, doc: "Slot for action buttons right of the title." do
     attr :label, :string, required: true
-    attr :on_click, JS, required: true
+
+    attr :on_click, :any,
+      required: true,
+      doc: "Event name or `Phoenix.LiveView.JS` command."
   end
 
   def app_bar(assigns) do

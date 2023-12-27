@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Allow event name as string in `on_click` attributes of app bar.
+
 ## [0.3.0] - 2023-12-27
 
 ### Added
