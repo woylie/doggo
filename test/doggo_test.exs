@@ -212,6 +212,108 @@ defmodule DoggoTest do
     end
   end
 
+  describe "card/1" do
+    test "default" do
+      assigns = %{}
+      html = parse_heex(~H"<Doggo.card></Doggo.card>")
+      article = Floki.find(html, "article")
+      assert Floki.attribute(article, "class") == ["card"]
+      assert Floki.children(article) == nil
+    end
+
+    test "with figure" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.card>
+          <:image>Doggo</:image>
+        </Doggo.card>
+        """)
+
+      div = Floki.find(html, "article figure")
+      assert text(div) == "Doggo"
+    end
+
+    test "with header" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.card>
+          <:header>Doggo</:header>
+        </Doggo.card>
+        """)
+
+      div = Floki.find(html, "article header")
+      assert text(div) == "Doggo"
+    end
+
+    test "with main" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.card>
+          <:main>Doggo</:main>
+        </Doggo.card>
+        """)
+
+      div = Floki.find(html, "article main")
+      assert text(div) == "Doggo"
+    end
+
+    test "with footer" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.card>
+          <:footer>Doggo</:footer>
+        </Doggo.card>
+        """)
+
+      div = Floki.find(html, "article footer")
+      assert text(div) == "Doggo"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.card class="is-narrow"></Doggo.card>
+        """)
+
+      article = Floki.find(html, "article")
+      assert Floki.attribute(article, "class") == ["card is-narrow"]
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.card class={["is-narrow", "is-crisp"]}></Doggo.card>
+        """)
+
+      article = Floki.find(html, "article")
+      assert Floki.attribute(article, "class") == ["card is-narrow is-crisp"]
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.card data-what="ever"></Doggo.card>
+        """)
+
+      article = Floki.find(html, "article")
+      assert Floki.attribute(article, "data-what") == ["ever"]
+    end
+  end
+
   describe "date/1" do
     test "with Date" do
       assigns = %{}
