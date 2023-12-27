@@ -26,6 +26,9 @@ Gettext, set your Gettext module in `config/config.exs`:
 
     config :doggo, gettext: MyApp.Gettext
 
+This only affects the `input` component. If you prefer, you can pass the
+gettext module as an attribute to the component instead.
+
 ### Storybook
 
 The library is equipped with story modules for
