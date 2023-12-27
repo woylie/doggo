@@ -3396,7 +3396,7 @@ defmodule Doggo do
   and the [`attr` CSS function](https://developer.mozilla.org/en-US/docs/Web/CSS/attr).
   Doggo does not provide a component for that kind of tooltip, since it is
   controlled by attributes only. You can check
-  [Pico.CSS](https://v2.picocss.com/docs/tooltip) for an example implementation.
+  [Pico.css](https://v2.picocss.com/docs/tooltip) for an example implementation.
 
   ## Example
 
