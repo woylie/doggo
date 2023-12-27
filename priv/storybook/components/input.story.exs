@@ -178,6 +178,52 @@ defmodule Storybook.Components.Input do
       },
       %VariationGroup{
         id: :description_and_errors,
+        description: "Autocomplete with datalist",
+        variations: [
+          %Variation{
+            id: :only_values,
+            attributes: %{
+              type: "text",
+              label: "Dog breed",
+              placeholder: "Some text",
+              options: [
+                "Labrador Retriever",
+                "German Shepherd",
+                "Golden Retriever",
+                "Bulldog",
+                "Beagle",
+                "Poodle",
+                "Rottweiler",
+                "Yorkshire Terrier",
+                "Boxer",
+                "Dachshund"
+              ]
+            }
+          },
+          %Variation{
+            id: :labels_and_values,
+            attributes: %{
+              type: "text",
+              label: "Dog breed",
+              placeholder: "Some text",
+              options: [
+                {"Labrador Retriever", "labrador_retriever"},
+                {"German Shepherd", "german_shepherd"},
+                {"Golden Retriever", "golden_retriever"},
+                {"Bulldog", "bulldog"},
+                {"Beagle", "beagle"},
+                {"Poodle", "poodle"},
+                {"Rottweiler", "rottweiler"},
+                {"Yorkshire Terrier", "yorkshire_terrier"},
+                {"Boxer", "boxer"},
+                {"Dachshund", "dachshund"}
+              ]
+            }
+          }
+        ]
+      },
+      %VariationGroup{
+        id: :description_and_errors,
         variations: [
           %Variation{
             id: :description,
