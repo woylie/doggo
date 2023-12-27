@@ -185,7 +185,7 @@ defmodule Storybook.Components.Input do
             attributes: %{
               type: "text",
               label: "Dog breed",
-              placeholder: "Some text",
+              placeholder: "Beagle",
               options: [
                 "Labrador Retriever",
                 "German Shepherd",
@@ -205,7 +205,7 @@ defmodule Storybook.Components.Input do
             attributes: %{
               type: "text",
               label: "Dog breed",
-              placeholder: "Some text",
+              placeholder: "Poodle",
               options: [
                 {"Labrador Retriever", "labrador_retriever"},
                 {"German Shepherd", "german_shepherd"},
