@@ -2007,10 +2007,23 @@ defmodule Doggo do
     doc: "An optional prompt for select elements."
 
   attr :options, :list,
+    default: nil,
     doc: """
-    A list of options for a select element or a radio group. See
-    `Phoenix.HTML.Form.options_for_select/2`. Note that the checkbox group and
-    radio group do not support nesting.
+    A list of options.
+
+    This attribute is supported for the following types:
+
+    - `"select"`
+    - `"radio-group"`
+    - `"checkbox-group"`
+    - other text types, date and time types, and the `"range"` type
+
+    If this attribute is set for types other than select, radio, and checkbox,
+    a [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist)
+    is rendered for the input.
+
+    See `Phoenix.HTML.Form.options_for_select/2` for the format. Note that only
+    the select supports nested options.
     """
 
   attr :multiple, :boolean,
@@ -2253,15 +2266,33 @@ defmodule Doggo do
       <input
         name={@name}
         id={@id}
+        list={@options && "#{@id}-datalist"}
         type={@type}
         value={normalize_value(@type, @value)}
         aria-describedby={input_aria_describedby(@id, @errors, @description)}
         {@validations}
         {@rest}
       />
+      <datalist :if={@options} id={"#{@id}-datalist"}>
+        <.option :for={option <- @options} option={option} />
+      </datalist>
       <.field_errors for={@id} errors={@errors} />
       <.field_description for={@id} description={@description} />
     </div>
+    """
+  end
+
+  defp option(%{option: {label, value}} = assigns) do
+    assigns = assign(assigns, label: label, value: value)
+
+    ~H"""
+    <option value={@value}><%= @label %></option>
+    """
+  end
+
+  defp option(%{option: _} = assigns) do
+    ~H"""
+    <option value={@option}></option>
     """
   end
 
