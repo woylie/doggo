@@ -2047,6 +2047,18 @@ defmodule Doggo do
 
   slot :description, doc: "A field description to render underneath the input."
 
+  slot :addon_left,
+    doc: """
+    Can be used to render an icon left in the input. Only supported for
+    single-line inputs.
+    """
+
+  slot :addon_right,
+    doc: """
+    Can be used to render an icon left in the input. Only supported for
+    single-line inputs.
+    """
+
   def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     gettext_module =
       Map.get(assigns, :gettext, Application.get_env(:doggo, :gettext))
@@ -2263,16 +2275,28 @@ defmodule Doggo do
       >
         <%= @label %>
       </.label>
-      <input
-        name={@name}
-        id={@id}
-        list={@options && "#{@id}-datalist"}
-        type={@type}
-        value={normalize_value(@type, @value)}
-        aria-describedby={input_aria_describedby(@id, @errors, @description)}
-        {@validations}
-        {@rest}
-      />
+      <div class={[
+        "input-wrapper",
+        @addon_left != [] && "has-addon-left",
+        @addon_right != [] && "has-addon-right"
+      ]}>
+        <input
+          name={@name}
+          id={@id}
+          list={@options && "#{@id}-datalist"}
+          type={@type}
+          value={normalize_value(@type, @value)}
+          aria-describedby={input_aria_describedby(@id, @errors, @description)}
+          {@validations}
+          {@rest}
+        />
+        <div :if={@addon_left != []} class="input-addon-left">
+          <%= render_slot(@addon_left) %>
+        </div>
+        <div :if={@addon_right != []} class="input-addon-right">
+          <%= render_slot(@addon_right) %>
+        </div>
+      </div>
       <datalist :if={@options} id={"#{@id}-datalist"}>
         <.option :for={option <- @options} option={option} />
       </datalist>
