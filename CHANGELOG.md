@@ -4,6 +4,7 @@
 
 ### Added
 
+- New component: `Doggo.avatar/1`.
 - New component: `Doggo.badge/1`.
 - New component: `Doggo.box/1`.
 - New component: `Doggo.callout/1`.
