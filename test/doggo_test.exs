@@ -381,6 +381,18 @@ defmodule DoggoTest do
       assert Floki.attribute(div, "class") == ["stack is-narrow is-crisp"]
       assert text(div) == "Hello"
     end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.stack data-what="ever">Hello</Doggo.stack>
+        """)
+
+      div = Floki.find(html, "div")
+      assert Floki.attribute(div, "data-what") == ["ever"]
+    end
   end
 
   describe "time/1" do
