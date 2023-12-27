@@ -1770,7 +1770,7 @@ defmodule Doggo do
   ## Example
 
       <.image
-        src="https://github.com/woylie/doggo/blob/main/dog_poncho.jpg?raw=true"
+        src="https://github.com/woylie/doggo/blob/main/assets/dog_poncho.jpg?raw=true"
         alt="A dog wearing a colorful poncho walks down a fashion show runway."
         ratio={{16, 9}}
       >

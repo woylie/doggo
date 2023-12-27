@@ -37,7 +37,7 @@ defmodule Storybook.Components.Box do
           """
           <:banner>
             <img
-              src="https://github.com/woylie/doggo/blob/main/dog_poncho.jpg?raw=true"
+              src="https://github.com/woylie/doggo/blob/main/assets/dog_poncho.jpg?raw=true"
               alt=""
             />
           </:banner>

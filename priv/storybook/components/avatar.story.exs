@@ -3,8 +3,8 @@ defmodule Storybook.Components.Avatar do
 
   def function, do: &Doggo.avatar/1
 
-  @src "https://github.com/woylie/doggo/blob/main/dog_avatar.jpg?raw=true"
-  @placeholder_src "https://github.com/woylie/doggo/blob/main/dog_avatar_placeholder.jpg?raw=true"
+  @src "https://github.com/woylie/doggo/blob/main/assets/dog_avatar.jpg?raw=true"
+  @placeholder_src "https://github.com/woylie/doggo/blob/main/assets/dog_avatar_placeholder.jpg?raw=true"
 
   def variations do
     [
