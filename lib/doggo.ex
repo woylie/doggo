@@ -38,7 +38,7 @@ defmodule Doggo do
 
   attr :rest, :global, doc: "Any additional HTML attributes."
 
-  slot :item do
+  slot :item, required: true do
     attr :label, :string, required: true
     attr :on_click, JS, required: true
   end
