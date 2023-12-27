@@ -37,7 +37,11 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.action_bar class="is-narrow">Hello</Doggo.action_bar>
+        <Doggo.action_bar class="is-narrow">
+          <:item label="Edit" on_click={JS.push("edit")}>
+            edit-icon
+          </:item>
+        </Doggo.action_bar>
         """)
 
       div = Floki.find(html, "div")
@@ -49,7 +53,11 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.action_bar class={["is-narrow", "is-crisp"]}>Hello</Doggo.action_bar>
+        <Doggo.action_bar class={["is-narrow", "is-crisp"]}>
+          <:item label="Edit" on_click={JS.push("edit")}>
+            edit-icon
+          </:item>
+        </Doggo.action_bar>
         """)
 
       div = Floki.find(html, "div")
@@ -61,7 +69,11 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.action_bar data-what="ever">Hello</Doggo.action_bar>
+        <Doggo.action_bar data-what="ever">
+          <:item label="Edit" on_click={JS.push("edit")}>
+            edit-icon
+          </:item>
+        </Doggo.action_bar>
         """)
 
       div = Floki.find(html, "div")
