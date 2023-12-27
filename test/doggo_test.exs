@@ -535,6 +535,94 @@ defmodule DoggoTest do
     end
   end
 
+  describe "drawer/1" do
+    test "default" do
+      assigns = %{}
+      html = parse_heex(~H"<Doggo.drawer></Doggo.drawer>")
+      aside = Floki.find(html, "aside")
+      assert Floki.attribute(aside, "class") == ["drawer"]
+      assert Floki.children(aside) == nil
+    end
+
+    test "with brand" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer>
+          <:brand>Doggo</:brand>
+        </Doggo.drawer>
+        """)
+
+      div = Floki.find(html, "aside div.drawer-brand")
+      assert text(div) == "Doggo"
+    end
+
+    test "with top slot" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer>
+          <:top>Doggo</:top>
+        </Doggo.drawer>
+        """)
+
+      div = Floki.find(html, "aside div.drawer-top")
+      assert text(div) == "Doggo"
+    end
+
+    test "with bottom slot" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer>
+          <:bottom>Doggo</:bottom>
+        </Doggo.drawer>
+        """)
+
+      div = Floki.find(html, "aside div.drawer-bottom")
+      assert text(div) == "Doggo"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer class="is-narrow"></Doggo.drawer>
+        """)
+
+      aside = Floki.find(html, "aside")
+      assert Floki.attribute(aside, "class") == ["drawer is-narrow"]
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer class={["is-narrow", "is-crisp"]}></Doggo.drawer>
+        """)
+
+      aside = Floki.find(html, "aside")
+      assert Floki.attribute(aside, "class") == ["drawer is-narrow is-crisp"]
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer data-what="ever"></Doggo.drawer>
+        """)
+
+      aside = Floki.find(html, "aside")
+      assert Floki.attribute(aside, "data-what") == ["ever"]
+    end
+  end
+
   describe "field_group/1" do
     test "default" do
       assigns = %{}
