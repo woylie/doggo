@@ -10,6 +10,7 @@ defmodule Doggo.MixProject do
       version: @version,
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
+      elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
@@ -33,6 +34,9 @@ defmodule Doggo.MixProject do
     ]
   end
 
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
+
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
@@ -50,7 +54,8 @@ defmodule Doggo.MixProject do
       {:floki, ">= 0.30.0", only: :test},
       {:gettext, "~> 0.20", optional: true},
       {:jason, "~> 1.0", only: [:dev, :test]},
-      {:phoenix_live_view, "~> 0.20.0"}
+      {:phoenix_live_view, "~> 0.20.0"},
+      {:tzdata, "~> 1.1", only: [:test]}
     ]
   end
 
