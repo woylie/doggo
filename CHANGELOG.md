@@ -8,6 +8,7 @@
 - New component: `Doggo.badge/1`.
 - New component: `Doggo.box/1`.
 - New component: `Doggo.callout/1`.
+- New component: `Doggo.fab/1`.
 - New component: `Doggo.field_group/1`.
 - New component: `Doggo.page_header/1`.
 - New component: `Doggo.skeleton/1`.

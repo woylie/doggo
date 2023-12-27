@@ -967,6 +967,52 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders a floating action button.
+
+  ## Example
+
+      <.fab label="Add item" phx-click={JS.patch(to: "/items/new")}>
+        <.icon><Heroicons.plus /></.icon>
+      </.fab>
+  """
+  @doc type: :component
+
+  attr :label, :string, required: true
+
+  attr :variant, :atom,
+    values: [:primary, :secondary, :info, :success, :warning, :danger],
+    default: :primary
+
+  attr :size, :atom,
+    values: [:small, :normal, :medium, :large],
+    default: :normal
+
+  attr :shape, :atom, values: [nil, :circle, :pill], default: :circle
+  attr :disabled, :boolean, default: nil
+  attr :rest, :global
+
+  slot :inner_block, required: true
+
+  def fab(assigns) do
+    ~H"""
+    <button
+      type="button"
+      aria-label={@label}
+      class={[
+        "fab",
+        variant_class(@variant),
+        size_class(@size),
+        shape_class(@shape)
+      ]}
+      disabled={@disabled}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </button>
+    """
+  end
+
+  @doc """
   Shows the flash messages as alerts.
 
   ## Hidden attribute
@@ -1480,13 +1526,13 @@ defmodule Doggo do
 
   Render an icon with text as `aria-label` using the `heroicons` library:
 
-      <.icon label="report bug"><Heroicons.bug_ant /></icon>
+      <.icon label="report bug"><Heroicons.bug_ant /></.icon>
 
   To display the text visibly:
 
       <.icon label="report bug" label_placement={:right}>
         <Heroicons.bug_ant />
-      </icon>
+      </.icon>
 
   > #### aria-hidden {: .info}
   >
