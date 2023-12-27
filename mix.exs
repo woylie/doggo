@@ -81,7 +81,7 @@ defmodule Doggo.MixProject do
       skip_undefined_reference_warnings_on: ["CHANGELOG.md"],
       groups_for_functions: [
         Components: &(&1[:type] == :component),
-        Layouts: &(&1[:type] == :layout)
+        Form: &(&1[:type] == :form)
       ]
     ]
   end

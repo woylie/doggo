@@ -1963,7 +1963,7 @@ defmodule Doggo do
   in array fields by default, you may need to handle the additional empty string
   manual in other contexts.
   """
-  @doc type: :component
+  @doc type: :form
 
   attr :id, :any, default: nil
   attr :name, :any
@@ -2421,7 +2421,7 @@ defmodule Doggo do
   @doc """
   Renders the label for an input.
   """
-  @doc type: :component
+  @doc type: :form
 
   attr :for, :string, default: nil, doc: "The ID of the input."
 
@@ -2465,7 +2465,7 @@ defmodule Doggo do
   @doc """
   Renders the errors for an input.
   """
-  @doc type: :component
+  @doc type: :form
 
   attr :for, :string, required: true, doc: "The ID of the input."
   attr :errors, :list, required: true, doc: "A list of errors as strings."
@@ -2483,7 +2483,7 @@ defmodule Doggo do
   @doc """
   Renders the description of an input.
   """
-  @doc type: :component
+  @doc type: :form
 
   attr :for, :string, required: true, doc: "The ID of the input."
   attr :description, :any
@@ -2541,7 +2541,7 @@ defmodule Doggo do
         <.input field={@form[:family_name]} label="Family name"/>
       </fieldset>
   """
-  @doc type: :component
+  @doc type: :form
 
   attr :class, :any,
     default: [],
