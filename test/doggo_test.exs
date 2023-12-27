@@ -81,6 +81,98 @@ defmodule DoggoTest do
     end
   end
 
+  describe "app_bar/1" do
+    test "default" do
+      assigns = %{}
+      html = parse_heex(~H"<Doggo.app_bar></Doggo.app_bar>")
+      header = Floki.find(html, "header")
+      assert Floki.attribute(header, "class") == ["app-bar"]
+      assert Floki.children(header) == nil
+    end
+
+    test "with title" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.app_bar title="Some Title"></Doggo.app_bar>
+        """)
+
+      h1 = Floki.find(html, "header h1")
+      assert text(h1) == "Some Title"
+    end
+
+    test "with navigation" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.app_bar>
+          <:navigation label="Back" on_click="back">back-icon</:navigation>
+        </Doggo.app_bar>
+        """)
+
+      div = Floki.find(html, "header div.app-bar-navigation")
+      a = Floki.find(div, "a")
+      assert Floki.attribute(a, "title") == ["Back"]
+      assert Floki.attribute(a, "phx-click") == ["back"]
+      assert text(a) == "back-icon"
+    end
+
+    test "with action" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.app_bar>
+          <:action label="Menu" on_click="open-menu">menu-icon</:action>
+        </Doggo.app_bar>
+        """)
+
+      div = Floki.find(html, "header div.app-bar-actions")
+      a = Floki.find(div, "a")
+      assert Floki.attribute(a, "title") == ["Menu"]
+      assert Floki.attribute(a, "phx-click") == ["open-menu"]
+      assert text(a) == "menu-icon"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.app_bar class="is-narrow"></Doggo.app_bar>
+        """)
+
+      header = Floki.find(html, "header")
+      assert Floki.attribute(header, "class") == ["app-bar is-narrow"]
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.app_bar class={["is-narrow", "is-crisp"]}></Doggo.app_bar>
+        """)
+
+      header = Floki.find(html, "header")
+      assert Floki.attribute(header, "class") == ["app-bar is-narrow is-crisp"]
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.app_bar data-what="ever"></Doggo.app_bar>
+        """)
+
+      header = Floki.find(html, "header")
+      assert Floki.attribute(header, "data-what") == ["ever"]
+    end
+  end
+
   describe "badge/1" do
     test "default" do
       assigns = %{}
