@@ -18,8 +18,8 @@
 - New component: `Doggo.tooltip/1`.
 - Allow to visually hide labels.
 - Support autocomplete via `<datalist>` in `input/1` component.
-- Add `addon_left` and `addon_right` slots to `input/1` component.
-- Added `gettext` attribute to `Doggo.input/1`, giving you the choice to
+- `addon_left` and `addon_right` slots on the `input/1` component.
+- `gettext` attribute on `Doggo.input/1`, giving you the choice to
   set the Gettext module locally.
 
 ## [0.2.1] - 2023-12-19
