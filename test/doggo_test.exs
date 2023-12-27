@@ -327,6 +327,62 @@ defmodule DoggoTest do
     end
   end
 
+  describe "stack/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.stack>Hello</Doggo.stack>
+        """)
+
+      div = Floki.find(html, "div")
+
+      assert Floki.attribute(div, "class") == ["stack"]
+      assert text(div) == "Hello"
+    end
+
+    test "recursive" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.stack recursive>Hello</Doggo.stack>
+        """)
+
+      div = Floki.find(html, "div")
+      assert Floki.attribute(div, "class") == ["stack is-recursive"]
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.stack class="is-narrow">Hello</Doggo.stack>
+        """)
+
+      div = Floki.find(html, "div")
+
+      assert Floki.attribute(div, "class") == ["stack is-narrow"]
+      assert text(div) == "Hello"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.stack class={["is-narrow", "is-crisp"]}>Hello</Doggo.stack>
+        """)
+
+      div = Floki.find(html, "div")
+
+      assert Floki.attribute(div, "class") == ["stack is-narrow is-crisp"]
+      assert text(div) == "Hello"
+    end
+  end
+
   describe "time/1" do
     test "with Time" do
       assigns = %{}
