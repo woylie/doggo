@@ -4,6 +4,71 @@ defmodule DoggoTest do
 
   import Doggo.TestHelpers
 
+  alias Phoenix.LiveView.JS
+
+  describe "action_bar/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.action_bar>
+          <:item label="Edit" on_click={JS.push("edit")}>
+            edit-icon
+          </:item>
+        </Doggo.action_bar>
+        """)
+
+      div = Floki.find(html, "div")
+      assert Floki.attribute(div, "class") == ["action-bar"]
+
+      a = Floki.find(div, "a")
+      assert Floki.attribute(a, "title") == ["Edit"]
+
+      assert Floki.attribute(a, "phx-click") == [
+               "[[\"push\",{\"event\":\"edit\"}]]"
+             ]
+
+      assert text(a) == "edit-icon"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.action_bar class="is-narrow">Hello</Doggo.action_bar>
+        """)
+
+      div = Floki.find(html, "div")
+      assert Floki.attribute(div, "class") == ["action-bar is-narrow"]
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.action_bar class={["is-narrow", "is-crisp"]}>Hello</Doggo.action_bar>
+        """)
+
+      div = Floki.find(html, "div")
+      assert Floki.attribute(div, "class") == ["action-bar is-narrow is-crisp"]
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.action_bar data-what="ever">Hello</Doggo.action_bar>
+        """)
+
+      div = Floki.find(html, "div")
+      assert Floki.attribute(div, "data-what") == ["ever"]
+    end
+  end
+
   describe "date/1" do
     test "with Date" do
       assigns = %{}
