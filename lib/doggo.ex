@@ -1108,6 +1108,117 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders profile picture, typically to represent a user.
+
+  ## Example
+
+  Minimal example with only the `src` attribute:
+
+      <.avatar src="avatar.png" />
+
+  Render avatar as a circle:
+
+      <.avatar src="avatar.png" circle />
+
+  Use a placeholder image in case the avatar is not set:
+
+      <.avatar src={@user.avatar_url} placeholder={{:src, "fallback.png"}} />
+
+  Render an text as the placeholder value:
+
+      <.avatar src={@user.avatar_url} placeholder="A" />
+
+  """
+  @doc type: :component
+
+  attr :src, :string,
+    default: nil,
+    doc: """
+    The URL of the avatar image. If `nil`, the component will use the value
+    provided in the placeholder attribute.
+    """
+
+  attr :placeholder, :any,
+    default: nil,
+    doc: """
+    Fallback value to render in case the `src` attribute is `nil`.
+
+    - For a placeholder image, pass a tuple `{:src, url}`.
+    - For other types of placeholder content, such as text initials or inline
+      SVG, pass the content directly. The component will render this content
+      as-is.
+
+    If the placeholder value is set to `nil`, no avatar will be rendered if the
+    `src` is `nil`.
+    """
+
+  attr :alt, :string,
+    default: "",
+    doc: """
+    Use alt text to identify the individual in an avatar if their name or
+    identifier isn't otherwise provided in adjacent text. In contexts where
+    the user's name or identifying information is already displayed alongside
+    the avatar, use `alt=""` (the default) to avoid redundancy and treat the
+    avatar as a decorative element for screen readers.
+    """
+
+  attr :size, :atom,
+    values: [:small, :normal, :medium, :large],
+    default: :normal
+
+  attr :circle, :boolean, default: false
+
+  attr :loading, :string, values: ["eager", "lazy"], default: "lazy"
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  def avatar(%{src: nil, placeholder: nil} = assigns), do: ~H""
+
+  def avatar(assigns) do
+    ~H"""
+    <div
+      class={
+        ["avatar", size_class(@size), @circle && shape_class(:circle)] ++
+          List.wrap(@class)
+      }
+      {@rest}
+    >
+      <.inner_avatar
+        src={@src}
+        placeholder={@placeholder}
+        alt={@alt}
+        loading={@loading}
+      />
+    </div>
+    """
+  end
+
+  defp inner_avatar(%{src: src} = assigns) when is_binary(src) do
+    ~H"""
+    <img src={@src} alt={@alt} loading={@loading} />
+    """
+  end
+
+  defp inner_avatar(%{placeholder: {:src, src}} = assigns)
+       when is_binary(src) do
+    assigns = assign(assigns, :src, src)
+
+    ~H"""
+    <img src={@src} alt={@alt} loading={@loading} />
+    """
+  end
+
+  defp inner_avatar(assigns) do
+    ~H"""
+    <%= @placeholder %>
+    """
+  end
+
+  @doc """
   Use the callout to highlight supplementary information related to the main
   content.
 
