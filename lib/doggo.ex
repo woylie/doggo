@@ -352,7 +352,11 @@ defmodule Doggo do
   """
   @doc type: :component
 
-  attr :aria_label, :string, default: "breadcrumb"
+  attr :label, :string,
+    default: "Breadcrumb",
+    doc: """
+    The aria label for the `<nav>` element.
+    """
 
   attr :class, :any,
     default: [],
@@ -373,7 +377,7 @@ defmodule Doggo do
       assign(assigns, :item, Enum.reverse([{:current, last_item} | rest]))
 
     ~H"""
-    <nav aria-label="Breadcrumb" class={["breadcrumb" | List.wrap(@class)]} {@rest}>
+    <nav aria-label={@label} class={["breadcrumb" | List.wrap(@class)]} {@rest}>
       <ul>
         <li :for={item <- @item}>
           <.breadcrumb_link item={item} />

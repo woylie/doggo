@@ -5,6 +5,7 @@
 ### Fixed
 
 - Box header not rendered if only action slot is used without banner or title.
+- Aria label of breadcrumb component not overridable.
 
 ## [0.3.1] - 2023-12-28
 

@@ -436,6 +436,93 @@ defmodule DoggoTest do
     end
   end
 
+  describe "breadcrumb/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.breadcrumb>
+          <:item patch="/categories">Categories</:item>
+          <:item patch="/categories/1">Reviews</:item>
+          <:item patch="/categories/1/articles/1">The Movie</:item>
+        </Doggo.breadcrumb>
+        """)
+
+      nav = find_one(html, "nav:root")
+      assert attribute(nav, "class") == "breadcrumb"
+      assert attribute(nav, "aria-label") == "Breadcrumb"
+
+      ul = find_one(html, "nav:root > ul")
+      assert [li1, li2, li3] = Floki.children(ul)
+
+      assert attribute(li1, "a", "href") == "/categories"
+      assert attribute(li2, "a", "href") == "/categories/1"
+      assert attribute(li3, "a", "href") == "/categories/1/articles/1"
+
+      assert attribute(li1, "a", "aria-current") == nil
+      assert attribute(li2, "a", "aria-current") == nil
+      assert attribute(li3, "a", "aria-current") == "page"
+
+      assert text(li1, "a") == "Categories"
+      assert text(li2, "a") == "Reviews"
+      assert text(li3, "a") == "The Movie"
+    end
+
+    test "with label" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.breadcrumb label="Brotkrumen">
+          <:item patch="/categories">Categories</:item>
+        </Doggo.breadcrumb>
+        """)
+
+      assert attribute(html, "nav:root", "aria-label") == "Brotkrumen"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.breadcrumb class="is-fancy">
+          <:item patch="/categories">Categories</:item>
+        </Doggo.breadcrumb>
+        """)
+
+      assert attribute(html, "nav:root", "class") == "breadcrumb is-fancy"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.breadcrumb class={["is-fancy", "is-dandy"]}>
+          <:item patch="/categories">Categories</:item>
+        </Doggo.breadcrumb>
+        """)
+
+      assert attribute(html, "nav:root", "class") ==
+               "breadcrumb is-fancy is-dandy"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.breadcrumb data-test="hello">
+          <:item patch="/categories">Categories</:item>
+        </Doggo.breadcrumb>
+        """)
+
+      assert attribute(html, "nav:root", "data-test") == "hello"
+    end
+  end
+
   describe "card/1" do
     test "default" do
       assigns = %{}
