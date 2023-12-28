@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Box header not rendered if only action slot is used without banner or title.
+
 ## [0.3.1] - 2023-12-28
 
 ### Changed

@@ -320,7 +320,7 @@ defmodule Doggo do
   def box(assigns) do
     ~H"""
     <section class={["box" | List.wrap(@class)]} {@rest}>
-      <header :if={@title != [] || @banner != []}>
+      <header :if={@title != [] || @banner != [] || @action != []}>
         <h2 :if={@title != []}><%= render_slot(@title) %></h2>
         <div :if={@action != []} class="box-actions">
           <%= for action <- @action do %>
