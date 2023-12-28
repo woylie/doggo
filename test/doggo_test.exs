@@ -922,6 +922,108 @@ defmodule DoggoTest do
     end
   end
 
+  describe "tab_navigation/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.tab_navigation current_value={:appointments}>
+          <:item href="/profile" value={:show}>Profile</:item>
+        </Doggo.tab_navigation>
+        """)
+
+      nav = find_one(html, "nav:root")
+      assert attribute(nav, "class") == "tab-navigation"
+      assert attribute(nav, "aria-label") == "Tabs"
+
+      a = find_one(nav, "ul > li > a")
+      assert attribute(a, "aria-current") == nil
+      assert attribute(a, "href") == "/profile"
+    end
+
+    test "with single value" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.tab_navigation current_value={:show}>
+          <:item href="/profile" value={:show}>Profile</:item>
+        </Doggo.tab_navigation>
+        """)
+
+      a = find_one(html, "nav:root > ul > li > a")
+      assert attribute(a, "aria-current") == "page"
+    end
+
+    test "with multiple values" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.tab_navigation current_value={:show}>
+          <:item href="/profile" value={[:show, :edit]}>Profile</:item>
+        </Doggo.tab_navigation>
+        """)
+
+      a = find_one(html, "nav:root > ul > li > a")
+      assert attribute(a, "aria-current") == "page"
+    end
+
+    test "with label" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.tab_navigation current_value={:appointments} label="Tabby">
+          <:item href="/profile" value={:show}>Profile</:item>
+        </Doggo.tab_navigation>
+        """)
+
+      assert attribute(html, "nav:root", "aria-label") == "Tabby"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.tab_navigation current_value={:show} class="is-narrow">
+          <:item value={[:show, :edit]}>Profile</:item>
+        </Doggo.tab_navigation>
+        """)
+
+      assert attribute(html, "nav:root", "class") == "tab-navigation is-narrow"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.tab_navigation current_value={:show} class={["is-narrow", "is-crisp"]}>
+          <:item value={[:show, :edit]}>Profile</:item>
+        </Doggo.tab_navigation>
+        """)
+
+      assert attribute(html, "nav:root", "class") ==
+               "tab-navigation is-narrow is-crisp"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.tab_navigation current_value={:show} data-test="hello">
+          <:item value={[:show, :edit]}>Profile</:item>
+        </Doggo.tab_navigation>
+        """)
+
+      assert attribute(html, "nav:root", "data-test") == "hello"
+    end
+  end
+
   describe "tag/1" do
     test "default" do
       assigns = %{}
