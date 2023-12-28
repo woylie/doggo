@@ -1179,6 +1179,81 @@ defmodule DoggoTest do
     end
   end
 
+  describe "fab/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.fab label="Add toy">add-icon</Doggo.fab>
+        """)
+
+      button = find_one(html, "button:root")
+      assert attribute(button, "type") == "button"
+      assert attribute(button, "class") == "fab is-primary is-circle"
+      assert attribute(button, "aria-label") == "Add toy"
+      assert text(button) == "add-icon"
+    end
+
+    test "disabled" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.fab label="Add toy" disabled>add-icon</Doggo.fab>
+        """)
+
+      assert attribute(html, "button:root", "disabled") == "disabled"
+    end
+
+    test "with variant" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.fab label="Add toy" variant={:success}>add-icon</Doggo.fab>
+        """)
+
+      assert attribute(html, "button:root", "class") ==
+               "fab is-success is-circle"
+    end
+
+    test "with size" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.fab label="Add toy" size={:large}>add-icon</Doggo.fab>
+        """)
+
+      assert attribute(html, "button:root", "class") ==
+               "fab is-primary is-large is-circle"
+    end
+
+    test "with shape" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.fab label="Add toy" shape={:pill}>add-icon</Doggo.fab>
+        """)
+
+      assert attribute(html, "button:root", "class") ==
+               "fab is-primary is-pill"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.fab label="Add toy" phx-click="add">add-icon</Doggo.fab>
+        """)
+
+      assert attribute(html, "button:root", "phx-click") == "add"
+    end
+  end
+
   describe "field_group/1" do
     test "default" do
       assigns = %{}
