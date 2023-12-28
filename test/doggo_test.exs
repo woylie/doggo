@@ -682,6 +682,60 @@ defmodule DoggoTest do
     end
   end
 
+  describe "callout/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.callout id="my-callout">Did you know?</Doggo.callout>
+        """)
+
+      aside = find_one(html, "aside:root")
+      assert attribute(aside, "class") == "callout is-info"
+      assert attribute(aside, "id") == "my-callout"
+      assert attribute(aside, "aria-labelledby") == nil
+
+      assert text(aside, "div.callout-body > div.callout-message") ==
+               "Did you know?"
+
+      assert Floki.find(aside, ".callout-icon") == []
+      assert Floki.find(aside, ".callout-title") == []
+    end
+
+    test "with title" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.callout id="my-callout" title="Did you know?">
+          Know what?
+        </Doggo.callout>
+        """)
+
+      aside = find_one(html, "aside:root")
+      assert attribute(aside, "aria-labelledby") == "my-callout-title"
+
+      div = find_one(aside, ".callout-body > .callout-title")
+      assert attribute(div, "id") == "my-callout-title"
+      assert text(div) == "Did you know?"
+    end
+
+    test "with icon" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.callout id="my-callout">
+          <:icon>lightbulb</:icon>
+          Did you know?
+        </Doggo.callout>
+        """)
+
+      assert text(html, "aside:root > .callout-icon") == "lightbulb"
+    end
+  end
+
   describe "card/1" do
     test "default" do
       assigns = %{}
