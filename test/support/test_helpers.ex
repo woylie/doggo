@@ -26,4 +26,17 @@ defmodule Doggo.TestHelpers do
     |> Floki.text(deep: false)
     |> String.trim()
   end
+
+  @doc """
+  Wrapper around `Floki.attribute/2` that unwraps the single attribute.
+
+  Raises if the attribute occurs multiple times.
+  """
+  def attribute(html, name) do
+    case Floki.attribute(html, name) do
+      [value] -> value
+      [] -> nil
+      _ -> raise "found attribute #{name} multiple times"
+    end
+  end
 end
