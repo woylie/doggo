@@ -858,10 +858,27 @@ defmodule Doggo do
   @doc """
   Renders a drawer with a `brand`, `top`, and `bottom` slot.
 
-  Within the slots, you can use the `drawer_nav/1` and `drawer_section/1`
-  components.
+  All slots are optional, and you can render any content in them. If you want
+  to use the drawer as a sidebar, you can use the `drawer_nav/1` and
+  `drawer_section/1` components.
 
   ## Example
+
+  Minimal example:
+
+    <.drawer>
+      <:top>Content</:top>
+    </.drawer>
+
+  With all slots:
+
+    <.drawer>
+      <:brand>Doggo</:brand>
+      <:top>Content at the top</:top>
+      <:bottom>Content at the bottom</:bottom>
+    </.drawer>
+
+  With navigation and sections:
 
       <.drawer>
         <:brand>
