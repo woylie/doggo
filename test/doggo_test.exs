@@ -1166,4 +1166,59 @@ defmodule DoggoTest do
       assert text(time) == "03:30:21"
     end
   end
+
+  describe "tooltip/1" do
+    test "with text" do
+      id = "text-details"
+      expected_id = id <> "-tooltip"
+      assigns = %{id: id}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.tooltip id={@id}>
+          some text
+          <:tooltip>some details</:tooltip>
+        </Doggo.tooltip>
+        """)
+
+      span = Floki.find(html, "span")
+      assert Floki.attribute(span, "data-aria-tooltip") == ["data-aria-tooltip"]
+      assert Floki.attribute(span, "aria-describedby") == [expected_id]
+
+      inner_span = Floki.find(html, "span > span")
+      assert attribute(inner_span, "tabindex") == "0"
+      assert text(inner_span) == "some text"
+
+      tooltip = Floki.find(html, "span > div[role='tooltip']")
+      assert attribute(tooltip, "id") == expected_id
+      assert text(tooltip) == "some details"
+    end
+
+    test "with link" do
+      id = "text-details"
+      expected_id = id <> "-tooltip"
+
+      assigns = %{id: id}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.tooltip id={@id} contains_link>
+          some link
+          <:tooltip>some details</:tooltip>
+        </Doggo.tooltip>
+        """)
+
+      span = Floki.find(html, "span")
+      assert Floki.attribute(span, "data-aria-tooltip") == ["data-aria-tooltip"]
+      assert Floki.attribute(span, "aria-describedby") == [expected_id]
+
+      inner_span = Floki.find(html, "span > span")
+      assert attribute(inner_span, "tabindex") == nil
+      assert text(inner_span) == "some link"
+
+      tooltip = Floki.find(html, "span > div[role='tooltip']")
+      assert attribute(tooltip, "id") == expected_id
+      assert text(tooltip) == "some details"
+    end
+  end
 end
