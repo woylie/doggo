@@ -523,6 +523,165 @@ defmodule DoggoTest do
     end
   end
 
+  describe "button/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button>Confirm</Doggo.button>
+        """)
+
+      button = find_one(html, "button:root")
+      assert attribute(button, "type") == "button"
+      assert attribute(button, "class") == "is-primary is-solid"
+      assert text(button) == "Confirm"
+    end
+
+    test "disabled" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button disabled>Confirm</Doggo.button>
+        """)
+
+      assert attribute(html, "button:root", "disabled") == "disabled"
+    end
+
+    test "with type" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button type="submit">Confirm</Doggo.button>
+        """)
+
+      assert attribute(html, "button:root", "type") == "submit"
+    end
+
+    test "with variant" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button variant={:danger}>Confirm</Doggo.button>
+        """)
+
+      assert attribute(html, "button:root", "class") == "is-danger is-solid"
+    end
+
+    test "with size" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button size={:large}>Confirm</Doggo.button>
+        """)
+
+      assert attribute(html, "button:root", "class") ==
+               "is-primary is-large is-solid"
+    end
+
+    test "with shape" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button shape={:pill}>Confirm</Doggo.button>
+        """)
+
+      assert attribute(html, "button:root", "class") ==
+               "is-primary is-pill is-solid"
+    end
+
+    test "with fill" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button fill={:outline}>Confirm</Doggo.button>
+        """)
+
+      assert attribute(html, "button:root", "class") == "is-primary is-outline"
+    end
+  end
+
+  describe "button_link/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button_link patch="/confirm">Confirm</Doggo.button_link>
+        """)
+
+      a = find_one(html, "a:root")
+      assert attribute(a, "role") == "button"
+      assert attribute(a, "class") == "is-primary is-solid"
+      assert attribute(a, "href") == "/confirm"
+      assert text(a) == "Confirm"
+    end
+
+    test "disabled" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button_link disabled>Confirm</Doggo.button_link>
+        """)
+
+      assert attribute(html, "a:root", "class") ==
+               "is-primary is-solid is-disabled"
+    end
+
+    test "with variant" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button_link variant={:info}>Confirm</Doggo.button_link>
+        """)
+
+      assert attribute(html, "a:root", "class") == "is-info is-solid"
+    end
+
+    test "with size" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button_link size={:small}>Confirm</Doggo.button_link>
+        """)
+
+      assert attribute(html, "a:root", "class") ==
+               "is-primary is-small is-solid"
+    end
+
+    test "with shape" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button_link shape={:pill}>Confirm</Doggo.button_link>
+        """)
+
+      assert attribute(html, "a:root", "class") ==
+               "is-primary is-pill is-solid"
+    end
+
+    test "with fill" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button_link fill={:text}>Confirm</Doggo.button_link>
+        """)
+
+      assert attribute(html, "a:root", "class") == "is-primary is-text"
+    end
+  end
+
   describe "card/1" do
     test "default" do
       assigns = %{}
