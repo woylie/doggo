@@ -909,6 +909,17 @@ defmodule DoggoTest do
       assert attribute(span, "class") == "switch-state-off"
       assert text(span) == "Off"
     end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.switch label="Subscribe" data-test="hello" />
+        """)
+
+      assert attribute(html, "button:root", "data-test") == "hello"
+    end
   end
 
   describe "tag/1" do
