@@ -3076,9 +3076,10 @@ defmodule Doggo do
   attr :rest, :global, doc: "Any additional HTML attributes."
 
   slot :step, required: true do
-    attr :on_click, JS,
+    attr :on_click, :any,
       doc: """
-      `Phoenix.LiveView.JS` command to execute when clicking on the step.
+      Event name or `Phoenix.LiveView.JS` command to execute when clicking on
+      the step.
       """
   end
 
@@ -3094,8 +3095,8 @@ defmodule Doggo do
           <span :if={index < @current_step} class="is-visually-hidden">
             <%= @completed_label %>
           </span>
-          <%= if on_click = step[:on_click] && ((@linear && index < @current_step) || (!@linear && index != @current_step)) do %>
-            <.link phx-click={on_click}>
+          <%= if step[:on_click] && ((@linear && index < @current_step) || (!@linear && index != @current_step)) do %>
+            <.link phx-click={step[:on_click]}>
               <%= render_slot(step) %>
             </.link>
           <% else %>
