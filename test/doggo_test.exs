@@ -1491,6 +1491,54 @@ defmodule DoggoTest do
     end
   end
 
+  describe "skeleton/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.skeleton type={:circle} />
+        """)
+
+      assert attribute(html, "div:root", "class") == "skeleton is-circle"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.skeleton type={:text_line} class="is-header" />
+        """)
+
+      assert attribute(html, "div:root", "class") ==
+               "skeleton is-text-line is-header"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.skeleton type={:image} class={["is-fullwidth", "is-large"]} />
+        """)
+
+      assert attribute(html, "div:root", "class") ==
+               "skeleton is-image is-fullwidth is-large"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.skeleton type={:square} data-test="hello" />
+        """)
+
+      assert attribute(html, "div:root", "data-test") == "hello"
+    end
+  end
+
   describe "stack/1" do
     test "default" do
       assigns = %{}
