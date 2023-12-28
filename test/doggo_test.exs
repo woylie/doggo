@@ -1348,6 +1348,74 @@ defmodule DoggoTest do
     end
   end
 
+  describe "fallback/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.fallback value="dog" />
+        """)
+
+      assert html == ["dog"]
+    end
+
+    test "with formatter" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.fallback value="dog" formatter={&String.upcase/1} />
+        """)
+
+      assert html == ["DOG"]
+    end
+
+    test "with nil" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.fallback value={nil} />
+        """)
+
+      assert html == [{"span", [{"aria-label", "not set"}], ["-"]}]
+    end
+
+    test "with empty string and formatter" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.fallback value="" formatter={&String.upcase/1} />
+        """)
+
+      assert html == [{"span", [{"aria-label", "not set"}], ["-"]}]
+    end
+
+    test "with placeholder" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.fallback value={[]} placeholder="n/a" />
+        """)
+
+      assert html == [{"span", [{"aria-label", "not set"}], ["n/a"]}]
+    end
+
+    test "with accessibility text" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.fallback value={[]} accessibility_text="not available" />
+        """)
+
+      assert html == [{"span", [{"aria-label", "not available"}], ["-"]}]
+    end
+  end
+
   describe "field_group/1" do
     test "default" do
       assigns = %{}
@@ -1431,6 +1499,80 @@ defmodule DoggoTest do
         """)
 
       assert attribute(html, "div", "class") == "frame is-circle"
+    end
+  end
+
+  describe "page_header/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.page_header title="Pets" />
+        """)
+
+      assert attribute(html, "header:root", "class") == "page-header"
+      assert text(html, ":root > .page-header-title > h1") == "Pets"
+      assert Floki.find(html, ".page-header-title > h2") == []
+      assert Floki.find(html, ".page-header-actions") == []
+    end
+
+    test "with subtitle" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.page_header title="Pets" subtitle="All of them" />
+        """)
+
+      assert text(html, ":root > .page-header-title > h2") == "All of them"
+    end
+
+    test "with action" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.page_header title="Pets">
+          <:action>Create</:action>
+        </Doggo.page_header>
+        """)
+
+      assert text(html, ":root > .page-header-actions") == "Create"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.page_header title="Pets" class="is-small" />
+        """)
+
+      assert attribute(html, ":root", "class") == "page-header is-small"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.page_header title="Pets" class={["is-narrow", "is-crisp"]} />
+        """)
+
+      assert attribute(html, ":root", "class") ==
+               "page-header is-narrow is-crisp"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.page_header title="Pets" data-test="hello" />
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 
