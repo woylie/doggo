@@ -734,6 +734,46 @@ defmodule DoggoTest do
 
       assert text(html, "aside:root > .callout-icon") == "lightbulb"
     end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.callout id="my-callout" class="is-cute">
+          Did you know?
+        </Doggo.callout>
+        """)
+
+      assert attribute(html, "aside:root", "class") == "callout is-info is-cute"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.callout id="my-callout" class={["is-cute", "is-petite"]}>
+          Did you know?
+        </Doggo.callout>
+        """)
+
+      assert attribute(html, "aside:root", "class") ==
+               "callout is-info is-cute is-petite"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.callout id="my-callout" data-test="hello">
+          Did you know?
+        </Doggo.callout>
+        """)
+
+      assert attribute(html, "aside:root", "data-test") == "hello"
+    end
   end
 
   describe "card/1" do
