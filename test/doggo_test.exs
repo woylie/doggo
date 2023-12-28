@@ -19,10 +19,9 @@ defmodule DoggoTest do
         </Doggo.action_bar>
         """)
 
-      div = Floki.find(html, "div")
-      assert attribute(div, "class") == "action-bar"
+      assert attribute(html, "div", "class") == "action-bar"
 
-      a = Floki.find(div, "a")
+      a = find_one(html, "div > a")
       assert attribute(a, "title") == "Edit"
       assert attribute(a, "phx-click") == "[[\"push\",{\"event\":\"edit\"}]]"
 
@@ -41,8 +40,7 @@ defmodule DoggoTest do
         </Doggo.action_bar>
         """)
 
-      div = Floki.find(html, "div")
-      assert attribute(div, "class") == "action-bar is-narrow"
+      assert attribute(html, "div", "class") == "action-bar is-narrow"
     end
 
     test "with additional classes as list" do
@@ -57,8 +55,7 @@ defmodule DoggoTest do
         </Doggo.action_bar>
         """)
 
-      div = Floki.find(html, "div")
-      assert attribute(div, "class") == "action-bar is-narrow is-crisp"
+      assert attribute(html, "div", "class") == "action-bar is-narrow is-crisp"
     end
 
     test "with global attribute" do
@@ -73,8 +70,7 @@ defmodule DoggoTest do
         </Doggo.action_bar>
         """)
 
-      div = Floki.find(html, "div")
-      assert attribute(div, "data-what") == "ever"
+      assert attribute(html, "div", "data-what") == "ever"
     end
   end
 
@@ -82,9 +78,9 @@ defmodule DoggoTest do
     test "default" do
       assigns = %{}
       html = parse_heex(~H"<Doggo.app_bar></Doggo.app_bar>")
-      header = Floki.find(html, "header")
+      header = find_one(html, "header")
       assert attribute(header, "class") == "app-bar"
-      assert Floki.children(header) == nil
+      assert Floki.children(header) == []
     end
 
     test "with title" do
@@ -95,8 +91,7 @@ defmodule DoggoTest do
         <Doggo.app_bar title="Some Title"></Doggo.app_bar>
         """)
 
-      h1 = Floki.find(html, "header h1")
-      assert text(h1) == "Some Title"
+      assert text(html, "header h1") == "Some Title"
     end
 
     test "with navigation" do
@@ -109,8 +104,7 @@ defmodule DoggoTest do
         </Doggo.app_bar>
         """)
 
-      div = Floki.find(html, "header div.app-bar-navigation")
-      a = Floki.find(div, "a")
+      a = find_one(html, "header div.app-bar-navigation a")
       assert attribute(a, "title") == "Back"
       assert attribute(a, "phx-click") == "back"
       assert text(a) == "back-icon"
@@ -126,8 +120,7 @@ defmodule DoggoTest do
         </Doggo.app_bar>
         """)
 
-      div = Floki.find(html, "header div.app-bar-actions")
-      a = Floki.find(div, "a")
+      a = find_one(html, "header div.app-bar-actions a")
       assert attribute(a, "title") == "Menu"
       assert attribute(a, "phx-click") == "open-menu"
       assert text(a) == "menu-icon"
@@ -141,8 +134,7 @@ defmodule DoggoTest do
         <Doggo.app_bar class="is-narrow"></Doggo.app_bar>
         """)
 
-      header = Floki.find(html, "header")
-      assert attribute(header, "class") == "app-bar is-narrow"
+      assert attribute(html, "header", "class") == "app-bar is-narrow"
     end
 
     test "with additional classes as list" do
@@ -153,8 +145,7 @@ defmodule DoggoTest do
         <Doggo.app_bar class={["is-narrow", "is-crisp"]}></Doggo.app_bar>
         """)
 
-      header = Floki.find(html, "header")
-      assert attribute(header, "class") == "app-bar is-narrow is-crisp"
+      assert attribute(html, "header", "class") == "app-bar is-narrow is-crisp"
     end
 
     test "with global attribute" do
@@ -165,8 +156,7 @@ defmodule DoggoTest do
         <Doggo.app_bar data-what="ever"></Doggo.app_bar>
         """)
 
-      header = Floki.find(html, "header")
-      assert attribute(header, "data-what") == "ever"
+      assert attribute(html, "header", "data-what") == "ever"
     end
   end
 
@@ -179,7 +169,7 @@ defmodule DoggoTest do
         <Doggo.badge>value</Doggo.badge>
         """)
 
-      span = Floki.find(html, "span")
+      span = find_one(html, "span")
       assert attribute(span, "class") == "badge "
       assert text(span) == "value"
     end
@@ -192,7 +182,7 @@ defmodule DoggoTest do
         <Doggo.badge size={:large}>value</Doggo.badge>
         """)
 
-      span = Floki.find(html, "span")
+      span = find_one(html, "span")
       assert attribute(span, "class") == "badge is-large"
     end
 
@@ -204,7 +194,7 @@ defmodule DoggoTest do
         <Doggo.badge variant={:secondary}>value</Doggo.badge>
         """)
 
-      span = Floki.find(html, "span")
+      span = find_one(html, "span")
       assert attribute(span, "class") == "badge is-secondary"
     end
   end
@@ -213,9 +203,9 @@ defmodule DoggoTest do
     test "default" do
       assigns = %{}
       html = parse_heex(~H"<Doggo.card></Doggo.card>")
-      article = Floki.find(html, "article")
+      article = find_one(html, "article")
       assert attribute(article, "class") == "card"
-      assert Floki.children(article) == nil
+      assert Floki.children(article) == []
     end
 
     test "with figure" do
@@ -228,8 +218,7 @@ defmodule DoggoTest do
         </Doggo.card>
         """)
 
-      div = Floki.find(html, "article figure")
-      assert text(div) == "Doggo"
+      assert text(html, "article > figure") == "Doggo"
     end
 
     test "with header" do
@@ -242,8 +231,7 @@ defmodule DoggoTest do
         </Doggo.card>
         """)
 
-      div = Floki.find(html, "article header")
-      assert text(div) == "Doggo"
+      assert text(html, "article > header") == "Doggo"
     end
 
     test "with main" do
@@ -256,8 +244,7 @@ defmodule DoggoTest do
         </Doggo.card>
         """)
 
-      div = Floki.find(html, "article main")
-      assert text(div) == "Doggo"
+      assert text(html, "article > main") == "Doggo"
     end
 
     test "with footer" do
@@ -270,8 +257,7 @@ defmodule DoggoTest do
         </Doggo.card>
         """)
 
-      div = Floki.find(html, "article footer")
-      assert text(div) == "Doggo"
+      assert text(html, "article > footer") == "Doggo"
     end
 
     test "with additional class as string" do
@@ -282,8 +268,7 @@ defmodule DoggoTest do
         <Doggo.card class="is-narrow"></Doggo.card>
         """)
 
-      article = Floki.find(html, "article")
-      assert attribute(article, "class") == "card is-narrow"
+      assert attribute(html, "article", "class") == "card is-narrow"
     end
 
     test "with additional classes as list" do
@@ -294,8 +279,7 @@ defmodule DoggoTest do
         <Doggo.card class={["is-narrow", "is-crisp"]}></Doggo.card>
         """)
 
-      article = Floki.find(html, "article")
-      assert attribute(article, "class") == "card is-narrow is-crisp"
+      assert attribute(html, "article", "class") == "card is-narrow is-crisp"
     end
 
     test "with global attribute" do
@@ -306,8 +290,7 @@ defmodule DoggoTest do
         <Doggo.card data-what="ever"></Doggo.card>
         """)
 
-      article = Floki.find(html, "article")
-      assert attribute(article, "data-what") == "ever"
+      assert attribute(html, "article", "data-what") == "ever"
     end
   end
 
@@ -320,7 +303,7 @@ defmodule DoggoTest do
         <Doggo.date value={~D[2023-12-27]} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-27"
       assert text(time) == "2023-12-27"
@@ -334,7 +317,7 @@ defmodule DoggoTest do
         <Doggo.date value={~U[2023-12-27T18:30:21Z]} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-27"
       assert text(time) == "2023-12-27"
@@ -348,7 +331,7 @@ defmodule DoggoTest do
         <Doggo.date value={~N[2023-12-27T18:30:21]} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-27"
       assert text(time) == "2023-12-27"
@@ -381,7 +364,7 @@ defmodule DoggoTest do
         />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-27"
       assert text(time) == "2023/12/27"
@@ -398,7 +381,7 @@ defmodule DoggoTest do
         />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "title") == "2023/12/27"
       assert text(time) == "2023-12-27"
@@ -412,7 +395,7 @@ defmodule DoggoTest do
         <Doggo.date value={~U[2023-12-27T18:30:21Z]} timezone="Asia/Tokyo" />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-28"
       assert text(time) == "2023-12-28"
@@ -428,7 +411,7 @@ defmodule DoggoTest do
         <Doggo.datetime value={~U[2023-12-27T18:30:21Z]} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-27T18:30:21Z"
       assert text(time) == "2023-12-27 18:30:21Z"
@@ -442,7 +425,7 @@ defmodule DoggoTest do
         <Doggo.datetime value={~N[2023-12-27 18:30:21]} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-27T18:30:21"
       assert text(time) == "2023-12-27 18:30:21"
@@ -476,7 +459,7 @@ defmodule DoggoTest do
         />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-27T18:30:21"
       assert text(time) == "12/2023 ~18h"
@@ -493,7 +476,7 @@ defmodule DoggoTest do
         />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "title") == "12/2023 ~18h"
     end
@@ -509,7 +492,7 @@ defmodule DoggoTest do
         />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-27T18:30:21.107074Z"
       assert text(time) == "2023-12-27 18:30:21.107074Z"
@@ -526,7 +509,7 @@ defmodule DoggoTest do
         />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-27T18:30:21.107Z"
       assert text(time) == "2023-12-27 18:30:21.107Z"
@@ -540,7 +523,7 @@ defmodule DoggoTest do
         <Doggo.datetime value={~U[2023-12-27T18:30:21.107074Z]} precision={:second} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-27T18:30:21Z"
       assert text(time) == "2023-12-27 18:30:21Z"
@@ -554,7 +537,7 @@ defmodule DoggoTest do
         <Doggo.datetime value={~U[2023-12-27T18:30:21.107074Z]} precision={:minute} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-27T18:30:00Z"
       assert text(time) == "2023-12-27 18:30:00Z"
@@ -568,7 +551,7 @@ defmodule DoggoTest do
         <Doggo.datetime value={~N[2023-12-27T18:30:21.107074]} precision={:microsecond} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-27T18:30:21.107074"
       assert text(time) == "2023-12-27 18:30:21.107074"
@@ -582,7 +565,7 @@ defmodule DoggoTest do
         <Doggo.datetime value={~N[2023-12-27T18:30:21.107074]} precision={:millisecond} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-27T18:30:21.107"
       assert text(time) == "2023-12-27 18:30:21.107"
@@ -596,7 +579,7 @@ defmodule DoggoTest do
         <Doggo.datetime value={~N[2023-12-27T18:30:21.107074]} precision={:second} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-27T18:30:21"
       assert text(time) == "2023-12-27 18:30:21"
@@ -610,7 +593,7 @@ defmodule DoggoTest do
         <Doggo.datetime value={~N[2023-12-27T18:30:21.107074]} precision={:minute} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-27T18:30:00"
       assert text(time) == "2023-12-27 18:30:00"
@@ -624,7 +607,7 @@ defmodule DoggoTest do
         <Doggo.datetime value={~U[2023-12-27T18:30:21Z]} timezone="Asia/Tokyo" />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "2023-12-28T03:30:21+09:00"
       assert text(time) == "2023-12-28 03:30:21+09:00 JST Asia/Tokyo"
@@ -635,9 +618,9 @@ defmodule DoggoTest do
     test "default" do
       assigns = %{}
       html = parse_heex(~H"<Doggo.drawer></Doggo.drawer>")
-      aside = Floki.find(html, "aside")
+      aside = find_one(html, "aside")
       assert attribute(aside, "class") == "drawer"
-      assert Floki.children(aside) == nil
+      assert Floki.children(aside) == []
     end
 
     test "with brand" do
@@ -650,8 +633,7 @@ defmodule DoggoTest do
         </Doggo.drawer>
         """)
 
-      div = Floki.find(html, "aside div.drawer-brand")
-      assert text(div) == "Doggo"
+      assert text(html, "aside > div.drawer-brand") == "Doggo"
     end
 
     test "with top slot" do
@@ -664,8 +646,7 @@ defmodule DoggoTest do
         </Doggo.drawer>
         """)
 
-      div = Floki.find(html, "aside div.drawer-top")
-      assert text(div) == "Doggo"
+      assert text(html, "aside > div.drawer-top") == "Doggo"
     end
 
     test "with bottom slot" do
@@ -678,8 +659,7 @@ defmodule DoggoTest do
         </Doggo.drawer>
         """)
 
-      div = Floki.find(html, "aside div.drawer-bottom")
-      assert text(div) == "Doggo"
+      assert text(html, "aside > div.drawer-bottom") == "Doggo"
     end
 
     test "with additional class as string" do
@@ -690,8 +670,7 @@ defmodule DoggoTest do
         <Doggo.drawer class="is-narrow"></Doggo.drawer>
         """)
 
-      aside = Floki.find(html, "aside")
-      assert attribute(aside, "class") == "drawer is-narrow"
+      assert attribute(html, "aside", "class") == "drawer is-narrow"
     end
 
     test "with additional classes as list" do
@@ -702,8 +681,7 @@ defmodule DoggoTest do
         <Doggo.drawer class={["is-narrow", "is-crisp"]}></Doggo.drawer>
         """)
 
-      aside = Floki.find(html, "aside")
-      assert attribute(aside, "class") == "drawer is-narrow is-crisp"
+      assert attribute(html, "aside", "class") == "drawer is-narrow is-crisp"
     end
 
     test "with global attribute" do
@@ -714,8 +692,7 @@ defmodule DoggoTest do
         <Doggo.drawer data-what="ever"></Doggo.drawer>
         """)
 
-      aside = Floki.find(html, "aside")
-      assert attribute(aside, "data-what") == "ever"
+      assert attribute(html, "aside", "data-what") == "ever"
     end
   end
 
@@ -728,7 +705,7 @@ defmodule DoggoTest do
         <Doggo.field_group>fields</Doggo.field_group>
         """)
 
-      div = Floki.find(html, "div")
+      div = find_one(html, "div")
       assert attribute(div, "class") == "field-group"
       assert text(div) == "fields"
     end
@@ -741,8 +718,7 @@ defmodule DoggoTest do
         <Doggo.field_group class="is-narrow">fields</Doggo.field_group>
         """)
 
-      div = Floki.find(html, "div")
-      assert attribute(div, "class") == "field-group is-narrow"
+      assert attribute(html, "div", "class") == "field-group is-narrow"
     end
 
     test "with additional classes as list" do
@@ -755,8 +731,7 @@ defmodule DoggoTest do
         </Doggo.field_group>
         """)
 
-      div = Floki.find(html, "div")
-      assert attribute(div, "class") == "field-group is-narrow is-crisp"
+      assert attribute(html, "div", "class") == "field-group is-narrow is-crisp"
     end
 
     test "with global attribute" do
@@ -767,8 +742,7 @@ defmodule DoggoTest do
         <Doggo.field_group data-what="ever">fields</Doggo.field_group>
         """)
 
-      div = Floki.find(html, "div")
-      assert attribute(div, "data-what") == "ever"
+      assert attribute(html, "div", "data-what") == "ever"
     end
   end
 
@@ -838,7 +812,7 @@ defmodule DoggoTest do
         <Doggo.stack>Hello</Doggo.stack>
         """)
 
-      div = Floki.find(html, "div")
+      div = find_one(html, "div")
 
       assert attribute(div, "class") == "stack"
       assert text(div) == "Hello"
@@ -852,8 +826,7 @@ defmodule DoggoTest do
         <Doggo.stack recursive>Hello</Doggo.stack>
         """)
 
-      div = Floki.find(html, "div")
-      assert attribute(div, "class") == "stack is-recursive"
+      assert attribute(html, "div", "class") == "stack is-recursive"
     end
 
     test "with additional class as string" do
@@ -864,7 +837,7 @@ defmodule DoggoTest do
         <Doggo.stack class="is-narrow">Hello</Doggo.stack>
         """)
 
-      div = Floki.find(html, "div")
+      div = find_one(html, "div")
 
       assert attribute(div, "class") == "stack is-narrow"
       assert text(div) == "Hello"
@@ -878,7 +851,7 @@ defmodule DoggoTest do
         <Doggo.stack class={["is-narrow", "is-crisp"]}>Hello</Doggo.stack>
         """)
 
-      div = Floki.find(html, "div")
+      div = find_one(html, "div")
 
       assert attribute(div, "class") == "stack is-narrow is-crisp"
       assert text(div) == "Hello"
@@ -892,8 +865,7 @@ defmodule DoggoTest do
         <Doggo.stack data-what="ever">Hello</Doggo.stack>
         """)
 
-      div = Floki.find(html, "div")
-      assert attribute(div, "data-what") == "ever"
+      assert attribute(html, "div", "data-what") == "ever"
     end
   end
 
@@ -906,7 +878,7 @@ defmodule DoggoTest do
         <Doggo.tag>value</Doggo.tag>
         """)
 
-      span = Floki.find(html, "span")
+      span = find_one(html, "span")
       assert attribute(span, "class") == "tag "
       assert text(span) == "value"
     end
@@ -919,8 +891,7 @@ defmodule DoggoTest do
         <Doggo.tag size={:medium}>value</Doggo.tag>
         """)
 
-      span = Floki.find(html, "span")
-      assert attribute(span, "class") == "tag is-medium"
+      assert attribute(html, "span", "class") == "tag is-medium"
     end
 
     test "with variant" do
@@ -931,8 +902,7 @@ defmodule DoggoTest do
         <Doggo.tag variant={:primary}>value</Doggo.tag>
         """)
 
-      span = Floki.find(html, "span")
-      assert attribute(span, "class") == "tag is-primary"
+      assert attribute(html, "span", "class") == "tag is-primary"
     end
 
     test "with shape" do
@@ -943,8 +913,7 @@ defmodule DoggoTest do
         <Doggo.tag shape={:pill}>value</Doggo.tag>
         """)
 
-      span = Floki.find(html, "span")
-      assert attribute(span, "class") == "tag is-pill"
+      assert attribute(html, "span", "class") == "tag is-pill"
     end
   end
 
@@ -957,7 +926,7 @@ defmodule DoggoTest do
         <Doggo.time value={~T[18:30:21]} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:21"
       assert text(time) == "18:30:21"
@@ -971,7 +940,7 @@ defmodule DoggoTest do
         <Doggo.time value={~U[2023-12-27T18:30:21Z]} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:21"
       assert text(time) == "18:30:21"
@@ -985,7 +954,7 @@ defmodule DoggoTest do
         <Doggo.time value={~N[2023-12-27 18:30:21]} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:21"
       assert text(time) == "18:30:21"
@@ -1016,7 +985,7 @@ defmodule DoggoTest do
         <Doggo.time value={~T[18:30:21]} formatter={&"#{&1.hour}h #{&1.minute}m"} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:21"
       assert text(time) == "18h 30m"
@@ -1030,9 +999,7 @@ defmodule DoggoTest do
         <Doggo.time value={~T[18:30:21]} title_formatter={&"#{&1.hour}h #{&1.minute}m"} />
         """)
 
-      time = Floki.find(html, "time")
-
-      assert attribute(time, "title") == "18h 30m"
+      assert attribute(html, "time", "title") == "18h 30m"
     end
 
     test "with Time and microsecond precision" do
@@ -1043,7 +1010,7 @@ defmodule DoggoTest do
         <Doggo.time value={~T[18:30:21.107074]} precision={:microsecond} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:21.107074"
       assert text(time) == "18:30:21.107074"
@@ -1057,7 +1024,7 @@ defmodule DoggoTest do
         <Doggo.time value={~T[18:30:21.107074]} precision={:millisecond} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:21.107"
       assert text(time) == "18:30:21.107"
@@ -1071,7 +1038,7 @@ defmodule DoggoTest do
         <Doggo.time value={~T[18:30:21.107074]} precision={:second} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:21"
       assert text(time) == "18:30:21"
@@ -1085,7 +1052,7 @@ defmodule DoggoTest do
         <Doggo.time value={~T[18:30:21.107074]} precision={:minute} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:00"
       assert text(time) == "18:30:00"
@@ -1099,7 +1066,7 @@ defmodule DoggoTest do
         <Doggo.time value={~U[2023-12-27T18:30:21.107074Z]} precision={:microsecond} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:21.107074"
       assert text(time) == "18:30:21.107074"
@@ -1113,7 +1080,7 @@ defmodule DoggoTest do
         <Doggo.time value={~U[2023-12-27T18:30:21.107074Z]} precision={:millisecond} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:21.107"
       assert text(time) == "18:30:21.107"
@@ -1127,7 +1094,7 @@ defmodule DoggoTest do
         <Doggo.time value={~U[2023-12-27T18:30:21.107074Z]} precision={:second} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:21"
       assert text(time) == "18:30:21"
@@ -1141,7 +1108,7 @@ defmodule DoggoTest do
         <Doggo.time value={~U[2023-12-27T18:30:21.107074Z]} precision={:minute} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:00"
       assert text(time) == "18:30:00"
@@ -1155,7 +1122,7 @@ defmodule DoggoTest do
         <Doggo.time value={~N[2023-12-27T18:30:21.107074]} precision={:microsecond} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:21.107074"
       assert text(time) == "18:30:21.107074"
@@ -1169,7 +1136,7 @@ defmodule DoggoTest do
         <Doggo.time value={~N[2023-12-27T18:30:21.107074]} precision={:millisecond} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:21.107"
       assert text(time) == "18:30:21.107"
@@ -1183,7 +1150,7 @@ defmodule DoggoTest do
         <Doggo.time value={~N[2023-12-27T18:30:21.107074]} precision={:second} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:21"
       assert text(time) == "18:30:21"
@@ -1197,7 +1164,7 @@ defmodule DoggoTest do
         <Doggo.time value={~N[2023-12-27T18:30:21.107074]} precision={:minute} />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "18:30:00"
       assert text(time) == "18:30:00"
@@ -1211,7 +1178,7 @@ defmodule DoggoTest do
         <Doggo.time value={~U[2023-12-27T18:30:21Z]} timezone="Asia/Tokyo" />
         """)
 
-      time = Floki.find(html, "time")
+      time = find_one(html, "time")
 
       assert attribute(time, "datetime") == "03:30:21"
       assert text(time) == "03:30:21"
@@ -1232,15 +1199,15 @@ defmodule DoggoTest do
         </Doggo.tooltip>
         """)
 
-      span = Floki.find(html, "span")
+      span = find_one(html, "span:root")
       assert attribute(span, "data-aria-tooltip") == "data-aria-tooltip"
       assert attribute(span, "aria-describedby") == expected_id
 
-      inner_span = Floki.find(html, "span > span")
+      inner_span = find_one(html, "span > span")
       assert attribute(inner_span, "tabindex") == "0"
       assert text(inner_span) == "some text"
 
-      tooltip = Floki.find(html, "span > div[role='tooltip']")
+      tooltip = find_one(html, "span > div[role='tooltip']")
       assert attribute(tooltip, "id") == expected_id
       assert text(tooltip) == "some details"
     end
@@ -1259,15 +1226,15 @@ defmodule DoggoTest do
         </Doggo.tooltip>
         """)
 
-      span = Floki.find(html, "span")
+      span = find_one(html, "span:root")
       assert attribute(span, "data-aria-tooltip") == "data-aria-tooltip"
       assert attribute(span, "aria-describedby") == expected_id
 
-      inner_span = Floki.find(html, "span > span")
+      inner_span = find_one(html, "span:root > span")
       assert attribute(inner_span, "tabindex") == nil
       assert text(inner_span) == "some link"
 
-      tooltip = Floki.find(html, "span > div[role='tooltip']")
+      tooltip = find_one(html, "span:root > div[role='tooltip']")
       assert attribute(tooltip, "id") == expected_id
       assert text(tooltip) == "some details"
     end
