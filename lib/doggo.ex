@@ -3336,11 +3336,11 @@ defmodule Doggo do
   attr :label, :string,
     default: "Tabs",
     doc: """
-    Label for the `<nav>` element. The label is especially important if you have
-    multiple `<nav>` elements on the same page. If the page is localized, the
-    label should be translated, too. Do not include "navigation" in the label,
-    since screen readers will already announce the "navigation" role as part
-    of the label.
+    Aria label for the `<nav>` element. The label is especially important if you
+    have multiple `<nav>` elements on the same page. If the page is localized,
+    the label should be translated, too. Do not include "navigation" in the
+    label, since screen readers will already announce the "navigation" role as
+    part of the label.
     """
 
   attr :current_value, :any,
