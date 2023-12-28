@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Require `id` attribute for `Doggo.callout/1`.
+
 ### Fixed
 
 - Box header not rendered if only action slot is used without banner or title.

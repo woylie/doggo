@@ -1428,7 +1428,7 @@ defmodule Doggo do
   """
   @doc type: :component
 
-  attr :id, :string, default: nil
+  attr :id, :string, required: true
 
   attr :variant, :atom,
     values: [:info, :success, :warning, :error],
