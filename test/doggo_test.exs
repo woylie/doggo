@@ -746,6 +746,42 @@ defmodule DoggoTest do
     end
   end
 
+  describe "frame/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.frame>image</Doggo.frame>
+        """)
+
+      assert attribute(html, "div", "class") == "frame "
+      assert text(html, "div") == "image"
+    end
+
+    test "with ratio" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.frame ratio={{16, 9}}>image</Doggo.frame>
+        """)
+
+      assert attribute(html, "div", "class") == "frame is-16-to-9"
+    end
+
+    test "with circle" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.frame circle>image</Doggo.frame>
+        """)
+
+      assert attribute(html, "div", "class") == "frame is-circle"
+    end
+  end
+
   describe "property_list/1" do
     test "default" do
       assigns = %{}
