@@ -3015,7 +3015,7 @@ defmodule Doggo do
 
   With patch navigation:
 
-      <.steps current_index={0}>
+      <.steps current_step={0}>
         <:step on_click={JS.patch(to: ~p"/form/step/personal-information")}>
           Profile
         </:step>
@@ -3029,7 +3029,7 @@ defmodule Doggo do
 
   With push events:
 
-      <.steps current_index={0}>
+      <.steps current_step={0}>
         <:step on_click={JS.push("go-to-step", value: %{step: "profile"})}>
           Profile
         </:step>
