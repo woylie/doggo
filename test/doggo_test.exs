@@ -869,6 +869,48 @@ defmodule DoggoTest do
     end
   end
 
+  describe "switch/1" do
+    test "default checked" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.switch label="Subscribe" checked />
+        """)
+
+      button = find_one(html, "button:root")
+      assert attribute(button, "type") == "button"
+      assert attribute(button, "role") == "switch"
+      assert attribute(button, "aria-checked") == "true"
+
+      assert text(button, "span.switch-label") == "Subscribe"
+
+      control = find_one(button, "span.switch-control")
+      assert Floki.children(control) == [{"span", [], []}]
+
+      span = find_one(button, "span.switch-state > span")
+      assert attribute(span, "class") == "switch-state-on"
+      assert attribute(span, "aria-hidden") == "true"
+      assert text(span) == "On"
+    end
+
+    test "default unchecked" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.switch label="Subscribe" />
+        """)
+
+      button = find_one(html, "button:root")
+      assert attribute(button, "aria-checked") == "false"
+
+      span = find_one(button, "span.switch-state > span")
+      assert attribute(span, "class") == "switch-state-off"
+      assert text(span) == "Off"
+    end
+  end
+
   describe "tag/1" do
     test "default" do
       assigns = %{}

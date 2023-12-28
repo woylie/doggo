@@ -3134,7 +3134,7 @@ defmodule Doggo do
   attr :label, :string, required: true
   attr :on_text, :string, default: "On"
   attr :off_text, :string, default: "Off"
-  attr :checked, :boolean, required: true
+  attr :checked, :boolean, default: false
   attr :rest, :global
 
   def switch(assigns) do
