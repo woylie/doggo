@@ -6,6 +6,10 @@
 
 - Allow event name as string in `on_click` attributes of app bar.
 
+### Fixed
+
+- Faulty application of the `on_click` attribute in `Doggo.steps/1`.
+
 ## [0.3.0] - 2023-12-27
 
 ### Added
