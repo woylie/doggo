@@ -1502,6 +1502,227 @@ defmodule DoggoTest do
     end
   end
 
+  describe "icon/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon>some-icon</Doggo.icon>
+        """)
+
+      span = find_one(html, "span:root")
+      assert attribute(span, "class") == "icon"
+      assert text(span) == "some-icon"
+    end
+
+    test "with size" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon size={:small}>some-icon</Doggo.icon>
+        """)
+
+      assert attribute(html, "span:root", "class") == "icon is-small"
+    end
+
+    test "with label" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon label="some-label">some-icon</Doggo.icon>
+        """)
+
+      span = find_one(html, "span:root")
+      assert attribute(span, "span:root", "aria-label") == "some-label"
+      assert Floki.find(html, "span > span") == []
+    end
+
+    test "with label left" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon label="some-label" label_placement={:left}>
+          some-icon
+        </Doggo.icon>
+        """)
+
+      span = find_one(html, "span:root")
+      assert attribute(span, "class") == "icon has-text-left"
+      assert attribute(span, "span:root", "aria-label") == nil
+      assert text(html, "span > span") == "some-label"
+    end
+
+    test "with label right" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon label="some-label" label_placement={:right}>
+          some-icon
+        </Doggo.icon>
+        """)
+
+      span = find_one(html, "span:root")
+      assert attribute(span, "class") == "icon has-text-right"
+      assert attribute(span, "span:root", "aria-label") == nil
+      assert text(html, "span > span") == "some-label"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon class="is-rad">some-icon</Doggo.icon>
+        """)
+
+      assert attribute(html, ":root", "class") == "icon is-rad"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon class={["is-rad", "is-boud"]}>some-icon</Doggo.icon>
+        """)
+
+      assert attribute(html, ":root", "class") == "icon is-rad is-boud"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon data-test="hello">some-icon</Doggo.icon>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
+    end
+  end
+
+  describe "icon_sprite/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon_sprite name="edit" />
+        """)
+
+      span = find_one(html, "span:root")
+      assert attribute(span, "class") == "icon"
+      svg = find_one(span, "svg")
+      assert attribute(svg, "aria-hidden") == "true"
+      assert attribute(svg, "use", "href") == "/assets/icons/sprite.svg#edit"
+    end
+
+    test "with sprite URL" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon_sprite sprite_url="/images/icons.svg" name="edit" />
+        """)
+
+      span = find_one(html, "span:root")
+      assert attribute(span, "class") == "icon"
+      svg = find_one(span, "svg")
+      assert attribute(svg, "aria-hidden") == "true"
+      assert attribute(svg, "use", "href") == "/images/icons.svg#edit"
+    end
+
+    test "with size" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon_sprite name="edit" size={:small} />
+        """)
+
+      assert attribute(html, "span:root", "class") == "icon is-small"
+    end
+
+    test "with label" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon_sprite name="edit" label="some-label" />
+        """)
+
+      span = find_one(html, "span:root")
+      assert attribute(span, "span:root", "aria-label") == "some-label"
+      assert Floki.find(html, "span > span") == []
+    end
+
+    test "with label left" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon_sprite name="edit" label="some-label" label_placement={:left} />
+        """)
+
+      span = find_one(html, "span:root")
+      assert attribute(span, "class") == "icon has-text-left"
+      assert attribute(span, "span:root", "aria-label") == nil
+      assert text(html, "span > span") == "some-label"
+    end
+
+    test "with label right" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon_sprite name="edit" label="some-label" label_placement={:right} />
+        """)
+
+      span = find_one(html, "span:root")
+      assert attribute(span, "class") == "icon has-text-right"
+      assert attribute(span, "span:root", "aria-label") == nil
+      assert text(html, "span > span") == "some-label"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon_sprite name="edit" class="is-rad" />
+        """)
+
+      assert attribute(html, ":root", "class") == "icon is-rad"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon_sprite name="edit" class={["is-rad", "is-boud"]} />
+        """)
+
+      assert attribute(html, ":root", "class") == "icon is-rad is-boud"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.icon_sprite name="edit" data-test="hello" />
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
+    end
+  end
+
   describe "page_header/1" do
     test "default" do
       assigns = %{}
