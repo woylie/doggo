@@ -74,6 +74,136 @@ defmodule DoggoTest do
     end
   end
 
+  describe "alert/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.alert id="some-alert">message</Doggo.alert>
+        """)
+
+      div = find_one(html, "div:root")
+      assert attribute(div, "id") == "some-alert"
+      assert attribute(div, "role") == "alert"
+      assert attribute(div, "class") == "is-info"
+      assert attribute(div, "aria-labelledby") == nil
+
+      assert text(html, ":root > .alert-body > .alert-message") == "message"
+
+      assert Floki.find(html, ".alert-icon") == []
+      assert Floki.find(html, ".alert-title") == []
+      assert Floki.find(html, "button") == []
+    end
+
+    test "with level" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.alert id="some-alert" level={:warning}>message</Doggo.alert>
+        """)
+
+      assert attribute(html, ":root", "class") == "is-warning"
+    end
+
+    test "with title" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.alert id="some-alert" level={:danger} title="Title">
+          message
+        </Doggo.alert>
+        """)
+
+      assert attribute(html, ":root", "aria-labelledby") == "some-alert-title"
+
+      div = find_one(html, ":root > .alert-body > .alert-title")
+      assert attribute(div, "id") == "some-alert-title"
+      assert text(div) == "Title"
+    end
+
+    test "with icon" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.alert id="some-alert">
+          message
+          <:icon>some-icon</:icon>
+        </Doggo.alert>
+        """)
+
+      assert text(html, ":root > .alert-icon") == "some-icon"
+    end
+
+    test "with on_click" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.alert id="some-alert" on_close="close-alert">
+          message
+        </Doggo.alert>
+        """)
+
+      assert attribute(html, "phx-click") == "close-alert"
+
+      button = find_one(html, ":root > button")
+      assert attribute(button, "phx-click") == "close-alert"
+      assert text(button) == "close"
+    end
+
+    test "with close label" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.alert id="some-alert" on_close="close-alert" close_label="klose">
+          message
+        </Doggo.alert>
+        """)
+
+      assert text(html, ":root > button") == "klose"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.alert id="some-alert" class="is-hip">message</Doggo.alert>
+        """)
+
+      assert attribute(html, ":root", "class") == "is-info is-hip"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.alert id="some-alert" class={["is-hip", "is-brisk"]}>
+          message
+        </Doggo.alert>
+        """)
+
+      assert attribute(html, ":root", "class") == "is-info is-hip is-brisk"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.alert id="some-alert" data-test="hi">message</Doggo.alert>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hi"
+    end
+  end
+
   describe "app_bar/1" do
     test "default" do
       assigns = %{}
@@ -1463,6 +1593,101 @@ defmodule DoggoTest do
         """)
 
       assert attribute(html, "div", "data-what") == "ever"
+    end
+  end
+
+  describe "flash_group/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.flash_group flash={%{}} />
+        """)
+
+      div = find_one(html, "div:root")
+      assert attribute(div, "class") == "flash-group"
+      assert attribute(div, "id") == "flash-group"
+
+      div = find_one(html, ":root > #flash-group-client-error")
+      assert attribute(div, "class") == "is-danger"
+      assert attribute(div, "hidden") == "hidden"
+
+      div = find_one(html, ":root > #flash-group-server-error")
+      assert attribute(div, "class") == "is-danger"
+      assert attribute(div, "hidden") == "hidden"
+    end
+
+    test "with id" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.flash_group id="flashes" flash={%{}} />
+        """)
+
+      assert attribute(html, ":root", "id") == "flashes"
+      find_one(html, ":root > #flashes-client-error")
+      find_one(html, ":root > #flashes-server-error")
+    end
+
+    test "with info flash" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.flash_group flash={%{"info" => "info-flash"}} />
+        """)
+
+      div = find_one(html, "div:root > #flash-group-flash-info")
+      assert text(div, ".alert-title") == "Success"
+      assert text(div, ".alert-message") == "info-flash"
+    end
+
+    test "with error flash" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.flash_group flash={%{"error" => "error-flash"}} />
+        """)
+
+      div = find_one(html, "div:root > #flash-group-flash-error")
+      assert text(div, ".alert-title") == "Error"
+      assert text(div, ".alert-message") == "error-flash"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.flash_group flash={%{}} class="is-green" />
+        """)
+
+      assert attribute(html, ":root", "class") == "flash-group is-green"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.flash_group flash={%{}} class={["is-green", "is-wide"]} />
+        """)
+
+      assert attribute(html, ":root", "class") == "flash-group is-green is-wide"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.flash_group flash={%{}} data-test="hello" />
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 
