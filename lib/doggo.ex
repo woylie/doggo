@@ -1678,7 +1678,7 @@ defmodule Doggo do
   """
   @doc type: :component
 
-  slot :inner_block, doc: "Slot for the SVG element."
+  slot :inner_block, doc: "Slot for the SVG element.", required: true
 
   attr :label, :string,
     default: nil,
