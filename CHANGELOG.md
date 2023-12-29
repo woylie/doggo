@@ -5,6 +5,7 @@
 ### Changed
 
 - Require `id` attribute for `Doggo.callout/1`.
+- Add `:normal` as size for `Doggo.icon_sprite/1`.
 
 ### Fixed
 
