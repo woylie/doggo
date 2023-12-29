@@ -4,8 +4,10 @@
 
 ### Changed
 
+- Significant changes to `Doggo.alert/1` and `Doggo.flash_group/1`.
 - Require `id` attribute for `Doggo.callout/1`.
 - Add `:normal` as size for `Doggo.icon_sprite/1`.
+- Remove `:error` variant in favor of `:danger`.
 
 ### Fixed
 
