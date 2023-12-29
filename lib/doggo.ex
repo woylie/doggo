@@ -1764,7 +1764,9 @@ defmodule Doggo do
     `label` text is used as `aria-label` attribute.
     """
 
-  attr :size, :atom, default: :medium, values: [:small, :medium, :large]
+  attr :size, :atom,
+    default: :normal,
+    values: [:small, :normal, :medium, :large]
 
   attr :class, :any,
     default: [],
