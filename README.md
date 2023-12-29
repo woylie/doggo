@@ -77,8 +77,6 @@ end
   than relying on CSS classes.
 - Where state or variations can not be expressed semantically, use modifier
   classes named `.is-*` or `.has-*`.
-- Provide a base CSS class for each component to support unstyled or
-  alternatively styled variations of the same HTML elements.
 - The library is designed without default styles and does not prefer any
   particular CSS framework.
 
