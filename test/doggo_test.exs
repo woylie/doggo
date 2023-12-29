@@ -453,8 +453,8 @@ defmodule DoggoTest do
       assert attribute(nav, "class") == "breadcrumb"
       assert attribute(nav, "aria-label") == "Breadcrumb"
 
-      ul = find_one(html, "nav:root > ul")
-      assert [li1, li2, li3] = Floki.children(ul)
+      ol = find_one(html, "nav:root > ol")
+      assert [li1, li2, li3] = Floki.children(ol)
 
       assert attribute(li1, "a", "href") == "/categories"
       assert attribute(li2, "a", "href") == "/categories/1"

@@ -378,11 +378,11 @@ defmodule Doggo do
 
     ~H"""
     <nav aria-label={@label} class={["breadcrumb" | List.wrap(@class)]} {@rest}>
-      <ul>
+      <ol>
         <li :for={item <- @item}>
           <.breadcrumb_link item={item} />
         </li>
-      </ul>
+      </ol>
     </nav>
     """
   end
