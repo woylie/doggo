@@ -1173,17 +1173,41 @@ defmodule Doggo do
   @doc type: :component
 
   attr :flash, :map, required: true, doc: "The map of flash messages."
-  attr :info_title, :string, default: "Success"
-  attr :error_title, :string, default: "Error"
-  attr :id, :string, default: nil, doc: "An optional ID for the container."
-  attr :class, :any, default: "stack", doc: "An optional class name."
+
+  attr :info_title, :string,
+    default: "Success",
+    doc: "Alert title for flash messages with level `:info`."
+
+  attr :error_title, :string,
+    default: "Error",
+    doc: "Alert title for flash messages with level `:error`."
+
+  attr :client_error_title, :string,
+    default: "Disconnected",
+    doc: "Alert title for disconnection errors."
+
+  attr :client_error_msg, :string,
+    default: "Attempting to reconnect.",
+    doc: "Alert message for disconnection errors."
+
+  attr :server_error_title, :string,
+    default: "Error",
+    doc: "Alert title for server errors."
+
+  attr :server_error_msg, :string,
+    default: "Please wait while we get back on track.",
+    doc: "Alert message for server errors."
+
+  attr :id, :string, default: "flash-group", doc: "An ID for the container."
+  attr :class, :any, default: nil, doc: "An optional class name."
   attr :rest, :global, doc: "Any additional HTML attributes."
 
   def flash_group(assigns) do
     ~H"""
-    <div id={@id} class={@class} {@rest}>
+    <div class={["flash-group" | List.wrap(@class)]} id={@id} {@rest}>
       <.alert
         :if={msg = Phoenix.Flash.get(@flash, :info)}
+        id={"#{@id}-flash-info"}
         level={:info}
         title={@info_title}
         on_close={clear_flash(:info)}
@@ -1192,31 +1216,32 @@ defmodule Doggo do
       </.alert>
       <.alert
         :if={msg = Phoenix.Flash.get(@flash, :error)}
-        level={:error}
+        id={"#{@id}-flash-error"}
+        level={:danger}
         title={@error_title}
         on_close={clear_flash(:error)}
       >
         <%= msg %>
       </.alert>
       <.alert
-        id="client-error"
-        level={:error}
-        title="Disconnected"
-        phx-disconnected={JS.show(to: ".phx-client-error #client-error")}
-        phx-connected={JS.hide(to: "#client-error")}
+        id={"#{@id}-client-error"}
+        level={:danger}
+        title={@client_error_title}
+        phx-disconnected={JS.show(to: ".phx-client-error ##{@id}-client-error")}
+        phx-connected={JS.hide(to: "##{@id}-client-error")}
         hidden
       >
-        Attempting to reconnect.
+        <%= @client_error_msg %>
       </.alert>
       <.alert
-        id="server-error"
-        level={:error}
-        title="Error"
-        phx-disconnected={JS.show(to: ".phx-server-error #server-error")}
-        phx-connected={JS.hide(to: "#server-error")}
+        id={"#{@id}-server-error"}
+        level={:danger}
+        title={@server_error_title}
+        phx-disconnected={JS.show(to: ".phx-server-error ##{@id}-server-error")}
+        phx-connected={JS.hide(to: "##{@id}-server-error")}
         hidden
       >
-        Please wait while we get back on track.
+        <%= @server_error_msg %>
       </.alert>
     </div>
     """
@@ -1235,16 +1260,16 @@ defmodule Doggo do
   """
   @doc type: :component
 
-  attr :id, :string, default: nil
+  attr :id, :string, required: true
 
   attr :level, :atom,
-    values: [:info, :success, :warning, :error],
+    values: [:info, :success, :warning, :danger],
     default: :info,
     doc: "Semantic level of the alert."
 
   attr :title, :string, default: nil, doc: "An optional title."
 
-  attr :on_close, JS,
+  attr :on_close, :any,
     default: nil,
     doc: """
     JS command to run when the close button is clicked. If not set, no close
@@ -1273,17 +1298,20 @@ defmodule Doggo do
       phx-click={@on_close}
       id={@id}
       role="alert"
-      class={["alert", variant_class(@level)] ++ List.wrap(@class)}
+      aria-labelledby={@title && "#{@id}-title"}
+      class={[variant_class(@level) | List.wrap(@class)]}
       {@rest}
     >
       <div :if={@icon != []} class="alert-icon">
         <%= render_slot(@icon) %>
       </div>
       <div class="alert-body">
-        <div :if={@title} class="alert-title"><%= @title %></div>
+        <div :if={@title} id={"#{@id}-title"} class="alert-title">
+          <%= @title %>
+        </div>
         <div class="alert-message"><%= render_slot(@inner_block) %></div>
       </div>
-      <button :if={@on_close} phx-click={@on_close} class="alert-close">
+      <button :if={@on_close} phx-click={@on_close}>
         <%= @close_label %>
       </button>
     </div>
@@ -1431,7 +1459,7 @@ defmodule Doggo do
   attr :id, :string, required: true
 
   attr :variant, :atom,
-    values: [:info, :success, :warning, :error],
+    values: [:info, :success, :warning, :danger],
     default: :info
 
   attr :title, :string, default: nil, doc: "An optional title."
@@ -3659,6 +3687,5 @@ defmodule Doggo do
   defp variant_class(:success), do: "is-success"
   defp variant_class(:warning), do: "is-warning"
   defp variant_class(:danger), do: "is-danger"
-  defp variant_class(:error), do: "is-danger"
   defp variant_class(_), do: nil
 end
