@@ -2911,12 +2911,14 @@ defmodule Doggo do
 
   slot :item,
     required: true,
-    doc: "A navigation item, usually a link or a button."
+    doc: "A navigation item, usually a link or a button." do
+    attr :class, :string, doc: "A class for the `<li>`."
+  end
 
   def navbar_items(assigns) do
     ~H"""
     <ul class={["navbar-items" | List.wrap(@class)]} {@rest}>
-      <li :for={item <- @item}><%= render_slot(item) %></li>
+      <li :for={item <- @item} class={item[:class]}><%= render_slot(item) %></li>
     </ul>
     """
   end
