@@ -1130,6 +1130,61 @@ defmodule DoggoTest do
     end
   end
 
+  describe "cluster/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.cluster>Hello</Doggo.cluster>
+        """)
+
+      div = find_one(html, "div")
+
+      assert attribute(div, "class") == "cluster"
+      assert text(div) == "Hello"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.cluster class="is-narrow">Hello</Doggo.cluster>
+        """)
+
+      div = find_one(html, "div")
+
+      assert attribute(div, "class") == "cluster is-narrow"
+      assert text(div) == "Hello"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.cluster class={["is-narrow", "is-crisp"]}>Hello</Doggo.cluster>
+        """)
+
+      div = find_one(html, "div")
+
+      assert attribute(div, "class") == "cluster is-narrow is-crisp"
+      assert text(div) == "Hello"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.cluster data-what="ever">Hello</Doggo.cluster>
+        """)
+
+      assert attribute(html, "div", "data-what") == "ever"
+    end
+  end
+
   describe "date/1" do
     test "with Date" do
       assigns = %{}

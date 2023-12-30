@@ -540,6 +540,36 @@ defmodule Doggo do
   end
 
   @doc """
+  Use the cluster component to visually group children.
+
+  Common use cases are groups of buttons, or group of tags.
+
+  ## Example
+
+      <Doggo.cluster>
+        <div>some item</div>
+        <div>some other item</div>
+      </Doggo.cluster>
+  """
+  @doc type: :component
+
+  slot :inner_block, required: true
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  def cluster(assigns) do
+    ~H"""
+    <div class={["cluster" | List.wrap(@class)]} {@rest}>
+      <%= render_slot(@inner_block) %>
+    </div>
+    """
+  end
+
+  @doc """
   Renders a `DateTime` or `NaiveDateTime` in a `<time>` tag.
 
   ## Examples

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- New component: `Doggo.cluster/1`.
+
 ### Changed
 
 - Significant changes to `Doggo.alert/1` and `Doggo.flash_group/1`.
