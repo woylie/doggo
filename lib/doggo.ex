@@ -3316,7 +3316,7 @@ defmodule Doggo do
     Overrides the default function that retrieves the row ID from a stream item.
     """
 
-  attr :row_click, JS,
+  attr :row_click, :any,
     default: nil,
     doc: """
     Sets the `phx-click` function attribute for each row `td`. Expects to be a
@@ -3353,7 +3353,7 @@ defmodule Doggo do
     """ do
     attr :label, :any, doc: "The content for the header column."
 
-    attr :col_attrs, :string,
+    attr :col_attrs, :list,
       doc: """
       If set, a `<colgroup>` element is rendered and the attributes are added
       to the `<col>` element of the respective column.
@@ -3374,7 +3374,7 @@ defmodule Doggo do
     """ do
     attr :label, :string, doc: "The content for the header column."
 
-    attr :col_attrs, :string,
+    attr :col_attrs, :list,
       doc: """
       If set, a `<colgroup>` element is rendered and the attributes are added
       to the `<col>` element of the respective column.
@@ -3382,7 +3382,6 @@ defmodule Doggo do
   end
 
   slot :foot,
-    default: nil,
     doc: """
     You can optionally add a `foot`. The inner block will be rendered inside
     a `tfoot` element.
