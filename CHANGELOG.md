@@ -32,6 +32,7 @@
 - Box header not rendered if only action slot is used without banner or title.
 - Aria label of breadcrumb component not overridable.
 - Radio groups and checkbox groups always marked as required.
+- Missing datalist option text.
 
 ## [0.3.1] - 2023-12-28
 

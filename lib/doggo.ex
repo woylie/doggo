@@ -2087,7 +2087,12 @@ defmodule Doggo do
 
   attr :id, :any, default: nil
   attr :name, :any
-  attr :label, :string, default: nil
+
+  attr :label, :string,
+    default: nil,
+    doc: """
+    Required for all types except `"hidden"`.
+    """
 
   attr :hide_label, :boolean,
     default: false,
@@ -2121,6 +2126,14 @@ defmodule Doggo do
     doc: "The value that is sent when the checkbox is checked."
 
   attr :checked, :boolean, doc: "The checked attribute for checkboxes."
+
+  attr :on_text, :string,
+    default: "On",
+    doc: "The state text for a switch when on."
+
+  attr :off_text, :string,
+    default: "Off",
+    doc: "The state text for a switch when off."
 
   attr :prompt, :string,
     default: nil,
@@ -2314,9 +2327,9 @@ defmodule Doggo do
             aria-hidden="true"
           >
             <%= if @checked do %>
-              On
+              <%= @on_text %>
             <% else %>
-              Off
+              <%= @off_text %>
             <% end %>
           </span>
         </span>
@@ -2415,7 +2428,7 @@ defmodule Doggo do
         <input
           name={@name}
           id={@id}
-          list={@options && "#{@id}-datalist"}
+          list={@options && "#{@id}_datalist"}
           type={@type}
           value={normalize_value(@type, @value)}
           aria-describedby={input_aria_describedby(@id, @errors, @description)}
@@ -2429,7 +2442,7 @@ defmodule Doggo do
           <%= render_slot(@addon_right) %>
         </div>
       </div>
-      <datalist :if={@options} id={"#{@id}-datalist"}>
+      <datalist :if={@options} id={"#{@id}_datalist"}>
         <.option :for={option <- @options} option={option} />
       </datalist>
       <.field_errors for={@id} errors={@errors} />
@@ -2450,7 +2463,7 @@ defmodule Doggo do
 
   defp option(%{option: _} = assigns) do
     ~H"""
-    <option value={@option}></option>
+    <option value={@option}><%= @option %></option>
     """
   end
 
@@ -2649,9 +2662,18 @@ defmodule Doggo do
   defp translate_error({msg, opts}, gettext_module)
        when is_atom(gettext_module) do
     if count = opts[:count] do
-      Gettext.dngettext(gettext_module, "errors", msg, msg, count, opts)
+      # credo:disable-for-next-line
+      apply(Gettext, :dngettext, [
+        gettext_module,
+        "errors",
+        msg,
+        msg,
+        count,
+        opts
+      ])
     else
-      Gettext.dgettext(gettext_module, "errors", msg, opts)
+      # credo:disable-for-next-line
+      apply(Gettext, :dgettext, [gettext_module, "errors", msg, opts])
     end
   end
 

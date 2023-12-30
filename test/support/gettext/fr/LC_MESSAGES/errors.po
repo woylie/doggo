@@ -1,0 +1,12 @@
+msgid ""
+msgstr ""
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid "weird dog"
+msgstr "chien bizarre"
+
+msgid "only %{count} dog(s) allowed"
+msgid_plural "only %{count} dog(s) allowed"
+msgstr[0] "un seul chien autorisé"
+msgstr[1] "seulement %{count} chiens autorisés"
