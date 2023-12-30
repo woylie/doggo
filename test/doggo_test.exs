@@ -290,6 +290,124 @@ defmodule DoggoTest do
     end
   end
 
+  describe "avatar/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.avatar src="avatar.png" />
+        """)
+
+      assert attribute(html, "div:root", "class") == "avatar"
+
+      img = find_one(html, ":root > img")
+      assert attribute(img, "src") == "avatar.png"
+      assert attribute(img, "alt") == ""
+      assert attribute(img, "loading") == "lazy"
+    end
+
+    test "with size" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.avatar src="avatar.png" size={:large} />
+        """)
+
+      assert attribute(html, "div:root", "class") == "avatar is-large"
+    end
+
+    test "with circle" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.avatar src="avatar.png" circle />
+        """)
+
+      assert attribute(html, "div:root", "class") == "avatar is-circle"
+    end
+
+    test "with loading" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.avatar src="avatar.png" loading="eager" />
+        """)
+
+      assert attribute(html, ":root > img", "loading") == "eager"
+    end
+
+    test "with alt" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.avatar src="avatar.png" alt="Avatar" />
+        """)
+
+      assert attribute(html, ":root > img", "alt") == "Avatar"
+    end
+
+    test "with text placeholder" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.avatar src={nil} placeholder="A" />
+        """)
+
+      assert Floki.find(html, "img") == []
+      assert text(html, ":root > span") == "A"
+    end
+
+    test "with image placeholder" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.avatar src={nil} placeholder={{:src, "placeholder.png"}} />
+        """)
+
+      assert attribute(html, ":root > img", "src") == "placeholder.png"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.avatar src="avatar.png" class="has-border" />
+        """)
+
+      assert attribute(html, ":root", "class") == "avatar has-border"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.avatar src="avatar.png" class={["has-border", "has-shadow"]} />
+        """)
+
+      assert attribute(html, ":root", "class") == "avatar has-border has-shadow"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.avatar src="avatar.png" data-test="hello" />
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
+    end
+  end
+
   describe "badge/1" do
     test "default" do
       assigns = %{}

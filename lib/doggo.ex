@@ -1355,7 +1355,7 @@ defmodule Doggo do
   """
   @doc type: :component
 
-  attr :src, :string,
+  attr :src, :any,
     default: nil,
     doc: """
     The URL of the avatar image. If `nil`, the component will use the value
@@ -1438,7 +1438,7 @@ defmodule Doggo do
 
   defp inner_avatar(assigns) do
     ~H"""
-    <%= @placeholder %>
+    <span><%= @placeholder %></span>
     """
   end
 
