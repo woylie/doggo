@@ -1607,6 +1607,21 @@ defmodule DoggoTest do
     end
   end
 
+  describe "field_description/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.field_description for="some-input">text</Doggo.field_description>
+        """)
+
+      div = find_one(html, "div:root")
+      assert attribute(div, "class") == "field-description"
+      assert attribute(div, "id") == "some-input_description"
+    end
+  end
+
   describe "field_errors/1" do
     test "without errors" do
       assigns = %{}

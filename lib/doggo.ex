@@ -2176,7 +2176,9 @@ defmodule Doggo do
         <%= @label %>
       </.label>
       <.field_errors for={@id} errors={@errors} />
-      <.field_description for={@id} description={@description} />
+      <.field_description :if={@description != []} for={@id}>
+        <%= render_slot(@description) %>
+      </.field_description>
     </div>
     """
   end
@@ -2203,7 +2205,9 @@ defmodule Doggo do
         </div>
       </fieldset>
       <.field_errors for={@id} errors={@errors} />
-      <.field_description for={@id} description={@description} />
+      <.field_description :if={@description != []} for={@id}>
+        <%= render_slot(@description) %>
+      </.field_description>
     </div>
     """
   end
@@ -2229,7 +2233,9 @@ defmodule Doggo do
         </div>
       </fieldset>
       <.field_errors for={@id} errors={@errors} />
-      <.field_description for={@id} description={@description} />
+      <.field_description :if={@description != []} for={@id}>
+        <%= render_slot(@description) %>
+      </.field_description>
     </div>
     """
   end
@@ -2270,7 +2276,9 @@ defmodule Doggo do
         </span>
       </.label>
       <.field_errors for={@id} errors={@errors} />
-      <.field_description for={@id} description={@description} />
+      <.field_description :if={@description != []} for={@id}>
+        <%= render_slot(@description) %>
+      </.field_description>
     </div>
     """
   end
@@ -2299,7 +2307,9 @@ defmodule Doggo do
         </select>
       </div>
       <.field_errors for={@id} errors={@errors} />
-      <.field_description for={@id} description={@description} />
+      <.field_description :if={@description != []} for={@id}>
+        <%= render_slot(@description) %>
+      </.field_description>
     </div>
     """
   end
@@ -2322,7 +2332,9 @@ defmodule Doggo do
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
       <.field_errors for={@id} errors={@errors} />
-      <.field_description for={@id} description={@description} />
+      <.field_description :if={@description != []} for={@id}>
+        <%= render_slot(@description) %>
+      </.field_description>
     </div>
     """
   end
@@ -2375,7 +2387,9 @@ defmodule Doggo do
         <.option :for={option <- @options} option={option} />
       </datalist>
       <.field_errors for={@id} errors={@errors} />
-      <.field_description for={@id} description={@description} />
+      <.field_description :if={@description != []} for={@id}>
+        <%= render_slot(@description) %>
+      </.field_description>
     </div>
     """
   end
@@ -2568,16 +2582,12 @@ defmodule Doggo do
   @doc type: :form
 
   attr :for, :string, required: true, doc: "The ID of the input."
-  attr :description, :any
+  slot :inner_block, required: true
 
   def field_description(assigns) do
     ~H"""
-    <div
-      :if={@description != []}
-      id={field_description_id(@for)}
-      class="field-description"
-    >
-      <%= render_slot(@description) %>
+    <div id={field_description_id(@for)} class="field-description">
+      <%= render_slot(@inner_block) %>
     </div>
     """
   end

@@ -14,6 +14,7 @@
 - Add required `label` attribute to `Doggo.navbar/1`.
 - Add `class` attribute to `:item` slot of `Doggo.navbar_items/1`.
 - Add `required_title` attribute to `Doggo.label/1`.
+- Change `description` attribute of `Doggo.field_description/1` to inner block.
 
 ### Fixed
 
