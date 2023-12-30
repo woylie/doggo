@@ -1257,6 +1257,19 @@ defmodule Doggo do
 
   For supplementary information that doesn't require the user's immediate
   attention, use `callout/1` instead.
+
+  ## Examples
+
+  Minimal example:
+
+      <Doggo.alert id="some-alert"></Doggo.alert>
+
+  With title, icon and level:
+
+      <Doggo.alert id="some-alert" level={:info} title="Info">
+        message
+        <:icon><Heroicon.light_bulb /></:icon>
+      </Doggo.alert>
   """
   @doc type: :component
 
