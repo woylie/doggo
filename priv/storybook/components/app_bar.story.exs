@@ -72,10 +72,6 @@ defmodule Storybook.Components.AppBar do
     [
       %Variation{
         id: :default,
-        description: """
-        Note that icons have been omitted from this example,
-        since Doggo does not ship with a default icon library.
-        """,
         attributes: %{
           title: "Page title"
         },

@@ -7,6 +7,7 @@ defmodule Storybook.Components.Navbar do
     [
       %Variation{
         id: :default,
+        attributes: %{label: "Main"},
         slots: [
           """
           <:brand>
@@ -38,6 +39,7 @@ defmodule Storybook.Components.Navbar do
       },
       %Variation{
         id: :multiple_navigation_sections,
+        attributes: %{label: "Main"},
         slots: [
           """
           <:brand>
