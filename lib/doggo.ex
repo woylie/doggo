@@ -1912,12 +1912,16 @@ defmodule Doggo do
     ],
     default: nil
 
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
   attr :rest, :global, doc: "Any additional HTML attributes."
   slot :caption
 
   def image(assigns) do
     ~H"""
-    <figure {@rest}>
+    <figure class={["image" | List.wrap(@class)]} {@rest}>
       <.frame ratio={@ratio}>
         <img
           src={@src}
