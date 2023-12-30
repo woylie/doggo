@@ -1019,23 +1019,28 @@ defmodule Doggo do
   """
   @doc type: :component
 
+  attr :id, :string, default: nil
+  attr :label, :string, required: true
+
   attr :rest, :global, doc: "Any additional HTML attributes."
 
   slot :title, doc: "An optional slot for the title of the menu."
 
   slot :item, required: true, doc: "Items" do
+    attr :class, :string
     attr :current_page, :boolean
   end
 
   def drawer_nav(assigns) do
     ~H"""
-    <nav {@rest}>
+    <nav id={@id} aria-label={@label} {@rest}>
       <div :if={@title != []} class="drawer-nav-title">
         <%= render_slot(@title) %>
       </div>
       <ul>
         <li
           :for={item <- @item}
+          class={item[:class]}
           aria-current={Map.get(item, :current_page, false) && "page"}
         >
           <%= render_slot(item) %>
@@ -1067,20 +1072,24 @@ defmodule Doggo do
   """
   @doc type: :component
 
+  attr :id, :string, required: true
+
   slot :title, doc: "An optional slot for the title of the nested menu section."
 
   slot :item, required: true, doc: "Items" do
+    attr :class, :string
     attr :current_page, :boolean
   end
 
   def drawer_nested_nav(assigns) do
     ~H"""
-    <div :if={@title != []} class="drawer-nav-title">
+    <div :if={@title != []} id={"#{@id}-title"} class="drawer-nav-title">
       <%= render_slot(@title) %>
     </div>
-    <ul>
+    <ul id={@id} aria-labelledby={@title != [] && "#{@id}-title"}>
       <li
         :for={item <- @item}
+        class={item[:class]}
         aria-current={Map.get(item, :current_page, false) && "page"}
       >
         <%= render_slot(item) %>

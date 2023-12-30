@@ -1588,6 +1588,166 @@ defmodule DoggoTest do
     end
   end
 
+  describe "drawer_nav/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer_nav id="main-nav" label="Main">
+          <:item>item</:item>
+        </Doggo.drawer_nav>
+        """)
+
+      div = find_one(html, "nav:root")
+      assert attribute(div, "id") == "main-nav"
+      assert attribute(div, "aria-label") == "Main"
+      assert Floki.find(html, ".drawer-nav-title") == []
+      assert text(html, ":root > ul > li") == "item"
+    end
+
+    test "with current page" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer_nav id="main-nav" label="Main">
+          <:item current_page>item</:item>
+        </Doggo.drawer_nav>
+        """)
+
+      assert attribute(html, ":root > ul > li", "aria-current") == "page"
+    end
+
+    test "with title" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer_nav id="main-nav" label="Main">
+          <:title>some title</:title>
+          <:item>item</:item>
+        </Doggo.drawer_nav>
+        """)
+
+      assert text(html, ":root > div.drawer-nav-title") == "some title"
+    end
+
+    test "with item class" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer_nav id="main-nav" label="Main">
+          <:item class="is-rad">item</:item>
+        </Doggo.drawer_nav>
+        """)
+
+      assert attribute(html, "li", "class") == "is-rad"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer_nav id="main-nav" label="Main" class="is-rad">
+          <:item>item</:item>
+        </Doggo.drawer_nav>
+        """)
+
+      assert attribute(html, ":root", "class") == "is-rad"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer_nav id="main-nav" label="Main" class={["hey", "ho"]}>
+          <:item>item</:item>
+        </Doggo.drawer_nav>
+        """)
+
+      assert attribute(html, ":root", "class") == "hey ho"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer_nav id="main-nav" label="Main" data-test="hello">
+          <:item>item</:item>
+        </Doggo.drawer_nav>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
+    end
+  end
+
+  describe "drawer_nested_nav/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer_nested_nav id="nested">
+          <:item>item</:item>
+        </Doggo.drawer_nested_nav>
+        """)
+
+      assert attribute(html, "ul:root", "id") == "nested"
+      li = find_one(html, "ul:root li")
+      assert attribute(li, "aria-labelledby") == nil
+      assert text(li) == "item"
+      assert Floki.find(html, ".drawer-nav-title") == []
+    end
+
+    test "with current page" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer_nested_nav id="nested">
+          <:item current_page>item</:item>
+        </Doggo.drawer_nested_nav>
+        """)
+
+      assert attribute(html, "ul:root > li", "aria-current") == "page"
+    end
+
+    test "with title" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer_nested_nav id="nested">
+          <:title>some title</:title>
+          <:item>item</:item>
+        </Doggo.drawer_nested_nav>
+        """)
+
+      div = find_one(html, "div.drawer-nav-title")
+      assert attribute(div, "id") == "nested-title"
+      assert text(div) == "some title"
+      assert attribute(html, "ul:root", "aria-labelledby") == "nested-title"
+    end
+
+    test "with item class" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.drawer_nested_nav id="nested">
+          <:item class="is-rad">item</:item>
+        </Doggo.drawer_nested_nav>
+        """)
+
+      assert attribute(html, "li", "class") == "is-rad"
+    end
+  end
+
   describe "drawer_section/1" do
     test "default" do
       assigns = %{}

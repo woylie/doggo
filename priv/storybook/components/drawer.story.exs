@@ -17,14 +17,14 @@ defmodule Storybook.Components.Drawer do
           """,
           """
           <:top>
-            <Doggo.drawer_nav aria-label="Main navigation">
+            <Doggo.drawer_nav id="main-nav" label="Main">
               <:item>
                 <Phoenix.Component.link navigate="/dashboard">
                   Dashboard
                 </Phoenix.Component.link>
               </:item>
               <:item>
-                <Doggo.drawer_nested_nav>
+                <Doggo.drawer_nested_nav id="main-nav-content">
                   <:title>Content</:title>
                   <:item current_page>
                     <Phoenix.Component.link navigate="/posts">
@@ -39,7 +39,7 @@ defmodule Storybook.Components.Drawer do
                 </Doggo.drawer_nested_nav>
               </:item>
             </Doggo.drawer_nav>
-            <Doggo.drawer_section>
+            <Doggo.drawer_section id="drawer-search">
               <:title>Search</:title>
               <:item><input type="search" placeholder="Search" /></:item>
             </Doggo.drawer_section>
@@ -47,7 +47,7 @@ defmodule Storybook.Components.Drawer do
           """,
           """
           <:bottom>
-            <Doggo.drawer_nav aria-label="User menu">
+            <Doggo.drawer_nav id="user-menu" label="User menu">
               <:item>
                 <Phoenix.Component.link navigate="/settings">
                   Settings

@@ -21,6 +21,10 @@
 - Change `description` attribute of `Doggo.field_description/1` to inner block.
 - Require `id` attribute for `Doggo.drawer_section/1`.
 - Add `aria-labelledby` attribute to `Doggo.drawer_section/1`.
+- Require `id` and `label` attributes for `Doggo.drawer_nav/1`.
+- Add `class` attribute to `Doggo.drawer_nav` item slot.
+- Require `id` attribute for `Doggo.drawer_nested_nav/1`.
+- Add `class` attribute to `Doggo.drawer_nested_nav` item slot.
 
 ### Fixed
 
