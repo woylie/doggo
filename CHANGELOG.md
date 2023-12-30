@@ -11,6 +11,7 @@
 - Add `<span>` around text placeholder for `Doggo.avatar/1`.
 - Add base class to `Doggo.image/1`, add `class` attribute.
 - Rename `Doggo.frame/1` ratio classes from `x-to-x` to `x-by-x`.
+- Add required `label` attribute to `Doggo.navbar/1`.
 
 ### Fixed
 
