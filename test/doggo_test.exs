@@ -1841,7 +1841,7 @@ defmodule DoggoTest do
         <Doggo.frame ratio={{16, 9}}>image</Doggo.frame>
         """)
 
-      assert attribute(html, "div", "class") == "frame is-16-to-9"
+      assert attribute(html, "div", "class") == "frame is-16-by-9"
     end
 
     test "with circle" do
