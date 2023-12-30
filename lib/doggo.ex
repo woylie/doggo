@@ -2187,7 +2187,7 @@ defmodule Doggo do
       <fieldset class="checkbox-group">
         <legend>
           <%= @label %>
-          <.required_mark required={@validations[:required] || false} />
+          <.required_mark :if={@validations[:required]} />
         </legend>
         <div>
           <input type="hidden" name={@name <> "[]"} value="" />
@@ -2214,7 +2214,7 @@ defmodule Doggo do
       <fieldset class="radio-group">
         <legend>
           <%= @label %>
-          <.required_mark required={@validations[:required] || false} />
+          <.required_mark :if={@validations[:required]} />
         </legend>
         <div>
           <.radio
