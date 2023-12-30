@@ -363,6 +363,17 @@ defmodule DoggoTest do
       assert text(html, ":root > span") == "A"
     end
 
+    test "without image or placeholder" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.avatar src={nil} />
+        """)
+
+      assert html == []
+    end
+
     test "with image placeholder" do
       assigns = %{}
 
