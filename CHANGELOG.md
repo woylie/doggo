@@ -25,6 +25,7 @@
 - Add `class` attribute to `Doggo.drawer_nav` item slot.
 - Require `id` attribute for `Doggo.drawer_nested_nav/1`.
 - Add `class` attribute to `Doggo.drawer_nested_nav` item slot.
+- Add `close_label` attribute to `Doggo.modal/1`.
 
 ### Fixed
 

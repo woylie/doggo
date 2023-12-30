@@ -2654,6 +2654,125 @@ defmodule DoggoTest do
     end
   end
 
+  describe "modal/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.modal id="pet-modal" on_cancel={JS.push("cancel")}>
+          <:title>Edit dog</:title>
+          dog-form
+          <:footer>paw</:footer>
+        </Doggo.modal>
+        """)
+
+      dialog = find_one(html, "dialog:root")
+      assert attribute(dialog, "id") == "pet-modal"
+      assert attribute(dialog, "class") == "modal"
+      assert attribute(dialog, "aria-modal") == "false"
+      assert attribute(dialog, "open") == nil
+      assert attribute(dialog, "phx-mounted") == nil
+
+      a = find_one(html, ":root > div > article > header > a.modal-close")
+      assert attribute(a, "aria-label") == "Close"
+      assert text(a, "span") == "close"
+
+      h2 = find_one(html, ":root > div > article > header > h2")
+      assert text(h2) == "Edit dog"
+
+      assert text(html, "article > .modal-content") == "dog-form"
+      assert text(html, "article > footer") == "paw"
+    end
+
+    test "opened" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.modal id="pet-modal" open>
+          <:title>Edit dog</:title>
+          dog-form
+        </Doggo.modal>
+        """)
+
+      dialog = find_one(html, "dialog:root")
+      assert attribute(dialog, "aria-modal") == "true"
+      assert attribute(dialog, "open") == "open"
+    end
+
+    test "with close slot" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.modal id="pet-modal" open>
+          <:title>Edit dog</:title>
+          dog-form
+          <:close>X</:close>
+        </Doggo.modal>
+        """)
+
+      assert text(html, "a.modal-close") == "X"
+    end
+
+    test "with close label" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.modal id="pet-modal" close_label="Cancel" open>
+          <:title>Edit dog</:title>
+          dog-form
+        </Doggo.modal>
+        """)
+
+      assert attribute(html, "a.modal-close", "aria-label") == "Cancel"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.modal id="pet-modal" class="is-narrow">
+          <:title>Edit dog</:title>
+          dog-form
+        </Doggo.modal>
+        """)
+
+      assert attribute(html, ":root", "class") == "modal is-narrow"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.modal id="pet-modal" class={["is-narrow", "is-dark"]}>
+          <:title>Edit dog</:title>
+          dog-form
+        </Doggo.modal>
+        """)
+
+      assert attribute(html, ":root", "class") == "modal is-narrow is-dark"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.modal id="pet-modal" data-test="hello">
+          <:title>Edit dog</:title>
+          dog-form
+        </Doggo.modal>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
+    end
+  end
+
   describe "navbar/1" do
     test "default" do
       assigns = %{}
