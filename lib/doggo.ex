@@ -2503,6 +2503,12 @@ defmodule Doggo do
     default: false,
     doc: "If set to `true`, a 'required' mark is rendered."
 
+  attr :required_title, :any,
+    default: "required",
+    doc: """
+    Sets the `title` attribute of the required mark.
+    """
+
   attr :visually_hidden, :boolean,
     default: false,
     doc: """
@@ -2525,14 +2531,16 @@ defmodule Doggo do
       {@rest}
     >
       <%= render_slot(@inner_block) %>
-      <.required_mark :if={@required} />
+      <.required_mark :if={@required} title={@required_title} />
     </label>
     """
   end
 
+  attr :title, :string, default: "required"
+
   defp required_mark(assigns) do
     ~H"""
-    <abbr class="label-required" aria-hidden="true" title="required">*</abbr>
+    <abbr class="label-required" aria-hidden="true" title={@title}>*</abbr>
     """
   end
 

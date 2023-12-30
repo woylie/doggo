@@ -13,6 +13,7 @@
 - Rename `Doggo.frame/1` ratio classes from `x-to-x` to `x-by-x`.
 - Add required `label` attribute to `Doggo.navbar/1`.
 - Add `class` attribute to `:item` slot of `Doggo.navbar_items/1`.
+- Add `required_title` attribute to `Doggo.label/1`.
 
 ### Fixed
 
