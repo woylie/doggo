@@ -9,6 +9,8 @@
 - Add `:normal` as size for `Doggo.icon_sprite/1`.
 - Remove `:error` variant in favor of `:danger`.
 - Add `<span>` around text placeholder for `Doggo.avatar/1`.
+- Add base class to `Doggo.image/1`, add `class` attribute.
+- Rename `Doggo.frame/1` ratio classes from `x-to-x` to `x-by-x`.
 
 ### Fixed
 
