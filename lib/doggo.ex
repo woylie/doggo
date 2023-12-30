@@ -2850,6 +2850,16 @@ defmodule Doggo do
   """
   @doc type: :component
 
+  attr :label, :string,
+    required: true,
+    doc: """
+    Aria label for the `<nav>` element (e.g. "Main"). The label is especially
+    important if you have multiple `<nav>` elements on the same page. If the
+    page is localized, the label should be translated, too. Do not include
+    "navigation" in the label, since screen readers will already announce the
+    "navigation" role as part of the label.
+    """
+
   attr :class, :any,
     default: [],
     doc: "Additional CSS classes. Can be a string or a list of strings."
@@ -2859,6 +2869,7 @@ defmodule Doggo do
   slot :brand, doc: "Slot for the brand name or logo."
 
   slot :inner_block,
+    required: true,
     doc: """
     Slot for navbar items. Use the `navbar_items` component here to render
     navigation links or other controls.
@@ -2866,7 +2877,7 @@ defmodule Doggo do
 
   def navbar(assigns) do
     ~H"""
-    <nav class={["navbar" | List.wrap(@class)]} {@rest}>
+    <nav class={["navbar" | List.wrap(@class)]} aria-label={@label} {@rest}>
       <div :if={@brand != []} class="navbar-brand">
         <%= render_slot(@brand) %>
       </div>

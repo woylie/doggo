@@ -2223,6 +2223,73 @@ defmodule DoggoTest do
     end
   end
 
+  describe "navbar/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.navbar label="Main">content</Doggo.navbar>
+        """)
+
+      nav = find_one(html, "nav:root")
+      assert attribute(nav, "class") == "navbar"
+      assert attribute(nav, "aria-label") == "Main"
+      assert text(nav) == "content"
+      assert Floki.find(html, ".navbar-brand") == []
+    end
+
+    test "with brand" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.navbar label="Main">
+          <:brand>Doggo</:brand>
+          content
+        </Doggo.navbar>
+        """)
+
+      div = find_one(html, ":root > .navbar-brand")
+      assert text(div) == "Doggo"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.navbar label="Main" class="is-narrow">content</Doggo.navbar>
+        """)
+
+      assert attribute(html, ":root", "class") == "navbar is-narrow"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.navbar label="Main" class={["is-narrow", "is-dark"]}>
+          content
+        </Doggo.navbar>
+        """)
+
+      assert attribute(html, ":root", "class") == "navbar is-narrow is-dark"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.navbar label="Main" data-test="hello">content</Doggo.navbar>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
+    end
+  end
+
   describe "page_header/1" do
     test "default" do
       assigns = %{}
