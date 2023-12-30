@@ -8,6 +8,7 @@
 - Require `id` attribute for `Doggo.callout/1`.
 - Add `:normal` as size for `Doggo.icon_sprite/1`.
 - Remove `:error` variant in favor of `:danger`.
+- Add `<span>` around text placeholder for `Doggo.avatar/1`.
 
 ### Fixed
 
