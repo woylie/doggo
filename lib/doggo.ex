@@ -1104,6 +1104,8 @@ defmodule Doggo do
   """
   @doc type: :component
 
+  attr :id, :string, required: true
+
   attr :class, :any,
     default: [],
     doc: "Additional CSS classes. Can be a string or a list of strings."
@@ -1119,8 +1121,13 @@ defmodule Doggo do
 
   def drawer_section(assigns) do
     ~H"""
-    <div class={["drawer-section" | List.wrap(@class)]} {@rest}>
-      <div :if={@title != []} class="drawer-section-title">
+    <div
+      id={@id}
+      class={["drawer-section" | List.wrap(@class)]}
+      aria-labelledby={@title != [] && "#{@id}-title"}
+      {@rest}
+    >
+      <div :if={@title != []} id={"#{@id}-title"} class="drawer-section-title">
         <%= render_slot(@title) %>
       </div>
       <div
