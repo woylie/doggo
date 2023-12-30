@@ -10,9 +10,7 @@ defmodule Storybook.Components.FieldDescription do
         attributes: %{for: "user_name"},
         slots: [
           """
-          <:description>
-            only lowercase letters and numbers, max. 30 characters
-          </:description>
+          only lowercase letters and numbers, max. 30 characters
           """
         ]
       }
