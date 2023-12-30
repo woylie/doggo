@@ -413,6 +413,8 @@ defmodule Doggo do
   @doc """
   Renders a button.
 
+  See also `button_link/1` and `toggle_button/1`.
+
   ## Examples
 
       <Doggo.button>Confirm</Doggo.button>
@@ -3558,6 +3560,95 @@ defmodule Doggo do
         </li>
       </ul>
     </nav>
+    """
+  end
+
+  @doc """
+  Renders a button that toggles a state.
+
+  ## Examples
+
+  With a boolean assign `@muted` and an event name:
+
+      <Doggo.toggle_button on_click="toggle-mute" pressed={@muted}>
+        Mute
+      </Doggo.toggle_button>
+
+  With a `Phoenix.LiveView.JS` command:
+
+    <Doggo.toggle_button on_click={JS.push("toggle-mute")} pressed={@muted}>
+      Mute
+    </Doggo.toggle_button>
+
+  ## Accessibility
+
+  The button state is conveyed via the `aria-pressed` attribute and the button
+  styling. The button text should not change depending on the state. You may
+  however include an icon that changes depending on the state.
+
+  ## CSS
+
+  A toggle button can be identified with an attribute selector for the
+  `aria-pressed` attribute.
+
+  To select any toggle button:
+
+  ```css
+  // any toggle button regardless of state
+  button[aria-pressed] {}
+
+  // unpressed toggle buttons
+  button[aria-pressed="false"] {}
+
+  // pressed toggle buttons
+  button[aria-pressed="true"] {}
+  ```
+  """
+  @doc type: :component
+
+  attr :pressed, :boolean, default: false
+
+  attr :on_click, :any,
+    required: true,
+    doc: """
+    Phoenix.LiveView.JS command or event name to trigger when the button is
+    clicked.
+    """
+
+  attr :variant, :atom,
+    values: [:primary, :secondary, :info, :success, :warning, :danger],
+    default: :primary
+
+  attr :fill, :atom, values: [:solid, :outline, :text], default: :solid
+
+  attr :size, :atom,
+    values: [:small, :normal, :medium, :large],
+    default: :normal
+
+  attr :shape, :atom, values: [nil, :circle, :pill], default: nil
+  attr :disabled, :boolean, default: nil
+  attr :rest, :global
+
+  slot :inner_block, required: true
+
+  def toggle_button(assigns) do
+    ~H"""
+    <button
+      type="button"
+      phx-click={@on_click}
+      aria-pressed={to_string(@pressed)}
+      tabindex="0"
+      class={[
+        variant_class(@variant),
+        size_class(@size),
+        shape_class(@shape),
+        fill_class(@fill)
+      ]}
+      disabled={@disabled}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </button>
     """
   end
 

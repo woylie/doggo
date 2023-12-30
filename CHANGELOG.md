@@ -5,6 +5,7 @@
 ### Added
 
 - New component: `Doggo.cluster/1`.
+- New component: `Doggo.toggle_button/1`.
 
 ### Changed
 
