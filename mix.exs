@@ -63,7 +63,7 @@ defmodule Doggo.MixProject do
 
   defp description do
     """
-    Collection of unstyled Phoenix components
+    Headless UI components for Phoenix
     """
   end
 
