@@ -24,7 +24,9 @@ end
 To allow Doggo to translate certain strings such as form field errors with
 Gettext, set your Gettext module in `config/config.exs`:
 
-    config :doggo, gettext: MyApp.Gettext
+```elixir
+config :doggo, gettext: MyApp.Gettext
+```
 
 This only affects the `input` component. If you prefer, you can pass the
 gettext module as an attribute to the component instead.
