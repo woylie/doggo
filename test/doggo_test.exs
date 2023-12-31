@@ -4456,7 +4456,6 @@ defmodule DoggoTest do
         """)
 
       button = find_one(html, "button:root")
-      assert attribute(button, "tabindex") == "0"
       assert attribute(button, "type") == "button"
       assert attribute(button, "aria-pressed") == "false"
       assert attribute(button, "phx-click") == "toggle-mute"
@@ -4474,7 +4473,6 @@ defmodule DoggoTest do
         """)
 
       button = find_one(html, "button:root")
-      assert attribute(button, "tabindex") == "0"
       assert attribute(button, "type") == "button"
       assert attribute(button, "aria-pressed") == "true"
       assert attribute(button, "phx-click") == "toggle-mute"

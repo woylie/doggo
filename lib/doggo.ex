@@ -3827,7 +3827,6 @@ defmodule Doggo do
       type="button"
       phx-click={@on_click}
       aria-pressed={to_string(@pressed)}
-      tabindex="0"
       class={[
         variant_class(@variant),
         size_class(@size),
