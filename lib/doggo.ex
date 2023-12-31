@@ -2683,6 +2683,14 @@ defmodule Doggo do
 
   @doc """
   Renders the label for an input.
+
+  ## Example
+
+  ```heex
+  <Doggo.label for="name" required>
+    Name
+  </Doggo.label>
+  ```
   """
   @doc type: :form
 
@@ -2735,6 +2743,12 @@ defmodule Doggo do
 
   @doc """
   Renders the errors for an input.
+
+  ## Example
+
+  ```heex
+  <Doggo.field_errors for="name" errors={["too many characters"]} />
+  ```
   """
   @doc type: :form
 
@@ -2753,6 +2767,14 @@ defmodule Doggo do
 
   @doc """
   Renders the description of an input.
+
+  ## Example
+
+  ```heex
+  <Doggo.field_description for="name">
+    max. 100 characters
+  </Doggo.field_description>
+  ```
   """
   @doc type: :form
 
