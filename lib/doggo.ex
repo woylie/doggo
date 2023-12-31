@@ -18,17 +18,19 @@ defmodule Doggo do
 
   ## Example
 
-      <Doggo.action_bar>
-        <:item label="Edit" on_click={JS.push("edit")}>
-          <Doggo.icon size={:small}><Lucideicons.pencil aria-hidden /></Doggo.icon>
-        </:item>
-        <:item label="Move" on_click={JS.push("move")}>
-          <Doggo.icon size={:small}><Lucideicons.move aria-hidden /></Doggo.icon>
-        </:item>
-        <:item label="Archive" on_click={JS.push("archive")}>
-          <Doggo.icon size={:small}><Lucideicons.archive aria-hidden /></Doggo.icon>
-        </:item>
-      </Doggo.action_bar>
+  ```heex
+  <Doggo.action_bar>
+    <:item label="Edit" on_click={JS.push("edit")}>
+      <Doggo.icon size={:small}><Lucideicons.pencil aria-hidden /></Doggo.icon>
+    </:item>
+    <:item label="Move" on_click={JS.push("move")}>
+      <Doggo.icon size={:small}><Lucideicons.move aria-hidden /></Doggo.icon>
+    </:item>
+    <:item label="Archive" on_click={JS.push("archive")}>
+      <Doggo.icon size={:small}><Lucideicons.archive aria-hidden /></Doggo.icon>
+    </:item>
+  </Doggo.action_bar>
+  ```
   """
   @doc type: :component
 
@@ -59,17 +61,19 @@ defmodule Doggo do
 
   ## Usage
 
-      <Doggo.app_bar title="Page title">
-        <:navigation label="Open menu" on_click={JS.push("toggle-menu")}>
-          <Doggo.icon><Lucideicons.menu aria-hidden /></Doggo.icon>
-        </:navigation>
-        <:action label="Search" on_click={JS.push("search")}>
-          <Doggo.icon><Lucideicons.search aria-hidden /></Doggo.icon>
-        </:action>
-        <:action label="Like" on_click={JS.push("like")}>
-          <Doggo.icon><Lucideicons.heart aria-hidden /></Doggo.icon>
-        </:action>
-      </Doggo.app_bar>
+  ```heex
+  <Doggo.app_bar title="Page title">
+    <:navigation label="Open menu" on_click={JS.push("toggle-menu")}>
+      <Doggo.icon><Lucideicons.menu aria-hidden /></Doggo.icon>
+    </:navigation>
+    <:action label="Search" on_click={JS.push("search")}>
+      <Doggo.icon><Lucideicons.search aria-hidden /></Doggo.icon>
+    </:action>
+    <:action label="Like" on_click={JS.push("like")}>
+      <Doggo.icon><Lucideicons.heart aria-hidden /></Doggo.icon>
+    </:action>
+  </Doggo.app_bar>
+  ```
   """
   @doc type: :component
 
@@ -135,7 +139,9 @@ defmodule Doggo do
 
   ## Examples
 
-      <Doggo.badge>8</Doggo.badge>
+  ```heex
+  <Doggo.badge>8</Doggo.badge>
+  ```
   """
   @doc type: :component
 
@@ -162,29 +168,31 @@ defmodule Doggo do
 
   ## Example
 
-      <Doggo.bottom_navigation current_value={@view}>
-        <:item
-          label="Profile"
-          navigate={~p"/pets/\#{@pet}"}
-          value={Profile}
-        >
-          <Lucideicons.user aria-hidden="true" />
-        </:item>
-        <:item
-          label="Appointments"
-          navigate={~p"/pets/\#{@pet}/appointments"}
-          value={Appointments}
-        >
-          <Lucideicons.calendar_days aria-hidden="true" />
-        </:item>
-        <:item
-          label="Messages"
-          navigate={~p"/pets/\#{@pet}/messages"}
-          value={Messages}
-        >
-          <Lucideicons.mails aria-hidden="true" />
-        </:item>
-      </Doggo.bottom_navigation>
+  ```heex
+  <Doggo.bottom_navigation current_value={@view}>
+    <:item
+      label="Profile"
+      navigate={~p"/pets/\#{@pet}"}
+      value={Profile}
+    >
+      <Lucideicons.user aria-hidden="true" />
+    </:item>
+    <:item
+      label="Appointments"
+      navigate={~p"/pets/\#{@pet}/appointments"}
+      value={Appointments}
+    >
+      <Lucideicons.calendar_days aria-hidden="true" />
+    </:item>
+    <:item
+      label="Messages"
+      navigate={~p"/pets/\#{@pet}/messages"}
+      value={Messages}
+    >
+      <Lucideicons.mails aria-hidden="true" />
+    </:item>
+  </Doggo.bottom_navigation>
+  ```
   """
   @doc type: :component
 
@@ -274,27 +282,31 @@ defmodule Doggo do
 
   Minimal example with only a box body:
 
-    <Doggo.box>
-      <p>This is a box.</p>
-    </Doggo.box>
+  ```heex
+  <Doggo.box>
+    <p>This is a box.</p>
+  </Doggo.box>
+  ```
 
   With title, banner, action, and footer:
 
-    <Doggo.box>
-      <:title>Profile</:title>
-      <:banner>
-        <img src="banner-image.png" alt="" />
-      </:banner>
-      <:action>
-        <Doggo.button_link patch={~p"/profiles/\#{@profile}/edit}>Edit</Doggo.button_link>
-      </:action>
+  ```heex
+  <Doggo.box>
+    <:title>Profile</:title>
+    <:banner>
+      <img src="banner-image.png" alt="" />
+    </:banner>
+    <:action>
+      <Doggo.button_link patch={~p"/profiles/\#{@profile}/edit"}>Edit</Doggo.button_link>
+    </:action>
 
-      <p>This is a profile.</p>
+    <p>This is a profile.</p>
 
-      <:footer>
-        <p>Last edited: <%= @profile.updated_at %></p>
-      </:footer>
-    </Doggo.box>
+    <:footer>
+      <p>Last edited: <%= @profile.updated_at %></p>
+    </:footer>
+  </Doggo.box>
+  ```
   """
   @doc type: :component
 
@@ -344,11 +356,13 @@ defmodule Doggo do
 
   ## Example
 
-      <Doggo.breadcrumb>
-        <:item patch="/categories">Categories</:item>
-        <:item patch="/categories/1">Reviews</:item>
-        <:item patch="/categories/1/articles/1">The Movie</:item>
-      </Doggo.breadcrumb>
+  ```heex
+  <Doggo.breadcrumb>
+    <:item patch="/categories">Categories</:item>
+    <:item patch="/categories/1">Reviews</:item>
+    <:item patch="/categories/1/articles/1">The Movie</:item>
+  </Doggo.breadcrumb>
+  ```
   """
   @doc type: :component
 
@@ -413,20 +427,26 @@ defmodule Doggo do
   @doc """
   Renders a button.
 
+  See also `button_link/1` and `toggle_button/1`.
+
   ## Examples
 
-      <Doggo.button>Confirm</Doggo.button>
+  ```heex
+  <Doggo.button>Confirm</Doggo.button>
 
-      <Doggo.button type="submit" variant={:secondary} size={:medium} shape={:pill}>
-        Submit
-      </Doggo.button>
+  <Doggo.button type="submit" variant={:secondary} size={:medium} shape={:pill}>
+    Submit
+  </Doggo.button>
+  ```
 
   To indicate a loading state, for example when submitting a form, use the
   `aria-busy` attribute:
 
-      <Doggo.button aria-label="Saving..." aria-busy={true}>
-        click me
-      </Doggo.button>
+  ```heex
+  <Doggo.button aria-label="Saving..." aria-busy={true}>
+    click me
+  </Doggo.button>
+  ```
   """
   @doc type: :component
 
@@ -471,14 +491,16 @@ defmodule Doggo do
 
   ## Examples
 
-      <Doggo.button_link patch={~p"/confirm"}>Confirm</.button>
+  ```heex
+  <Doggo.button_link patch={~p"/confirm"}>Confirm</.button>
 
-      <Doggo.button_link
-        navigate={~p"/registration"}
-        variant={:primary}
-        shape={:pill}>
-        Submit
-      </Doggo.button>
+  <Doggo.button_link
+    navigate={~p"/registration"}
+    variant={:primary}
+    shape={:pill}>
+    Submit
+  </Doggo.button>
+  ```
   """
   @doc type: :component
 
@@ -546,10 +568,12 @@ defmodule Doggo do
 
   ## Example
 
-      <Doggo.cluster>
-        <div>some item</div>
-        <div>some other item</div>
-      </Doggo.cluster>
+  ```heex
+  <Doggo.cluster>
+    <div>some item</div>
+    <div>some other item</div>
+  </Doggo.cluster>
+  ```
   """
   @doc type: :component
 
@@ -576,28 +600,36 @@ defmodule Doggo do
 
   By default, the given value is formatted for display with `to_string/1`. This:
 
-      <Doggo.datetime value={~U[2023-02-05 12:22:06.003Z]} />
+  ```heex
+  <Doggo.datetime value={~U[2023-02-05 12:22:06.003Z]} />
+  ```
 
   Will be rendered as:
 
-      <time datetime="2023-02-05T12:22:06.003Z">
-        2023-02-05 12:22:06.003Z
-      </time>
+  ```html
+  <time datetime="2023-02-05T12:22:06.003Z">
+    2023-02-05 12:22:06.003Z
+  </time>
+  ```
 
   You can also pass a custom formatter function. For example, if you are using
   [ex_cldr_dates_times](https://hex.pm/packages/ex_cldr_dates_times) in your
   application, you could do this:
 
-      <Doggo.datetime
-        value={~U[2023-02-05 14:22:06.003Z]}
-        formatter={&MyApp.Cldr.DateTime.to_string!/1}
-      />
+  ```heex
+  <Doggo.datetime
+    value={~U[2023-02-05 14:22:06.003Z]}
+    formatter={&MyApp.Cldr.DateTime.to_string!/1}
+  />
+  ```
 
   Which, depending on your locale, may be rendered as:
 
-      <time datetime="2023-02-05T14:22:06.003Z">
-        Feb 2, 2023, 14:22:06 PM
-      </time>
+  ```html
+  <time datetime="2023-02-05T14:22:06.003Z">
+    Feb 2, 2023, 14:22:06 PM
+  </time>
+  ```
   """
   @doc type: :component
 
@@ -704,28 +736,36 @@ defmodule Doggo do
 
   By default, the given value is formatted for display with `to_string/1`. This:
 
-      <Doggo.date value={~D[2023-02-05]} />
+  ```heex
+  <Doggo.date value={~D[2023-02-05]} />
+  ```
 
   Will be rendered as:
 
-      <time datetime="2023-02-05">
-        2023-02-05
-      </time>
+  ```html
+  <time datetime="2023-02-05">
+    2023-02-05
+  </time>
+  ```
 
   You can also pass a custom formatter function. For example, if you are using
   [ex_cldr_dates_times](https://hex.pm/packages/ex_cldr_dates_times) in your
   application, you could do this:
 
-      <Doggo.date
-        value={~D[2023-02-05]}
-        formatter={&MyApp.Cldr.Date.to_string!/1}
-      />
+  ```heex
+  <Doggo.date
+    value={~D[2023-02-05]}
+    formatter={&MyApp.Cldr.Date.to_string!/1}
+  />
+  ```
 
   Which, depending on your locale, may be rendered as:
 
-      <time datetime="2023-02-05">
-        Feb 2, 2023
-      </time>
+  ```html
+  <time datetime="2023-02-05">
+    Feb 2, 2023
+  </time>
+  ```
   """
   @doc type: :component
 
@@ -793,28 +833,36 @@ defmodule Doggo do
 
   By default, the given value is formatted for display with `to_string/1`. This:
 
-      <Doggo.time value={~T[12:22:06.003Z]} />
+  ```heex
+  <Doggo.time value={~T[12:22:06.003Z]} />
+  ```
 
   Will be rendered as:
 
-      <time datetime="12:22:06.003">
-        12:22:06.003
-      </time>
+  ```html
+  <time datetime="12:22:06.003">
+    12:22:06.003
+  </time>
+  ```
 
   You can also pass a custom formatter function. For example, if you are using
   [ex_cldr_dates_times](https://hex.pm/packages/ex_cldr_dates_times) in your
   application, you could do this:
 
-      <Doggo.time
-        value={~T[12:22:06.003]}
-        formatter={&MyApp.Cldr.Time.to_string!/1}
-      />
+  ```heex
+  <Doggo.time
+    value={~T[12:22:06.003]}
+    formatter={&MyApp.Cldr.Time.to_string!/1}
+  />
+  ```
 
   Which, depending on your locale, may be rendered as:
 
-      <time datetime="14:22:06.003">
-        14:22:06 PM
-      </time>
+  ```html
+  <time datetime="14:22:06.003">
+    14:22:06 PM
+  </time>
+  ```
   """
   @doc type: :component
 
@@ -896,57 +944,63 @@ defmodule Doggo do
 
   Minimal example:
 
-    <Doggo.drawer>
-      <:top>Content</:top>
-    </Doggo.drawer>
+  ```heex
+  <Doggo.drawer>
+    <:top>Content</:top>
+  </Doggo.drawer>
+  ```
 
   With all slots:
 
-    <Doggo.drawer>
-      <:brand>Doggo</:brand>
-      <:top>Content at the top</:top>
-      <:bottom>Content at the bottom</:bottom>
-    </Doggo.drawer>
+  ```heex
+  <Doggo.drawer>
+    <:brand>Doggo</:brand>
+    <:top>Content at the top</:top>
+    <:bottom>Content at the bottom</:bottom>
+  </Doggo.drawer>
+  ```
 
   With navigation and sections:
 
-      <Doggo.drawer>
-        <:brand>
-          <.link navigate={~p"/"}>App</.link>
-        </:brand>
-        <:top>
-          <Doggo.drawer_nav aria-label="Main">
-            <:item>
-              <.link navigate={~p"/dashboard"}>Dashboard</.link>
+  ```heex
+  <Doggo.drawer>
+    <:brand>
+      <.link navigate={~p"/"}>App</.link>
+    </:brand>
+    <:top>
+      <Doggo.drawer_nav aria-label="Main">
+        <:item>
+          <.link navigate={~p"/dashboard"}>Dashboard</.link>
+        </:item>
+        <:item>
+          <Doggo.drawer_nested_nav>
+            <:title>Content</:title>
+            <:item current_page>
+              <.link navigate={~p"/posts"}>Posts</.link>
             </:item>
             <:item>
-              <Doggo.drawer_nested_nav>
-                <:title>Content</:title>
-                <:item current_page>
-                  <.link navigate={~p"/posts"}>Posts</.link>
-                </:item>
-                <:item>
-                  <.link navigate={~p"/comments"}>Comments</.link>
-                </:item>
-              </Doggo.drawer_nested_nav>
+              <.link navigate={~p"/comments"}>Comments</.link>
             </:item>
-          </.drawer_nav>
-          <Doggo.drawer_section>
-            <:title>Search</:title>
-            <:item><input type="search" placeholder="Search" /></:item>
-          </Doggo.drawer_section>
-        </:top>
-        <:bottom>
-          <Doggo.drawer_nav aria-label="User menu">
-            <:item>
-              <.link navigate={~p"/settings"}>Settings</.link>
-            </:item>
-            <:item>
-              <.link navigate={~p"/logout"}>Logout</.link>
-            </:item>
-          </Doggo.drawer_nav>
-        </:bottom>
-      </Doggo.drawer>
+          </Doggo.drawer_nested_nav>
+        </:item>
+      </.drawer_nav>
+      <Doggo.drawer_section>
+        <:title>Search</:title>
+        <:item><input type="search" placeholder="Search" /></:item>
+      </Doggo.drawer_section>
+    </:top>
+    <:bottom>
+      <Doggo.drawer_nav aria-label="User menu">
+        <:item>
+          <.link navigate={~p"/settings"}>Settings</.link>
+        </:item>
+        <:item>
+          <.link navigate={~p"/logout"}>Logout</.link>
+        </:item>
+      </Doggo.drawer_nav>
+    </:bottom>
+  </Doggo.drawer>
+  ```
   """
   @doc type: :component
 
@@ -1000,22 +1054,24 @@ defmodule Doggo do
 
   ## Example
 
-      <Doggo.drawer_nav aria-label="Main">
-        <:item>
-          <.link navigate={~p"/dashboard"}>Dashboard</.link>
+  ```heex
+  <Doggo.drawer_nav aria-label="Main">
+    <:item>
+      <.link navigate={~p"/dashboard"}>Dashboard</.link>
+    </:item>
+    <:item>
+      <Doggo.drawer_nested_nav>
+        <:title>Content</:title>
+        <:item current_page>
+          <.link navigate={~p"/posts"}>Posts</.link>
         </:item>
         <:item>
-          <Doggo.drawer_nested_nav>
-            <:title>Content</:title>
-            <:item current_page>
-              <.link navigate={~p"/posts"}>Posts</.link>
-            </:item>
-            <:item>
-              <.link navigate={~p"/comments"}>Comments</.link>
-            </:item>
-          </Doggo.drawer_nested_nav>
+          <.link navigate={~p"/comments"}>Comments</.link>
         </:item>
-      </Doggo.drawer_nav>
+      </Doggo.drawer_nested_nav>
+    </:item>
+  </Doggo.drawer_nav>
+  ```
   """
   @doc type: :component
 
@@ -1056,19 +1112,21 @@ defmodule Doggo do
 
   ## Example
 
-      <Doggo.drawer_nav aria-label="Main">
-        <:item>
-          <Doggo.drawer_nested_nav>
-            <:title>Content</:title>
-            <:item current_page>
-              <.link navigate={~p"/posts"}>Posts</.link>
-            </:item>
-            <:item>
-              <.link navigate={~p"/comments"}>Comments</.link>
-            </:item>
-          </Doggo.drawer_nested_nav>
+  ```heex
+  <Doggo.drawer_nav aria-label="Main">
+    <:item>
+      <Doggo.drawer_nested_nav>
+        <:title>Content</:title>
+        <:item current_page>
+          <.link navigate={~p"/posts"}>Posts</.link>
         </:item>
-      </Doggo.drawer_nav>
+        <:item>
+          <.link navigate={~p"/comments"}>Comments</.link>
+        </:item>
+      </Doggo.drawer_nested_nav>
+    </:item>
+  </Doggo.drawer_nav>
+  ```
   """
   @doc type: :component
 
@@ -1106,10 +1164,12 @@ defmodule Doggo do
 
   ## Example
 
-      <Doggo.drawer_section>
-        <:title>Search</:title>
-        <:item><input type="search" placeholder="Search" /></:item>
-      </Doggo.drawer_section>
+  ```heex
+  <Doggo.drawer_section>
+    <:title>Search</:title>
+    <:item><input type="search" placeholder="Search" /></:item>
+  </Doggo.drawer_section>
+  ```
   """
   @doc type: :component
 
@@ -1154,9 +1214,11 @@ defmodule Doggo do
 
   ## Example
 
-      <Doggo.fab label="Add item" phx-click={JS.patch(to: "/items/new")}>
-        <Doggo.icon><Heroicons.plus /></Doggo.icon>
-      </Doggo.fab>
+  ```heex
+  <Doggo.fab label="Add item" phx-click={JS.patch(to: "/items/new")}>
+    <Doggo.icon><Heroicons.plus /></Doggo.icon>
+  </Doggo.fab>
+  ```
   """
   @doc type: :component
 
@@ -1214,7 +1276,9 @@ defmodule Doggo do
 
   ## Examples
 
-      <Doggo.flash_group flash={@flash} />
+  ```heex
+  <Doggo.flash_group flash={@flash} />
+  ```
   """
   @doc type: :component
 
@@ -1308,14 +1372,18 @@ defmodule Doggo do
 
   Minimal example:
 
-      <Doggo.alert id="some-alert"></Doggo.alert>
+  ```heex
+  <Doggo.alert id="some-alert"></Doggo.alert>
+  ```
 
   With title, icon and level:
 
-      <Doggo.alert id="some-alert" level={:info} title="Info">
-        message
-        <:icon><Heroicon.light_bulb /></:icon>
-      </Doggo.alert>
+  ```heex
+  <Doggo.alert id="some-alert" level={:info} title="Info">
+    message
+    <:icon><Heroicon.light_bulb /></:icon>
+  </Doggo.alert>
+  ```
   """
   @doc type: :component
 
@@ -1384,19 +1452,27 @@ defmodule Doggo do
 
   Minimal example with only the `src` attribute:
 
-      <Doggo.avatar src="avatar.png" />
+  ```heex
+  <Doggo.avatar src="avatar.png" />
+  ```
 
   Render avatar as a circle:
 
-      <Doggo.avatar src="avatar.png" circle />
+  ```heex
+  <Doggo.avatar src="avatar.png" circle />
+  ```
 
   Use a placeholder image in case the avatar is not set:
 
-      <Doggo.avatar src={@user.avatar_url} placeholder={{:src, "fallback.png"}} />
+  ```heex
+  <Doggo.avatar src={@user.avatar_url} placeholder={{:src, "fallback.png"}} />
+  ```
 
   Render an text as the placeholder value:
 
-      <Doggo.avatar src={@user.avatar_url} placeholder="A" />
+  ```heex
+  <Doggo.avatar src={@user.avatar_url} placeholder="A" />
+  ```
 
   """
   @doc type: :component
@@ -1499,19 +1575,23 @@ defmodule Doggo do
 
   Standard callout:
 
-      <Doggo.callout title="Dog Care Tip">
-        <p>Regular exercise is essential for keeping your dog healthy and happy.</p>
-      </Doggo.callout>
+  ```heex
+  <Doggo.callout title="Dog Care Tip">
+    <p>Regular exercise is essential for keeping your dog healthy and happy.</p>
+  </Doggo.callout>
+  ```
 
   Callout with an icon:
 
-      <Doggo.callout title="Fun Dog Fact">
-        <:icon><Heroicons.information_circle /></:icon>
-        <p>
-          Did you know? Dogs have a sense of time and can get upset when their
-          routine is changed.
-        </p>
-      </Doggo.callout>
+  ```heex
+  <Doggo.callout title="Fun Dog Fact">
+    <:icon><Heroicons.information_circle /></:icon>
+    <p>
+      Did you know? Dogs have a sense of time and can get upset when their
+      routine is changed.
+    </p>
+  </Doggo.callout>
+  ```
   """
   @doc type: :component
 
@@ -1559,20 +1639,22 @@ defmodule Doggo do
 
   ## Usage
 
-      <Doggo.card>
-        <:image>
-          <img src="image.png" alt="Picture of a dog dressed in a poncho." />
-        </:image>
-        <:header><h2>Dog Fashion Show</h2></:header>
-        <:main>
-          The next dog fashion show is coming up quickly. Here's what you need
-          to look out for.
-        </:main>
-        <:footer>
-          <span>2023-11-15 12:24</span>
-          <span>Events</span>
-        </:footer>
-      </Doggo.card>
+  ```heex
+  <Doggo.card>
+    <:image>
+      <img src="image.png" alt="Picture of a dog dressed in a poncho." />
+    </:image>
+    <:header><h2>Dog Fashion Show</h2></:header>
+    <:main>
+      The next dog fashion show is coming up quickly. Here's what you need
+      to look out for.
+    </:main>
+    <:footer>
+      <span>2023-11-15 12:24</span>
+      <span>Events</span>
+    </:footer>
+  </Doggo.card>
+  ```
   """
   @doc type: :component
 
@@ -1631,19 +1713,25 @@ defmodule Doggo do
   Render the value of `@some_value` if it's available, or display the
   default placeholder otherwise:
 
-      <Doggo.fallback value={@some_value} />
+  ```heex
+  <Doggo.fallback value={@some_value} />
+  ```
 
   Apply a formatter function to `@some_value` if it is not `nil`:
 
-      <Doggo.fallback value={@some_value} formatter={&format_date/1} />
+  ```heex
+  <Doggo.fallback value={@some_value} formatter={&format_date/1} />
+  ```
 
   Set a custom placeholder and text for screen readers:
 
-      <Doggo.fallback
-        value={@some_value}
-        placeholder="n/a"
-        accessibility_text="not available"
-      />
+  ```heex
+  <Doggo.fallback
+    value={@some_value}
+    placeholder="n/a"
+    accessibility_text="not available"
+  />
+  ```
   """
   @doc type: :component
 
@@ -1697,15 +1785,19 @@ defmodule Doggo do
 
   Rendering an image with the aspect ratio 4:3.
 
-      <Doggo.frame ratio={{4, 3}}>
-        <img src="image.png" alt="An example image illustrating the usage." />
-      </Doggo.frame>
+  ```heex
+  <Doggo.frame ratio={{4, 3}}>
+    <img src="image.png" alt="An example image illustrating the usage." />
+  </Doggo.frame>
+  ```
 
   Rendering an image as a circle.
 
-      <Doggo.frame circle>
-        <img src="image.png" alt="An example image illustrating the usage." />
-      </Doggo.frame>
+  ```heex
+  <Doggo.frame circle>
+    <img src="image.png" alt="An example image illustrating the usage." />
+  </Doggo.frame>
+  ```
   """
   @doc type: :component
 
@@ -1750,13 +1842,17 @@ defmodule Doggo do
 
   Render an icon with text as `aria-label` using the `heroicons` library:
 
-      <Doggo.icon label="report bug"><Heroicons.bug_ant /></.icon>
+  ```heex
+  <Doggo.icon label="report bug"><Heroicons.bug_ant /></.icon>
+  ```
 
   To display the text visibly:
 
-      <Doggo.icon label="report bug" label_placement={:right}>
-        <Heroicons.bug_ant />
-      </Doggo.icon>
+  ```heex
+  <Doggo.icon label="report bug" label_placement={:right}>
+    <Heroicons.bug_ant />
+  </Doggo.icon>
+  ```
 
   > #### aria-hidden {: .info}
   >
@@ -1822,11 +1918,15 @@ defmodule Doggo do
 
   Render an icon with text as `aria-label`:
 
-      <Doggo.icon name="arrow-left" label="Go back" />
+  ```heex
+  <Doggo.icon name="arrow-left" label="Go back" />
+  ```
 
   To display the text visibly:
 
-      <Doggo.icon name="arrow-left" label="Go back" label_placement={:right} />
+  ```heex
+  <Doggo.icon name="arrow-left" label="Go back" label_placement={:right} />
+  ```
   """
   @doc type: :component
 
@@ -1885,16 +1985,18 @@ defmodule Doggo do
 
   ## Example
 
-      <Doggo.image
-        src="https://github.com/woylie/doggo/blob/main/assets/dog_poncho.jpg?raw=true"
-        alt="A dog wearing a colorful poncho walks down a fashion show runway."
-        ratio={{16, 9}}
-      >
-        <:caption>
-          Spotlight on canine couture: A dog fashion show where four-legged models
-          dazzle the runway with the latest in pet apparel.
-        </:caption>
-      </Doggo.image>
+  ```heex
+  <Doggo.image
+    src="https://github.com/woylie/doggo/blob/main/assets/dog_poncho.jpg?raw=true"
+    alt="A dog wearing a colorful poncho walks down a fashion show runway."
+    ratio={{16, 9}}
+  >
+    <:caption>
+      Spotlight on canine couture: A dog fashion show where four-legged models
+      dazzle the runway with the latest in pet apparel.
+    </:caption>
+  </Doggo.image>
+  ```
   """
   @doc type: :component
 
@@ -2016,7 +2118,9 @@ defmodule Doggo do
 
   Alternatively, pass the Gettext module as an attribute:
 
-      <Doggo.input field={@form[:name]} gettext={MyApp.Gettext} />
+  ```heex
+  <Doggo.input field={@form[:name]} gettext={MyApp.Gettext} />
+  ```
 
   ## Label positioning
 
@@ -2029,34 +2133,44 @@ defmodule Doggo do
   labels to the left of the inputs in a horizontal form layout, you can add an
   `is-horizontal` class to the form:
 
-      <.form class="is-horizontal">
-        <!-- inputs -->
-      </.form>
+  ```heex
+  <.form class="is-horizontal">
+    <!-- inputs -->
+  </.form>
+  ```
 
   Then, in your CSS, apply the necessary styles to the `.field` class within
   forms having the `is-horizontal` class:
 
-      form.is-horizontal .field {
-        // styles to position label left of the input
-      }
+  ```css
+  form.is-horizontal .field {
+    // styles to position label left of the input
+  }
+  ```
 
   The component has a `hide_label` attribute to visually hide labels while still
   making them accessible to screen readers. If all labels within a form need to
   be visually hidden, it may be more convenient to define a
   `.has-visually-hidden-labels` modifier class for the `<form>`.
 
-      <.form class="has-visually-hidden-labels">
-        <!-- inputs -->
-      </.form>
+  ```heex
+  <.form class="has-visually-hidden-labels">
+    <!-- inputs -->
+  </.form>
+  ```
 
   Ensure to take checkbox and radio labels into consideration when writing the
   CSS styles.
 
   ## Examples
 
-      <Doggo.input field={@form[:name]} />
+  ```heex
+  <Doggo.input field={@form[:name]} />
+  ```
 
-      <Doggo.input field={@form[:email]} type="email" />
+  ```heex
+  <Doggo.input field={@form[:email]} type="email" />
+  ```
 
   ### Radio group and checkbox group
 
@@ -2065,16 +2179,18 @@ defmodule Doggo do
   `options` attribute is required for these types and has the same format as
   the options for the `select` type, except that options may not be nested.
 
-      <Doggo.input
-        field={@form[:email]}
-        type="checkbox-group"
-        label="Cuisine"
-        options={[
-          {"Mexican", "mexican"},
-          {"Japanese", "japanese"},
-          {"Libanese", "libanese"}
-        ]}
-      />
+  ```heex
+  <Doggo.input
+    field={@form[:email]}
+    type="checkbox-group"
+    label="Cuisine"
+    options={[
+      {"Mexican", "mexican"},
+      {"Japanese", "japanese"},
+      {"Libanese", "libanese"}
+    ]}
+  />
+  ```
 
   Note that the `checkbox-group` type renders an additional hidden input with
   an empty value before the checkboxes. This ensures that a value exists in case
@@ -2567,6 +2683,14 @@ defmodule Doggo do
 
   @doc """
   Renders the label for an input.
+
+  ## Example
+
+  ```heex
+  <Doggo.label for="name" required>
+    Name
+  </Doggo.label>
+  ```
   """
   @doc type: :form
 
@@ -2619,6 +2743,12 @@ defmodule Doggo do
 
   @doc """
   Renders the errors for an input.
+
+  ## Example
+
+  ```heex
+  <Doggo.field_errors for="name" errors={["too many characters"]} />
+  ```
   """
   @doc type: :form
 
@@ -2637,6 +2767,14 @@ defmodule Doggo do
 
   @doc """
   Renders the description of an input.
+
+  ## Example
+
+  ```heex
+  <Doggo.field_description for="name">
+    max. 100 characters
+  </Doggo.field_description>
+  ```
   """
   @doc type: :form
 
@@ -2688,18 +2826,22 @@ defmodule Doggo do
 
   Visual grouping of inputs:
 
-      <Doggo.field_group>
-        <Doggo.input field={@form[:given_name]} label="Given name" />
-        <Doggo.input field={@form[:family_name]} label="Family name"/>
-      </Doggo.field_group>
+  ```heex
+  <Doggo.field_group>
+    <Doggo.input field={@form[:given_name]} label="Given name" />
+    <Doggo.input field={@form[:family_name]} label="Family name"/>
+  </Doggo.field_group>
+  ```
 
   Semantic grouping (for reference):
 
-      <fieldset>
-        <legend>Personal Information</legend>
-        <Doggo.input field={@form[:given_name]} label="Given name" />
-        <Doggo.input field={@form[:family_name]} label="Family name"/>
-      </fieldset>
+  ```heex
+  <fieldset>
+    <legend>Personal Information</legend>
+    <Doggo.input field={@form[:given_name]} label="Given name" />
+    <Doggo.input field={@form[:family_name]} label="Family name"/>
+  </fieldset>
+  ```
   """
   @doc type: :form
 
@@ -2739,25 +2881,29 @@ defmodule Doggo do
 
   #### Example
 
-      <Doggo.modal
-        :if={@live_action == :show}
-        id="pet-modal"
-        on_cancel={JS.patch(~p"/pets")}
-        open
-      >
-        <:title>Show pet</:title>
-        <p>My pet is called Johnny.</p>
-        <:footer>
-          <.link phx-click={JS.exec("data-cancel", to: "#pet-modal")}>
-            Close
-          </.link>
-        </:footer>
-      </Doggo.modal>
+  ```heex
+  <Doggo.modal
+    :if={@live_action == :show}
+    id="pet-modal"
+    on_cancel={JS.patch(~p"/pets")}
+    open
+  >
+    <:title>Show pet</:title>
+    <p>My pet is called Johnny.</p>
+    <:footer>
+      <.link phx-click={JS.exec("data-cancel", to: "#pet-modal")}>
+        Close
+      </.link>
+    </:footer>
+  </Doggo.modal>
+  ```
 
   To open the modal, patch or navigate to the URL associated with the live
   action.
 
-      <.link patch={~p"/pets/\#{@id}"}>show</.link>
+  ```heex
+  <.link patch={~p"/pets/\#{@id}"}>show</.link>
+  ```
 
   ### Without URL
 
@@ -2768,29 +2914,35 @@ defmodule Doggo do
 
   #### Example
 
-      <Doggo.modal id="pet-modal">
-        <:title>Show pet</:title>
-        <p>My pet is called Johnny.</p>
-        <:footer>
-          <.link phx-click={JS.exec("data-cancel", to: "#pet-modal")}>
-            Close
-          </.link>
-        </:footer>
-      </Doggo.modal>
+  ```heex
+  <Doggo.modal id="pet-modal">
+    <:title>Show pet</:title>
+    <p>My pet is called Johnny.</p>
+    <:footer>
+      <.link phx-click={JS.exec("data-cancel", to: "#pet-modal")}>
+        Close
+      </.link>
+    </:footer>
+  </Doggo.modal>
+  ```
 
   To open modal, use the `show_modal` function.
 
-      <.link phx-click={show_modal("pet-modal")}>show</.link>
+  ```heex
+  <.link phx-click={show_modal("pet-modal")}>show</.link>
+  ```
 
   ## CSS
 
   To hide the modal when the `open` attribute is not set, use the following CSS
   styles:
 
-      dialog.modal:not([open]),
-      dialog.modal[open="false"] {
-        display: none;
-      }
+  ```css
+  dialog.modal:not([open]),
+  dialog.modal[open="false"] {
+    display: none;
+  }
+  ```
 
   ## Semantics
 
@@ -2874,7 +3026,9 @@ defmodule Doggo do
 
   ## Example
 
-      <.link phx-click={show_modal("pet-modal")}>show</.link>
+  ```heex
+  <.link phx-click={show_modal("pet-modal")}>show</.link>
+  ```
   """
   def show_modal(js \\ %JS{}, id) when is_binary(id) do
     js
@@ -2889,7 +3043,9 @@ defmodule Doggo do
 
   ## Example
 
-      <.link phx-click={hide_modal("pet-modal")}>hide</.link>
+  ```heex
+  <.link phx-click={hide_modal("pet-modal")}>hide</.link>
+  ```
   """
   def hide_modal(js \\ %JS{}, id) do
     js
@@ -2903,40 +3059,46 @@ defmodule Doggo do
 
   ## Usage
 
-      <Doggo.navbar>
-        <:brand><.link navigate={~p"/"}>Pet Clinic</.link></:brand>
-        <Doggo.navbar_items>
-          <:item><.link navigate={~p"/about"}>About</.link></:item>
-          <:item><.link navigate={~p"/services"}>Services</.link></:item>
-          <:item>
-            <.link navigate={~p"/login"} class="button">Log in</.link>
-          </:item>
-        </Doggo.navbar_items>
-      </Doggo.navbar>
+  ```heex
+  <Doggo.navbar>
+    <:brand><.link navigate={~p"/"}>Pet Clinic</.link></:brand>
+    <Doggo.navbar_items>
+      <:item><.link navigate={~p"/about"}>About</.link></:item>
+      <:item><.link navigate={~p"/services"}>Services</.link></:item>
+      <:item>
+        <.link navigate={~p"/login"} class="button">Log in</.link>
+      </:item>
+    </Doggo.navbar_items>
+  </Doggo.navbar>
+  ```
 
   You can place multiple navigation item lists in the inner block. If the
   `.navbar` is styled as a flex box, you can use the CSS `order` property to
   control the display order of the brand and lists.
 
-      <Doggo.navbar>
-        <:brand><.link navigate={~p"/"}>Pet Clinic</.link></:brand>
-        <Doggo.navbar_items class="navbar-main-links">
-          <:item><.link navigate={~p"/about"}>About</.link></:item>
-          <:item><.link navigate={~p"/services"}>Services</.link></:item>
-        </Doggo.navbar_items>
-        <Doggo.navbar_items class="navbar-user-menu">
-          <:item>
-            <Doggo.button_link navigate={~p"/login"}>Log in</Doggo.button_link>
-          </:item>
-        </Doggo.navbar_items>
-      </Doggo.navbar>
+  ```heex
+  <Doggo.navbar>
+    <:brand><.link navigate={~p"/"}>Pet Clinic</.link></:brand>
+    <Doggo.navbar_items class="navbar-main-links">
+      <:item><.link navigate={~p"/about"}>About</.link></:item>
+      <:item><.link navigate={~p"/services"}>Services</.link></:item>
+    </Doggo.navbar_items>
+    <Doggo.navbar_items class="navbar-user-menu">
+      <:item>
+        <Doggo.button_link navigate={~p"/login"}>Log in</Doggo.button_link>
+      </:item>
+    </Doggo.navbar_items>
+  </Doggo.navbar>
+  ```
 
   If you have multiple `<nav>` elements on your page, it is recommended to set
   the `aria-label` attribute.
 
-      <Doggo.navbar aria-label="main navigation">
-        <!-- ... -->
-      </Doggo.navbar>
+  ```heex
+  <Doggo.navbar aria-label="main navigation">
+    <!-- ... -->
+  </Doggo.navbar>
+  ```
   """
   @doc type: :component
 
@@ -2983,13 +3145,15 @@ defmodule Doggo do
 
   ## Usage
 
-      <Doggo.navbar_items>
-        <:item><.link navigate={~p"/about"}>About</.link></:item>
-        <:item><.link navigate={~p"/services"}>Services</.link></:item>
-        <:item>
-          <.link navigate={~p"/login"} class="button">Log in</.link>
-        </:item>
-      </Doggo.navbar_items>
+  ```heex
+  <Doggo.navbar_items>
+    <:item><.link navigate={~p"/about"}>About</.link></:item>
+    <:item><.link navigate={~p"/services"}>Services</.link></:item>
+    <:item>
+      <.link navigate={~p"/login"} class="button">Log in</.link>
+    </:item>
+  </Doggo.navbar_items>
+  ```
   """
   @doc type: :component
 
@@ -3025,17 +3189,19 @@ defmodule Doggo do
 
   ## Example
 
-      <main>
-        <Doggo.page_header title="Puppy Profiles" subtitle="Share Your Pup's Story">
-          <:action>
-            <Doggo.button_link patch={~p"/puppies/new"}>Add New Profile</Doggo.button_link>
-          </:action>
-        </Doggo.page_header>
+  ```heex
+  <main>
+    <Doggo.page_header title="Puppy Profiles" subtitle="Share Your Pup's Story">
+      <:action>
+        <Doggo.button_link patch={~p"/puppies/new"}>Add New Profile</Doggo.button_link>
+      </:action>
+    </Doggo.page_header>
 
-        <section>
-          <!-- Content -->
-        </section>
-      </main>
+    <section>
+      <!-- Content -->
+    </section>
+  </main>
+  ```
   """
   @doc type: :component
 
@@ -3071,10 +3237,12 @@ defmodule Doggo do
 
   ## Example
 
-      <Doggo.property_list>
-        <:prop label={gettext("Name")}>George</:prop>
-        <:prop label={gettext("Age")}>42</:prop>
-      </Doggo.property_list>
+  ```heex
+  <Doggo.property_list>
+    <:prop label={gettext("Name")}>George</:prop>
+    <:prop label={gettext("Age")}>42</:prop>
+  </Doggo.property_list>
+  ```
   """
   @doc type: :component
 
@@ -3110,24 +3278,32 @@ defmodule Doggo do
 
   Render one of several primitive types:
 
-      <Doggo.skeleton type={:text_line} />
+  ```heex
+  <Doggo.skeleton type={:text_line} />
+  ```
 
   Combine primitives for complex layouts:
 
-      <div class="card-skeleton" aria-busy="true">
-        <Doggo.skeleton type={:image} />
-        <Doggo.skeleton type={:text_line} />
-        <Doggo.skeleton type={:text_line} />
-        <Doggo.skeleton type={:text_line} />
-        <Doggo.skeleton type={:rectangle} />
-      </div>
+  ```heex
+  <div class="card-skeleton" aria-busy="true">
+    <Doggo.skeleton type={:image} />
+    <Doggo.skeleton type={:text_line} />
+    <Doggo.skeleton type={:text_line} />
+    <Doggo.skeleton type={:text_line} />
+    <Doggo.skeleton type={:rectangle} />
+  </div>
+  ```
 
   To modify the primitives for your use cases, you can use custom classes or CSS
   properties:
 
-      <Doggo.skeleton type={:text_line} class="header" />
+  ```heex
+  <Doggo.skeleton type={:text_line} class="header" />
+  ```
 
-      <Doggo.skeleton type={:image} style="--aspect-ratio: 75%;" />
+  ```heex
+  <Doggo.skeleton type={:image} style="--aspect-ratio: 75%;" />
+  ```
 
   ## Aria-busy attribute
 
@@ -3144,11 +3320,13 @@ defmodule Doggo do
 
   Assuming you defined a card skeleton component as described above:
 
-      <.async_result :let={puppy} assign={@puppy}>
-        <:loading><.card_skeleton /></:loading>
-        <:failed :let={_reason}>There was an error loading the puppy.</:failed>
-        <!-- Card for loaded content -->
-      </.async_result>
+  ```heex
+  <.async_result :let={puppy} assign={@puppy}>
+    <:loading><.card_skeleton /></:loading>
+    <:failed :let={_reason}>There was an error loading the puppy.</:failed>
+    <!-- Card for loaded content -->
+  </.async_result>
+  ```
   """
   @doc type: :component
 
@@ -3186,31 +3364,35 @@ defmodule Doggo do
 
   With patch navigation:
 
-      <Doggo.steps current_step={0}>
-        <:step on_click={JS.patch(to: ~p"/form/step/personal-information")}>
-          Profile
-        </:step>
-        <:step on_click={JS.patch(to: ~p"/form/step/delivery")}>
-          Delivery
-        </:step>
-        <:step on_click={JS.patch(to: ~p"/form/step/confirmation")}>
-          Confirmation
-        </:step>
-      </Doggo.steps>
+  ```heex
+  <Doggo.steps current_step={0}>
+    <:step on_click={JS.patch(to: ~p"/form/step/personal-information")}>
+      Profile
+    </:step>
+    <:step on_click={JS.patch(to: ~p"/form/step/delivery")}>
+      Delivery
+    </:step>
+    <:step on_click={JS.patch(to: ~p"/form/step/confirmation")}>
+      Confirmation
+    </:step>
+  </Doggo.steps>
+  ```
 
   With push events:
 
-      <Doggo.steps current_step={0}>
-        <:step on_click={JS.push("go-to-step", value: %{step: "profile"})}>
-          Profile
-        </:step>
-        <:step on_click={JS.push("go-to-step", value: %{step: "delivery"})}>
-          Delivery
-        </:step>
-        <:step on_click={JS.push("go-to-step", value: %{step: "confirmation"})}>
-          Confirmation
-        </:step>
-      </Doggo.steps>
+  ```heex
+  <Doggo.steps current_step={0}>
+    <:step on_click={JS.push("go-to-step", value: %{step: "profile"})}>
+      Profile
+    </:step>
+    <:step on_click={JS.push("go-to-step", value: %{step: "delivery"})}>
+      Delivery
+    </:step>
+    <:step on_click={JS.push("go-to-step", value: %{step: "confirmation"})}>
+      Confirmation
+    </:step>
+  </Doggo.steps>
+  ```
   """
   @doc type: :component
 
@@ -3295,11 +3477,13 @@ defmodule Doggo do
 
   ## Examples
 
-      <Doggo.switch
-        label="Subscribe"
-        checked={true}
-        phx-click="toggle-subscription"
-      />
+  ```heex
+  <Doggo.switch
+    label="Subscribe"
+    checked={true}
+    phx-click="toggle-subscription"
+  />
+  ```
   """
   @doc type: :component
 
@@ -3335,10 +3519,12 @@ defmodule Doggo do
 
   ## Examples
 
-      <Doggo.table id="pets" rows={@pets}>
-        <:col :let={p} label="name"><%= p.name %></:col>
-        <:col :let={p} label="age"><%= p.age %></:col>
-      </Doggo.table>
+  ```heex
+  <Doggo.table id="pets" rows={@pets}>
+    <:col :let={p} label="name"><%= p.name %></:col>
+    <:col :let={p} label="age"><%= p.age %></:col>
+  </Doggo.table>
+  ```
   """
   @doc type: :component
 
@@ -3481,26 +3667,28 @@ defmodule Doggo do
 
   ## Example
 
-      <Doggo.tab_navigation current_value={@live_action}>
-        <:item
-          patch={~p"/pets/\#{@pet}"}
-          value={[:show, :edit]}
-        >
-          Profile
-        </:item>
-        <:item
-          patch={~p"/pets/\#{@pet}/appointments"}
-          value={:appointments}
-        >
-          Appointments
-        </:item>
-        <:item
-          patch={~p"/pets/\#{@pet}/messages"}
-          value={:messages}
-        >
-          Messages
-        </:item>
-      </Doggo.tab_navigation>
+  ```heex
+  <Doggo.tab_navigation current_value={@live_action}>
+    <:item
+      patch={~p"/pets/\#{@pet}"}
+      value={[:show, :edit]}
+    >
+      Profile
+    </:item>
+    <:item
+      patch={~p"/pets/\#{@pet}/appointments"}
+      value={:appointments}
+    >
+      Appointments
+    </:item>
+    <:item
+      patch={~p"/pets/\#{@pet}/messages"}
+      value={:messages}
+    >
+      Messages
+    </:item>
+  </Doggo.tab_navigation>
+  ```
   """
   @doc type: :component
 
@@ -3562,6 +3750,98 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders a button that toggles a state.
+
+  ## Examples
+
+  With a boolean assign `@muted` and an event name:
+
+  ```heex
+  <Doggo.toggle_button on_click="toggle-mute" pressed={@muted}>
+    Mute
+  </Doggo.toggle_button>
+  ```
+
+  With a `Phoenix.LiveView.JS` command:
+
+  ```heex
+  <Doggo.toggle_button on_click={JS.push("toggle-mute")} pressed={@muted}>
+    Mute
+  </Doggo.toggle_button>
+  ```
+
+  ## Accessibility
+
+  The button state is conveyed via the `aria-pressed` attribute and the button
+  styling. The button text should not change depending on the state. You may
+  however include an icon that changes depending on the state.
+
+  ## CSS
+
+  A toggle button can be identified with an attribute selector for the
+  `aria-pressed` attribute.
+
+  To select any toggle button:
+
+  ```css
+  // any toggle button regardless of state
+  button[aria-pressed] {}
+
+  // unpressed toggle buttons
+  button[aria-pressed="false"] {}
+
+  // pressed toggle buttons
+  button[aria-pressed="true"] {}
+  ```
+  """
+  @doc type: :component
+
+  attr :pressed, :boolean, default: false
+
+  attr :on_click, :any,
+    required: true,
+    doc: """
+    Phoenix.LiveView.JS command or event name to trigger when the button is
+    clicked.
+    """
+
+  attr :variant, :atom,
+    values: [:primary, :secondary, :info, :success, :warning, :danger],
+    default: :primary
+
+  attr :fill, :atom, values: [:solid, :outline, :text], default: :solid
+
+  attr :size, :atom,
+    values: [:small, :normal, :medium, :large],
+    default: :normal
+
+  attr :shape, :atom, values: [nil, :circle, :pill], default: nil
+  attr :disabled, :boolean, default: nil
+  attr :rest, :global
+
+  slot :inner_block, required: true
+
+  def toggle_button(assigns) do
+    ~H"""
+    <button
+      type="button"
+      phx-click={@on_click}
+      aria-pressed={to_string(@pressed)}
+      class={[
+        variant_class(@variant),
+        size_class(@size),
+        shape_class(@shape),
+        fill_class(@fill)
+      ]}
+      disabled={@disabled}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </button>
+    """
+  end
+
+  @doc """
   Renders content with a tooltip.
 
   There are different ways to render a tooltip. This component renders a `<div>`
@@ -3579,37 +3859,41 @@ defmodule Doggo do
 
   With an inline text:
 
-      <p>
-        Did you know that the
-        <Doggo.tooltip id="labrador-info">
-          Labrador Retriever
-          <:tooltip>
-            <p><strong>Labrador Retriever</strong></p>
-            <p>
-              Labradors are known for their friendly nature and excellent
-              swimming abilities.
-            </p>
-          </:tooltip>
-        </Doggo.tooltip>
-        is one of the most popular dog breeds in the world?
-      </p>
+  ```heex
+  <p>
+    Did you know that the
+    <Doggo.tooltip id="labrador-info">
+      Labrador Retriever
+      <:tooltip>
+        <p><strong>Labrador Retriever</strong></p>
+        <p>
+          Labradors are known for their friendly nature and excellent
+          swimming abilities.
+        </p>
+      </:tooltip>
+    </Doggo.tooltip>
+    is one of the most popular dog breeds in the world?
+  </p>
+  ```
 
   If the inner block contains a link, add the `:contains_link` attribute:
 
-      <p>
-        Did you know that the
-        <Doggo.tooltip id="labrador-info" contains_link>
-          <.link navigate={~p"/labradors"}>Labrador Retriever</.link>
-          <:tooltip>
-            <p><strong>Labrador Retriever</strong></p>
-            <p>
-              Labradors are known for their friendly nature and excellent
-              swimming abilities.
-            </p>
-          </:tooltip>
-        </Doggo.tooltip>
-        is one of the most popular dog breeds in the world?
-      </p>
+  ```heex
+  <p>
+    Did you know that the
+    <Doggo.tooltip id="labrador-info" contains_link>
+      <.link navigate={~p"/labradors"}>Labrador Retriever</.link>
+      <:tooltip>
+        <p><strong>Labrador Retriever</strong></p>
+        <p>
+          Labradors are known for their friendly nature and excellent
+          swimming abilities.
+        </p>
+      </:tooltip>
+    </Doggo.tooltip>
+    is one of the most popular dog breeds in the world?
+  </p>
+  ```
   """
   @doc type: :component
 
@@ -3647,21 +3931,25 @@ defmodule Doggo do
 
   ## Example
 
-      <Doggo.stack>
-        <div>some block</div>
-        <div>some other block</div>
-      </Doggo.stack>
+  ```heex
+  <Doggo.stack>
+    <div>some block</div>
+    <div>some other block</div>
+  </Doggo.stack>
+  ```
 
   To apply a vertical margin on nested elements as well, set `recursive` to
   `true`.
 
-      <Doggo.stack recursive={true}>
-        <div>
-          <div>some nested block</div>
-          <div>another nested block</div>
-        </div>
-        <div>some other block</div>
-      </Doggo.stack>
+  ```heex
+  <Doggo.stack recursive={true}>
+    <div>
+      <div>some nested block</div>
+      <div>another nested block</div>
+    </div>
+    <div>some other block</div>
+  </Doggo.stack>
+  ```
   """
   @doc type: :component
 
@@ -3696,27 +3984,33 @@ defmodule Doggo do
 
   Plain tag:
 
-      <Doggo.tag>Well-Trained</Doggo.tag>
+  ```heex
+  <Doggo.tag>Well-Trained</Doggo.tag>
+  ```
 
   With icon:
 
-      <Doggo.tag>
-        Puppy
-        <Doggo.icon><Heroicons.edit /></Doggo.icon>
-      </Doggo.tag>
+  ```heex
+  <Doggo.tag>
+    Puppy
+    <Doggo.icon><Heroicons.edit /></Doggo.icon>
+  </Doggo.tag>
+  ```
 
   With delete button:
 
-      <Doggo.tag>
-        High Energy
-        <button
-          phx-click="remove-tag"
-          phx-value-tag="high-energy"
-          aria-label="Remove tag"
-        >
-          <Doggo.icon><Heroicons.x /></Doggo.icon>
-        </button>
-      </Doggo.tag>
+  ```heex
+  <Doggo.tag>
+    High Energy
+    <button
+      phx-click="remove-tag"
+      phx-value-tag="high-energy"
+      aria-label="Remove tag"
+    >
+      <Doggo.icon><Heroicons.x /></Doggo.icon>
+    </button>
+  </Doggo.tag>
+  ```
   """
   @doc type: :component
 
