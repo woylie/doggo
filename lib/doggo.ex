@@ -3781,8 +3781,6 @@ defmodule Doggo do
   A toggle button can be identified with an attribute selector for the
   `aria-pressed` attribute.
 
-  To select any toggle button:
-
   ```css
   // any toggle button regardless of state
   button[aria-pressed] {}
