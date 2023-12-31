@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.4.0] - 2023-12-31
+
 ### Added
 
 - New component: `Doggo.cluster/1`.
