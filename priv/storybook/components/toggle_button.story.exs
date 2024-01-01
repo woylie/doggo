@@ -15,14 +15,7 @@ defmodule Storybook.Components.ToggleButton do
       %VariationGroup{
         id: :variants,
         variations:
-          for variant <- [
-                :primary,
-                :secondary,
-                :info,
-                :success,
-                :warning,
-                :danger
-              ] do
+          for variant <- Doggo.variants() do
             %Variation{
               id: variant,
               attributes: %{
@@ -60,7 +53,7 @@ defmodule Storybook.Components.ToggleButton do
       %VariationGroup{
         id: :fills,
         variations:
-          for fill <- [:solid, :outline, :text] do
+          for fill <- Doggo.fills() do
             %Variation{
               id: fill,
               attributes: %{
@@ -75,7 +68,7 @@ defmodule Storybook.Components.ToggleButton do
       %VariationGroup{
         id: :sizes,
         variations:
-          for size <- [:small, :normal, :medium, :large] do
+          for size <- Doggo.sizes() do
             %Variation{
               id: size,
               attributes: %{
@@ -90,11 +83,11 @@ defmodule Storybook.Components.ToggleButton do
       %VariationGroup{
         id: :shapes,
         variations:
-          for shape <- [:circle, :pill] do
+          for shape <- [nil | Doggo.shapes()] do
             %Variation{
-              id: shape,
+              id: shape || :default,
               attributes: %{
-                on_click: toggle_mute([:shapes, shape]),
+                on_click: toggle_mute([:shapes, shape || :default]),
                 shape: shape,
                 pressed: false
               },

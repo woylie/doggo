@@ -27,7 +27,7 @@ defmodule Storybook.Components.Avatar do
       %VariationGroup{
         id: :sizes,
         variations:
-          for size <- [:small, :normal, :medium, :large] do
+          for size <- Doggo.sizes() do
             %Variation{
               id: size,
               attributes: %{src: @src, size: size}

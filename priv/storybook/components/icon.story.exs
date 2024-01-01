@@ -34,28 +34,14 @@ defmodule Storybook.Components.Icon do
       },
       %VariationGroup{
         id: :sizes,
-        variations: [
-          %Variation{
-            id: :small,
-            attributes: %{size: :small},
-            slots: [svg()]
-          },
-          %Variation{
-            id: :normal,
-            attributes: %{size: :normal},
-            slots: [svg()]
-          },
-          %Variation{
-            id: :medium,
-            attributes: %{size: :medium},
-            slots: [svg()]
-          },
-          %Variation{
-            id: :large,
-            attributes: %{size: :large},
-            slots: [svg()]
-          }
-        ]
+        variations:
+          for size <- Doggo.sizes() do
+            %Variation{
+              id: size,
+              attributes: %{size: size},
+              slots: [svg()]
+            }
+          end
       },
       %VariationGroup{
         id: :label,

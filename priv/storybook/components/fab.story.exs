@@ -42,14 +42,7 @@ defmodule Storybook.Components.Fab do
       %VariationGroup{
         id: :variants,
         variations:
-          for variant <- [
-                :primary,
-                :secondary,
-                :info,
-                :success,
-                :warning,
-                :danger
-              ] do
+          for variant <- Doggo.variants() do
             %Variation{
               id: variant,
               attributes: %{label: "Add item", variant: variant},
@@ -60,7 +53,7 @@ defmodule Storybook.Components.Fab do
       %VariationGroup{
         id: :sizes,
         variations:
-          for size <- [:small, :normal, :medium, :large] do
+          for size <- Doggo.sizes() do
             %Variation{
               id: size,
               attributes: %{label: "Add item", size: size},
@@ -70,23 +63,14 @@ defmodule Storybook.Components.Fab do
       },
       %VariationGroup{
         id: :shapes,
-        variations: [
-          %Variation{
-            id: :no_shape,
-            attributes: %{label: "Add item", shape: nil},
-            slots: slot()
-          },
-          %Variation{
-            id: :circle_button,
-            attributes: %{label: "Add item", shape: :circle},
-            slots: slot()
-          },
-          %Variation{
-            id: :pill_button,
-            attributes: %{label: "Add item", shape: :pill},
-            slots: slot()
-          }
-        ]
+        variations:
+          for shape <- [nil | Doggo.shapes()] do
+            %Variation{
+              id: shape || :default,
+              attributes: %{label: "Add item", shape: shape},
+              slots: slot()
+            }
+          end
       }
     ]
   end

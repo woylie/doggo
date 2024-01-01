@@ -22,28 +22,14 @@ defmodule Storybook.Components.Alert do
       },
       %VariationGroup{
         id: :levels,
-        variations: [
-          %Variation{
-            id: :info,
-            attributes: %{level: :info},
-            slots: ["This is an alert with level 'info'."]
-          },
-          %Variation{
-            id: :success,
-            attributes: %{level: :success},
-            slots: ["This is an alert with level 'success'."]
-          },
-          %Variation{
-            id: :warning,
-            attributes: %{level: :warning},
-            slots: ["This is an alert with level 'warning'."]
-          },
-          %Variation{
-            id: :error,
-            attributes: %{level: :error},
-            slots: ["This is an alert with level 'error'."]
-          }
-        ]
+        variations:
+          for level <- Doggo.variants() do
+            %Variation{
+              id: level,
+              attributes: %{level: level},
+              slots: ["This is an alert with level '#{level}'."]
+            }
+          end
       }
     ]
   end
