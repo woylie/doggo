@@ -434,7 +434,7 @@ defmodule DoggoTest do
         <Doggo.avatar src="avatar.png" />
         """)
 
-      assert attribute(html, "div:root", "class") == "avatar"
+      assert attribute(html, "div:root", "class") == "avatar is-normal"
 
       img = find_one(html, ":root > img")
       assert attribute(img, "src") == "avatar.png"
@@ -461,7 +461,8 @@ defmodule DoggoTest do
         <Doggo.avatar src="avatar.png" circle />
         """)
 
-      assert attribute(html, "div:root", "class") == "avatar is-circle"
+      assert attribute(html, "div:root", "class") ==
+               "avatar is-normal is-circle"
     end
 
     test "with loading" do
@@ -528,7 +529,7 @@ defmodule DoggoTest do
         <Doggo.avatar src="avatar.png" class="has-border" />
         """)
 
-      assert attribute(html, ":root", "class") == "avatar has-border"
+      assert attribute(html, ":root", "class") == "avatar is-normal has-border"
     end
 
     test "with additional classes as list" do
@@ -539,7 +540,8 @@ defmodule DoggoTest do
         <Doggo.avatar src="avatar.png" class={["has-border", "has-shadow"]} />
         """)
 
-      assert attribute(html, ":root", "class") == "avatar has-border has-shadow"
+      assert attribute(html, ":root", "class") ==
+               "avatar is-normal has-border has-shadow"
     end
 
     test "with global attribute" do
@@ -564,7 +566,7 @@ defmodule DoggoTest do
         """)
 
       span = find_one(html, "span")
-      assert attribute(span, "class") == "badge "
+      assert attribute(span, "class") == "badge is-normal"
       assert text(span) == "value"
     end
 
@@ -589,7 +591,7 @@ defmodule DoggoTest do
         """)
 
       span = find_one(html, "span")
-      assert attribute(span, "class") == "badge is-secondary"
+      assert attribute(span, "class") == "badge is-normal is-secondary"
     end
   end
 
@@ -928,7 +930,7 @@ defmodule DoggoTest do
 
       button = find_one(html, "button:root")
       assert attribute(button, "type") == "button"
-      assert attribute(button, "class") == "is-primary is-solid"
+      assert attribute(button, "class") == "is-primary is-normal is-solid"
       assert text(button) == "Confirm"
     end
 
@@ -962,7 +964,8 @@ defmodule DoggoTest do
         <Doggo.button variant={:danger}>Confirm</Doggo.button>
         """)
 
-      assert attribute(html, "button:root", "class") == "is-danger is-solid"
+      assert attribute(html, "button:root", "class") ==
+               "is-danger is-normal is-solid"
     end
 
     test "with size" do
@@ -986,7 +989,7 @@ defmodule DoggoTest do
         """)
 
       assert attribute(html, "button:root", "class") ==
-               "is-primary is-pill is-solid"
+               "is-primary is-normal is-pill is-solid"
     end
 
     test "with fill" do
@@ -997,7 +1000,8 @@ defmodule DoggoTest do
         <Doggo.button fill={:outline}>Confirm</Doggo.button>
         """)
 
-      assert attribute(html, "button:root", "class") == "is-primary is-outline"
+      assert attribute(html, "button:root", "class") ==
+               "is-primary is-normal is-outline"
     end
   end
 
@@ -1012,7 +1016,7 @@ defmodule DoggoTest do
 
       a = find_one(html, "a:root")
       assert attribute(a, "role") == "button"
-      assert attribute(a, "class") == "is-primary is-solid"
+      assert attribute(a, "class") == "is-primary is-normal is-solid"
       assert attribute(a, "href") == "/confirm"
       assert text(a) == "Confirm"
     end
@@ -1026,7 +1030,7 @@ defmodule DoggoTest do
         """)
 
       assert attribute(html, "a:root", "class") ==
-               "is-primary is-solid is-disabled"
+               "is-primary is-normal is-solid is-disabled"
     end
 
     test "with variant" do
@@ -1037,7 +1041,7 @@ defmodule DoggoTest do
         <Doggo.button_link variant={:info}>Confirm</Doggo.button_link>
         """)
 
-      assert attribute(html, "a:root", "class") == "is-info is-solid"
+      assert attribute(html, "a:root", "class") == "is-info is-normal is-solid"
     end
 
     test "with size" do
@@ -1061,7 +1065,7 @@ defmodule DoggoTest do
         """)
 
       assert attribute(html, "a:root", "class") ==
-               "is-primary is-pill is-solid"
+               "is-primary is-normal is-pill is-solid"
     end
 
     test "with fill" do
@@ -1072,7 +1076,8 @@ defmodule DoggoTest do
         <Doggo.button_link fill={:text}>Confirm</Doggo.button_link>
         """)
 
-      assert attribute(html, "a:root", "class") == "is-primary is-text"
+      assert attribute(html, "a:root", "class") ==
+               "is-primary is-normal is-text"
     end
   end
 
@@ -1985,7 +1990,7 @@ defmodule DoggoTest do
 
       button = find_one(html, "button:root")
       assert attribute(button, "type") == "button"
-      assert attribute(button, "class") == "fab is-primary is-circle"
+      assert attribute(button, "class") == "fab is-primary is-normal is-circle"
       assert attribute(button, "aria-label") == "Add toy"
       assert text(button) == "add-icon"
     end
@@ -2010,7 +2015,7 @@ defmodule DoggoTest do
         """)
 
       assert attribute(html, "button:root", "class") ==
-               "fab is-success is-circle"
+               "fab is-success is-normal is-circle"
     end
 
     test "with size" do
@@ -2034,7 +2039,7 @@ defmodule DoggoTest do
         """)
 
       assert attribute(html, "button:root", "class") ==
-               "fab is-primary is-pill"
+               "fab is-primary is-normal is-pill"
     end
 
     test "with global attribute" do
@@ -2364,7 +2369,7 @@ defmodule DoggoTest do
         """)
 
       span = find_one(html, "span:root")
-      assert attribute(span, "class") == "icon"
+      assert attribute(span, "class") == "icon is-normal"
       assert text(span) == "some-icon"
     end
 
@@ -2403,7 +2408,7 @@ defmodule DoggoTest do
         """)
 
       span = find_one(html, "span:root")
-      assert attribute(span, "class") == "icon has-text-left"
+      assert attribute(span, "class") == "icon is-normal has-text-left"
       assert attribute(span, "span:root", "aria-label") == nil
       assert text(html, "span > span") == "some-label"
     end
@@ -2419,7 +2424,7 @@ defmodule DoggoTest do
         """)
 
       span = find_one(html, "span:root")
-      assert attribute(span, "class") == "icon has-text-right"
+      assert attribute(span, "class") == "icon is-normal has-text-right"
       assert attribute(span, "span:root", "aria-label") == nil
       assert text(html, "span > span") == "some-label"
     end
@@ -2432,7 +2437,7 @@ defmodule DoggoTest do
         <Doggo.icon class="is-rad">some-icon</Doggo.icon>
         """)
 
-      assert attribute(html, ":root", "class") == "icon is-rad"
+      assert attribute(html, ":root", "class") == "icon is-normal is-rad"
     end
 
     test "with additional classes as list" do
@@ -2443,7 +2448,8 @@ defmodule DoggoTest do
         <Doggo.icon class={["is-rad", "is-boud"]}>some-icon</Doggo.icon>
         """)
 
-      assert attribute(html, ":root", "class") == "icon is-rad is-boud"
+      assert attribute(html, ":root", "class") ==
+               "icon is-normal is-rad is-boud"
     end
 
     test "with global attribute" do
@@ -2468,7 +2474,7 @@ defmodule DoggoTest do
         """)
 
       span = find_one(html, "span:root")
-      assert attribute(span, "class") == "icon"
+      assert attribute(span, "class") == "icon is-normal"
       svg = find_one(span, "svg")
       assert attribute(svg, "aria-hidden") == "true"
       assert attribute(svg, "use", "href") == "/assets/icons/sprite.svg#edit"
@@ -2483,7 +2489,7 @@ defmodule DoggoTest do
         """)
 
       span = find_one(html, "span:root")
-      assert attribute(span, "class") == "icon"
+      assert attribute(span, "class") == "icon is-normal"
       svg = find_one(span, "svg")
       assert attribute(svg, "aria-hidden") == "true"
       assert attribute(svg, "use", "href") == "/images/icons.svg#edit"
@@ -2522,7 +2528,7 @@ defmodule DoggoTest do
         """)
 
       span = find_one(html, "span:root")
-      assert attribute(span, "class") == "icon has-text-left"
+      assert attribute(span, "class") == "icon is-normal has-text-left"
       assert attribute(span, "span:root", "aria-label") == nil
       assert text(html, "span > span") == "some-label"
     end
@@ -2536,7 +2542,7 @@ defmodule DoggoTest do
         """)
 
       span = find_one(html, "span:root")
-      assert attribute(span, "class") == "icon has-text-right"
+      assert attribute(span, "class") == "icon is-normal has-text-right"
       assert attribute(span, "span:root", "aria-label") == nil
       assert text(html, "span > span") == "some-label"
     end
@@ -2549,7 +2555,7 @@ defmodule DoggoTest do
         <Doggo.icon_sprite name="edit" class="is-rad" />
         """)
 
-      assert attribute(html, ":root", "class") == "icon is-rad"
+      assert attribute(html, ":root", "class") == "icon is-normal is-rad"
     end
 
     test "with additional classes as list" do
@@ -2560,7 +2566,8 @@ defmodule DoggoTest do
         <Doggo.icon_sprite name="edit" class={["is-rad", "is-boud"]} />
         """)
 
-      assert attribute(html, ":root", "class") == "icon is-rad is-boud"
+      assert attribute(html, ":root", "class") ==
+               "icon is-normal is-rad is-boud"
     end
 
     test "with global attribute" do
@@ -4381,7 +4388,7 @@ defmodule DoggoTest do
         """)
 
       span = find_one(html, "span")
-      assert attribute(span, "class") == "tag "
+      assert attribute(span, "class") == "tag is-normal"
       assert text(span) == "value"
     end
 
@@ -4404,7 +4411,7 @@ defmodule DoggoTest do
         <Doggo.tag variant={:primary}>value</Doggo.tag>
         """)
 
-      assert attribute(html, "span", "class") == "tag is-primary"
+      assert attribute(html, "span", "class") == "tag is-primary is-normal"
     end
 
     test "with shape" do
@@ -4415,7 +4422,7 @@ defmodule DoggoTest do
         <Doggo.tag shape={:pill}>value</Doggo.tag>
         """)
 
-      assert attribute(html, "span", "class") == "tag is-pill"
+      assert attribute(html, "span", "class") == "tag is-normal is-pill"
     end
   end
 
@@ -4743,7 +4750,8 @@ defmodule DoggoTest do
         </Doggo.toggle_button>
         """)
 
-      assert attribute(html, "button:root", "class") == "is-danger is-solid"
+      assert attribute(html, "button:root", "class") ==
+               "is-danger is-normal is-solid"
     end
 
     test "with size" do
@@ -4771,7 +4779,7 @@ defmodule DoggoTest do
         """)
 
       assert attribute(html, "button:root", "class") ==
-               "is-primary is-pill is-solid"
+               "is-primary is-normal is-pill is-solid"
     end
 
     test "with fill" do
@@ -4784,7 +4792,8 @@ defmodule DoggoTest do
         </Doggo.toggle_button>
         """)
 
-      assert attribute(html, "button:root", "class") == "is-primary is-outline"
+      assert attribute(html, "button:root", "class") ==
+               "is-primary is-normal is-outline"
     end
 
     test "with global attribute" do
@@ -4853,6 +4862,13 @@ defmodule DoggoTest do
       tooltip = find_one(html, "span:root > div[role='tooltip']")
       assert attribute(tooltip, "id") == expected_id
       assert text(tooltip) == "some details"
+    end
+  end
+
+  describe "modifier_classes/1" do
+    test "returns a map of modifier classes" do
+      assert %{variants: [variant | _]} = Doggo.modifier_classes()
+      assert is_binary(variant)
     end
   end
 end

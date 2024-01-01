@@ -72,6 +72,22 @@ scope "/", MyAppWeb do
 end
 ```
 
+### PurgeCSS
+
+If you use PurgeCSS, you will need to add `deps/doggo/lib/doggo.ex` to your
+PurgeCSS configuration.
+
+Doggo also uses modifier CSS classes to alter the appearance of components. The
+class names are generated dynamically, which means PurgeCSS won't be able to
+find them in the source code. You can use `mix dog.modifiers` to save a
+list of all modifier class names to a file:
+
+```bash
+mix dog.modifiers -o assets/modifiers.txt
+```
+
+Add the generated file to your PurgeCSS configuration as well.
+
 ## Design decisions
 
 - Favor semantic HTML elements over CSS classes for structure and clarity.

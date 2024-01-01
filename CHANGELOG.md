@@ -5,6 +5,8 @@
 ### Added
 
 - New component: `Doggo.tabs/1`.
+- Storybook page about modifier classes.
+- Mix task `mix dog.modifiers` to list all modifier classes.
 
 ## [0.4.0] - 2023-12-31
 
