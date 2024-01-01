@@ -4864,4 +4864,11 @@ defmodule DoggoTest do
       assert text(tooltip) == "some details"
     end
   end
+
+  describe "modifier_classes/1" do
+    test "returns a map of modifier classes" do
+      assert %{variants: [variant | _]} = Doggo.modifier_classes()
+      assert is_binary(variant)
+    end
+  end
 end

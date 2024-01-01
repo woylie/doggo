@@ -5,5 +5,6 @@ defmodule DemoWeb.Storybook do
     # assets path are remote path, not local file-system paths
     css_path: "/assets/app.css",
     js_path: "/assets/app.js",
-    sandbox_class: "demo-web"
+    sandbox_class: "demo-web",
+    title: "Doggo Storybook"
 end

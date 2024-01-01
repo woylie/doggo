@@ -4262,4 +4262,16 @@ defmodule Doggo do
 
   @doc false
   def variants, do: @variants
+
+  @doc false
+  def modifier_classes do
+    %{
+      fills: Enum.map(fills(), &fill_class/1),
+      ratios: Enum.map(ratios(), &ratio_class/1),
+      shapes: Enum.map(shapes(), &shape_class/1),
+      sizes: Enum.map(sizes(), &size_class/1),
+      skeleton_types: Enum.map(skeleton_types(), &skeleton_type_class/1),
+      variants: Enum.map(variants(), &variant_class/1)
+    }
+  end
 end
