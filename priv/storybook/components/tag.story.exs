@@ -17,14 +17,7 @@ defmodule Storybook.Components.Tag do
       %VariationGroup{
         id: :variants,
         variations:
-          for variant <- [
-                :primary,
-                :secondary,
-                :info,
-                :success,
-                :warning,
-                :danger
-              ] do
+          for variant <- Doggo.variants() do
             %Variation{
               id: variant,
               attributes: %{variant: variant},
@@ -35,7 +28,7 @@ defmodule Storybook.Components.Tag do
       %VariationGroup{
         id: :sizes,
         variations:
-          for size <- [:small, :normal, :medium, :large] do
+          for size <- Doggo.sizes() do
             %Variation{
               id: size,
               attributes: %{size: size},

@@ -26,103 +26,47 @@ defmodule Storybook.Components.Button do
       },
       %VariationGroup{
         id: :variants,
-        variations: [
-          %Variation{
-            id: :primary_button,
-            attributes: %{variant: :primary},
-            slots: ["primary"]
-          },
-          %Variation{
-            id: :secondary_button,
-            attributes: %{variant: :secondary},
-            slots: ["secondary"]
-          },
-          %Variation{
-            id: :info_button,
-            attributes: %{variant: :info},
-            slots: ["info"]
-          },
-          %Variation{
-            id: :success_button,
-            attributes: %{variant: :success},
-            slots: ["success"]
-          },
-          %Variation{
-            id: :warning_button,
-            attributes: %{variant: :warning},
-            slots: ["warning"]
-          },
-          %Variation{
-            id: :danger_button,
-            attributes: %{variant: :danger},
-            slots: ["danger"]
-          }
-        ]
+        variations:
+          for variant <- Doggo.variants() do
+            %Variation{
+              id: variant,
+              attributes: %{variant: variant},
+              slots: [to_string(variant)]
+            }
+          end
       },
       %VariationGroup{
         id: :fills,
-        variations: [
-          %Variation{
-            id: :solid_button,
-            attributes: %{fill: :solid},
-            slots: ["solid"]
-          },
-          %Variation{
-            id: :outline_button,
-            attributes: %{fill: :outline},
-            slots: ["outline"]
-          },
-          %Variation{
-            id: :text_button,
-            attributes: %{fill: :text},
-            slots: ["text"]
-          }
-        ]
+        variations:
+          for fill <- Doggo.fills() do
+            %Variation{
+              id: fill,
+              attributes: %{fill: fill},
+              slots: [to_string(fill)]
+            }
+          end
       },
       %VariationGroup{
         id: :sizes,
-        variations: [
-          %Variation{
-            id: :small_button,
-            attributes: %{size: :small},
-            slots: ["small"]
-          },
-          %Variation{
-            id: :normal_button,
-            attributes: %{size: :normal},
-            slots: ["normal"]
-          },
-          %Variation{
-            id: :medium_button,
-            attributes: %{size: :medium},
-            slots: ["medium"]
-          },
-          %Variation{
-            id: :large_button,
-            attributes: %{size: :large},
-            slots: ["large"]
-          }
-        ]
+        variations:
+          for size <- Doggo.sizes() do
+            %Variation{
+              id: size,
+              attributes: %{size: size},
+              slots: [to_string(size)]
+            }
+          end
       },
       %VariationGroup{
         id: :shapes,
-        variations: [
-          %Variation{
-            id: :default_shape_button,
-            attributes: %{shape: nil},
-            slots: ["default"]
-          },
-          %Variation{
-            id: :circle_button,
-            attributes: %{shape: :circle},
-            slots: ["circle"]
-          },
-          %Variation{
-            id: :pill_button,
-            attributes: %{shape: :pill},
-            slots: ["pill"]
-          }
-        ]
+        variations:
+          for shape <- [nil | Doggo.shapes()] do
+            %Variation{
+              id: shape || :default,
+              attributes: %{shape: shape},
+              slots: ["#{shape || :default}"]
+            }
+          end
       }
     ]
   end

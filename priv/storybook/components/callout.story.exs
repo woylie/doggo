@@ -25,6 +25,19 @@ defmodule Storybook.Components.Callout do
           "<p>Regular exercise is essential for keeping your dog healthy and happy.</p>"
         ]
       },
+      %VariationGroup{
+        id: :variants,
+        variations:
+          for variant <- Doggo.variants() do
+            %Variation{
+              id: variant,
+              attributes: %{title: "Dog Care Tip", variant: variant},
+              slots: [
+                "<p>Regular exercise is essential for keeping your dog healthy and happy.</p>"
+              ]
+            }
+          end
+      },
       %Variation{
         id: :with_title_and_icon,
         attributes: %{title: "Fun Dog Fact"},

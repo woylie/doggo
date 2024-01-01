@@ -8,6 +8,30 @@ defmodule Doggo do
   alias Phoenix.HTML.Form
   alias Phoenix.LiveView.JS
 
+  @fills [:solid, :outline, :text]
+  @ratios [
+    {1, 1},
+    {3, 2},
+    {2, 3},
+    {4, 3},
+    {3, 4},
+    {5, 4},
+    {4, 5},
+    {16, 9},
+    {9, 16}
+  ]
+  @shapes [:circle, :pill]
+  @sizes [:small, :normal, :medium, :large]
+  @skeleton_types [
+    :text_line,
+    :text_block,
+    :image,
+    :circle,
+    :rectangle,
+    :square
+  ]
+  @variants [:primary, :secondary, :info, :success, :warning, :danger]
+
   ## Components
 
   @doc """
@@ -242,13 +266,8 @@ defmodule Doggo do
   """
   @doc type: :component
 
-  attr :size, :atom,
-    values: [:small, :normal, :medium, :large],
-    default: :normal
-
-  attr :variant, :atom,
-    values: [nil, :primary, :secondary, :info, :success, :warning, :danger],
-    default: nil
+  attr :size, :atom, values: @sizes, default: :normal
+  attr :variant, :atom, values: [nil | @variants], default: nil
 
   slot :inner_block, required: true
 
@@ -548,18 +567,10 @@ defmodule Doggo do
   @doc type: :component
 
   attr :type, :string, values: ["button", "reset", "submit"], default: "button"
-
-  attr :variant, :atom,
-    values: [:primary, :secondary, :info, :success, :warning, :danger],
-    default: :primary
-
-  attr :fill, :atom, values: [:solid, :outline, :text], default: :solid
-
-  attr :size, :atom,
-    values: [:small, :normal, :medium, :large],
-    default: :normal
-
-  attr :shape, :atom, values: [nil, :circle, :pill], default: nil
+  attr :variant, :atom, values: @variants, default: :primary
+  attr :fill, :atom, values: @fills, default: :solid
+  attr :size, :atom, values: @sizes, default: :normal
+  attr :shape, :atom, values: [nil | @shapes], default: nil
   attr :disabled, :boolean, default: nil
   attr :rest, :global, include: ~w(autofocus form name value)
 
@@ -601,17 +612,10 @@ defmodule Doggo do
   """
   @doc type: :component
 
-  attr :variant, :atom,
-    values: [:primary, :secondary, :info, :success, :warning, :danger],
-    default: :primary
-
-  attr :fill, :atom, values: [:solid, :outline, :text], default: :solid
-
-  attr :size, :atom,
-    values: [:small, :normal, :medium, :large],
-    default: :normal
-
-  attr :shape, :atom, values: [nil, :circle, :pill], default: nil
+  attr :variant, :atom, values: @variants, default: :primary
+  attr :fill, :atom, values: @fills, default: :solid
+  attr :size, :atom, values: @sizes, default: :normal
+  attr :shape, :atom, values: [nil | @shapes], default: nil
 
   attr :disabled, :boolean,
     default: false,
@@ -1320,16 +1324,9 @@ defmodule Doggo do
   @doc type: :component
 
   attr :label, :string, required: true
-
-  attr :variant, :atom,
-    values: [:primary, :secondary, :info, :success, :warning, :danger],
-    default: :primary
-
-  attr :size, :atom,
-    values: [:small, :normal, :medium, :large],
-    default: :normal
-
-  attr :shape, :atom, values: [nil, :circle, :pill], default: :circle
+  attr :variant, :atom, values: @variants, default: :primary
+  attr :size, :atom, values: @sizes, default: :normal
+  attr :shape, :atom, values: [nil | @shapes], default: :circle
   attr :disabled, :boolean, default: nil
   attr :rest, :global
 
@@ -1605,12 +1602,8 @@ defmodule Doggo do
     avatar as a decorative element for screen readers.
     """
 
-  attr :size, :atom,
-    values: [:small, :normal, :medium, :large],
-    default: :normal
-
+  attr :size, :atom, values: @sizes, default: :normal
   attr :circle, :boolean, default: false
-
   attr :loading, :string, values: ["eager", "lazy"], default: "lazy"
 
   attr :class, :any,
@@ -1693,11 +1686,7 @@ defmodule Doggo do
   @doc type: :component
 
   attr :id, :string, required: true
-
-  attr :variant, :atom,
-    values: [:info, :success, :warning, :danger],
-    default: :info
-
+  attr :variant, :atom, values: @variants, default: :info
   attr :title, :string, default: nil, doc: "An optional title."
 
   attr :class, :any,
@@ -1898,21 +1887,7 @@ defmodule Doggo do
   """
   @doc type: :component
 
-  attr :ratio, :any,
-    values: [
-      nil,
-      {1, 1},
-      {3, 2},
-      {2, 3},
-      {4, 3},
-      {3, 4},
-      {5, 4},
-      {4, 5},
-      {16, 9},
-      {9, 16}
-    ],
-    default: nil
-
+  attr :ratio, :any, values: [nil | @ratios], default: nil
   attr :circle, :boolean, default: false
 
   slot :inner_block
@@ -1975,9 +1950,7 @@ defmodule Doggo do
     `label` text is used as `aria-label` attribute.
     """
 
-  attr :size, :atom,
-    default: :normal,
-    values: [:small, :normal, :medium, :large]
+  attr :size, :atom, values: @sizes, default: :normal
 
   attr :class, :any,
     default: [],
@@ -2048,9 +2021,7 @@ defmodule Doggo do
     `label` text is used as `aria-label` attribute.
     """
 
-  attr :size, :atom,
-    default: :normal,
-    values: [:small, :normal, :medium, :large]
+  attr :size, :atom, values: @sizes, default: :normal
 
   attr :class, :any,
     default: [],
@@ -2141,21 +2112,7 @@ defmodule Doggo do
   attr :width, :integer, default: nil
   attr :height, :integer, default: nil
   attr :loading, :string, values: ["eager", "lazy"], default: "lazy"
-
-  attr :ratio, :any,
-    values: [
-      nil,
-      {1, 1},
-      {3, 2},
-      {2, 3},
-      {4, 3},
-      {3, 4},
-      {5, 4},
-      {4, 5},
-      {16, 9},
-      {9, 16}
-    ],
-    default: nil
+  attr :ratio, :any, values: [nil | @ratios], default: nil
 
   attr :class, :any,
     default: [],
@@ -3428,16 +3385,7 @@ defmodule Doggo do
   """
   @doc type: :component
 
-  attr :type, :atom,
-    required: true,
-    values: [
-      :text_line,
-      :text_block,
-      :image,
-      :circle,
-      :rectangle,
-      :square
-    ]
+  attr :type, :atom, required: true, values: @skeleton_types
 
   attr :class, :any,
     default: [],
@@ -4013,17 +3961,10 @@ defmodule Doggo do
     clicked.
     """
 
-  attr :variant, :atom,
-    values: [:primary, :secondary, :info, :success, :warning, :danger],
-    default: :primary
-
-  attr :fill, :atom, values: [:solid, :outline, :text], default: :solid
-
-  attr :size, :atom,
-    values: [:small, :normal, :medium, :large],
-    default: :normal
-
-  attr :shape, :atom, values: [nil, :circle, :pill], default: nil
+  attr :variant, :atom, values: @variants, default: :primary
+  attr :fill, :atom, values: @fills, default: :solid
+  attr :size, :atom, values: @sizes, default: :normal
+  attr :shape, :atom, values: [nil | @shapes], default: nil
   attr :disabled, :boolean, default: nil
   attr :rest, :global
 
@@ -4222,14 +4163,8 @@ defmodule Doggo do
   """
   @doc type: :component
 
-  attr :size, :atom,
-    values: [:small, :normal, :medium, :large],
-    default: :normal
-
-  attr :variant, :atom,
-    values: [nil, :primary, :secondary, :info, :success, :warning, :danger],
-    default: nil
-
+  attr :size, :atom, values: @sizes, default: :normal
+  attr :variant, :atom, values: [nil | @variants], default: nil
   attr :shape, :atom, values: [nil, :pill], default: nil
 
   slot :inner_block, required: true
@@ -4309,4 +4244,22 @@ defmodule Doggo do
   defp variant_class(:warning), do: "is-warning"
   defp variant_class(:danger), do: "is-danger"
   defp variant_class(_), do: nil
+
+  @doc false
+  def fills, do: @fills
+
+  @doc false
+  def ratios, do: @ratios
+
+  @doc false
+  def shapes, do: @shapes
+
+  @doc false
+  def sizes, do: @sizes
+
+  @doc false
+  def skeleton_types, do: @skeleton_types
+
+  @doc false
+  def variants, do: @variants
 end
