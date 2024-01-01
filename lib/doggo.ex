@@ -4173,8 +4173,8 @@ defmodule Doggo do
     ~H"""
     <span class={[
       "tag",
-      size_class(@size),
       variant_class(@variant),
+      size_class(@size),
       shape_class(@shape)
     ]}>
       <%= render_slot(@inner_block) %>
@@ -4222,7 +4222,7 @@ defmodule Doggo do
   defp ratio_class(nil), do: nil
 
   defp size_class(:small), do: "is-small"
-  defp size_class(:normal), do: nil
+  defp size_class(:normal), do: "is-normal"
   defp size_class(:medium), do: "is-medium"
   defp size_class(:large), do: "is-large"
 
