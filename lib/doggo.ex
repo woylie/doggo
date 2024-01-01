@@ -4206,44 +4206,42 @@ defmodule Doggo do
 
   ## Modifier classes
 
-  defp fill_class(:solid), do: "is-solid"
-  defp fill_class(:outline), do: "is-outline"
-  defp fill_class(:text), do: "is-text"
+  for fill <- @fills do
+    str = fill |> to_string() |> String.replace("_", "-")
+    defp fill_class(unquote(fill)), do: "is-#{unquote(str)}"
+  end
 
-  defp ratio_class({1, 1}), do: "is-1-by-1"
-  defp ratio_class({3, 2}), do: "is-3-by-2"
-  defp ratio_class({2, 3}), do: "is-2-by-3"
-  defp ratio_class({4, 3}), do: "is-4-by-3"
-  defp ratio_class({3, 4}), do: "is-3-by-4"
-  defp ratio_class({5, 4}), do: "is-5-by-4"
-  defp ratio_class({4, 5}), do: "is-4-by-5"
-  defp ratio_class({16, 9}), do: "is-16-by-9"
-  defp ratio_class({9, 16}), do: "is-9-by-16"
+  for {w, h} <- @ratios do
+    defp ratio_class({unquote(w), unquote(h)}) do
+      "is-#{unquote(w)}-by-#{unquote(h)}"
+    end
+  end
+
   defp ratio_class(nil), do: nil
 
-  defp size_class(:small), do: "is-small"
-  defp size_class(:normal), do: "is-normal"
-  defp size_class(:medium), do: "is-medium"
-  defp size_class(:large), do: "is-large"
+  for size <- @sizes do
+    str = size |> to_string() |> String.replace("_", "-")
+    defp size_class(unquote(size)), do: "is-#{unquote(str)}"
+  end
 
-  defp shape_class(:circle), do: "is-circle"
-  defp shape_class(:pill), do: "is-pill"
+  for shape <- @shapes do
+    str = shape |> to_string() |> String.replace("_", "-")
+    defp shape_class(unquote(shape)), do: "is-#{unquote(str)}"
+  end
+
   defp shape_class(nil), do: nil
 
-  defp skeleton_type_class(:text_line), do: "is-text-line"
-  defp skeleton_type_class(:text_block), do: "is-text-block"
-  defp skeleton_type_class(:image), do: "is-image"
-  defp skeleton_type_class(:circle), do: "is-circle"
-  defp skeleton_type_class(:rectangle), do: "is-rectangle"
-  defp skeleton_type_class(:square), do: "is-square"
+  for type <- @skeleton_types do
+    str = type |> to_string() |> String.replace("_", "-")
+    defp skeleton_type_class(unquote(type)), do: "is-#{unquote(str)}"
+  end
 
-  defp variant_class(:primary), do: "is-primary"
-  defp variant_class(:secondary), do: "is-secondary"
-  defp variant_class(:info), do: "is-info"
-  defp variant_class(:success), do: "is-success"
-  defp variant_class(:warning), do: "is-warning"
-  defp variant_class(:danger), do: "is-danger"
-  defp variant_class(_), do: nil
+  for variant <- @variants do
+    str = variant |> to_string() |> String.replace("_", "-")
+    defp variant_class(unquote(variant)), do: "is-#{unquote(str)}"
+  end
+
+  defp variant_class(nil), do: nil
 
   @doc false
   def fills, do: @fills
