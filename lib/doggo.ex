@@ -3891,6 +3891,11 @@ defmodule Doggo do
   attr :id, :string, required: true
   attr :title, :string, required: true, doc: "A title that labels the tabs."
 
+  attr :heading, :string,
+    default: "h3",
+    values: ["h2", "h3", "h4", "h5", "h6"],
+    doc: "The heading level."
+
   attr :class, :any,
     default: [],
     doc: "Additional CSS classes. Can be a string or a list of strings."
@@ -3904,7 +3909,7 @@ defmodule Doggo do
   def tabs(assigns) do
     ~H"""
     <div id={@id} class={["tabs" | List.wrap(@class)]} {@rest}>
-      <h3 id={"#{@id}-title"}><%= @title %></h3>
+      <.dynamic_tag name={@heading} id={"#{@id}-title"}><%= @title %></.dynamic_tag>
       <div role="tablist" aria-labelledby={"#{@id}-title"}>
         <button
           :for={{panel, index} <- Enum.with_index(@panel, 1)}

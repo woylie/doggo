@@ -4170,6 +4170,20 @@ defmodule DoggoTest do
       assert text(div) == "some other text"
     end
 
+    test "with heading" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.tabs id="my-tabs" title="My Tabs" heading="h4">
+          <:panel label="Panel 1">some text</:panel>
+          <:panel label="Panel 2">some other text</:panel>
+        </Doggo.tabs>
+        """)
+
+      assert text(html, ":root > h4") == "My Tabs"
+    end
+
     test "with additional class as string" do
       assigns = %{}
 
