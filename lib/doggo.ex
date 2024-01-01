@@ -2910,7 +2910,8 @@ defmodule Doggo do
   To toggle the modal visibility dynamically with the `open` attribute:
 
   1. Omit the `open` attribute in the template.
-  2. Use the `show_modal` and `hide_modal` functions to change the visibility.
+  2. Use the `show_modal/1` and `hide_modal/1` functions to change the
+     visibility.
 
   #### Example
 
@@ -2926,10 +2927,10 @@ defmodule Doggo do
   </Doggo.modal>
   ```
 
-  To open modal, use the `show_modal` function.
+  To open modal, use the `show_modal/1` function.
 
   ```heex
-  <.link phx-click={show_modal("pet-modal")}>show</.link>
+  <.link phx-click={Doggo.show_modal("pet-modal")}>show</.link>
   ```
 
   ## CSS
@@ -3665,6 +3666,10 @@ defmodule Doggo do
   @doc """
   Renders navigation tabs.
 
+  This component is meant for tabs that link to a different view or live action.
+  If you want to render tabs that switch between in-page content panels, use
+  `tabs/1` instead.
+
   ## Example
 
   ```heex
@@ -3747,6 +3752,109 @@ defmodule Doggo do
       </ul>
     </nav>
     """
+  end
+
+  @doc """
+  Renders tab panels.
+
+  This component is meant for tabs that toggle content panels within the page.
+  If you want to link to a different view or live action, use
+  `tab_navigation/1` instead.
+
+  > #### Keyboard interaction {: .warning}
+  >
+  > Keyboard interaction will be added in a future version.
+
+  ## Example
+
+  ```heex
+  <Doggo.tabs id="dog-breed-profiles" title="Dog Breed Profiles">
+    <:panel label="Golden Retriever">
+      <p>
+        Friendly, intelligent, great with families. Origin: Scotland. Needs
+        regular exercise.
+      </p>
+    </:panel>
+    <:panel label="Siberian Husky">
+      <p>
+        Energetic, outgoing, distinctive appearance. Origin: Northeast Asia.
+        Loves cold climates.
+      </p>
+    </:panel>
+    <:panel label="Dachshund">
+      <p>
+        Playful, stubborn, small size. Origin: Germany. Enjoys sniffing games.
+      </p>
+    </:panel>
+  </Doggo.tabs>
+  ```
+  """
+  @doc type: :component
+
+  attr :id, :string, required: true
+  attr :title, :string, required: true, doc: "A title that labels the tabs."
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :panel, required: true do
+    attr :label, :string
+  end
+
+  def tabs(assigns) do
+    ~H"""
+    <div id={@id} class={["tabs" | List.wrap(@class)]} {@rest}>
+      <h3 id={"#{@id}-title"}><%= @title %></h3>
+      <div role="tablist" aria-labelledby={"#{@id}-title"}>
+        <button
+          :for={{panel, index} <- Enum.with_index(@panel, 1)}
+          type="button"
+          role="tab"
+          id={"#{@id}-tab-#{index}"}
+          aria-selected={to_string(index == 1)}
+          aria-controls={"#{@id}-panel-#{index}"}
+          tabindex={index != 1 && "-1"}
+          phx-click={show_tab(@id, index)}
+        >
+          <%= panel.label %>
+        </button>
+      </div>
+      <div
+        :for={{panel, index} <- Enum.with_index(@panel, 1)}
+        id={"#{@id}-panel-#{index}"}
+        role="tabpanel"
+        aria-labelledby={"#{@id}-tab-#{index}"}
+        hidden={index != 1}
+      >
+        <%= render_slot(panel) %>
+      </div>
+    </div>
+    """
+  end
+
+  @doc """
+  Shows the tab with the given index of the `tabs/1` component with the given
+  ID.
+
+  ## Example
+
+      Doggo.show_tab("my-tabs", 2)
+  """
+  def show_tab(js \\ %JS{}, id, index)
+      when is_binary(id) and is_integer(index) do
+    other_tabs = "##{id} [role='tab']:not(##{id}-tab-#{index})"
+    other_panels = "##{id} [role='tabpanel']:not(##{id}-panel-#{index})"
+
+    js
+    |> JS.set_attribute({"aria-selected", "true"}, to: "##{id}-tab-#{index}")
+    |> JS.set_attribute({"tabindex", "0"}, to: "##{id}-tab-#{index}")
+    |> JS.remove_attribute("hidden", to: "##{id}-panel-#{index}")
+    |> JS.set_attribute({"aria-selected", "false"}, to: other_tabs)
+    |> JS.set_attribute({"tabindex", "-1"}, to: other_tabs)
+    |> JS.set_attribute({"hidden", "hidden"}, to: other_panels)
   end
 
   @doc """

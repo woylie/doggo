@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- New component: `Doggo.tabs/1`.
+
 ## [0.4.0] - 2023-12-31
 
 ### Added
