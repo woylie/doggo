@@ -118,3 +118,7 @@ The storybook can be accessed at http://localhost:4000.
 
 The library is actively developed. Being in its early stages, the library may
 still undergo significant changes, potentially leading to breaking changes.
+
+If you miss a component, if you have trouble with an existing component, or if a
+component doesn't work for you in a certain use case, please don't hesitate to
+open a [Github issue](https://github.com/woylie/doggo/issues).
