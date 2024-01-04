@@ -4,6 +4,7 @@
 
 ### Added
 
+- New component: `Doggo.radio_group/1`.
 - New component: `Doggo.tabs/1`.
 - Storybook page about modifier classes.
 - Mix task `mix dog.modifiers` to list all modifier classes.

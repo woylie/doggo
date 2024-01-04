@@ -3323,6 +3323,135 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders a group of radio buttons, for example for a toolbar.
+
+  To render radio buttons within a regular form, use `input/1` with the
+  `"radio-group"` type instead.
+
+  ## Example
+
+  ```heex
+  <Doggo.radio_group
+    id="favorite_dog"
+    name="favorite_dog"
+    label="Favorite Dog"
+    options={[
+      {"Labrador Retriever", "labrador"},
+      {"German Shepherd", "german_shepherd"},
+      {"Golden Retriever", "golden_retriever"},
+      {"French Bulldog", "french_bulldog"},
+      {"Beagle", "beagle"}
+    ]}
+  />
+  ```
+
+  ## CSS
+
+  To target the wrapper, use an attribute selector:
+
+  ```css
+  [role="radio-group"] {}
+  ```
+  """
+
+  @doc type: :form
+
+  attr :id, :string, required: true
+
+  attr :name, :string,
+    required: true,
+    doc: "The `name` attribute for the `input` elements."
+
+  attr :label, :string,
+    default: nil,
+    doc: """
+    A accessibility label for the radio group. Set as `aria-label` attribute.
+
+    You should ensure that either the `label` or the `labelledby` attribute is
+    set.
+    """
+
+  attr :labelledby, :string,
+    default: nil,
+    doc: """
+    The DOM ID of an element that labels this radio group.
+
+    Example:
+
+    ```html
+    <h3 id="dog-rg-label">Favorite Dog</h3>
+    <.radio_group labelled_by="dog-rg-label"></.radio_group>
+    ```
+
+    You should ensure that either the `label` or the `labelledby` attribute is
+    set.
+    """
+
+  attr :options, :list,
+    required: true,
+    doc: """
+    A list of options. It can be given a list values or as a list of
+    `{label, value}` tuples.
+    """
+
+  attr :value, :any,
+    default: nil,
+    doc: """
+    The currently selected value, which is compared with the option value to
+    determine whether a radio button is checked.
+    """
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  def radio_group(assigns) do
+    label = assigns[:label]
+    labelledby = assigns[:labelledby]
+
+    if (label && labelledby) || !(label || labelledby) do
+      raise """
+      invalid label attributes for radio_group
+
+      Doggo.radio_group requires either 'label' or 'labelledby' set for
+      accessibility, but not both.
+
+      ## Examples
+
+          With label:
+
+          <Doggo.radio_group label="Favorite Dog" ... />
+
+          <h3 id="favorite_dog_label">Favorite Dog</h3>
+          <Doggo.radio_group labelledby="favorite_dog_label" ... />
+      """
+    end
+
+    ~H"""
+    <div
+      id={@id}
+      role="radiogroup"
+      aria-label={@label}
+      aria-labelledby={@labelledby}
+      class={@class}
+      {@rest}
+    >
+      <.radio
+        :for={option <- @options}
+        option={option}
+        name={@name}
+        id={@id}
+        value={@value}
+        errors={[]}
+        description={[]}
+      />
+    </div>
+    """
+  end
+
+  @doc """
   Renders a skeleton loader, a placeholder for content that is in the process of
   loading.
 
