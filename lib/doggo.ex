@@ -1069,7 +1069,7 @@ defmodule Doggo do
       <.link navigate={~p"/"}>App</.link>
     </:brand>
     <:top>
-      <Doggo.drawer_nav aria-label="Main">
+      <Doggo.drawer_nav label="Main">
         <:item>
           <.link navigate={~p"/dashboard"}>Dashboard</.link>
         </:item>
@@ -1091,7 +1091,7 @@ defmodule Doggo do
       </Doggo.drawer_section>
     </:top>
     <:bottom>
-      <Doggo.drawer_nav aria-label="User menu">
+      <Doggo.drawer_nav label="User menu">
         <:item>
           <.link navigate={~p"/settings"}>Settings</.link>
         </:item>
@@ -1156,7 +1156,7 @@ defmodule Doggo do
   ## Example
 
   ```heex
-  <Doggo.drawer_nav aria-label="Main">
+  <Doggo.drawer_nav label="Main">
     <:item>
       <.link navigate={~p"/dashboard"}>Dashboard</.link>
     </:item>
@@ -1214,7 +1214,7 @@ defmodule Doggo do
   ## Example
 
   ```heex
-  <Doggo.drawer_nav aria-label="Main">
+  <Doggo.drawer_nav label="Main">
     <:item>
       <Doggo.drawer_nested_nav>
         <:title>Content</:title>
