@@ -5,7 +5,7 @@ defmodule Storybook.Components.ToggleButton do
 
   defp toggle_mute(variation_id) do
     JS.push(
-      "toggle",
+      "psb-toggle",
       value: %{attr: :pressed, variation_id: variation_id}
     )
   end

@@ -3,7 +3,7 @@ defmodule Storybook.ModifierClasses do
 
   def render(assigns) do
     ~H"""
-    <div class="lsb-welcome-page">
+    <div class="psb-welcome-page">
       <p>
         Doggo makes use of modifier CSS classes to alter the appearance of
         components. Here's a complete list:
