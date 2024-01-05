@@ -7,7 +7,7 @@ defmodule Storybook.Components.Input do
   def template do
     """
     <Phoenix.Component.form for={%{}} as={:story} :let={f}>
-      <.lsb-variation-group field={f[:field]} />
+      <.psb-variation-group field={f[:field]} />
     </Phoenix.Component.form>
     """
   end

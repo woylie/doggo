@@ -7,7 +7,7 @@ defmodule Storybook.Components.Modal do
     """
     <div>
       <button phx-click={Doggo.show_modal("modal-single-default")}>Open modal</button>
-      <.lsb-variation/>
+      <.psb-variation/>
     </div>
     """
   end

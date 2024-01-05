@@ -9,6 +9,10 @@
 - Storybook page about modifier classes.
 - Mix task `mix dog.modifiers` to list all modifier classes.
 
+### Changed
+
+- Depend on `phoenix_storybook ~> 0.6.0`.
+
 ## [0.4.0] - 2023-12-31
 
 ### Added
