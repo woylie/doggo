@@ -559,7 +559,7 @@ defmodule Doggo do
   `aria-busy` attribute:
 
   ```heex
-  <Doggo.button aria-label="Saving..." aria-busy={true}>
+  <Doggo.button aria-label="Saving..." aria-busy>
     click me
   </Doggo.button>
   ```
