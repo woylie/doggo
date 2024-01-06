@@ -3399,7 +3399,7 @@ defmodule Doggo do
   ```
   """
 
-  @doc type: :form
+  @doc type: :component
 
   attr :id, :string, required: true
 
@@ -4400,7 +4400,7 @@ defmodule Doggo do
   ```
   """
 
-  @doc type: :form
+  @doc type: :component
 
   attr :label, :string,
     default: nil,
@@ -4523,6 +4523,7 @@ defmodule Doggo do
     </:items>
   </Doggo.tree_item>
   """
+  @doc type: :component
 
   slot :items,
     doc: """
