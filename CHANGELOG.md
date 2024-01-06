@@ -4,6 +4,7 @@
 
 ### Added
 
+- New component: `Doggo.disclosure_button/`.
 - New component: `Doggo.radio_group/1`.
 - New component: `Doggo.tabs/1`.
 - New component: `Doggo.tree/1`.
