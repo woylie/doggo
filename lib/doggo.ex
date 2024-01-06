@@ -1035,6 +1035,46 @@ defmodule Doggo do
   defp to_time(nil), do: nil
 
   @doc """
+  Renders a button that toggles the visibility of another element.
+
+  For a button that toggles other states, use `toggle_button/1` instead.
+
+  > #### Not ready {: .warning}
+  >
+  > Doggo does not ship with JavaScript yet. The necessary JavaScript to
+  > toggle the element and the aria attribute will be added in a future version.
+
+  ## Examples
+
+  ```heex
+  <Doggo.disclosure_button controls="data-table">
+    Data Table
+  </Doggo.disclosure_button>
+
+  <table id="data-table" hidden></table>
+  ```
+  """
+  @doc type: :component
+
+  attr :controls, :string,
+    required: true,
+    doc: """
+    The DOM ID of the element that this button controls.
+    """
+
+  attr :rest, :global
+
+  slot :inner_block, required: true
+
+  def disclosure_button(assigns) do
+    ~H"""
+    <button type="button" aria-expanded="false" aria-controls={@controls} {@rest}>
+      <%= render_slot(@inner_block) %>
+    </button>
+    """
+  end
+
+  @doc """
   Renders a drawer with a `brand`, `top`, and `bottom` slot.
 
   All slots are optional, and you can render any content in them. If you want
