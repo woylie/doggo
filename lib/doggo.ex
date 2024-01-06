@@ -2984,7 +2984,12 @@ defmodule Doggo do
   To open modal, use the `show_modal/1` function.
 
   ```heex
-  <.link phx-click={Doggo.show_modal("pet-modal")}>show</.link>
+  <Doggo.button
+    phx-click={Doggo.show_modal("pet-modal")}
+    aria-haspopup="dialog"
+  >
+    show
+  </Doggo.button>
   ```
 
   ## CSS
