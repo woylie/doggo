@@ -3332,8 +3332,8 @@ defmodule Doggo do
 
   ```heex
   <Doggo.radio_group
-    id="favorite_dog"
-    name="favorite_dog"
+    id="favorite-dog"
+    name="favorite-dog"
     label="Favorite Dog"
     options={[
       {"Labrador Retriever", "labrador"},
@@ -3380,7 +3380,7 @@ defmodule Doggo do
 
     ```html
     <h3 id="dog-rg-label">Favorite Dog</h3>
-    <.radio_group labelled_by="dog-rg-label"></.radio_group>
+    <.radio_group labelledby="dog-rg-label"></.radio_group>
     ```
 
     You should ensure that either the `label` or the `labelledby` attribute is
@@ -3424,8 +3424,10 @@ defmodule Doggo do
 
           <Doggo.radio_group label="Favorite Dog" ... />
 
-          <h3 id="favorite_dog_label">Favorite Dog</h3>
-          <Doggo.radio_group labelledby="favorite_dog_label" ... />
+          With labelledby:
+
+          <h3 id="favorite-dog-label">Favorite Dog</h3>
+          <Doggo.radio_group labelledby="favorite-dog-label" ... />
       """
     end
 
@@ -4308,6 +4310,199 @@ defmodule Doggo do
     ]}>
       <%= render_slot(@inner_block) %>
     </span>
+    """
+  end
+
+  @doc """
+  Renders a hierarchical list as a tree.
+
+  A good use case for this component is a folder structure. For navigation and
+  other menus, a regular nested list should be preferred.
+
+  > #### Not ready {: .warning}
+  >
+  > Doggo does not ship with JavaScript yet. The necessary JavaScript to
+  > expand and collapse nodes, to select items, and to navigate the tree  will
+  > be added in a later release.
+
+  ## Example
+
+  ```heex
+  <Doggo.tree label="Dogs">
+    <Doggo.tree_item>
+      Breeds
+      <:items>
+        <Doggo.tree_item>Golden Retriever</Doggo.tree_item>
+        <Doggo.tree_item>Labrador Retriever</Doggo.tree_item>
+      </:items>
+    </Doggo.tree_item>
+    <Doggo.tree_item>
+      Characteristics
+      <:items>
+        <Doggo.tree_item>Playful</Doggo.tree_item>
+        <Doggo.tree_item>Loyal</Doggo.tree_item>
+      </:items>
+    </Doggo.tree_item>
+  </Doggo.tree>
+  ```
+
+  ## CSS
+
+  To target the wrapper, use an attribute selector:
+
+  ```css
+  [role="tree"] {}
+  ```
+  """
+
+  @doc type: :form
+
+  attr :label, :string,
+    default: nil,
+    doc: """
+    A accessibility label for the truee. Set as `aria-label` attribute.
+
+    You should ensure that either the `label` or the `labelledby` attribute is
+    set.
+
+    Do not repeat the word `tree` in the label, since it is already announced
+    by screen readers.
+    """
+
+  attr :labelledby, :string,
+    default: nil,
+    doc: """
+    The DOM ID of an element that labels this tree.
+
+    Example:
+
+    ```html
+    <h3 id="dog-tree-label">Dogs</h3>
+    <.tree labelledby="dog-tree-label"></.tree>
+    ```
+
+    You should ensure that either the `label` or the `labelledby` attribute is
+    set.
+    """
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :inner_block,
+    required: true,
+    doc: """
+    Slot for the root nodes of the tree. Use the `tree_item/1` component as
+    direct children.
+    """
+
+  def tree(assigns) do
+    label = assigns[:label]
+    labelledby = assigns[:labelledby]
+
+    if (label && labelledby) || !(label || labelledby) do
+      raise """
+      invalid label attributes for tree
+
+      Doggo.tree requires either 'label' or 'labelledby' set for accessibility,
+      but not both.
+
+      ## Examples
+
+          With label:
+
+          <Doggo.tree label="Dogs" ... />
+
+          With labelledby:
+
+          <h3 id="dog-tree-label">Favorite Dog</h3>
+          <Doggo.tree labelledby="dog-tree-label" ... />
+      """
+    end
+
+    ~H"""
+    <ul
+      role="tree"
+      aria-label={@label}
+      aria-labelledby={@labelledby}
+      class={@class}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </ul>
+    """
+  end
+
+  @doc """
+  Renders a tree item within a `tree/1`.
+
+  This component can be used as a direct child of `tree/1` or within the `items`
+  slot of this component.
+
+  > #### Not ready {: .warning}
+  >
+  > Doggo does not ship with JavaScript yet. The necessary JavaScript to
+  > expand and collapse nodes, to select items, and to navigate the tree  will
+  > be added in a later release.
+
+  ## Example
+
+  ```heex
+  <Doggo.tree label="Dogs">
+    <Doggo.tree_item>
+      Breeds
+      <:items>
+        <Doggo.tree_item>Golden Retriever</Doggo.tree_item>
+        <Doggo.tree_item>Labrador Retriever</Doggo.tree_item>
+      </:items>
+    </Doggo.tree_item>
+    <Doggo.tree_item>
+      Characteristics
+      <:items>
+        <Doggo.tree_item>Playful</Doggo.tree_item>
+        <Doggo.tree_item>Loyal</Doggo.tree_item>
+      </:items>
+    </Doggo.tree_item>
+  </Doggo.tree>
+  ```
+
+  Icons can be added before the label:
+
+  <Doggo.tree_item>
+    <Heroicon.folder /> Breeds
+    <:items>
+      <Doggo.tree_item><Heroicon.document /> Golden Retriever</Doggo.tree_item>
+      <Doggo.tree_item><Heroicon.document /> Labrador Retriever</Doggo.tree_item>
+    </:items>
+  </Doggo.tree_item>
+  """
+
+  slot :items,
+    doc: """
+    Slot for children of this item. Place one or more additional `tree_item/1`
+    components within this slot, or omit if this is a leaf node.
+    """
+
+  slot :inner_block,
+    required: true,
+    doc: """
+    Slot for the item label.
+    """
+
+  def tree_item(assigns) do
+    ~H"""
+    <li
+      role="treeitem"
+      aria-selected="false"
+      aria-expanded={@items != [] && "false"}
+    >
+      <span><%= render_slot(@inner_block) %></span>
+      <ul :if={@items != []} role="group">
+        <%= render_slot(@items) %>
+      </ul>
+    </li>
     """
   end
 
