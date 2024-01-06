@@ -2438,7 +2438,9 @@ defmodule Doggo do
           id={@id}
           value={@checked_value}
           checked={@checked}
-          aria-describedby={input_aria_describedby(@id, @errors, @description)}
+          aria-describedby={input_aria_describedby(@id, @description)}
+          aria-errormessage={input_aria_errormessage(@id, @errors)}
+          aria-invalid={@errors != [] && "true"}
           {@validations}
           {@rest}
         />
@@ -2527,7 +2529,9 @@ defmodule Doggo do
           id={@id}
           value={@checked_value}
           checked={@checked}
-          aria-describedby={input_aria_describedby(@id, @errors, @description)}
+          aria-describedby={input_aria_describedby(@id, @description)}
+          aria-errormessage={input_aria_errormessage(@id, @errors)}
+          aria-invalid={@errors != [] && "true"}
           {@validations}
           {@rest}
         />
@@ -2567,7 +2571,9 @@ defmodule Doggo do
           name={@name}
           id={@id}
           multiple={@multiple}
-          aria-describedby={input_aria_describedby(@id, @errors, @description)}
+          aria-describedby={input_aria_describedby(@id, @description)}
+          aria-errormessage={input_aria_errormessage(@id, @errors)}
+          aria-invalid={@errors != [] && "true"}
           {@validations}
           {@rest}
         >
@@ -2596,7 +2602,9 @@ defmodule Doggo do
       <textarea
         name={@name}
         id={@id}
-        aria-describedby={input_aria_describedby(@id, @errors, @description)}
+        aria-describedby={input_aria_describedby(@id, @description)}
+        aria-errormessage={input_aria_errormessage(@id, @errors)}
+        aria-invalid={@errors != [] && "true"}
         {@validations}
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
@@ -2641,7 +2649,9 @@ defmodule Doggo do
           list={@options && "#{@id}_datalist"}
           type={@type}
           value={normalize_value(@type, @value)}
-          aria-describedby={input_aria_describedby(@id, @errors, @description)}
+          aria-describedby={input_aria_describedby(@id, @description)}
+          aria-errormessage={input_aria_errormessage(@id, @errors)}
+          aria-invalid={@errors != [] && "true"}
           {@validations}
           {@rest}
         />
@@ -2690,12 +2700,11 @@ defmodule Doggo do
   defp normalize_value("date", _), do: ""
   defp normalize_value(type, value), do: Form.normalize_value(type, value)
 
-  defp input_aria_describedby(_, [], []), do: nil
-  defp input_aria_describedby(id, _, []), do: field_errors_id(id)
-  defp input_aria_describedby(id, [], _), do: field_description_id(id)
+  defp input_aria_describedby(_, []), do: nil
+  defp input_aria_describedby(id, _), do: field_description_id(id)
 
-  defp input_aria_describedby(id, _, _),
-    do: "#{field_errors_id(id)} #{field_description_id(id)}"
+  defp input_aria_errormessage(_, []), do: nil
+  defp input_aria_errormessage(id, _), do: field_errors_id(id)
 
   defp field_error_class([]), do: nil
   defp field_error_class(_), do: "has-errors"
@@ -2709,7 +2718,9 @@ defmodule Doggo do
         id={@id <> "_#{@option_value}"}
         value={@option_value}
         checked={checked?(@option_value, @value)}
-        aria-describedby={input_aria_describedby(@id, @errors, @description)}
+        aria-describedby={input_aria_describedby(@id, @description)}
+        aria-errormessage={input_aria_errormessage(@id, @errors)}
+        aria-invalid={@errors != [] && "true"}
       />
       <%= @label %>
     </.label>
@@ -2741,7 +2752,9 @@ defmodule Doggo do
         id={@id <> "_#{@option_value}"}
         value={@option_value}
         checked={checked?(@option_value, @value)}
-        aria-describedby={input_aria_describedby(@id, @errors, @description)}
+        aria-describedby={input_aria_describedby(@id, @description)}
+        aria-errormessage={input_aria_errormessage(@id, @errors)}
+        aria-invalid={@errors != [] && "true"}
       />
       <%= @label %>
     </.label>

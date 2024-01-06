@@ -13,6 +13,8 @@
 
 ### Changed
 
+- Set `aria-invalid` and `aria-errormessage` attributes in `Doggo.input/1`
+  component.
 - Depend on `phoenix_storybook ~> 0.6.0`.
 
 ## [0.4.0] - 2023-12-31
