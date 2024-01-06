@@ -2765,6 +2765,8 @@ defmodule DoggoTest do
       assert attribute(input, "name") == "age"
       assert attribute(input, "type") == "text"
       assert attribute(input, "aria-describedby") == nil
+      assert attribute(input, "aria-invalid") == nil
+      assert attribute(input, "aria-errormessage") == nil
 
       assert attribute(html, "label", "for") == "age"
       assert text(html, "label") == "Age"
@@ -3068,7 +3070,8 @@ defmodule DoggoTest do
         </.form>
         """)
 
-      assert attribute(html, "input", "aria-describedby") == "species_errors"
+      assert attribute(html, "input", "aria-invalid") == "true"
+      assert attribute(html, "input", "aria-errormessage") == "species_errors"
       assert attribute(html, "ul", "id") == "species_errors"
       assert attribute(html, "ul", "class") == "field-errors"
       assert text(html, ".field-errors > li") == "wrong"
@@ -3086,8 +3089,11 @@ defmodule DoggoTest do
         </.form>
         """)
 
+      assert attribute(html, "input", "aria-invalid") == "true"
+      assert attribute(html, "input", "aria-errormessage") == "species_errors"
+
       assert attribute(html, "input", "aria-describedby") ==
-               "species_errors species_description"
+               "species_description"
 
       assert attribute(html, "ul", "id") == "species_errors"
       assert attribute(html, "ul", "class") == "field-errors"
