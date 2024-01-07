@@ -7,6 +7,9 @@
 Headless UI component collection for Phoenix, focused on semantics and
 accessibility.
 
+For a full list of available components, please refer to the
+[documentation](https://hexdocs.pm/doggo/Doggo.html).
+
 ## Installation
 
 The package can be installed by adding `doggo` to your list of dependencies in

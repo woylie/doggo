@@ -38,10 +38,14 @@ defmodule Doggo do
   Renders a set of headings that control the visibility of their content
   sections.
 
-  > #### No JavaScript {: .warning}
+  > #### In Development {: .warning}
   >
-  > Doggo does not ship with JavaScript yet. The necessary JavaScript to trigger
-  > the accordion sections will be added in a future version.
+  > The necessary JavaScript for making this component fully functional and
+  > accessible will be added in a future version.
+  >
+  > **Missing features**
+  >
+  > - Toggle accordion sections
 
   ## Example
 
@@ -137,10 +141,15 @@ defmodule Doggo do
 
   It is typically positioned to float above other content.
 
-  > #### Caution {: .warning}
+  > #### In Development {: .warning}
   >
-  > This component implements the `toolbar` role, but it doesn't implement
-  > focus management with roving tabindex and arrow key handling yet.
+  > The necessary JavaScript for making this component fully functional and
+  > accessible will be added in a future version.
+  >
+  > **Missing features**
+  >
+  > - Roving tabindex
+  > - Move focus with arrow keys
 
   ## Example
 
@@ -1044,10 +1053,14 @@ defmodule Doggo do
 
   For a button that toggles other states, use `toggle_button/1` instead.
 
-  > #### Not ready {: .warning}
+  > #### In Development {: .warning}
   >
-  > Doggo does not ship with JavaScript yet. The necessary JavaScript to
-  > toggle the element and the aria attribute will be added in a future version.
+  > The necessary JavaScript for making this component fully functional and
+  > accessible will be added in a future version.
+  >
+  > **Missing features**
+  >
+  > - Toggle visibility of controlled element
 
   ## Examples
 
@@ -4000,9 +4013,15 @@ defmodule Doggo do
   If you want to link to a different view or live action, use
   `tab_navigation/1` instead.
 
-  > #### Keyboard interaction {: .warning}
+  > #### In Development {: .warning}
   >
-  > Keyboard interaction will be added in a future version.
+  > The necessary JavaScript for making this component fully functional and
+  > accessible will be added in a future version.
+  >
+  > **Missing features**
+  >
+  > - Roving tabindex
+  > - Move focus with arrow keys
 
   ## Example
 
@@ -4379,10 +4398,15 @@ defmodule Doggo do
   @doc """
   Renders a container for a set of controls.
 
-  > #### Caution {: .warning}
+  > #### In Development {: .warning}
   >
-  > This component implements the `toolbar` role, but it doesn't implement
-  > focus management with roving tabindex and arrow key handling yet.
+  > The necessary JavaScript for making this component fully functional and
+  > accessible will be added in a future version.
+  >
+  > **Missing features**
+  >
+  > - Roving tabindex
+  > - Move focus with arrow keys
 
   ## Example
 
@@ -4500,11 +4524,16 @@ defmodule Doggo do
   A good use case for this component is a folder structure. For navigation and
   other menus, a regular nested list should be preferred.
 
-  > #### Not ready {: .warning}
+  > #### In Development {: .warning}
   >
-  > Doggo does not ship with JavaScript yet. The necessary JavaScript to
-  > expand and collapse nodes, to select items, and to navigate the tree  will
-  > be added in a later release.
+  > The necessary JavaScript for making this component fully functional and
+  > accessible will be added in a future version.
+  >
+  > **Missing features**
+  >
+  > - Expand and collapse nodes
+  > - Select nodes
+  > - Navigate tree with arrow keys
 
   ## Example
 
@@ -4622,11 +4651,16 @@ defmodule Doggo do
   This component can be used as a direct child of `tree/1` or within the `items`
   slot of this component.
 
-  > #### Not ready {: .warning}
+  > #### In Development {: .warning}
   >
-  > Doggo does not ship with JavaScript yet. The necessary JavaScript to
-  > expand and collapse nodes, to select items, and to navigate the tree  will
-  > be added in a later release.
+  > The necessary JavaScript for making this component fully functional and
+  > accessible will be added in a future version.
+  >
+  > **Missing features**
+  >
+  > - Expand and collapse nodes
+  > - Select nodes
+  > - Navigate tree with arrow keys
 
   ## Example
 
