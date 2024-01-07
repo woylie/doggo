@@ -3307,15 +3307,30 @@ defmodule DoggoTest do
       assert attribute(dialog, "open") == nil
       assert attribute(dialog, "phx-mounted") == nil
 
-      a = find_one(html, ":root > div > article > header > a.modal-close")
+      a = find_one(html, ":root > div > section > header > button.modal-close")
       assert attribute(a, "aria-label") == "Close"
       assert text(a, "span") == "close"
 
-      h2 = find_one(html, ":root > div > article > header > h2")
+      h2 = find_one(html, ":root > div > section > header > h2")
       assert text(h2) == "Edit dog"
 
-      assert text(html, "article > .modal-content") == "dog-form"
-      assert text(html, "article > footer") == "paw"
+      assert text(html, "section > .modal-content") == "dog-form"
+      assert text(html, "section > footer") == "paw"
+    end
+
+    test "not dismissable" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.modal id="pet-modal" on_cancel={JS.push("cancel")} dismissable={false}>
+          <:title>Edit dog</:title>
+          dog-form
+          <:footer>paw</:footer>
+        </Doggo.modal>
+        """)
+
+      assert Floki.find(html, ".modal-close") == []
     end
 
     test "opened" do
@@ -3346,7 +3361,7 @@ defmodule DoggoTest do
         </Doggo.modal>
         """)
 
-      assert text(html, "a.modal-close") == "X"
+      assert text(html, "button.modal-close") == "X"
     end
 
     test "with close label" do
@@ -3360,7 +3375,7 @@ defmodule DoggoTest do
         </Doggo.modal>
         """)
 
-      assert attribute(html, "a.modal-close", "aria-label") == "Cancel"
+      assert attribute(html, "button.modal-close", "aria-label") == "Cancel"
     end
 
     test "with additional class as string" do
