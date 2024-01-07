@@ -169,9 +169,9 @@ defmodule Doggo do
   def action_bar(assigns) do
     ~H"""
     <div class={["action-bar" | List.wrap(@class)]} {@rest}>
-      <.link :for={item <- @item} phx-click={item.on_click} title={item.label}>
+      <button :for={item <- @item} phx-click={item.on_click} title={item.label}>
         <%= render_slot(item) %>
-      </.link>
+      </button>
     </div>
     """
   end

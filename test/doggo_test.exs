@@ -156,11 +156,13 @@ defmodule DoggoTest do
 
       assert attribute(html, "div", "class") == "action-bar"
 
-      a = find_one(html, "div > a")
-      assert attribute(a, "title") == "Edit"
-      assert attribute(a, "phx-click") == "[[\"push\",{\"event\":\"edit\"}]]"
+      button = find_one(html, "div > button")
+      assert attribute(button, "title") == "Edit"
 
-      assert text(a) == "edit-icon"
+      assert attribute(button, "phx-click") ==
+               "[[\"push\",{\"event\":\"edit\"}]]"
+
+      assert text(button) == "edit-icon"
     end
 
     test "with additional class as string" do
