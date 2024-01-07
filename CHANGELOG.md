@@ -6,6 +6,7 @@
 
 - New component: `Doggo.disclosure_button/1`.
 - New component: `Doggo.radio_group/1`.
+- New component: `Doggo.split_pane/1`.
 - New component: `Doggo.tabs/1`.
 - New component: `Doggo.toolbar/1`.
 - New component: `Doggo.tree/1`.

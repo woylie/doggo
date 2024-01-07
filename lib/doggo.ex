@@ -3611,6 +3611,141 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders a horizontal or vertical resizable split pane.
+
+  > #### In Development {: .warning}
+  >
+  > The necessary JavaScript for making this component fully functional and
+  > accessible will be added in a future version.
+  >
+  > **Missing features**
+  >
+  > - Resize panes with the mouse
+  > - Resize panes with the keyboard
+
+  ## Examples
+
+  Horizontal separator with label:
+
+  ```heex
+  <Doggo.split_pane
+    id="sidebar-splitter"
+    label="Sidebar"
+    orientation="horizontal"
+  >
+    <:primary>One</:primary>
+    <:secondary>Two</:secondary>
+  </Doggo.split_pane>
+  ```
+
+  Horizontal separator with visible label:
+
+  ```heex
+  <Doggo.split_pane id="sidebar-splitter"
+    labelledby="sidebar-label"
+    orientation="horizontal"
+  >
+    <:primary>
+      <h2 id="sidebar-label">Sidebar</h2>
+      <p>One</p>
+    </:primary>
+    <:secondary>Two</:secondary>
+  </Doggo.split_pane>
+  ```
+
+  Nested window splitters:
+
+  ```heex
+  <Doggo.split_pane
+    id="sidebar-splitter"
+    label="Sidebar"
+    orientation="horizontal"
+  >
+    <:primary>One</:primary>
+    <:secondary>
+      <Doggo.split_pane
+        id="filter-splitter"
+        label="Filters"
+        orientation="vertical"
+      >
+        <:primary>Two</:primary>
+        <:secondary>Three</:secondary>
+      </Doggo.split_pane>
+    </:secondary>
+  </Doggo.split_pane>
+  ```
+  """
+  @doc type: :component
+
+  attr :label, :string,
+    default: nil,
+    doc: """
+    An accessibility label for the separator if the primary pane has no visible
+    label. If it has a visible label, set the `labelledby` attribute instead.
+
+    Note that the label should describe the primary pane, not the resize handle.
+    """
+
+  attr :labelledby, :string,
+    default: nil,
+    doc: """
+    If the primary pane has a visible label, set this attribute to the DOM ID
+    of that label. Otherwise, provide a label via the `label` attribute.
+    """
+
+  attr :id, :string, required: true
+  attr :orientation, :string, values: ["horizontal", "vertical"], required: true
+  attr :default_size, :integer, required: true
+  attr :min_size, :integer, default: 0
+  attr :max_size, :integer, default: 100
+
+  slot :primary, required: true
+  slot :secondary, required: true
+
+  def split_pane(assigns) do
+    label = assigns[:label]
+    labelledby = assigns[:labelledby]
+
+    if (label && labelledby) || !(label || labelledby) do
+      raise """
+      invalid label attributes for split_pane
+
+      Doggo.split_pane requires either 'label' or 'labelledby' set for
+      accessibility, but not both.
+
+      ## Examples
+
+          With label:
+
+          <Doggo.split_pane label="Favorite Dog" ... />
+
+          With labelledby:
+
+          <h3 id="favorite-dog-label">Favorite Dog</h3>
+          <Doggo.split_pane labelledby="favorite-dog-label" ... />
+      """
+    end
+
+    ~H"""
+    <div id={@id} class="split-pane" data-orientation={@orientation}>
+      <div id={"#{@id}-primary"}><%= render_slot(@primary) %></div>
+      <div
+        role="separator"
+        aria-label={@label}
+        aria-labelledby={@labelledby}
+        aria-controls={"#{@id}-primary"}
+        aria-orientation={@orientation}
+        aria-valuenow={@default_size}
+        aria-valuemin={@min_size}
+        aria-valuemax={@max_size}
+      >
+      </div>
+      <div id={"#{@id}-secondary"}><%= render_slot(@secondary) %></div>
+    </div>
+    """
+  end
+
+  @doc """
   Renders a navigation for form steps.
 
   ## Examples
