@@ -26,9 +26,9 @@ defmodule Storybook.Components.Modal do
           """,
           """
           <:footer>
-            <.link phx-click={JS.exec("data-cancel", to: "#modal-single-default")}>
+            <Doggo.button phx-click={JS.exec("data-cancel", to: "#modal-single-default")}>
               Close
-            </.link>
+            </Doggo.button>
           </:footer>
           """
         ]
