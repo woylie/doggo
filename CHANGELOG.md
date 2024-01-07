@@ -16,6 +16,7 @@
 - Set `aria-invalid` and `aria-errormessage` attributes in `Doggo.input/1`
   component.
 - Use buttons instead of links in `Doggo.action_bar/1`.
+- Add `toolbar` role to `Doggo.action_bar/1`.
 - Depend on `phoenix_storybook ~> 0.6.0`.
 
 ## [0.4.0] - 2023-12-31

@@ -154,9 +154,10 @@ defmodule DoggoTest do
         </Doggo.action_bar>
         """)
 
-      assert attribute(html, "div", "class") == "action-bar"
+      assert attribute(html, "div:root", "class") == "action-bar"
+      assert attribute(html, ":root", "role") == "toolbar"
 
-      button = find_one(html, "div > button")
+      button = find_one(html, ":root > button")
       assert attribute(button, "title") == "Edit"
 
       assert attribute(button, "phx-click") ==

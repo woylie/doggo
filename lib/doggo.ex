@@ -168,7 +168,7 @@ defmodule Doggo do
 
   def action_bar(assigns) do
     ~H"""
-    <div class={["action-bar" | List.wrap(@class)]} {@rest}>
+    <div role="toolbar" class={["action-bar" | List.wrap(@class)]} {@rest}>
       <button :for={item <- @item} phx-click={item.on_click} title={item.label}>
         <%= render_slot(item) %>
       </button>
