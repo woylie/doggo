@@ -4,6 +4,7 @@
 
 ### Added
 
+- New component: `Doggo.alert_dialog/1`.
 - New component: `Doggo.disclosure_button/1`.
 - New component: `Doggo.radio_group/1`.
 - New component: `Doggo.split_pane/1`.
@@ -19,6 +20,9 @@
   component.
 - Use buttons instead of links in `Doggo.action_bar/1`.
 - Add `toolbar` role to `Doggo.action_bar/1`.
+- Use `section` instead of `article` in `Doggo.modal/1`.
+- Use `button` for close button in `Doggo.modal/1`.
+- Add `dismissable` attribute to `Doggo.modal/1`.
 - Depend on `phoenix_storybook ~> 0.6.0`.
 
 ## [0.4.0] - 2023-12-31
