@@ -137,6 +137,11 @@ defmodule Doggo do
 
   It is typically positioned to float above other content.
 
+  > #### Caution {: .warning}
+  >
+  > This component implements the `toolbar` role, but it doesn't implement
+  > focus management with roving tabindex and arrow key handling yet.
+
   ## Example
 
   ```heex
@@ -168,10 +173,10 @@ defmodule Doggo do
 
   def action_bar(assigns) do
     ~H"""
-    <div class={["action-bar" | List.wrap(@class)]} {@rest}>
-      <.link :for={item <- @item} phx-click={item.on_click} title={item.label}>
+    <div role="toolbar" class={["action-bar" | List.wrap(@class)]} {@rest}>
+      <button :for={item <- @item} phx-click={item.on_click} title={item.label}>
         <%= render_slot(item) %>
-      </.link>
+      </button>
     </div>
     """
   end
@@ -4372,6 +4377,124 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders a container for a set of controls.
+
+  > #### Caution {: .warning}
+  >
+  > This component implements the `toolbar` role, but it doesn't implement
+  > focus management with roving tabindex and arrow key handling yet.
+
+  ## Example
+
+  Direct children of this component can be any types buttons or groups of
+  buttons.
+
+  ```heex
+  <Doggo.toolbar label="Actions for the dog">
+    <div role="group">
+      <button phx-click="feed-dog">
+        <Doggo.icon label="Feed dog"><Icons.feed /></Doggo.icon>
+      </button>
+      <button phx-click="walk-dog">
+        <Doggo.icon label="Walk dog"><Icons.walk /></Doggo.icon>
+      </button>
+    </div>
+    <div role="group">
+      <button phx-click="teach-trick">
+        <Doggo.icon label="Teach a Trick"><Icons.teach /></Doggo.icon>
+      </button>
+      <button phx-click="groom-dog">
+        <Doggo.icon label="Groom dog"><Icons.groom /></Doggo.icon>
+      </button>
+    </div>
+  </Doggo.toolbar>
+  ```
+  """
+  @doc type: :component
+
+  attr :label, :string,
+    default: nil,
+    doc: """
+    A accessibility label for the toolbar. Set as `aria-label` attribute.
+
+    You should ensure that either the `label` or the `labelledby` attribute is
+    set.
+
+    Do not repeat the word `toolbar` in the label, since it is already announced
+    by screen readers.
+    """
+
+  attr :labelledby, :string,
+    default: nil,
+    doc: """
+    The DOM ID of an element that labels this tree.
+
+    Example:
+
+    ```html
+    <h3 id="dog-toolbar-label">Dogs</h3>
+    <Doggo.toolbar labelledby="dog-toolbar-label"></Doggo.toolbar>
+    ```
+
+    You should ensure that either the `label` or the `labelledby` attribute is
+    set.
+    """
+
+  attr :controls, :string,
+    default: nil,
+    doc: """
+    DOM ID of the element that is controlled by this toolbar. For example,
+    if the toolbar provides text formatting options for an editable content
+    area, the values should be the ID of that content area.
+    """
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :inner_block,
+    required: true,
+    doc: """
+    Place any number of buttons, groups of buttons, toggle buttons, menu
+    buttons, or disclosure buttons here.
+    """
+
+  def toolbar(assigns) do
+    label = assigns[:label]
+    labelledby = assigns[:labelledby]
+
+    if (label && labelledby) || !(label || labelledby) do
+      raise """
+      invalid label attributes for toolbar
+
+      Doggo.toolbar requires either 'label' or 'labelledby' set for
+      accessibility, but not both.
+
+      ## Examples
+
+          With label:
+
+          <Doggo.toolbar label="Actions for the dog"></Doggo.toolbar>
+
+          With labelledby:
+
+          <h3 id="dog-toolbar-label">Actions for the dog</h3>
+          <Doggo.toolbar labelledby="dog-toolbar-label"></Doggo.toolbar>
+      """
+    end
+
+    ~H"""
+    <div
+      role="toolbar"
+      aria-label={@label}
+      aria-labelledby={@labelledby}
+      aria-controls={@controls}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </div>
+    """
+  end
+
+  @doc """
   Renders a hierarchical list as a tree.
 
   A good use case for this component is a folder structure. For navigation and
@@ -4418,7 +4541,7 @@ defmodule Doggo do
   attr :label, :string,
     default: nil,
     doc: """
-    A accessibility label for the truee. Set as `aria-label` attribute.
+    A accessibility label for the tree. Set as `aria-label` attribute.
 
     You should ensure that either the `label` or the `labelledby` attribute is
     set.

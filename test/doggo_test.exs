@@ -154,13 +154,16 @@ defmodule DoggoTest do
         </Doggo.action_bar>
         """)
 
-      assert attribute(html, "div", "class") == "action-bar"
+      assert attribute(html, "div:root", "class") == "action-bar"
+      assert attribute(html, ":root", "role") == "toolbar"
 
-      a = find_one(html, "div > a")
-      assert attribute(a, "title") == "Edit"
-      assert attribute(a, "phx-click") == "[[\"push\",{\"event\":\"edit\"}]]"
+      button = find_one(html, ":root > button")
+      assert attribute(button, "title") == "Edit"
 
-      assert text(a) == "edit-icon"
+      assert attribute(button, "phx-click") ==
+               "[[\"push\",{\"event\":\"edit\"}]]"
+
+      assert text(button) == "edit-icon"
     end
 
     test "with additional class as string" do
@@ -5028,6 +5031,85 @@ defmodule DoggoTest do
       tooltip = find_one(html, "span:root > div[role='tooltip']")
       assert attribute(tooltip, "id") == expected_id
       assert text(tooltip) == "some details"
+    end
+  end
+
+  describe "toolbar/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.toolbar label="Actions for dog">
+          buttons
+        </Doggo.toolbar>
+        """)
+
+      assert attribute(html, "div:root", "role") == "toolbar"
+      assert attribute(html, ":root", "aria-label") == "Actions for dog"
+      assert attribute(html, ":root", "aria-labelledby") == nil
+      assert text(html, ":root") == "buttons"
+    end
+
+    test "with labelledby" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.toolbar labelledby="toolbar-heading"></Doggo.toolbar>
+        """)
+
+      assert attribute(html, ":root", "aria-label") == nil
+      assert attribute(html, ":root", "aria-labelledby") == "toolbar-heading"
+    end
+
+    test "with controls" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.toolbar label="Actions for dog" controls="dog-panel"></Doggo.toolbar>
+        """)
+
+      assert attribute(html, ":root", "aria-controls") == "dog-panel"
+    end
+
+    test "raises if both label and labelledby are set" do
+      error =
+        assert_raise RuntimeError, fn ->
+          assigns = %{}
+
+          parse_heex(~H"""
+          <Doggo.toolbar label="Dog actions" labelledby="dog-toolbar-label">
+          </Doggo.toolbar>
+          """)
+        end
+
+      assert error.message =~ "invalid label attributes"
+    end
+
+    test "raises if neither label nor labelledby are set" do
+      error =
+        assert_raise RuntimeError, fn ->
+          assigns = %{}
+
+          parse_heex(~H"""
+          <Doggo.toolbar></Doggo.toolbar>
+          """)
+        end
+
+      assert error.message =~ "invalid label attributes"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.toolbar label="Actions for dog" data-test="hello"></Doggo.toolbar>
+        """)
+
+      assert attribute(html, "div", "data-test") == "hello"
     end
   end
 

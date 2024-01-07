@@ -7,6 +7,7 @@
 - New component: `Doggo.disclosure_button/1`.
 - New component: `Doggo.radio_group/1`.
 - New component: `Doggo.tabs/1`.
+- New component: `Doggo.toolbar/1`.
 - New component: `Doggo.tree/1`.
 - Storybook page about modifier classes.
 - Mix task `mix dog.modifiers` to list all modifier classes.
@@ -15,6 +16,8 @@
 
 - Set `aria-invalid` and `aria-errormessage` attributes in `Doggo.input/1`
   component.
+- Use buttons instead of links in `Doggo.action_bar/1`.
+- Add `toolbar` role to `Doggo.action_bar/1`.
 - Depend on `phoenix_storybook ~> 0.6.0`.
 
 ## [0.4.0] - 2023-12-31
