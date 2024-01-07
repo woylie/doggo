@@ -5034,6 +5034,85 @@ defmodule DoggoTest do
     end
   end
 
+  describe "toolbar/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.toolbar label="Actions for dog">
+          buttons
+        </Doggo.toolbar>
+        """)
+
+      assert attribute(html, "div:root", "role") == "toolbar"
+      assert attribute(html, ":root", "aria-label") == "Actions for dog"
+      assert attribute(html, ":root", "aria-labelledby") == nil
+      assert text(html, ":root") == "buttons"
+    end
+
+    test "with labelledby" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.toolbar labelledby="toolbar-heading"></Doggo.toolbar>
+        """)
+
+      assert attribute(html, ":root", "aria-label") == nil
+      assert attribute(html, ":root", "aria-labelledby") == "toolbar-heading"
+    end
+
+    test "with controls" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.toolbar label="Actions for dog" controls="dog-panel"></Doggo.toolbar>
+        """)
+
+      assert attribute(html, ":root", "aria-controls") == "dog-panel"
+    end
+
+    test "raises if both label and labelledby are set" do
+      error =
+        assert_raise RuntimeError, fn ->
+          assigns = %{}
+
+          parse_heex(~H"""
+          <Doggo.toolbar label="Dog actions" labelledby="dog-toolbar-label">
+          </Doggo.toolbar>
+          """)
+        end
+
+      assert error.message =~ "invalid label attributes"
+    end
+
+    test "raises if neither label nor labelledby are set" do
+      error =
+        assert_raise RuntimeError, fn ->
+          assigns = %{}
+
+          parse_heex(~H"""
+          <Doggo.toolbar></Doggo.toolbar>
+          """)
+        end
+
+      assert error.message =~ "invalid label attributes"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.toolbar label="Actions for dog" data-test="hello"></Doggo.toolbar>
+        """)
+
+      assert attribute(html, "div", "data-test") == "hello"
+    end
+  end
+
   describe "tree/1" do
     test "with label" do
       assigns = %{}
