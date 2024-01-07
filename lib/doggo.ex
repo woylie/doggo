@@ -137,6 +137,11 @@ defmodule Doggo do
 
   It is typically positioned to float above other content.
 
+  > #### Caution {: .warning}
+  >
+  > This component implements the `toolbar` role, but it doesn't implement
+  > focus management with roving tabindex and arrow key handling yet.
+
   ## Example
 
   ```heex
@@ -4373,6 +4378,11 @@ defmodule Doggo do
 
   @doc """
   Renders a container for a set of controls.
+
+  > #### Caution {: .warning}
+  >
+  > This component implements the `toolbar` role, but it doesn't implement
+  > focus management with roving tabindex and arrow key handling yet.
 
   ## Example
 
