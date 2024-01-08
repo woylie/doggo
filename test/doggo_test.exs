@@ -2556,9 +2556,9 @@ defmodule DoggoTest do
         <Doggo.icon label="some-label">some-icon</Doggo.icon>
         """)
 
-      span = find_one(html, "span:root")
-      assert attribute(span, "span:root", "aria-label") == "some-label"
-      assert Floki.find(html, "span > span") == []
+      assert span = find_one(html, "span > span")
+      assert attribute(span, "class") == "is-visually-hidden"
+      assert text(span) == "some-label"
     end
 
     test "with label left" do
@@ -2573,8 +2573,9 @@ defmodule DoggoTest do
 
       span = find_one(html, "span:root")
       assert attribute(span, "class") == "icon is-normal has-text-left"
-      assert attribute(span, "span:root", "aria-label") == nil
-      assert text(html, "span > span") == "some-label"
+      assert span = find_one(html, "span > span")
+      assert attribute(span, "class") == ""
+      assert text(span) == "some-label"
     end
 
     test "with label right" do
@@ -2589,8 +2590,9 @@ defmodule DoggoTest do
 
       span = find_one(html, "span:root")
       assert attribute(span, "class") == "icon is-normal has-text-right"
-      assert attribute(span, "span:root", "aria-label") == nil
-      assert text(html, "span > span") == "some-label"
+      assert span = find_one(html, "span > span")
+      assert attribute(span, "class") == ""
+      assert text(span) == "some-label"
     end
 
     test "with additional class as string" do
@@ -2678,9 +2680,9 @@ defmodule DoggoTest do
         <Doggo.icon_sprite name="edit" label="some-label" />
         """)
 
-      span = find_one(html, "span:root")
-      assert attribute(span, "span:root", "aria-label") == "some-label"
-      assert Floki.find(html, "span > span") == []
+      assert span = find_one(html, "span > span")
+      assert attribute(span, "class") == "is-visually-hidden"
+      assert text(span) == "some-label"
     end
 
     test "with label left" do
@@ -2693,8 +2695,9 @@ defmodule DoggoTest do
 
       span = find_one(html, "span:root")
       assert attribute(span, "class") == "icon is-normal has-text-left"
-      assert attribute(span, "span:root", "aria-label") == nil
-      assert text(html, "span > span") == "some-label"
+      assert span = find_one(html, "span > span")
+      assert attribute(span, "class") == ""
+      assert text(span) == "some-label"
     end
 
     test "with label right" do
@@ -2707,8 +2710,9 @@ defmodule DoggoTest do
 
       span = find_one(html, "span:root")
       assert attribute(span, "class") == "icon is-normal has-text-right"
-      assert attribute(span, "span:root", "aria-label") == nil
-      assert text(html, "span > span") == "some-label"
+      assert span = find_one(html, "span > span")
+      assert attribute(span, "class") == ""
+      assert text(span) == "some-label"
     end
 
     test "with additional class as string" do

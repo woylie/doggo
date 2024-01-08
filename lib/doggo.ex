@@ -2175,11 +2175,12 @@ defmodule Doggo do
           label_placement_class(@label_placement)
         ] ++ List.wrap(@class)
       }
-      aria-label={if @label && @label_placement == :hidden, do: @label}
       {@rest}
     >
       <%= render_slot(@inner_block) %>
-      <span :if={@label && @label_placement != :hidden}><%= @label %></span>
+      <span :if={@label} class={@label_placement == :hidden && "is-visually-hidden"}>
+        <%= @label %>
+      </span>
     </span>
     """
   end
@@ -2246,11 +2247,12 @@ defmodule Doggo do
           label_placement_class(@label_placement)
         ] ++ List.wrap(@class)
       }
-      aria-label={if @label && @label_placement == :hidden, do: @label}
       {@rest}
     >
       <svg aria-hidden="true"><use href={"#{@sprite_url}##{@name}"} /></svg>
-      <span :if={@label && @label_placement != :hidden}><%= @label %></span>
+      <span :if={@label} class={@label_placement == :hidden && "is-visually-hidden"}>
+        <%= @label %>
+      </span>
     </span>
     """
   end
