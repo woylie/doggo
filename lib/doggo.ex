@@ -2175,11 +2175,12 @@ defmodule Doggo do
           label_placement_class(@label_placement)
         ] ++ List.wrap(@class)
       }
-      aria-label={if @label && @label_placement == :hidden, do: @label}
       {@rest}
     >
       <%= render_slot(@inner_block) %>
-      <span :if={@label && @label_placement != :hidden}><%= @label %></span>
+      <span :if={@label} class={@label_placement == :hidden && "is-visually-hidden"}>
+        <%= @label %>
+      </span>
     </span>
     """
   end
@@ -2246,11 +2247,12 @@ defmodule Doggo do
           label_placement_class(@label_placement)
         ] ++ List.wrap(@class)
       }
-      aria-label={if @label && @label_placement == :hidden, do: @label}
       {@rest}
     >
       <svg aria-hidden="true"><use href={"#{@sprite_url}##{@name}"} /></svg>
-      <span :if={@label && @label_placement != :hidden}><%= @label %></span>
+      <span :if={@label} class={@label_placement == :hidden && "is-visually-hidden"}>
+        <%= @label %>
+      </span>
     </span>
     """
   end
@@ -3009,6 +3011,16 @@ defmodule Doggo do
 
   attr :title, :string, default: "required"
 
+  # inputs are announced as required by screen readers if the `required`
+  # attribute is set. This makes this mark purely visual. `aria-hidden="true"`
+  # is added so that screen readers don't announce redundant information. The
+  # title attribute has poor accessibility characteristics, but since this is
+  # purely presentational, this is acceptable.
+  # It is good practice to add a sentence explaining that fields marked with an
+  # asterisk (*) are required to the form.
+  # Alternatively, the word `required` might be used instead of an asterisk. In
+  # that case, the text should still be aria-hidden. But also, this wouldn't be
+  # an abbr anymore.
   defp required_mark(assigns) do
     ~H"""
     <abbr class="label-required" aria-hidden="true" title={@title}>*</abbr>
