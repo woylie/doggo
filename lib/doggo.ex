@@ -706,7 +706,15 @@ defmodule Doggo do
   @doc """
   Renders a button.
 
-  See also `button_link/1` and `toggle_button/1`.
+  Use this component when you need to perform an action that doesn't involve
+  navigating to a different page, such as submitting a form, confirming an
+  action, or deleting an item.
+
+  If you need to navigate to a different page or a specific section on the
+  current page and want to style the link like a button, use `button_link/1`
+  instead. To
+
+  See also `button_link/1`, `toggle_button/1`, and `disclosure_button/1`.
 
   ## Examples
 
@@ -760,6 +768,13 @@ defmodule Doggo do
   @doc """
   Renders a link (`<a>`) that has the role and style of a button.
 
+  Use this component when you need to style a link to a different page or a
+  specific section within the same page as a button.
+
+  To perform an action on the same page, including toggles and revealing/hiding
+  elements, you should always use a real button instead. See `button/1`,
+  `toggle_button/1`, and `disclosure_button/1`.
+
   ## Examples
 
   ```heex
@@ -770,7 +785,7 @@ defmodule Doggo do
     variant={:primary}
     shape={:pill}>
     Submit
-  </Doggo.button>
+  </Doggo.button_link>
   ```
   """
   @doc type: :component
@@ -786,6 +801,10 @@ defmodule Doggo do
     Since `<a>` tags cannot have a `disabled` attribute, this attribute toggles
     the `"is-disabled"` class.
     """
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
 
   attr :rest, :global,
     include: [
@@ -810,14 +829,16 @@ defmodule Doggo do
   def button_link(assigns) do
     ~H"""
     <.link
-      role="button"
-      class={[
-        variant_class(@variant),
-        size_class(@size),
-        shape_class(@shape),
-        fill_class(@fill),
-        @disabled && "is-disabled"
-      ]}
+      class={
+        [
+          "button",
+          variant_class(@variant),
+          size_class(@size),
+          shape_class(@shape),
+          fill_class(@fill),
+          @disabled && "is-disabled"
+        ] ++ List.wrap(@class)
+      }
       {@rest}
     >
       <%= render_slot(@inner_block) %>
@@ -1200,7 +1221,11 @@ defmodule Doggo do
   @doc """
   Renders a button that toggles the visibility of another element.
 
-  For a button that toggles other states, use `toggle_button/1` instead.
+  Use this component to reveal or hide additional content, such as in
+  collapsible sections or dropdown menus.
+
+  For a button that toggles other states, use `toggle_button/1` instead. See
+  also `button/1` and `button_link/1`.
 
   > #### In Development {: .warning}
   >
@@ -4437,6 +4462,11 @@ defmodule Doggo do
 
   @doc """
   Renders a button that toggles a state.
+
+  Use this component to switch a feature or setting on or off, for example to
+  toggle dark mode or mute/unmute sound.
+
+  See also `button/1`, `button_link/1`, and `disclosure_button/1`.
 
   ## Examples
 

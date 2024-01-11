@@ -1160,8 +1160,8 @@ defmodule DoggoTest do
         """)
 
       a = find_one(html, "a:root")
-      assert attribute(a, "role") == "button"
-      assert attribute(a, "class") == "is-primary is-normal is-solid"
+      assert attribute(a, "role") == nil
+      assert attribute(a, "class") == "button is-primary is-normal is-solid"
       assert attribute(a, "href") == "/confirm"
       assert text(a) == "Confirm"
     end
@@ -1175,7 +1175,7 @@ defmodule DoggoTest do
         """)
 
       assert attribute(html, "a:root", "class") ==
-               "is-primary is-normal is-solid is-disabled"
+               "button is-primary is-normal is-solid is-disabled"
     end
 
     test "with variant" do
@@ -1186,7 +1186,8 @@ defmodule DoggoTest do
         <Doggo.button_link variant={:info}>Confirm</Doggo.button_link>
         """)
 
-      assert attribute(html, "a:root", "class") == "is-info is-normal is-solid"
+      assert attribute(html, "a:root", "class") ==
+               "button is-info is-normal is-solid"
     end
 
     test "with size" do
@@ -1198,7 +1199,7 @@ defmodule DoggoTest do
         """)
 
       assert attribute(html, "a:root", "class") ==
-               "is-primary is-small is-solid"
+               "button is-primary is-small is-solid"
     end
 
     test "with shape" do
@@ -1210,7 +1211,7 @@ defmodule DoggoTest do
         """)
 
       assert attribute(html, "a:root", "class") ==
-               "is-primary is-normal is-pill is-solid"
+               "button is-primary is-normal is-pill is-solid"
     end
 
     test "with fill" do
@@ -1222,7 +1223,44 @@ defmodule DoggoTest do
         """)
 
       assert attribute(html, "a:root", "class") ==
-               "is-primary is-normal is-text"
+               "button is-primary is-normal is-text"
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button_link class="is-cute">Register</Doggo.button_link>
+        """)
+
+      assert attribute(html, ":root", "class") ==
+               "button is-primary is-normal is-solid is-cute"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button_link class={["is-cute", "is-petite"]}>
+          Register
+        </Doggo.button_link>
+        """)
+
+      assert attribute(html, ":root", "class") ==
+               "button is-primary is-normal is-solid is-cute is-petite"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.button_link data-test="hello">Register</Doggo.button_link>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 

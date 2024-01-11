@@ -23,6 +23,7 @@
 - Use `section` instead of `article` in `Doggo.modal/1`.
 - Use `button` for close button in `Doggo.modal/1`.
 - Add `dismissable` attribute to `Doggo.modal/1`.
+- Remove `role` from `button_link/1`, add `class`.
 - Depend on `phoenix_storybook ~> 0.6.0`.
 
 ## [0.4.0] - 2023-12-31
