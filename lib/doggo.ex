@@ -787,6 +787,10 @@ defmodule Doggo do
     the `"is-disabled"` class.
     """
 
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
   attr :rest, :global,
     include: [
       # HTML attributes
@@ -810,14 +814,16 @@ defmodule Doggo do
   def button_link(assigns) do
     ~H"""
     <.link
-      role="button"
-      class={[
-        variant_class(@variant),
-        size_class(@size),
-        shape_class(@shape),
-        fill_class(@fill),
-        @disabled && "is-disabled"
-      ]}
+      class={
+        [
+          "button",
+          variant_class(@variant),
+          size_class(@size),
+          shape_class(@shape),
+          fill_class(@fill),
+          @disabled && "is-disabled"
+        ] ++ List.wrap(@class)
+      }
       {@rest}
     >
       <%= render_slot(@inner_block) %>
