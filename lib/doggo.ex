@@ -712,7 +712,7 @@ defmodule Doggo do
 
   If you need to navigate to a different page or a specific section on the
   current page and want to style the link like a button, use `button_link/1`
-  instead. To
+  instead.
 
   See also `button_link/1`, `toggle_button/1`, and `disclosure_button/1`.
 
