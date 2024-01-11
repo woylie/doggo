@@ -4366,7 +4366,7 @@ defmodule Doggo do
   ## Example
 
   ```heex
-  <Doggo.tabs id="dog-breed-profiles" title="Dog Breed Profiles">
+  <Doggo.tabs id="dog-breed-profiles" label="Dog Breed Profiles">
     <:panel label="Golden Retriever">
       <p>
         Friendly, intelligent, great with families. Origin: Scotland. Needs
@@ -4390,12 +4390,34 @@ defmodule Doggo do
   @doc type: :component
 
   attr :id, :string, required: true
-  attr :title, :string, required: true, doc: "A title that labels the tabs."
 
-  attr :heading, :string,
-    default: "h3",
-    values: ["h2", "h3", "h4", "h5", "h6"],
-    doc: "The heading level."
+  attr :label, :string,
+    default: nil,
+    doc: """
+    A accessibility label for the tabs. Set as `aria-label` attribute.
+
+    You should ensure that either the `label` or the `labelledby` attribute is
+    set.
+
+    Do not repeat the word `tab list` or similar in the label, since it is
+    already announced by screen readers.
+    """
+
+  attr :labelledby, :string,
+    default: nil,
+    doc: """
+    The DOM ID of an element that labels the tabs.
+
+    Example:
+
+    ```html
+    <h3 id="my-tabs-label">Dogs</h3>
+    <Doggo.tabs labelledby="my-tabs-label"></Doggo.tabs>
+    ```
+
+    You should ensure that either the `label` or the `labelledby` attribute is
+    set.
+    """
 
   attr :class, :any,
     default: [],
@@ -4408,10 +4430,32 @@ defmodule Doggo do
   end
 
   def tabs(assigns) do
+    label = assigns[:label]
+    labelledby = assigns[:labelledby]
+
+    if (label && labelledby) || !(label || labelledby) do
+      raise """
+      invalid label attributes for toolbar
+
+      Doggo.toolbar requires either 'label' or 'labelledby' set for
+      accessibility, but not both.
+
+      ## Examples
+
+          With label:
+
+          <Doggo.tabs label="Dog Facts"></Doggo.tabs>
+
+          With labelledby:
+
+          <h3 id="dog-facts-label">Dog Facts</h3>
+          <Doggo.tabs labelledby="dog-facts-label"></Doggo.tabs>
+      """
+    end
+
     ~H"""
     <div id={@id} class={["tabs" | List.wrap(@class)]} {@rest}>
-      <.dynamic_tag name={@heading} id={"#{@id}-title"}><%= @title %></.dynamic_tag>
-      <div role="tablist" aria-labelledby={"#{@id}-title"}>
+      <div role="tablist" aria-label={@label} aria-labelledby={@labelledby}>
         <button
           :for={{panel, index} <- Enum.with_index(@panel, 1)}
           type="button"

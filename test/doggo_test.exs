@@ -4604,7 +4604,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.tabs id="my-tabs" title="My Tabs">
+        <Doggo.tabs id="my-tabs" label="My Tabs">
           <:panel label="Panel 1">some text</:panel>
           <:panel label="Panel 2">some other text</:panel>
         </Doggo.tabs>
@@ -4614,11 +4614,9 @@ defmodule DoggoTest do
       assert attribute(div, "class") == "tabs"
       assert attribute(div, "id") == "my-tabs"
 
-      assert attribute(html, ":root > h3", "id") == "my-tabs-title"
-      assert text(html, ":root > h3") == "My Tabs"
-
       div = find_one(html, ":root > div[role='tablist']")
-      assert attribute(div, "aria-labelledby") == "my-tabs-title"
+      assert attribute(div, "aria-label") == "My Tabs"
+      assert attribute(div, "aria-labelledby") == nil
 
       button = find_one(div, "button:first-child")
       assert attribute(button, "type") == "button"
@@ -4651,18 +4649,52 @@ defmodule DoggoTest do
       assert text(div) == "some other text"
     end
 
-    test "with heading" do
+    test "with labelledby" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
-        <Doggo.tabs id="my-tabs" title="My Tabs" heading="h4">
+        <Doggo.tabs id="my-tabs" labelledby="my-tabs-title">
           <:panel label="Panel 1">some text</:panel>
           <:panel label="Panel 2">some other text</:panel>
         </Doggo.tabs>
         """)
 
-      assert text(html, ":root > h4") == "My Tabs"
+      div = find_one(html, "div[role='tablist']")
+      assert attribute(div, "aria-label") == nil
+      assert attribute(div, "aria-labelledby") == "my-tabs-title"
+    end
+
+    test "raises if both label and labelledby are set" do
+      error =
+        assert_raise RuntimeError, fn ->
+          assigns = %{}
+
+          parse_heex(~H"""
+          <Doggo.tabs id="my-tabs" label="My Tabs" labelledby="my-tabs-title">
+            <:panel label="Panel 1">some text</:panel>
+            <:panel label="Panel 2">some other text</:panel>
+          </Doggo.tabs>
+          """)
+        end
+
+      assert error.message =~ "invalid label attributes"
+    end
+
+    test "raises if neither label nor labelledby are set" do
+      error =
+        assert_raise RuntimeError, fn ->
+          assigns = %{}
+
+          parse_heex(~H"""
+          <Doggo.tabs id="my-tabs">
+            <:panel label="Panel 1">some text</:panel>
+            <:panel label="Panel 2">some other text</:panel>
+          </Doggo.tabs>
+          """)
+        end
+
+      assert error.message =~ "invalid label attributes"
     end
 
     test "with additional class as string" do
@@ -4670,7 +4702,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.tabs id="my-tabs" title="My Tabs" class="is-rad">
+        <Doggo.tabs id="my-tabs" label="My Tabs" class="is-rad">
           <:panel label="Panel 1">some text</:panel>
         </Doggo.tabs>
         """)
@@ -4683,7 +4715,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.tabs id="my-tabs" title="My Tabs" class={["is-rad", "is-dark"]}>
+        <Doggo.tabs id="my-tabs" label="My Tabs" class={["is-rad", "is-dark"]}>
           <:panel label="Panel 1">some text</:panel>
         </Doggo.tabs>
         """)
@@ -4696,7 +4728,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.tabs id="my-tabs" title="My Tabs" data-test="hello">
+        <Doggo.tabs id="my-tabs" label="My Tabs" data-test="hello">
           <:panel label="Panel 1">some text</:panel>
         </Doggo.tabs>
         """)

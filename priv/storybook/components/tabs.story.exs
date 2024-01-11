@@ -9,7 +9,7 @@ defmodule Storybook.Components.Tabs do
         id: :default,
         attributes: %{
           id: "dog-breed-profiles",
-          title: "Dog Breed Profiles"
+          label: "Dog Breed Profiles"
         },
         slots: [
           """
