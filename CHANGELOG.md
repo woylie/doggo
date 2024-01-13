@@ -25,6 +25,10 @@
 - Use `button` for close button in `Doggo.modal/1`.
 - Add `dismissable` attribute to `Doggo.modal/1`.
 - Remove `role` from `button_link/1`, add `class`.
+- Rename `Doggo.drawer/1` slots to `header`, `main`, and `footer`.
+- Rename `Doggo.drawer_nav/1`, `Doggo.drawer_nav_nested/1` and
+  `Doggo.drawer_nav_section` to `Dogger.vertical_nav/1`,
+  `Doggo.vertical_nav_nested/1` and `Doggo.vertical_nav_section/1`.
 - Depend on `phoenix_storybook ~> 0.6.0`.
 
 ## [0.4.0] - 2023-12-31
