@@ -5,6 +5,7 @@
 ### Added
 
 - New component: `Doggo.alert_dialog/1`.
+- New component: `Doggo.carousel/1`.
 - New component: `Doggo.disclosure_button/1`.
 - New component: `Doggo.radio_group/1`.
 - New component: `Doggo.split_pane/1`.
