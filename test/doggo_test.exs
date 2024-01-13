@@ -2147,15 +2147,15 @@ defmodule DoggoTest do
     end
   end
 
-  describe "drawer_nav/1" do
+  describe "vertical_nav/1" do
     test "default" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_nav id="main-nav" label="Main">
+        <Doggo.vertical_nav id="main-nav" label="Main">
           <:item>item</:item>
-        </Doggo.drawer_nav>
+        </Doggo.vertical_nav>
         """)
 
       div = find_one(html, "nav:root")
@@ -2170,9 +2170,9 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_nav id="main-nav" label="Main">
+        <Doggo.vertical_nav id="main-nav" label="Main">
           <:item current_page>item</:item>
-        </Doggo.drawer_nav>
+        </Doggo.vertical_nav>
         """)
 
       assert attribute(html, ":root > ul > li", "aria-current") == "page"
@@ -2183,10 +2183,10 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_nav id="main-nav" label="Main">
+        <Doggo.vertical_nav id="main-nav" label="Main">
           <:title>some title</:title>
           <:item>item</:item>
-        </Doggo.drawer_nav>
+        </Doggo.vertical_nav>
         """)
 
       assert text(html, ":root > div.drawer-nav-title") == "some title"
@@ -2197,9 +2197,9 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_nav id="main-nav" label="Main">
+        <Doggo.vertical_nav id="main-nav" label="Main">
           <:item class="is-rad">item</:item>
-        </Doggo.drawer_nav>
+        </Doggo.vertical_nav>
         """)
 
       assert attribute(html, "li", "class") == "is-rad"
@@ -2210,9 +2210,9 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_nav id="main-nav" label="Main" class="is-rad">
+        <Doggo.vertical_nav id="main-nav" label="Main" class="is-rad">
           <:item>item</:item>
-        </Doggo.drawer_nav>
+        </Doggo.vertical_nav>
         """)
 
       assert attribute(html, ":root", "class") == "is-rad"
@@ -2223,9 +2223,9 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_nav id="main-nav" label="Main" class={["hey", "ho"]}>
+        <Doggo.vertical_nav id="main-nav" label="Main" class={["hey", "ho"]}>
           <:item>item</:item>
-        </Doggo.drawer_nav>
+        </Doggo.vertical_nav>
         """)
 
       assert attribute(html, ":root", "class") == "hey ho"
@@ -2236,24 +2236,24 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_nav id="main-nav" label="Main" data-test="hello">
+        <Doggo.vertical_nav id="main-nav" label="Main" data-test="hello">
           <:item>item</:item>
-        </Doggo.drawer_nav>
+        </Doggo.vertical_nav>
         """)
 
       assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 
-  describe "drawer_nested_nav/1" do
+  describe "vertical_nav_nested/1" do
     test "default" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_nested_nav id="nested">
+        <Doggo.vertical_nav_nested id="nested">
           <:item>item</:item>
-        </Doggo.drawer_nested_nav>
+        </Doggo.vertical_nav_nested>
         """)
 
       assert attribute(html, "ul:root", "id") == "nested"
@@ -2268,9 +2268,9 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_nested_nav id="nested">
+        <Doggo.vertical_nav_nested id="nested">
           <:item current_page>item</:item>
-        </Doggo.drawer_nested_nav>
+        </Doggo.vertical_nav_nested>
         """)
 
       assert attribute(html, "ul:root > li", "aria-current") == "page"
@@ -2281,10 +2281,10 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_nested_nav id="nested">
+        <Doggo.vertical_nav_nested id="nested">
           <:title>some title</:title>
           <:item>item</:item>
-        </Doggo.drawer_nested_nav>
+        </Doggo.vertical_nav_nested>
         """)
 
       div = find_one(html, "div.drawer-nav-title")
@@ -2298,24 +2298,24 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_nested_nav id="nested">
+        <Doggo.vertical_nav_nested id="nested">
           <:item class="is-rad">item</:item>
-        </Doggo.drawer_nested_nav>
+        </Doggo.vertical_nav_nested>
         """)
 
       assert attribute(html, "li", "class") == "is-rad"
     end
   end
 
-  describe "drawer_section/1" do
+  describe "vertical_nav_section/1" do
     test "default" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_section id="my-drawer">
+        <Doggo.vertical_nav_section id="my-drawer">
           <:item>item</:item>
-        </Doggo.drawer_section>
+        </Doggo.vertical_nav_section>
         """)
 
       div = find_one(html, "div:root")
@@ -2331,10 +2331,10 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_section id="my-drawer">
+        <Doggo.vertical_nav_section id="my-drawer">
           <:title>some title</:title>
           <:item>item</:item>
-        </Doggo.drawer_section>
+        </Doggo.vertical_nav_section>
         """)
 
       div = find_one(html, "div:root")
@@ -2350,9 +2350,9 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_section id="my-drawer">
+        <Doggo.vertical_nav_section id="my-drawer">
           <:item class="is-rad">item</:item>
-        </Doggo.drawer_section>
+        </Doggo.vertical_nav_section>
         """)
 
       assert attribute(html, ":root > div", "class") == "drawer-item is-rad"
@@ -2363,9 +2363,9 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_section id="my-drawer" class="is-narrow">
+        <Doggo.vertical_nav_section id="my-drawer" class="is-narrow">
           <:item>item</:item>
-        </Doggo.drawer_section>
+        </Doggo.vertical_nav_section>
         """)
 
       assert attribute(html, ":root", "class") == "drawer-section is-narrow"
@@ -2376,9 +2376,9 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_section id="my-drawer" class={["is-narrow", "is-crisp"]}>
+        <Doggo.vertical_nav_section id="my-drawer" class={["is-narrow", "is-crisp"]}>
           <:item>item</:item>
-        </Doggo.drawer_section>
+        </Doggo.vertical_nav_section>
         """)
 
       assert attribute(html, ":root", "class") ==
@@ -2390,9 +2390,9 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.drawer_section id="my-drawer" data-test="hello">
+        <Doggo.vertical_nav_section id="my-drawer" data-test="hello">
           <:item>item</:item>
-        </Doggo.drawer_section>
+        </Doggo.vertical_nav_section>
         """)
 
       assert attribute(html, ":root", "data-test") == "hello"

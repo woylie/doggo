@@ -1475,8 +1475,8 @@ defmodule Doggo do
   Renders a drawer with a `brand`, `top`, and `bottom` slot.
 
   All slots are optional, and you can render any content in them. If you want
-  to use the drawer as a sidebar, you can use the `drawer_nav/1` and
-  `drawer_section/1` components.
+  to use the drawer as a sidebar, you can use the `vertical_nav/1` and
+  `vertical_nav_section/1` components.
 
   ## Example
 
@@ -1506,12 +1506,12 @@ defmodule Doggo do
       <.link navigate={~p"/"}>App</.link>
     </:header>
     <:main>
-      <Doggo.drawer_nav label="Main">
+      <Doggo.vertical_nav label="Main">
         <:item>
           <.link navigate={~p"/dashboard"}>Dashboard</.link>
         </:item>
         <:item>
-          <Doggo.drawer_nested_nav>
+          <Doggo.vertical_nav_nested>
             <:title>Content</:title>
             <:item current_page>
               <.link navigate={~p"/posts"}>Posts</.link>
@@ -1519,28 +1519,28 @@ defmodule Doggo do
             <:item>
               <.link navigate={~p"/comments"}>Comments</.link>
             </:item>
-          </Doggo.drawer_nested_nav>
+          </Doggo.vertical_nav_nested>
         </:item>
-      </.drawer_nav>
-      <Doggo.drawer_section>
+      </.vertical_nav>
+      <Doggo.vertical_nav_section>
         <:title>Search</:title>
         <:item><input type="search" placeholder="Search" /></:item>
-      </Doggo.drawer_section>
+      </Doggo.vertical_nav_section>
     </:main>
     <:footer>
-      <Doggo.drawer_nav label="User menu">
+      <Doggo.vertical_nav label="User menu">
         <:item>
           <.link navigate={~p"/settings"}>Settings</.link>
         </:item>
         <:item>
           <.link navigate={~p"/logout"}>Logout</.link>
         </:item>
-      </Doggo.drawer_nav>
+      </Doggo.vertical_nav>
     </:footer>
   </Doggo.drawer>
   ```
   """
-  @doc type: :component
+  @doc type: :navigation
 
   attr :class, :any,
     default: [],
@@ -1579,26 +1579,26 @@ defmodule Doggo do
   end
 
   @doc """
-  Renders a navigation menu as a drawer section.
+  Renders a vertical navigation menu.
 
-  This component must be placed within the `:top` or `:bottom` slot of the
-  `drawer/1` component.
+  It is commonly placed within drawers or sidebars.
 
-  To nest the navigation, use the `drawer_nested_nav/1` component within the
+  For hierarchical menu structures, use `vertical_nav_nested/1` within the
   `:item` slot.
 
-  To render a drawer section that is not a navigation menu, use
-  `drawer_section/1` instead.
+  To include sections in your drawer or sidebar that are not part of the
+  navigation menu (like informational text or a site search), use the
+  `vertical_nav_section/1` component.
 
   ## Example
 
   ```heex
-  <Doggo.drawer_nav label="Main">
+  <Doggo.vertical_nav label="Main">
     <:item>
       <.link navigate={~p"/dashboard"}>Dashboard</.link>
     </:item>
     <:item>
-      <Doggo.drawer_nested_nav>
+      <Doggo.vertical_nav_nested>
         <:title>Content</:title>
         <:item current_page>
           <.link navigate={~p"/posts"}>Posts</.link>
@@ -1606,9 +1606,9 @@ defmodule Doggo do
         <:item>
           <.link navigate={~p"/comments"}>Comments</.link>
         </:item>
-      </Doggo.drawer_nested_nav>
+      </Doggo.vertical_nav_nested>
     </:item>
-  </Doggo.drawer_nav>
+  </Doggo.vertical_nav>
   ```
   """
   @doc type: :navigation
@@ -1625,7 +1625,7 @@ defmodule Doggo do
     attr :current_page, :boolean
   end
 
-  def drawer_nav(assigns) do
+  def vertical_nav(assigns) do
     ~H"""
     <nav id={@id} aria-label={@label} {@rest}>
       <div :if={@title != []} class="drawer-nav-title">
@@ -1645,15 +1645,15 @@ defmodule Doggo do
   end
 
   @doc """
-  Renders nested navigation items within the `:item` slot of the `drawer_nav/1`
-  component.
+  Renders nested navigation items within the `:item` slot of the
+  `vertical_nav/1` component.
 
   ## Example
 
   ```heex
-  <Doggo.drawer_nav label="Main">
+  <Doggo.vertical_nav label="Main">
     <:item>
-      <Doggo.drawer_nested_nav>
+      <Doggo.vertical_nav_nested>
         <:title>Content</:title>
         <:item current_page>
           <.link navigate={~p"/posts"}>Posts</.link>
@@ -1661,9 +1661,9 @@ defmodule Doggo do
         <:item>
           <.link navigate={~p"/comments"}>Comments</.link>
         </:item>
-      </Doggo.drawer_nested_nav>
+      </Doggo.vertical_nav_nested>
     </:item>
-  </Doggo.drawer_nav>
+  </Doggo.vertical_nav>
   ```
   """
   @doc type: :navigation
@@ -1677,7 +1677,7 @@ defmodule Doggo do
     attr :current_page, :boolean
   end
 
-  def drawer_nested_nav(assigns) do
+  def vertical_nav_nested(assigns) do
     ~H"""
     <div :if={@title != []} id={"#{@id}-title"} class="drawer-nav-title">
       <%= render_slot(@title) %>
@@ -1695,18 +1695,18 @@ defmodule Doggo do
   end
 
   @doc """
-  Renders a section in a drawer that contains one or more items, which are not
-  navigation links.
+  Renders a section within a sidebar or drawer that contains one or more
+  items which are not navigation links.
 
-  To render a drawer navigation, use `drawer_nav/1` instead.
+  To render navigation links, use `vertical_nav/1` instead.
 
   ## Example
 
   ```heex
-  <Doggo.drawer_section>
+  <Doggo.vertical_nav_section>
     <:title>Search</:title>
     <:item><input type="search" placeholder="Search" /></:item>
-  </Doggo.drawer_section>
+  </Doggo.vertical_nav_section>
   ```
   """
   @doc type: :navigation
@@ -1726,7 +1726,7 @@ defmodule Doggo do
       doc: "Additional CSS classes. Can be a string or a list of strings."
   end
 
-  def drawer_section(assigns) do
+  def vertical_nav_section(assigns) do
     ~H"""
     <div
       id={@id}

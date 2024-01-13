@@ -17,14 +17,14 @@ defmodule Storybook.Components.Drawer do
           """,
           """
           <:main>
-            <Doggo.drawer_nav id="main-nav" label="Main">
+            <Doggo.vertical_nav id="main-nav" label="Main">
               <:item>
                 <Phoenix.Component.link navigate="/dashboard">
                   Dashboard
                 </Phoenix.Component.link>
               </:item>
               <:item>
-                <Doggo.drawer_nested_nav id="main-nav-content">
+                <Doggo.vertical_nav_nested id="main-nav-content">
                   <:title>Content</:title>
                   <:item current_page>
                     <Phoenix.Component.link navigate="/posts">
@@ -36,18 +36,18 @@ defmodule Storybook.Components.Drawer do
                       Comments
                     </Phoenix.Component.link>
                   </:item>
-                </Doggo.drawer_nested_nav>
+                </Doggo.vertical_nav_nested>
               </:item>
-            </Doggo.drawer_nav>
-            <Doggo.drawer_section id="drawer-search">
+            </Doggo.vertical_nav>
+            <Doggo.vertical_nav_section id="drawer-search">
               <:title>Search</:title>
               <:item><input type="search" placeholder="Search" /></:item>
-            </Doggo.drawer_section>
+            </Doggo.vertical_nav_section>
           </:main>
           """,
           """
           <:footer>
-            <Doggo.drawer_nav id="user-menu" label="User menu">
+            <Doggo.vertical_nav id="user-menu" label="User menu">
               <:item>
                 <Phoenix.Component.link navigate="/settings">
                   Settings
@@ -58,7 +58,7 @@ defmodule Storybook.Components.Drawer do
                   Logout
                 </Phoenix.Component.link>
               </:item>
-            </Doggo.drawer_nav>
+            </Doggo.vertical_nav>
           </:footer>
           """
         ]
