@@ -473,7 +473,7 @@ defmodule Doggo do
   </Doggo.bottom_navigation>
   ```
   """
-  @doc type: :component
+  @doc type: :navigation
 
   attr :label, :string,
     default: nil,
@@ -643,7 +643,7 @@ defmodule Doggo do
   </Doggo.breadcrumb>
   ```
   """
-  @doc type: :component
+  @doc type: :navigation
 
   attr :label, :string,
     default: "Breadcrumb",
@@ -735,7 +735,7 @@ defmodule Doggo do
   </Doggo.button>
   ```
   """
-  @doc type: :component
+  @doc type: :button
 
   attr :type, :string, values: ["button", "reset", "submit"], default: "button"
   attr :variant, :atom, values: @variants, default: :primary
@@ -788,7 +788,7 @@ defmodule Doggo do
   </Doggo.button_link>
   ```
   """
-  @doc type: :component
+  @doc type: :button
 
   attr :variant, :atom, values: @variants, default: :primary
   attr :fill, :atom, values: @fills, default: :solid
@@ -897,6 +897,7 @@ defmodule Doggo do
   </Doggo.carousel>
   ```
   """
+  @doc type: :component
 
   attr :id, :string, required: true
 
@@ -1450,7 +1451,7 @@ defmodule Doggo do
   <table id="data-table" hidden></table>
   ```
   """
-  @doc type: :component
+  @doc type: :button
 
   attr :controls, :string,
     required: true,
@@ -1610,7 +1611,7 @@ defmodule Doggo do
   </Doggo.drawer_nav>
   ```
   """
-  @doc type: :component
+  @doc type: :navigation
 
   attr :id, :string, default: nil
   attr :label, :string, required: true
@@ -1665,7 +1666,7 @@ defmodule Doggo do
   </Doggo.drawer_nav>
   ```
   """
-  @doc type: :component
+  @doc type: :navigation
 
   attr :id, :string, required: true
 
@@ -1708,7 +1709,7 @@ defmodule Doggo do
   </Doggo.drawer_section>
   ```
   """
-  @doc type: :component
+  @doc type: :navigation
 
   attr :id, :string, required: true
 
@@ -1757,7 +1758,7 @@ defmodule Doggo do
   </Doggo.fab>
   ```
   """
-  @doc type: :component
+  @doc type: :button
 
   attr :label, :string, required: true
   attr :variant, :atom, values: @variants, default: :primary
@@ -3640,7 +3641,7 @@ defmodule Doggo do
   </Doggo.navbar>
   ```
   """
-  @doc type: :component
+  @doc type: :navigation
 
   attr :label, :string,
     required: true,
@@ -4149,7 +4150,7 @@ defmodule Doggo do
   </Doggo.steps>
   ```
   """
-  @doc type: :component
+  @doc type: :navigation
 
   attr :label, :string, default: "Form steps"
 
@@ -4449,7 +4450,7 @@ defmodule Doggo do
   </Doggo.tab_navigation>
   ```
   """
-  @doc type: :component
+  @doc type: :navigation
 
   attr :label, :string,
     default: "Tabs",
@@ -4693,7 +4694,7 @@ defmodule Doggo do
   button[aria-pressed="true"] {}
   ```
   """
-  @doc type: :component
+  @doc type: :button
 
   attr :pressed, :boolean, default: false
 
