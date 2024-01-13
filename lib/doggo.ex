@@ -981,28 +981,7 @@ defmodule Doggo do
   end
 
   def carousel(assigns) do
-    label = assigns[:label]
-    labelledby = assigns[:labelledby]
-
-    if (label && labelledby) || !(label || labelledby) do
-      raise """
-      invalid label attributes for carousel
-
-      Doggo.carousel requires either 'label' or 'labelledby' set for
-      accessibility, but not both.
-
-      ## Examples
-
-          With label:
-
-          <Doggo.carousel label="Our Dogs" ... />
-
-          With labelledby:
-
-          <h3 id="dog-carousel-label">Our Dogs</h3>
-          <Doggo.carousel labelledby="dog-carousel-label" ... />
-      """
-    end
+    ensure_label!(assigns, "Doggo.carousel", "Our Dogs")
 
     ~H"""
     <section
@@ -3914,28 +3893,7 @@ defmodule Doggo do
   attr :rest, :global, doc: "Any additional HTML attributes."
 
   def radio_group(assigns) do
-    label = assigns[:label]
-    labelledby = assigns[:labelledby]
-
-    if (label && labelledby) || !(label || labelledby) do
-      raise """
-      invalid label attributes for radio_group
-
-      Doggo.radio_group requires either 'label' or 'labelledby' set for
-      accessibility, but not both.
-
-      ## Examples
-
-          With label:
-
-          <Doggo.radio_group label="Favorite Dog" ... />
-
-          With labelledby:
-
-          <h3 id="favorite-dog-label">Favorite Dog</h3>
-          <Doggo.radio_group labelledby="favorite-dog-label" ... />
-      """
-    end
+    ensure_label!(assigns, "Doggo.radio_group", "Favorite Dog")
 
     ~H"""
     <div
@@ -4133,28 +4091,7 @@ defmodule Doggo do
   slot :secondary, required: true
 
   def split_pane(assigns) do
-    label = assigns[:label]
-    labelledby = assigns[:labelledby]
-
-    if (label && labelledby) || !(label || labelledby) do
-      raise """
-      invalid label attributes for split_pane
-
-      Doggo.split_pane requires either 'label' or 'labelledby' set for
-      accessibility, but not both.
-
-      ## Examples
-
-          With label:
-
-          <Doggo.split_pane label="Favorite Dog" ... />
-
-          With labelledby:
-
-          <h3 id="favorite-dog-label">Favorite Dog</h3>
-          <Doggo.split_pane labelledby="favorite-dog-label" ... />
-      """
-    end
+    ensure_label!(assigns, "Doggo.split_pane", "Sidebar")
 
     ~H"""
     <div id={@id} class="split-pane" data-orientation={@orientation}>
@@ -4655,28 +4592,7 @@ defmodule Doggo do
   end
 
   def tabs(assigns) do
-    label = assigns[:label]
-    labelledby = assigns[:labelledby]
-
-    if (label && labelledby) || !(label || labelledby) do
-      raise """
-      invalid label attributes for toolbar
-
-      Doggo.toolbar requires either 'label' or 'labelledby' set for
-      accessibility, but not both.
-
-      ## Examples
-
-          With label:
-
-          <Doggo.tabs label="Dog Facts"></Doggo.tabs>
-
-          With labelledby:
-
-          <h3 id="dog-facts-label">Dog Facts</h3>
-          <Doggo.tabs labelledby="dog-facts-label"></Doggo.tabs>
-      """
-    end
+    ensure_label!(assigns, "Doggo.tabs", "Dog Facts")
 
     ~H"""
     <div id={@id} class={["tabs" | List.wrap(@class)]} {@rest}>
@@ -5096,28 +5012,7 @@ defmodule Doggo do
     """
 
   def toolbar(assigns) do
-    label = assigns[:label]
-    labelledby = assigns[:labelledby]
-
-    if (label && labelledby) || !(label || labelledby) do
-      raise """
-      invalid label attributes for toolbar
-
-      Doggo.toolbar requires either 'label' or 'labelledby' set for
-      accessibility, but not both.
-
-      ## Examples
-
-          With label:
-
-          <Doggo.toolbar label="Actions for the dog"></Doggo.toolbar>
-
-          With labelledby:
-
-          <h3 id="dog-toolbar-label">Actions for the dog</h3>
-          <Doggo.toolbar labelledby="dog-toolbar-label"></Doggo.toolbar>
-      """
-    end
+    ensure_label!(assigns, "Doggo.toolbar", "Dog profile actions")
 
     ~H"""
     <div
@@ -5223,28 +5118,7 @@ defmodule Doggo do
     """
 
   def tree(assigns) do
-    label = assigns[:label]
-    labelledby = assigns[:labelledby]
-
-    if (label && labelledby) || !(label || labelledby) do
-      raise """
-      invalid label attributes for tree
-
-      Doggo.tree requires either 'label' or 'labelledby' set for accessibility,
-      but not both.
-
-      ## Examples
-
-          With label:
-
-          <Doggo.tree label="Dogs" ... />
-
-          With labelledby:
-
-          <h3 id="dog-tree-label">Favorite Dog</h3>
-          <Doggo.tree labelledby="dog-tree-label" ... />
-      """
-    end
+    ensure_label!(assigns, "Doggo.tree", "Dog Breeds")
 
     ~H"""
     <ul
@@ -5425,5 +5299,19 @@ defmodule Doggo do
       skeleton_types: Enum.map(skeleton_types(), &skeleton_type_class/1),
       variants: Enum.map(variants(), &variant_class/1)
     }
+  end
+
+  defp ensure_label!(%{label: s, labelledby: nil}, _, _) when is_binary(s) do
+    :ok
+  end
+
+  defp ensure_label!(%{label: nil, labelledby: s}, _, _) when is_binary(s) do
+    :ok
+  end
+
+  defp ensure_label!(_, component, example_label) do
+    raise Doggo.InvalidLabelError,
+      component: component,
+      example_label: example_label
   end
 end

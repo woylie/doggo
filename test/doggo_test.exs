@@ -1562,37 +1562,31 @@ defmodule DoggoTest do
     end
 
     test "raises if both label and labelledby are set" do
-      error =
-        assert_raise RuntimeError, fn ->
-          assigns = %{}
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
 
-          parse_heex(~H"""
-          <Doggo.carousel
-            id="dog-carousel"
-            label="Dog Carousel"
-            labelledby="dog-carousel-label"
-          >
-            <:item label="1 of 1"></:item>
-          </Doggo.carousel>
-          """)
-        end
-
-      assert error.message =~ "invalid label attributes"
+        parse_heex(~H"""
+        <Doggo.carousel
+          id="dog-carousel"
+          label="Dog Carousel"
+          labelledby="dog-carousel-label"
+        >
+          <:item label="1 of 1"></:item>
+        </Doggo.carousel>
+        """)
+      end
     end
 
     test "raises if neither label nor labelledby are set" do
-      error =
-        assert_raise RuntimeError, fn ->
-          assigns = %{}
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
 
-          parse_heex(~H"""
-          <Doggo.carousel id="dog-carousel">
-            <:item label="1 of 1"></:item>
-          </Doggo.carousel>
-          """)
-        end
-
-      assert error.message =~ "invalid label attributes"
+        parse_heex(~H"""
+        <Doggo.carousel id="dog-carousel">
+          <:item label="1 of 1"></:item>
+        </Doggo.carousel>
+        """)
+      end
     end
 
     test "with role descriptions" do
@@ -4149,39 +4143,33 @@ defmodule DoggoTest do
     end
 
     test "raises if both label and labelledby are set" do
-      error =
-        assert_raise RuntimeError, fn ->
-          assigns = %{}
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
 
-          parse_heex(~H"""
-          <Doggo.radio_group
-            id="favorite_dog_rg"
-            name="favorite_dog"
-            label="Favorite Dog"
-            labelledby="rg-label"
-            options={[{"Labrador Retriever", "labrador"}]}
-          />
-          """)
-        end
-
-      assert error.message =~ "invalid label attributes"
+        parse_heex(~H"""
+        <Doggo.radio_group
+          id="favorite_dog_rg"
+          name="favorite_dog"
+          label="Favorite Dog"
+          labelledby="rg-label"
+          options={[{"Labrador Retriever", "labrador"}]}
+        />
+        """)
+      end
     end
 
     test "raises if neither label nor labelledby are set" do
-      error =
-        assert_raise RuntimeError, fn ->
-          assigns = %{}
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
 
-          parse_heex(~H"""
-          <Doggo.radio_group
-            id="favorite_dog_rg"
-            name="favorite_dog"
-            options={[{"Labrador Retriever", "labrador"}]}
-          />
-          """)
-        end
-
-      assert error.message =~ "invalid label attributes"
+        parse_heex(~H"""
+        <Doggo.radio_group
+          id="favorite_dog_rg"
+          name="favorite_dog"
+          options={[{"Labrador Retriever", "labrador"}]}
+        />
+        """)
+      end
     end
 
     test "with additional class as string" do
@@ -4370,45 +4358,39 @@ defmodule DoggoTest do
     end
 
     test "raises if both label and labelledby are set" do
-      error =
-        assert_raise RuntimeError, fn ->
-          assigns = %{}
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
 
-          parse_heex(~H"""
-          <Doggo.split_pane
-            id="sidebar-splitter"
-            label="Sidebar"
-            labelledby="sidebar-heading"
-            orientation="horizontal"
-            default_size={200}
-          >
-            <:primary>One</:primary>
-            <:secondary>Two</:secondary>
-          </Doggo.split_pane>
-          """)
-        end
-
-      assert error.message =~ "invalid label attributes"
+        parse_heex(~H"""
+        <Doggo.split_pane
+          id="sidebar-splitter"
+          label="Sidebar"
+          labelledby="sidebar-heading"
+          orientation="horizontal"
+          default_size={200}
+        >
+          <:primary>One</:primary>
+          <:secondary>Two</:secondary>
+        </Doggo.split_pane>
+        """)
+      end
     end
 
     test "raises if neither label nor labelledby are set" do
-      error =
-        assert_raise RuntimeError, fn ->
-          assigns = %{}
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
 
-          parse_heex(~H"""
-          <Doggo.split_pane
-            id="sidebar-splitter"
-            orientation="horizontal"
-            default_size={200}
-          >
-            <:primary>One</:primary>
-            <:secondary>Two</:secondary>
-          </Doggo.split_pane>
-          """)
-        end
-
-      assert error.message =~ "invalid label attributes"
+        parse_heex(~H"""
+        <Doggo.split_pane
+          id="sidebar-splitter"
+          orientation="horizontal"
+          default_size={200}
+        >
+          <:primary>One</:primary>
+          <:secondary>Two</:secondary>
+        </Doggo.split_pane>
+        """)
+      end
     end
   end
 
@@ -4890,35 +4872,29 @@ defmodule DoggoTest do
     end
 
     test "raises if both label and labelledby are set" do
-      error =
-        assert_raise RuntimeError, fn ->
-          assigns = %{}
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
 
-          parse_heex(~H"""
-          <Doggo.tabs id="my-tabs" label="My Tabs" labelledby="my-tabs-title">
-            <:panel label="Panel 1">some text</:panel>
-            <:panel label="Panel 2">some other text</:panel>
-          </Doggo.tabs>
-          """)
-        end
-
-      assert error.message =~ "invalid label attributes"
+        parse_heex(~H"""
+        <Doggo.tabs id="my-tabs" label="My Tabs" labelledby="my-tabs-title">
+          <:panel label="Panel 1">some text</:panel>
+          <:panel label="Panel 2">some other text</:panel>
+        </Doggo.tabs>
+        """)
+      end
     end
 
     test "raises if neither label nor labelledby are set" do
-      error =
-        assert_raise RuntimeError, fn ->
-          assigns = %{}
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
 
-          parse_heex(~H"""
-          <Doggo.tabs id="my-tabs">
-            <:panel label="Panel 1">some text</:panel>
-            <:panel label="Panel 2">some other text</:panel>
-          </Doggo.tabs>
-          """)
-        end
-
-      assert error.message =~ "invalid label attributes"
+        parse_heex(~H"""
+        <Doggo.tabs id="my-tabs">
+          <:panel label="Panel 1">some text</:panel>
+          <:panel label="Panel 2">some other text</:panel>
+        </Doggo.tabs>
+        """)
+      end
     end
 
     test "with additional class as string" do
@@ -5636,30 +5612,24 @@ defmodule DoggoTest do
     end
 
     test "raises if both label and labelledby are set" do
-      error =
-        assert_raise RuntimeError, fn ->
-          assigns = %{}
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
 
-          parse_heex(~H"""
-          <Doggo.toolbar label="Dog actions" labelledby="dog-toolbar-label">
-          </Doggo.toolbar>
-          """)
-        end
-
-      assert error.message =~ "invalid label attributes"
+        parse_heex(~H"""
+        <Doggo.toolbar label="Dog actions" labelledby="dog-toolbar-label">
+        </Doggo.toolbar>
+        """)
+      end
     end
 
     test "raises if neither label nor labelledby are set" do
-      error =
-        assert_raise RuntimeError, fn ->
-          assigns = %{}
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
 
-          parse_heex(~H"""
-          <Doggo.toolbar></Doggo.toolbar>
-          """)
-        end
-
-      assert error.message =~ "invalid label attributes"
+        parse_heex(~H"""
+        <Doggo.toolbar></Doggo.toolbar>
+        """)
+      end
     end
 
     test "with global attribute" do
@@ -5702,29 +5672,23 @@ defmodule DoggoTest do
     end
 
     test "raises if both label and labelledby are set" do
-      error =
-        assert_raise RuntimeError, fn ->
-          assigns = %{}
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
 
-          parse_heex(~H"""
-          <Doggo.tree label="Dogs" labelledby="dog-tree-label"></Doggo.tree>
-          """)
-        end
-
-      assert error.message =~ "invalid label attributes"
+        parse_heex(~H"""
+        <Doggo.tree label="Dogs" labelledby="dog-tree-label"></Doggo.tree>
+        """)
+      end
     end
 
     test "raises if neither label nor labelledby are set" do
-      error =
-        assert_raise RuntimeError, fn ->
-          assigns = %{}
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
 
-          parse_heex(~H"""
-          <Doggo.tree></Doggo.tree>
-          """)
-        end
-
-      assert error.message =~ "invalid label attributes"
+        parse_heex(~H"""
+        <Doggo.tree></Doggo.tree>
+        """)
+      end
     end
 
     test "with additional class as string" do
