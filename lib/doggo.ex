@@ -1540,7 +1540,7 @@ defmodule Doggo do
   </Doggo.drawer>
   ```
   """
-  @doc type: :navigation
+  @doc type: :component
 
   attr :class, :any,
     default: [],
