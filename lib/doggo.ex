@@ -1484,7 +1484,7 @@ defmodule Doggo do
 
   ```heex
   <Doggo.drawer>
-    <:top>Content</:top>
+    <:main>Content</:main>
   </Doggo.drawer>
   ```
 
@@ -1492,9 +1492,9 @@ defmodule Doggo do
 
   ```heex
   <Doggo.drawer>
-    <:brand>Doggo</:brand>
-    <:top>Content at the top</:top>
-    <:bottom>Content at the bottom</:bottom>
+    <:header>Doggo</:header>
+    <:main>Content at the top</:main>
+    <:footer>Content at the bottom</:footer>
   </Doggo.drawer>
   ```
 
@@ -1502,10 +1502,10 @@ defmodule Doggo do
 
   ```heex
   <Doggo.drawer>
-    <:brand>
+    <:header>
       <.link navigate={~p"/"}>App</.link>
-    </:brand>
-    <:top>
+    </:header>
+    <:main>
       <Doggo.drawer_nav label="Main">
         <:item>
           <.link navigate={~p"/dashboard"}>Dashboard</.link>
@@ -1526,8 +1526,8 @@ defmodule Doggo do
         <:title>Search</:title>
         <:item><input type="search" placeholder="Search" /></:item>
       </Doggo.drawer_section>
-    </:top>
-    <:bottom>
+    </:main>
+    <:footer>
       <Doggo.drawer_nav label="User menu">
         <:item>
           <.link navigate={~p"/settings"}>Settings</.link>
@@ -1536,7 +1536,7 @@ defmodule Doggo do
           <.link navigate={~p"/logout"}>Logout</.link>
         </:item>
       </Doggo.drawer_nav>
-    </:bottom>
+    </:footer>
   </Doggo.drawer>
   ```
   """
@@ -1548,31 +1548,31 @@ defmodule Doggo do
 
   attr :rest, :global, doc: "Any additional HTML attributes."
 
-  slot :brand, doc: "Optional slot for the brand name or logo."
+  slot :header, doc: "Optional slot for the brand name or logo."
 
-  slot :top,
+  slot :main,
     doc: """
     Slot for content that is rendered after the brand, at the start of the
     side bar.
     """
 
-  slot :bottom,
+  slot :footer,
     doc: """
-    Slot for content that is rendered at the end of the drawer, pinned to the
-    bottom, if there is enough room.
+    Slot for content that is rendered at the end of the drawer, potentially
+    pinned to the bottom, if there is enough room.
     """
 
   def drawer(assigns) do
     ~H"""
     <aside class={["drawer" | List.wrap(@class)]} {@rest}>
-      <div :if={@brand != []} class="drawer-brand">
-        <%= render_slot(@brand) %>
+      <div :if={@header != []} class="drawer-header">
+        <%= render_slot(@header) %>
       </div>
-      <div :if={@top != []} class="drawer-top">
-        <%= render_slot(@top) %>
+      <div :if={@main != []} class="drawer-main">
+        <%= render_slot(@main) %>
       </div>
-      <div :if={@bottom != []} class="drawer-bottom">
-        <%= render_slot(@bottom) %>
+      <div :if={@footer != []} class="drawer-footer">
+        <%= render_slot(@footer) %>
       </div>
     </aside>
     """

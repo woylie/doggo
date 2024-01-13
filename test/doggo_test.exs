@@ -2074,43 +2074,43 @@ defmodule DoggoTest do
       assert Floki.children(aside) == []
     end
 
-    test "with brand" do
+    test "with header" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
         <Doggo.drawer>
-          <:brand>Doggo</:brand>
+          <:header>Doggo</:header>
         </Doggo.drawer>
         """)
 
-      assert text(html, "aside > div.drawer-brand") == "Doggo"
+      assert text(html, "aside > div.drawer-header") == "Doggo"
     end
 
-    test "with top slot" do
+    test "with main slot" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
         <Doggo.drawer>
-          <:top>Doggo</:top>
+          <:main>Doggo</:main>
         </Doggo.drawer>
         """)
 
-      assert text(html, "aside > div.drawer-top") == "Doggo"
+      assert text(html, "aside > div.drawer-main") == "Doggo"
     end
 
-    test "with bottom slot" do
+    test "with footer slot" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
         <Doggo.drawer>
-          <:bottom>Doggo</:bottom>
+          <:footer>Doggo</:footer>
         </Doggo.drawer>
         """)
 
-      assert text(html, "aside > div.drawer-bottom") == "Doggo"
+      assert text(html, "aside > div.drawer-footer") == "Doggo"
     end
 
     test "with additional class as string" do

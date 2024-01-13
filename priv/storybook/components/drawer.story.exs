@@ -9,14 +9,14 @@ defmodule Storybook.Components.Drawer do
         id: :default,
         slots: [
           """
-          <:brand>
+          <:header>
             <Phoenix.Component.link navigate="/">
               Pet Clinic
             </Phoenix.Component.link>
-          </:brand>
+          </:header>
           """,
           """
-          <:top>
+          <:main>
             <Doggo.drawer_nav id="main-nav" label="Main">
               <:item>
                 <Phoenix.Component.link navigate="/dashboard">
@@ -43,10 +43,10 @@ defmodule Storybook.Components.Drawer do
               <:title>Search</:title>
               <:item><input type="search" placeholder="Search" /></:item>
             </Doggo.drawer_section>
-          </:top>
+          </:main>
           """,
           """
-          <:bottom>
+          <:footer>
             <Doggo.drawer_nav id="user-menu" label="User menu">
               <:item>
                 <Phoenix.Component.link navigate="/settings">
@@ -59,7 +59,7 @@ defmodule Storybook.Components.Drawer do
                 </Phoenix.Component.link>
               </:item>
             </Doggo.drawer_nav>
-          </:bottom>
+          </:footer>
           """
         ]
       }
