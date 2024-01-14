@@ -3689,6 +3689,103 @@ defmodule DoggoTest do
     end
   end
 
+  describe "menubar/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.menubar label="Dog actions">
+          <:item>A</:item>
+        </Doggo.menubar>
+        """)
+
+      ul = find_one(html, "ul:root")
+      assert attribute(ul, "role") == "menubar"
+      assert attribute(ul, "aria-label") == "Dog actions"
+
+      assert li = find_one(html, "ul > li")
+      assert attribute(li, "role") == "none"
+      assert text(li) == "A"
+    end
+
+    test "with labelledby" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.menubar labelledby="dog-menu-label">
+          <:item>A</:item>
+        </Doggo.menubar>
+        """)
+
+      assert attribute(html, ":root", "aria-labelledby") == "dog-menu-label"
+    end
+
+    test "raises if both label and labelledby are set" do
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <Doggo.menubar label="Dog actions" labelledby="dog-menu-label">
+          <:item>A</:item>
+        </Doggo.menubar>
+        """)
+      end
+    end
+
+    test "raises if neither label nor labelledby are set" do
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <Doggo.menubar>
+          <:item>A</:item>
+        </Doggo.menubar>
+        """)
+      end
+    end
+
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.menubar label="Dog actions" class="is-rad">
+          <:item>A</:item>
+        </Doggo.menubar>
+        """)
+
+      assert attribute(html, ":root", "class") == "is-rad"
+    end
+
+    test "with additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.menubar label="Dog Carousel" class={["is-rad", "is-good"]}>
+          <:item>A</:item>
+        </Doggo.menubar>
+        """)
+
+      assert attribute(html, ":root", "class") == "is-rad is-good"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.menubar label="Dog actions" data-test="hello">
+          <:item>A</:item>
+        </Doggo.menubar>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
+    end
+  end
+
   describe "modal/1" do
     test "default" do
       assigns = %{}
