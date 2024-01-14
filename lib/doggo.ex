@@ -3378,6 +3378,72 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders a menubar, similar to those found in desktop applications.
+
+  This component is meant for organizing actions within an application, rather
+  than for navigating between different pages or sections of a website.
+
+  ## Example
+
+  ```heex
+  <Doggo.menubar label="Main">
+    <:item>A</:item>
+  </Doggo.menubar>
+  ```
+  """
+
+  attr :label, :string,
+    default: nil,
+    doc: """
+    A accessibility label for the menubar. Set as `aria-label` attribute.
+
+    You should ensure that either the `label` or the `labelledby` attribute is
+    set.
+    """
+
+  attr :labelledby, :string,
+    default: nil,
+    doc: """
+    The DOM ID of an element that labels this menubar.
+
+    Example:
+
+    ```html
+    <h3 id="dog-menu-label">Dog Actions</h3>
+    <.menubar labelledby="dog-menu-label"></.menubar>
+    ```
+
+    You should ensure that either the `label` or the `labelledby` attribute is
+    set.
+    """
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :item, required: true
+
+  def menubar(assigns) do
+    ensure_label!(assigns, "Doggo.menubar", "Dog Actions")
+
+    ~H"""
+    <ul
+      class={@class}
+      role="menubar"
+      aria-label={@label}
+      aria-labelledby={@labelledby}
+      {@rest}
+    >
+      <li :for={item <- @item} role="none">
+        <%= render_slot(item) %>
+      </li>
+    </ul>
+    """
+  end
+
+  @doc """
   Renders a modal dialog for content such as forms and informational panels.
 
   This component is appropriate for non-critical interactions. For dialogs
