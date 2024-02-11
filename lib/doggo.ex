@@ -3394,6 +3394,8 @@ defmodule Doggo do
   This component is meant for organizing actions within an application, rather
   than for navigating between different pages or sections of a website.
 
+  See also `menu_button/1`.
+
   ## Example
 
   ```heex
@@ -3451,6 +3453,89 @@ defmodule Doggo do
         <%= render_slot(item) %>
       </li>
     </ul>
+    """
+  end
+
+  @doc """
+  Renders a button that toggles an actions menu.
+
+  This component can be used on its own or as part of a `menubar/1`.
+
+  For a button that toggles the visibility of an element that is not a menu, use
+  `disclosure_button/1`. For a button that toggles other states, use
+  `toggle_button/1`. See also `button/1` and `button_link/1`.
+
+  ## Examples
+
+  Set the `controls` attribute to the DOM ID of the element that you want to
+  toggle with the button.
+
+  The initial state is hidden. Do not forget to add the `hidden` attribute to
+  the toggled menu. Otherwise, visibility of the element will not align with
+  the `aria-expanded` attribute of the button.
+
+  ```heex
+  <div>
+    <Doggo.menu_button controls="actions-menu" id="actions-button">
+      Actions
+    </Doggo.menu_button>
+
+    <ul id="actions-menu" role="menu" aria-labelledby="actions-button" hidden>
+      <li role="menuitem">View Dog Profiles</li>
+      <li role="menuitem">Add Dog Profile</li>
+      <li role="menuitem">Dog Care Tips</li>
+    </ul>
+  </div>
+  ```
+
+  If this menu button is a child of a `menubar/1`, set the `menuitem` attribute.
+
+  ```heex
+  <Doggo.menu_button controls="actions-menu" id="actions-button" menuitem>
+    Actions
+  </Doggo.menu_button>
+  ```
+  """
+  @doc type: :button
+
+  attr :id, :string,
+    required: true,
+    doc: """
+    The DOM ID of the button. Set the `aria-labelledby` attribute of the toggled
+    menu to the same value.
+    """
+
+  attr :controls, :string,
+    required: true,
+    doc: """
+    The DOM ID of the element that this button controls.
+    """
+
+  attr :menuitem, :boolean,
+    default: false,
+    doc: """
+    Set this attribute to `true` if the menu button is used as a child of a
+    `menubar/1`. This ensures that the `role` is set to `menuitem`.
+    """
+
+  attr :rest, :global
+
+  slot :inner_block, required: true
+
+  def menu_button(assigns) do
+    ~H"""
+    <button
+      id={@id}
+      type="button"
+      role={@menuitem && "menuitem"}
+      aria-haspopup="true"
+      aria-expanded="false"
+      aria-controls={@controls}
+      phx-click={toggle_disclosure(@controls)}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </button>
     """
   end
 
