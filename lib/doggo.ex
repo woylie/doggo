@@ -3430,7 +3430,7 @@ defmodule Doggo do
   This component is meant for organizing actions within an application, rather
   than for navigating between different pages or sections of a website.
 
-  See also `menu_bar/1` and `menu_button/1`.
+  See also `menu_bar/1`, `menu_button/1`, and `menu_group/1`.
 
   > #### In Development {: .warning}
   >
@@ -3540,7 +3540,7 @@ defmodule Doggo do
   This component is meant for organizing actions within an application, rather
   than for navigating between different pages or sections of a website.
 
-  See also `menu/1`, `menu_button/1`, and `menu_item/1`.
+  See also `menu/1`, `menu_button/1`, `menu_item/1`, and `menu_group/1`.
 
   > #### In Development {: .warning}
   >
@@ -3657,7 +3657,7 @@ defmodule Doggo do
   Renders a button that toggles an actions menu.
 
   This component can be used on its own or as part of a `menu_bar/1` or `menu/1`.
-  See also `menu_item/1`.
+  See also `menu_item/1` and `menu_group/1`.
 
   For a button that toggles the visibility of an element that is not a menu, use
   `disclosure_button/1`. For a button that toggles other states, use
@@ -3756,6 +3756,89 @@ defmodule Doggo do
     >
       <%= render_slot(@inner_block) %>
     </button>
+    """
+  end
+
+  @doc """
+  This component can be used to group items within a `menu/1` or `menu_bar/1`.
+
+  See also `menu_button/1` and  `menu_item/1`.
+
+  > #### In Development {: .warning}
+  >
+  > The necessary JavaScript for making this component fully functional and
+  > accessible will be added in a future version.
+  >
+  > **Missing features**
+  >
+  > - Focus management
+  > - Keyboard support
+
+  ## Example
+
+  ```heex
+  <Doggo.menu id="actions-menu" labelledby="actions-button" hidden>
+    <:item>
+      <Doggo.menu_group label="Dog actions">
+        <:item>
+          <Doggo.menu_item on_click={JS.push("view-dog-profiles")}>
+            View Dog Profiles
+          </Doggo.menu_item>
+        </:item>
+        <:item>
+          <Doggo.menu_item on_click={JS.push("add-dog-profile")}>
+            Add Dog Profile
+          </Doggo.menu_item>
+        </:item>
+        <:item>
+          <Doggo.menu_item on_click={JS.push("dog-care-tips")}>
+            Dog Care Tips
+          </Doggo.menu_item>
+        </:item>
+      </Doggo.menu_group>
+    </:item>
+    <:item role="separator" />
+    <:item>
+      <Doggo.menu_item on_click={JS.push("help")}>Help</Doggo.menu_item>
+    </:item>
+  </Doggo.menu>
+  ```
+  """
+  @doc type: :component
+  @doc since: "0.5.0"
+
+  attr :label, :string,
+    required: true,
+    doc: """
+    A accessibility label for the group. Set as `aria-label` attribute.
+    """
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :item, required: true do
+    attr :role, :string,
+      values: ["none", "separator"],
+      doc: """
+      Sets the role of the list item. If the item has a menu item, menu
+      item radio group or menu item checkbox as a child, use `"none"`. If you
+      want to render a visual separator, use `"separator"`. The default is
+      `"none"`.
+      """
+  end
+
+  def menu_group(assigns) do
+    ~H"""
+    <ul class={@class} role="group" aria-label={@label} {@rest}>
+      <li :for={item <- @item} role={Map.get(item, :role, "none")}>
+        <%= if item[:role] != "separator" do %>
+          <%= render_slot(item) %>
+        <% end %>
+      </li>
+    </ul>
     """
   end
 
