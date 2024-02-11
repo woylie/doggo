@@ -3466,7 +3466,7 @@ defmodule Doggo do
   </Doggo.menu_button>
   <Doggo.menu labelledby="actions-button" hidden></Doggo.menu>
   """
-  @doc type: :component
+  @doc type: :menu
   @doc since: "0.5.0"
 
   attr :label, :string,
@@ -3590,7 +3590,7 @@ defmodule Doggo do
   </Doggo.menu_bar>
   ```
   """
-  @doc type: :component
+  @doc type: :menu
   @doc since: "0.5.0"
 
   attr :label, :string,
@@ -3717,7 +3717,7 @@ defmodule Doggo do
   </Doggo.menu>
   ```
   """
-  @doc type: :button
+  @doc type: :menu
   @doc since: "0.5.0"
 
   attr :id, :string,
@@ -3806,7 +3806,7 @@ defmodule Doggo do
   </Doggo.menu>
   ```
   """
-  @doc type: :component
+  @doc type: :menu
   @doc since: "0.5.0"
 
   attr :label, :string,
@@ -3867,7 +3867,7 @@ defmodule Doggo do
   </Doggo.menu>
   ```
   """
-  @doc type: :component
+  @doc type: :menu
   @doc since: "0.5.0"
 
   attr :on_click, JS, required: true
@@ -3910,7 +3910,7 @@ defmodule Doggo do
   </Doggo.menu>
   ```
   """
-  @doc type: :component
+  @doc type: :menu
   @doc since: "0.5.0"
 
   attr :checked, :boolean, default: false
@@ -3965,7 +3965,7 @@ defmodule Doggo do
   </Doggo.menu>
   ```
   """
-  @doc type: :component
+  @doc type: :menu
   @doc since: "0.5.0"
 
   attr :label, :string,
