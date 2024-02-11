@@ -3430,7 +3430,8 @@ defmodule Doggo do
   This component is meant for organizing actions within an application, rather
   than for navigating between different pages or sections of a website.
 
-  See also `menu_bar/1`, `menu_button/1`, and `menu_group/1`.
+  See also `menu_bar/1`, `menu_group/1`, `menu_button/1`, `menu_item/1`, and
+  `menu_item_checkbox/1`.
 
   > #### In Development {: .warning}
   >
@@ -3540,7 +3541,8 @@ defmodule Doggo do
   This component is meant for organizing actions within an application, rather
   than for navigating between different pages or sections of a website.
 
-  See also `menu/1`, `menu_button/1`, `menu_item/1`, and `menu_group/1`.
+  See also `menu/1`, `menu_group/1`, `menu_button/1`, `menu_item/1`, and
+  `menu_item_checkbox/1`.
 
   > #### In Development {: .warning}
   >
@@ -3657,7 +3659,7 @@ defmodule Doggo do
   Renders a button that toggles an actions menu.
 
   This component can be used on its own or as part of a `menu_bar/1` or `menu/1`.
-  See also `menu_item/1` and `menu_group/1`.
+  See also `menu_item/1`, `menu_item_checkbox/1`, and `menu_group/1`.
 
   For a button that toggles the visibility of an element that is not a menu, use
   `disclosure_button/1`. For a button that toggles other states, use
@@ -3762,7 +3764,7 @@ defmodule Doggo do
   @doc """
   This component can be used to group items within a `menu/1` or `menu_bar/1`.
 
-  See also `menu_button/1` and  `menu_item/1`.
+  See also `menu_button/1`,  `menu_item/1`, and `menu_item_checkbox/1`.
 
   > #### In Development {: .warning}
   >
@@ -3878,6 +3880,55 @@ defmodule Doggo do
     <button type="button" role="menuitem" phx-click={@on_click} {@rest}>
       <%= render_slot(@inner_block) %>
     </button>
+    """
+  end
+
+  @doc """
+  Renders a menu item checkbox as part of a `menu/1` or `menu_bar/1`.
+
+  See also `menu_item/1`.
+
+  > #### In Development {: .warning}
+  >
+  > The necessary JavaScript for making this component fully functional and
+  > accessible will be added in a future version.
+  >
+  > **Missing features**
+  >
+  > - State management
+  > - Keyboard support
+
+  ## Example
+
+  ```heex
+  <Doggo.menu label="Actions">
+    <:item>
+      <Doggo.menu_item_checkbox on_click={JS.dispatch("myapp:toggle-word-wrap")}>
+        Word wrap
+      </Doggo.menu_item_checkbox>
+    </:item>
+  </Doggo.menu>
+  ```
+  """
+  @doc type: :component
+  @doc since: "0.5.0"
+
+  attr :checked, :boolean, default: false
+  attr :on_click, JS, required: true
+  attr :rest, :global
+
+  slot :inner_block, required: true
+
+  def menu_item_checkbox(assigns) do
+    ~H"""
+    <div
+      role="menuitemcheckbox"
+      aria-checked={to_string(@checked)}
+      phx-click={@on_click}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </div>
     """
   end
 
