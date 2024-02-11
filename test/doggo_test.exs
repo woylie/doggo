@@ -4043,6 +4043,39 @@ defmodule DoggoTest do
     end
   end
 
+  describe "menu_item_checkbox/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.menu_item_checkbox on_click={JS.push("hello")}>
+          Action
+        </Doggo.menu_item_checkbox>
+        """)
+
+      div = find_one(html, "div:root")
+      assert attribute(div, "phx-click")
+      assert attribute(div, "role") == "menuitemcheckbox"
+      assert attribute(div, "aria-checked") == "false"
+      assert text(div) == "Action"
+    end
+
+    test "checked" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.menu_item_checkbox on_click={JS.push("hello")} checked>
+          Action
+        </Doggo.menu_item_checkbox>
+        """)
+
+      div = find_one(html, "div:root")
+      assert attribute(div, "aria-checked") == "true"
+    end
+  end
+
   describe "modal/1" do
     test "default" do
       assigns = %{}
