@@ -7,6 +7,7 @@
 - New component: `Doggo.alert_dialog/1`.
 - New component: `Doggo.carousel/1`.
 - New component: `Doggo.disclosure_button/1`.
+- New component: `Doggo.menu/1`.
 - New component: `Doggo.menu_bar/1`.
 - New component: `Doggo.menu_button/1`.
 - New component: `Doggo.radio_group/1`.
