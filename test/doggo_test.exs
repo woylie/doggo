@@ -5503,13 +5503,15 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.toggle_button on_click="toggle-mute">Mute</Doggo.toggle_button>
+        <Doggo.toggle_button on_click={JS.push("toggle-mute")}>
+          Mute
+        </Doggo.toggle_button>
         """)
 
       button = find_one(html, "button:root")
       assert attribute(button, "type") == "button"
       assert attribute(button, "aria-pressed") == "false"
-      assert attribute(button, "phx-click") == "toggle-mute"
+      assert attribute(button, "phx-click")
       assert text(button) == "Mute"
     end
 
@@ -5518,7 +5520,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.toggle_button on_click="toggle-mute" pressed>
+        <Doggo.toggle_button on_click={JS.push("toggle-mute")} pressed>
           Mute
         </Doggo.toggle_button>
         """)
@@ -5526,7 +5528,7 @@ defmodule DoggoTest do
       button = find_one(html, "button:root")
       assert attribute(button, "type") == "button"
       assert attribute(button, "aria-pressed") == "true"
-      assert attribute(button, "phx-click") == "toggle-mute"
+      assert attribute(button, "phx-click")
       assert text(button) == "Mute"
     end
 
@@ -5535,7 +5537,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.toggle_button on_click="toggle-mute" disabled>
+        <Doggo.toggle_button on_click={JS.push("toggle-mute")} disabled>
           Mute
         </Doggo.toggle_button>
         """)
@@ -5548,7 +5550,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.toggle_button on_click="toggle-mute" variant={:danger}>
+        <Doggo.toggle_button on_click={JS.push("toggle-mute")} variant={:danger}>
           Mute
         </Doggo.toggle_button>
         """)
@@ -5562,7 +5564,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.toggle_button on_click="toggle-mute" size={:large}>
+        <Doggo.toggle_button on_click={JS.push("toggle-mute")} size={:large}>
           Mute
         </Doggo.toggle_button>
         """)
@@ -5576,7 +5578,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.toggle_button on_click="toggle-mute" shape={:pill}>
+        <Doggo.toggle_button on_click={JS.push("toggle-mute")} shape={:pill}>
           Mute
         </Doggo.toggle_button>
         """)
@@ -5590,7 +5592,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.toggle_button on_click="toggle-mute" fill={:outline}>
+        <Doggo.toggle_button on_click={JS.push("toggle-mute")} fill={:outline}>
           Mute
         </Doggo.toggle_button>
         """)
@@ -5604,7 +5606,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.toggle_button on_click="toggle-mute" data-test="hello">
+        <Doggo.toggle_button on_click={JS.push("toggle-mute")} data-test="hello">
           Mute
         </Doggo.toggle_button>
         """)

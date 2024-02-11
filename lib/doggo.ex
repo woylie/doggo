@@ -4723,14 +4723,6 @@ defmodule Doggo do
 
   ## Examples
 
-  With a boolean assign `@muted` and an event name:
-
-  ```heex
-  <Doggo.toggle_button on_click="toggle-mute" pressed={@muted}>
-    Mute
-  </Doggo.toggle_button>
-  ```
-
   With a `Phoenix.LiveView.JS` command:
 
   ```heex
@@ -4765,7 +4757,7 @@ defmodule Doggo do
 
   attr :pressed, :boolean, default: false
 
-  attr :on_click, :any,
+  attr :on_click, JS,
     required: true,
     doc: """
     Phoenix.LiveView.JS command or event name to trigger when the button is
@@ -4785,7 +4777,7 @@ defmodule Doggo do
     ~H"""
     <button
       type="button"
-      phx-click={@on_click}
+      phx-click={JS.toggle_attribute(@on_click, {"aria-pressed", "true", "false"})}
       aria-pressed={to_string(@pressed)}
       class={[
         variant_class(@variant),
