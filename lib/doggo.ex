@@ -3432,6 +3432,16 @@ defmodule Doggo do
 
   See also `menu_bar/1` and `menu_button/1`.
 
+  > #### In Development {: .warning}
+  >
+  > The necessary JavaScript for making this component fully functional and
+  > accessible will be added in a future version.
+  >
+  > **Missing features**
+  >
+  > - Focus management
+  > - keyboard support
+
   ## Example
 
   If the menu is always visible or can only be toggled by a keyboard shortcut,
@@ -3512,19 +3522,56 @@ defmodule Doggo do
   end
 
   @doc """
-  Renders a menubar, similar to those found in desktop applications.
+  Renders a menu bar, similar to those found in desktop applications.
 
   This component is meant for organizing actions within an application, rather
   than for navigating between different pages or sections of a website.
 
-  See also `menu/1` and `menu_button/1`.
+  See also `menu/1`, `menu_button/1`, and `menu_item/1`.
+
+  > #### In Development {: .warning}
+  >
+  > The necessary JavaScript for making this component fully functional and
+  > accessible will be added in a future version.
+  >
+  > **Missing features**
+  >
+  > - Focus management
+  > - keyboard support
 
   ## Example
 
   ```heex
-  <Doggo.menubar label="Main">
-    <:item>A</:item>
-  </Doggo.menubar>
+  <Doggo.menu_bar label="Main">
+    <:item>
+      <Doggo.menu_button controls="actions-menu" id="actions-button">
+        Actions
+      </Doggo.menu_button>
+
+      <Doggo.menu id="actions-menu" labelledby="actions-button" hidden>
+        <:item>
+          <Doggo.menu_item on_click={JS.push("view-dog-profiles")}>
+            View Dog Profiles
+          </Doggo.menu_item>
+        </:item>
+        <:item>
+          <Doggo.menu_item on_click={JS.push("add-dog-profile")}>
+            Add Dog Profile
+          </Doggo.menu_item>
+        </:item>
+        <:item>
+          <Doggo.menu_item on_click={JS.push("dog-care-tips")}>
+            Dog Care Tips
+          </Doggo.menu_item>
+        </:item>
+      </Doggo.menu>
+    </:item>
+    <:item>
+      <Doggo.menu_item on_click={JS.dispatch("myapp:help")}>
+        Help
+      </Doggo.menu_item>
+    </:item>
+  </Doggo.menu_bar>
   ```
   """
   @doc type: :component
@@ -3542,13 +3589,13 @@ defmodule Doggo do
   attr :labelledby, :string,
     default: nil,
     doc: """
-    The DOM ID of an element that labels this menubar.
+    The DOM ID of an element that labels this menu bar.
 
     Example:
 
     ```html
     <h3 id="dog-menu-label">Dog Actions</h3>
-    <.menubar labelledby="dog-menu-label"></.menubar>
+    <Doggo.menu_bar labelledby="dog-menu-label"></Doggo.menu_bar>
     ```
 
     You should ensure that either the `label` or the `labelledby` attribute is
@@ -3563,8 +3610,8 @@ defmodule Doggo do
 
   slot :item, required: true
 
-  def menubar(assigns) do
-    ensure_label!(assigns, "Doggo.menubar", "Dog Actions")
+  def menu_bar(assigns) do
+    ensure_label!(assigns, "Doggo.menu_bar", "Dog Actions")
 
     ~H"""
     <ul
@@ -3584,7 +3631,8 @@ defmodule Doggo do
   @doc """
   Renders a button that toggles an actions menu.
 
-  This component can be used on its own or as part of a `menubar/1` or `menu/1`.
+  This component can be used on its own or as part of a `menu_bar/1` or `menu/1`.
+  See also `menu_item/1`.
 
   For a button that toggles the visibility of an element that is not a menu, use
   `disclosure_button/1`. For a button that toggles other states, use
@@ -3605,21 +3653,41 @@ defmodule Doggo do
       Actions
     </Doggo.menu_button>
 
-    <ul id="actions-menu" role="menu" aria-labelledby="actions-button" hidden>
-      <li role="menuitem">View Dog Profiles</li>
-      <li role="menuitem">Add Dog Profile</li>
-      <li role="menuitem">Dog Care Tips</li>
-    </ul>
+    <Doggo.menu id="actions-menu" labelledby="actions-button" hidden>
+      <:item>
+        <Doggo.menu_item on_click={JS.push("view-dog-profiles")}>
+          View Dog Profiles
+        </Doggo.menu_item>
+      </:item>
+      <:item>
+        <Doggo.menu_item on_click={JS.push("add-dog-profile")}>
+          Add Dog Profile
+        </Doggo.menu_item>
+      </:item>
+      <:item>
+        <Doggo.menu_item on_click={JS.push("dog-care-tips")}>
+          Dog Care Tips
+        </Doggo.menu_item>
+      </:item>
+    </Doggo.menu>
   </div>
   ```
 
-  If this menu button is a child of a `menubar/1` or a `menu/1`, set the
+  If this menu button is a child of a `menu_bar/1` or a `menu/1`, set the
   `menuitem` attribute.
 
   ```heex
-  <Doggo.menu_button controls="actions-menu" id="actions-button" menuitem>
-    Actions
-  </Doggo.menu_button>
+  <Doggo.menu id="actions-menu">
+    <:item>
+      <Doggo.menu_button controls="actions-menu" id="actions-button" menuitem>
+        Dog Actions
+      </Doggo.menu_button>
+      <Doggo.menu id="dog-actions-menu" labelledby="actions-button" hidden>
+        <:item><!-- ... --></:item>
+      </Doggo.menu>
+    </:item>
+    <:item><!-- ... --></:item>
+  </Doggo.menu>
   ```
   """
   @doc type: :button
@@ -3642,7 +3710,7 @@ defmodule Doggo do
     default: false,
     doc: """
     Set this attribute to `true` if the menu button is used as a child of a
-    `menubar/1`. This ensures that the `role` is set to `menuitem`.
+    `menu_bar/1`. This ensures that the `role` is set to `menuitem`.
     """
 
   attr :rest, :global
@@ -3661,6 +3729,45 @@ defmodule Doggo do
       phx-click={toggle_disclosure(@controls)}
       {@rest}
     >
+      <%= render_slot(@inner_block) %>
+    </button>
+    """
+  end
+
+  @doc """
+  Renders a button that acts as a menu item within a `menu/1` or `menu_bar/1`.
+
+  A menu item is meant to be used to trigger an action. For a button that
+  toggles the visibility of a menu, use `menu_button/1`.
+
+  ## Example
+
+  ```heex
+  <Doggo.menu label="Actions">
+    <:item>
+      <Doggo.menu_item on_click={JS.dispatch("myapp:copy")}>
+        Copy
+      </Doggo.menu_item>
+    </:item>
+    <:item>
+      <Doggo.menu_item on_click={JS.dispatch("myapp:paste")}>
+        Paste
+      </Doggo.menu_item>
+    </:item>
+  </Doggo.menu>
+  ```
+  """
+  @doc type: :component
+  @doc since: "0.5.0"
+
+  attr :on_click, JS, required: true
+  attr :rest, :global
+
+  slot :inner_block, required: true
+
+  def menu_item(assigns) do
+    ~H"""
+    <button type="button" role="menuitem" phx-click={@on_click} {@rest}>
       <%= render_slot(@inner_block) %>
     </button>
     """
