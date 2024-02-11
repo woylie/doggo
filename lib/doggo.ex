@@ -363,7 +363,7 @@ defmodule Doggo do
   </Doggo.app_bar>
   ```
   """
-  @doc type: :component
+  @doc type: :navigation
   @doc since: "0.1.0"
 
   attr :title, :string,
@@ -4326,7 +4326,7 @@ defmodule Doggo do
   </Doggo.navbar_items>
   ```
   """
-  @doc type: :component
+  @doc type: :navigation
   @doc since: "0.1.0"
 
   attr :class, :any,
