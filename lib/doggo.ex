@@ -3425,12 +3425,99 @@ defmodule Doggo do
   end
 
   @doc """
+  Renders a menu that offers a list of actions or functions.
+
+  This component is meant for organizing actions within an application, rather
+  than for navigating between different pages or sections of a website.
+
+  See also `menu_bar/1` and `menu_button/1`.
+
+  ## Example
+
+  If the menu is always visible or can only be toggled by a keyboard shortcut,
+  set the `label` attribute.
+
+  ```heex
+  <Doggo.menu label="Actions">
+    <:item>Copy</:item>
+    <:item>Paste</:item>
+  </Doggo.menu>
+  ```
+
+  If the menu is toggled by a `menu_button/1`, ensure that the `controls`
+  attribute of the button matches the DOM ID of the menu and that the
+  `labelledby` attribute of the menu matches the DOM ID of the button.
+
+  <Doggo.menu_button controls="actions-menu" id="actions-button">
+    Actions
+  </Doggo.menu_button>
+  <Doggo.menu labelledby="actions-button" hidden></Doggo.menu>
+  """
+  @doc type: :component
+  @doc since: "0.5.0"
+
+  attr :label, :string,
+    default: nil,
+    doc: """
+    A accessibility label for the menubar. Set as `aria-label` attribute.
+
+    You should ensure that either the `label` or the `labelledby` attribute is
+    set.
+    """
+
+  attr :labelledby, :string,
+    default: nil,
+    doc: """
+    The DOM ID of an element that labels this menubar. If the menu is toggled
+    by a `menu_button/1`, this attribute should be set to the DOM ID of that
+    button.
+
+    Example:
+
+    ```html
+    <Doggo.menu_button controls="actions-menu" id="actions-button">
+      Actions
+    </Doggo.menu_button>
+    <Doggo.menu labelledby="actions-button" hidden></Doggo.menu>
+    ```
+
+    You should ensure that either the `label` or the `labelledby` attribute is
+    set.
+    """
+
+  attr :class, :any,
+    default: [],
+    doc: "Additional CSS classes. Can be a string or a list of strings."
+
+  attr :rest, :global, doc: "Any additional HTML attributes."
+
+  slot :item, required: true
+
+  def menu(assigns) do
+    ensure_label!(assigns, "Doggo.menu", "Dog Actions")
+
+    ~H"""
+    <ul
+      class={@class}
+      role="menu"
+      aria-label={@label}
+      aria-labelledby={@labelledby}
+      {@rest}
+    >
+      <li :for={item <- @item} role="none">
+        <%= render_slot(item) %>
+      </li>
+    </ul>
+    """
+  end
+
+  @doc """
   Renders a menubar, similar to those found in desktop applications.
 
   This component is meant for organizing actions within an application, rather
   than for navigating between different pages or sections of a website.
 
-  See also `menu_button/1`.
+  See also `menu/1` and `menu_button/1`.
 
   ## Example
 
@@ -3497,7 +3584,7 @@ defmodule Doggo do
   @doc """
   Renders a button that toggles an actions menu.
 
-  This component can be used on its own or as part of a `menubar/1`.
+  This component can be used on its own or as part of a `menubar/1` or `menu/1`.
 
   For a button that toggles the visibility of an element that is not a menu, use
   `disclosure_button/1`. For a button that toggles other states, use
@@ -3526,7 +3613,8 @@ defmodule Doggo do
   </div>
   ```
 
-  If this menu button is a child of a `menubar/1`, set the `menuitem` attribute.
+  If this menu button is a child of a `menubar/1` or a `menu/1`, set the
+  `menuitem` attribute.
 
   ```heex
   <Doggo.menu_button controls="actions-menu" id="actions-button" menuitem>
