@@ -3,13 +3,6 @@ defmodule Storybook.Components.ToggleButton do
 
   def function, do: &Doggo.toggle_button/1
 
-  defp toggle_mute(variation_id) do
-    JS.push(
-      "psb-toggle",
-      value: %{attr: :pressed, variation_id: variation_id}
-    )
-  end
-
   def variations do
     [
       %VariationGroup{
@@ -19,7 +12,7 @@ defmodule Storybook.Components.ToggleButton do
             %Variation{
               id: variant,
               attributes: %{
-                on_click: toggle_mute([:variants, variant]),
+                on_click: %JS{},
                 variant: variant,
                 pressed: false
               },
@@ -41,7 +34,7 @@ defmodule Storybook.Components.ToggleButton do
             %Variation{
               id: variant,
               attributes: %{
-                on_click: toggle_mute([:disabled, variant]),
+                on_click: %JS{},
                 variant: variant,
                 pressed: false,
                 disabled: true
@@ -57,7 +50,7 @@ defmodule Storybook.Components.ToggleButton do
             %Variation{
               id: fill,
               attributes: %{
-                on_click: toggle_mute([:fills, fill]),
+                on_click: %JS{},
                 fill: fill,
                 pressed: false
               },
@@ -72,7 +65,7 @@ defmodule Storybook.Components.ToggleButton do
             %Variation{
               id: size,
               attributes: %{
-                on_click: toggle_mute([:sizes, size]),
+                on_click: %JS{},
                 size: size,
                 pressed: false
               },
@@ -87,7 +80,7 @@ defmodule Storybook.Components.ToggleButton do
             %Variation{
               id: shape || :default,
               attributes: %{
-                on_click: toggle_mute([:shapes, shape || :default]),
+                on_click: %JS{},
                 shape: shape,
                 pressed: false
               },
