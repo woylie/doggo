@@ -38,15 +38,6 @@ defmodule Doggo do
   Renders a set of headings that control the visibility of their content
   sections.
 
-  > #### In Development {: .warning}
-  >
-  > The necessary JavaScript for making this component fully functional and
-  > accessible will be added in a future version.
-  >
-  > **Missing features**
-  >
-  > - Toggle accordion sections
-
   ## Example
 
   ```heex
@@ -113,6 +104,7 @@ defmodule Doggo do
             type="button"
             aria-expanded={to_string(accordion_section_expanded?(index, @expanded))}
             aria-controls={"#{@id}-section-#{index}"}
+            phx-click={toggle_accordion_section(@id, index)}
           >
             <span><%= section.title %></span>
           </button>
@@ -134,6 +126,15 @@ defmodule Doggo do
   defp accordion_section_expanded?(_, :none), do: false
   defp accordion_section_expanded?(1, :first), do: true
   defp accordion_section_expanded?(_, :first), do: false
+
+  defp toggle_accordion_section(id, index)
+       when is_binary(id) and is_integer(index) do
+    %JS{}
+    |> JS.toggle_attribute({"aria-expanded", "true", "false"},
+      to: "##{id}-trigger-#{index}"
+    )
+    |> JS.toggle_attribute({"hidden", "hidden"}, to: "##{id}-section-#{index}")
+  end
 
   @doc """
   The action bar offers users quick access to primary actions within the
