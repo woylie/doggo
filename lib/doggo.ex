@@ -63,6 +63,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.5.0"
 
   attr :id, :string, required: true
 
@@ -169,6 +170,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   attr :class, :any,
     default: [],
@@ -255,6 +257,7 @@ defmodule Doggo do
   modal semantics, the `aria-modal` attribute is added to the dialog element.
   """
   @doc type: :component
+  @doc since: "0.5.0"
 
   attr :id, :string, required: true
   attr :open, :boolean, default: false, doc: "Initializes the dialog as open."
@@ -361,6 +364,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   attr :title, :string,
     default: nil,
@@ -429,6 +433,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.3.0"
 
   attr :size, :atom, values: @sizes, default: :normal
   attr :variant, :atom, values: [nil | @variants], default: nil
@@ -475,6 +480,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :navigation
+  @doc since: "0.3.0"
 
   attr :label, :string,
     default: nil,
@@ -589,6 +595,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.3.0"
 
   slot :title, doc: "The title for the box."
 
@@ -645,6 +652,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :navigation
+  @doc since: "0.1.0"
 
   attr :label, :string,
     default: "Breadcrumb",
@@ -737,6 +745,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :button
+  @doc since: "0.1.0"
 
   attr :type, :string, values: ["button", "reset", "submit"], default: "button"
   attr :variant, :atom, values: @variants, default: :primary
@@ -790,6 +799,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :button
+  @doc since: "0.1.0"
 
   attr :variant, :atom, values: @variants, default: :primary
   attr :fill, :atom, values: @fills, default: :solid
@@ -899,6 +909,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.5.0"
 
   attr :id, :string, required: true
 
@@ -1067,6 +1078,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.4.0"
 
   slot :inner_block, required: true
 
@@ -1123,6 +1135,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   attr :value, :any,
     required: true,
@@ -1259,6 +1272,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   attr :value, :any,
     required: true,
@@ -1356,6 +1370,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   attr :value, :any,
     required: true,
@@ -1451,6 +1466,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :button
+  @doc since: "0.5.0"
 
   attr :controls, :string,
     required: true,
@@ -1552,6 +1568,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   attr :class, :any,
     default: [],
@@ -1623,6 +1640,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :navigation
+  @doc since: "0.5.0"
 
   attr :id, :string, default: nil
   attr :label, :string, required: true
@@ -1678,6 +1696,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :navigation
+  @doc since: "0.5.0"
 
   attr :id, :string, required: true
 
@@ -1721,6 +1740,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :navigation
+  @doc since: "0.5.0"
 
   attr :id, :string, required: true
 
@@ -1770,6 +1790,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :button
+  @doc since: "0.3.0"
 
   attr :label, :string, required: true
   attr :variant, :atom, values: @variants, default: :primary
@@ -1823,6 +1844,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   attr :flash, :map, required: true, doc: "The map of flash messages."
 
@@ -1928,6 +1950,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   attr :id, :string, required: true
 
@@ -2018,6 +2041,7 @@ defmodule Doggo do
 
   """
   @doc type: :component
+  @doc since: "0.3.0"
 
   attr :src, :any,
     default: nil,
@@ -2132,6 +2156,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.3.0"
 
   attr :id, :string, required: true
   attr :variant, :atom, values: @variants, default: :info
@@ -2191,6 +2216,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   attr :class, :any,
     default: [],
@@ -2268,6 +2294,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   attr :value, :any,
     required: true,
@@ -2334,6 +2361,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.2.0"
 
   attr :ratio, :any, values: [nil | @ratios], default: nil
   attr :circle, :boolean, default: false
@@ -2380,6 +2408,7 @@ defmodule Doggo do
   > make sure that it is set on the `<svg>` element that the library renders.
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   slot :inner_block, doc: "Slot for the SVG element.", required: true
 
@@ -2448,6 +2477,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   attr :name, :string, required: true, doc: "Icon name as used in the sprite."
 
@@ -2517,6 +2547,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.2.0"
 
   attr :src, :string, required: true, doc: "The URL of the image to render."
 
@@ -2704,6 +2735,7 @@ defmodule Doggo do
   manual in other contexts.
   """
   @doc type: :form
+  @doc since: "0.1.0"
 
   attr :id, :any, default: nil
   attr :name, :any
@@ -3210,6 +3242,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :form
+  @doc since: "0.1.0"
 
   attr :for, :string, default: nil, doc: "The ID of the input."
 
@@ -3278,6 +3311,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :form
+  @doc since: "0.1.0"
 
   attr :for, :string, required: true, doc: "The ID of the input."
   attr :errors, :list, required: true, doc: "A list of errors as strings."
@@ -3304,6 +3338,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :form
+  @doc since: "0.1.0"
 
   attr :for, :string, required: true, doc: "The ID of the input."
   slot :inner_block, required: true
@@ -3371,6 +3406,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :form
+  @doc since: "0.3.0"
 
   attr :class, :any,
     default: [],
@@ -3394,6 +3430,8 @@ defmodule Doggo do
   This component is meant for organizing actions within an application, rather
   than for navigating between different pages or sections of a website.
 
+  See also `menu_button/1`.
+
   ## Example
 
   ```heex
@@ -3402,6 +3440,8 @@ defmodule Doggo do
   </Doggo.menubar>
   ```
   """
+  @doc type: :component
+  @doc since: "0.5.0"
 
   attr :label, :string,
     default: nil,
@@ -3451,6 +3491,90 @@ defmodule Doggo do
         <%= render_slot(item) %>
       </li>
     </ul>
+    """
+  end
+
+  @doc """
+  Renders a button that toggles an actions menu.
+
+  This component can be used on its own or as part of a `menubar/1`.
+
+  For a button that toggles the visibility of an element that is not a menu, use
+  `disclosure_button/1`. For a button that toggles other states, use
+  `toggle_button/1`. See also `button/1` and `button_link/1`.
+
+  ## Examples
+
+  Set the `controls` attribute to the DOM ID of the element that you want to
+  toggle with the button.
+
+  The initial state is hidden. Do not forget to add the `hidden` attribute to
+  the toggled menu. Otherwise, visibility of the element will not align with
+  the `aria-expanded` attribute of the button.
+
+  ```heex
+  <div>
+    <Doggo.menu_button controls="actions-menu" id="actions-button">
+      Actions
+    </Doggo.menu_button>
+
+    <ul id="actions-menu" role="menu" aria-labelledby="actions-button" hidden>
+      <li role="menuitem">View Dog Profiles</li>
+      <li role="menuitem">Add Dog Profile</li>
+      <li role="menuitem">Dog Care Tips</li>
+    </ul>
+  </div>
+  ```
+
+  If this menu button is a child of a `menubar/1`, set the `menuitem` attribute.
+
+  ```heex
+  <Doggo.menu_button controls="actions-menu" id="actions-button" menuitem>
+    Actions
+  </Doggo.menu_button>
+  ```
+  """
+  @doc type: :button
+  @doc since: "0.5.0"
+
+  attr :id, :string,
+    required: true,
+    doc: """
+    The DOM ID of the button. Set the `aria-labelledby` attribute of the toggled
+    menu to the same value.
+    """
+
+  attr :controls, :string,
+    required: true,
+    doc: """
+    The DOM ID of the element that this button controls.
+    """
+
+  attr :menuitem, :boolean,
+    default: false,
+    doc: """
+    Set this attribute to `true` if the menu button is used as a child of a
+    `menubar/1`. This ensures that the `role` is set to `menuitem`.
+    """
+
+  attr :rest, :global
+
+  slot :inner_block, required: true
+
+  def menu_button(assigns) do
+    ~H"""
+    <button
+      id={@id}
+      type="button"
+      role={@menuitem && "menuitem"}
+      aria-haspopup="true"
+      aria-expanded="false"
+      aria-controls={@controls}
+      phx-click={toggle_disclosure(@controls)}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </button>
     """
   end
 
@@ -3556,6 +3680,7 @@ defmodule Doggo do
   modal semantics, the `aria-modal` attribute is added to the dialog element.
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   attr :id, :string, required: true
   attr :open, :boolean, default: false, doc: "Initializes the modal as open."
@@ -3648,6 +3773,8 @@ defmodule Doggo do
   <.link phx-click={show_modal("pet-modal")}>show</.link>
   ```
   """
+  @doc since: "0.1.0"
+
   def show_modal(js \\ %JS{}, id) when is_binary(id) do
     js
     |> JS.push_focus()
@@ -3665,6 +3792,8 @@ defmodule Doggo do
   <.link phx-click={hide_modal("pet-modal")}>hide</.link>
   ```
   """
+  @doc since: "0.1.0"
+
   def hide_modal(js \\ %JS{}, id) do
     js
     |> JS.remove_attribute("open", to: "##{id}")
@@ -3719,6 +3848,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :navigation
+  @doc since: "0.1.0"
 
   attr :label, :string,
     required: true,
@@ -3774,6 +3904,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   attr :class, :any,
     default: [],
@@ -3822,6 +3953,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.3.0"
 
   attr :title, :string, required: true, doc: "The title for the current page."
   attr :subtitle, :string, default: nil, doc: "An optional sub title."
@@ -3863,6 +3995,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   slot :prop, doc: "A property to be rendered." do
     attr :label, :string, required: true
@@ -3918,6 +4051,7 @@ defmodule Doggo do
   """
 
   @doc type: :component
+  @doc since: "0.5.0"
 
   attr :id, :string, required: true
 
@@ -4057,6 +4191,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.3.0"
 
   attr :type, :atom, required: true, values: @skeleton_types
 
@@ -4142,6 +4277,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.5.0"
 
   attr :label, :string,
     default: nil,
@@ -4228,6 +4364,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :navigation
+  @doc since: "0.3.0"
 
   attr :label, :string, default: "Form steps"
 
@@ -4319,6 +4456,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   attr :label, :string, required: true
   attr :on_text, :string, default: "On"
@@ -4360,6 +4498,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   attr :id, :string, required: true
 
@@ -4528,6 +4667,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :navigation
+  @doc since: "0.2.0"
 
   attr :label, :string,
     default: "Tabs",
@@ -4628,6 +4768,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.5.0"
 
   attr :id, :string, required: true
 
@@ -4709,6 +4850,8 @@ defmodule Doggo do
 
       Doggo.show_tab("my-tabs", 2)
   """
+  @doc since: "0.5.0"
+
   def show_tab(js \\ %JS{}, id, index)
       when is_binary(id) and is_integer(index) do
     other_tabs = "##{id} [role='tab']:not(##{id}-tab-#{index})"
@@ -4764,6 +4907,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :button
+  @doc since: "0.4.0"
 
   attr :pressed, :boolean, default: false
 
@@ -4858,6 +5002,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.3.0"
 
   attr :id, :string, required: true
 
@@ -4914,6 +5059,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.1.0"
 
   slot :inner_block, required: true
 
@@ -4975,6 +5121,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.3.0"
 
   attr :size, :atom, values: @sizes, default: :normal
   attr :variant, :atom, values: [nil | @variants], default: nil
@@ -5035,6 +5182,7 @@ defmodule Doggo do
   ```
   """
   @doc type: :component
+  @doc since: "0.5.0"
 
   attr :label, :string,
     default: nil,
@@ -5145,6 +5293,7 @@ defmodule Doggo do
   """
 
   @doc type: :component
+  @doc since: "0.5.0"
 
   attr :label, :string,
     default: nil,
@@ -5252,6 +5401,7 @@ defmodule Doggo do
   </Doggo.tree_item>
   """
   @doc type: :component
+  @doc since: "0.5.0"
 
   slot :items,
     doc: """
