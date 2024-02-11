@@ -10,6 +10,7 @@
 - New component: `Doggo.menu/1`.
 - New component: `Doggo.menu_bar/1`.
 - New component: `Doggo.menu_button/1`.
+- New component: `Doggo.menu_item/1`.
 - New component: `Doggo.radio_group/1`.
 - New component: `Doggo.split_pane/1`.
 - New component: `Doggo.tabs/1`.

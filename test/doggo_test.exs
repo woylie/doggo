@@ -3792,9 +3792,9 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.menubar label="Dog actions">
+        <Doggo.menu_bar label="Dog actions">
           <:item>A</:item>
-        </Doggo.menubar>
+        </Doggo.menu_bar>
         """)
 
       ul = find_one(html, "ul:root")
@@ -3811,9 +3811,9 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.menubar labelledby="dog-menu-label">
+        <Doggo.menu_bar labelledby="dog-menu-label">
           <:item>A</:item>
-        </Doggo.menubar>
+        </Doggo.menu_bar>
         """)
 
       assert attribute(html, ":root", "aria-labelledby") == "dog-menu-label"
@@ -3824,9 +3824,9 @@ defmodule DoggoTest do
         assigns = %{}
 
         parse_heex(~H"""
-        <Doggo.menubar label="Dog actions" labelledby="dog-menu-label">
+        <Doggo.menu_bar label="Dog actions" labelledby="dog-menu-label">
           <:item>A</:item>
-        </Doggo.menubar>
+        </Doggo.menu_bar>
         """)
       end
     end
@@ -3836,9 +3836,9 @@ defmodule DoggoTest do
         assigns = %{}
 
         parse_heex(~H"""
-        <Doggo.menubar>
+        <Doggo.menu_bar>
           <:item>A</:item>
-        </Doggo.menubar>
+        </Doggo.menu_bar>
         """)
       end
     end
@@ -3848,9 +3848,9 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.menubar label="Dog actions" class="is-rad">
+        <Doggo.menu_bar label="Dog actions" class="is-rad">
           <:item>A</:item>
-        </Doggo.menubar>
+        </Doggo.menu_bar>
         """)
 
       assert attribute(html, ":root", "class") == "is-rad"
@@ -3861,9 +3861,9 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.menubar label="Dog Carousel" class={["is-rad", "is-good"]}>
+        <Doggo.menu_bar label="Dog Carousel" class={["is-rad", "is-good"]}>
           <:item>A</:item>
-        </Doggo.menubar>
+        </Doggo.menu_bar>
         """)
 
       assert attribute(html, ":root", "class") == "is-rad is-good"
@@ -3874,9 +3874,9 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.menubar label="Dog actions" data-test="hello">
+        <Doggo.menu_bar label="Dog actions" data-test="hello">
           <:item>A</:item>
-        </Doggo.menubar>
+        </Doggo.menu_bar>
         """)
 
       assert attribute(html, ":root", "data-test") == "hello"
@@ -3916,6 +3916,25 @@ defmodule DoggoTest do
 
       button = find_one(html, "button:root")
       assert attribute(button, "role") == "menuitem"
+    end
+  end
+
+  describe "menu_item/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.menu_item on_click={JS.push("hello")}>
+          Action
+        </Doggo.menu_item>
+        """)
+
+      button = find_one(html, "button:root")
+      assert attribute(button, "type") == "button"
+      assert attribute(button, "phx-click")
+      assert attribute(button, "role") == "menuitem"
+      assert text(button) == "Action"
     end
   end
 
