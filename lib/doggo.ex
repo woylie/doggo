@@ -3432,6 +3432,16 @@ defmodule Doggo do
 
   See also `menu_bar/1` and `menu_button/1`.
 
+  > #### In Development {: .warning}
+  >
+  > The necessary JavaScript for making this component fully functional and
+  > accessible will be added in a future version.
+  >
+  > **Missing features**
+  >
+  > - Focus management
+  > - keyboard support
+
   ## Example
 
   If the menu is always visible or can only be toggled by a keyboard shortcut,
@@ -3518,6 +3528,16 @@ defmodule Doggo do
   than for navigating between different pages or sections of a website.
 
   See also `menu/1`, `menu_button/1`, and `menu_item/1`.
+
+  > #### In Development {: .warning}
+  >
+  > The necessary JavaScript for making this component fully functional and
+  > accessible will be added in a future version.
+  >
+  > **Missing features**
+  >
+  > - Focus management
+  > - keyboard support
 
   ## Example
 
