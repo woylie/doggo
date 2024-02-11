@@ -7,7 +7,7 @@ defmodule Doggo.InvalidLabelError do
     example_label = Keyword.fetch!(opts, :example_label)
 
     msg = """
-    Invalid label attributes for carousel
+    Invalid label attributes for #{component}
 
     #{component} requires exactly one of 'label' or 'labelledby' set for
     accessibility. These attributes are essential for screen readers and other
