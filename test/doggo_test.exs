@@ -3709,6 +3709,21 @@ defmodule DoggoTest do
       assert text(li) == "A"
     end
 
+    test "with separator" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.menu label="Dog actions">
+          <:item role="separator">A</:item>
+        </Doggo.menu>
+        """)
+
+      assert li = find_one(html, "ul > li")
+      assert attribute(li, "role") == "separator"
+      assert text(li) == ""
+    end
+
     test "with labelledby" do
       assigns = %{}
 
@@ -3786,7 +3801,7 @@ defmodule DoggoTest do
     end
   end
 
-  describe "menubar/1" do
+  describe "menu_bar/1" do
     test "default" do
       assigns = %{}
 
@@ -3804,6 +3819,21 @@ defmodule DoggoTest do
       assert li = find_one(html, "ul > li")
       assert attribute(li, "role") == "none"
       assert text(li) == "A"
+    end
+
+    test "with separator" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <Doggo.menu_bar label="Dog actions">
+          <:item role="separator">A</:item>
+        </Doggo.menu_bar>
+        """)
+
+      assert li = find_one(html, "ul > li")
+      assert attribute(li, "role") == "separator"
+      assert text(li) == ""
     end
 
     test "with labelledby" do
