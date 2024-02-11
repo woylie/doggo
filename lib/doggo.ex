@@ -1433,16 +1433,14 @@ defmodule Doggo do
   For a button that toggles other states, use `toggle_button/1` instead. See
   also `button/1` and `button_link/1`.
 
-  > #### In Development {: .warning}
-  >
-  > The necessary JavaScript for making this component fully functional and
-  > accessible will be added in a future version.
-  >
-  > **Missing features**
-  >
-  > - Toggle visibility of controlled element
-
   ## Examples
+
+  Set the `controls` attribute to the DOM ID of the element that you want to
+  toggle with the button.
+
+  The initial state is hidden. Do not forget to add the `hidden` attribute to
+  the toggled element. Otherwise, visibility of the element will not align with
+  the `aria-expanded` attribute of the button.
 
   ```heex
   <Doggo.disclosure_button controls="data-table">
@@ -1466,10 +1464,22 @@ defmodule Doggo do
 
   def disclosure_button(assigns) do
     ~H"""
-    <button type="button" aria-expanded="false" aria-controls={@controls} {@rest}>
+    <button
+      type="button"
+      aria-expanded="false"
+      aria-controls={@controls}
+      phx-click={toggle_disclosure(@controls)}
+      {@rest}
+    >
       <%= render_slot(@inner_block) %>
     </button>
     """
+  end
+
+  defp toggle_disclosure(target_id) when is_binary(target_id) do
+    %JS{}
+    |> JS.toggle_attribute({"aria-expanded", "true", "false"})
+    |> JS.toggle_attribute({"hidden", "hidden"}, to: "##{target_id}")
   end
 
   @doc """
