@@ -90,6 +90,7 @@ defmodule Doggo.MixProject do
         Components: &(&1[:type] == :component),
         Buttons: &(&1[:type] == :button),
         Form: &(&1[:type] == :form),
+        Menu: &(&1[:type] == :menu),
         Navigation: &(&1[:type] == :navigation)
       ]
     ]

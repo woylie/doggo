@@ -7,11 +7,12 @@ defmodule Storybook.Components.MenuButton do
     """
     <div>
       <.psb-variation/>
-      <ul id="actions-menu" role="menu" aria-labelledby="actions-button" hidden>
-        <li role="menuitem">View Dog Profiles</li>
-        <li role="menuitem">Add Dog Profile</li>
-        <li role="menuitem">Dog Care Tips</li>
-      </ul>
+      <Doggo.menu id="actions-menu" labelledby="actions-button" hidden>
+        <:item>Copy</:item>
+        <:item>Paste</:item>
+        <:item role="separator"></:item>
+        <:item>Sort lines</:item>
+      </Doggo.menu>
     </div>
     """
   end
