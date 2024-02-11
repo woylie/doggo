@@ -3451,6 +3451,8 @@ defmodule Doggo do
   <Doggo.menu label="Actions">
     <:item>Copy</:item>
     <:item>Paste</:item>
+    <:item role="separator"></:item>
+    <:item>Sort lines</:item>
   </Doggo.menu>
   ```
 
@@ -3501,7 +3503,16 @@ defmodule Doggo do
 
   attr :rest, :global, doc: "Any additional HTML attributes."
 
-  slot :item, required: true
+  slot :item, required: true do
+    attr :role, :string,
+      values: ["none", "separator"],
+      doc: """
+      Sets the role of the list item. If the item has a menu item, group, menu
+      item radio group or menu item checkbox as a child, use `"none"`. If you
+      want to render a visual separator, use `"separator"`. The default is
+      `"none"`.
+      """
+  end
 
   def menu(assigns) do
     ensure_label!(assigns, "Doggo.menu", "Dog Actions")
@@ -3514,8 +3525,10 @@ defmodule Doggo do
       aria-labelledby={@labelledby}
       {@rest}
     >
-      <li :for={item <- @item} role="none">
-        <%= render_slot(item) %>
+      <li :for={item <- @item} role={Map.get(item, :role, "none")}>
+        <%= if item[:role] != "separator" do %>
+          <%= render_slot(item) %>
+        <% end %>
       </li>
     </ul>
     """
@@ -3566,6 +3579,7 @@ defmodule Doggo do
         </:item>
       </Doggo.menu>
     </:item>
+    <:item role="separator"></:item>
     <:item>
       <Doggo.menu_item on_click={JS.dispatch("myapp:help")}>
         Help
@@ -3608,7 +3622,16 @@ defmodule Doggo do
 
   attr :rest, :global, doc: "Any additional HTML attributes."
 
-  slot :item, required: true
+  slot :item, required: true do
+    attr :role, :string,
+      values: ["none", "separator"],
+      doc: """
+      Sets the role of the list item. If the item has a menu item, group, menu
+      item radio group or menu item checkbox as a child, use `"none"`. If you
+      want to render a visual separator, use `"separator"`. The default is
+      `"none"`.
+      """
+  end
 
   def menu_bar(assigns) do
     ensure_label!(assigns, "Doggo.menu_bar", "Dog Actions")
@@ -3621,8 +3644,10 @@ defmodule Doggo do
       aria-labelledby={@labelledby}
       {@rest}
     >
-      <li :for={item <- @item} role="none">
-        <%= render_slot(item) %>
+      <li :for={item <- @item} role={Map.get(item, :role, "none")}>
+        <%= if item[:role] != "separator" do %>
+          <%= render_slot(item) %>
+        <% end %>
       </li>
     </ul>
     """
