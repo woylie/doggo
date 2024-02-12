@@ -1166,6 +1166,8 @@ defmodule Doggo do
   />
   ```
   """
+  @doc type: :component
+  @doc since: "0.5.0"
 
   attr :id, :string, required: true, doc: "Sets the DOM ID for the input."
   attr :name, :string, required: true, doc: "Sets the name for the text input."
