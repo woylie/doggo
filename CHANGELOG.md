@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.5.0] - 2024-02-12
+
 ### Added
 
 - New component: `Doggo.alert_dialog/1`.
