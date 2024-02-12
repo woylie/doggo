@@ -1255,7 +1255,9 @@ defmodule Doggo do
     assigns = assign(assigns, label: label, value: value, option: nil)
 
     ~H"""
-    <li role="option" data-value={@value}><%= @label %></li>
+    <li role="option" data-value={@value}>
+      <span class="combobox-option-label"><%= @label %></span>
+    </li>
     """
   end
 
@@ -1278,7 +1280,9 @@ defmodule Doggo do
 
   defp combobox_option(assigns) do
     ~H"""
-    <li role="option" data-value={@option}><%= @option %></li>
+    <li role="option" data-value={@option}>
+      <span class="combobox-option-label"><%= @option %></span>
+    </li>
     """
   end
 

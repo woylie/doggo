@@ -1773,12 +1773,16 @@ defmodule DoggoTest do
       assert li = find_one(ul, "li:first-child")
       assert attribute(li, "role") == "option"
       assert attribute(li, "data-value") == "Blue"
-      assert text(li) == "Blue"
+      span = find_one(li, "span:first-child")
+      assert attribute(span, "class") == "combobox-option-label"
+      assert text(span) == "Blue"
 
       assert li = find_one(ul, "li:last-child")
       assert attribute(li, "role") == "option"
       assert attribute(li, "data-value") == "Green"
-      assert text(li) == "Green"
+      span = find_one(li, "span:last-child")
+      assert attribute(span, "class") == "combobox-option-label"
+      assert text(span) == "Green"
 
       input = find_one(div, "input[type='hidden']")
       assert attribute(input, "id") == "color-selector-value"
@@ -1830,11 +1834,15 @@ defmodule DoggoTest do
 
       li = find_one(ul, "li:first-child")
       assert attribute(li, "data-value") == "blue"
-      assert text(li) == "Blue"
+      span = find_one(li, "span:first-child")
+      assert attribute(span, "class") == "combobox-option-label"
+      assert text(span) == "Blue"
 
       li = find_one(ul, "li:last-child")
       assert attribute(li, "data-value") == "green"
-      assert text(li) == "Green"
+      span = find_one(li, "span:last-child")
+      assert attribute(span, "class") == "combobox-option-label"
+      assert text(span) == "Green"
     end
 
     test "with option labels and descriptions" do
