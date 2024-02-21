@@ -3020,6 +3020,24 @@ defmodule Doggo do
     also be set globally, see above.
     """
 
+  attr :required_text, :atom,
+    doc: """
+    The presentational text or symbol to be added to labels of required inputs.
+
+    This option can also be set globally:
+
+        config :doggo, required_text: "required"
+    """
+
+  attr :required_title, :atom,
+    doc: """
+    The `title` attribute for the `required_text`.
+
+    This option can also be set globally:
+
+        config :doggo, required_title: "required"
+    """
+
   slot :description, doc: "A field description to render underneath the input."
 
   slot :addon_left,
@@ -3043,6 +3061,14 @@ defmodule Doggo do
     |> assign_new(
       :errors,
       fn -> Enum.map(field.errors, &translate_error(&1, gettext_module)) end
+    )
+    |> assign_new(
+      :required_text,
+      fn -> Application.get_env(:doggo, :required_text, "*") end
+    )
+    |> assign_new(
+      :required_title,
+      fn -> Application.get_env(:doggo, :required_title, "required") end
     )
     |> assign_new(:validations, fn ->
       Form.input_validations(field.form, field.field)
@@ -3092,7 +3118,11 @@ defmodule Doggo do
       <fieldset class="checkbox-group">
         <legend>
           <%= @label %>
-          <.required_mark :if={@validations[:required]} />
+          <.required_mark
+            :if={@validations[:required]}
+            text={@required_text}
+            title={@required_title}
+          />
         </legend>
         <div>
           <input type="hidden" name={@name <> "[]"} value="" />
@@ -3121,7 +3151,11 @@ defmodule Doggo do
       <fieldset class="radio-group">
         <legend>
           <%= @label %>
-          <.required_mark :if={@validations[:required]} />
+          <.required_mark
+            :if={@validations[:required]}
+            text={@required_text}
+            title={@required_title}
+          />
         </legend>
         <div>
           <.radio
@@ -3194,6 +3228,8 @@ defmodule Doggo do
       <.label
         for={@id}
         required={@validations[:required] || false}
+        required_text={@required_text}
+        required_title={@required_title}
         visually_hidden={@hide_label}
       >
         <%= @label %>
@@ -3227,6 +3263,8 @@ defmodule Doggo do
       <.label
         for={@id}
         required={@validations[:required] || false}
+        required_text={@required_text}
+        required_title={@required_title}
         visually_hidden={@hide_label}
       >
         <%= @label %>
@@ -3266,6 +3304,8 @@ defmodule Doggo do
       <.label
         for={@id}
         required={@validations[:required] || false}
+        required_text={@required_text}
+        required_title={@required_title}
         visually_hidden={@hide_label}
       >
         <%= @label %>
@@ -3440,6 +3480,12 @@ defmodule Doggo do
     default: false,
     doc: "If set to `true`, a 'required' mark is rendered."
 
+  attr :required_text, :any,
+    default: "*",
+    doc: """
+    Sets the presentational text or symbol to mark an input as required.
+    """
+
   attr :required_title, :any,
     default: "required",
     doc: """
@@ -3468,11 +3514,12 @@ defmodule Doggo do
       {@rest}
     >
       <%= render_slot(@inner_block) %>
-      <.required_mark :if={@required} title={@required_title} />
+      <.required_mark :if={@required} title={@required_title} text={@required_text} />
     </label>
     """
   end
 
+  attr :text, :string, default: "*"
   attr :title, :string, default: "required"
 
   # inputs are announced as required by screen readers if the `required`
@@ -3482,12 +3529,12 @@ defmodule Doggo do
   # purely presentational, this is acceptable.
   # It is good practice to add a sentence explaining that fields marked with an
   # asterisk (*) are required to the form.
-  # Alternatively, the word `required` might be used instead of an asterisk. In
-  # that case, the text should still be aria-hidden. But also, this wouldn't be
-  # an abbr anymore.
+  # Alternatively, the word `required` might be used instead of an asterisk.
   defp required_mark(assigns) do
     ~H"""
-    <abbr class="label-required" aria-hidden="true" title={@title}>*</abbr>
+    <span :if={@text} class="label-required" aria-hidden="true" title={@title}>
+      <%= @text %>
+    </span>
     """
   end
 
