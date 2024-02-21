@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Allow to set required text and required title attributes for input and label.
+
 ## [0.5.0] - 2024-02-12
 
 ### Added
