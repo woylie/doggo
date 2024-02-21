@@ -3813,7 +3813,7 @@ defmodule DoggoTest do
         <Doggo.label required>text</Doggo.label>
         """)
 
-      mark = find_one(html, "label > abbr.label-required")
+      mark = find_one(html, "label > span.label-required")
       assert attribute(mark, "title") == "required"
 
       # inputs with `required` attribute are already announced as required
@@ -3828,7 +3828,7 @@ defmodule DoggoTest do
         <Doggo.label required_title="necessary" required>text</Doggo.label>
         """)
 
-      assert attribute(html, "label > abbr.label-required", "title") ==
+      assert attribute(html, "label > span.label-required", "title") ==
                "necessary"
     end
 
