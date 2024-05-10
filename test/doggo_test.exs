@@ -3344,8 +3344,6 @@ defmodule DoggoTest do
         </.form>
         """)
 
-      assert attribute(html, ".field", "phx-feedback-for") == "age"
-
       input = find_one(html, "input")
       assert attribute(input, "id") == "age"
       assert attribute(input, "name") == "age"
@@ -3734,8 +3732,32 @@ defmodule DoggoTest do
       assert attribute(html, "input", "value") == ""
     end
 
-    test "inserts gettext variables in errors without gettext module" do
+    test "hides errors if field is unused" do
       assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <Doggo.input field={%{@form[:what] | errors: [{"weird", []}]}} />
+        </.form>
+        """)
+
+      assert Floki.find(html, ".field-errors") == []
+
+      assigns = %{form: to_form(%{"what" => "what", "_unused_what" => ""})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <Doggo.input field={%{@form[:what] | errors: [{"weird", []}]}} />
+        </.form>
+        """)
+
+      assert Floki.find(html, ".field-errors") == []
+    end
+
+    test "inserts gettext variables in errors without gettext module" do
+      assigns = %{form: to_form(%{"what" => "what"})}
 
       html =
         parse_heex(~H"""
@@ -3750,7 +3772,7 @@ defmodule DoggoTest do
     end
 
     test "translates errors with gettext" do
-      assigns = %{form: to_form(%{})}
+      assigns = %{form: to_form(%{"what" => "what"})}
 
       html =
         parse_heex(~H"""
@@ -3766,7 +3788,7 @@ defmodule DoggoTest do
     end
 
     test "translates errors with numbers with gettext" do
-      assigns = %{form: to_form(%{})}
+      assigns = %{form: to_form(%{"what" => "what"})}
 
       html =
         parse_heex(~H"""
