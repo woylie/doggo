@@ -3053,6 +3053,8 @@ defmodule Doggo do
     """
 
   def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
+    errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
+
     gettext_module =
       Map.get(assigns, :gettext, Application.get_env(:doggo, :gettext))
 
@@ -3060,7 +3062,7 @@ defmodule Doggo do
     |> assign(field: nil, id: assigns.id || field.id)
     |> assign_new(
       :errors,
-      fn -> Enum.map(field.errors, &translate_error(&1, gettext_module)) end
+      fn -> Enum.map(errors, &translate_error(&1, gettext_module)) end
     )
     |> assign_new(
       :required_text,
@@ -3087,7 +3089,7 @@ defmodule Doggo do
       end)
 
     ~H"""
-    <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
+    <div class={["field", field_error_class(@errors)]}>
       <.label required={@validations[:required] || false} class="checkbox">
         <input type="hidden" name={@name} value="false" />
         <input
@@ -3114,7 +3116,7 @@ defmodule Doggo do
 
   def input(%{type: "checkbox-group"} = assigns) do
     ~H"""
-    <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
+    <div class={["field", field_error_class(@errors)]}>
       <fieldset class="checkbox-group">
         <legend>
           <%= @label %>
@@ -3147,7 +3149,7 @@ defmodule Doggo do
 
   def input(%{type: "radio-group"} = assigns) do
     ~H"""
-    <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
+    <div class={["field", field_error_class(@errors)]}>
       <fieldset class="radio-group">
         <legend>
           <%= @label %>
@@ -3184,7 +3186,7 @@ defmodule Doggo do
       end)
 
     ~H"""
-    <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
+    <div class={["field", field_error_class(@errors)]}>
       <.label required={@validations[:required] || false} class="switch">
         <span class="switch-label"><%= @label %></span>
         <input type="hidden" name={@name} value="false" />
@@ -3224,7 +3226,7 @@ defmodule Doggo do
 
   def input(%{type: "select"} = assigns) do
     ~H"""
-    <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
+    <div class={["field", field_error_class(@errors)]}>
       <.label
         for={@id}
         required={@validations[:required] || false}
@@ -3259,7 +3261,7 @@ defmodule Doggo do
 
   def input(%{type: "textarea"} = assigns) do
     ~H"""
-    <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
+    <div class={["field", field_error_class(@errors)]}>
       <.label
         for={@id}
         required={@validations[:required] || false}
@@ -3300,7 +3302,7 @@ defmodule Doggo do
 
   def input(assigns) do
     ~H"""
-    <div class={["field", field_error_class(@errors)]} phx-feedback-for={@name}>
+    <div class={["field", field_error_class(@errors)]}>
       <.label
         for={@id}
         required={@validations[:required] || false}

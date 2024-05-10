@@ -5,6 +5,7 @@
 ### Changed
 
 - Allow to set required text and required title attributes for input and label.
+- Require `live_view ~> 1.0.0-rc.0`.
 
 ## [0.5.0] - 2024-02-12
 
