@@ -4650,7 +4650,7 @@ defmodule DoggoTest do
         <Doggo.page_header title="Pets" subtitle="All of them" />
         """)
 
-      assert text(html, ":root > .page-header-title > h2") == "All of them"
+      assert text(html, ":root > .page-header-title > p") == "All of them"
     end
 
     test "with action" do

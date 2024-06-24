@@ -6,6 +6,7 @@
 
 - Allow to set required text and required title attributes for input and label.
 - Require `live_view ~> 1.0.0-rc.0`.
+- Don't use `h2` for `Doggo.page_header/1` sub title.
 
 ## [0.5.0] - 2024-02-12
 
