@@ -4633,7 +4633,7 @@ defmodule Doggo do
     <header class={["page-header" | List.wrap(@class)]} {@rest}>
       <div class="page-header-title">
         <h1><%= @title %></h1>
-        <h2 :if={@subtitle}><%= @subtitle %></h2>
+        <p :if={@subtitle}><%= @subtitle %></p>
       </div>
       <div :if={@action != []} class="page-header-actions">
         <%= for action <- @action do %>
