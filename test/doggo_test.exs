@@ -7,19 +7,6 @@ defmodule DoggoTest do
   alias Phoenix.LiveView.JS
   alias Phoenix.LiveView.LiveStream
 
-  defmodule TestComponents do
-    @moduledoc """
-    Generates components for tests.
-    """
-
-    use Phoenix.Component
-    import Doggo.Components
-
-    action_bar()
-    badge()
-    tag()
-  end
-
   describe "accordion/1" do
     test "with expanded all" do
       assigns = %{}
@@ -151,47 +138,6 @@ defmodule DoggoTest do
         """)
 
       assert attribute(html, ":root", "data-test") == "hello"
-    end
-  end
-
-  describe "action_bar/1" do
-    test "default" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.action_bar>
-          <:item label="Edit" on_click={JS.push("edit")}>
-            edit-icon
-          </:item>
-        </TestComponents.action_bar>
-        """)
-
-      assert attribute(html, "div:root", "class") == "action-bar"
-      assert attribute(html, ":root", "role") == "toolbar"
-
-      button = find_one(html, ":root > button")
-      assert attribute(button, "title") == "Edit"
-
-      assert attribute(button, "phx-click") ==
-               "[[\"push\",{\"event\":\"edit\"}]]"
-
-      assert text(button) == "edit-icon"
-    end
-
-    test "with global attribute" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.action_bar data-what="ever">
-          <:item label="Edit" on_click={JS.push("edit")}>
-            edit-icon
-          </:item>
-        </TestComponents.action_bar>
-        """)
-
-      assert attribute(html, "div", "data-what") == "ever"
     end
   end
 
@@ -681,56 +627,6 @@ defmodule DoggoTest do
         """)
 
       assert attribute(html, ":root", "data-test") == "hello"
-    end
-  end
-
-  describe "badge/1" do
-    test "default" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.badge>value</TestComponents.badge>
-        """)
-
-      span = find_one(html, "span")
-      assert attribute(span, "class") == "badge is-normal"
-      assert text(span) == "value"
-    end
-
-    test "with size" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.badge size="large">value</TestComponents.badge>
-        """)
-
-      span = find_one(html, "span")
-      assert attribute(span, "class") == "badge is-large"
-    end
-
-    test "with variant" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.badge variant="secondary">value</TestComponents.badge>
-        """)
-
-      span = find_one(html, "span")
-      assert attribute(span, "class") == "badge is-normal is-secondary"
-    end
-
-    test "with global attribute" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.badge data-what="ever">value</TestComponents.badge>
-        """)
-
-      assert attribute(html, "span", "data-what") == "ever"
     end
   end
 
@@ -5744,54 +5640,6 @@ defmodule DoggoTest do
       assert attribute(html, "tbody tr:last-child", "id") == "pets-2"
       assert text(html, "tbody tr:first-child td") == "pets-1 George"
       assert text(html, "tbody tr:last-child td") == "pets-2 Mary"
-    end
-  end
-
-  describe "tag/1" do
-    test "default" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.tag>value</TestComponents.tag>
-        """)
-
-      span = find_one(html, "span")
-      assert attribute(span, "class") == "tag is-normal"
-      assert text(span) == "value"
-    end
-
-    test "with size" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.tag size="medium">value</TestComponents.tag>
-        """)
-
-      assert attribute(html, "span", "class") == "tag is-medium"
-    end
-
-    test "with variant" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.tag variant="primary">value</TestComponents.tag>
-        """)
-
-      assert attribute(html, "span", "class") == "tag is-normal is-primary"
-    end
-
-    test "with shape" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.tag shape="pill">value</TestComponents.tag>
-        """)
-
-      assert attribute(html, "span", "class") == "tag is-normal is-pill"
     end
   end
 
