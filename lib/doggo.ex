@@ -5666,63 +5666,6 @@ defmodule Doggo do
   end
 
   @doc """
-  Renders a tag, typically used for displaying labels, categories, or keywords.
-
-  ## Examples
-
-  Plain tag:
-
-  ```heex
-  <Doggo.tag>Well-Trained</Doggo.tag>
-  ```
-
-  With icon:
-
-  ```heex
-  <Doggo.tag>
-    Puppy
-    <Doggo.icon><Heroicons.edit /></Doggo.icon>
-  </Doggo.tag>
-  ```
-
-  With delete button:
-
-  ```heex
-  <Doggo.tag>
-    High Energy
-    <button
-      phx-click="remove-tag"
-      phx-value-tag="high-energy"
-      aria-label="Remove tag"
-    >
-      <Doggo.icon><Heroicons.x /></Doggo.icon>
-    </button>
-  </Doggo.tag>
-  ```
-  """
-  @doc type: :component
-  @doc since: "0.3.0"
-
-  attr :size, :atom, values: @sizes, default: :normal
-  attr :variant, :atom, values: [nil | @variants], default: nil
-  attr :shape, :atom, values: [nil, :pill], default: nil
-
-  slot :inner_block, required: true
-
-  def tag(assigns) do
-    ~H"""
-    <span class={[
-      "tag",
-      variant_class(@variant),
-      size_class(@size),
-      shape_class(@shape)
-    ]}>
-      <%= render_slot(@inner_block) %>
-    </span>
-    """
-  end
-
-  @doc """
   Renders a container for a set of controls.
 
   > #### In Development {: .warning}

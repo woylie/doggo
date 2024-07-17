@@ -240,6 +240,123 @@ defmodule Doggo.Components do
     end
   end
 
+  @tag_doc """
+  Renders a tag, typically used for displaying labels, categories, or keywords.
+  """
+
+  @tag_usage """
+  ## Usage
+
+  Plain tag:
+
+  ```heex
+  <Doggo.tag>Well-Trained</Doggo.tag>
+  ```
+
+  With icon:
+
+  ```heex
+  <Doggo.tag>
+    Puppy
+    <Doggo.icon><Heroicons.edit /></Doggo.icon>
+  </Doggo.tag>
+  ```
+
+  With delete button:
+
+  ```heex
+  <Doggo.tag>
+    High Energy
+    <button
+      phx-click="remove-tag"
+      phx-value-tag="high-energy"
+      aria-label="Remove tag"
+    >
+      <Doggo.icon><Heroicons.x /></Doggo.icon>
+    </button>
+  </Doggo.tag>
+  ```
+  """
+
+  @doc """
+  #{@tag_doc}
+
+  ## Generate Component
+
+  With default options:
+
+      tag()
+
+  Overriding the defaults:
+
+      tag(
+        base_class: "tag",
+        modifiers: [
+          size: [values: #{inspect(@sizes)}, default: "normal"]
+        ]
+      )
+
+  #{@tag_usage}
+  """
+
+  @doc type: :component
+  @doc since: "0.6.0"
+
+  defmacro tag(opts \\ []) do
+    opts =
+      Keyword.validate!(opts,
+        name: :tag,
+        base_class: "tag",
+        modifiers: [
+          size: [values: @sizes, default: "normal"],
+          variant: [values: [nil | @variants], default: nil],
+          shape: [values: [nil, "pill"], default: nil]
+        ],
+        class_name_fun: &Doggo.modifier_class_name/1
+      )
+
+    name = Keyword.fetch!(opts, :name)
+    base_class = Keyword.fetch!(opts, :base_class)
+    modifiers = Keyword.fetch!(opts, :modifiers)
+    modifier_names = Keyword.keys(modifiers)
+    class_name_fun = Keyword.fetch!(opts, :class_name_fun)
+
+    quote do
+      @doc """
+      #{unquote(@tag_doc)}
+
+      #{unquote(@tag_usage)}
+      """
+
+      for {name, modifier_opts} <- unquote(modifiers) do
+        attr name, :string, modifier_opts
+      end
+
+      attr :rest, :global, doc: "Any additional HTML attributes."
+
+      slot :inner_block, required: true
+
+      def unquote(name)(var!(assigns)) do
+        var!(assigns) =
+          assign(var!(assigns),
+            base_class: unquote(base_class),
+            modifier_classes:
+              Doggo.Components.modifier_classes(
+                unquote(modifier_names),
+                unquote(class_name_fun),
+                var!(assigns)
+              )
+          )
+
+        ~H"""
+        <span class={[@base_class | @modifier_classes]} {@rest}>
+          <%= render_slot(@inner_block) %>
+        </span>
+        """
+      end
+    end
+  end
+
   @doc false
   def modifier_classes(modifier_names, class_name_fun, assigns) do
     for name <- modifier_names do

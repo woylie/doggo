@@ -17,6 +17,7 @@ defmodule DoggoTest do
 
     action_bar()
     badge()
+    tag()
   end
 
   describe "accordion/1" do
@@ -5752,7 +5753,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.tag>value</Doggo.tag>
+        <TestComponents.tag>value</TestComponents.tag>
         """)
 
       span = find_one(html, "span")
@@ -5765,7 +5766,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.tag size={:medium}>value</Doggo.tag>
+        <TestComponents.tag size="medium">value</TestComponents.tag>
         """)
 
       assert attribute(html, "span", "class") == "tag is-medium"
@@ -5776,10 +5777,10 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.tag variant={:primary}>value</Doggo.tag>
+        <TestComponents.tag variant="primary">value</TestComponents.tag>
         """)
 
-      assert attribute(html, "span", "class") == "tag is-primary is-normal"
+      assert attribute(html, "span", "class") == "tag is-normal is-primary"
     end
 
     test "with shape" do
@@ -5787,7 +5788,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.tag shape={:pill}>value</Doggo.tag>
+        <TestComponents.tag shape="pill">value</TestComponents.tag>
         """)
 
       assert attribute(html, "span", "class") == "tag is-normal is-pill"
