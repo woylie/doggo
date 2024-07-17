@@ -32,111 +32,55 @@ defmodule Doggo.Components do
 
   use Phoenix.Component
 
-  @sizes ["small", "normal", "medium", "large"]
-  @variants ["primary", "secondary", "info", "success", "warning", "danger"]
+  import Doggo.Macros
 
-  @action_bar_defaults [
-    name: :action_bar,
-    base_class: "action-bar",
+  component(
+    :action_bar,
     modifiers: [],
-    class_name_fun: &Doggo.modifier_class_name/1
-  ]
+    doc: """
+    The action bar offers users quick access to primary actions within the
+    application.
 
-  @action_bar_doc """
-  The action bar offers users quick access to primary actions within the
-  application.
+    It is typically positioned to float above other content.
 
-  It is typically positioned to float above other content.
+    > #### In Development {: .warning}
+    >
+    > The necessary JavaScript for making this component fully functional and
+    > accessible will be added in a future version.
+    >
+    > **Missing features**
+    >
+    > - Roving tabindex
+    > - Move focus with arrow keys
+    """,
+    usage: """
+    ```heex
+    <action_bar>
+      <:item label="Edit" on_click={JS.push("edit")}>
+        <icon size={:small}><Lucideicons.pencil aria-hidden /></icon>
+      </:item>
+      <:item label="Move" on_click={JS.push("move")}>
+        <icon size={:small}><Lucideicons.move aria-hidden /></icon>
+      </:item>
+      <:item label="Archive" on_click={JS.push("archive")}>
+        <icon size={:small}><Lucideicons.archive aria-hidden /></icon>
+      </:item>
+      </action_bar>
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :rest, :global, doc: "Any additional HTML attributes."
 
-  > #### In Development {: .warning}
-  >
-  > The necessary JavaScript for making this component fully functional and
-  > accessible will be added in a future version.
-  >
-  > **Missing features**
-  >
-  > - Roving tabindex
-  > - Move focus with arrow keys
-  """
-
-  @action_bar_usage """
-  ## Usage
-
-  ```heex
-  <action_bar>
-    <:item label="Edit" on_click={JS.push("edit")}>
-      <icon size={:small}><Lucideicons.pencil aria-hidden /></icon>
-    </:item>
-    <:item label="Move" on_click={JS.push("move")}>
-      <icon size={:small}><Lucideicons.move aria-hidden /></icon>
-    </:item>
-    <:item label="Archive" on_click={JS.push("archive")}>
-      <icon size={:small}><Lucideicons.archive aria-hidden /></icon>
-    </:item>
-  </action_bar>
-  ```
-  """
-
-  @doc """
-  #{@action_bar_doc}
-
-  ## Generate Component
-
-  Generate component with default options:
-
-      action_bar()
-
-  ## Default Options
-
-  ```elixir
-  #{inspect(@action_bar_defaults, pretty: true)}
-  ```
-
-  #{@action_bar_usage}
-  """
-
-  @doc type: :component
-  @doc since: "0.6.0"
-
-  defmacro action_bar(opts \\ []) do
-    opts = Keyword.validate!(opts, @action_bar_defaults)
-
-    name = Keyword.fetch!(opts, :name)
-    base_class = Keyword.fetch!(opts, :base_class)
-    modifiers = Keyword.fetch!(opts, :modifiers)
-    modifier_names = Keyword.keys(modifiers)
-    class_name_fun = Keyword.fetch!(opts, :class_name_fun)
-
-    quote do
-      @doc """
-      #{unquote(@action_bar_doc)}
-
-      #{unquote(@action_bar_usage)}
-      """
-
-      for {name, modifier_opts} <- unquote(modifiers) do
-        attr name, :string, modifier_opts
-      end
-
-      attr :rest, :global, doc: "Any additional HTML attributes."
-
-      slot :item, required: true do
-        attr :label, :string, required: true
-        attr :on_click, JS, required: true
-      end
-
-      def unquote(name)(var!(assigns)) do
-        var!(assigns) =
-          assign(var!(assigns),
-            base_class: unquote(base_class),
-            modifier_classes:
-              Doggo.Components.modifier_classes(
-                unquote(modifier_names),
-                unquote(class_name_fun),
-                var!(assigns)
-              )
-          )
-
+        slot :item, required: true do
+          attr :label, :string, required: true
+          attr :on_click, JS, required: true
+        end
+      end,
+    heex:
+      quote do
         ~H"""
         <div role="toolbar" class={[@base_class | @modifier_classes]} {@rest}>
           <button :for={item <- @item} phx-click={item.on_click} title={item.label}>
@@ -145,300 +89,150 @@ defmodule Doggo.Components do
         </div>
         """
       end
-    end
-  end
+  )
 
-  @badge_defaults [
-    name: :badge,
-    base_class: "badge",
+  component(
+    :badge,
     modifiers: [
-      size: [values: @sizes, default: "normal"],
-      variant: [values: [nil | @variants], default: nil]
+      size: [values: ["small", "normal", "medium", "large"], default: "normal"],
+      variant: [
+        values: [
+          nil,
+          "primary",
+          "secondary",
+          "info",
+          "success",
+          "warning",
+          "danger"
+        ],
+        default: nil
+      ]
     ],
-    class_name_fun: &Doggo.modifier_class_name/1
-  ]
-
-  @badge_doc """
-  Generates a badge component, typically used for drawing attention to elements
-  like notification counts.
-  """
-
-  @badge_usage """
-  ## Usage
-
-  ```heex
-  <badge>8</badge>
-  ```
-  """
-
-  @doc """
-  #{@badge_doc}
-
-  ## Generate Component
-
-  Generate component with default options:
-
-      badge()
-
-  ## Default options
-
-  ```elixir
-  #{inspect(@badge_defaults, pretty: true)}
-  ```
-
-  #{@badge_usage}
-  """
-
-  @doc type: :component
-  @doc since: "0.6.0"
-
-  defmacro badge(opts \\ []) do
-    opts = Keyword.validate!(opts, @badge_defaults)
-
-    name = Keyword.fetch!(opts, :name)
-    base_class = Keyword.fetch!(opts, :base_class)
-    modifiers = Keyword.fetch!(opts, :modifiers)
-    modifier_names = Keyword.keys(modifiers)
-    class_name_fun = Keyword.fetch!(opts, :class_name_fun)
-
-    quote do
-      @doc """
-      #{unquote(@badge_doc)}
-
-      #{unquote(@badge_usage)}
-      """
-
-      for {name, modifier_opts} <- unquote(modifiers) do
-        attr name, :string, modifier_opts
-      end
-
-      attr :rest, :global, doc: "Any additional HTML attributes."
-
-      slot :inner_block, required: true
-
-      def unquote(name)(var!(assigns)) do
-        var!(assigns) =
-          assign(var!(assigns),
-            base_class: unquote(base_class),
-            modifier_classes:
-              Doggo.Components.modifier_classes(
-                unquote(modifier_names),
-                unquote(class_name_fun),
-                var!(assigns)
-              )
-          )
-
+    doc: """
+    Generates a badge component, typically used for drawing attention to elements
+    like notification counts.
+    """,
+    usage: """
+    ```heex
+    <badge>8</badge>
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :rest, :global, doc: "Any additional HTML attributes."
+        slot :inner_block, required: true
+      end,
+    heex:
+      quote do
         ~H"""
         <span class={[@base_class | @modifier_classes]} {@rest}>
           <%= render_slot(@inner_block) %>
         </span>
         """
       end
-    end
-  end
+  )
 
-  @cluster_defaults [
-    name: :cluster,
-    base_class: "cluster",
+  component(
+    :cluster,
     modifiers: [],
-    class_name_fun: &Doggo.modifier_class_name/1
-  ]
+    doc: """
+    Use the cluster component to visually group children.
 
-  @cluster_doc """
-  Use the cluster component to visually group children.
-
-  Common use cases are groups of buttons, or group of tags.
-  """
-
-  @cluster_usage """
-  ## Usage
-
-  <cluster>
-    <div>some item</div>
-    <div>some other item</div>
-  </cluster>
-  """
-
-  @doc """
-  #{@cluster_doc}
-
-  ## Generate Component
-
-  Generate component with default options:
-
-      cluster()
-
-  ## Default options
-
-  ```elixir
-  #{inspect(@cluster_defaults, pretty: true)}
-  ```
-
-  #{@cluster_usage}
-  """
-
-  @doc type: :component
-  @doc since: "0.6.0"
-
-  defmacro cluster(opts \\ []) do
-    opts = Keyword.validate!(opts, @cluster_defaults)
-
-    name = Keyword.fetch!(opts, :name)
-    base_class = Keyword.fetch!(opts, :base_class)
-    modifiers = Keyword.fetch!(opts, :modifiers)
-    modifier_names = Keyword.keys(modifiers)
-    class_name_fun = Keyword.fetch!(opts, :class_name_fun)
-
-    quote do
-      @doc """
-      #{unquote(@cluster_doc)}
-
-      #{unquote(@cluster_usage)}
-      """
-
-      for {name, modifier_opts} <- unquote(modifiers) do
-        attr name, :string, modifier_opts
-      end
-
-      attr :rest, :global, doc: "Any additional HTML attributes."
-
-      slot :inner_block, required: true
-
-      def unquote(name)(var!(assigns)) do
-        var!(assigns) =
-          assign(var!(assigns),
-            base_class: unquote(base_class),
-            modifier_classes:
-              Doggo.Components.modifier_classes(
-                unquote(modifier_names),
-                unquote(class_name_fun),
-                var!(assigns)
-              )
-          )
-
+    Common use cases are groups of buttons, or group of tags.
+    """,
+    usage: """
+    ```heex
+    <cluster>
+      <div>some item</div>
+      <div>some other item</div>
+    </cluster>
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :rest, :global, doc: "Any additional HTML attributes."
+        slot :inner_block, required: true
+      end,
+    heex:
+      quote do
         ~H"""
         <div class={[@base_class | @modifier_classes]} {@rest}>
           <%= render_slot(@inner_block) %>
         </div>
         """
       end
-    end
-  end
+  )
 
-  @tag_defaults [
-    name: :tag,
-    base_class: "tag",
+  component(
+    :tag,
     modifiers: [
-      size: [values: @sizes, default: "normal"],
-      variant: [values: [nil | @variants], default: nil],
+      size: [values: ["small", "normal", "medium", "large"], default: "normal"],
+      variant: [
+        values: [
+          nil,
+          "primary",
+          "secondary",
+          "info",
+          "success",
+          "warning",
+          "danger"
+        ],
+        default: nil
+      ],
       shape: [values: [nil, "pill"], default: nil]
     ],
-    class_name_fun: &Doggo.modifier_class_name/1
-  ]
+    doc: """
+    Renders a tag, typically used for displaying labels, categories, or keywords.
+    """,
+    usage: """
+    ```heex
+    <tag>Well-Trained</tag>
+    ```
 
-  @tag_doc """
-  Renders a tag, typically used for displaying labels, categories, or keywords.
-  """
+    With icon:
 
-  @tag_usage """
-  ## Usage
+    ```heex
+    <tag>
+      Puppy
+      <icon><Heroicons.edit /></icon>
+    </tag>
+    ```
 
-  Plain tag:
+    With delete button:
 
-  ```heex
-  <tag>Well-Trained</tag>
-  ```
-
-  With icon:
-
-  ```heex
-  <tag>
-    Puppy
-    <icon><Heroicons.edit /></icon>
-  </tag>
-  ```
-
-  With delete button:
-
-  ```heex
-  <tag>
-    High Energy
-    <button
-      phx-click="remove-tag"
-      phx-value-tag="high-energy"
-      aria-label="Remove tag"
-    >
-      <icon><Heroicons.x /></icon>
-    </button>
-  </tag>
-  ```
-  """
-
-  @doc """
-  #{@tag_doc}
-
-  ## Generate Component
-
-  Generate component with default options:
-
-      tag()
-
-  ## Default Options
-
-  ```elixir
-  #{inspect(@tag_defaults, pretty: true)}
-  ```
-
-  #{@tag_usage}
-  """
-
-  @doc type: :component
-  @doc since: "0.6.0"
-
-  defmacro tag(opts \\ []) do
-    opts = Keyword.validate!(opts, @tag_defaults)
-
-    name = Keyword.fetch!(opts, :name)
-    base_class = Keyword.fetch!(opts, :base_class)
-    modifiers = Keyword.fetch!(opts, :modifiers)
-    modifier_names = Keyword.keys(modifiers)
-    class_name_fun = Keyword.fetch!(opts, :class_name_fun)
-
-    quote do
-      @doc """
-      #{unquote(@tag_doc)}
-
-      #{unquote(@tag_usage)}
-      """
-
-      for {name, modifier_opts} <- unquote(modifiers) do
-        attr name, :string, modifier_opts
-      end
-
-      attr :rest, :global, doc: "Any additional HTML attributes."
-
-      slot :inner_block, required: true
-
-      def unquote(name)(var!(assigns)) do
-        var!(assigns) =
-          assign(var!(assigns),
-            base_class: unquote(base_class),
-            modifier_classes:
-              Doggo.Components.modifier_classes(
-                unquote(modifier_names),
-                unquote(class_name_fun),
-                var!(assigns)
-              )
-          )
-
+    ```heex
+    <tag>
+      High Energy
+      <button
+        phx-click="remove-tag"
+        phx-value-tag="high-energy"
+        aria-label="Remove tag"
+      >
+        <icon><Heroicons.x /></icon>
+      </button>
+    </tag>
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :rest, :global, doc: "Any additional HTML attributes."
+        slot :inner_block, required: true
+      end,
+    heex:
+      quote do
         ~H"""
         <span class={[@base_class | @modifier_classes]} {@rest}>
           <%= render_slot(@inner_block) %>
         </span>
         """
       end
-    end
-  end
+  )
 
   @doc false
   def modifier_classes(modifier_names, class_name_fun, assigns) do
