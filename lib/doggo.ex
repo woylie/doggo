@@ -423,32 +423,6 @@ defmodule Doggo do
   end
 
   @doc """
-  Renders a badge, typically used for drawing attention to elements like
-  notification counts.
-
-  ## Examples
-
-  ```heex
-  <Doggo.badge>8</Doggo.badge>
-  ```
-  """
-  @doc type: :component
-  @doc since: "0.3.0"
-
-  attr :size, :atom, values: @sizes, default: :normal
-  attr :variant, :atom, values: [nil | @variants], default: nil
-
-  slot :inner_block, required: true
-
-  def badge(assigns) do
-    ~H"""
-    <span class={["badge", size_class(@size), variant_class(@variant)]}>
-      <%= render_slot(@inner_block) %>
-    </span>
-    """
-  end
-
-  @doc """
   Renders a navigation that sticks to the bottom of the screen.
 
   ## Example
@@ -6115,6 +6089,18 @@ defmodule Doggo do
   end
 
   ## Modifier classes
+
+  @doc """
+  Takes a modifier attribute value and returns a CSS class name.
+
+  This function is used as a default for the `class_name_fun` option.
+
+  ## Example
+
+      iex> modifier_class_name("large")
+      "is-large"
+  """
+  def modifier_class_name(value) when is_binary(value), do: "is-#{value}"
 
   for fill <- @fills do
     str = fill |> to_string() |> String.replace("_", "-")

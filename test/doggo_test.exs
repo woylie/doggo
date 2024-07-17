@@ -4,6 +4,7 @@ defmodule DoggoTest do
 
   import Doggo.TestHelpers
 
+  alias Doggo.TestComponents
   alias Phoenix.LiveView.JS
   alias Phoenix.LiveView.LiveStream
 
@@ -707,7 +708,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.badge>value</Doggo.badge>
+        <TestComponents.badge>value</TestComponents.badge>
         """)
 
       span = find_one(html, "span")
@@ -720,7 +721,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.badge size={:large}>value</Doggo.badge>
+        <TestComponents.badge size="large">value</TestComponents.badge>
         """)
 
       span = find_one(html, "span")
@@ -732,7 +733,7 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.badge variant={:secondary}>value</Doggo.badge>
+        <TestComponents.badge variant="secondary">value</TestComponents.badge>
         """)
 
       span = find_one(html, "span")
