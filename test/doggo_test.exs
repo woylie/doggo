@@ -4,9 +4,20 @@ defmodule DoggoTest do
 
   import Doggo.TestHelpers
 
-  alias Doggo.TestComponents
   alias Phoenix.LiveView.JS
   alias Phoenix.LiveView.LiveStream
+
+  defmodule TestComponents do
+    @moduledoc """
+    Generates components for tests.
+    """
+
+    use Phoenix.Component
+    import Doggo.Components
+
+    action_bar()
+    badge()
+  end
 
   describe "accordion/1" do
     test "with expanded all" do
