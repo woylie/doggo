@@ -61,17 +61,17 @@ defmodule Doggo.Components do
   ## Usage
 
   ```heex
-  <Doggo.action_bar>
+  <action_bar>
     <:item label="Edit" on_click={JS.push("edit")}>
-      <Doggo.icon size={:small}><Lucideicons.pencil aria-hidden /></Doggo.icon>
+      <icon size={:small}><Lucideicons.pencil aria-hidden /></icon>
     </:item>
     <:item label="Move" on_click={JS.push("move")}>
-      <Doggo.icon size={:small}><Lucideicons.move aria-hidden /></Doggo.icon>
+      <icon size={:small}><Lucideicons.move aria-hidden /></icon>
     </:item>
     <:item label="Archive" on_click={JS.push("archive")}>
-      <Doggo.icon size={:small}><Lucideicons.archive aria-hidden /></Doggo.icon>
+      <icon size={:small}><Lucideicons.archive aria-hidden /></icon>
     </:item>
-  </Doggo.action_bar>
+  </action_bar>
   ```
   """
 
@@ -165,7 +165,7 @@ defmodule Doggo.Components do
   ## Usage
 
   ```heex
-  <Doggo.badge>8</Doggo.badge>
+  <badge>8</badge>
   ```
   """
 
@@ -256,31 +256,31 @@ defmodule Doggo.Components do
   Plain tag:
 
   ```heex
-  <Doggo.tag>Well-Trained</Doggo.tag>
+  <tag>Well-Trained</tag>
   ```
 
   With icon:
 
   ```heex
-  <Doggo.tag>
+  <tag>
     Puppy
-    <Doggo.icon><Heroicons.edit /></Doggo.icon>
-  </Doggo.tag>
+    <icon><Heroicons.edit /></icon>
+  </tag>
   ```
 
   With delete button:
 
   ```heex
-  <Doggo.tag>
+  <tag>
     High Energy
     <button
       phx-click="remove-tag"
       phx-value-tag="high-energy"
       aria-label="Remove tag"
     >
-      <Doggo.icon><Heroicons.x /></Doggo.icon>
+      <icon><Heroicons.x /></icon>
     </button>
-  </Doggo.tag>
+  </tag>
   ```
   """
 
