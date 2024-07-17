@@ -148,11 +148,11 @@ defmodule DoggoTest do
 
       html =
         parse_heex(~H"""
-        <Doggo.action_bar>
+        <TestComponents.action_bar>
           <:item label="Edit" on_click={JS.push("edit")}>
             edit-icon
           </:item>
-        </Doggo.action_bar>
+        </TestComponents.action_bar>
         """)
 
       assert attribute(html, "div:root", "class") == "action-bar"
@@ -167,46 +167,16 @@ defmodule DoggoTest do
       assert text(button) == "edit-icon"
     end
 
-    test "with additional class as string" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.action_bar class="is-narrow">
-          <:item label="Edit" on_click={JS.push("edit")}>
-            edit-icon
-          </:item>
-        </Doggo.action_bar>
-        """)
-
-      assert attribute(html, "div", "class") == "action-bar is-narrow"
-    end
-
-    test "with additional classes as list" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.action_bar class={["is-narrow", "is-crisp"]}>
-          <:item label="Edit" on_click={JS.push("edit")}>
-            edit-icon
-          </:item>
-        </Doggo.action_bar>
-        """)
-
-      assert attribute(html, "div", "class") == "action-bar is-narrow is-crisp"
-    end
-
     test "with global attribute" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
-        <Doggo.action_bar data-what="ever">
+        <TestComponents.action_bar data-what="ever">
           <:item label="Edit" on_click={JS.push("edit")}>
             edit-icon
           </:item>
-        </Doggo.action_bar>
+        </TestComponents.action_bar>
         """)
 
       assert attribute(html, "div", "data-what") == "ever"

@@ -6,5 +6,6 @@ defmodule Doggo.TestComponents do
   use Phoenix.Component
   import Doggo.Components
 
+  action_bar()
   badge()
 end

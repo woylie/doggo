@@ -138,62 +138,6 @@ defmodule Doggo do
   end
 
   @doc """
-  The action bar offers users quick access to primary actions within the
-  application.
-
-  It is typically positioned to float above other content.
-
-  > #### In Development {: .warning}
-  >
-  > The necessary JavaScript for making this component fully functional and
-  > accessible will be added in a future version.
-  >
-  > **Missing features**
-  >
-  > - Roving tabindex
-  > - Move focus with arrow keys
-
-  ## Example
-
-  ```heex
-  <Doggo.action_bar>
-    <:item label="Edit" on_click={JS.push("edit")}>
-      <Doggo.icon size={:small}><Lucideicons.pencil aria-hidden /></Doggo.icon>
-    </:item>
-    <:item label="Move" on_click={JS.push("move")}>
-      <Doggo.icon size={:small}><Lucideicons.move aria-hidden /></Doggo.icon>
-    </:item>
-    <:item label="Archive" on_click={JS.push("archive")}>
-      <Doggo.icon size={:small}><Lucideicons.archive aria-hidden /></Doggo.icon>
-    </:item>
-  </Doggo.action_bar>
-  ```
-  """
-  @doc type: :component
-  @doc since: "0.1.0"
-
-  attr :class, :any,
-    default: [],
-    doc: "Additional CSS classes. Can be a string or a list of strings."
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-
-  slot :item, required: true do
-    attr :label, :string, required: true
-    attr :on_click, JS, required: true
-  end
-
-  def action_bar(assigns) do
-    ~H"""
-    <div role="toolbar" class={["action-bar" | List.wrap(@class)]} {@rest}>
-      <button :for={item <- @item} phx-click={item.on_click} title={item.label}>
-        <%= render_slot(item) %>
-      </button>
-    </div>
-    """
-  end
-
-  @doc """
   Renders an alert dialog that requires the immediate attention and response of
   the user.
 

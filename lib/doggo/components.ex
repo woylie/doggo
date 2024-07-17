@@ -8,6 +8,7 @@ defmodule Doggo.Components do
         use Phoenix.Component
         import Doggo.Components
 
+        action_bar()
         badge()
       end
 
@@ -29,6 +30,119 @@ defmodule Doggo.Components do
 
   @sizes ["small", "normal", "medium", "large"]
   @variants ["primary", "secondary", "info", "success", "warning", "danger"]
+
+  @action_bar_doc """
+  The action bar offers users quick access to primary actions within the
+  application.
+
+  It is typically positioned to float above other content.
+
+  > #### In Development {: .warning}
+  >
+  > The necessary JavaScript for making this component fully functional and
+  > accessible will be added in a future version.
+  >
+  > **Missing features**
+  >
+  > - Roving tabindex
+  > - Move focus with arrow keys
+  """
+
+  @action_bar_usage """
+  ## Usage
+
+  ```heex
+  <Doggo.action_bar>
+    <:item label="Edit" on_click={JS.push("edit")}>
+      <Doggo.icon size={:small}><Lucideicons.pencil aria-hidden /></Doggo.icon>
+    </:item>
+    <:item label="Move" on_click={JS.push("move")}>
+      <Doggo.icon size={:small}><Lucideicons.move aria-hidden /></Doggo.icon>
+    </:item>
+    <:item label="Archive" on_click={JS.push("archive")}>
+      <Doggo.icon size={:small}><Lucideicons.archive aria-hidden /></Doggo.icon>
+    </:item>
+  </Doggo.action_bar>
+  ```
+  """
+
+  @doc """
+  #{@action_bar_doc}
+
+  ## Generate Component
+
+  With default options:
+
+      action_bar()
+
+  Overriding the defaults:
+
+      action_bar(
+        base_class: "action-bar",
+        modifiers: [
+          size: [values: #{inspect(@sizes)}, default: "normal"]
+        ]
+      )
+
+  #{@action_bar_usage}
+  """
+
+  @doc type: :component
+  @doc since: "0.6.0"
+
+  defmacro action_bar(opts \\ []) do
+    opts =
+      Keyword.validate!(opts,
+        base_class: "action-bar",
+        modifiers: [],
+        class_name_fun: &Doggo.modifier_class_name/1
+      )
+
+    base_class = Keyword.fetch!(opts, :base_class)
+    modifiers = Keyword.fetch!(opts, :modifiers)
+    modifier_names = Keyword.keys(modifiers)
+    class_name_fun = Keyword.fetch!(opts, :class_name_fun)
+
+    quote do
+      @doc """
+      #{unquote(@action_bar_doc)}
+
+      #{unquote(@action_bar_usage)}
+      """
+
+      for {name, modifier_opts} <- unquote(modifiers) do
+        attr name, :string, modifier_opts
+      end
+
+      attr :rest, :global, doc: "Any additional HTML attributes."
+
+      slot :item, required: true do
+        attr :label, :string, required: true
+        attr :on_click, JS, required: true
+      end
+
+      def action_bar(var!(assigns)) do
+        var!(assigns) =
+          assign(var!(assigns),
+            base_class: unquote(base_class),
+            modifier_classes:
+              Doggo.Components.modifier_classes(
+                unquote(modifier_names),
+                unquote(class_name_fun),
+                var!(assigns)
+              )
+          )
+
+        ~H"""
+        <div role="toolbar" class={[@base_class | @modifier_classes]} {@rest}>
+          <button :for={item <- @item} phx-click={item.on_click} title={item.label}>
+            <%= render_slot(item) %>
+          </button>
+        </div>
+        """
+      end
+    end
+  end
 
   @badge_doc """
   Generates a badge component, typically used for drawing attention to elements
