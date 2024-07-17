@@ -30,11 +30,23 @@ defmodule Doggo.Components do
   @sizes ["small", "normal", "medium", "large"]
   @variants ["primary", "secondary", "info", "success", "warning", "danger"]
 
-  @doc """
+  @badge_doc """
   Generates a badge component, typically used for drawing attention to elements
   like notification counts.
+  """
 
-  ## Examples
+  @badge_usage """
+  ## Usage
+
+  ```heex
+  <Doggo.badge>8</Doggo.badge>
+  ```
+  """
+
+  @doc """
+  #{@badge_doc}
+
+  ## Generate Component
 
   With default options:
 
@@ -50,11 +62,7 @@ defmodule Doggo.Components do
         ]
       )
 
-  Using the component:
-
-  ```heex
-  <badge>8</badge>
-  ```
+  #{@badge_usage}
   """
 
   @doc type: :component
@@ -78,14 +86,9 @@ defmodule Doggo.Components do
 
     quote do
       @doc """
-      Renders a badge, typically used for drawing attention to elements like
-      notification counts.
+      #{@badge_doc}
 
-      ## Examples
-
-      ```heex
-      <Doggo.badge>8</Doggo.badge>
-      ```
+      #{@badge_usage}
       """
 
       for {name, modifier_opts} <- unquote(modifiers) do
