@@ -86,9 +86,9 @@ defmodule Doggo.Components do
 
     quote do
       @doc """
-      #{@badge_doc}
+      #{unquote(@badge_doc)}
 
-      #{@badge_usage}
+      #{unquote(@badge_usage)}
       """
 
       for {name, modifier_opts} <- unquote(modifiers) do
