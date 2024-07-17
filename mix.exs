@@ -86,7 +86,7 @@ defmodule Doggo.MixProject do
       logo: "assets/doggo.png",
       source_ref: @version,
       skip_undefined_reference_warnings_on: ["CHANGELOG.md"],
-      groups_for_functions: [
+      groups_for_docs: [
         Components: &(&1[:type] == :component),
         Buttons: &(&1[:type] == :button),
         Form: &(&1[:type] == :form),
