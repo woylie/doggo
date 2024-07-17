@@ -33,6 +33,13 @@ defmodule Doggo.Components do
   @sizes ["small", "normal", "medium", "large"]
   @variants ["primary", "secondary", "info", "success", "warning", "danger"]
 
+  @action_bar_defaults [
+    name: :action_bar,
+    base_class: "action-bar",
+    modifiers: [],
+    class_name_fun: &Doggo.modifier_class_name/1
+  ]
+
   @action_bar_doc """
   The action bar offers users quick access to primary actions within the
   application.
@@ -73,18 +80,15 @@ defmodule Doggo.Components do
 
   ## Generate Component
 
-  With default options:
+  Generate component with default options:
 
       action_bar()
 
-  Overriding the defaults:
+  ## Default Options
 
-      action_bar(
-        base_class: "action-bar",
-        modifiers: [
-          size: [values: #{inspect(@sizes)}, default: "normal"]
-        ]
-      )
+  ```elixir
+  #{inspect(@action_bar_defaults, pretty: true)}
+  ```
 
   #{@action_bar_usage}
   """
@@ -93,13 +97,7 @@ defmodule Doggo.Components do
   @doc since: "0.6.0"
 
   defmacro action_bar(opts \\ []) do
-    opts =
-      Keyword.validate!(opts,
-        name: :action_bar,
-        base_class: "action-bar",
-        modifiers: [],
-        class_name_fun: &Doggo.modifier_class_name/1
-      )
+    opts = Keyword.validate!(opts, @action_bar_defaults)
 
     name = Keyword.fetch!(opts, :name)
     base_class = Keyword.fetch!(opts, :base_class)
@@ -148,6 +146,16 @@ defmodule Doggo.Components do
     end
   end
 
+  @badge_defaults [
+    name: :badge,
+    base_class: "badge",
+    modifiers: [
+      size: [values: @sizes, default: "normal"],
+      variant: [values: [nil | @variants], default: nil]
+    ],
+    class_name_fun: &Doggo.modifier_class_name/1
+  ]
+
   @badge_doc """
   Generates a badge component, typically used for drawing attention to elements
   like notification counts.
@@ -166,19 +174,15 @@ defmodule Doggo.Components do
 
   ## Generate Component
 
-  With default options:
+  Generate component with default options:
 
       badge()
 
-  Overriding the defaults:
+  ## Default options
 
-      badge(
-        base_class: "badge",
-        modifiers: [
-          size: [values: #{inspect(@sizes)}, default: "normal"],
-          variant: [values: #{inspect(@variants)}, default: nil]
-        ]
-      )
+  ```elixir
+  #{inspect(@badge_defaults, pretty: true)}
+  ```
 
   #{@badge_usage}
   """
@@ -187,16 +191,7 @@ defmodule Doggo.Components do
   @doc since: "0.6.0"
 
   defmacro badge(opts \\ []) do
-    opts =
-      Keyword.validate!(opts,
-        name: :badge,
-        base_class: "badge",
-        modifiers: [
-          size: [values: @sizes, default: "normal"],
-          variant: [values: [nil | @variants], default: nil]
-        ],
-        class_name_fun: &Doggo.modifier_class_name/1
-      )
+    opts = Keyword.validate!(opts, @badge_defaults)
 
     name = Keyword.fetch!(opts, :name)
     base_class = Keyword.fetch!(opts, :base_class)
@@ -239,6 +234,17 @@ defmodule Doggo.Components do
       end
     end
   end
+
+  @tag_defaults [
+    name: :tag,
+    base_class: "tag",
+    modifiers: [
+      size: [values: @sizes, default: "normal"],
+      variant: [values: [nil | @variants], default: nil],
+      shape: [values: [nil, "pill"], default: nil]
+    ],
+    class_name_fun: &Doggo.modifier_class_name/1
+  ]
 
   @tag_doc """
   Renders a tag, typically used for displaying labels, categories, or keywords.
@@ -283,18 +289,15 @@ defmodule Doggo.Components do
 
   ## Generate Component
 
-  With default options:
+  Generate component with default options:
 
       tag()
 
-  Overriding the defaults:
+  ## Default Options
 
-      tag(
-        base_class: "tag",
-        modifiers: [
-          size: [values: #{inspect(@sizes)}, default: "normal"]
-        ]
-      )
+  ```elixir
+  #{inspect(@tag_defaults, pretty: true)}
+  ```
 
   #{@tag_usage}
   """
@@ -303,17 +306,7 @@ defmodule Doggo.Components do
   @doc since: "0.6.0"
 
   defmacro tag(opts \\ []) do
-    opts =
-      Keyword.validate!(opts,
-        name: :tag,
-        base_class: "tag",
-        modifiers: [
-          size: [values: @sizes, default: "normal"],
-          variant: [values: [nil | @variants], default: nil],
-          shape: [values: [nil, "pill"], default: nil]
-        ],
-        class_name_fun: &Doggo.modifier_class_name/1
-      )
+    opts = Keyword.validate!(opts, @tag_defaults)
 
     name = Keyword.fetch!(opts, :name)
     base_class = Keyword.fetch!(opts, :base_class)
