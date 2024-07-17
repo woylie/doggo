@@ -16,6 +16,8 @@ defmodule Doggo.Components do
 
   All component macros support the following options:
 
+  - `name` - The name of the function of the generated component. Defaults to
+    the macro name.
   - `base_class` - The base class used on the root element of the component. If
     not set, a default base class is used.
   - `modifiers` - A keyword list of modifier attributes. For each item, an
@@ -93,11 +95,13 @@ defmodule Doggo.Components do
   defmacro action_bar(opts \\ []) do
     opts =
       Keyword.validate!(opts,
+        name: :action_bar,
         base_class: "action-bar",
         modifiers: [],
         class_name_fun: &Doggo.modifier_class_name/1
       )
 
+    name = Keyword.fetch!(opts, :name)
     base_class = Keyword.fetch!(opts, :base_class)
     modifiers = Keyword.fetch!(opts, :modifiers)
     modifier_names = Keyword.keys(modifiers)
@@ -121,7 +125,7 @@ defmodule Doggo.Components do
         attr :on_click, JS, required: true
       end
 
-      def action_bar(var!(assigns)) do
+      def unquote(name)(var!(assigns)) do
         var!(assigns) =
           assign(var!(assigns),
             base_class: unquote(base_class),
@@ -185,6 +189,7 @@ defmodule Doggo.Components do
   defmacro badge(opts \\ []) do
     opts =
       Keyword.validate!(opts,
+        name: :badge,
         base_class: "badge",
         modifiers: [
           size: [values: @sizes, default: "normal"],
@@ -193,6 +198,7 @@ defmodule Doggo.Components do
         class_name_fun: &Doggo.modifier_class_name/1
       )
 
+    name = Keyword.fetch!(opts, :name)
     base_class = Keyword.fetch!(opts, :base_class)
     modifiers = Keyword.fetch!(opts, :modifiers)
     modifier_names = Keyword.keys(modifiers)
@@ -213,7 +219,7 @@ defmodule Doggo.Components do
 
       slot :inner_block, required: true
 
-      def badge(var!(assigns)) do
+      def unquote(name)(var!(assigns)) do
         var!(assigns) =
           assign(var!(assigns),
             base_class: unquote(base_class),
