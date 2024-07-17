@@ -982,39 +982,6 @@ defmodule Doggo do
   def slide_label(n), do: "Slide #{n}"
 
   @doc """
-  Use the cluster component to visually group children.
-
-  Common use cases are groups of buttons, or group of tags.
-
-  ## Example
-
-  ```heex
-  <Doggo.cluster>
-    <div>some item</div>
-    <div>some other item</div>
-  </Doggo.cluster>
-  ```
-  """
-  @doc type: :component
-  @doc since: "0.4.0"
-
-  slot :inner_block, required: true
-
-  attr :class, :any,
-    default: [],
-    doc: "Additional CSS classes. Can be a string or a list of strings."
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-
-  def cluster(assigns) do
-    ~H"""
-    <div class={["cluster" | List.wrap(@class)]} {@rest}>
-      <%= render_slot(@inner_block) %>
-    </div>
-    """
-  end
-
-  @doc """
   Renders a text input with a popup that allows users to select a value from
   a list of suggestions.
 

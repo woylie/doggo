@@ -16,6 +16,7 @@ defmodule Doggo.ComponentsTest do
 
     action_bar()
     badge()
+    cluster()
     tag()
   end
 
@@ -107,6 +108,33 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "span", "data-what") == "ever"
+    end
+  end
+
+  describe "cluster/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.cluster>Hello</TestComponents.cluster>
+        """)
+
+      div = find_one(html, "div")
+
+      assert attribute(div, "class") == "cluster"
+      assert text(div) == "Hello"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.cluster data-what="ever">Hello</TestComponents.cluster>
+        """)
+
+      assert attribute(html, "div", "data-what") == "ever"
     end
   end
 

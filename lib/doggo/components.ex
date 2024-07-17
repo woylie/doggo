@@ -10,6 +10,8 @@ defmodule Doggo.Components do
 
         action_bar()
         badge()
+        cluster()
+        tag()
       end
 
   ## Common Options
@@ -230,6 +232,94 @@ defmodule Doggo.Components do
         <span class={[@base_class | @modifier_classes]} {@rest}>
           <%= render_slot(@inner_block) %>
         </span>
+        """
+      end
+    end
+  end
+
+  @cluster_defaults [
+    name: :cluster,
+    base_class: "cluster",
+    modifiers: [],
+    class_name_fun: &Doggo.modifier_class_name/1
+  ]
+
+  @cluster_doc """
+  Use the cluster component to visually group children.
+
+  Common use cases are groups of buttons, or group of tags.
+  """
+
+  @cluster_usage """
+  ## Usage
+
+  <cluster>
+    <div>some item</div>
+    <div>some other item</div>
+  </cluster>
+  """
+
+  @doc """
+  #{@cluster_doc}
+
+  ## Generate Component
+
+  Generate component with default options:
+
+      cluster()
+
+  ## Default options
+
+  ```elixir
+  #{inspect(@cluster_defaults, pretty: true)}
+  ```
+
+  #{@cluster_usage}
+  """
+
+  @doc type: :component
+  @doc since: "0.6.0"
+
+  defmacro cluster(opts \\ []) do
+    opts = Keyword.validate!(opts, @cluster_defaults)
+
+    name = Keyword.fetch!(opts, :name)
+    base_class = Keyword.fetch!(opts, :base_class)
+    modifiers = Keyword.fetch!(opts, :modifiers)
+    modifier_names = Keyword.keys(modifiers)
+    class_name_fun = Keyword.fetch!(opts, :class_name_fun)
+
+    quote do
+      @doc """
+      #{unquote(@cluster_doc)}
+
+      #{unquote(@cluster_usage)}
+      """
+
+      for {name, modifier_opts} <- unquote(modifiers) do
+        attr name, :string, modifier_opts
+      end
+
+      attr :rest, :global, doc: "Any additional HTML attributes."
+
+      slot :inner_block, required: true
+
+      def unquote(name)(var!(assigns)) do
+        var!(assigns) =
+          assign(var!(assigns),
+            base_class: unquote(base_class),
+            modifier_classes:
+              Doggo.Components.modifier_classes(
+                unquote(modifier_names),
+                unquote(class_name_fun),
+                var!(assigns)
+              )
+          )
+
+        ~H"""
+        <div class={[@base_class | @modifier_classes]} {@rest}>
+          <%= render_slot(@inner_block) %>
+        </div>
         """
       end
     end
