@@ -95,6 +95,8 @@ defmodule Doggo.Components do
         attr name, :string, modifier_opts
       end
 
+      attr :rest, :global, doc: "Any additional HTML attributes."
+
       slot :inner_block, required: true
 
       def badge(var!(assigns)) do
@@ -110,7 +112,7 @@ defmodule Doggo.Components do
           )
 
         ~H"""
-        <span class={[@base_class | @modifier_classes]}>
+        <span class={[@base_class | @modifier_classes]} {@rest}>
           <%= render_slot(@inner_block) %>
         </span>
         """

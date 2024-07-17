@@ -739,6 +739,17 @@ defmodule DoggoTest do
       span = find_one(html, "span")
       assert attribute(span, "class") == "badge is-normal is-secondary"
     end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.badge data-what="ever">value</TestComponents.badge>
+        """)
+
+      assert attribute(html, "span", "data-what") == "ever"
+    end
   end
 
   describe "bottom_navigation/1" do
