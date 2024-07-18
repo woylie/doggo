@@ -4877,6 +4877,7 @@ defmodule Doggo do
       iex> modifier_class_name("large")
       "is-large"
   """
+  @spec modifier_class_name(String.t()) :: String.t()
   def modifier_class_name(value) when is_binary(value), do: "is-#{value}"
 
   for fill <- @fills do
