@@ -27,6 +27,7 @@ defmodule Doggo.ComponentsTest do
     tag()
     skeleton()
     toggle_button()
+    toolbar()
     tree()
     tree_item()
 
@@ -830,6 +831,81 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, ":root", "data-test") == "hello"
+    end
+  end
+
+  describe "toolbar/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.toolbar label="Actions for dog">
+          buttons
+        </TestComponents.toolbar>
+        """)
+
+      assert attribute(html, "div:root", "role") == "toolbar"
+      assert attribute(html, ":root", "aria-label") == "Actions for dog"
+      assert attribute(html, ":root", "aria-labelledby") == nil
+      assert text(html, ":root") == "buttons"
+    end
+
+    test "with labelledby" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.toolbar labelledby="toolbar-heading"></TestComponents.toolbar>
+        """)
+
+      assert attribute(html, ":root", "aria-label") == nil
+      assert attribute(html, ":root", "aria-labelledby") == "toolbar-heading"
+    end
+
+    test "with controls" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.toolbar label="Actions for dog" controls="dog-panel">
+        </TestComponents.toolbar>
+        """)
+
+      assert attribute(html, ":root", "aria-controls") == "dog-panel"
+    end
+
+    test "raises if both label and labelledby are set" do
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.toolbar label="Dog actions" labelledby="dog-toolbar-label">
+        </TestComponents.toolbar>
+        """)
+      end
+    end
+
+    test "raises if neither label nor labelledby are set" do
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.toolbar></TestComponents.toolbar>
+        """)
+      end
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.toolbar label="Actions for dog" data-test="hello">
+        </TestComponents.toolbar>
+        """)
+
+      assert attribute(html, "div", "data-test") == "hello"
     end
   end
 
