@@ -377,69 +377,6 @@ defmodule Doggo do
   end
 
   @doc """
-  Renders a button.
-
-  Use this component when you need to perform an action that doesn't involve
-  navigating to a different page, such as submitting a form, confirming an
-  action, or deleting an item.
-
-  If you need to navigate to a different page or a specific section on the
-  current page and want to style the link like a button, use `button_link/1`
-  instead.
-
-  See also `button_link/1`, `toggle_button/1`, and `disclosure_button/1`.
-
-  ## Examples
-
-  ```heex
-  <Doggo.button>Confirm</Doggo.button>
-
-  <Doggo.button type="submit" variant={:secondary} size={:medium} shape={:pill}>
-    Submit
-  </Doggo.button>
-  ```
-
-  To indicate a loading state, for example when submitting a form, use the
-  `aria-busy` attribute:
-
-  ```heex
-  <Doggo.button aria-label="Saving..." aria-busy>
-    click me
-  </Doggo.button>
-  ```
-  """
-  @doc type: :button
-  @doc since: "0.1.0"
-
-  attr :type, :string, values: ["button", "reset", "submit"], default: "button"
-  attr :variant, :atom, values: @variants, default: :primary
-  attr :fill, :atom, values: @fills, default: :solid
-  attr :size, :atom, values: @sizes, default: :normal
-  attr :shape, :atom, values: [nil | @shapes], default: nil
-  attr :disabled, :boolean, default: nil
-  attr :rest, :global, include: ~w(autofocus form name value)
-
-  slot :inner_block, required: true
-
-  def button(assigns) do
-    ~H"""
-    <button
-      type={@type}
-      class={[
-        variant_class(@variant),
-        size_class(@size),
-        shape_class(@shape),
-        fill_class(@fill)
-      ]}
-      disabled={@disabled}
-      {@rest}
-    >
-      <%= render_slot(@inner_block) %>
-    </button>
-    """
-  end
-
-  @doc """
   Renders a link (`<a>`) that has the role and style of a button.
 
   Use this component when you need to style a link to a different page or a

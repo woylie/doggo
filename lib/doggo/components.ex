@@ -18,6 +18,7 @@ defmodule Doggo.Components do
         badge()
         box()
         breadcrumb()
+        button()
         cluster()
         tag()
         tree()
@@ -280,7 +281,7 @@ defmodule Doggo.Components do
         <img src="banner-image.png" alt="" />
       </:banner>
       <:action>
-        <Doggo.button_link patch={~p"/profiles/\#{@profile}/edit"}>Edit</Doggo.button_link>
+        <button_link patch={~p"/profiles/\#{@profile}/edit"}>Edit</button_link>
       </:action>
 
       <p>This is a profile.</p>
@@ -416,6 +417,83 @@ defmodule Doggo.Components do
     </.link>
     """
   end
+
+  component(
+    :button,
+    modifiers: [
+      variant: [
+        values: [
+          "primary",
+          "secondary",
+          "info",
+          "success",
+          "warning",
+          "danger"
+        ],
+        default: "primary"
+      ],
+      size: [values: ["small", "normal", "medium", "large"], default: "normal"],
+      fill: [values: ["solid", "outline", "text"], default: "solid"],
+      shape: [values: [nil, "circle", "pill"], default: nil]
+    ],
+    doc: """
+    Renders a button.
+
+    Use this component when you need to perform an action that doesn't involve
+    navigating to a different page, such as submitting a form, confirming an
+    action, or deleting an item.
+
+    If you need to navigate to a different page or a specific section on the
+    current page and want to style the link like a button, use `button_link/1`
+    instead.
+
+    See also `button_link/1`, `toggle_button/1`, and `disclosure_button/1`.
+    """,
+    usage: """
+    ```heex
+    <button>Confirm</button>
+
+    <button type="submit" variant={:secondary} size={:medium} shape={:pill}>
+      Submit
+    </button>
+    ```
+
+    To indicate a loading state, for example when submitting a form, use the
+    `aria-busy` attribute:
+
+    ```heex
+    <button aria-label="Saving..." aria-busy>
+      click me
+    </button>
+    ```
+    """,
+    type: :button,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :type, :string,
+          values: ["button", "reset", "submit"],
+          default: "button"
+
+        attr :disabled, :boolean, default: nil
+        attr :rest, :global, include: ~w(autofocus form name value)
+
+        slot :inner_block, required: true
+      end,
+    heex:
+      quote do
+        ~H"""
+        <button
+          type={@type}
+          class={[@base_class | @modifier_classes]}
+          disabled={@disabled}
+          {@rest}
+        >
+          <%= render_slot(@inner_block) %>
+        </button>
+        """
+      end
+  )
 
   component(
     :cluster,

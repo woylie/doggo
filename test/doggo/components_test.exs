@@ -19,6 +19,7 @@ defmodule Doggo.ComponentsTest do
     badge()
     box()
     breadcrumb()
+    button()
     cluster()
     tag()
     tree()
@@ -361,6 +362,95 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "nav:root", "data-test") == "hello"
+    end
+  end
+
+  describe "button/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button>Confirm</TestComponents.button>
+        """)
+
+      button = find_one(html, "button:root")
+      assert attribute(button, "type") == "button"
+
+      assert attribute(button, "class") ==
+               "button is-primary is-normal is-solid"
+
+      assert text(button) == "Confirm"
+    end
+
+    test "disabled" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button disabled>Confirm</TestComponents.button>
+        """)
+
+      assert attribute(html, "button:root", "disabled") == "disabled"
+    end
+
+    test "with type" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button type="submit">Confirm</TestComponents.button>
+        """)
+
+      assert attribute(html, "button:root", "type") == "submit"
+    end
+
+    test "with variant" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button variant="danger">Confirm</TestComponents.button>
+        """)
+
+      assert attribute(html, "button:root", "class") ==
+               "button is-danger is-normal is-solid"
+    end
+
+    test "with size" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button size="large">Confirm</TestComponents.button>
+        """)
+
+      assert attribute(html, "button:root", "class") ==
+               "button is-primary is-large is-solid"
+    end
+
+    test "with shape" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button shape="pill">Confirm</TestComponents.button>
+        """)
+
+      assert attribute(html, "button:root", "class") ==
+               "button is-primary is-normal is-solid is-pill"
+    end
+
+    test "with fill" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button fill="outline">Confirm</TestComponents.button>
+        """)
+
+      assert attribute(html, "button:root", "class") ==
+               "button is-primary is-normal is-outline"
     end
   end
 
