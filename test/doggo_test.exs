@@ -3918,63 +3918,6 @@ defmodule DoggoTest do
     end
   end
 
-  describe "property_list/1" do
-    test "default" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.property_list>
-          <:prop label="Name">George</:prop>
-        </Doggo.property_list>
-        """)
-
-      assert attribute(html, "dl", "class") == "property-list"
-      assert text(html, "dl > div > dt") == "Name"
-      assert text(html, "dl > div > dd") == "George"
-    end
-
-    test "with additional class as string" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.property_list class="is-narrow">
-          <:prop label="Name">George</:prop>
-        </Doggo.property_list>
-        """)
-
-      assert attribute(html, "dl", "class") == "property-list is-narrow"
-    end
-
-    test "with additional classes as list" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.property_list class={["is-narrow", "is-crisp"]}>
-          <:prop label="Name">George</:prop>
-        </Doggo.property_list>
-        """)
-
-      assert attribute(html, "dl", "class") ==
-               "property-list is-narrow is-crisp"
-    end
-
-    test "with global attribute" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.property_list data-test="value">
-          <:prop label="Name">George</:prop>
-        </Doggo.property_list>
-        """)
-
-      assert attribute(html, "dl", "data-test") == "value"
-    end
-  end
-
   describe "time/1" do
     test "with Time" do
       assigns = %{}

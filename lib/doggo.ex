@@ -3961,42 +3961,6 @@ defmodule Doggo do
     """
   end
 
-  @doc """
-  Renders a list of properties, i.e. key/value pairs.
-
-  ## Example
-
-  ```heex
-  <Doggo.property_list>
-    <:prop label={gettext("Name")}>George</:prop>
-    <:prop label={gettext("Age")}>42</:prop>
-  </Doggo.property_list>
-  ```
-  """
-  @doc type: :component
-  @doc since: "0.1.0"
-
-  slot :prop, doc: "A property to be rendered." do
-    attr :label, :string, required: true
-  end
-
-  attr :class, :any,
-    default: [],
-    doc: "Additional CSS classes. Can be a string or a list of strings."
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-
-  def property_list(assigns) do
-    ~H"""
-    <dl class={["property-list" | List.wrap(@class)]} {@rest}>
-      <div :for={prop <- @prop}>
-        <dt><%= prop.label %></dt>
-        <dd><%= render_slot(prop) %></dd>
-      </div>
-    </dl>
-    """
-  end
-
   ## Helpers
 
   @doc false

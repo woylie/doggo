@@ -23,6 +23,7 @@ defmodule Doggo.Components do
         cluster()
         disclosure_button()
         fab()
+        property_list()
         radio_group()
         skeleton()
         split_pane()
@@ -747,6 +748,43 @@ defmodule Doggo.Components do
         >
           <%= render_slot(@inner_block) %>
         </button>
+        """
+      end
+  )
+
+  component(
+    :property_list,
+    modifiers: [],
+    doc: """
+    Renders a list of properties, i.e. key/value pairs.
+    """,
+    usage: """
+    ```heex
+    <.property_list>
+      <:prop label={gettext("Name")}>George</:prop>
+      <:prop label={gettext("Age")}>42</:prop>
+    </.property_list>
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        slot :prop, doc: "A property to be rendered." do
+          attr :label, :string, required: true
+        end
+
+        attr :rest, :global, doc: "Any additional HTML attributes."
+      end,
+    heex:
+      quote do
+        ~H"""
+        <dl class={[@base_class | @modifier_classes]} {@rest}>
+          <div :for={prop <- @prop}>
+            <dt><%= prop.label %></dt>
+            <dd><%= render_slot(prop) %></dd>
+          </div>
+        </dl>
         """
       end
   )

@@ -25,6 +25,7 @@ defmodule Doggo.ComponentsTest do
     cluster()
     disclosure_button()
     fab()
+    property_list()
     radio_group()
     skeleton()
     split_pane()
@@ -681,6 +682,36 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "button:root", "phx-click") == "add"
+    end
+  end
+
+  describe "property_list/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.property_list>
+          <:prop label="Name">George</:prop>
+        </TestComponents.property_list>
+        """)
+
+      assert attribute(html, "dl", "class") == "property-list"
+      assert text(html, "dl > div > dt") == "Name"
+      assert text(html, "dl > div > dd") == "George"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.property_list data-test="value">
+          <:prop label="Name">George</:prop>
+        </TestComponents.property_list>
+        """)
+
+      assert attribute(html, "dl", "data-test") == "value"
     end
   end
 
