@@ -17,6 +17,7 @@ defmodule Doggo.ComponentsTest do
     accordion()
     action_bar()
     badge()
+    box()
     cluster()
     tag()
     tree_item()
@@ -218,6 +219,86 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "span", "data-what") == "ever"
+    end
+  end
+
+  describe "box/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.box>
+          Content
+        </TestComponents.box>
+        """)
+
+      section = find_one(html, "section:root")
+      assert attribute(section, "class") == "box"
+      assert text(section) == "Content"
+    end
+
+    test "with title" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.box>
+          <:title>Profile</:title>
+        </TestComponents.box>
+        """)
+
+      assert text(html, "section:root > header > h2") == "Profile"
+    end
+
+    test "with banner" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.box>
+          <:banner>Banner</:banner>
+        </TestComponents.box>
+        """)
+
+      assert text(html, "section:root > header > div.box-banner") == "Banner"
+    end
+
+    test "with action" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.box>
+          <:action>Action</:action>
+        </TestComponents.box>
+        """)
+
+      assert text(html, "section:root > header > div.box-actions") == "Action"
+    end
+
+    test "with footer" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.box>
+          <:footer>Doggo</:footer>
+        </TestComponents.box>
+        """)
+
+      assert text(html, "section:root > footer") == "Doggo"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.box data-test="hello"></TestComponents.box>
+        """)
+
+      assert attribute(html, "section:root", "data-test") == "hello"
     end
   end
 

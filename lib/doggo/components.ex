@@ -4,6 +4,11 @@ defmodule Doggo.Components do
 
   ## Usage
 
+  Import this module, ensure you also use `Phoenix.Component`, and call the
+  macros of all the components you need.
+
+  To generate all components with their default options:
+
       defmodule MyAppWeb.CoreComponents do
         use Phoenix.Component
         import Doggo.Components
@@ -11,6 +16,7 @@ defmodule Doggo.Components do
         accordion()
         action_bar()
         badge()
+        box()
         cluster()
         tag()
         tree_item()
@@ -244,6 +250,84 @@ defmodule Doggo.Components do
         <span class={[@base_class | @modifier_classes]} {@rest}>
           <%= render_slot(@inner_block) %>
         </span>
+        """
+      end
+  )
+
+  component(
+    :box,
+    modifiers: [],
+    doc: """
+    Renders a box for a section on the page.
+    """,
+    usage: """
+    Minimal example with only a box body:
+
+    ```heex
+    <box>
+      <p>This is a box.</p>
+    </box>
+    ```
+
+    With title, banner, action, and footer:
+
+    ```heex
+    <box>
+      <:title>Profile</:title>
+      <:banner>
+        <img src="banner-image.png" alt="" />
+      </:banner>
+      <:action>
+        <Doggo.button_link patch={~p"/profiles/\#{@profile}/edit"}>Edit</Doggo.button_link>
+      </:action>
+
+      <p>This is a profile.</p>
+
+      <:footer>
+        <p>Last edited: <%= @profile.updated_at %></p>
+      </:footer>
+    </box>
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        slot :title, doc: "The title for the box."
+
+        slot :inner_block,
+          required: true,
+          doc: "Slot for the content of the box body."
+
+        slot :action, doc: "A slot for action buttons related to the box."
+
+        slot :banner,
+          doc: "A slot that can be used to render a banner image in the header."
+
+        slot :footer, doc: "An optional slot for the footer."
+
+        attr :rest, :global, doc: "Any additional HTML attributes."
+      end,
+    heex:
+      quote do
+        ~H"""
+        <section class={[@base_class | @modifier_classes]} {@rest}>
+          <header :if={@title != [] || @banner != [] || @action != []}>
+            <h2 :if={@title != []}><%= render_slot(@title) %></h2>
+            <div :if={@action != []} class="box-actions">
+              <%= for action <- @action do %>
+                <%= render_slot(action) %>
+              <% end %>
+            </div>
+            <div :if={@banner != []} class="box-banner">
+              <%= render_slot(@banner) %>
+            </div>
+          </header>
+          <%= render_slot(@inner_block) %>
+          <footer :if={@footer != []}>
+            <%= render_slot(@footer) %>
+          </footer>
+        </section>
         """
       end
   )
