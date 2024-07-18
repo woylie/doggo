@@ -22,6 +22,7 @@ defmodule Doggo.ComponentsTest do
     button()
     button_link()
     cluster()
+    disclosure_button()
     tag()
     tree()
     tree_item()
@@ -571,6 +572,25 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "div", "data-what") == "ever"
+    end
+  end
+
+  describe "disclosure_button/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.disclosure_button controls="data-table">
+          Data Table
+        </TestComponents.disclosure_button>
+        """)
+
+      button = find_one(html, "button:root")
+      assert attribute(button, "type") == "button"
+      assert attribute(button, "aria-expanded") == "false"
+      assert attribute(button, "aria-controls") == "data-table"
+      assert text(button) == "Data Table"
     end
   end
 

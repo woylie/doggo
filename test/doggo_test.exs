@@ -1539,25 +1539,6 @@ defmodule DoggoTest do
     end
   end
 
-  describe "disclosure_button/1" do
-    test "default" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.disclosure_button controls="data-table">
-          Data Table
-        </Doggo.disclosure_button>
-        """)
-
-      button = find_one(html, "button:root")
-      assert attribute(button, "type") == "button"
-      assert attribute(button, "aria-expanded") == "false"
-      assert attribute(button, "aria-controls") == "data-table"
-      assert text(button) == "Data Table"
-    end
-  end
-
   describe "drawer/1" do
     test "default" do
       assigns = %{}

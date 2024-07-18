@@ -21,6 +21,7 @@ defmodule Doggo.Components do
         button()
         button_link()
         cluster()
+        disclosure_button()
         tag()
         tree()
         tree_item()
@@ -618,6 +619,80 @@ defmodule Doggo.Components do
         <div class={[@base_class | @modifier_classes]} {@rest}>
           <%= render_slot(@inner_block) %>
         </div>
+        """
+      end
+  )
+
+  component(
+    :disclosure_button,
+    base_class: "button",
+    modifiers: [
+      variant: [
+        values: [
+          "primary",
+          "secondary",
+          "info",
+          "success",
+          "warning",
+          "danger"
+        ],
+        default: "primary"
+      ],
+      size: [values: ["small", "normal", "medium", "large"], default: "normal"],
+      fill: [values: ["solid", "outline", "text"], default: "solid"],
+      shape: [values: [nil, "circle", "pill"], default: nil]
+    ],
+    doc: """
+    Renders a button that toggles the visibility of another element.
+
+    Use this component to reveal or hide additional content, such as in
+    collapsible sections or dropdown menus.
+
+    For a button that toggles other states, use `toggle_button/1` instead. See
+    also `button/1` and `button_link/1`.
+    """,
+    usage: """
+    Set the `controls` attribute to the DOM ID of the element that you want to
+    toggle with the button.
+
+    The initial state is hidden. Do not forget to add the `hidden` attribute to
+    the toggled element. Otherwise, visibility of the element will not align with
+    the `aria-expanded` attribute of the button.
+
+    ```heex
+    <.disclosure_button controls="data-table">
+      Data Table
+    </.disclosure_button>
+
+    <table id="data-table" hidden></table>
+    """,
+    type: :button,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :controls, :string,
+          required: true,
+          doc: """
+          The DOM ID of the element that this button controls.
+          """
+
+        attr :rest, :global
+
+        slot :inner_block, required: true
+      end,
+    heex:
+      quote do
+        ~H"""
+        <button
+          type="button"
+          aria-expanded="false"
+          aria-controls={@controls}
+          phx-click={Doggo.toggle_disclosure(@controls)}
+          class={[@base_class | @modifier_classes]}
+          {@rest}
+        >
+          <%= render_slot(@inner_block) %>
+        </button>
         """
       end
   )

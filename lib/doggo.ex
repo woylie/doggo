@@ -1116,65 +1116,6 @@ defmodule Doggo do
   defp to_time(nil), do: nil
 
   @doc """
-  Renders a button that toggles the visibility of another element.
-
-  Use this component to reveal or hide additional content, such as in
-  collapsible sections or dropdown menus.
-
-  For a button that toggles other states, use `toggle_button/1` instead. See
-  also `button/1` and `button_link/1`.
-
-  ## Examples
-
-  Set the `controls` attribute to the DOM ID of the element that you want to
-  toggle with the button.
-
-  The initial state is hidden. Do not forget to add the `hidden` attribute to
-  the toggled element. Otherwise, visibility of the element will not align with
-  the `aria-expanded` attribute of the button.
-
-  ```heex
-  <Doggo.disclosure_button controls="data-table">
-    Data Table
-  </Doggo.disclosure_button>
-
-  <table id="data-table" hidden></table>
-  ```
-  """
-  @doc type: :button
-  @doc since: "0.5.0"
-
-  attr :controls, :string,
-    required: true,
-    doc: """
-    The DOM ID of the element that this button controls.
-    """
-
-  attr :rest, :global
-
-  slot :inner_block, required: true
-
-  def disclosure_button(assigns) do
-    ~H"""
-    <button
-      type="button"
-      aria-expanded="false"
-      aria-controls={@controls}
-      phx-click={toggle_disclosure(@controls)}
-      {@rest}
-    >
-      <%= render_slot(@inner_block) %>
-    </button>
-    """
-  end
-
-  defp toggle_disclosure(target_id) when is_binary(target_id) do
-    %JS{}
-    |> JS.toggle_attribute({"aria-expanded", "true", "false"})
-    |> JS.toggle_attribute({"hidden", "hidden"}, to: "##{target_id}")
-  end
-
-  @doc """
   Renders a drawer with a `brand`, `top`, and `bottom` slot.
 
   All slots are optional, and you can render any content in them. If you want
@@ -5356,6 +5297,15 @@ defmodule Doggo do
     s
     |> String.replace("_", " ")
     |> :string.titlecase()
+  end
+
+  ## JS functions
+
+  @doc false
+  def toggle_disclosure(target_id) when is_binary(target_id) do
+    %JS{}
+    |> JS.toggle_attribute({"aria-expanded", "true", "false"})
+    |> JS.toggle_attribute({"hidden", "hidden"}, to: "##{target_id}")
   end
 
   ## Modifier classes
