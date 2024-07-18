@@ -18,6 +18,7 @@ defmodule Doggo.ComponentsTest do
     action_bar()
     badge()
     box()
+    breadcrumb()
     cluster()
     tag()
     tree_item()
@@ -299,6 +300,66 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "section:root", "data-test") == "hello"
+    end
+  end
+
+  describe "breadcrumb/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.breadcrumb>
+          <:item patch="/categories">Categories</:item>
+          <:item patch="/categories/1">Reviews</:item>
+          <:item patch="/categories/1/articles/1">The Movie</:item>
+        </TestComponents.breadcrumb>
+        """)
+
+      nav = find_one(html, "nav:root")
+      assert attribute(nav, "class") == "breadcrumb"
+      assert attribute(nav, "aria-label") == "Breadcrumb"
+
+      ol = find_one(html, "nav:root > ol")
+      assert [li1, li2, li3] = Floki.children(ol)
+
+      assert attribute(li1, "a", "href") == "/categories"
+      assert attribute(li2, "a", "href") == "/categories/1"
+      assert attribute(li3, "a", "href") == "/categories/1/articles/1"
+
+      assert attribute(li1, "a", "aria-current") == nil
+      assert attribute(li2, "a", "aria-current") == nil
+      assert attribute(li3, "a", "aria-current") == "page"
+
+      assert text(li1, "a") == "Categories"
+      assert text(li2, "a") == "Reviews"
+      assert text(li3, "a") == "The Movie"
+    end
+
+    test "with label" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.breadcrumb label="Brotkrumen">
+          <:item patch="/categories">Categories</:item>
+        </TestComponents.breadcrumb>
+        """)
+
+      assert attribute(html, "nav:root", "aria-label") == "Brotkrumen"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.breadcrumb data-test="hello">
+          <:item patch="/categories">Categories</:item>
+        </TestComponents.breadcrumb>
+        """)
+
+      assert attribute(html, "nav:root", "data-test") == "hello"
     end
   end
 

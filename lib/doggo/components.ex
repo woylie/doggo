@@ -17,6 +17,7 @@ defmodule Doggo.Components do
         action_bar()
         badge()
         box()
+        breadcrumb()
         cluster()
         tag()
         tree_item()
@@ -331,6 +332,89 @@ defmodule Doggo.Components do
         """
       end
   )
+
+  component(
+    :breadcrumb,
+    modifiers: [],
+    doc: """
+    Renders a breadcrumb navigation.
+    """,
+    usage: """
+    ```heex
+    <breadcrumb>
+      <:item patch="/categories">Categories</:item>
+      <:item patch="/categories/1">Reviews</:item>
+      <:item patch="/categories/1/articles/1">The Movie</:item>
+    </breadcrumb>
+    ```
+    """,
+    type: :navigation,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :label, :string,
+          default: "Breadcrumb",
+          doc: """
+          The aria label for the `<nav>` element.
+
+          The label should start with a capital letter, be localized, and should
+          not repeat the word 'navigation'.
+          """
+
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :item, required: true do
+          attr :navigate, :string
+          attr :patch, :string
+          attr :href, :string
+        end
+      end,
+    heex:
+      quote do
+        [last_item | rest] = Enum.reverse(var!(assigns).item)
+
+        var!(assigns) =
+          assign(
+            var!(assigns),
+            :item,
+            Enum.reverse([{:current, last_item} | rest])
+          )
+
+        ~H"""
+        <nav aria-label={@label} class={[@base_class | @modifier_classes]} {@rest}>
+          <ol>
+            <li :for={item <- @item}>
+              <Doggo.Components.breadcrumb_link item={item} />
+            </li>
+          </ol>
+        </nav>
+        """
+      end
+  )
+
+  @doc false
+  def breadcrumb_link(%{item: {:current, current_item}} = assigns) do
+    assigns = assign(assigns, :item, current_item)
+
+    ~H"""
+    <.link
+      navigate={@item[:navigate]}
+      patch={@item[:patch]}
+      href={@item[:href]}
+      aria-current="page"
+    >
+      <%= render_slot(@item) %>
+    </.link>
+    """
+  end
+
+  def breadcrumb_link(assigns) do
+    ~H"""
+    <.link navigate={@item[:navigate]} patch={@item[:patch]} href={@item[:href]}>
+      <%= render_slot(@item) %>
+    </.link>
+    """
+  end
 
   component(
     :cluster,
