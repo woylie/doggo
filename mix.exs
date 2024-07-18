@@ -91,7 +91,8 @@ defmodule Doggo.MixProject do
         Buttons: &(&1[:type] == :button),
         Form: &(&1[:type] == :form),
         Menu: &(&1[:type] == :menu),
-        Navigation: &(&1[:type] == :navigation)
+        Navigation: &(&1[:type] == :navigation),
+        JS: &(&1[:type] == :js)
       ]
     ]
   end

@@ -3812,43 +3812,6 @@ defmodule Doggo do
   end
 
   @doc """
-  Shows the modal with the given ID.
-
-  ## Example
-
-  ```heex
-  <.link phx-click={show_modal("pet-modal")}>show</.link>
-  ```
-  """
-  @doc since: "0.1.0"
-
-  def show_modal(js \\ %JS{}, id) when is_binary(id) do
-    js
-    |> JS.push_focus()
-    |> JS.set_attribute({"open", "true"}, to: "##{id}")
-    |> JS.set_attribute({"aria-modal", "true"}, to: "##{id}")
-    |> JS.focus_first(to: "##{id}-content")
-  end
-
-  @doc """
-  Hides the modal with the given ID.
-
-  ## Example
-
-  ```heex
-  <.link phx-click={hide_modal("pet-modal")}>hide</.link>
-  ```
-  """
-  @doc since: "0.1.0"
-
-  def hide_modal(js \\ %JS{}, id) do
-    js
-    |> JS.remove_attribute("open", to: "##{id}")
-    |> JS.set_attribute({"aria-modal", "false"}, to: "##{id}")
-    |> JS.pop_focus()
-  end
-
-  @doc """
   Renders a navigation bar.
 
   ## Usage
@@ -4807,30 +4770,6 @@ defmodule Doggo do
     """
   end
 
-  @doc """
-  Shows the tab with the given index of the `tabs/1` component with the given
-  ID.
-
-  ## Example
-
-      Doggo.show_tab("my-tabs", 2)
-  """
-  @doc since: "0.5.0"
-
-  def show_tab(js \\ %JS{}, id, index)
-      when is_binary(id) and is_integer(index) do
-    other_tabs = "##{id} [role='tab']:not(##{id}-tab-#{index})"
-    other_panels = "##{id} [role='tabpanel']:not(##{id}-panel-#{index})"
-
-    js
-    |> JS.set_attribute({"aria-selected", "true"}, to: "##{id}-tab-#{index}")
-    |> JS.set_attribute({"tabindex", "0"}, to: "##{id}-tab-#{index}")
-    |> JS.remove_attribute("hidden", to: "##{id}-panel-#{index}")
-    |> JS.set_attribute({"aria-selected", "false"}, to: other_tabs)
-    |> JS.set_attribute({"tabindex", "-1"}, to: other_tabs)
-    |> JS.set_attribute({"hidden", "hidden"}, to: other_panels)
-  end
-
   ## Helpers
 
   defp humanize(atom) when is_atom(atom) do
@@ -4854,6 +4793,70 @@ defmodule Doggo do
   end
 
   ## JS functions
+
+  @doc """
+  Hides the modal with the given ID.
+
+  ## Example
+
+  ```heex
+  <.link phx-click={hide_modal("pet-modal")}>hide</.link>
+  ```
+  """
+  @doc type: :js
+  @doc since: "0.1.0"
+
+  def hide_modal(js \\ %JS{}, id) do
+    js
+    |> JS.remove_attribute("open", to: "##{id}")
+    |> JS.set_attribute({"aria-modal", "false"}, to: "##{id}")
+    |> JS.pop_focus()
+  end
+
+  @doc """
+  Shows the modal with the given ID.
+
+  ## Example
+
+  ```heex
+  <.link phx-click={show_modal("pet-modal")}>show</.link>
+  ```
+  """
+  @doc type: :js
+  @doc since: "0.1.0"
+
+  def show_modal(js \\ %JS{}, id) when is_binary(id) do
+    js
+    |> JS.push_focus()
+    |> JS.set_attribute({"open", "true"}, to: "##{id}")
+    |> JS.set_attribute({"aria-modal", "true"}, to: "##{id}")
+    |> JS.focus_first(to: "##{id}-content")
+  end
+
+  @doc """
+  Shows the tab with the given index of the `tabs/1` component with the given
+  ID.
+
+  ## Example
+
+      Doggo.show_tab("my-tabs", 2)
+  """
+  @doc type: :js
+  @doc since: "0.5.0"
+
+  def show_tab(js \\ %JS{}, id, index)
+      when is_binary(id) and is_integer(index) do
+    other_tabs = "##{id} [role='tab']:not(##{id}-tab-#{index})"
+    other_panels = "##{id} [role='tabpanel']:not(##{id}-panel-#{index})"
+
+    js
+    |> JS.set_attribute({"aria-selected", "true"}, to: "##{id}-tab-#{index}")
+    |> JS.set_attribute({"tabindex", "0"}, to: "##{id}-tab-#{index}")
+    |> JS.remove_attribute("hidden", to: "##{id}-panel-#{index}")
+    |> JS.set_attribute({"aria-selected", "false"}, to: other_tabs)
+    |> JS.set_attribute({"tabindex", "-1"}, to: other_tabs)
+    |> JS.set_attribute({"hidden", "hidden"}, to: other_panels)
+  end
 
   @doc false
   def toggle_disclosure(target_id) when is_binary(target_id) do
