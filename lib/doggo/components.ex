@@ -23,6 +23,7 @@ defmodule Doggo.Components do
         cluster()
         disclosure_button()
         fab()
+        skeleton()
         tag()
         toggle_button()
         tree()
@@ -748,6 +749,95 @@ defmodule Doggo.Components do
         >
           <%= render_slot(@inner_block) %>
         </button>
+        """
+      end
+  )
+
+  component(
+    :skeleton,
+    modifiers: [
+      type: [
+        values: [
+          "text-line",
+          "text-block",
+          "image",
+          "circle",
+          "rectangle",
+          "square"
+        ],
+        required: true
+      ]
+    ],
+    doc: """
+    Renders a skeleton loader, a placeholder for content that is in the process of
+    loading.
+
+    It mimics the layout of the actual content, providing a better user experience
+    during loading phases.
+    """,
+    usage: """
+    Render one of the primitive types in isolation:
+
+    ```heex
+    <.skeleton type="text_line" />
+    ```
+
+    Combine primitives for complex layouts:
+
+    ```heex
+    <div class="card-skeleton" aria-busy="true">
+      <.skeleton type="image" />
+      <.skeleton type="text-line" />
+      <.skeleton type="text-line" />
+      <.skeleton type="text-line" />
+      <.skeleton type="rectangle" />
+    </div>
+    ```
+
+    To modify the primitives for your use cases, you can either configure additional
+    modifiers or use CSS properties:
+
+    ```heex
+    <Doggo.skeleton type="text-line" variant="header" />
+    ```
+
+    ```heex
+    <Doggo.skeleton type="image" style="--aspect-ratio: 75%;" />
+    ```
+
+    ## Aria-busy attribute
+
+    When using skeleton loaders, apply `aria-busy="true"` to the container element
+    that contains the skeleton layout. For standalone use, add the attribute
+    directly to the individual skeleton loader.
+
+    ## Async result component
+
+    The easiest way to load data asynchronously and render a skeleton loader is
+    to use LiveView's
+    [async operations](`m:Phoenix.LiveView#module-async-operations`)
+    and `Phoenix.Component.async_result/1`.
+
+    Assuming you defined a card skeleton component as described above:
+
+    ```heex
+    <.async_result :let={puppy} assign={@puppy}>
+      <:loading><.card_skeleton /></:loading>
+      <:failed :let={_reason}>There was an error loading the puppy.</:failed>
+      <!-- Card for loaded content -->
+    </.async_result>
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :rest, :global, doc: "Any additional HTML attributes."
+      end,
+    heex:
+      quote do
+        ~H"""
+        <div class={[@base_class | @modifier_classes]} {@rest}></div>
         """
       end
   )

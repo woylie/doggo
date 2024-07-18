@@ -25,6 +25,7 @@ defmodule Doggo.ComponentsTest do
     disclosure_button()
     fab()
     tag()
+    skeleton()
     toggle_button()
     tree()
     tree_item()
@@ -667,6 +668,41 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "button:root", "phx-click") == "add"
+    end
+  end
+
+  describe "skeleton/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.skeleton type="circle" />
+        """)
+
+      assert attribute(html, "div:root", "class") == "skeleton is-circle"
+    end
+
+    test "with text block" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.skeleton type="text-block" />
+        """)
+
+      assert attribute(html, "div:root", "class") == "skeleton is-text-block"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.skeleton type="square" data-test="hello" />
+        """)
+
+      assert attribute(html, "div:root", "data-test") == "hello"
     end
   end
 
