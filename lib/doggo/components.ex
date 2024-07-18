@@ -12,6 +12,7 @@ defmodule Doggo.Components do
         badge()
         cluster()
         tag()
+        tree_item()
       end
 
   ## Common Options
@@ -230,6 +231,94 @@ defmodule Doggo.Components do
         <span class={[@base_class | @modifier_classes]} {@rest}>
           <%= render_slot(@inner_block) %>
         </span>
+        """
+      end
+  )
+
+  component(
+    :tree_item,
+    base_class: nil,
+    modifiers: [],
+    doc: """
+    Renders a tree item within a `tree/1`.
+
+    This component can be used as a direct child of `tree/1` or within the `items`
+    slot of this component.
+
+    > #### In Development {: .warning}
+    >
+    > The necessary JavaScript for making this component fully functional and
+    > accessible will be added in a future version.
+    >
+    > **Missing featumres**
+    >
+    > - Expand and collapse nodes
+    > - Select nodes
+    > - Navigate tree with arrow keys
+    """,
+    usage: """
+    ```heex
+    <tree label="Dogs">
+      <tree_item>
+        Breeds
+        <:items>
+          <tree_item>Golden Retriever</tree_item>
+          <tree_item>Labrador Retriever</tree_item>
+        </:items>
+      </tree_item>
+      <tree_item>
+        Characteristics
+        <:items>
+          <tree_item>Playful</tree_item>
+          <tree_item>Loyal</tree_item>
+        </:items>
+      </tree_item>
+    </tree>
+    ```
+
+    Icons can be added before the label:
+
+    <tree_item>
+      <Heroicon.folder /> Breeds
+      <:items>
+        <tree_item><Heroicon.document /> Golden Retriever</tree_item>
+        <tree_item><Heroicon.document /> Labrador Retriever</tree_item>
+      </:items>
+    </tree_item>
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :items,
+          doc: """
+          Slot for children of this item. Place one or more additional `tree_item/1`
+          components within this slot, or omit if this is a leaf node.
+          """
+
+        slot :inner_block,
+          required: true,
+          doc: """
+          Slot for the item label.
+          """
+      end,
+    heex:
+      quote do
+        ~H"""
+        <li
+          class={[@base_class | @modifier_classes]}
+          role="treeitem"
+          aria-selected="false"
+          aria-expanded={@items != [] && "false"}
+          {@rest}
+        >
+          <span><%= render_slot(@inner_block) %></span>
+          <ul :if={@items != []} role="group">
+            <%= render_slot(@items) %>
+          </ul>
+        </li>
         """
       end
   )

@@ -6183,62 +6183,6 @@ defmodule DoggoTest do
     end
   end
 
-  describe "tree_item/1" do
-    test "without children" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.tree_item>
-          Breeds
-        </Doggo.tree_item>
-        """)
-
-      assert attribute(html, "li:root", "role") == "treeitem"
-      assert attribute(html, ":root", "aria-expanded") == nil
-      assert attribute(html, ":root", "aria-selected") == "false"
-      assert text(html, ":root > span") == "Breeds"
-      assert Floki.find(html, ":root ul") == []
-    end
-
-    test "with children" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.tree_item>
-          Breeds
-          <:items>
-            <Doggo.tree_item>Golden Retriever</Doggo.tree_item>
-            <Doggo.tree_item>Labrador Retriever</Doggo.tree_item>
-          </:items>
-        </Doggo.tree_item>
-        """)
-
-      assert attribute(html, "li:root", "role") == "treeitem"
-      assert attribute(html, ":root", "aria-expanded") == "false"
-      assert attribute(html, ":root", "aria-selected") == "false"
-      assert text(html, ":root > span") == "Breeds"
-
-      assert ul = find_one(html, "li:root > ul")
-      assert attribute(ul, "role") == "group"
-
-      assert li = find_one(ul, "li:first-child")
-      assert attribute(li, "role") == "treeitem"
-      assert attribute(li, ":root", "aria-expanded") == nil
-      assert attribute(li, ":root", "aria-selected") == "false"
-      assert text(li, ":root > span") == "Golden Retriever"
-      assert Floki.find(li, ":root ul") == []
-
-      assert li = find_one(ul, "li:last-child")
-      assert attribute(li, "role") == "treeitem"
-      assert attribute(li, ":root", "aria-expanded") == nil
-      assert attribute(li, ":root", "aria-selected") == "false"
-      assert text(li, ":root > span") == "Labrador Retriever"
-      assert Floki.find(li, ":root ul") == []
-    end
-  end
-
   describe "modifier_classes/1" do
     test "returns a map of modifier classes" do
       assert %{variants: [variant | _]} = Doggo.modifier_classes()

@@ -5,6 +5,7 @@ defmodule Doggo.Macros do
   defmacro component(name, opts) do
     opts =
       Keyword.validate!(opts, [
+        :base_class,
         :modifiers,
         :doc,
         :usage,
@@ -20,10 +21,17 @@ defmodule Doggo.Macros do
     usage = Keyword.fetch!(opts, :usage)
     modifiers = Keyword.fetch!(opts, :modifiers)
 
+    base_class =
+      Keyword.get(
+        opts,
+        :base_class,
+        name |> to_string |> String.replace("_", "-")
+      )
+
     defaults =
       [
         name: name,
-        base_class: name |> to_string |> String.replace("_", "-"),
+        base_class: base_class,
         modifiers: modifiers,
         class_name_fun: &Doggo.modifier_class_name/1
       ]
