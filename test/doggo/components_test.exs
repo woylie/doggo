@@ -28,6 +28,7 @@ defmodule Doggo.ComponentsTest do
     tag()
     skeleton()
     stack()
+    switch()
     tab_navigation()
     table()
     tabs()
@@ -763,6 +764,59 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "div", "data-what") == "ever"
+    end
+  end
+
+  describe "switch/1" do
+    test "default checked" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.switch label="Subscribe" checked />
+        """)
+
+      button = find_one(html, "button:root")
+      assert attribute(button, "type") == "button"
+      assert attribute(button, "role") == "switch"
+      assert attribute(button, "aria-checked") == "true"
+
+      assert text(button, "span.switch-label") == "Subscribe"
+
+      control = find_one(button, "span.switch-control")
+      assert Floki.children(control) == [{"span", [], []}]
+
+      span = find_one(button, "span.switch-state > span")
+      assert attribute(span, "class") == "switch-state-on"
+      assert attribute(span, "aria-hidden") == "true"
+      assert text(span) == "On"
+    end
+
+    test "default unchecked" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.switch label="Subscribe" />
+        """)
+
+      button = find_one(html, "button:root")
+      assert attribute(button, "aria-checked") == "false"
+
+      span = find_one(button, "span.switch-state > span")
+      assert attribute(span, "class") == "switch-state-off"
+      assert text(span) == "Off"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.switch label="Subscribe" data-test="hello" />
+        """)
+
+      assert attribute(html, "button:root", "data-test") == "hello"
     end
   end
 
