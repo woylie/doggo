@@ -27,6 +27,11 @@ defmodule Doggo.ComponentsTest do
     tag()
     tree()
     tree_item()
+
+    button_link(
+      name: :button_link_with_disabled_class,
+      disabled_class: "disabled"
+    )
   end
 
   describe "accordion/1" do
@@ -485,6 +490,20 @@ defmodule Doggo.ComponentsTest do
 
       assert attribute(html, "a:root", "class") ==
                "button is-primary is-normal is-solid is-disabled"
+    end
+
+    test "disabled with custom disabled class" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button_link_with_disabled_class disabled>
+          Confirm
+        </TestComponents.button_link_with_disabled_class>
+        """)
+
+      assert attribute(html, "a:root", "class") ==
+               "button is-primary is-normal is-solid disabled"
     end
 
     test "with variant" do
