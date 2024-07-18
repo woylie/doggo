@@ -25,6 +25,7 @@ defmodule Doggo.ComponentsTest do
     disclosure_button()
     fab()
     tag()
+    toggle_button()
     tree()
     tree_item()
 
@@ -714,6 +715,85 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "span", "class") == "tag is-normal is-pill"
+    end
+  end
+
+  describe "toggle_button/1" do
+    test "with pressed false" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.toggle_button on_click={JS.push("toggle-mute")}>
+          Mute
+        </TestComponents.toggle_button>
+        """)
+
+      button = find_one(html, "button:root")
+      assert attribute(button, "type") == "button"
+      assert attribute(button, "aria-pressed") == "false"
+      assert attribute(button, "phx-click")
+      assert text(button) == "Mute"
+    end
+
+    test "with pressed true" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.toggle_button on_click={JS.push("toggle-mute")} pressed>
+          Mute
+        </TestComponents.toggle_button>
+        """)
+
+      button = find_one(html, "button:root")
+      assert attribute(button, "type") == "button"
+      assert attribute(button, "aria-pressed") == "true"
+      assert attribute(button, "phx-click")
+      assert text(button) == "Mute"
+    end
+
+    test "disabled" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.toggle_button on_click={JS.push("toggle-mute")} disabled>
+          Mute
+        </TestComponents.toggle_button>
+        """)
+
+      assert attribute(html, "button:root", "disabled") == "disabled"
+    end
+
+    test "with variant" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.toggle_button on_click={JS.push("toggle-mute")} variant="danger">
+          Mute
+        </TestComponents.toggle_button>
+        """)
+
+      assert attribute(html, "button:root", "class") ==
+               "button is-danger is-normal is-solid"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.toggle_button
+          on_click={JS.push("toggle-mute")}
+          data-test="hello"
+        >
+          Mute
+        </TestComponents.toggle_button>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 

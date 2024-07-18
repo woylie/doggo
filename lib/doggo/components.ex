@@ -24,6 +24,7 @@ defmodule Doggo.Components do
         disclosure_button()
         fab()
         tag()
+        toggle_button()
         tree()
         tree_item()
       end
@@ -814,6 +815,104 @@ defmodule Doggo.Components do
         <span class={[@base_class | @modifier_classes]} {@rest}>
           <%= render_slot(@inner_block) %>
         </span>
+        """
+      end
+  )
+
+  component(
+    :toggle_button,
+    base_class: "button",
+    modifiers: [
+      variant: [
+        values: [
+          "primary",
+          "secondary",
+          "info",
+          "success",
+          "warning",
+          "danger"
+        ],
+        default: "primary"
+      ],
+      size: [values: ["small", "normal", "medium", "large"], default: "normal"],
+      fill: [values: ["solid", "outline", "text"], default: "solid"],
+      shape: [values: [nil, "circle", "pill"], default: nil]
+    ],
+    doc: """
+    Renders a button that toggles a state.
+
+    Use this component to switch a feature or setting on or off, for example to
+    toggle dark mode or mute/unmute sound.
+
+    See also `button/1`, `button_link/1`, and `disclosure_button/1`.
+    """,
+    usage: """
+    With a `Phoenix.LiveView.JS` command:
+
+    ```heex
+    <.toggle_button on_click={JS.push("toggle-mute")} pressed={@muted}>
+      Mute
+    </.toggle_button>
+    ```
+
+    ## Accessibility
+
+    The button state is conveyed via the `aria-pressed` attribute and the button
+    styling. The button text should not change depending on the state. You may
+    however include an icon that changes depending on the state.
+
+    ## CSS
+
+    A toggle button can be identified with an attribute selector for the
+    `aria-pressed` attribute.
+
+    ```css
+    // any toggle button regardless of state
+    button[aria-pressed] {}
+
+    // unpressed toggle buttons
+    button[aria-pressed="false"] {}
+
+    // pressed toggle buttons
+    button[aria-pressed="true"] {}
+    ```
+    """,
+    type: :button,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :pressed, :boolean, default: false
+
+        attr :on_click, Phoenix.LiveView.JS,
+          required: true,
+          doc: """
+          `Phoenix.LiveView.JS` command or event name to trigger when the button is
+          clicked.
+          """
+
+        attr :disabled, :boolean, default: nil
+        attr :rest, :global
+
+        slot :inner_block, required: true
+      end,
+    heex:
+      quote do
+        ~H"""
+        <button
+          type="button"
+          phx-click={
+            Phoenix.LiveView.JS.toggle_attribute(
+              @on_click,
+              {"aria-pressed", "true", "false"}
+            )
+          }
+          aria-pressed={to_string(@pressed)}
+          class={[@base_class | @modifier_classes]}
+          disabled={@disabled}
+          {@rest}
+        >
+          <%= render_slot(@inner_block) %>
+        </button>
         """
       end
   )
