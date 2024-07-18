@@ -134,7 +134,7 @@ defmodule Doggo.Components do
                   )
                 }
                 aria-controls={"#{@id}-section-#{index}"}
-                phx-click={Doggo.Components.toggle_accordion_section(@id, index)}
+                phx-click={Doggo.toggle_accordion_section(@id, index)}
               >
                 <span><%= section.title %></span>
               </button>
@@ -158,18 +158,6 @@ defmodule Doggo.Components do
   def accordion_section_expanded?(_, :none), do: false
   def accordion_section_expanded?(1, :first), do: true
   def accordion_section_expanded?(_, :first), do: false
-
-  @doc false
-  def toggle_accordion_section(id, index)
-      when is_binary(id) and is_integer(index) do
-    %Phoenix.LiveView.JS{}
-    |> Phoenix.LiveView.JS.toggle_attribute({"aria-expanded", "true", "false"},
-      to: "##{id}-trigger-#{index}"
-    )
-    |> Phoenix.LiveView.JS.toggle_attribute({"hidden", "hidden"},
-      to: "##{id}-section-#{index}"
-    )
-  end
 
   component(
     :action_bar,

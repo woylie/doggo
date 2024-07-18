@@ -4228,6 +4228,18 @@ defmodule Doggo do
   end
 
   @doc false
+  def toggle_accordion_section(id, index)
+      when is_binary(id) and is_integer(index) do
+    %JS{}
+    |> JS.toggle_attribute({"aria-expanded", "true", "false"},
+      to: "##{id}-trigger-#{index}"
+    )
+    |> JS.toggle_attribute({"hidden", "hidden"},
+      to: "##{id}-section-#{index}"
+    )
+  end
+
+  @doc false
   def toggle_disclosure(target_id) when is_binary(target_id) do
     %JS{}
     |> JS.toggle_attribute({"aria-expanded", "true", "false"})
