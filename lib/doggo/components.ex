@@ -519,7 +519,6 @@ defmodule Doggo.Components do
 
   component(
     :tree,
-    base_class: nil,
     modifiers: [],
     doc: """
     Renders a hierarchical list as a tree.
@@ -627,7 +626,6 @@ defmodule Doggo.Components do
 
   component(
     :tree_item,
-    base_class: nil,
     modifiers: [],
     doc: """
     Renders a tree item within a `tree/1`.
