@@ -14,12 +14,14 @@ defmodule Doggo.Macros do
         :attrs_and_slots,
         :type,
         :since,
-        :heex
+        :heex,
+        :extra
       ])
 
     doc = Keyword.fetch!(opts, :doc)
     usage = Keyword.fetch!(opts, :usage)
     modifiers = Keyword.fetch!(opts, :modifiers)
+    extra = Keyword.get(opts, :extra, [])
 
     base_class =
       Keyword.get(
@@ -34,7 +36,7 @@ defmodule Doggo.Macros do
         base_class: base_class,
         modifiers: modifiers,
         class_name_fun: &Doggo.modifier_class_name/1
-      ]
+      ] ++ extra
 
     type = Keyword.fetch!(opts, :type)
     since = Keyword.fetch!(opts, :since)
@@ -68,12 +70,15 @@ defmodule Doggo.Macros do
       defmacro unquote(name)(opts \\ []) do
         opts = Keyword.validate!(opts, unquote(defaults))
 
+        {opts, extra} =
+          Keyword.split(opts, [:name, :base_class, :modifiers, :class_name_fun])
+
         name = Keyword.fetch!(opts, :name)
         base_class = Keyword.fetch!(opts, :base_class)
         modifiers = Keyword.fetch!(opts, :modifiers)
         modifier_names = Keyword.keys(modifiers)
         class_name_fun = Keyword.fetch!(opts, :class_name_fun)
-        heex = unquote(heex)
+        heex = Doggo.Macros.unpack_heex(unquote(heex), extra)
         attrs_and_slots = unquote(attrs_and_slots)
         usage = unquote(usage)
         doc = unquote(doc)
@@ -111,4 +116,7 @@ defmodule Doggo.Macros do
       end
     end
   end
+
+  def unpack_heex(heex, extra) when is_function(heex), do: heex.(extra)
+  def unpack_heex(heex, _), do: heex
 end

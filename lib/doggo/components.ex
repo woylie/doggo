@@ -19,6 +19,7 @@ defmodule Doggo.Components do
         box()
         breadcrumb()
         button()
+        button_link()
         cluster()
         tag()
         tree()
@@ -493,6 +494,99 @@ defmodule Doggo.Components do
         </button>
         """
       end
+  )
+
+  component(
+    :button_link,
+    base_class: "button",
+    extra: [disabled_class: "is-disabled"],
+    modifiers: [
+      variant: [
+        values: [
+          "primary",
+          "secondary",
+          "info",
+          "success",
+          "warning",
+          "danger"
+        ],
+        default: "primary"
+      ],
+      size: [values: ["small", "normal", "medium", "large"], default: "normal"],
+      fill: [values: ["solid", "outline", "text"], default: "solid"],
+      shape: [values: [nil, "circle", "pill"], default: nil]
+    ],
+    doc: """
+    Renders a link (`<a>`) that has the role and style of a button.
+
+    Use this component when you need to style a link to a different page or a
+    specific section within the same page as a button.
+
+    To perform an action on the same page, including toggles and revealing/hiding
+    elements, you should always use a real button instead. See `button/1`,
+    `toggle_button/1`, and `disclosure_button/1`.
+    """,
+    usage: """
+    ```heex
+    <Doggo.button_link patch={~p"/confirm"}>Confirm</.button>
+
+    <Doggo.button_link
+      navigate={~p"/registration"}
+      variant={:primary}
+      shape={:pill}>
+      Submit
+    </Doggo.button_link>
+    ```
+    """,
+    type: :button,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :disabled, :boolean,
+          default: false,
+          doc: """
+          Since `<a>` tags cannot have a `disabled` attribute, this attribute
+          toggles a class.
+          """
+
+        attr :rest, :global,
+          include: [
+            # HTML attributes
+            "download",
+            "hreflang",
+            "referrerpolicy",
+            "rel",
+            "target",
+            "type",
+            # Phoenix.LiveView.Component.link/1 attributes
+            "navigate",
+            "patch",
+            "href",
+            "replace",
+            "method",
+            "csrf_token"
+          ]
+
+        slot :inner_block, required: true
+      end,
+    heex: fn extra ->
+      disabled_class = Keyword.fetch!(extra, :disabled_class)
+
+      quote do
+        var!(assigns) =
+          assign(
+            var!(assigns),
+            :disabled_class,
+            var!(assigns)[:disabled] && unquote(disabled_class)
+          )
+
+        ~H"""
+        <.link class={[@base_class | @modifier_classes] ++ [@disabled_class]} {@rest}>
+          <%= render_slot(@inner_block) %>
+        </.link>
+        """
+      end
+    end
   )
 
   component(
