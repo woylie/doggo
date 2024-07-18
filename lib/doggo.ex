@@ -5481,113 +5481,6 @@ defmodule Doggo do
     """
   end
 
-  @doc """
-  Renders a hierarchical list as a tree.
-
-  A good use case for this component is a folder structure. For navigation and
-  other menus, a regular nested list should be preferred.
-
-  > #### In Development {: .warning}
-  >
-  > The necessary JavaScript for making this component fully functional and
-  > accessible will be added in a future version.
-  >
-  > **Missing features**
-  >
-  > - Expand and collapse nodes
-  > - Select nodes
-  > - Navigate tree with arrow keys
-
-  ## Example
-
-  ```heex
-  <Doggo.tree label="Dogs">
-    <Doggo.tree_item>
-      Breeds
-      <:items>
-        <Doggo.tree_item>Golden Retriever</Doggo.tree_item>
-        <Doggo.tree_item>Labrador Retriever</Doggo.tree_item>
-      </:items>
-    </Doggo.tree_item>
-    <Doggo.tree_item>
-      Characteristics
-      <:items>
-        <Doggo.tree_item>Playful</Doggo.tree_item>
-        <Doggo.tree_item>Loyal</Doggo.tree_item>
-      </:items>
-    </Doggo.tree_item>
-  </Doggo.tree>
-  ```
-
-  ## CSS
-
-  To target the wrapper, use an attribute selector:
-
-  ```css
-  [role="tree"] {}
-  ```
-  """
-
-  @doc type: :component
-  @doc since: "0.5.0"
-
-  attr :label, :string,
-    default: nil,
-    doc: """
-    A accessibility label for the tree. Set as `aria-label` attribute.
-
-    You should ensure that either the `label` or the `labelledby` attribute is
-    set.
-
-    Do not repeat the word `tree` in the label, since it is already announced
-    by screen readers.
-    """
-
-  attr :labelledby, :string,
-    default: nil,
-    doc: """
-    The DOM ID of an element that labels this tree.
-
-    Example:
-
-    ```html
-    <h3 id="dog-tree-label">Dogs</h3>
-    <.tree labelledby="dog-tree-label"></.tree>
-    ```
-
-    You should ensure that either the `label` or the `labelledby` attribute is
-    set.
-    """
-
-  attr :class, :any,
-    default: [],
-    doc: "Additional CSS classes. Can be a string or a list of strings."
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-
-  slot :inner_block,
-    required: true,
-    doc: """
-    Slot for the root nodes of the tree. Use the `tree_item/1` component as
-    direct children.
-    """
-
-  def tree(assigns) do
-    ensure_label!(assigns, "Doggo.tree", "Dog Breeds")
-
-    ~H"""
-    <ul
-      role="tree"
-      aria-label={@label}
-      aria-labelledby={@labelledby}
-      class={@class}
-      {@rest}
-    >
-      <%= render_slot(@inner_block) %>
-    </ul>
-    """
-  end
-
   ## Helpers
 
   defp humanize(atom) when is_atom(atom) do
@@ -5691,15 +5584,16 @@ defmodule Doggo do
     }
   end
 
-  defp ensure_label!(%{label: s, labelledby: nil}, _, _) when is_binary(s) do
+  @doc false
+  def ensure_label!(%{label: s, labelledby: nil}, _, _) when is_binary(s) do
     :ok
   end
 
-  defp ensure_label!(%{label: nil, labelledby: s}, _, _) when is_binary(s) do
+  def ensure_label!(%{label: nil, labelledby: s}, _, _) when is_binary(s) do
     :ok
   end
 
-  defp ensure_label!(_, component, example_label) do
+  def ensure_label!(_, component, example_label) do
     raise Doggo.InvalidLabelError,
       component: component,
       example_label: example_label

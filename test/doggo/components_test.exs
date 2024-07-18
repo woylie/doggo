@@ -21,6 +21,7 @@ defmodule Doggo.ComponentsTest do
     breadcrumb()
     cluster()
     tag()
+    tree()
     tree_item()
   end
 
@@ -435,6 +436,66 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "span", "class") == "tag is-normal is-pill"
+    end
+  end
+
+  describe "tree/1" do
+    test "with label" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tree label="Dogs">
+          items
+        </TestComponents.tree>
+        """)
+
+      assert attribute(html, "ul:root", "role") == "tree"
+      assert attribute(html, ":root", "aria-label") == "Dogs"
+      assert text(html, ":root") == "items"
+    end
+
+    test "with labelledby" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tree labelledby="dog-tree-label"></TestComponents.tree>
+        """)
+
+      assert attribute(html, ":root", "aria-labelledby") == "dog-tree-label"
+    end
+
+    test "raises if both label and labelledby are set" do
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.tree label="Dogs" labelledby="dog-tree-label">
+        </TestComponents.tree>
+        """)
+      end
+    end
+
+    test "raises if neither label nor labelledby are set" do
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.tree></TestComponents.tree>
+        """)
+      end
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tree labelledby="rg-label" data-test="hi"></TestComponents.tree>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hi"
     end
   end
 
