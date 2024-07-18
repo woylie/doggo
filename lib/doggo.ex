@@ -2545,7 +2545,7 @@ defmodule Doggo do
           />
         </legend>
         <div>
-          <.radio
+          <Doggo.Components.radio
             :for={option <- @options}
             option={option}
             name={@name}
@@ -2759,11 +2759,13 @@ defmodule Doggo do
   defp normalize_value("date", _), do: ""
   defp normalize_value(type, value), do: Form.normalize_value(type, value)
 
-  defp input_aria_describedby(_, []), do: nil
-  defp input_aria_describedby(id, _), do: field_description_id(id)
+  @doc false
+  def input_aria_describedby(_, []), do: nil
+  def input_aria_describedby(id, _), do: field_description_id(id)
 
-  defp input_aria_errormessage(_, []), do: nil
-  defp input_aria_errormessage(id, _), do: field_errors_id(id)
+  @doc false
+  def input_aria_errormessage(_, []), do: nil
+  def input_aria_errormessage(id, _), do: field_errors_id(id)
 
   defp field_error_class([]), do: nil
   defp field_error_class(_), do: "has-errors"
@@ -2802,48 +2804,15 @@ defmodule Doggo do
     |> checkbox()
   end
 
-  defp radio(%{option_value: _} = assigns) do
-    ~H"""
-    <.label>
-      <input
-        type="radio"
-        name={@name}
-        id={@id <> "_#{@option_value}"}
-        value={@option_value}
-        checked={checked?(@option_value, @value)}
-        aria-describedby={input_aria_describedby(@id, @description)}
-        aria-errormessage={input_aria_errormessage(@id, @errors)}
-        aria-invalid={@errors != [] && "true"}
-      />
-      <%= @label %>
-    </.label>
-    """
-  end
-
-  defp radio(%{option: {option_label, option_value}} = assigns) do
-    assigns
-    |> assign(label: option_label, option_value: option_value, option: nil)
-    |> radio()
-  end
-
-  defp radio(%{option: option_value} = assigns) do
-    assigns
-    |> assign(
-      label: humanize(option_value),
-      option_value: option_value,
-      option: nil
-    )
-    |> radio()
-  end
-
-  defp checked?(option, value) when is_list(value) do
+  @doc false
+  def checked?(option, value) when is_list(value) do
     Phoenix.HTML.html_escape(option) in Enum.map(
       value,
       &Phoenix.HTML.html_escape/1
     )
   end
 
-  defp checked?(option, value) do
+  def checked?(option, value) do
     Phoenix.HTML.html_escape(option) == Phoenix.HTML.html_escape(value)
   end
 
@@ -4028,126 +3997,16 @@ defmodule Doggo do
     """
   end
 
-  @doc """
-  Renders a group of radio buttons, for example for a toolbar.
-
-  To render radio buttons within a regular form, use `input/1` with the
-  `"radio-group"` type instead.
-
-  ## Example
-
-  ```heex
-  <Doggo.radio_group
-    id="favorite-dog"
-    name="favorite-dog"
-    label="Favorite Dog"
-    options={[
-      {"Labrador Retriever", "labrador"},
-      {"German Shepherd", "german_shepherd"},
-      {"Golden Retriever", "golden_retriever"},
-      {"French Bulldog", "french_bulldog"},
-      {"Beagle", "beagle"}
-    ]}
-  />
-  ```
-
-  ## CSS
-
-  To target the wrapper, use an attribute selector:
-
-  ```css
-  [role="radio-group"] {}
-  ```
-  """
-
-  @doc type: :component
-  @doc since: "0.5.0"
-
-  attr :id, :string, required: true
-
-  attr :name, :string,
-    required: true,
-    doc: "The `name` attribute for the `input` elements."
-
-  attr :label, :string,
-    default: nil,
-    doc: """
-    A accessibility label for the radio group. Set as `aria-label` attribute.
-
-    You should ensure that either the `label` or the `labelledby` attribute is
-    set.
-    """
-
-  attr :labelledby, :string,
-    default: nil,
-    doc: """
-    The DOM ID of an element that labels this radio group.
-
-    Example:
-
-    ```html
-    <h3 id="dog-rg-label">Favorite Dog</h3>
-    <.radio_group labelledby="dog-rg-label"></.radio_group>
-    ```
-
-    You should ensure that either the `label` or the `labelledby` attribute is
-    set.
-    """
-
-  attr :options, :list,
-    required: true,
-    doc: """
-    A list of options. It can be given a list values or as a list of
-    `{label, value}` tuples.
-    """
-
-  attr :value, :any,
-    default: nil,
-    doc: """
-    The currently selected value, which is compared with the option value to
-    determine whether a radio button is checked.
-    """
-
-  attr :class, :any,
-    default: [],
-    doc: "Additional CSS classes. Can be a string or a list of strings."
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-
-  def radio_group(assigns) do
-    ensure_label!(assigns, "Doggo.radio_group", "Favorite Dog")
-
-    ~H"""
-    <div
-      id={@id}
-      role="radiogroup"
-      aria-label={@label}
-      aria-labelledby={@labelledby}
-      class={@class}
-      {@rest}
-    >
-      <.radio
-        :for={option <- @options}
-        option={option}
-        name={@name}
-        id={@id}
-        value={@value}
-        errors={[]}
-        description={[]}
-      />
-    </div>
-    """
-  end
-
   ## Helpers
 
-  defp humanize(atom) when is_atom(atom) do
+  @doc false
+  def humanize(atom) when is_atom(atom) do
     atom
     |> Atom.to_string()
     |> humanize()
   end
 
-  defp humanize(s) when is_binary(s) do
+  def humanize(s) when is_binary(s) do
     if String.ends_with?(s, "_id") do
       s |> binary_part(0, byte_size(s) - 3) |> to_titlecase()
     else

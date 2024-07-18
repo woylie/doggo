@@ -23,6 +23,7 @@ defmodule Doggo.Components do
         cluster()
         disclosure_button()
         fab()
+        radio_group()
         skeleton()
         split_pane()
         stack()
@@ -749,6 +750,152 @@ defmodule Doggo.Components do
         """
       end
   )
+
+  component(
+    :radio_group,
+    modifiers: [],
+    doc: """
+    Renders a group of radio buttons, for example for a toolbar.
+
+    To render radio buttons within a regular form, use `input/1` with the
+    `"radio-group"` type instead.
+    """,
+    usage: """
+    ```heex
+    <.radio_group
+      id="favorite-dog"
+      name="favorite-dog"
+      label="Favorite Dog"
+      options={[
+        {"Labrador Retriever", "labrador"},
+        {"German Shepherd", "german_shepherd"},
+        {"Golden Retriever", "golden_retriever"},
+        {"French Bulldog", "french_bulldog"},
+        {"Beagle", "beagle"}
+      ]}
+    />
+    ```
+
+    ## CSS
+
+    To target the wrapper, you can use an attribute selector:
+
+    ```css
+    [role="radio-group"] {}
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :id, :string, required: true
+
+        attr :name, :string,
+          required: true,
+          doc: "The `name` attribute for the `input` elements."
+
+        attr :label, :string,
+          default: nil,
+          doc: """
+          A accessibility label for the radio group. Set as `aria-label` attribute.
+
+          You should ensure that either the `label` or the `labelledby` attribute is
+          set.
+          """
+
+        attr :labelledby, :string,
+          default: nil,
+          doc: """
+          The DOM ID of an element that labels this radio group.
+
+          Example:
+
+          ```html
+          <h3 id="dog-rg-label">Favorite Dog</h3>
+          <.radio_group labelledby="dog-rg-label"></.radio_group>
+          ```
+
+          You should ensure that either the `label` or the `labelledby` attribute is
+          set.
+          """
+
+        attr :options, :list,
+          required: true,
+          doc: """
+          A list of options. It can be given a list values or as a list of
+          `{label, value}` tuples.
+          """
+
+        attr :value, :any,
+          default: nil,
+          doc: """
+          The currently selected value, which is compared with the option value to
+          determine whether a radio button is checked.
+          """
+
+        attr :rest, :global, doc: "Any additional HTML attributes."
+      end,
+    heex:
+      quote do
+        Doggo.ensure_label!(var!(assigns), ".radio_group", "Favorite Dog")
+
+        ~H"""
+        <div
+          id={@id}
+          role="radiogroup"
+          aria-label={@label}
+          aria-labelledby={@labelledby}
+          class={[@base_class | @modifier_classes]}
+          {@rest}
+        >
+          <Doggo.Components.radio
+            :for={option <- @options}
+            option={option}
+            name={@name}
+            id={@id}
+            value={@value}
+            errors={[]}
+            description={[]}
+          />
+        </div>
+        """
+      end
+  )
+
+  @doc false
+  def radio(%{option_value: _} = assigns) do
+    ~H"""
+    <Doggo.label>
+      <input
+        type="radio"
+        name={@name}
+        id={@id <> "_#{@option_value}"}
+        value={@option_value}
+        checked={Doggo.checked?(@option_value, @value)}
+        aria-describedby={Doggo.input_aria_describedby(@id, @description)}
+        aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+        aria-invalid={@errors != [] && "true"}
+      />
+      <%= @label %>
+    </Doggo.label>
+    """
+  end
+
+  def radio(%{option: {option_label, option_value}} = assigns) do
+    assigns
+    |> assign(label: option_label, option_value: option_value, option: nil)
+    |> radio()
+  end
+
+  def radio(%{option: option_value} = assigns) do
+    assigns
+    |> assign(
+      label: Doggo.humanize(option_value),
+      option_value: option_value,
+      option: nil
+    )
+    |> radio()
+  end
 
   component(
     :skeleton,
