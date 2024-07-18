@@ -27,6 +27,7 @@ defmodule Doggo.ComponentsTest do
     tag()
     skeleton()
     stack()
+    tab_navigation()
     tabs()
     toggle_button()
     toolbar()
@@ -760,6 +761,81 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "div", "data-what") == "ever"
+    end
+  end
+
+  describe "tab_navigation/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tab_navigation current_value={:appointments}>
+          <:item href="/profile" value={:show}>Profile</:item>
+        </TestComponents.tab_navigation>
+        """)
+
+      nav = find_one(html, "nav:root")
+      assert attribute(nav, "class") == "tab-navigation"
+      assert attribute(nav, "aria-label") == "Tabs"
+
+      a = find_one(nav, "ul > li > a")
+      assert attribute(a, "aria-current") == nil
+      assert attribute(a, "href") == "/profile"
+    end
+
+    test "with single value" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tab_navigation current_value={:show}>
+          <:item href="/profile" value={:show}>Profile</:item>
+        </TestComponents.tab_navigation>
+        """)
+
+      a = find_one(html, "nav:root > ul > li > a")
+      assert attribute(a, "aria-current") == "page"
+    end
+
+    test "with multiple values" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tab_navigation current_value={:show}>
+          <:item href="/profile" value={[:show, :edit]}>Profile</:item>
+        </TestComponents.tab_navigation>
+        """)
+
+      a = find_one(html, "nav:root > ul > li > a")
+      assert attribute(a, "aria-current") == "page"
+    end
+
+    test "with label" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tab_navigation current_value={:appointments} label="Tabby">
+          <:item href="/profile" value={:show}>Profile</:item>
+        </TestComponents.tab_navigation>
+        """)
+
+      assert attribute(html, "nav:root", "aria-label") == "Tabby"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tab_navigation current_value={:show} data-test="hello">
+          <:item value={[:show, :edit]}>Profile</:item>
+        </TestComponents.tab_navigation>
+        """)
+
+      assert attribute(html, "nav:root", "data-test") == "hello"
     end
   end
 
