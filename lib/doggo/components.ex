@@ -57,7 +57,7 @@ defmodule Doggo.Components do
     """,
     usage: """
     ```heex
-    <accordion id="dog-breeds">
+    <.accordion id="dog-breeds">
       <:section title="Golden Retriever">
         <p>
           Friendly, intelligent, great with families. Origin: Scotland. Needs
@@ -75,7 +75,7 @@ defmodule Doggo.Components do
           Playful, stubborn, small size. Origin: Germany. Enjoys sniffing games.
         </p>
       </:section>
-    </accordion>
+    </.accordion>
     ```
     """,
     type: :component,
@@ -181,17 +181,17 @@ defmodule Doggo.Components do
     """,
     usage: """
     ```heex
-    <action_bar>
+    <.action_bar>
       <:item label="Edit" on_click={JS.push("edit")}>
-        <icon size={:small}><Lucideicons.pencil aria-hidden /></icon>
+        <.icon><Lucideicons.pencil aria-hidden /></.icon>
       </:item>
       <:item label="Move" on_click={JS.push("move")}>
-        <icon size={:small}><Lucideicons.move aria-hidden /></icon>
+        <.icon><Lucideicons.move aria-hidden /></.icon>
       </:item>
       <:item label="Archive" on_click={JS.push("archive")}>
-        <icon size={:small}><Lucideicons.archive aria-hidden /></icon>
+        <.icon><Lucideicons.archive aria-hidden /></.icon>
       </:item>
-      </action_bar>
+    </.action_bar>
     ```
     """,
     type: :component,
@@ -240,7 +240,7 @@ defmodule Doggo.Components do
     """,
     usage: """
     ```heex
-    <badge>8</badge>
+    <.badge>8</.badge>
     ```
     """,
     type: :component,
@@ -270,9 +270,9 @@ defmodule Doggo.Components do
     Minimal example with only a box body:
 
     ```heex
-    <box>
+    <.box>
       <p>This is a box.</p>
-    </box>
+    </.box>
     ```
 
     With title, banner, action, and footer:
@@ -346,11 +346,11 @@ defmodule Doggo.Components do
     """,
     usage: """
     ```heex
-    <breadcrumb>
+    <.breadcrumb>
       <:item patch="/categories">Categories</:item>
       <:item patch="/categories/1">Reviews</:item>
       <:item patch="/categories/1/articles/1">The Movie</:item>
-    </breadcrumb>
+    </.breadcrumb>
     ```
     """,
     type: :navigation,
@@ -454,20 +454,20 @@ defmodule Doggo.Components do
     """,
     usage: """
     ```heex
-    <button>Confirm</button>
+    <.button>Confirm</.button>
 
-    <button type="submit" variant={:secondary} size={:medium} shape={:pill}>
+    <.button type="submit">
       Submit
-    </button>
+    </.button>
     ```
 
     To indicate a loading state, for example when submitting a form, use the
     `aria-busy` attribute:
 
     ```heex
-    <button aria-label="Saving..." aria-busy>
+    <.button aria-label="Saving..." aria-busy>
       click me
-    </button>
+    </.button>
     ```
     """,
     type: :button,
@@ -530,14 +530,13 @@ defmodule Doggo.Components do
     """,
     usage: """
     ```heex
-    <Doggo.button_link patch={~p"/confirm"}>Confirm</.button>
+    <.button_link patch={~p"/confirm"}>
+      Confirm
+    </.button_link>
 
-    <Doggo.button_link
-      navigate={~p"/registration"}
-      variant={:primary}
-      shape={:pill}>
-      Submit
-    </Doggo.button_link>
+    <.button_link navigate={~p"/registration"}>
+      Registration
+    </.button_link>
     ```
     """,
     type: :button,
@@ -601,10 +600,10 @@ defmodule Doggo.Components do
     """,
     usage: """
     ```heex
-    <cluster>
+    <.cluster>
       <div>some item</div>
       <div>some other item</div>
-    </cluster>
+    </.cluster>
     ```
     """,
     type: :component,
@@ -666,6 +665,7 @@ defmodule Doggo.Components do
     </.disclosure_button>
 
     <table id="data-table" hidden></table>
+    ```
     """,
     type: :button,
     since: "0.6.0",
@@ -774,31 +774,31 @@ defmodule Doggo.Components do
     """,
     usage: """
     ```heex
-    <tag>Well-Trained</tag>
+    <.tag>Well-Trained</.tag>
     ```
 
     With icon:
 
     ```heex
-    <tag>
+    <.tag>
       Puppy
-      <icon><Heroicons.edit /></icon>
-    </tag>
+      <.icon><Heroicons.edit /></.icon>
+    </.tag>
     ```
 
     With delete button:
 
     ```heex
-    <tag>
+    <.tag>
       High Energy
-      <button
+      <.button
         phx-click="remove-tag"
         phx-value-tag="high-energy"
         aria-label="Remove tag"
       >
-        <icon><Heroicons.x /></icon>
-      </button>
-    </tag>
+        <.icon><Heroicons.x /></.icon>
+      </.button>
+    </.tag>
     ```
     """,
     type: :component,
@@ -848,22 +848,22 @@ defmodule Doggo.Components do
     """,
     usage: """
     ```heex
-    <tree label="Dogs">
+    <.tree label="Dogs">
       <tree_item>
         Breeds
         <:items>
-          <tree_item>Golden Retriever</tree_item>
-          <tree_item>Labrador Retriever</tree_item>
+          <.tree_item>Golden Retriever</.tree_item>
+          <.tree_item>Labrador Retriever</.tree_item>
         </:items>
-      </tree_item>
-      <tree_item>
+      </.tree_item>
+      <.tree_item>
         Characteristics
         <:items>
-          <tree_item>Playful</tree_item>
-          <tree_item>Loyal</tree_item>
+          <.tree_item>Playful</.tree_item>
+          <.tree_item>Loyal</.tree_item>
         </:items>
-      </tree_item>
-    </tree>
+      </.tree_item>
+    </.tree>
     ```
     """,
     type: :component,
@@ -947,33 +947,33 @@ defmodule Doggo.Components do
     """,
     usage: """
     ```heex
-    <tree label="Dogs">
-      <tree_item>
+    <.tree label="Dogs">
+      <.tree_item>
         Breeds
         <:items>
-          <tree_item>Golden Retriever</tree_item>
-          <tree_item>Labrador Retriever</tree_item>
+          <.tree_item>Golden Retriever</.tree_item>
+          <.tree_item>Labrador Retriever</.tree_item>
         </:items>
-      </tree_item>
-      <tree_item>
+      </.tree_item>
+      <.tree_item>
         Characteristics
         <:items>
-          <tree_item>Playful</tree_item>
-          <tree_item>Loyal</tree_item>
+          <.tree_item>Playful</.tree_item>
+          <.tree_item>Loyal</.tree_item>
         </:items>
-      </tree_item>
-    </tree>
+      </.tree_item>
+    </.tree>
     ```
 
     Icons can be added before the label:
 
-    <tree_item>
+    <.tree_item>
       <Heroicon.folder /> Breeds
       <:items>
-        <tree_item><Heroicon.document /> Golden Retriever</tree_item>
-        <tree_item><Heroicon.document /> Labrador Retriever</tree_item>
+        <.tree_item><Heroicon.document /> Golden Retriever</.tree_item>
+        <.tree_item><Heroicon.document /> Labrador Retriever</.tree_item>
       </:items>
-    </tree_item>
+    </.tree_item>
     """,
     type: :component,
     since: "0.6.0",
