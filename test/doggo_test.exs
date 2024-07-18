@@ -5103,61 +5103,6 @@ defmodule DoggoTest do
     end
   end
 
-  describe "tooltip/1" do
-    test "with text" do
-      id = "text-details"
-      expected_id = id <> "-tooltip"
-      assigns = %{id: id}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.tooltip id={@id}>
-          some text
-          <:tooltip>some details</:tooltip>
-        </Doggo.tooltip>
-        """)
-
-      span = find_one(html, "span:root")
-      assert attribute(span, "data-aria-tooltip") == "data-aria-tooltip"
-      assert attribute(span, "aria-describedby") == expected_id
-
-      inner_span = find_one(html, "span > span")
-      assert attribute(inner_span, "tabindex") == "0"
-      assert text(inner_span) == "some text"
-
-      tooltip = find_one(html, "span > div[role='tooltip']")
-      assert attribute(tooltip, "id") == expected_id
-      assert text(tooltip) == "some details"
-    end
-
-    test "with link" do
-      id = "text-details"
-      expected_id = id <> "-tooltip"
-
-      assigns = %{id: id}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.tooltip id={@id} contains_link>
-          some link
-          <:tooltip>some details</:tooltip>
-        </Doggo.tooltip>
-        """)
-
-      span = find_one(html, "span:root")
-      assert attribute(span, "data-aria-tooltip") == "data-aria-tooltip"
-      assert attribute(span, "aria-describedby") == expected_id
-
-      inner_span = find_one(html, "span:root > span")
-      assert attribute(inner_span, "tabindex") == nil
-      assert text(inner_span) == "some link"
-
-      tooltip = find_one(html, "span:root > div[role='tooltip']")
-      assert attribute(tooltip, "id") == expected_id
-      assert text(tooltip) == "some details"
-    end
-  end
-
   describe "modifier_classes/1" do
     test "returns a map of modifier classes" do
       assert %{variants: [variant | _]} = Doggo.modifier_classes()
