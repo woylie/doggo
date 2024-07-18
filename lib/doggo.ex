@@ -1396,48 +1396,6 @@ defmodule Doggo do
   end
 
   @doc """
-  Renders a floating action button.
-
-  ## Example
-
-  ```heex
-  <Doggo.fab label="Add item" phx-click={JS.patch(to: "/items/new")}>
-    <Doggo.icon><Heroicons.plus /></Doggo.icon>
-  </Doggo.fab>
-  ```
-  """
-  @doc type: :button
-  @doc since: "0.3.0"
-
-  attr :label, :string, required: true
-  attr :variant, :atom, values: @variants, default: :primary
-  attr :size, :atom, values: @sizes, default: :normal
-  attr :shape, :atom, values: [nil | @shapes], default: :circle
-  attr :disabled, :boolean, default: nil
-  attr :rest, :global
-
-  slot :inner_block, required: true
-
-  def fab(assigns) do
-    ~H"""
-    <button
-      type="button"
-      aria-label={@label}
-      class={[
-        "fab",
-        variant_class(@variant),
-        size_class(@size),
-        shape_class(@shape)
-      ]}
-      disabled={@disabled}
-      {@rest}
-    >
-      <%= render_slot(@inner_block) %>
-    </button>
-    """
-  end
-
-  @doc """
   Shows the flash messages as alerts.
 
   ## Hidden attribute

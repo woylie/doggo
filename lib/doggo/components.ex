@@ -22,6 +22,7 @@ defmodule Doggo.Components do
         button_link()
         cluster()
         disclosure_button()
+        fab()
         tag()
         tree()
         tree_item()
@@ -689,6 +690,59 @@ defmodule Doggo.Components do
           aria-controls={@controls}
           phx-click={Doggo.toggle_disclosure(@controls)}
           class={[@base_class | @modifier_classes]}
+          {@rest}
+        >
+          <%= render_slot(@inner_block) %>
+        </button>
+        """
+      end
+  )
+
+  component(
+    :fab,
+    modifiers: [
+      variant: [
+        values: [
+          "primary",
+          "secondary",
+          "info",
+          "success",
+          "warning",
+          "danger"
+        ],
+        default: "primary"
+      ],
+      size: [values: ["small", "normal", "medium", "large"], default: "normal"],
+      shape: [values: [nil, "circle", "pill"], default: "circle"]
+    ],
+    doc: """
+    Renders a floating action button.
+    """,
+    usage: """
+    ```heex
+    <.fab label="Add item" phx-click={JS.patch(to: "/items/new")}>
+      <.icon><Heroicons.plus /></.icon>
+    </.fab>
+    ```
+    """,
+    type: :button,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :label, :string, required: true
+        attr :disabled, :boolean, default: false
+        attr :rest, :global
+
+        slot :inner_block, required: true
+      end,
+    heex:
+      quote do
+        ~H"""
+        <button
+          type="button"
+          aria-label={@label}
+          class={[@base_class | @modifier_classes]}
+          disabled={@disabled}
           {@rest}
         >
           <%= render_slot(@inner_block) %>
