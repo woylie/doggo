@@ -25,6 +25,7 @@ defmodule Doggo.ComponentsTest do
     cluster()
     disclosure_button()
     fab()
+    page_header()
     property_list()
     radio_group()
     skeleton()
@@ -682,6 +683,57 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "button:root", "phx-click") == "add"
+    end
+  end
+
+  describe "page_header/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.page_header title="Pets" />
+        """)
+
+      assert attribute(html, "header:root", "class") == "page-header"
+      assert text(html, ":root > .page-header-title > h1") == "Pets"
+      assert Floki.find(html, ".page-header-title > h2") == []
+      assert Floki.find(html, ".page-header-actions") == []
+    end
+
+    test "with subtitle" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.page_header title="Pets" subtitle="All of them" />
+        """)
+
+      assert text(html, ":root > .page-header-title > p") == "All of them"
+    end
+
+    test "with action" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.page_header title="Pets">
+          <:action>Create</:action>
+        </TestComponents.page_header>
+        """)
+
+      assert text(html, ":root > .page-header-actions") == "Create"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.page_header title="Pets" data-test="hello" />
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 

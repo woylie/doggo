@@ -23,6 +23,7 @@ defmodule Doggo.Components do
         cluster()
         disclosure_button()
         fab()
+        page_header()
         property_list()
         radio_group()
         skeleton()
@@ -748,6 +749,67 @@ defmodule Doggo.Components do
         >
           <%= render_slot(@inner_block) %>
         </button>
+        """
+      end
+  )
+
+  component(
+    :page_header,
+    modifiers: [],
+    doc: """
+    Renders a header that is specific to the content of the current page.
+
+    Unlike a site-wide header, which offers consistent navigation and elements
+    like logos throughout the website or application, this component is meant
+    to describe the unique content of each page. For instance, on an article page,
+    it would display the article's title.
+
+    It is typically used as a direct child of the `<main>` element.
+    """,
+    usage: """
+    ```heex
+    <main>
+      <.page_header title="Puppy Profiles" subtitle="Share Your Pup's Story">
+        <:action>
+          <.button_link patch={~p"/puppies/new"}>Add New Profile</.button_link>
+        </:action>
+      </.page_header>
+
+      <section>
+        <!-- Content -->
+      </section>
+    </main>
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :title, :string,
+          required: true,
+          doc: "The title for the current page."
+
+        attr :subtitle, :string, default: nil, doc: "An optional sub title."
+
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :action,
+          doc: "A slot for action buttons related to the current page."
+      end,
+    heex:
+      quote do
+        ~H"""
+        <header class={[@base_class | @modifier_classes]} {@rest}>
+          <div class="page-header-title">
+            <h1><%= @title %></h1>
+            <p :if={@subtitle}><%= @subtitle %></p>
+          </div>
+          <div :if={@action != []} class="page-header-actions">
+            <%= for action <- @action do %>
+              <%= render_slot(action) %>
+            <% end %>
+          </div>
+        </header>
         """
       end
   )
