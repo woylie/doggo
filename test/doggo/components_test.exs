@@ -27,6 +27,7 @@ defmodule Doggo.ComponentsTest do
     tag()
     skeleton()
     stack()
+    tabs()
     toggle_button()
     toolbar()
     tooltip()
@@ -759,6 +760,113 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "div", "data-what") == "ever"
+    end
+  end
+
+  describe "tabs/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tabs id="my-tabs" label="My Tabs">
+          <:panel label="Panel 1">some text</:panel>
+          <:panel label="Panel 2">some other text</:panel>
+        </TestComponents.tabs>
+        """)
+
+      div = find_one(html, "div:root")
+      assert attribute(div, "class") == "tabs"
+      assert attribute(div, "id") == "my-tabs"
+
+      div = find_one(html, ":root > div[role='tablist']")
+      assert attribute(div, "aria-label") == "My Tabs"
+      assert attribute(div, "aria-labelledby") == nil
+
+      button = find_one(div, "button:first-child")
+      assert attribute(button, "type") == "button"
+      assert attribute(button, "role") == "tab"
+      assert attribute(button, "id") == "my-tabs-tab-1"
+      assert attribute(button, "aria-selected") == "true"
+      assert attribute(button, "aria-controls") == "my-tabs-panel-1"
+      assert attribute(button, "tabindex") == nil
+      assert text(button) == "Panel 1"
+
+      button = find_one(div, "button:last-child")
+      assert attribute(button, "type") == "button"
+      assert attribute(button, "role") == "tab"
+      assert attribute(button, "id") == "my-tabs-tab-2"
+      assert attribute(button, "aria-selected") == "false"
+      assert attribute(button, "aria-controls") == "my-tabs-panel-2"
+      assert attribute(button, "tabindex") == "-1"
+      assert text(button) == "Panel 2"
+
+      div = find_one(html, ":root > div#my-tabs-panel-1")
+      assert attribute(div, "role") == "tabpanel"
+      assert attribute(div, "aria-labelledby") == "my-tabs-tab-1"
+      assert attribute(div, "hidden") == nil
+      assert text(div) == "some text"
+
+      div = find_one(html, ":root > div#my-tabs-panel-2")
+      assert attribute(div, "role") == "tabpanel"
+      assert attribute(div, "aria-labelledby") == "my-tabs-tab-2"
+      assert attribute(div, "hidden") == "hidden"
+      assert text(div) == "some other text"
+    end
+
+    test "with labelledby" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tabs id="my-tabs" labelledby="my-tabs-title">
+          <:panel label="Panel 1">some text</:panel>
+          <:panel label="Panel 2">some other text</:panel>
+        </TestComponents.tabs>
+        """)
+
+      div = find_one(html, "div[role='tablist']")
+      assert attribute(div, "aria-label") == nil
+      assert attribute(div, "aria-labelledby") == "my-tabs-title"
+    end
+
+    test "raises if both label and labelledby are set" do
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.tabs id="my-tabs" label="My Tabs" labelledby="my-tabs-title">
+          <:panel label="Panel 1">some text</:panel>
+          <:panel label="Panel 2">some other text</:panel>
+        </TestComponents.tabs>
+        """)
+      end
+    end
+
+    test "raises if neither label nor labelledby are set" do
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.tabs id="my-tabs">
+          <:panel label="Panel 1">some text</:panel>
+          <:panel label="Panel 2">some other text</:panel>
+        </TestComponents.tabs>
+        """)
+      end
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tabs id="my-tabs" label="My Tabs" data-test="hello">
+          <:panel label="Panel 1">some text</:panel>
+        </TestComponents.tabs>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 
