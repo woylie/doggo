@@ -26,6 +26,7 @@ defmodule Doggo.ComponentsTest do
     fab()
     tag()
     skeleton()
+    stack()
     toggle_button()
     toolbar()
     tree()
@@ -35,6 +36,8 @@ defmodule Doggo.ComponentsTest do
       name: :button_link_with_disabled_class,
       disabled_class: "disabled"
     )
+
+    stack(name: :stack_with_recursive_class, recursive_class: "recursive")
   end
 
   describe "accordion/1" do
@@ -704,6 +707,57 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "div:root", "data-test") == "hello"
+    end
+  end
+
+  describe "stack/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.stack>Hello</TestComponents.stack>
+        """)
+
+      div = find_one(html, "div")
+
+      assert attribute(div, "class") == "stack"
+      assert text(div) == "Hello"
+    end
+
+    test "recursive" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.stack recursive>Hello</TestComponents.stack>
+        """)
+
+      assert attribute(html, "div", "class") == "stack is-recursive"
+    end
+
+    test "recursive with custom recursive class" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.stack_with_recursive_class recursive>
+          Hello
+        </TestComponents.stack_with_recursive_class>
+        """)
+
+      assert attribute(html, "div", "class") == "stack recursive"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.stack data-what="ever">Hello</TestComponents.stack>
+        """)
+
+      assert attribute(html, "div", "data-what") == "ever"
     end
   end
 

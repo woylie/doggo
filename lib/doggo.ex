@@ -4917,58 +4917,6 @@ defmodule Doggo do
     """
   end
 
-  @doc """
-  Applies a vertical margin between the child elements.
-
-  ## Example
-
-  ```heex
-  <Doggo.stack>
-    <div>some block</div>
-    <div>some other block</div>
-  </Doggo.stack>
-  ```
-
-  To apply a vertical margin on nested elements as well, set `recursive` to
-  `true`.
-
-  ```heex
-  <Doggo.stack recursive={true}>
-    <div>
-      <div>some nested block</div>
-      <div>another nested block</div>
-    </div>
-    <div>some other block</div>
-  </Doggo.stack>
-  ```
-  """
-  @doc type: :component
-  @doc since: "0.1.0"
-
-  slot :inner_block, required: true
-
-  attr :recursive, :boolean,
-    default: false,
-    doc:
-      "If `true`, the stack margins will be applied to nested elements as well."
-
-  attr :class, :any,
-    default: [],
-    doc: "Additional CSS classes. Can be a string or a list of strings."
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-
-  def stack(assigns) do
-    ~H"""
-    <div
-      class={["stack", @recursive && "is-recursive"] ++ List.wrap(@class)}
-      {@rest}
-    >
-      <%= render_slot(@inner_block) %>
-    </div>
-    """
-  end
-
   ## Helpers
 
   defp humanize(atom) when is_atom(atom) do

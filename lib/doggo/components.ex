@@ -24,6 +24,7 @@ defmodule Doggo.Components do
         disclosure_button()
         fab()
         skeleton()
+        stack()
         tag()
         toggle_button()
         toolbar()
@@ -841,6 +842,67 @@ defmodule Doggo.Components do
         <div class={[@base_class | @modifier_classes]} {@rest}></div>
         """
       end
+  )
+
+  component(
+    :stack,
+    modifiers: [],
+    extra: [recursive_class: "is-recursive"],
+    doc: """
+    Applies a vertical margin between the child elements.
+    """,
+    usage: """
+    ```heex
+    <.stack>
+      <div>some block</div>
+      <div>some other block</div>
+    </.stack>
+    ```
+
+    To apply a vertical margin on nested elements as well, set `recursive` to
+    `true`.
+
+    ```heex
+    <.stack recursive={true}>
+      <div>
+        <div>some nested block</div>
+        <div>another nested block</div>
+      </div>
+      <div>some other block</div>
+    </.stack>
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :recursive, :boolean,
+          default: false,
+          doc:
+            "If `true`, the stack margins will be applied to nested elements as well."
+
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :inner_block, required: true
+      end,
+    heex: fn extra ->
+      recursive_class = Keyword.fetch!(extra, :recursive_class)
+
+      quote do
+        var!(assigns) =
+          assign(
+            var!(assigns),
+            :recursive_class,
+            var!(assigns)[:recursive] && unquote(recursive_class)
+          )
+
+        ~H"""
+        <div class={[@base_class | @modifier_classes] ++ [@recursive_class]} {@rest}>
+          <%= render_slot(@inner_block) %>
+        </div>
+        """
+      end
+    end
   )
 
   component(
