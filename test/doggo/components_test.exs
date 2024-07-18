@@ -25,13 +25,14 @@ defmodule Doggo.ComponentsTest do
     cluster()
     disclosure_button()
     fab()
-    tag()
     skeleton()
     stack()
+    steps()
     switch()
     tab_navigation()
     table()
     tabs()
+    tag()
     toggle_button()
     toolbar()
     tooltip()
@@ -764,6 +765,168 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "div", "data-what") == "ever"
+    end
+  end
+
+  describe "steps/1" do
+    test "first step without links" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.steps current_step={0}>
+          <:step>Customer Information</:step>
+          <:step>Plan</:step>
+          <:step>Add-ons</:step>
+        </TestComponents.steps>
+        """)
+
+      nav = find_one(html, "nav:root")
+      assert attribute(nav, "class") == "steps"
+      assert attribute(nav, "aria-label") == "Form steps"
+
+      ol = find_one(nav, "ol")
+      assert [li1, li2, li3] = Floki.children(ol)
+
+      assert text(li1, "span") == "Customer Information"
+      assert text(li2, "span") == "Plan"
+      assert text(li3, "span") == "Add-ons"
+
+      assert attribute(li1, "class") == "is-current"
+      assert attribute(li2, "class") == "is-upcoming"
+      assert attribute(li3, "class") == "is-upcoming"
+
+      assert attribute(li1, "aria-current") == "step"
+      assert attribute(li2, "aria-current") == nil
+      assert attribute(li3, "aria-current") == nil
+    end
+
+    test "first step with links" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.steps current_step={0}>
+          <:step on_click="to-customer-info">Customer Information</:step>
+          <:step on_click="to-plan">Plan</:step>
+          <:step on_click="to-add-ons">Add-ons</:step>
+        </TestComponents.steps>
+        """)
+
+      nav = find_one(html, "nav:root")
+      assert attribute(nav, "class") == "steps"
+      assert attribute(nav, "aria-label") == "Form steps"
+
+      ol = find_one(nav, "ol")
+      assert [li1, li2, li3] = Floki.children(ol)
+
+      assert text(li1, "span") == "Customer Information"
+      assert text(li2, "a") == "Plan"
+      assert text(li3, "a") == "Add-ons"
+
+      assert attribute(li2, "a", "phx-click") == "to-plan"
+      assert attribute(li3, "a", "phx-click") == "to-add-ons"
+    end
+
+    test "with completed step" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.steps current_step={1}>
+          <:step on_click="to-customer-info">Customer Information</:step>
+          <:step on_click="to-plan">Plan</:step>
+          <:step on_click="to-add-ons">Add-ons</:step>
+        </TestComponents.steps>
+        """)
+
+      nav = find_one(html, "nav:root")
+      assert attribute(nav, "class") == "steps"
+      assert attribute(nav, "aria-label") == "Form steps"
+
+      ol = find_one(nav, "ol")
+      assert [li1, li2, li3] = Floki.children(ol)
+
+      assert text(li1, "span.is-visually-hidden") == "Completed:"
+      assert text(li1, "a") == "Customer Information"
+      assert text(li2, "span") == "Plan"
+      assert text(li3, "a") == "Add-ons"
+
+      assert attribute(li1, "a", "phx-click") == "to-customer-info"
+      assert attribute(li3, "a", "phx-click") == "to-add-ons"
+
+      assert attribute(li1, "class") == "is-completed"
+      assert attribute(li2, "class") == "is-current"
+      assert attribute(li3, "class") == "is-upcoming"
+    end
+
+    test "with completed step and linear" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.steps current_step={1} linear>
+          <:step on_click="to-customer-info">Customer Information</:step>
+          <:step on_click="to-plan">Plan</:step>
+          <:step on_click="to-add-ons">Add-ons</:step>
+        </TestComponents.steps>
+        """)
+
+      nav = find_one(html, "nav:root")
+      assert attribute(nav, "class") == "steps"
+      assert attribute(nav, "aria-label") == "Form steps"
+
+      ol = find_one(nav, "ol")
+      assert [li1, li2, li3] = Floki.children(ol)
+
+      assert text(li1, "span.is-visually-hidden") == "Completed:"
+      assert text(li1, "a") == "Customer Information"
+      assert text(li2, "span") == "Plan"
+      assert text(li3, "span") == "Add-ons"
+
+      assert attribute(li1, "a", "phx-click") == "to-customer-info"
+    end
+
+    test "with label" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.steps current_step={0} label="Hops">
+          <:step>Customer Information</:step>
+        </TestComponents.steps>
+        """)
+
+      assert attribute(html, "nav:root", "aria-label") == "Hops"
+    end
+
+    test "with completed label" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.steps current_step={1} completed_label="Done: ">
+          <:step>Customer Information</:step>
+          <:step>Plan</:step>
+        </TestComponents.steps>
+        """)
+
+      ol = find_one(html, "nav:root ol")
+      assert [li1, _] = Floki.children(ol)
+      assert text(li1, "span.is-visually-hidden") == "Done:"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.steps current_step={0} data-test="hello">
+          <:step>Plan</:step>
+        </TestComponents.steps>
+        """)
+
+      assert attribute(html, "nav:root", "data-test") == "hello"
     end
   end
 
