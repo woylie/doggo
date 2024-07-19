@@ -23,6 +23,7 @@ defmodule Doggo.Components do
         cluster()
         disclosure_button()
         fab()
+        menu_item_radio_group()
         modal()
         navbar()
         navbar_items()
@@ -752,6 +753,81 @@ defmodule Doggo.Components do
         >
           <%= render_slot(@inner_block) %>
         </button>
+        """
+      end
+  )
+
+  component(
+    :menu_item_radio_group,
+    modifiers: [],
+    doc: """
+    Renders a group of menu item radios as part of a `menu/1` or `menu_bar/1`.
+
+    See also `menu_button/1`, `menu_item/1`, and `menu_item_checkbox/1`.
+
+    > #### In Development {: .warning}
+    >
+    > The necessary JavaScript for making this component fully functional and
+    > accessible will be added in a future version.
+    >
+    > **Missing features**
+    >
+    > - Focus management
+    > - State management
+    > - Keyboard support
+    """,
+    usage: """
+    ```heex
+    <.menu id="actions-menu" labelledby="actions-button" hidden>
+      <:item>
+        <.menu_item_radio_group label="Theme">
+          <:item on_click={JS.dispatch("switch-theme-light")}>
+            Light
+          </:item>
+          <:item on_click={JS.dispatch("switch-theme-dark")} checked>
+            Dark
+          </:item>
+        </.menu_item_radio_group>
+      </:item>
+    </.menu>
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :label, :string,
+          required: true,
+          doc: """
+          A accessibility label for the group. Set as `aria-label` attribute.
+          """
+
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :item, required: true do
+          attr :checked, :boolean
+          attr :on_click, JS
+        end
+      end,
+    heex:
+      quote do
+        ~H"""
+        <ul
+          class={[@base_class | @modifier_classes]}
+          role="group"
+          aria-label={@label}
+          {@rest}
+        >
+          <li :for={item <- @item} role="none">
+            <div
+              role="menuitemradio"
+              phx-click={item.on_click}
+              aria-checked={item |> Map.get(:checked, false) |> to_string()}
+            >
+              <%= render_slot(item) %>
+            </div>
+          </li>
+        </ul>
         """
       end
   )

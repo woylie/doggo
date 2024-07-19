@@ -25,6 +25,7 @@ defmodule Doggo.ComponentsTest do
     cluster()
     disclosure_button()
     fab()
+    menu_item_radio_group()
     modal()
     navbar()
     navbar_items()
@@ -686,6 +687,59 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "button:root", "phx-click") == "add"
+    end
+  end
+
+  describe "menu_item_radio_group/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu_item_radio_group label="Theme">
+          <:item on_click={JS.push("dark")}>Dark</:item>
+        </TestComponents.menu_item_radio_group>
+        """)
+
+      ul = find_one(html, "ul:root")
+      assert attribute(ul, "role") == "group"
+      assert attribute(ul, "aria-label") == "Theme"
+
+      assert li = find_one(html, "ul > li")
+      assert attribute(li, "role") == "none"
+
+      assert div = find_one(li, "div")
+      assert attribute(div, "role") == "menuitemradio"
+      assert attribute(div, "phx-click")
+      assert attribute(div, "aria-checked") == "false"
+      assert text(div) == "Dark"
+    end
+
+    test "checked" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu_item_radio_group label="Theme">
+          <:item on_click={JS.push("dark")} checked>Dark</:item>
+        </TestComponents.menu_item_radio_group>
+        """)
+
+      div = find_one(html, "ul:root > li > div")
+      assert attribute(div, "aria-checked") == "true"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu_item_radio_group label="Dog actions" data-test="hello">
+          <:item on_click={JS.push("dark")}>Dark</:item>
+        </TestComponents.menu_item_radio_group>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 
