@@ -25,6 +25,7 @@ defmodule Doggo.ComponentsTest do
     cluster()
     disclosure_button()
     fab()
+    modal()
     navbar()
     navbar_items()
     page_header()
@@ -685,6 +686,116 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "button:root", "phx-click") == "add"
+    end
+  end
+
+  describe "modal/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.modal id="pet-modal" on_cancel={JS.push("cancel")}>
+          <:title>Edit dog</:title>
+          dog-form
+          <:footer>paw</:footer>
+        </TestComponents.modal>
+        """)
+
+      dialog = find_one(html, "dialog:root")
+      assert attribute(dialog, "id") == "pet-modal"
+      assert attribute(dialog, "class") == "modal"
+      assert attribute(dialog, "aria-modal") == "false"
+      assert attribute(dialog, "open") == nil
+      assert attribute(dialog, "phx-mounted") == nil
+
+      a = find_one(html, ":root > div > section > header > button.modal-close")
+      assert attribute(a, "aria-label") == "Close"
+      assert text(a, "span") == "close"
+
+      h2 = find_one(html, ":root > div > section > header > h2")
+      assert text(h2) == "Edit dog"
+
+      assert text(html, "section > .modal-content") == "dog-form"
+      assert text(html, "section > footer") == "paw"
+    end
+
+    test "not dismissable" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.modal
+          id="pet-modal"
+          on_cancel={JS.push("cancel")}
+          dismissable={false}
+        >
+          <:title>Edit dog</:title>
+          dog-form
+          <:footer>paw</:footer>
+        </TestComponents.modal>
+        """)
+
+      assert Floki.find(html, ".modal-close") == []
+    end
+
+    test "opened" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.modal id="pet-modal" open>
+          <:title>Edit dog</:title>
+          dog-form
+        </TestComponents.modal>
+        """)
+
+      dialog = find_one(html, "dialog:root")
+      assert attribute(dialog, "aria-modal") == "true"
+      assert attribute(dialog, "open") == "open"
+    end
+
+    test "with close slot" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.modal id="pet-modal" open>
+          <:title>Edit dog</:title>
+          dog-form
+          <:close>X</:close>
+        </TestComponents.modal>
+        """)
+
+      assert text(html, "button.modal-close") == "X"
+    end
+
+    test "with close label" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.modal id="pet-modal" close_label="Cancel" open>
+          <:title>Edit dog</:title>
+          dog-form
+        </TestComponents.modal>
+        """)
+
+      assert attribute(html, "button.modal-close", "aria-label") == "Cancel"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.modal id="pet-modal" data-test="hello">
+          <:title>Edit dog</:title>
+          dog-form
+        </TestComponents.modal>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 
