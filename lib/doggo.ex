@@ -679,57 +679,6 @@ defmodule Doggo do
   end
 
   @doc """
-  Renders nested navigation items within the `:item` slot of the
-  `vertical_nav/1` component.
-
-  ## Example
-
-  ```heex
-  <Doggo.vertical_nav label="Main">
-    <:item>
-      <Doggo.vertical_nav_nested>
-        <:title>Content</:title>
-        <:item current_page>
-          <.link navigate={~p"/posts"}>Posts</.link>
-        </:item>
-        <:item>
-          <.link navigate={~p"/comments"}>Comments</.link>
-        </:item>
-      </Doggo.vertical_nav_nested>
-    </:item>
-  </Doggo.vertical_nav>
-  ```
-  """
-  @doc type: :navigation
-  @doc since: "0.5.0"
-
-  attr :id, :string, required: true
-
-  slot :title, doc: "An optional slot for the title of the nested menu section."
-
-  slot :item, required: true, doc: "Items" do
-    attr :class, :string
-    attr :current_page, :boolean
-  end
-
-  def vertical_nav_nested(assigns) do
-    ~H"""
-    <div :if={@title != []} id={"#{@id}-title"} class="drawer-nav-title">
-      <%= render_slot(@title) %>
-    </div>
-    <ul id={@id} aria-labelledby={@title != [] && "#{@id}-title"}>
-      <li
-        :for={item <- @item}
-        class={item[:class]}
-        aria-current={Map.get(item, :current_page, false) && "page"}
-      >
-        <%= render_slot(item) %>
-      </li>
-    </ul>
-    """
-  end
-
-  @doc """
   Renders a section within a sidebar or drawer that contains one or more
   items which are not navigation links.
 

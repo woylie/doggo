@@ -55,6 +55,7 @@ defmodule Doggo.Components do
         tree()
         tree_item()
         vertical_nav()
+        vertical_nav_nested()
       end
 
   ## Common Options
@@ -4007,6 +4008,63 @@ defmodule Doggo.Components do
             </li>
           </ul>
         </nav>
+        """
+      end
+  )
+
+  component(
+    :vertical_nav_nested,
+    modifiers: [],
+    doc: """
+    Renders nested navigation items within the `:item` slot of the
+    `vertical_nav/1` component.
+    """,
+    usage: """
+    ```heex
+    <.vertical_nav label="Main">
+      <:item>
+        <.vertical_nav_nested>
+          <:title>Content</:title>
+          <:item current_page>
+            <.link navigate={~p"/posts"}>Posts</.link>
+          </:item>
+          <:item>
+            <.link navigate={~p"/comments"}>Comments</.link>
+          </:item>
+        </.vertical_nav_nested>
+      </:item>
+    </.vertical_nav>
+    ```
+    """,
+    type: :navigation,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :id, :string, required: true
+
+        slot :title,
+          doc: "An optional slot for the title of the nested menu section."
+
+        slot :item, required: true, doc: "Items" do
+          attr :class, :string
+          attr :current_page, :boolean
+        end
+      end,
+    heex:
+      quote do
+        ~H"""
+        <div :if={@title != []} id={"#{@id}-title"} class="drawer-nav-title">
+          <%= render_slot(@title) %>
+        </div>
+        <ul id={@id} aria-labelledby={@title != [] && "#{@id}-title"}>
+          <li
+            :for={item <- @item}
+            class={item[:class]}
+            aria-current={Map.get(item, :current_page, false) && "page"}
+          >
+            <%= render_slot(item) %>
+          </li>
+        </ul>
         """
       end
   )

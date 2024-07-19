@@ -1037,68 +1037,6 @@ defmodule DoggoTest do
     end
   end
 
-  describe "vertical_nav_nested/1" do
-    test "default" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.vertical_nav_nested id="nested">
-          <:item>item</:item>
-        </Doggo.vertical_nav_nested>
-        """)
-
-      assert attribute(html, "ul:root", "id") == "nested"
-      li = find_one(html, "ul:root li")
-      assert attribute(li, "aria-labelledby") == nil
-      assert text(li) == "item"
-      assert Floki.find(html, ".drawer-nav-title") == []
-    end
-
-    test "with current page" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.vertical_nav_nested id="nested">
-          <:item current_page>item</:item>
-        </Doggo.vertical_nav_nested>
-        """)
-
-      assert attribute(html, "ul:root > li", "aria-current") == "page"
-    end
-
-    test "with title" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.vertical_nav_nested id="nested">
-          <:title>some title</:title>
-          <:item>item</:item>
-        </Doggo.vertical_nav_nested>
-        """)
-
-      div = find_one(html, "div.drawer-nav-title")
-      assert attribute(div, "id") == "nested-title"
-      assert text(div) == "some title"
-      assert attribute(html, "ul:root", "aria-labelledby") == "nested-title"
-    end
-
-    test "with item class" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.vertical_nav_nested id="nested">
-          <:item class="is-rad">item</:item>
-        </Doggo.vertical_nav_nested>
-        """)
-
-      assert attribute(html, "li", "class") == "is-rad"
-    end
-  end
-
   describe "vertical_nav_section/1" do
     test "default" do
       assigns = %{}
