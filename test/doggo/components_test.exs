@@ -20,6 +20,7 @@ defmodule Doggo.ComponentsTest do
     alert_dialog()
     app_bar()
     badge()
+    bottom_navigation()
     box()
     breadcrumb()
     button()
@@ -440,6 +441,109 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "span", "data-what") == "ever"
+    end
+  end
+
+  describe "bottom_navigation/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.bottom_navigation current_value={:appointments}>
+          <:item label="Profile" href="/profile" value={:show}>
+            profile-icon
+          </:item>
+        </TestComponents.bottom_navigation>
+        """)
+
+      nav = find_one(html, "nav:root")
+      assert attribute(nav, "class") == "bottom-navigation"
+
+      a = find_one(nav, "ul > li > a")
+      assert attribute(a, "aria-current") == nil
+      assert attribute(a, "aria-label") == "Profile"
+      assert attribute(a, "href") == "/profile"
+
+      assert text(a, "span.icon") == "profile-icon"
+      assert text(a, "span:last-child") == "Profile"
+    end
+
+    test "with aria label" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.bottom_navigation current_value={:appointments} label="Main">
+          <:item label="Profile" href="/profile" value={:show}>
+            profile-icon
+          </:item>
+        </TestComponents.bottom_navigation>
+        """)
+
+      assert attribute(html, "nav:root", "aria-label") == "Main"
+    end
+
+    test "with hide_labels" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.bottom_navigation current_value={:appointments} hide_labels>
+          <:item label="Profile" href="/profile" value={:show}>
+            profile-icon
+          </:item>
+        </TestComponents.bottom_navigation>
+        """)
+
+      a = find_one(html, "nav:root > ul > li > a")
+      assert [span] = Floki.children(a)
+      assert attribute(span, "class") == "icon"
+    end
+
+    test "with single value" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.bottom_navigation current_value={:show}>
+          <:item label="Profile" href="/profile" value={:show}>
+            profile-icon
+          </:item>
+        </TestComponents.bottom_navigation>
+        """)
+
+      assert attribute(html, "nav:root > ul > li > a", "aria-current") == "page"
+    end
+
+    test "with multiple values" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.bottom_navigation current_value={:show}>
+          <:item label="Profile" href="/profile" value={[:show, :edit]}>
+            profile-icon
+          </:item>
+        </TestComponents.bottom_navigation>
+        """)
+
+      assert attribute(html, "nav:root > ul > li > a", "aria-current") == "page"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.bottom_navigation current_value={:show} data-test="hello">
+          <:item label="Profile" href="/profile" value={[:show, :edit]}>
+            profile-icon
+          </:item>
+        </TestComponents.bottom_navigation>
+        """)
+
+      assert attribute(html, "nav:root", "data-test") == "hello"
     end
   end
 
