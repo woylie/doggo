@@ -34,6 +34,7 @@ defmodule Doggo.Components do
         drawer()
         fab()
         icon()
+        icon_sprite()
         menu()
         menu_bar()
         menu_button()
@@ -2072,6 +2073,80 @@ defmodule Doggo.Components do
           {@rest}
         >
           <%= render_slot(@inner_block) %>
+          <span :if={@label} class={@label_placement == :hidden && "is-visually-hidden"}>
+            <%= @label %>
+          </span>
+        </span>
+        """
+      end
+  )
+
+  component(
+    :icon_sprite,
+    base_class: "icon",
+    modifiers: [
+      size: [values: ["small", "normal", "medium", "large"], default: "normal"]
+    ],
+    doc: """
+    Renders an icon using an SVG sprite.
+    """,
+    usage: """
+    Render an icon with text as `aria-label`:
+
+    ```heex
+    <.icon name="arrow-left" label="Go back" />
+    ```
+
+    To display the text visibly:
+
+    ```heex
+    <.icon name="arrow-left" label="Go back" label_placement={:right} />
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :name, :string,
+          required: true,
+          doc: "Icon name as used in the sprite."
+
+        attr :sprite_url, :string,
+          default: "/assets/icons/sprite.svg",
+          doc: "The URL of the SVG sprite."
+
+        attr :label, :string,
+          default: nil,
+          doc: """
+          Text that describes the icon. If `label_placement` is set to `:hidden`, this
+          text is set as `aria-label` attribute.
+          """
+
+        attr :label_placement, :atom,
+          default: :hidden,
+          values: [:left, :right, :hidden],
+          doc: """
+          Position of the label relative to the icon. If set to `:hidden`, the
+          `label` text is used as `aria-label` attribute.
+          """
+
+        attr :rest, :global, doc: "Any additional HTML attributes."
+      end,
+    heex:
+      quote do
+        var!(assigns) =
+          assign(
+            var!(assigns),
+            :label_placement_class,
+            Doggo.label_placement_class(var!(assigns).label_placement)
+          )
+
+        ~H"""
+        <span
+          class={[@base_class | @modifier_classes] ++ [@label_placement_class]}
+          {@rest}
+        >
+          <svg aria-hidden="true"><use href={"#{@sprite_url}##{@name}"} /></svg>
           <span :if={@label} class={@label_placement == :hidden && "is-visually-hidden"}>
             <%= @label %>
           </span>

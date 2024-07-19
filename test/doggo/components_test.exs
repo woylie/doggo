@@ -36,6 +36,7 @@ defmodule Doggo.ComponentsTest do
     drawer()
     fab()
     icon()
+    icon_sprite()
     menu()
     menu_bar()
     menu_button()
@@ -1984,6 +1985,111 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <TestComponents.icon data-test="hello">some-icon</TestComponents.icon>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
+    end
+  end
+
+  describe "icon_sprite/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.icon_sprite name="edit" />
+        """)
+
+      span = find_one(html, "span:root")
+      assert attribute(span, "class") == "icon is-normal"
+      svg = find_one(span, "svg")
+      assert attribute(svg, "aria-hidden") == "true"
+      assert attribute(svg, "use", "href") == "/assets/icons/sprite.svg#edit"
+    end
+
+    test "with sprite URL" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.icon_sprite sprite_url="/images/icons.svg" name="edit" />
+        """)
+
+      span = find_one(html, "span:root")
+      assert attribute(span, "class") == "icon is-normal"
+      svg = find_one(span, "svg")
+      assert attribute(svg, "aria-hidden") == "true"
+      assert attribute(svg, "use", "href") == "/images/icons.svg#edit"
+    end
+
+    test "with size" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.icon_sprite name="edit" size="small" />
+        """)
+
+      assert attribute(html, "span:root", "class") == "icon is-small"
+    end
+
+    test "with label" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.icon_sprite name="edit" label="some-label" />
+        """)
+
+      assert span = find_one(html, "span > span")
+      assert attribute(span, "class") == "is-visually-hidden"
+      assert text(span) == "some-label"
+    end
+
+    test "with label left" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.icon_sprite
+          name="edit"
+          label="some-label"
+          label_placement={:left}
+        />
+        """)
+
+      span = find_one(html, "span:root")
+      assert attribute(span, "class") == "icon is-normal has-text-left"
+      assert span = find_one(html, "span > span")
+      assert attribute(span, "class") == ""
+      assert text(span) == "some-label"
+    end
+
+    test "with label right" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.icon_sprite
+          name="edit"
+          label="some-label"
+          label_placement={:right}
+        />
+        """)
+
+      span = find_one(html, "span:root")
+      assert attribute(span, "class") == "icon is-normal has-text-right"
+      assert span = find_one(html, "span > span")
+      assert attribute(span, "class") == ""
+      assert text(span) == "some-label"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.icon_sprite name="edit" data-test="hello" />
         """)
 
       assert attribute(html, ":root", "data-test") == "hello"
