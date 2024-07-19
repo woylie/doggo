@@ -37,142 +37,43 @@ defmodule Doggo do
   @doc false
   def slide_label(n), do: "Slide #{n}"
 
-  @doc """
-  Renders a `DateTime` or `NaiveDateTime` in a `<time>` tag.
+  @doc false
+  def truncate_datetime(nil, _), do: nil
+  def truncate_datetime(v, nil), do: v
+  def truncate_datetime(v, :minute), do: %{v | second: 0, microsecond: {0, 0}}
 
-  ## Examples
-
-  By default, the given value is formatted for display with `to_string/1`. This:
-
-  ```heex
-  <Doggo.datetime value={~U[2023-02-05 12:22:06.003Z]} />
-  ```
-
-  Will be rendered as:
-
-  ```html
-  <time datetime="2023-02-05T12:22:06.003Z">
-    2023-02-05 12:22:06.003Z
-  </time>
-  ```
-
-  You can also pass a custom formatter function. For example, if you are using
-  [ex_cldr_dates_times](https://hex.pm/packages/ex_cldr_dates_times) in your
-  application, you could do this:
-
-  ```heex
-  <Doggo.datetime
-    value={~U[2023-02-05 14:22:06.003Z]}
-    formatter={&MyApp.Cldr.DateTime.to_string!/1}
-  />
-  ```
-
-  Which, depending on your locale, may be rendered as:
-
-  ```html
-  <time datetime="2023-02-05T14:22:06.003Z">
-    Feb 2, 2023, 14:22:06 PM
-  </time>
-  ```
-  """
-  @doc type: :component
-  @doc since: "0.1.0"
-
-  attr :value, :any,
-    required: true,
-    doc: """
-    Either a `DateTime` or `NaiveDateTime`.
-    """
-
-  attr :formatter, :any,
-    doc: """
-    A function that takes a `DateTime` or a `NaiveDateTime` as an argument and
-    returns the value formatted for display. Defaults to `to_string/1`.
-    """
-
-  attr :title_formatter, :any,
-    default: nil,
-    doc: """
-    When provided, this function is used to format the date time value for the
-    `title` attribute. If the attribute is not set, no `title` attribute will
-    be added.
-    """
-
-  attr :precision, :atom,
-    values: [:minute, :second, :millisecond, :microsecond, nil],
-    default: nil,
-    doc: """
-    Precision to truncate the given value with. The truncation is applied on
-    both the display value and the value of the `datetime` attribute.
-    """
-
-  attr :timezone, :string,
-    default: nil,
-    doc: """
-    If set and the given value is a `DateTime`, the value will be shifted to
-    that time zone. This affects both the display value and the `datetime` tag.
-    Note that you need to
-    [configure a time zone database](https://hexdocs.pm/elixir/DateTime.html#module-time-zone-database)
-    for this to work.
-    """
-
-  def datetime(
-        %{value: value, precision: precision, timezone: timezone} = assigns
-      ) do
-    value =
-      value
-      |> shift_zone(timezone)
-      |> truncate_datetime(precision)
-
-    assigns =
-      assigns
-      |> assign(:value, value)
-      |> assign_new(:formatter, fn -> &to_string/1 end)
-
-    ~H"""
-    <time
-      :if={@value}
-      datetime={datetime_attr(@value)}
-      title={time_title_attr(@value, @title_formatter)}
-    >
-      <%= @formatter.(@value) %>
-    </time>
-    """
-  end
-
-  defp truncate_datetime(nil, _), do: nil
-  defp truncate_datetime(v, nil), do: v
-  defp truncate_datetime(v, :minute), do: %{v | second: 0, microsecond: {0, 0}}
-
-  defp truncate_datetime(%DateTime{} = dt, precision) do
+  def truncate_datetime(%DateTime{} = dt, precision) do
     DateTime.truncate(dt, precision)
   end
 
-  defp truncate_datetime(%NaiveDateTime{} = dt, precision) do
+  def truncate_datetime(%NaiveDateTime{} = dt, precision) do
     NaiveDateTime.truncate(dt, precision)
   end
 
-  defp truncate_datetime(%Time{} = t, precision) do
+  def truncate_datetime(%Time{} = t, precision) do
     Time.truncate(t, precision)
   end
 
-  defp shift_zone(%DateTime{} = dt, tz) when is_binary(tz) do
+  @doc false
+  def shift_zone(%DateTime{} = dt, tz) when is_binary(tz) do
     DateTime.shift_zone!(dt, tz)
   end
 
-  defp shift_zone(v, _), do: v
+  def shift_zone(v, _), do: v
 
-  defp datetime_attr(%DateTime{} = dt) do
+  @doc false
+  def datetime_attr(%DateTime{} = dt) do
     DateTime.to_iso8601(dt)
   end
 
-  defp datetime_attr(%NaiveDateTime{} = dt) do
+  def datetime_attr(%NaiveDateTime{} = dt) do
     NaiveDateTime.to_iso8601(dt)
   end
 
   # don't add title attribute if no title formatter is set
-  defp time_title_attr(_, nil), do: nil
-  defp time_title_attr(v, fun) when is_function(fun, 1), do: fun.(v)
+  @doc false
+  def time_title_attr(_, nil), do: nil
+  def time_title_attr(v, fun) when is_function(fun, 1), do: fun.(v)
 
   @doc """
   Renders a `Date`, `DateTime`, or `NaiveDateTime` in a `<time>` tag.
