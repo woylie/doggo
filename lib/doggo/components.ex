@@ -23,6 +23,7 @@ defmodule Doggo.Components do
         breadcrumb()
         button()
         button_link()
+        callout()
         carousel()
         cluster()
         combobox()
@@ -960,6 +961,81 @@ defmodule Doggo.Components do
         """
       end
     end
+  )
+
+  component(
+    :callout,
+    modifiers: [
+      variant: [
+        values: [
+          "info",
+          "success",
+          "warning",
+          "danger"
+        ],
+        default: "info"
+      ]
+    ],
+    doc: """
+    Use the callout to highlight supplementary information related to the main
+    content.
+
+    For information that needs immediate attention of the user, use `alert/1`
+    instead.
+    """,
+    usage: """
+    Standard callout:
+
+    ```heex
+    <.callout title="Dog Care Tip">
+      <p>Regular exercise is essential for keeping your dog healthy and happy.</p>
+    </.callout>
+    ```
+
+    Callout with an icon:
+
+    ```heex
+    <.callout title="Fun Dog Fact">
+      <:icon><Heroicons.information_circle /></:icon>
+      <p>
+        Did you know? Dogs have a sense of time and can get upset when their
+        routine is changed.
+      </p>
+    </.callout>
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :id, :string, required: true
+        attr :title, :string, default: nil, doc: "An optional title."
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :inner_block, required: true, doc: "The main content of the alert."
+        slot :icon, doc: "Optional slot to render an icon."
+      end,
+    heex:
+      quote do
+        ~H"""
+        <aside
+          id={@id}
+          class={[@base_class | @modifier_classes]}
+          aria-labelledby={@title && "#{@id}-title"}
+          {@rest}
+        >
+          <div :if={@icon != []} class="callout-icon">
+            <%= render_slot(@icon) %>
+          </div>
+          <div class="callout-body">
+            <div :if={@title} id={"#{@id}-title"} class="callout-title">
+              <%= @title %>
+            </div>
+            <div class="callout-message"><%= render_slot(@inner_block) %></div>
+          </div>
+        </aside>
+        """
+      end
   )
 
   component(
