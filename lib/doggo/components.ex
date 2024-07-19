@@ -23,6 +23,7 @@ defmodule Doggo.Components do
         cluster()
         disclosure_button()
         fab()
+        navbar_items()
         page_header()
         property_list()
         radio_group()
@@ -749,6 +750,47 @@ defmodule Doggo.Components do
         >
           <%= render_slot(@inner_block) %>
         </button>
+        """
+      end
+  )
+
+  component(
+    :navbar_items,
+    modifiers: [],
+    doc: """
+    Renders a list of navigation items.
+
+    Meant to be used in the inner block of the `navbar` component.
+    """,
+    usage: """
+    ```heex
+    <.navbar_items>
+      <:item><.link navigate={~p"/about"}>About</.link></:item>
+      <:item><.link navigate={~p"/services"}>Services</.link></:item>
+      <:item>
+        <.link navigate={~p"/login"} class="button">Log in</.link>
+      </:item>
+    </.navbar_items>
+    ```
+    """,
+    type: :navigation,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :item,
+          required: true,
+          doc: "A navigation item, usually a link or a button." do
+          attr :class, :string, doc: "A class for the `<li>`."
+        end
+      end,
+    heex:
+      quote do
+        ~H"""
+        <ul class={[@base_class | @modifier_classes]} {@rest}>
+          <li :for={item <- @item} class={item[:class]}><%= render_slot(item) %></li>
+        </ul>
         """
       end
   )

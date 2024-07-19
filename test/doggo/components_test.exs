@@ -25,6 +25,7 @@ defmodule Doggo.ComponentsTest do
     cluster()
     disclosure_button()
     fab()
+    navbar_items()
     page_header()
     property_list()
     radio_group()
@@ -683,6 +684,48 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "button:root", "phx-click") == "add"
+    end
+  end
+
+  describe "navbar_items/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.navbar_items>
+          <:item>item</:item>
+        </TestComponents.navbar_items>
+        """)
+
+      assert attribute(html, "ul:root", "class") == "navbar-items"
+      assert text(html, ":root > li") == "item"
+    end
+
+    test "with item class" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.navbar_items>
+          <:item class="is-highlighted">item</:item>
+        </TestComponents.navbar_items>
+        """)
+
+      assert attribute(html, ":root > li", "class") == "is-highlighted"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.navbar_items data-test="hello">
+          <:item>item</:item>
+        </TestComponents.navbar_items>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 

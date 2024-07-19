@@ -3865,46 +3865,6 @@ defmodule Doggo do
     """
   end
 
-  @doc """
-  Renders a list of navigation items.
-
-  Meant to be used in the inner block of the `navbar` component.
-
-  ## Usage
-
-  ```heex
-  <Doggo.navbar_items>
-    <:item><.link navigate={~p"/about"}>About</.link></:item>
-    <:item><.link navigate={~p"/services"}>Services</.link></:item>
-    <:item>
-      <.link navigate={~p"/login"} class="button">Log in</.link>
-    </:item>
-  </Doggo.navbar_items>
-  ```
-  """
-  @doc type: :navigation
-  @doc since: "0.1.0"
-
-  attr :class, :any,
-    default: [],
-    doc: "Additional CSS classes. Can be a string or a list of strings."
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-
-  slot :item,
-    required: true,
-    doc: "A navigation item, usually a link or a button." do
-    attr :class, :string, doc: "A class for the `<li>`."
-  end
-
-  def navbar_items(assigns) do
-    ~H"""
-    <ul class={["navbar-items" | List.wrap(@class)]} {@rest}>
-      <li :for={item <- @item} class={item[:class]}><%= render_slot(item) %></li>
-    </ul>
-    """
-  end
-
   ## Helpers
 
   @doc false
