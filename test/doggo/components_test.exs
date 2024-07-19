@@ -25,6 +25,7 @@ defmodule Doggo.ComponentsTest do
     cluster()
     disclosure_button()
     fab()
+    navbar()
     navbar_items()
     page_header()
     property_list()
@@ -684,6 +685,51 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "button:root", "phx-click") == "add"
+    end
+  end
+
+  describe "navbar/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.navbar label="Main">content</TestComponents.navbar>
+        """)
+
+      nav = find_one(html, "nav:root")
+      assert attribute(nav, "class") == "navbar"
+      assert attribute(nav, "aria-label") == "Main"
+      assert text(nav) == "content"
+      assert Floki.find(html, ".navbar-brand") == []
+    end
+
+    test "with brand" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.navbar label="Main">
+          <:brand>Doggo</:brand>
+          content
+        </TestComponents.navbar>
+        """)
+
+      div = find_one(html, ":root > .navbar-brand")
+      assert text(div) == "Doggo"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.navbar label="Main" data-test="hello">
+          content
+        </TestComponents.navbar>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 
