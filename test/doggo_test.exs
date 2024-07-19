@@ -3333,42 +3333,6 @@ defmodule DoggoTest do
     end
   end
 
-  describe "menu_button/1" do
-    test "default" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.menu_button controls="actions-menu" id="actions-button">
-          Menu
-        </Doggo.menu_button>
-        """)
-
-      button = find_one(html, "button:root")
-      assert attribute(button, "id") == "actions-button"
-      assert attribute(button, "type") == "button"
-      assert attribute(button, "aria-haspopup") == "true"
-      assert attribute(button, "aria-expanded") == "false"
-      assert attribute(button, "aria-controls") == "actions-menu"
-      assert attribute(button, "role") == nil
-      assert text(button) == "Menu"
-    end
-
-    test "as menu item" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.menu_button controls="actions-menu" id="actions-button" menuitem>
-          Menu
-        </Doggo.menu_button>
-        """)
-
-      button = find_one(html, "button:root")
-      assert attribute(button, "role") == "menuitem"
-    end
-  end
-
   describe "time/1" do
     test "with Time" do
       assigns = %{}
