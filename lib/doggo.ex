@@ -514,88 +514,10 @@ defmodule Doggo do
     """
   end
 
-  @doc """
-  Renders a customizable icon using a slot for SVG content.
-
-  This component does not bind you to a specific set of icons. Instead, it
-  provides a slot for inserting SVG content from any icon library you choose
-
-  The `label` attribute is used to describe the icon and is by default applied
-  as an `aria-label` for accessibility. If `label_placement` is set to
-  `:left` or `:right`, the text becomes visible alongside the icon.
-
-  ## Examples
-
-  Render an icon with text as `aria-label` using the `heroicons` library:
-
-  ```heex
-  <Doggo.icon label="report bug"><Heroicons.bug_ant /></.icon>
-  ```
-
-  To display the text visibly:
-
-  ```heex
-  <Doggo.icon label="report bug" label_placement={:right}>
-    <Heroicons.bug_ant />
-  </Doggo.icon>
-  ```
-
-  > #### aria-hidden {: .info}
-  >
-  > Not all icon libraries set the `aria-hidden` attribute by default. Always
-  > make sure that it is set on the `<svg>` element that the library renders.
-  """
-  @doc type: :component
-  @doc since: "0.1.0"
-
-  slot :inner_block, doc: "Slot for the SVG element.", required: true
-
-  attr :label, :string,
-    default: nil,
-    doc: """
-    Text that describes the icon. If `label_placement` is set to `:hidden`,
-    this text is set as `aria-label` attribute.
-    """
-
-  attr :label_placement, :atom,
-    default: :hidden,
-    values: [:left, :right, :hidden],
-    doc: """
-    Position of the label relative to the icon. If set to `:hidden`, the
-    `label` text is used as `aria-label` attribute.
-    """
-
-  attr :size, :atom, values: @sizes, default: :normal
-
-  attr :class, :any,
-    default: [],
-    doc: "Additional CSS classes. Can be a string or a list of strings."
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-
-  def icon(assigns) do
-    ~H"""
-    <span
-      class={
-        [
-          "icon",
-          size_class(@size),
-          label_placement_class(@label_placement)
-        ] ++ List.wrap(@class)
-      }
-      {@rest}
-    >
-      <%= render_slot(@inner_block) %>
-      <span :if={@label} class={@label_placement == :hidden && "is-visually-hidden"}>
-        <%= @label %>
-      </span>
-    </span>
-    """
-  end
-
-  defp label_placement_class(:hidden), do: nil
-  defp label_placement_class(:left), do: "has-text-left"
-  defp label_placement_class(:right), do: "has-text-right"
+  @doc false
+  def label_placement_class(:hidden), do: nil
+  def label_placement_class(:left), do: "has-text-left"
+  def label_placement_class(:right), do: "has-text-right"
 
   @doc """
   Renders an icon using an SVG sprite.

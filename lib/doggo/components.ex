@@ -33,6 +33,7 @@ defmodule Doggo.Components do
         disclosure_button()
         drawer()
         fab()
+        icon()
         menu()
         menu_bar()
         menu_button()
@@ -1998,6 +1999,83 @@ defmodule Doggo.Components do
         >
           <%= render_slot(@inner_block) %>
         </button>
+        """
+      end
+  )
+
+  component(
+    :icon,
+    modifiers: [
+      size: [values: ["small", "normal", "medium", "large"], default: "normal"]
+    ],
+    doc: """
+    Renders a customizable icon using a slot for SVG content.
+
+    This component does not bind you to a specific set of icons. Instead, it
+    provides a slot for inserting SVG content from any icon library you choose.
+    """,
+    usage: """
+    Render an icon with text as `aria-label` using the `heroicons` library:
+
+    ```heex
+    <.icon label="report bug"><Heroicons.bug_ant /></.icon>
+    ```
+
+    To display the text visibly:
+
+    ```heex
+    <.icon label="report bug" label_placement={:right}>
+      <Heroicons.bug_ant />
+    </.icon>
+    ```
+
+    > #### aria-hidden {: .info}
+    >
+    > Not all icon libraries set the `aria-hidden` attribute by default. Always
+    > make sure that it is set on the `<svg>` element that the library renders.
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        slot :inner_block, doc: "Slot for the SVG element.", required: true
+
+        attr :label, :string,
+          default: nil,
+          doc: """
+          Text that describes the icon. If `label_placement` is set to `:hidden`,
+          this text is set as `aria-label` attribute.
+          """
+
+        attr :label_placement, :atom,
+          default: :hidden,
+          values: [:left, :right, :hidden],
+          doc: """
+          Position of the label relative to the icon. If set to `:hidden`, the
+          `label` text is used as `aria-label` attribute.
+          """
+
+        attr :rest, :global, doc: "Any additional HTML attributes."
+      end,
+    heex:
+      quote do
+        var!(assigns) =
+          assign(
+            var!(assigns),
+            :label_placement_class,
+            Doggo.label_placement_class(var!(assigns).label_placement)
+          )
+
+        ~H"""
+        <span
+          class={[@base_class | @modifier_classes] ++ [@label_placement_class]}
+          {@rest}
+        >
+          <%= render_slot(@inner_block) %>
+          <span :if={@label} class={@label_placement == :hidden && "is-visually-hidden"}>
+            <%= @label %>
+          </span>
+        </span>
         """
       end
   )
