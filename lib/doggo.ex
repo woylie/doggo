@@ -3476,55 +3476,6 @@ defmodule Doggo do
     """
   end
 
-  @doc """
-  Renders a menu item checkbox as part of a `menu/1` or `menu_bar/1`.
-
-  See also `menu_item/1`.
-
-  > #### In Development {: .warning}
-  >
-  > The necessary JavaScript for making this component fully functional and
-  > accessible will be added in a future version.
-  >
-  > **Missing features**
-  >
-  > - State management
-  > - Keyboard support
-
-  ## Example
-
-  ```heex
-  <Doggo.menu label="Actions">
-    <:item>
-      <Doggo.menu_item_checkbox on_click={JS.dispatch("myapp:toggle-word-wrap")}>
-        Word wrap
-      </Doggo.menu_item_checkbox>
-    </:item>
-  </Doggo.menu>
-  ```
-  """
-  @doc type: :menu
-  @doc since: "0.5.0"
-
-  attr :checked, :boolean, default: false
-  attr :on_click, JS, required: true
-  attr :rest, :global
-
-  slot :inner_block, required: true
-
-  def menu_item_checkbox(assigns) do
-    ~H"""
-    <div
-      role="menuitemcheckbox"
-      aria-checked={to_string(@checked)}
-      phx-click={@on_click}
-      {@rest}
-    >
-      <%= render_slot(@inner_block) %>
-    </div>
-    """
-  end
-
   ## Helpers
 
   @doc false

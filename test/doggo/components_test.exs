@@ -25,6 +25,7 @@ defmodule Doggo.ComponentsTest do
     cluster()
     disclosure_button()
     fab()
+    menu_item_checkbox()
     menu_item_radio_group()
     modal()
     navbar()
@@ -687,6 +688,39 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "button:root", "phx-click") == "add"
+    end
+  end
+
+  describe "menu_item_checkbox/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu_item_checkbox on_click={JS.push("hello")}>
+          Action
+        </TestComponents.menu_item_checkbox>
+        """)
+
+      div = find_one(html, "div:root")
+      assert attribute(div, "phx-click")
+      assert attribute(div, "role") == "menuitemcheckbox"
+      assert attribute(div, "aria-checked") == "false"
+      assert text(div) == "Action"
+    end
+
+    test "checked" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu_item_checkbox on_click={JS.push("hello")} checked>
+          Action
+        </TestComponents.menu_item_checkbox>
+        """)
+
+      div = find_one(html, "div:root")
+      assert attribute(div, "aria-checked") == "true"
     end
   end
 

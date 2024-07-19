@@ -23,6 +23,7 @@ defmodule Doggo.Components do
         cluster()
         disclosure_button()
         fab()
+        menu_item_checkbox()
         menu_item_radio_group()
         modal()
         navbar()
@@ -758,6 +759,61 @@ defmodule Doggo.Components do
   )
 
   component(
+    :menu_item_checkbox,
+    modifiers: [],
+    doc: """
+    Renders a menu item checkbox as part of a `menu/1` or `menu_bar/1`.
+
+    See also `menu_item/1`.
+
+    > #### In Development {: .warning}
+    >
+    > The necessary JavaScript for making this component fully functional and
+    > accessible will be added in a future version.
+    >
+    > **Missing features**
+    >
+    > - State management
+    > - Keyboard support
+    """,
+    usage: """
+    ```heex
+    <.menu label="Actions">
+      <:item>
+        <.menu_item_checkbox on_click={JS.dispatch("myapp:toggle-word-wrap")}>
+          Word wrap
+        </.menu_item_checkbox>
+      </:item>
+    </.menu>
+    ```
+    """,
+    type: :menu,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :checked, :boolean, default: false
+        attr :on_click, Phoenix.LiveView.JS, required: true
+        attr :rest, :global
+
+        slot :inner_block, required: true
+      end,
+    heex:
+      quote do
+        ~H"""
+        <div
+          class={[@base_class | @modifier_classes]}
+          role="menuitemcheckbox"
+          aria-checked={to_string(@checked)}
+          phx-click={@on_click}
+          {@rest}
+        >
+          <%= render_slot(@inner_block) %>
+        </div>
+        """
+      end
+  )
+
+  component(
     :menu_item_radio_group,
     modifiers: [],
     doc: """
@@ -792,7 +848,7 @@ defmodule Doggo.Components do
     </.menu>
     ```
     """,
-    type: :component,
+    type: :menu,
     since: "0.6.0",
     attrs_and_slots:
       quote do
