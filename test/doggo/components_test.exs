@@ -25,6 +25,7 @@ defmodule Doggo.ComponentsTest do
     cluster()
     disclosure_button()
     fab()
+    menu_group()
     menu_item()
     menu_item_checkbox()
     menu_item_radio_group()
@@ -689,6 +690,55 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "button:root", "phx-click") == "add"
+    end
+  end
+
+  describe "menu_group/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu_group label="Dog actions">
+          <:item>A</:item>
+        </TestComponents.menu_group>
+        """)
+
+      ul = find_one(html, "ul:root")
+      assert attribute(ul, "role") == "group"
+      assert attribute(ul, "aria-label") == "Dog actions"
+
+      assert li = find_one(html, "ul > li")
+      assert attribute(li, "role") == "none"
+      assert text(li) == "A"
+    end
+
+    test "with separator" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu_group label="Dog actions">
+          <:item role="separator">A</:item>
+        </TestComponents.menu_group>
+        """)
+
+      assert li = find_one(html, "ul > li")
+      assert attribute(li, "role") == "separator"
+      assert text(li) == ""
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu_group label="Dog actions" data-test="hello">
+          <:item>A</:item>
+        </TestComponents.menu_group>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 

@@ -23,6 +23,7 @@ defmodule Doggo.Components do
         cluster()
         disclosure_button()
         fab()
+        menu_group()
         menu_item()
         menu_item_checkbox()
         menu_item_radio_group()
@@ -755,6 +756,95 @@ defmodule Doggo.Components do
         >
           <%= render_slot(@inner_block) %>
         </button>
+        """
+      end
+  )
+
+  component(
+    :menu_group,
+    modifiers: [],
+    doc: """
+    This component can be used to group items within a `menu/1` or `menu_bar/1`.
+
+    See also `menu_button/1`, `menu_item/1`, and `menu_item_checkbox/1`.
+
+    > #### In Development {: .warning}
+    >
+    > The necessary JavaScript for making this component fully functional and
+    > accessible will be added in a future version.
+    >
+    > **Missing features**
+    >
+    > - Focus management
+    > - Keyboard support
+    """,
+    usage: """
+    ```heex
+    <.menu id="actions-menu" labelledby="actions-button" hidden>
+      <:item>
+        <.menu_group label="Dog actions">
+          <:item>
+            <.menu_item on_click={JS.push("view-dog-profiles")}>
+              View Dog Profiles
+            </.menu_item>
+          </:item>
+          <:item>
+            <.menu_item on_click={JS.push("add-dog-profile")}>
+              Add Dog Profile
+            </.menu_item>
+          </:item>
+          <:item>
+            <.menu_item on_click={JS.push("dog-care-tips")}>
+              Dog Care Tips
+            </.menu_item>
+          </:item>
+        </.menu_group>
+      </:item>
+      <:item role="separator" />
+      <:item>
+        <.menu_item on_click={JS.push("help")}>Help</.menu_item>
+      </:item>
+    </.menu>
+    ```
+    """,
+    type: :menu,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :label, :string,
+          required: true,
+          doc: """
+          A accessibility label for the group. Set as `aria-label` attribute.
+          """
+
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :item, required: true do
+          attr :role, :string,
+            values: ["none", "separator"],
+            doc: """
+            Sets the role of the list item. If the item has a menu item, menu
+            item radio group or menu item checkbox as a child, use `"none"`. If you
+            want to render a visual separator, use `"separator"`. The default is
+            `"none"`.
+            """
+        end
+      end,
+    heex:
+      quote do
+        ~H"""
+        <ul
+          class={[@base_class | @modifier_classes]}
+          role="group"
+          aria-label={@label}
+          {@rest}
+        >
+          <li :for={item <- @item} role={Map.get(item, :role, "none")}>
+            <%= if item[:role] != "separator" do %>
+              <%= render_slot(item) %>
+            <% end %>
+          </li>
+        </ul>
         """
       end
   )
