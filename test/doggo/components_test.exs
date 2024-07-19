@@ -27,6 +27,7 @@ defmodule Doggo.ComponentsTest do
     button_link()
     carousel()
     cluster()
+    combobox()
     disclosure_button()
     fab()
     menu()
@@ -1102,6 +1103,187 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "div", "data-what") == "ever"
+    end
+  end
+
+  describe "combobox/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue", "Green"]}
+          value="Green"
+        />
+        """)
+
+      div = find_one(html, "div:root")
+      assert attribute(div, "class") == "combobox"
+
+      group_div = find_one(div, "div[role='group']")
+
+      input = find_one(group_div, "input")
+      assert attribute(input, "id") == "color-selector"
+      assert attribute(input, "type") == "text"
+      assert attribute(input, "role") == "combobox"
+      assert attribute(input, "name") == "color_search"
+      assert attribute(input, "value") == "Green"
+      assert attribute(input, "aria-autocomplete") == "list"
+      assert attribute(input, "aria-expanded") == "false"
+      assert attribute(input, "aria-controls") == "color-selector-listbox"
+      assert attribute(input, "autocomplete") == "off"
+
+      button = find_one(div, "button")
+      assert attribute(button, "id") == "color-selector-button"
+      assert attribute(button, "tabindex") == "-1"
+      assert attribute(button, "aria-label") == "Colors"
+      assert attribute(button, "aria-expanded") == "false"
+      assert attribute(button, "aria-controls") == "color-selector-listbox"
+
+      ul = find_one(div, "ul")
+      assert attribute(ul, "id") == "color-selector-listbox"
+      assert attribute(ul, "role") == "listbox"
+      assert attribute(ul, "aria-label") == "Colors"
+      assert attribute(ul, "hidden") == "hidden"
+
+      assert li = find_one(ul, "li:first-child")
+      assert attribute(li, "role") == "option"
+      assert attribute(li, "data-value") == "Blue"
+      span = find_one(li, "span:first-child")
+      assert attribute(span, "class") == "combobox-option-label"
+      assert text(span) == "Blue"
+
+      assert li = find_one(ul, "li:last-child")
+      assert attribute(li, "role") == "option"
+      assert attribute(li, "data-value") == "Green"
+      span = find_one(li, "span:last-child")
+      assert attribute(span, "class") == "combobox-option-label"
+      assert text(span) == "Green"
+
+      input = find_one(div, "input[type='hidden']")
+      assert attribute(input, "id") == "color-selector-value"
+      assert attribute(input, "name") == "color"
+      assert attribute(input, "value") == "Green"
+    end
+
+    test "with name using bracket notation" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="dog[color]"
+          list_label="Colors"
+          options={["Blue", "Green"]}
+        />
+        """)
+
+      input = find_one(html, "input[type='text']")
+      assert attribute(input, "name") == "dog[color_search]"
+
+      input = find_one(html, "input[type='hidden']")
+      assert attribute(input, "name") == "dog[color]"
+    end
+
+    test "with option labels" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"Blue", "blue"}, {"Green", "green"}]}
+          value="green"
+        />
+        """)
+
+      input = find_one(html, "input[type='text']")
+      assert attribute(input, "value") == "Green"
+
+      input = find_one(html, "input[type='hidden']")
+      assert attribute(input, "value") == "green"
+
+      ul = find_one(html, "ul")
+
+      li = find_one(ul, "li:first-child")
+      assert attribute(li, "data-value") == "blue"
+      span = find_one(li, "span:first-child")
+      assert attribute(span, "class") == "combobox-option-label"
+      assert text(span) == "Blue"
+
+      li = find_one(ul, "li:last-child")
+      assert attribute(li, "data-value") == "green"
+      span = find_one(li, "span:last-child")
+      assert attribute(span, "class") == "combobox-option-label"
+      assert text(span) == "Green"
+    end
+
+    test "with option labels and descriptions" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[
+            {"Hakodate", "hakodate", "Hokkaido"},
+            {"Kanazawa", "kanazawa", "Ishikawa"}
+          ]}
+          value="hakodate"
+        />
+        """)
+
+      input = find_one(html, "input[type='text']")
+      assert attribute(input, "value") == "Hakodate"
+
+      input = find_one(html, "input[type='hidden']")
+      assert attribute(input, "value") == "hakodate"
+
+      ul = find_one(html, "ul")
+
+      li = find_one(ul, "li:first-child")
+      assert attribute(li, "data-value") == "hakodate"
+      span = find_one(li, "span:first-child")
+      assert attribute(span, "class") == "combobox-option-label"
+      assert text(span) == "Hakodate"
+      span = find_one(li, "span:last-child")
+      assert attribute(span, "class") == "combobox-option-description"
+      assert text(span) == "Hokkaido"
+
+      li = find_one(ul, "li:last-child")
+      assert attribute(li, "data-value") == "kanazawa"
+      span = find_one(li, "span:first-child")
+      assert attribute(span, "class") == "combobox-option-label"
+      assert text(span) == "Kanazawa"
+      span = find_one(li, "span:last-child")
+      assert attribute(span, "class") == "combobox-option-description"
+      assert text(span) == "Ishikawa"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+          data-what="ever"
+        />
+        """)
+
+      assert attribute(html, ":root", "data-what") == "ever"
     end
   end
 
