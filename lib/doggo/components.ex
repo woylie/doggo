@@ -23,6 +23,7 @@ defmodule Doggo.Components do
         cluster()
         disclosure_button()
         fab()
+        menu()
         menu_bar()
         menu_button()
         menu_group()
@@ -758,6 +759,118 @@ defmodule Doggo.Components do
         >
           <%= render_slot(@inner_block) %>
         </button>
+        """
+      end
+  )
+
+  component(
+    :menu,
+    modifiers: [],
+    doc: """
+    Renders a menu that offers a list of actions or functions.
+
+    This component is meant for organizing actions within an application, rather
+    than for navigating between different pages or sections of a website.
+
+    See also `menu_bar/1`, `menu_group/1`, `menu_button/1`, `menu_item/1`, and
+    `menu_item_checkbox/1`.
+
+    > #### In Development {: .warning}
+    >
+    > The necessary JavaScript for making this component fully functional and
+    > accessible will be added in a future version.
+    >
+    > **Missing features**
+    >
+    > - Focus management
+    > - keyboard support
+    """,
+    usage: """
+    If the menu is always visible or can only be toggled by a keyboard shortcut,
+    set the `label` attribute.
+
+    ```heex
+    <.menu label="Actions">
+      <:item>Copy</:item>
+      <:item>Paste</:item>
+      <:item role="separator"></:item>
+      <:item>Sort lines</:item>
+    </.menu>
+    ```
+
+    If the menu is toggled by a `menu_button/1`, ensure that the `controls`
+    attribute of the button matches the DOM ID of the menu and that the
+    `labelledby` attribute of the menu matches the DOM ID of the button.
+
+    <.menu_button controls="actions-menu" id="actions-button">
+      Actions
+    </.menu_button>
+    <.menu labelledby="actions-button" hidden></.menu>
+    """,
+    type: :menu,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :label, :string,
+          default: nil,
+          doc: """
+          A accessibility label for the menubar. Set as `aria-label` attribute.
+
+          You should ensure that either the `label` or the `labelledby` attribute is
+          set.
+          """
+
+        attr :labelledby, :string,
+          default: nil,
+          doc: """
+          The DOM ID of an element that labels this menubar. If the menu is toggled
+          by a `menu_button/1`, this attribute should be set to the DOM ID of that
+          button.
+
+          Example:
+
+          ```html
+          <Doggo.menu_button controls="actions-menu" id="actions-button">
+            Actions
+          </Doggo.menu_button>
+          <Doggo.menu labelledby="actions-button" hidden></Doggo.menu>
+          ```
+
+          You should ensure that either the `label` or the `labelledby` attribute is
+          set.
+          """
+
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :item, required: true do
+          attr :role, :string,
+            values: ["none", "separator"],
+            doc: """
+            Sets the role of the list item. If the item has a menu item, group, menu
+            item radio group or menu item checkbox as a child, use `"none"`. If you
+            want to render a visual separator, use `"separator"`. The default is
+            `"none"`.
+            """
+        end
+      end,
+    heex:
+      quote do
+        Doggo.ensure_label!(var!(assigns), ".menu", "Dog Actions")
+
+        ~H"""
+        <ul
+          class={[@base_class | @modifier_classes]}
+          role="menu"
+          aria-label={@label}
+          aria-labelledby={@labelledby}
+          {@rest}
+        >
+          <li :for={item <- @item} role={Map.get(item, :role, "none")}>
+            <%= if item[:role] != "separator" do %>
+              <%= render_slot(item) %>
+            <% end %>
+          </li>
+        </ul>
         """
       end
   )

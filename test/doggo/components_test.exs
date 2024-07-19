@@ -25,6 +25,7 @@ defmodule Doggo.ComponentsTest do
     cluster()
     disclosure_button()
     fab()
+    menu()
     menu_bar()
     menu_button()
     menu_group()
@@ -692,6 +693,92 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "button:root", "phx-click") == "add"
+    end
+  end
+
+  describe "menu/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu label="Dog actions">
+          <:item>A</:item>
+        </TestComponents.menu>
+        """)
+
+      ul = find_one(html, "ul:root")
+      assert attribute(ul, "role") == "menu"
+      assert attribute(ul, "aria-label") == "Dog actions"
+
+      assert li = find_one(html, "ul > li")
+      assert attribute(li, "role") == "none"
+      assert text(li) == "A"
+    end
+
+    test "with separator" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu label="Dog actions">
+          <:item role="separator">A</:item>
+        </TestComponents.menu>
+        """)
+
+      assert li = find_one(html, "ul > li")
+      assert attribute(li, "role") == "separator"
+      assert text(li) == ""
+    end
+
+    test "with labelledby" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu labelledby="dog-menu-label">
+          <:item>A</:item>
+        </TestComponents.menu>
+        """)
+
+      assert attribute(html, ":root", "aria-labelledby") == "dog-menu-label"
+    end
+
+    test "raises if both label and labelledby are set" do
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.menu label="Dog actions" labelledby="dog-menu-label">
+          <:item>A</:item>
+        </TestComponents.menu>
+        """)
+      end
+    end
+
+    test "raises if neither label nor labelledby are set" do
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.menu>
+          <:item>A</:item>
+        </TestComponents.menu>
+        """)
+      end
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu label="Dog actions" data-test="hello">
+          <:item>A</:item>
+        </TestComponents.menu>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 
