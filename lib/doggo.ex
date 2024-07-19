@@ -394,69 +394,6 @@ defmodule Doggo do
   end
 
   @doc """
-  Renders a card in an `article` tag, typically used repetitively in a grid or
-  flex box layout.
-
-  ## Usage
-
-  ```heex
-  <Doggo.card>
-    <:image>
-      <img src="image.png" alt="Picture of a dog dressed in a poncho." />
-    </:image>
-    <:header><h2>Dog Fashion Show</h2></:header>
-    <:main>
-      The next dog fashion show is coming up quickly. Here's what you need
-      to look out for.
-    </:main>
-    <:footer>
-      <span>2023-11-15 12:24</span>
-      <span>Events</span>
-    </:footer>
-  </Doggo.card>
-  ```
-  """
-  @doc type: :component
-  @doc since: "0.1.0"
-
-  attr :class, :any,
-    default: [],
-    doc: "Additional CSS classes. Can be a string or a list of strings."
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-
-  slot :image,
-    doc: """
-    An optional image slot. The slot content will be rendered within a figure
-    element.
-    """
-
-  slot :header,
-    doc: """
-    The header of the card. You typically want to wrap the header in a `h2` or
-    `h3` tag, or another header level, depending on the hierarchy on the page.
-    """
-
-  slot :main, doc: "The main content of the card."
-
-  slot :footer,
-    doc: """
-    A footer of the card, typically containing controls, tags, or meta
-    information.
-    """
-
-  def card(assigns) do
-    ~H"""
-    <article class={["card" | List.wrap(@class)]} {@rest}>
-      <figure :if={@image != []}><%= render_slot(@image) %></figure>
-      <header :if={@header != []}><%= render_slot(@header) %></header>
-      <main :if={@main != []}><%= render_slot(@main) %></main>
-      <footer :if={@footer != []}><%= render_slot(@footer) %></footer>
-    </article>
-    """
-  end
-
-  @doc """
   The fallback component renders a given value unless it is empty, in which case
   it renders a fallback value instead.
 

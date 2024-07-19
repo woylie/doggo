@@ -26,6 +26,7 @@ defmodule Doggo.ComponentsTest do
     button()
     button_link()
     callout()
+    card()
     carousel()
     cluster()
     combobox()
@@ -956,6 +957,79 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "aside:root", "data-test") == "hello"
+    end
+  end
+
+  describe "card/1" do
+    test "default" do
+      assigns = %{}
+      html = parse_heex(~H"<TestComponents.card></TestComponents.card>")
+      article = find_one(html, "article")
+      assert attribute(article, "class") == "card"
+      assert Floki.children(article) == []
+    end
+
+    test "with figure" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.card>
+          <:image>Doggo</:image>
+        </TestComponents.card>
+        """)
+
+      assert text(html, "article > figure") == "Doggo"
+    end
+
+    test "with header" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.card>
+          <:header>Doggo</:header>
+        </TestComponents.card>
+        """)
+
+      assert text(html, "article > header") == "Doggo"
+    end
+
+    test "with main" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.card>
+          <:main>Doggo</:main>
+        </TestComponents.card>
+        """)
+
+      assert text(html, "article > main") == "Doggo"
+    end
+
+    test "with footer" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.card>
+          <:footer>Doggo</:footer>
+        </TestComponents.card>
+        """)
+
+      assert text(html, "article > footer") == "Doggo"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.card data-what="ever"></TestComponents.card>
+        """)
+
+      assert attribute(html, "article", "data-what") == "ever"
     end
   end
 
