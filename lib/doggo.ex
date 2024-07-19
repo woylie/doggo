@@ -679,60 +679,6 @@ defmodule Doggo do
   end
 
   @doc """
-  Renders a section within a sidebar or drawer that contains one or more
-  items which are not navigation links.
-
-  To render navigation links, use `vertical_nav/1` instead.
-
-  ## Example
-
-  ```heex
-  <Doggo.vertical_nav_section>
-    <:title>Search</:title>
-    <:item><input type="search" placeholder="Search" /></:item>
-  </Doggo.vertical_nav_section>
-  ```
-  """
-  @doc type: :navigation
-  @doc since: "0.5.0"
-
-  attr :id, :string, required: true
-
-  attr :class, :any,
-    default: [],
-    doc: "Additional CSS classes. Can be a string or a list of strings."
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-
-  slot :title, doc: "An optional slot for the title of the section."
-
-  slot :item, required: true, doc: "Items" do
-    attr :class, :any,
-      doc: "Additional CSS classes. Can be a string or a list of strings."
-  end
-
-  def vertical_nav_section(assigns) do
-    ~H"""
-    <div
-      id={@id}
-      class={["drawer-section" | List.wrap(@class)]}
-      aria-labelledby={@title != [] && "#{@id}-title"}
-      {@rest}
-    >
-      <div :if={@title != []} id={"#{@id}-title"} class="drawer-section-title">
-        <%= render_slot(@title) %>
-      </div>
-      <div
-        :for={item <- @item}
-        class={["drawer-item" | item |> Map.get(:class, []) |> List.wrap()]}
-      >
-        <%= render_slot(item) %>
-      </div>
-    </div>
-    """
-  end
-
-  @doc """
   Shows the flash messages as alerts.
 
   ## Hidden attribute

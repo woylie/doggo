@@ -58,6 +58,7 @@ defmodule Doggo.ComponentsTest do
     tree_item()
     vertical_nav()
     vertical_nav_nested()
+    vertical_nav_section()
 
     button_link(
       name: :button_link_with_disabled_class,
@@ -3153,6 +3154,71 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "li", "class") == "is-rad"
+    end
+  end
+
+  describe "vertical_nav_section/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.vertical_nav_section id="my-drawer">
+          <:item>item</:item>
+        </TestComponents.vertical_nav_section>
+        """)
+
+      div = find_one(html, "div:root")
+      assert attribute(div, "class") == "vertical-nav-section"
+      assert attribute(div, "id") == "my-drawer"
+      assert attribute(div, "aria-labelledby") == nil
+      assert Floki.find(html, ".drawer-section-title") == []
+      assert text(html, ":root > div.drawer-item") == "item"
+    end
+
+    test "with title" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.vertical_nav_section id="my-drawer">
+          <:title>some title</:title>
+          <:item>item</:item>
+        </TestComponents.vertical_nav_section>
+        """)
+
+      div = find_one(html, "div:root")
+      assert attribute(div, "aria-labelledby") == "my-drawer-title"
+
+      div = find_one(html, "div > .drawer-section-title")
+      assert attribute(div, "id") == "my-drawer-title"
+      assert text(div) == "some title"
+    end
+
+    test "with item class" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.vertical_nav_section id="my-drawer">
+          <:item class="is-rad">item</:item>
+        </TestComponents.vertical_nav_section>
+        """)
+
+      assert attribute(html, ":root > div", "class") == "drawer-item is-rad"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.vertical_nav_section id="my-drawer" data-test="hello">
+          <:item>item</:item>
+        </TestComponents.vertical_nav_section>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 end

@@ -56,6 +56,7 @@ defmodule Doggo.Components do
         tree_item()
         vertical_nav()
         vertical_nav_nested()
+        vertical_nav_section()
       end
 
   ## Common Options
@@ -4065,6 +4066,61 @@ defmodule Doggo.Components do
             <%= render_slot(item) %>
           </li>
         </ul>
+        """
+      end
+  )
+
+  component(
+    :vertical_nav_section,
+    modifiers: [],
+    doc: """
+    Renders a section within a sidebar or drawer that contains one or more
+    items which are not navigation links.
+
+    To render navigation links, use `vertical_nav/1` instead.
+    """,
+    usage: """
+    ```heex
+    <.vertical_nav_section>
+      <:title>Search</:title>
+      <:item><input type="search" placeholder="Search" /></:item>
+    </.vertical_nav_section>
+    ```
+    """,
+    type: :navigation,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :id, :string, required: true
+
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :title, doc: "An optional slot for the title of the section."
+
+        slot :item, required: true, doc: "Items" do
+          attr :class, :any,
+            doc: "Additional CSS classes. Can be a string or a list of strings."
+        end
+      end,
+    heex:
+      quote do
+        ~H"""
+        <div
+          id={@id}
+          class={[@base_class | @modifier_classes]}
+          aria-labelledby={@title != [] && "#{@id}-title"}
+          {@rest}
+        >
+          <div :if={@title != []} id={"#{@id}-title"} class="drawer-section-title">
+            <%= render_slot(@title) %>
+          </div>
+          <div
+            :for={item <- @item}
+            class={["drawer-item" | item |> Map.get(:class, []) |> List.wrap()]}
+          >
+            <%= render_slot(item) %>
+          </div>
+        </div>
         """
       end
   )
