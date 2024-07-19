@@ -75,103 +75,11 @@ defmodule Doggo do
   def time_title_attr(_, nil), do: nil
   def time_title_attr(v, fun) when is_function(fun, 1), do: fun.(v)
 
-  @doc """
-  Renders a `Date`, `DateTime`, or `NaiveDateTime` in a `<time>` tag.
-
-  ## Examples
-
-  By default, the given value is formatted for display with `to_string/1`. This:
-
-  ```heex
-  <Doggo.date value={~D[2023-02-05]} />
-  ```
-
-  Will be rendered as:
-
-  ```html
-  <time datetime="2023-02-05">
-    2023-02-05
-  </time>
-  ```
-
-  You can also pass a custom formatter function. For example, if you are using
-  [ex_cldr_dates_times](https://hex.pm/packages/ex_cldr_dates_times) in your
-  application, you could do this:
-
-  ```heex
-  <Doggo.date
-    value={~D[2023-02-05]}
-    formatter={&MyApp.Cldr.Date.to_string!/1}
-  />
-  ```
-
-  Which, depending on your locale, may be rendered as:
-
-  ```html
-  <time datetime="2023-02-05">
-    Feb 2, 2023
-  </time>
-  ```
-  """
-  @doc type: :component
-  @doc since: "0.1.0"
-
-  attr :value, :any,
-    required: true,
-    doc: """
-    Either a `Date`, `DateTime`, or `NaiveDateTime`.
-    """
-
-  attr :formatter, :any,
-    doc: """
-    A function that takes a `Date` as an argument and returns the value
-    formatted for display. Defaults to `to_string/1`.
-    """
-
-  attr :title_formatter, :any,
-    default: nil,
-    doc: """
-    When provided, this function is used to format the date value for the
-    `title` attribute. If the attribute is not set, no `title` attribute will
-    be added.
-    """
-
-  attr :timezone, :string,
-    default: nil,
-    doc: """
-    If set and the given value is a `DateTime`, the value will be shifted to
-    that time zone. This affects both the display value and the `datetime` tag.
-    Note that you need to
-    [configure a time zone database](https://hexdocs.pm/elixir/DateTime.html#module-time-zone-database)
-    for this to work.
-    """
-
-  def date(%{value: value, timezone: timezone} = assigns) do
-    value =
-      value
-      |> shift_zone(timezone)
-      |> to_date()
-
-    assigns =
-      assigns
-      |> assign(:value, value)
-      |> assign_new(:formatter, fn -> &to_string/1 end)
-
-    ~H"""
-    <time
-      :if={@value}
-      datetime={Date.to_iso8601(@value)}
-      title={time_title_attr(@value, @title_formatter)}
-    >
-      <%= @formatter.(@value) %>
-    </time>
-    """
-  end
-
-  defp to_date(%Date{} = d), do: d
-  defp to_date(%DateTime{} = dt), do: DateTime.to_date(dt)
-  defp to_date(%NaiveDateTime{} = dt), do: NaiveDateTime.to_date(dt)
-  defp to_date(nil), do: nil
+  @doc false
+  def to_date(%Date{} = d), do: d
+  def to_date(%DateTime{} = dt), do: DateTime.to_date(dt)
+  def to_date(%NaiveDateTime{} = dt), do: NaiveDateTime.to_date(dt)
+  def to_date(nil), do: nil
 
   @doc """
   Renders a `Time`, `DateTime`, or `NaiveDateTime` in a `<time>` tag.
