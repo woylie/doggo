@@ -31,6 +31,7 @@ defmodule Doggo.ComponentsTest do
     date()
     datetime()
     disclosure_button()
+    drawer()
     fab()
     menu()
     menu_bar()
@@ -1644,6 +1645,66 @@ defmodule Doggo.ComponentsTest do
       assert attribute(button, "aria-expanded") == "false"
       assert attribute(button, "aria-controls") == "data-table"
       assert text(button) == "Data Table"
+    end
+  end
+
+  describe "drawer/1" do
+    test "default" do
+      assigns = %{}
+      html = parse_heex(~H"<TestComponents.drawer></TestComponents.drawer>")
+      aside = find_one(html, "aside")
+      assert attribute(aside, "class") == "drawer"
+      assert Floki.children(aside) == []
+    end
+
+    test "with header" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.drawer>
+          <:header>Doggo</:header>
+        </TestComponents.drawer>
+        """)
+
+      assert text(html, "aside > div.drawer-header") == "Doggo"
+    end
+
+    test "with main slot" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.drawer>
+          <:main>Doggo</:main>
+        </TestComponents.drawer>
+        """)
+
+      assert text(html, "aside > div.drawer-main") == "Doggo"
+    end
+
+    test "with footer slot" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.drawer>
+          <:footer>Doggo</:footer>
+        </TestComponents.drawer>
+        """)
+
+      assert text(html, "aside > div.drawer-footer") == "Doggo"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.drawer data-what="ever"></TestComponents.drawer>
+        """)
+
+      assert attribute(html, "aside", "data-what") == "ever"
     end
   end
 

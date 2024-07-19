@@ -29,6 +29,7 @@ defmodule Doggo.Components do
         date()
         datetime()
         disclosure_button()
+        drawer()
         fab()
         menu()
         menu_bar()
@@ -1694,6 +1695,115 @@ defmodule Doggo.Components do
         >
           <%= render_slot(@inner_block) %>
         </button>
+        """
+      end
+  )
+
+  component(
+    :drawer,
+    modifiers: [],
+    doc: """
+    Renders a drawer with a `brand`, `top`, and `bottom` slot.
+
+    All slots are optional, and you can render any content in them. If you want
+    to use the drawer as a sidebar, you can use the `vertical_nav/1` and
+    `vertical_nav_section/1` components.
+    """,
+    usage: """
+    Minimal example:
+
+    ```heex
+    <.drawer>
+      <:main>Content</:main>
+    </.drawer>
+    ```
+
+    With all slots:
+
+    ```heex
+    <.drawer>
+      <:header>Doggo</:header>
+      <:main>Content at the top</:main>
+      <:footer>Content at the bottom</:footer>
+    </.drawer>
+    ```
+
+    With navigation and sections:
+
+    ```heex
+    <.drawer>
+      <:header>
+        <.link navigate={~p"/"}>App</.link>
+      </:header>
+      <:main>
+        <.vertical_nav label="Main">
+          <:item>
+            <.link navigate={~p"/dashboard"}>Dashboard</.link>
+          </:item>
+          <:item>
+            <.vertical_nav_nested>
+              <:title>Content</:title>
+              <:item current_page>
+                <.link navigate={~p"/posts"}>Posts</.link>
+              </:item>
+              <:item>
+                <.link navigate={~p"/comments"}>Comments</.link>
+              </:item>
+            </.vertical_nav_nested>
+          </:item>
+        </.vertical_nav>
+        <.vertical_nav_section>
+          <:title>Search</:title>
+          <:item><input type="search" placeholder="Search" /></:item>
+        </.vertical_nav_section>
+      </:main>
+      <:footer>
+        <.vertical_nav label="User menu">
+          <:item>
+            <.link navigate={~p"/settings"}>Settings</.link>
+          </:item>
+          <:item>
+            <.link navigate={~p"/logout"}>Logout</.link>
+          </:item>
+        </.vertical_nav>
+      </:footer>
+    </.drawer>
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :header, doc: "Optional slot for the brand name or logo."
+
+        slot :main,
+          doc: """
+          Slot for content that is rendered after the brand, at the start of the
+          side bar.
+          """
+
+        slot :footer,
+          doc: """
+          Slot for content that is rendered at the end of the drawer, potentially
+          pinned to the bottom, if there is enough room.
+          """
+      end,
+    heex:
+      quote do
+        ~H"""
+        <aside class={[@base_class | @modifier_classes]} {@rest}>
+          <div :if={@header != []} class="drawer-header">
+            <%= render_slot(@header) %>
+          </div>
+          <div :if={@main != []} class="drawer-main">
+            <%= render_slot(@main) %>
+          </div>
+          <div :if={@footer != []} class="drawer-footer">
+            <%= render_slot(@footer) %>
+          </div>
+        </aside>
         """
       end
   )
