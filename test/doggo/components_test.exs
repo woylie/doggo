@@ -56,6 +56,7 @@ defmodule Doggo.ComponentsTest do
     tooltip()
     tree()
     tree_item()
+    vertical_nav()
 
     button_link(
       name: :button_link_with_disabled_class,
@@ -3017,6 +3018,78 @@ defmodule Doggo.ComponentsTest do
       assert attribute(li, ":root", "aria-selected") == "false"
       assert text(li, ":root > span") == "Labrador Retriever"
       assert Floki.find(li, ":root ul") == []
+    end
+  end
+
+  describe "vertical_nav/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.vertical_nav id="main-nav" label="Main">
+          <:item>item</:item>
+        </TestComponents.vertical_nav>
+        """)
+
+      div = find_one(html, "nav:root")
+      assert attribute(div, "id") == "main-nav"
+      assert attribute(div, "aria-label") == "Main"
+      assert Floki.find(html, ".drawer-nav-title") == []
+      assert text(html, ":root > ul > li") == "item"
+    end
+
+    test "with current page" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.vertical_nav id="main-nav" label="Main">
+          <:item current_page>item</:item>
+        </TestComponents.vertical_nav>
+        """)
+
+      assert attribute(html, ":root > ul > li", "aria-current") == "page"
+    end
+
+    test "with title" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.vertical_nav id="main-nav" label="Main">
+          <:title>some title</:title>
+          <:item>item</:item>
+        </TestComponents.vertical_nav>
+        """)
+
+      assert text(html, ":root > div.drawer-nav-title") == "some title"
+    end
+
+    test "with item class" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.vertical_nav id="main-nav" label="Main">
+          <:item class="is-rad">item</:item>
+        </TestComponents.vertical_nav>
+        """)
+
+      assert attribute(html, "li", "class") == "is-rad"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.vertical_nav id="main-nav" label="Main" data-test="hello">
+          <:item>item</:item>
+        </TestComponents.vertical_nav>
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 end

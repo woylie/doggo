@@ -54,6 +54,7 @@ defmodule Doggo.Components do
         tooltip()
         tree()
         tree_item()
+        vertical_nav()
       end
 
   ## Common Options
@@ -3930,6 +3931,82 @@ defmodule Doggo.Components do
             <%= render_slot(@items) %>
           </ul>
         </li>
+        """
+      end
+  )
+
+  component(
+    :vertical_nav,
+    modifiers: [],
+    doc: """
+    Renders a vertical navigation menu.
+
+    It is commonly placed within drawers or sidebars.
+
+    For hierarchical menu structures, use `vertical_nav_nested/1` within the
+    `:item` slot.
+
+    To include sections in your drawer or sidebar that are not part of the
+    navigation menu (like informational text or a site search), use the
+    `vertical_nav_section/1` component.
+    """,
+    usage: """
+    ```heex
+    <.vertical_nav label="Main">
+      <:item>
+        <.link navigate={~p"/dashboard"}>Dashboard</.link>
+      </:item>
+      <:item>
+        <.vertical_nav_nested>
+          <:title>Content</:title>
+          <:item current_page>
+            <.link navigate={~p"/posts"}>Posts</.link>
+          </:item>
+          <:item>
+            <.link navigate={~p"/comments"}>Comments</.link>
+          </:item>
+        </.vertical_nav_nested>
+      </:item>
+    </.vertical_nav>
+    ```
+    """,
+    type: :navigation,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :id, :string, default: nil
+        attr :label, :string, required: true
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :title, doc: "An optional slot for the title of the menu."
+
+        slot :item, required: true, doc: "Items" do
+          attr :class, :string
+          attr :current_page, :boolean
+        end
+      end,
+    heex:
+      quote do
+        ~H"""
+        <nav
+          class={[@base_class | @modifier_classes]}
+          id={@id}
+          aria-label={@label}
+          {@rest}
+        >
+          <div :if={@title != []} class="drawer-nav-title">
+            <%= render_slot(@title) %>
+          </div>
+          <ul>
+            <li
+              :for={item <- @item}
+              class={item[:class]}
+              aria-current={Map.get(item, :current_page, false) && "page"}
+            >
+              <%= render_slot(item) %>
+            </li>
+          </ul>
+        </nav>
         """
       end
   )
