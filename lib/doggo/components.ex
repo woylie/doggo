@@ -16,6 +16,7 @@ defmodule Doggo.Components do
         accordion()
         action_bar()
         alert_dialog()
+        app_bar()
         badge()
         box()
         breadcrumb()
@@ -384,6 +385,86 @@ defmodule Doggo.Components do
             </section>
           </.focus_wrap>
         </dialog>
+        """
+      end
+  )
+
+  component(
+    :app_bar,
+    modifiers: [],
+    doc: """
+    The app bar is typically located at the top of the interface and provides
+    access to key features and navigation options.
+    """,
+    usage: """
+    ```heex
+    <.app_bar title="Page title">
+      <:navigation label="Open menu" on_click={JS.push("toggle-menu")}>
+        <.icon><Lucideicons.menu aria-hidden /></.icon>
+      </:navigation>
+      <:action label="Search" on_click={JS.push("search")}>
+        <.icon><Lucideicons.search aria-hidden /></.icon>
+      </:action>
+      <:action label="Like" on_click={JS.push("like")}>
+        <.icon><Lucideicons.heart aria-hidden /></.icon>
+      </:action>
+    </.app_bar>
+    ```
+    """,
+    type: :navigation,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :title, :string,
+          default: nil,
+          doc: "The page title. Will be set as `h1`."
+
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :navigation,
+          doc: """
+          Slot for a single button left of the title, typically used for a menu button
+          that toggles a drawer, or for a back link.
+          """ do
+          attr :label, :string, required: true
+
+          attr :on_click, :any,
+            required: true,
+            doc: "Event name or `Phoenix.LiveView.JS` command."
+        end
+
+        slot :action, doc: "Slot for action buttons right of the title." do
+          attr :label, :string, required: true
+
+          attr :on_click, :any,
+            required: true,
+            doc: "Event name or `Phoenix.LiveView.JS` command."
+        end
+      end,
+    heex:
+      quote do
+        ~H"""
+        <header class={[@base_class | @modifier_classes]} {@rest}>
+          <div :if={@navigation != []} class="app-bar-navigation">
+            <.link
+              :for={navigation <- @navigation}
+              phx-click={navigation.on_click}
+              title={navigation.label}
+            >
+              <%= render_slot(navigation) %>
+            </.link>
+          </div>
+          <h1 :if={@title}><%= @title %></h1>
+          <div :if={@action != []} class="app-bar-actions">
+            <.link
+              :for={action <- @action}
+              phx-click={action.on_click}
+              title={action.label}
+            >
+              <%= render_slot(action) %>
+            </.link>
+          </div>
+        </header>
         """
       end
   )
