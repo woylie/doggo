@@ -25,6 +25,7 @@ defmodule Doggo.ComponentsTest do
     cluster()
     disclosure_button()
     fab()
+    menu_item()
     menu_item_checkbox()
     menu_item_radio_group()
     modal()
@@ -688,6 +689,25 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "button:root", "phx-click") == "add"
+    end
+  end
+
+  describe "menu_item/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu_item on_click={JS.push("hello")}>
+          Action
+        </TestComponents.menu_item>
+        """)
+
+      button = find_one(html, "button:root")
+      assert attribute(button, "type") == "button"
+      assert attribute(button, "phx-click")
+      assert attribute(button, "role") == "menuitem"
+      assert text(button) == "Action"
     end
   end
 

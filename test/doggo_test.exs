@@ -3444,25 +3444,6 @@ defmodule DoggoTest do
     end
   end
 
-  describe "menu_item/1" do
-    test "default" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.menu_item on_click={JS.push("hello")}>
-          Action
-        </Doggo.menu_item>
-        """)
-
-      button = find_one(html, "button:root")
-      assert attribute(button, "type") == "button"
-      assert attribute(button, "phx-click")
-      assert attribute(button, "role") == "menuitem"
-      assert text(button) == "Action"
-    end
-  end
-
   describe "time/1" do
     test "with Time" do
       assigns = %{}

@@ -3437,45 +3437,6 @@ defmodule Doggo do
     """
   end
 
-  @doc """
-  Renders a button that acts as a menu item within a `menu/1` or `menu_bar/1`.
-
-  A menu item is meant to be used to trigger an action. For a button that
-  toggles the visibility of a menu, use `menu_button/1`.
-
-  ## Example
-
-  ```heex
-  <Doggo.menu label="Actions">
-    <:item>
-      <Doggo.menu_item on_click={JS.dispatch("myapp:copy")}>
-        Copy
-      </Doggo.menu_item>
-    </:item>
-    <:item>
-      <Doggo.menu_item on_click={JS.dispatch("myapp:paste")}>
-        Paste
-      </Doggo.menu_item>
-    </:item>
-  </Doggo.menu>
-  ```
-  """
-  @doc type: :menu
-  @doc since: "0.5.0"
-
-  attr :on_click, JS, required: true
-  attr :rest, :global
-
-  slot :inner_block, required: true
-
-  def menu_item(assigns) do
-    ~H"""
-    <button type="button" role="menuitem" phx-click={@on_click} {@rest}>
-      <%= render_slot(@inner_block) %>
-    </button>
-    """
-  end
-
   ## Helpers
 
   @doc false

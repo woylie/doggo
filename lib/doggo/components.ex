@@ -23,6 +23,7 @@ defmodule Doggo.Components do
         cluster()
         disclosure_button()
         fab()
+        menu_item()
         menu_item_checkbox()
         menu_item_radio_group()
         modal()
@@ -750,6 +751,56 @@ defmodule Doggo.Components do
           aria-label={@label}
           class={[@base_class | @modifier_classes]}
           disabled={@disabled}
+          {@rest}
+        >
+          <%= render_slot(@inner_block) %>
+        </button>
+        """
+      end
+  )
+
+  component(
+    :menu_item,
+    modifiers: [],
+    doc: """
+    Renders a button that acts as a menu item within a `menu/1` or `menu_bar/1`.
+
+    A menu item is meant to be used to trigger an action. For a button that
+    toggles the visibility of a menu, use `menu_button/1`.
+    """,
+    usage: """
+    ```heex
+    <.menu label="Actions">
+      <:item>
+        <.menu_item on_click={JS.dispatch("myapp:copy")}>
+          Copy
+        </.menu_item>
+      </:item>
+      <:item>
+        <.menu_item on_click={JS.dispatch("myapp:paste")}>
+          Paste
+        </.menu_item>
+      </:item>
+    </.menu>
+    ```
+    """,
+    type: :menu,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :on_click, Phoenix.LiveView.JS, required: true
+        attr :rest, :global
+
+        slot :inner_block, required: true
+      end,
+    heex:
+      quote do
+        ~H"""
+        <button
+          class={[@base_class | @modifier_classes]}
+          type="button"
+          role="menuitem"
+          phx-click={@on_click}
           {@rest}
         >
           <%= render_slot(@inner_block) %>
