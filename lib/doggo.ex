@@ -81,113 +81,11 @@ defmodule Doggo do
   def to_date(%NaiveDateTime{} = dt), do: NaiveDateTime.to_date(dt)
   def to_date(nil), do: nil
 
-  @doc """
-  Renders a `Time`, `DateTime`, or `NaiveDateTime` in a `<time>` tag.
-
-  ## Examples
-
-  By default, the given value is formatted for display with `to_string/1`. This:
-
-  ```heex
-  <Doggo.time value={~T[12:22:06.003Z]} />
-  ```
-
-  Will be rendered as:
-
-  ```html
-  <time datetime="12:22:06.003">
-    12:22:06.003
-  </time>
-  ```
-
-  You can also pass a custom formatter function. For example, if you are using
-  [ex_cldr_dates_times](https://hex.pm/packages/ex_cldr_dates_times) in your
-  application, you could do this:
-
-  ```heex
-  <Doggo.time
-    value={~T[12:22:06.003]}
-    formatter={&MyApp.Cldr.Time.to_string!/1}
-  />
-  ```
-
-  Which, depending on your locale, may be rendered as:
-
-  ```html
-  <time datetime="14:22:06.003">
-    14:22:06 PM
-  </time>
-  ```
-  """
-  @doc type: :component
-  @doc since: "0.1.0"
-
-  attr :value, :any,
-    required: true,
-    doc: """
-    Either a `Time`, `DateTime`, or `NaiveDateTime`.
-    """
-
-  attr :formatter, :any,
-    doc: """
-    A function that takes a `Time`, `DateTime`, or `NaiveDateTime` as an
-    argument and returns the value formatted for display. Defaults to
-    `to_string/1`.
-    """
-
-  attr :title_formatter, :any,
-    default: nil,
-    doc: """
-    When provided, this function is used to format the time value for the
-    `title` attribute. If the attribute is not set, no `title` attribute will
-    be added.
-    """
-
-  attr :precision, :atom,
-    values: [:minute, :second, :millisecond, :microsecond, nil],
-    default: nil,
-    doc: """
-    Precision to truncate the given value with. The truncation is applied on
-    both the display value and the value of the `datetime` attribute.
-    """
-
-  attr :timezone, :string,
-    default: nil,
-    doc: """
-    If set and the given value is a `DateTime`, the value will be shifted to
-    that time zone. This affects both the display value and the `datetime` tag.
-    Note that you need to
-    [configure a time zone database](https://hexdocs.pm/elixir/DateTime.html#module-time-zone-database)
-    for this to work.
-    """
-
-  def time(%{value: value, precision: precision, timezone: timezone} = assigns) do
-    value =
-      value
-      |> shift_zone(timezone)
-      |> truncate_datetime(precision)
-      |> to_time()
-
-    assigns =
-      assigns
-      |> assign(:value, value)
-      |> assign_new(:formatter, fn -> &to_string/1 end)
-
-    ~H"""
-    <time
-      :if={@value}
-      datetime={Time.to_iso8601(@value)}
-      title={time_title_attr(@value, @title_formatter)}
-    >
-      <%= @formatter.(@value) %>
-    </time>
-    """
-  end
-
-  defp to_time(%Time{} = t), do: t
-  defp to_time(%DateTime{} = dt), do: DateTime.to_time(dt)
-  defp to_time(%NaiveDateTime{} = dt), do: NaiveDateTime.to_time(dt)
-  defp to_time(nil), do: nil
+  @doc false
+  def to_time(%Time{} = t), do: t
+  def to_time(%DateTime{} = dt), do: DateTime.to_time(dt)
+  def to_time(%NaiveDateTime{} = dt), do: NaiveDateTime.to_time(dt)
+  def to_time(nil), do: nil
 
   @doc """
   Renders a drawer with a `brand`, `top`, and `bottom` slot.

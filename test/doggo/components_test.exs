@@ -54,6 +54,7 @@ defmodule Doggo.ComponentsTest do
     table()
     tabs()
     tag()
+    time()
     toggle_button()
     toolbar()
     tooltip()
@@ -3217,6 +3218,298 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "span", "class") == "tag is-normal is-pill"
+    end
+  end
+
+  describe "time/1" do
+    test "with Time" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time value={~T[18:30:21]} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:21"
+      assert text(time) == "18:30:21"
+    end
+
+    test "with DateTime" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time value={~U[2023-12-27T18:30:21Z]} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:21"
+      assert text(time) == "18:30:21"
+    end
+
+    test "with NaiveDateTime" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time value={~N[2023-12-27 18:30:21]} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:21"
+      assert text(time) == "18:30:21"
+    end
+
+    test "with nil" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time
+          value={nil}
+          formatter={& &1}
+          title_formatter={& &1}
+          precision={:minute}
+          timezone="Asia/Tokyo"
+        />
+        """)
+
+      assert html == []
+    end
+
+    test "with formatter" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time
+          value={~T[18:30:21]}
+          formatter={&"#{&1.hour}h #{&1.minute}m"}
+        />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:21"
+      assert text(time) == "18h 30m"
+    end
+
+    test "with title formatter" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time
+          value={~T[18:30:21]}
+          title_formatter={&"#{&1.hour}h #{&1.minute}m"}
+        />
+        """)
+
+      assert attribute(html, "time", "title") == "18h 30m"
+    end
+
+    test "with Time and microsecond precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time value={~T[18:30:21.107074]} precision={:microsecond} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:21.107074"
+      assert text(time) == "18:30:21.107074"
+    end
+
+    test "with Time and millisecond precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time value={~T[18:30:21.107074]} precision={:millisecond} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:21.107"
+      assert text(time) == "18:30:21.107"
+    end
+
+    test "with Time and second precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time value={~T[18:30:21.107074]} precision={:second} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:21"
+      assert text(time) == "18:30:21"
+    end
+
+    test "with Time and minute precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time value={~T[18:30:21.107074]} precision={:minute} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:00"
+      assert text(time) == "18:30:00"
+    end
+
+    test "with DateTime and microsecond precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time
+          value={~U[2023-12-27T18:30:21.107074Z]}
+          precision={:microsecond}
+        />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:21.107074"
+      assert text(time) == "18:30:21.107074"
+    end
+
+    test "with DateTime and millisecond precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time
+          value={~U[2023-12-27T18:30:21.107074Z]}
+          precision={:millisecond}
+        />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:21.107"
+      assert text(time) == "18:30:21.107"
+    end
+
+    test "with DateTime and second precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time
+          value={~U[2023-12-27T18:30:21.107074Z]}
+          precision={:second}
+        />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:21"
+      assert text(time) == "18:30:21"
+    end
+
+    test "with DateTime and minute precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time
+          value={~U[2023-12-27T18:30:21.107074Z]}
+          precision={:minute}
+        />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:00"
+      assert text(time) == "18:30:00"
+    end
+
+    test "with NaiveDateTime and microsecond precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time
+          value={~N[2023-12-27T18:30:21.107074]}
+          precision={:microsecond}
+        />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:21.107074"
+      assert text(time) == "18:30:21.107074"
+    end
+
+    test "with NaiveDateTime and millisecond precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time
+          value={~N[2023-12-27T18:30:21.107074]}
+          precision={:millisecond}
+        />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:21.107"
+      assert text(time) == "18:30:21.107"
+    end
+
+    test "with NaiveDateTime and second precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time value={~N[2023-12-27T18:30:21.107074]} precision={:second} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:21"
+      assert text(time) == "18:30:21"
+    end
+
+    test "with NaiveDateTime and minute precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time value={~N[2023-12-27T18:30:21.107074]} precision={:minute} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "18:30:00"
+      assert text(time) == "18:30:00"
+    end
+
+    test "with DateTime and time zone" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time value={~U[2023-12-27T18:30:21Z]} timezone="Asia/Tokyo" />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "03:30:21"
+      assert text(time) == "03:30:21"
     end
   end
 
