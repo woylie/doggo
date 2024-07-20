@@ -18,6 +18,7 @@ defmodule Doggo.Components do
         alert()
         alert_dialog()
         app_bar()
+        avatar()
         badge()
         bottom_navigation()
         box()
@@ -574,6 +575,119 @@ defmodule Doggo.Components do
         """
       end
   )
+
+  component(
+    :avatar,
+    modifiers: [
+      size: [values: ["small", "normal", "medium", "large"], default: "normal"],
+      shape: [values: [nil, "circle"], default: nil]
+    ],
+    doc: """
+    Renders profile picture, typically to represent a user.
+    """,
+    usage: """
+    Minimal example with only the `src` attribute:
+
+    ```heex
+    <.avatar src="avatar.png" />
+    ```
+
+    Render avatar as a circle:
+
+    ```heex
+    <.avatar src="avatar.png" circle />
+    ```
+
+    Use a placeholder image in case the avatar is not set:
+
+    ```heex
+    <.avatar src={@user.avatar_url} placeholder={{:src, "fallback.png"}} />
+    ```
+
+    Render an text as the placeholder value:
+
+    ```heex
+    <.avatar src={@user.avatar_url} placeholder="A" />
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :src, :any,
+          default: nil,
+          doc: """
+          The URL of the avatar image. If `nil`, the component will use the value
+          provided in the placeholder attribute.
+          """
+
+        attr :placeholder, :any,
+          default: nil,
+          doc: """
+          Fallback value to render in case the `src` attribute is `nil`.
+
+          - For a placeholder image, pass a tuple `{:src, url}`.
+          - For other types of placeholder content, such as text initials or inline
+            SVG, pass the content directly. The component will render this content
+            as-is.
+
+          If the placeholder value is set to `nil`, no avatar will be rendered if the
+          `src` is `nil`.
+          """
+
+        attr :alt, :string,
+          default: "",
+          doc: """
+          Use alt text to identify the individual in an avatar if their name or
+          identifier isn't otherwise provided in adjacent text. In contexts where
+          the user's name or identifying information is already displayed alongside
+          the avatar, use `alt=""` (the default) to avoid redundancy and treat the
+          avatar as a decorative element for screen readers.
+          """
+
+        attr :loading, :string, values: ["eager", "lazy"], default: "lazy"
+        attr :rest, :global, doc: "Any additional HTML attributes."
+      end,
+    heex:
+      quote do
+        ~H"""
+        <div
+          :if={@src || @placeholder}
+          class={[@base_class | @modifier_classes]}
+          {@rest}
+        >
+          <Doggo.Components.inner_avatar
+            src={@src}
+            placeholder={@placeholder}
+            alt={@alt}
+            loading={@loading}
+          />
+        </div>
+        """
+      end
+  )
+
+  @doc false
+  def inner_avatar(%{src: src} = assigns) when is_binary(src) do
+    ~H"""
+    <img src={@src} alt={@alt} loading={@loading} />
+    """
+  end
+
+  def inner_avatar(%{placeholder: {:src, src}} = assigns)
+      when is_binary(src) do
+    assigns = assign(assigns, :src, src)
+
+    ~H"""
+    <img src={@src} alt={@alt} loading={@loading} />
+    """
+  end
+
+  def inner_avatar(assigns) do
+    ~H"""
+    <span><%= @placeholder %></span>
+    """
+  end
 
   component(
     :badge,
