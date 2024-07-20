@@ -678,7 +678,7 @@ defmodule DoggoTest do
     )
 
     callout(
-      class_name_fun: &__MODULE__.modifier_class_name/1,
+      class_name_fun: &__MODULE__.modifier_class_name/2,
       modifiers: [
         variant: [
           values: ["info", "warning"],
@@ -693,20 +693,20 @@ defmodule DoggoTest do
       ]
     )
 
-    def modifier_class_name(value), do: ":#{value}"
+    def modifier_class_name(name, value), do: "#{name}-#{value}"
   end
 
   describe "modifier_classes/1" do
     @tag :this
     test "returns a map of modifier classes" do
       assert Doggo.modifier_classes(TestComponents) == [
-               ":info",
-               ":warning",
                "is-large",
                "is-normal",
                "is-primary",
                "is-secondary",
-               "is-small"
+               "is-small",
+               "variant-info",
+               "variant-warning"
              ]
     end
   end

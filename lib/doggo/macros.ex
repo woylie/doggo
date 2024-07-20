@@ -36,7 +36,7 @@ defmodule Doggo.Macros do
         name: opts[:name] || name,
         base_class: base_class,
         modifiers: modifiers,
-        class_name_fun: &Doggo.modifier_class_name/1
+        class_name_fun: &Doggo.modifier_class_name/2
       ] ++ extra
 
     type = Keyword.fetch!(opts, :type)

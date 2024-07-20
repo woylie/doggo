@@ -1001,17 +1001,17 @@ defmodule Doggo do
   ## Modifier classes
 
   @doc """
-  Takes a modifier attribute value and returns a CSS class name.
+  Takes a modifier attribute name and value and returns a CSS class name.
 
   This function is used as a default for the `class_name_fun` option.
 
   ## Example
 
-      iex> modifier_class_name("large")
+      iex> modifier_class_name(:size, "large")
       "is-large"
   """
-  @spec modifier_class_name(String.t()) :: String.t()
-  def modifier_class_name(value) when is_binary(value), do: "is-#{value}"
+  @spec modifier_class_name(atom, String.t()) :: String.t()
+  def modifier_class_name(_, value) when is_binary(value), do: "is-#{value}"
 
   @doc false
   def modifier_classes(module) do
@@ -1026,11 +1026,11 @@ defmodule Doggo do
 
     info
     |> Keyword.fetch!(:modifiers)
-    |> Enum.flat_map(fn {_, modifier_opts} ->
+    |> Enum.flat_map(fn {name, modifier_opts} ->
       modifier_opts
       |> Keyword.fetch!(:values)
       |> Enum.reject(&is_nil/1)
-      |> Enum.map(class_name_fun)
+      |> Enum.map(&class_name_fun.(name, &1))
     end)
   end
 
