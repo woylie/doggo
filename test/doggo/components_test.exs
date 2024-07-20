@@ -37,6 +37,7 @@ defmodule Doggo.ComponentsTest do
     disclosure_button()
     drawer()
     fab()
+    fallback()
     icon()
     icon_sprite()
     menu()
@@ -2069,6 +2070,86 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "aside", "data-what") == "ever"
+    end
+  end
+
+  describe "fallback/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.fallback value="dog" />
+        """)
+
+      assert html == ["dog"]
+    end
+
+    test "with formatter" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.fallback value="dog" formatter={&String.upcase/1} />
+        """)
+
+      assert html == ["DOG"]
+    end
+
+    test "with nil" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.fallback value={nil} />
+        """)
+
+      assert html == [
+               {"span", [{"class", "fallback"}, {"aria-label", "not set"}],
+                ["-"]}
+             ]
+    end
+
+    test "with empty string and formatter" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.fallback value="" formatter={&String.upcase/1} />
+        """)
+
+      assert html == [
+               {"span", [{"class", "fallback"}, {"aria-label", "not set"}],
+                ["-"]}
+             ]
+    end
+
+    test "with placeholder" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.fallback value={[]} placeholder="n/a" />
+        """)
+
+      assert html == [
+               {"span", [{"class", "fallback"}, {"aria-label", "not set"}],
+                ["n/a"]}
+             ]
+    end
+
+    test "with accessibility text" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.fallback value={[]} accessibility_text="not available" />
+        """)
+
+      assert html == [
+               {"span",
+                [{"class", "fallback"}, {"aria-label", "not available"}], ["-"]}
+             ]
     end
   end
 
