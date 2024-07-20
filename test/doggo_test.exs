@@ -655,10 +655,59 @@ defmodule DoggoTest do
     end
   end
 
+  defmodule TestComponents do
+    @moduledoc """
+    Generates components for tests.
+    """
+
+    use Doggo.Components
+    use Phoenix.Component
+
+    button(
+      modifiers: [
+        size: [values: ["small", "normal"], default: "normal"],
+        variant: [
+          values: [
+            nil,
+            "primary",
+            "secondary"
+          ],
+          default: nil
+        ]
+      ]
+    )
+
+    callout(
+      class_name_fun: &__MODULE__.modifier_class_name/1,
+      modifiers: [
+        variant: [
+          values: ["info", "warning"],
+          default: "info"
+        ]
+      ]
+    )
+
+    tag(
+      modifiers: [
+        size: [values: ["small", "normal", "large"], default: "normal"]
+      ]
+    )
+
+    def modifier_class_name(value), do: ":#{value}"
+  end
+
   describe "modifier_classes/1" do
+    @tag :this
     test "returns a map of modifier classes" do
-      assert %{variants: [variant | _]} = Doggo.modifier_classes()
-      assert is_binary(variant)
+      assert Doggo.modifier_classes(TestComponents) == [
+               ":info",
+               ":warning",
+               "is-large",
+               "is-normal",
+               "is-primary",
+               "is-secondary",
+               "is-small"
+             ]
     end
   end
 end
