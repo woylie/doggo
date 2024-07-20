@@ -15,6 +15,7 @@ defmodule Doggo.Components do
 
         accordion()
         action_bar()
+        alert()
         alert_dialog()
         app_bar()
         badge()
@@ -239,6 +240,97 @@ defmodule Doggo.Components do
         <div role="toolbar" class={[@base_class | @modifier_classes]} {@rest}>
           <button :for={item <- @item} phx-click={item.on_click} title={item.label}>
             <%= render_slot(item) %>
+          </button>
+        </div>
+        """
+      end
+  )
+
+  component(
+    :alert,
+    modifiers: [
+      level: [
+        values: [
+          "info",
+          "success",
+          "warning",
+          "danger"
+        ],
+        default: "info"
+      ]
+    ],
+    doc: """
+    The alert component serves as a notification mechanism to provide feedback to
+    the user.
+
+    For supplementary information that doesn't require the user's immediate
+    attention, use `callout/1` instead.
+    """,
+    usage: """
+    Minimal example:
+
+    ```heex
+    <.alert id="some-alert"></.alert>
+    ```
+
+    With title, icon and level:
+
+    ```heex
+    <.alert id="some-alert" level={:info} title="Info">
+      message
+      <:icon><Heroicon.light_bulb /></:icon>
+    </.alert>
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        attr :id, :string, required: true
+
+        attr :title, :string, default: nil, doc: "An optional title."
+
+        attr :on_close, :any,
+          default: nil,
+          doc: """
+          JS command to run when the close button is clicked. If not set, no close
+          button is rendered.
+          """
+
+        attr :close_label, :any,
+          default: "close",
+          doc: """
+          This value will be used as aria label. Consider overriding it in case your
+          app is served in different languages.
+          """
+
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :inner_block, required: true, doc: "The main content of the alert."
+        slot :icon, doc: "Optional slot to render an icon."
+      end,
+    heex:
+      quote do
+        ~H"""
+        <div
+          phx-click={@on_close}
+          id={@id}
+          role="alert"
+          aria-labelledby={@title && "#{@id}-title"}
+          class={[@base_class | @modifier_classes]}
+          {@rest}
+        >
+          <div :if={@icon != []} class="alert-icon">
+            <%= render_slot(@icon) %>
+          </div>
+          <div class="alert-body">
+            <div :if={@title} id={"#{@id}-title"} class="alert-title">
+              <%= @title %>
+            </div>
+            <div class="alert-message"><%= render_slot(@inner_block) %></div>
+          </div>
+          <button :if={@on_close} phx-click={@on_close}>
+            <%= @close_label %>
           </button>
         </div>
         """
