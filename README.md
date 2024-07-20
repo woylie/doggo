@@ -23,6 +23,34 @@ def deps do
 end
 ```
 
+## Usage
+
+Use `Doggo.Components` in your core components module or in a separate module.
+`Doggo.Components` defines macros that generate Phoenix components.
+
+```elixir
+defmodule MyAppWeb.CoreComponents do
+  use Doggo.Components
+  use Phoenix.Component
+
+  alert()
+  alert_dialog()
+
+  button(
+    modifiers: [
+      variant: [
+        values: ["primary", "secondary", "outline"],
+        default: "primary"
+      ],
+      size: [values: ["small", "normal"], default: "normal"]
+    ]
+  )
+end
+```
+
+Refer to the `Doggo.Components` module documentation for more information about
+the options and the individual components.
+
 ### Gettext
 
 To allow Doggo to translate certain strings such as form field errors with

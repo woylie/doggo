@@ -74,6 +74,7 @@ defmodule Doggo.Macros do
         {opts, extra} =
           Keyword.split(opts, [:name, :base_class, :modifiers, :class_name_fun])
 
+        component_info = Keyword.put(opts, :component, unquote(name))
         name = Keyword.fetch!(opts, :name)
         base_class = Keyword.fetch!(opts, :base_class)
         modifiers = Keyword.fetch!(opts, :modifiers)
@@ -85,6 +86,8 @@ defmodule Doggo.Macros do
         doc = unquote(doc)
 
         quote do
+          @dog_components unquote(component_info)
+
           @doc """
           #{unquote(doc)}
 
