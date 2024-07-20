@@ -96,56 +96,6 @@ defmodule DoggoTest do
     end
   end
 
-  describe "frame/1" do
-    test "default" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.frame>image</Doggo.frame>
-        """)
-
-      assert attribute(html, "div", "class") == "frame "
-      assert text(html, "div") == "image"
-    end
-
-    test "with ratio" do
-      ratios = [
-        {1, 1},
-        {3, 2},
-        {2, 3},
-        {4, 3},
-        {3, 4},
-        {5, 4},
-        {4, 5},
-        {16, 9},
-        {9, 16}
-      ]
-
-      for {w, h} = ratio <- ratios do
-        assigns = %{ratio: ratio}
-
-        html =
-          parse_heex(~H"""
-          <Doggo.frame ratio={@ratio}>image</Doggo.frame>
-          """)
-
-        assert attribute(html, "div", "class") == "frame is-#{w}-by-#{h}"
-      end
-    end
-
-    test "with circle" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.frame circle>image</Doggo.frame>
-        """)
-
-      assert attribute(html, "div", "class") == "frame is-circle"
-    end
-  end
-
   describe "input/1" do
     test "with text input" do
       assigns = %{form: to_form(%{})}

@@ -36,6 +36,7 @@ defmodule Doggo.Components do
         drawer()
         fab()
         fallback()
+        frame()
         icon()
         icon_sprite()
         image()
@@ -2309,6 +2310,66 @@ defmodule Doggo.Components do
   )
 
   component(
+    :frame_builder,
+    name: :frame,
+    base_class: "frame",
+    modifiers: [
+      ratio: [
+        values: [
+          nil,
+          "1-by-1",
+          "3-by-2",
+          "2-by-3",
+          "4-by-3",
+          "3-by-4",
+          "5-by-4",
+          "4-by-5",
+          "16-by-9",
+          "9-by-16"
+        ],
+        default: nil
+      ],
+      shape: [values: [nil, "circle"], default: nil]
+    ],
+    doc: """
+    Renders a frame with an aspect ratio for images or videos.
+
+    This component is used within the `image/1` component.
+    """,
+    usage: """
+    Rendering an image with the aspect ratio 4:3.
+
+    ```heex
+    <.frame ratio={{4, 3}}>
+      <img src="image.png" alt="An example image illustrating the usage." />
+    </.frame>
+    ```
+
+    Rendering an image as a circle.
+
+    ```heex
+    <.frame circle>
+      <img src="image.png" alt="An example image illustrating the usage." />
+    </.frame>
+    ```
+    """,
+    type: :component,
+    since: "0.6.0",
+    attrs_and_slots:
+      quote do
+        slot :inner_block
+      end,
+    heex:
+      quote do
+        ~H"""
+        <div class={[@base_class | @modifier_classes]}>
+          <%= render_slot(@inner_block) %>
+        </div>
+        """
+      end
+  )
+
+  component(
     :icon,
     modifiers: [
       size: [values: ["small", "normal", "medium", "large"], default: "normal"]
@@ -2480,6 +2541,11 @@ defmodule Doggo.Components do
     ],
     doc: """
     Renders an image with an optional caption.
+
+    Note that this component relies on the frame component being compiled in the
+    same module with `frame_builder/1` with the default name (`:frame`). If you
+    override the default ratios, ensure that both the `image` component and
+    the `frame` component are generated with the same values.
     """,
     usage: """
     <.image
@@ -2551,7 +2617,7 @@ defmodule Doggo.Components do
       quote do
         ~H"""
         <figure class={[@base_class | @modifier_classes]} {@rest}>
-          <Doggo.frame ratio={@ratio}>
+          <.frame ratio={@ratio}>
             <img
               src={@src}
               width={@width}
@@ -2561,7 +2627,7 @@ defmodule Doggo.Components do
               srcset={Doggo.build_srcset(@srcset)}
               sizes={@sizes}
             />
-          </Doggo.frame>
+          </.frame>
           <figcaption :if={@caption != []}><%= render_slot(@caption) %></figcaption>
         </figure>
         """

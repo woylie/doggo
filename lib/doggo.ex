@@ -87,45 +87,6 @@ defmodule Doggo do
   def to_time(%NaiveDateTime{} = dt), do: NaiveDateTime.to_time(dt)
   def to_time(nil), do: nil
 
-  @doc """
-  Renders a frame with an aspect ratio for images or videos.
-
-  This component is used within the `image/1` component.
-
-  ## Example
-
-  Rendering an image with the aspect ratio 4:3.
-
-  ```heex
-  <Doggo.frame ratio={{4, 3}}>
-    <img src="image.png" alt="An example image illustrating the usage." />
-  </Doggo.frame>
-  ```
-
-  Rendering an image as a circle.
-
-  ```heex
-  <Doggo.frame circle>
-    <img src="image.png" alt="An example image illustrating the usage." />
-  </Doggo.frame>
-  ```
-  """
-  @doc type: :component
-  @doc since: "0.2.0"
-
-  attr :ratio, :any, values: [nil | @ratios], default: nil
-  attr :circle, :boolean, default: false
-
-  slot :inner_block
-
-  def frame(assigns) do
-    ~H"""
-    <div class={["frame", ratio_class(@ratio), @circle && shape_class(:circle)]}>
-      <%= render_slot(@inner_block) %>
-    </div>
-    """
-  end
-
   @doc false
   def label_placement_class(:hidden), do: nil
   def label_placement_class(:left), do: "has-text-left"

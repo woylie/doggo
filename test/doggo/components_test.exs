@@ -38,6 +38,7 @@ defmodule Doggo.ComponentsTest do
     drawer()
     fab()
     fallback()
+    frame_builder()
     icon()
     icon_sprite()
     image()
@@ -2074,6 +2075,42 @@ defmodule Doggo.ComponentsTest do
     end
   end
 
+  describe "frame/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.frame>image</TestComponents.frame>
+        """)
+
+      assert attribute(html, "div", "class") == "frame"
+      assert text(html, "div") == "image"
+    end
+
+    test "with ratio" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.frame ratio="16-by-9">image</TestComponents.frame>
+        """)
+
+      assert attribute(html, "div", "class") == "frame is-16-by-9"
+    end
+
+    test "with circle" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.frame shape="circle">image</TestComponents.frame>
+        """)
+
+      assert attribute(html, "div", "class") == "frame is-circle"
+    end
+  end
+
   describe "fallback/1" do
     test "default" do
       assigns = %{}
@@ -2446,7 +2483,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.image src="image.png" alt="some text" ratio={{3, 2}} />
+        <TestComponents.image src="image.png" alt="some text" ratio="3-by-2" />
         """)
 
       assert attribute(html, ".frame", "class") == "frame is-3-by-2"
