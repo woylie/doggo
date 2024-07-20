@@ -4,14 +4,21 @@ defmodule Doggo.Components do
 
   ## Usage
 
-  Import this module, ensure you also use `Phoenix.Component`, and call the
-  macros of all the components you need.
+  Add `use Doggo.Components` to you module and ensure you also add
+  `use Phoenix.Component`. Then use the macros in this module to generate the
+  components you need.
+
+  > #### `use Doggo.Components` {: .info}
+  >
+  > When you `use Doggo.Components`, the module will import `Doggo.Components`
+  > and define a `__dog_components__/1` function that returns a map containing
+  > the options of the Doggo components you used.
 
   To generate all components with their default options:
 
       defmodule MyAppWeb.CoreComponents do
+        use Doggo.Components
         use Phoenix.Component
-        import Doggo.Components
 
         accordion()
         action_bar()
@@ -92,6 +99,27 @@ defmodule Doggo.Components do
   use Phoenix.Component
 
   import Doggo.Macros
+
+  defmacro __using__(_opts \\ []) do
+    quote do
+      import Doggo.Components
+
+      Module.register_attribute(__MODULE__, :dog_components, accumulate: true)
+
+      @before_compile unquote(__MODULE__)
+    end
+  end
+
+  defmacro __before_compile__(env) do
+    components =
+      env.module
+      |> Module.get_attribute(:dog_components)
+      |> Map.new(fn info -> {info[:name], Keyword.delete(info, :name)} end)
+
+    quote do
+      def __dog_components__, do: unquote(Macro.escape(components))
+    end
+  end
 
   component(
     :accordion,

@@ -12,8 +12,8 @@ defmodule Doggo.ComponentsTest do
     Generates components for tests.
     """
 
+    use Doggo.Components
     use Phoenix.Component
-    import Doggo.Components
 
     accordion()
     action_bar()
@@ -80,6 +80,13 @@ defmodule Doggo.ComponentsTest do
     )
 
     stack(name: :stack_with_recursive_class, recursive_class: "recursive")
+  end
+
+  describe "__dog_components__/0" do
+    test "returns map of components" do
+      assert %{button_link: _, button_link_with_disabled_class: _} =
+               TestComponents.__dog_components__()
+    end
   end
 
   describe "accordion/1" do
