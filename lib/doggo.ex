@@ -131,103 +131,11 @@ defmodule Doggo do
   def label_placement_class(:left), do: "has-text-left"
   def label_placement_class(:right), do: "has-text-right"
 
-  @doc """
-  Renders an image with an optional caption.
+  @doc false
+  def build_srcset(nil), do: nil
+  def build_srcset(srcset) when is_binary(srcset), do: srcset
 
-  ## Example
-
-  ```heex
-  <Doggo.image
-    src="https://github.com/woylie/doggo/blob/main/assets/dog_poncho.jpg?raw=true"
-    alt="A dog wearing a colorful poncho walks down a fashion show runway."
-    ratio={{16, 9}}
-  >
-    <:caption>
-      Spotlight on canine couture: A dog fashion show where four-legged models
-      dazzle the runway with the latest in pet apparel.
-    </:caption>
-  </Doggo.image>
-  ```
-  """
-  @doc type: :component
-  @doc since: "0.2.0"
-
-  attr :src, :string, required: true, doc: "The URL of the image to render."
-
-  attr :srcset, :any,
-    default: nil,
-    doc: """
-    A set of image URLs in different sizes. Can be passed as a string or a map.
-
-    For example, this map:
-
-        %{
-          "1x" => "images/image-1x.jpg",
-          "2x" => "images/image-2x.jpg"
-        }
-
-    Will result in this `srcset`:
-
-        "images/image-1x.jpg 1x, images/image-2x.jpg 2x"
-
-    See https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/srcset.
-    """
-
-  attr :sizes, :string,
-    default: nil,
-    doc: """
-    Specifies media conditions for the image widths, if the `srcset` attribute
-    uses intrinsic widths.
-
-    See https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/sizes.
-    """
-
-  attr :alt, :string,
-    required: true,
-    doc: """
-    A text description of the image for screen reader users and those with slow
-    internet. Effective alt text should concisely capture the image's essence
-    and function, considering its context within the content. Aim for clarity
-    and inclusivity without repeating information already conveyed by
-    surrounding text, and avoid starting with "Image of" as screen readers
-    automatically announce image presence.
-    """
-
-  attr :width, :integer, default: nil
-  attr :height, :integer, default: nil
-  attr :loading, :string, values: ["eager", "lazy"], default: "lazy"
-  attr :ratio, :any, values: [nil | @ratios], default: nil
-
-  attr :class, :any,
-    default: [],
-    doc: "Additional CSS classes. Can be a string or a list of strings."
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-  slot :caption
-
-  def image(assigns) do
-    ~H"""
-    <figure class={["image" | List.wrap(@class)]} {@rest}>
-      <.frame ratio={@ratio}>
-        <img
-          src={@src}
-          width={@width}
-          height={@height}
-          alt={@alt}
-          loading={@loading}
-          srcset={build_srcset(@srcset)}
-          sizes={@sizes}
-        />
-      </.frame>
-      <figcaption :if={@caption != []}><%= render_slot(@caption) %></figcaption>
-    </figure>
-    """
-  end
-
-  defp build_srcset(nil), do: nil
-  defp build_srcset(srcset) when is_binary(srcset), do: srcset
-
-  defp build_srcset(%{} = srcset) do
+  def build_srcset(%{} = srcset) do
     Enum.map_join(srcset, ", ", fn {width_or_density, url} ->
       "#{url} #{width_or_density}"
     end)
