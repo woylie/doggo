@@ -8,30 +8,6 @@ defmodule Doggo do
   alias Phoenix.HTML.Form
   alias Phoenix.LiveView.JS
 
-  @fills [:solid, :outline, :text]
-  @ratios [
-    {1, 1},
-    {3, 2},
-    {2, 3},
-    {4, 3},
-    {3, 4},
-    {5, 4},
-    {4, 5},
-    {16, 9},
-    {9, 16}
-  ]
-  @shapes [:circle, :pill]
-  @sizes [:small, :normal, :medium, :large]
-  @skeleton_types [
-    :text_line,
-    :text_block,
-    :image,
-    :circle,
-    :rectangle,
-    :square
-  ]
-  @variants [:primary, :secondary, :info, :success, :warning, :danger]
-
   ## Components
 
   @doc false
@@ -1025,83 +1001,37 @@ defmodule Doggo do
   ## Modifier classes
 
   @doc """
-  Takes a modifier attribute value and returns a CSS class name.
+  Takes a modifier attribute name and value and returns a CSS class name.
 
   This function is used as a default for the `class_name_fun` option.
 
   ## Example
 
-      iex> modifier_class_name("large")
+      iex> modifier_class_name(:size, "large")
       "is-large"
   """
-  @spec modifier_class_name(String.t()) :: String.t()
-  def modifier_class_name(value) when is_binary(value), do: "is-#{value}"
+  @spec modifier_class_name(atom, String.t()) :: String.t()
+  def modifier_class_name(_, value) when is_binary(value), do: "is-#{value}"
 
-  for fill <- @fills do
-    str = fill |> to_string() |> String.replace("_", "-")
-    defp fill_class(unquote(fill)), do: "is-#{unquote(str)}"
+  @doc false
+  def modifier_classes(module) do
+    module.__dog_components__()
+    |> Enum.flat_map(&get_modifier_classes/1)
+    |> Enum.uniq()
+    |> Enum.sort()
   end
 
-  for {w, h} <- @ratios do
-    defp ratio_class({unquote(w), unquote(h)}) do
-      "is-#{unquote(w)}-by-#{unquote(h)}"
-    end
-  end
+  defp get_modifier_classes({_, info}) do
+    class_name_fun = Keyword.fetch!(info, :class_name_fun)
 
-  defp ratio_class(nil), do: nil
-
-  for size <- @sizes do
-    str = size |> to_string() |> String.replace("_", "-")
-    defp size_class(unquote(size)), do: "is-#{unquote(str)}"
-  end
-
-  for shape <- @shapes do
-    str = shape |> to_string() |> String.replace("_", "-")
-    defp shape_class(unquote(shape)), do: "is-#{unquote(str)}"
-  end
-
-  defp shape_class(nil), do: nil
-
-  for type <- @skeleton_types do
-    str = type |> to_string() |> String.replace("_", "-")
-    defp skeleton_type_class(unquote(type)), do: "is-#{unquote(str)}"
-  end
-
-  for variant <- @variants do
-    str = variant |> to_string() |> String.replace("_", "-")
-    defp variant_class(unquote(variant)), do: "is-#{unquote(str)}"
-  end
-
-  defp variant_class(nil), do: nil
-
-  @doc false
-  def fills, do: @fills
-
-  @doc false
-  def ratios, do: @ratios
-
-  @doc false
-  def shapes, do: @shapes
-
-  @doc false
-  def sizes, do: @sizes
-
-  @doc false
-  def skeleton_types, do: @skeleton_types
-
-  @doc false
-  def variants, do: @variants
-
-  @doc false
-  def modifier_classes do
-    %{
-      fills: Enum.map(fills(), &fill_class/1),
-      ratios: Enum.map(ratios(), &ratio_class/1),
-      shapes: Enum.map(shapes(), &shape_class/1),
-      sizes: Enum.map(sizes(), &size_class/1),
-      skeleton_types: Enum.map(skeleton_types(), &skeleton_type_class/1),
-      variants: Enum.map(variants(), &variant_class/1)
-    }
+    info
+    |> Keyword.fetch!(:modifiers)
+    |> Enum.flat_map(fn {name, modifier_opts} ->
+      modifier_opts
+      |> Keyword.fetch!(:values)
+      |> Enum.reject(&is_nil/1)
+      |> Enum.map(&class_name_fun.(name, &1))
+    end)
   end
 
   @doc false

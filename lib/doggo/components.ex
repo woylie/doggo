@@ -92,8 +92,9 @@ defmodule Doggo.Components do
     attribute with the type `:string` is added. The options will be passed to
     `Phoenix.Component.attr/3`. Most components define a set of default
     modifiers.
-  - `class_name_fun` - A 1-arity function that takes a modifier attribute value
-    and returns a CSS class name. Defaults to `Doggo.modifier_class_name/1`.
+  - `class_name_fun` - A 2-arity function that takes a modifier attribute name
+    and value and returns a CSS class name. Defaults to
+    `Doggo.modifier_class_name/2`.
   """
 
   use Phoenix.Component
@@ -5586,7 +5587,7 @@ defmodule Doggo.Components do
   def modifier_classes(modifier_names, class_name_fun, assigns) do
     for name <- modifier_names do
       case assigns do
-        %{^name => value} when is_binary(value) -> class_name_fun.(value)
+        %{^name => value} when is_binary(value) -> class_name_fun.(name, value)
         _ -> nil
       end
     end

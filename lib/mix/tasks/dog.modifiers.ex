@@ -12,36 +12,37 @@ defmodule Mix.Tasks.Dog.Modifiers do
 
   Write modifier classes to file:
 
-      mix dog.modifiers -o assets/modifiers.txt
+      mix dog.modifiers -m MyAppWeb.CoreComponents -o assets/modifiers.txt
   """
 
   use Mix.Task
 
   @parser_opts [
-    aliases: [o: :output],
-    strict: [output: :string]
+    aliases: [m: :module, o: :output],
+    strict: [module: :string, output: :string]
   ]
 
   @impl Mix.Task
   def run(args) do
-    case OptionParser.parse(args, @parser_opts) do
-      {switches, [], []} ->
-        modifiers = list_modifiers()
+    with {switches, [], []} <- OptionParser.parse(args, @parser_opts),
+         {:ok, module} <- Keyword.fetch(switches, :module) do
+      modifiers = list_modifiers(module)
 
-        if path = Keyword.get(switches, :output) do
-          File.write(path, modifiers)
-        else
-          IO.puts(modifiers)
-        end
-
+      if path = Keyword.get(switches, :output) do
+        File.write(path, modifiers)
+      else
+        IO.puts(modifiers)
+      end
+    else
       _ ->
         IO.puts(@moduledoc)
     end
   end
 
-  defp list_modifiers do
-    Doggo.modifier_classes()
-    |> Enum.flat_map(fn {_, classes} -> classes end)
+  defp list_modifiers(module) do
+    [module]
+    |> Module.safe_concat()
+    |> Doggo.modifier_classes()
     |> Enum.join("\n")
   end
 end
