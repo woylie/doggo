@@ -13,36 +13,36 @@ defmodule Doggo.StorybookTest do
     use Phoenix.Component
 
     accordion(modifiers: [variant: [values: [nil, "one", "two"], default: nil]])
-    button()
+    button(modifiers: [variant: [values: [nil, "one", "two"], default: nil]])
   end
 
-  test "generates storybook module for accordion" do
-    defmodule Story.Accordion do
-      use PhoenixStorybook.Story, :component
+  for {name, info} <- TestComponents.__dog_components__() do
+    component = Keyword.fetch!(info, :component)
 
-      use Doggo.Storybook,
-        module: Doggo.StorybookTest.TestComponents,
-        name: :accordion
+    story_module =
+      Module.concat([
+        "Story",
+        component |> Atom.to_string() |> String.capitalize()
+      ])
+
+    @tag name: name
+    @tag info: info
+    @tag story_module: story_module
+    test "generates storybook modules for #{name}", %{
+      name: name,
+      info: info,
+      story_module: story_module
+    } do
+      defmodule unquote(story_module) do
+        use PhoenixStorybook.Story, :component
+
+        use Doggo.Storybook,
+          module: Doggo.StorybookTest.TestComponents,
+          name: unquote(name)
+      end
+
+      assert story_module.function()
+      assert [%Variation{} | _] = story_module.variations()
     end
-
-    assert Story.Accordion.function() ==
-             (&Doggo.StorybookTest.TestComponents.accordion/1)
-
-    assert [%Variation{} | _] = Story.Accordion.variations()
-  end
-
-  test "generates storybook module for button" do
-    defmodule Story.Button do
-      use PhoenixStorybook.Story, :component
-
-      use Doggo.Storybook,
-        module: Doggo.StorybookTest.TestComponents,
-        name: :button
-    end
-
-    assert Story.Button.function() ==
-             (&Doggo.StorybookTest.TestComponents.button/1)
-
-    assert [%Variation{} | _] = Story.Button.variations()
   end
 end
