@@ -23,26 +23,33 @@ defmodule Doggo.Storybook do
     module = opts |> Keyword.fetch!(:module) |> Macro.expand(__ENV__)
     name = Keyword.fetch!(opts, :name)
 
-    info = Map.fetch!(module.__dog_components__(), name)
+    components = module.__dog_components__()
+    info = Map.fetch!(components, name)
     component = Keyword.fetch!(info, :component)
     modifiers = Keyword.fetch!(info, :modifiers)
 
     storybook_module = storybook_module(component)
     function = Function.capture(module, name, 1)
-    variations = storybook_module.variations()
-    modifier_groups = modifier_groups(modifiers, storybook_module)
 
     quote do
       def function, do: unquote(function)
 
+      if unquote(function_exported?(storybook_module, :template, 0)) do
+        def template, do: unquote(storybook_module).template()
+      end
+
       def variations do
-        unquote(Macro.escape(variations ++ modifier_groups))
+        unquote(storybook_module).variations() ++
+          Doggo.Storybook.modifier_groups(
+            unquote(modifiers),
+            unquote(storybook_module)
+          )
       end
     end
   end
 
   defp storybook_module(component) when is_atom(component) do
-    component_module = component |> Atom.to_string() |> String.capitalize()
+    component_module = component |> Atom.to_string() |> Macro.camelize()
     Module.safe_concat([Doggo.Storybook, component_module])
   end
 

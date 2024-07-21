@@ -1,9 +1,50 @@
-defmodule Storybook.Components.ActionBar do
-  use PhoenixStorybook.Story, :component
+defmodule Doggo.Storybook.ActionBar do
+  @moduledoc false
+  alias PhoenixStorybook.Stories.Variation
 
-  def function, do: &Doggo.action_bar/1
+  def variations do
+    [
+      %Variation{
+        id: :default,
+        slots: slots()
+      }
+    ]
+  end
 
-  def edit_svg do
+  def modifier_variation(_, _) do
+    %{
+      attributes: %{},
+      slots: slots()
+    }
+  end
+
+  defp slots do
+    [
+      """
+      <:item label="Edit" on_click={JS.push("edit")}>
+        <Doggo.icon label="Edit" size={:small}>
+          #{edit_svg()}
+        </Doggo.icon>
+      </:item>
+      """,
+      """
+      <:item label="Move" on_click={JS.push("move")}>
+        <Doggo.icon label="Move" size={:small}>
+          #{move_svg()}
+        </Doggo.icon>
+      </:item>
+      """,
+      """
+      <:item label="Archive" on_click={JS.push("archive")}>
+        <Doggo.icon label="Archive" size={:small}>
+          #{archive_svg()}
+        </Doggo.icon>
+      </:item>
+      """
+    ]
+  end
+
+  defp edit_svg do
     """
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +64,7 @@ defmodule Storybook.Components.ActionBar do
     """
   end
 
-  def move_svg do
+  defp move_svg do
     """
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +84,7 @@ defmodule Storybook.Components.ActionBar do
     """
   end
 
-  def archive_svg do
+  defp archive_svg do
     """
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -61,36 +102,5 @@ defmodule Storybook.Components.ActionBar do
       <rect width="20" height="5" x="2" y="3" rx="1" /><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" /><path d="M10 12h4" />
     </svg>
     """
-  end
-
-  def variations do
-    [
-      %Variation{
-        id: :default,
-        slots: [
-          """
-          <:item label="Edit" on_click={JS.push("edit")}>
-            <Doggo.icon label="Edit" size={:small}>
-              #{edit_svg()}
-            </Doggo.icon>
-          </:item>
-          """,
-          """
-          <:item label="Move" on_click={JS.push("move")}>
-            <Doggo.icon label="Move" size={:small}>
-              #{move_svg()}
-            </Doggo.icon>
-          </:item>
-          """,
-          """
-          <:item label="Archive" on_click={JS.push("archive")}>
-            <Doggo.icon label="Archive" size={:small}>
-              #{archive_svg()}
-            </Doggo.icon>
-          </:item>
-          """
-        ]
-      }
-    ]
   end
 end

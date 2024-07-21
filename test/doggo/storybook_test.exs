@@ -12,8 +12,10 @@ defmodule Doggo.StorybookTest do
     use Doggo.Components
     use Phoenix.Component
 
-    accordion(modifiers: [variant: [values: [nil, "one", "two"], default: nil]])
-    button(modifiers: [variant: [values: [nil, "one", "two"], default: nil]])
+    accordion(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    action_bar(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    alert(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    button(modifiers: [variant: [values: [nil, "yes"], default: nil]])
   end
 
   for {name, info} <- TestComponents.__dog_components__() do
@@ -22,7 +24,7 @@ defmodule Doggo.StorybookTest do
     story_module =
       Module.concat([
         "Story",
-        component |> Atom.to_string() |> String.capitalize()
+        component |> Atom.to_string() |> Macro.camelize()
       ])
 
     @tag name: name
