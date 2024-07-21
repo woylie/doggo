@@ -18,6 +18,7 @@ defmodule DemoWeb.Router do
 
   scope "/", DemoWeb do
     pipe_through :browser
-    live_storybook("/", backend_module: DemoWeb.Storybook)
+    get "/", PageController, :home
+    live_storybook("/storybook", backend_module: DemoWeb.Storybook)
   end
 end
