@@ -15,6 +15,9 @@ defmodule Doggo.Storybook do
       end
   """
 
+  alias PhoenixStorybook.Stories.Variation
+  alias PhoenixStorybook.Stories.VariationGroup
+
   defmacro __using__(opts \\ []) do
     opts = Keyword.validate!(opts, [:module, :name])
     module = opts |> Keyword.fetch!(:module) |> Macro.expand(__ENV__)
@@ -26,12 +29,15 @@ defmodule Doggo.Storybook do
 
     storybook_module = storybook_module(component)
     function = Function.capture(module, name, 1)
+    variations = storybook_module.variations()
+    modifier_groups = modifier_groups(modifiers, storybook_module)
 
     quote do
       def function, do: unquote(function)
 
-      def variations,
-        do: unquote(storybook_module).variations(unquote(modifiers))
+      def variations do
+        unquote(Macro.escape(variations ++ modifier_groups))
+      end
     end
   end
 
@@ -48,5 +54,36 @@ defmodule Doggo.Storybook do
       use Doggo.Storybook, module: #{module}, name: :#{name}
     end
     """
+  end
+
+  @doc false
+  def modifier_groups(modifiers, storybook_module) do
+    Enum.map(modifiers, &modifier_group(&1, storybook_module))
+  end
+
+  @doc false
+  def modifier_group({name, modifier_opts}, storybook_module) do
+    %VariationGroup{
+      id: name,
+      variations: modifier_variations(name, modifier_opts, storybook_module)
+    }
+  end
+
+  @doc false
+  def modifier_variations(name, modifier_opts, storybook_module) do
+    values = Keyword.fetch!(modifier_opts, :values)
+    Enum.map(values, &modifier_variation(name, &1, storybook_module))
+  end
+
+  @doc false
+  def modifier_variation(name, value, storybook_module) do
+    id = String.to_atom(~s(#{name}_#{value || "unset"}))
+
+    attrs =
+      name
+      |> storybook_module.modifier_variation(value)
+      |> Map.put(:id, id)
+
+    struct!(Variation, attrs)
   end
 end

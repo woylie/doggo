@@ -12,11 +12,12 @@ defmodule Doggo.StorybookTest do
     use Doggo.Components
     use Phoenix.Component
 
-    accordion()
+    accordion(modifiers: [variant: [values: [nil, "one", "two"], default: nil]])
+    button()
   end
 
-  test "generates storybook module" do
-    defmodule Story do
+  test "generates storybook module for accordion" do
+    defmodule Story.Accordion do
       use PhoenixStorybook.Story, :component
 
       use Doggo.Storybook,
@@ -24,7 +25,24 @@ defmodule Doggo.StorybookTest do
         name: :accordion
     end
 
-    assert Story.function() == (&Doggo.StorybookTest.TestComponents.accordion/1)
-    assert [%Variation{} | _] = Story.variations()
+    assert Story.Accordion.function() ==
+             (&Doggo.StorybookTest.TestComponents.accordion/1)
+
+    assert [%Variation{} | _] = Story.Accordion.variations()
+  end
+
+  test "generates storybook module for button" do
+    defmodule Story.Button do
+      use PhoenixStorybook.Story, :component
+
+      use Doggo.Storybook,
+        module: Doggo.StorybookTest.TestComponents,
+        name: :button
+    end
+
+    assert Story.Button.function() ==
+             (&Doggo.StorybookTest.TestComponents.button/1)
+
+    assert [%Variation{} | _] = Story.Button.variations()
   end
 end
