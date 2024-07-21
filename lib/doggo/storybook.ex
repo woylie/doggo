@@ -39,4 +39,14 @@ defmodule Doggo.Storybook do
     component_module = component |> Atom.to_string() |> String.capitalize()
     Module.safe_concat([Doggo.Storybook, component_module])
   end
+
+  @doc false
+  def story_template(module, name) do
+    """
+    defmodule Storybook.Components.Accordion do
+      use PhoenixStorybook.Story, :component
+      use Doggo.Storybook, module: #{module}, name: :#{name}
+    end
+    """
+  end
 end
