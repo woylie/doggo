@@ -487,7 +487,7 @@ defmodule Doggo.Components do
           open={@open}
           phx-mounted={@open && Doggo.show_modal(@id)}
           phx-remove={Doggo.hide_modal(@id)}
-          data-cancel={JS.exec(@on_cancel, "phx-remove")}
+          data-cancel={Phoenix.LiveView.JS.exec(@on_cancel, "phx-remove")}
           {@rest}
         >
           <.focus_wrap
@@ -508,7 +508,7 @@ defmodule Doggo.Components do
                   href="#"
                   class="alert-dialog-close"
                   aria-label={@close_label}
-                  phx-click={JS.exec("data-cancel", to: "##{@id}")}
+                  phx-click={Phoenix.LiveView.JS.exec("data-cancel", to: "##{@id}")}
                 >
                   <%= render_slot(@close) %>
                   <span :if={@close == []}>close</span>
