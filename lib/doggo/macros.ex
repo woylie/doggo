@@ -5,18 +5,16 @@ defmodule Doggo.Macros do
   defmacro component(name, opts) do
     opts =
       Keyword.validate!(opts, [
-        :name,
-        :base_class,
-        :modifiers,
-        :doc,
-        :usage,
-        :type,
-        :since,
         :attrs_and_slots,
-        :type,
-        :since,
+        :base_class,
+        :doc,
+        :extra,
         :heex,
-        :extra
+        :modifiers,
+        :name,
+        :since,
+        :type,
+        :usage
       ])
 
     doc = Keyword.fetch!(opts, :doc)
@@ -74,7 +72,11 @@ defmodule Doggo.Macros do
         {opts, extra} =
           Keyword.split(opts, [:name, :base_class, :modifiers, :class_name_fun])
 
-        component_info = Keyword.put(opts, :component, unquote(name))
+        component_info =
+          opts
+          |> Keyword.put(:component, unquote(name))
+          |> Keyword.put(:type, unquote(type))
+
         name = Keyword.fetch!(opts, :name)
         base_class = Keyword.fetch!(opts, :base_class)
         modifiers = Keyword.fetch!(opts, :modifiers)

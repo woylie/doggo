@@ -33,8 +33,9 @@ defmodule Mix.Tasks.Dog.Gen.Stories do
     end
   end
 
-  defp write_story({name, _}, module, base_path) do
-    folder_path = Path.join([base_path, "components"])
+  defp write_story({name, info}, module, base_path) do
+    type = Keyword.fetch!(info, :type)
+    folder_path = Path.join([base_path, Atom.to_string(type)])
     File.mkdir_p!(folder_path)
     file_path = Path.join([folder_path, "#{name}.story.exs"])
     template = Doggo.Storybook.story_template(module, name)

@@ -28,8 +28,8 @@ defmodule Mix.Tasks.Dog.GenStoriesTest do
              ])
            end)
 
-    button_path = Path.join([tmp_dir, "components", "button.story.exs"])
-    menu_path = Path.join([tmp_dir, "components", "context_menu.story.exs"])
+    button_path = Path.join([tmp_dir, "buttons", "button.story.exs"])
+    menu_path = Path.join([tmp_dir, "menu", "context_menu.story.exs"])
 
     assert File.exists?(button_path)
 
