@@ -43,7 +43,7 @@ defmodule Doggo.Components do
         drawer()
         fab()
         fallback()
-        frame()
+        frame_builder()
         icon()
         icon_sprite()
         image()
