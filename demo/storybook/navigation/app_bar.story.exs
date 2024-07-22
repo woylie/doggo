@@ -1,4 +1,4 @@
-defmodule Storybook.Components.Accordion do
+defmodule Storybook.Components.AppBar do
   use PhoenixStorybook.Story, :component
-  use Doggo.Storybook, module: Elixir.DemoWeb.CoreComponents, name: :app_bar
+  use Doggo.Storybook, module: DemoWeb.CoreComponents, name: :app_bar
 end

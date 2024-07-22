@@ -1,7 +1,4 @@
-defmodule Storybook.Components.Accordion do
+defmodule Storybook.Components.ToggleButton do
   use PhoenixStorybook.Story, :component
-
-  use Doggo.Storybook,
-    module: Elixir.DemoWeb.CoreComponents,
-    name: :toggle_button
+  use Doggo.Storybook, module: DemoWeb.CoreComponents, name: :toggle_button
 end

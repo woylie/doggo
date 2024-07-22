@@ -1,4 +1,4 @@
-defmodule Storybook.Components.Accordion do
+defmodule Storybook.Components.PageHeader do
   use PhoenixStorybook.Story, :component
-  use Doggo.Storybook, module: Elixir.DemoWeb.CoreComponents, name: :page_header
+  use Doggo.Storybook, module: DemoWeb.CoreComponents, name: :page_header
 end

@@ -77,24 +77,34 @@ defmodule Mix.Tasks.Dog.Gen.Stories do
 
   defp write_stories([{name, info} | rest], module, base_path, opts) do
     type = Keyword.fetch!(info, :type)
-    template = Doggo.Storybook.story_template(module, name)
 
-    folder_path = Path.join([base_path, Atom.to_string(type)])
-    File.mkdir_p!(folder_path)
-    file_path = Path.join([folder_path, "#{name}.story.exs"])
-    exists? = File.exists?(file_path)
+    if template = Doggo.Storybook.story_template(module, name) do
+      folder_path = Path.join([base_path, Atom.to_string(type)])
+      File.mkdir_p!(folder_path)
+      file_path = Path.join([folder_path, "#{name}.story.exs"])
+      exists? = File.exists?(file_path)
 
-    cond do
-      !exists? || opts[:force] ->
-        File.write!(file_path, template)
-        IO.puts("Story written to #{file_path}.")
-        write_stories(rest, module, base_path, opts)
+      cond do
+        !exists? || opts[:force] ->
+          File.write!(file_path, template)
+          IO.puts("Story written to #{file_path}.")
+          write_stories(rest, module, base_path, opts)
 
-      exists? && opts[:skip_all] ->
-        write_stories(rest, module, base_path, opts)
+        exists? && opts[:skip_all] ->
+          write_stories(rest, module, base_path, opts)
 
-      true ->
-        handle_existing_file(file_path, template, rest, module, base_path, opts)
+        true ->
+          handle_existing_file(
+            file_path,
+            template,
+            rest,
+            module,
+            base_path,
+            opts
+          )
+      end
+    else
+      write_stories(rest, module, base_path, opts)
     end
   end
 

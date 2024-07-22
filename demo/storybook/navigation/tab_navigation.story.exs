@@ -1,7 +1,4 @@
-defmodule Storybook.Components.Accordion do
+defmodule Storybook.Components.TabNavigation do
   use PhoenixStorybook.Story, :component
-
-  use Doggo.Storybook,
-    module: Elixir.DemoWeb.CoreComponents,
-    name: :tab_navigation
+  use Doggo.Storybook, module: DemoWeb.CoreComponents, name: :tab_navigation
 end

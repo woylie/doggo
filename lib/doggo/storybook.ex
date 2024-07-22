@@ -54,17 +54,33 @@ defmodule Doggo.Storybook do
 
   defp storybook_module(component) when is_atom(component) do
     component_module = component |> Atom.to_string() |> Macro.camelize()
-    Module.safe_concat([Doggo.Storybook, component_module])
+    Module.concat([Doggo.Storybook, component_module])
   end
 
   @doc false
   def story_template(module, name) do
-    """
-    defmodule Storybook.Components.Accordion do
-      use PhoenixStorybook.Story, :component
-      use Doggo.Storybook, module: #{module}, name: :#{name}
+    loaded =
+      module.__dog_components__()
+      |> Map.fetch!(name)
+      |> Keyword.fetch!(:component)
+      |> storybook_module()
+      |> Code.ensure_loaded()
+
+    case loaded do
+      {:module, _} ->
+        module = module |> to_string() |> String.trim_leading("Elixir.")
+        name_module = name |> to_string() |> Macro.camelize()
+
+        """
+        defmodule Storybook.Components.#{name_module} do
+          use PhoenixStorybook.Story, :component
+          use Doggo.Storybook, module: #{module}, name: :#{name}
+        end
+        """
+
+      _ ->
+        nil
     end
-    """
   end
 
   @doc false

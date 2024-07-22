@@ -1,7 +1,4 @@
-defmodule Storybook.Components.Accordion do
+defmodule Storybook.Components.PropertyList do
   use PhoenixStorybook.Story, :component
-
-  use Doggo.Storybook,
-    module: Elixir.DemoWeb.CoreComponents,
-    name: :property_list
+  use Doggo.Storybook, module: DemoWeb.CoreComponents, name: :property_list
 end
