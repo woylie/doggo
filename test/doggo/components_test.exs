@@ -708,7 +708,7 @@ defmodule Doggo.ComponentsTest do
       assert attribute(a, "aria-label") == "Profile"
       assert attribute(a, "href") == "/profile"
 
-      assert text(a, "span.icon") == "profile-icon"
+      assert text(a, "span.bottom-navigation-icon") == "profile-icon"
       assert text(a, "span:last-child") == "Profile"
     end
 
@@ -741,7 +741,7 @@ defmodule Doggo.ComponentsTest do
 
       a = find_one(html, "nav:root > ul > li > a")
       assert [span] = Floki.children(a)
-      assert attribute(span, "class") == "icon"
+      assert attribute(span, "class") == "bottom-navigation-icon"
     end
 
     test "with single value" do
@@ -4740,7 +4740,7 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.vertical_nav>
         """)
 
-      assert text(html, ":root > div.drawer-nav-title") == "some title"
+      assert text(html, ":root > div.vertical-nav-title") == "some title"
     end
 
     test "with item class" do
@@ -4812,7 +4812,7 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.vertical_nav_nested>
         """)
 
-      div = find_one(html, "div.drawer-nav-title")
+      div = find_one(html, "div.vertical-nav-nested-title")
       assert attribute(div, "id") == "nested-title"
       assert text(div) == "some title"
 
@@ -4849,8 +4849,8 @@ defmodule Doggo.ComponentsTest do
       assert attribute(div, "class") == "vertical-nav-section"
       assert attribute(div, "id") == "my-drawer"
       assert attribute(div, "aria-labelledby") == nil
-      assert Floki.find(html, ".drawer-section-title") == []
-      assert text(html, ":root > div.drawer-item") == "item"
+      assert Floki.find(html, ".vertical-nav-section-title") == []
+      assert text(html, ":root > div.vertical-nav-section-item") == "item"
     end
 
     test "with title" do
@@ -4867,7 +4867,7 @@ defmodule Doggo.ComponentsTest do
       div = find_one(html, "div:root")
       assert attribute(div, "aria-labelledby") == "my-drawer-title"
 
-      div = find_one(html, "div > .drawer-section-title")
+      div = find_one(html, "div > .vertical-nav-section-title")
       assert attribute(div, "id") == "my-drawer-title"
       assert text(div) == "some title"
     end
@@ -4882,7 +4882,8 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.vertical_nav_section>
         """)
 
-      assert attribute(html, ":root > div", "class") == "drawer-item is-rad"
+      assert attribute(html, ":root > div", "class") ==
+               "vertical-nav-section-item is-rad"
     end
 
     test "with global attribute" do
