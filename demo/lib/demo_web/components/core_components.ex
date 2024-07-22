@@ -2,7 +2,10 @@ defmodule DemoWeb.CoreComponents do
   use Doggo.Components
   use Phoenix.Component
 
-  accordion()
+  accordion(
+    modifiers: [variant: [values: ["primary", "secondary"], default: "primary"]]
+  )
+
   action_bar()
   alert()
   alert_dialog()
@@ -10,7 +13,7 @@ defmodule DemoWeb.CoreComponents do
   avatar()
   badge()
   bottom_navigation()
-  box()
+  box(modifiers: [size: [values: ["normal", "narrow"], default: "normal"]])
   breadcrumb()
   button()
   button_link()
@@ -49,10 +52,14 @@ defmodule DemoWeb.CoreComponents do
   switch()
   tab_navigation()
   table()
-  tabs()
+  tabs(modifiers: [size: [values: ["normal", "narrow"], default: "normal"]])
   tag()
   time()
-  toggle_button()
+
+  toggle_button(
+    modifiers: [variant: [values: ["primary", "secondary"], default: "primary"]]
+  )
+
   toolbar()
   tooltip()
   tree()

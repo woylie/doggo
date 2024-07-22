@@ -15,8 +15,12 @@ defmodule Doggo.Storybook.Tabs do
     ]
   end
 
-  def modifier_variation_base(_id, _name, _value) do
+  def modifier_variation_base(id, _name, _value) do
     %{
+      attributes: %{
+        id: id,
+        label: "Dog Breed Profiles"
+      },
       slots: slots()
     }
   end

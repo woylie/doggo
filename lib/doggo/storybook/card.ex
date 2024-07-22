@@ -2,6 +2,8 @@ defmodule Doggo.Storybook.Card do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
+  def layout, do: :one_column
+
   def variations do
     [
       %Variation{
