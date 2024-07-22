@@ -52,7 +52,11 @@ defmodule DemoWeb.CoreComponents do
   tabs()
   tag()
   time()
-  toggle_button()
+
+  toggle_button(
+    modifiers: [size: [values: ["normal", "small"], default: "small"]]
+  )
+
   toolbar()
   tooltip()
   tree()
