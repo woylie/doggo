@@ -1,8 +1,12 @@
 defmodule Doggo.Storybook.Alert do
   @moduledoc false
+
+  import Doggo.Storybook.Shared
   alias PhoenixStorybook.Stories.Variation
 
-  def variations(_opts) do
+  def dependent_components, do: [:icon]
+
+  def variations(opts) do
     [
       %Variation{
         id: :default,
@@ -13,6 +17,11 @@ defmodule Doggo.Storybook.Alert do
         id: :title,
         attributes: %{title: "This is the title."},
         slots: slots()
+      },
+      %Variation{
+        id: :icon,
+        attributes: %{title: "This is the title."},
+        slots: slots_with_icon(opts)
       },
       %Variation{
         id: :close_button,
@@ -32,5 +41,14 @@ defmodule Doggo.Storybook.Alert do
 
   defp slots do
     ["This is an alert."]
+  end
+
+  defp slots_with_icon(opts) do
+    dependent_components = opts[:dependent_components]
+
+    [
+      "This is an alert.",
+      "<:icon>#{icon(:info, dependent_components)}</:icon>"
+    ]
   end
 end
