@@ -596,7 +596,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.avatar src={nil} placeholder="A" />
+        <TestComponents.avatar src={nil} placeholder_content="A" />
         """)
 
       assert Floki.find(html, "img") == []
@@ -619,7 +619,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.avatar src={nil} placeholder={{:src, "placeholder.png"}} />
+        <TestComponents.avatar src={nil} placeholder_src="placeholder.png" />
         """)
 
       assert attribute(html, ":root > img", "src") == "placeholder.png"

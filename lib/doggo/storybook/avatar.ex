@@ -10,11 +10,11 @@ defmodule Doggo.Storybook.Avatar do
       },
       %Variation{
         id: :image_fallback,
-        attributes: %{src: nil, placeholder: {:src, placeholder_src()}}
+        attributes: %{src: nil, placeholder_src: placeholder_src()}
       },
       %Variation{
         id: :text_fallback,
-        attributes: %{src: nil, placeholder: "A"}
+        attributes: %{src: nil, placeholder_content: "A"}
       }
     ]
   end
