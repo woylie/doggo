@@ -1,6 +1,8 @@
 defmodule Doggo do
   @moduledoc """
-  Collection of Phoenix Components.
+  This module only contains miscellaneous functions.
+
+  The components are defined in `Doggo.Components`.
   """
 
   use Phoenix.Component

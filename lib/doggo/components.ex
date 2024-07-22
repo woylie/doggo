@@ -4,7 +4,7 @@ defmodule Doggo.Components do
 
   ## Usage
 
-  Add `use Doggo.Components` to you module and ensure you also add
+  Add `use Doggo.Components` to your module and ensure you also add
   `use Phoenix.Component`. Then use the macros in this module to generate the
   components you need.
 
@@ -91,9 +91,9 @@ defmodule Doggo.Components do
   - `modifiers` - A keyword list of modifier attributes. For each item, an
     attribute with the type `:string` is added. The options will be passed to
     `Phoenix.Component.attr/3`. Most components define a set of default
-    modifiers.
+    modifiers that can be overridden.
   - `class_name_fun` - A 2-arity function that takes a modifier attribute name
-    and value and returns a CSS class name. Defaults to
+    and a value and returns a CSS class name. Defaults to
     `Doggo.modifier_class_name/2`.
   """
 
