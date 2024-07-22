@@ -2402,12 +2402,13 @@ defmodule Doggo.Components do
     maturity: :developing,
     attrs_and_slots:
       quote do
+        attr :rest, :global, doc: "Any additional HTML attributes."
         slot :inner_block
       end,
     heex:
       quote do
         ~H"""
-        <div class={@class}>
+        <div class={@class} {@rest}>
           <%= render_slot(@inner_block) %>
         </div>
         """
@@ -5521,6 +5522,7 @@ defmodule Doggo.Components do
     attrs_and_slots:
       quote do
         attr :id, :string, required: true
+        attr :rest, :global, doc: "Any additional HTML attributes."
 
         slot :title,
           doc: "An optional slot for the title of the nested menu section."
@@ -5533,18 +5535,20 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <div :if={@title != []} id={"#{@id}-title"} class="drawer-nav-title">
-          <%= render_slot(@title) %>
+        <div class={@class} {@rest}>
+          <div :if={@title != []} id={"#{@id}-title"} class="drawer-nav-title">
+            <%= render_slot(@title) %>
+          </div>
+          <ul id={@id} aria-labelledby={@title != [] && "#{@id}-title"}>
+            <li
+              :for={item <- @item}
+              class={item[:class]}
+              aria-current={Map.get(item, :current_page, false) && "page"}
+            >
+              <%= render_slot(item) %>
+            </li>
+          </ul>
         </div>
-        <ul id={@id} aria-labelledby={@title != [] && "#{@id}-title"}>
-          <li
-            :for={item <- @item}
-            class={item[:class]}
-            aria-current={Map.get(item, :current_page, false) && "page"}
-          >
-            <%= render_slot(item) %>
-          </li>
-        </ul>
         """
       end
   )

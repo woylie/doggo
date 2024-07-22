@@ -4781,8 +4781,8 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.vertical_nav_nested>
         """)
 
-      assert attribute(html, "ul:root", "id") == "nested"
-      li = find_one(html, "ul:root li")
+      assert attribute(html, "div:root > ul", "id") == "nested"
+      li = find_one(html, "div:root > ul li")
       assert attribute(li, "aria-labelledby") == nil
       assert text(li) == "item"
       assert Floki.find(html, ".drawer-nav-title") == []
@@ -4798,7 +4798,7 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.vertical_nav_nested>
         """)
 
-      assert attribute(html, "ul:root > li", "aria-current") == "page"
+      assert attribute(html, "div:root > ul > li", "aria-current") == "page"
     end
 
     test "with title" do
@@ -4815,7 +4815,9 @@ defmodule Doggo.ComponentsTest do
       div = find_one(html, "div.drawer-nav-title")
       assert attribute(div, "id") == "nested-title"
       assert text(div) == "some title"
-      assert attribute(html, "ul:root", "aria-labelledby") == "nested-title"
+
+      assert attribute(html, "div:root > ul", "aria-labelledby") ==
+               "nested-title"
     end
 
     test "with item class" do
