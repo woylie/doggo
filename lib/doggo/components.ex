@@ -152,7 +152,7 @@ defmodule Doggo.Components do
     </.accordion>
     ```
     """,
-    type: :components,
+    type: :data,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -256,7 +256,7 @@ defmodule Doggo.Components do
     </.action_bar>
     ```
     """,
-    type: :components,
+    type: :miscellaneous,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -315,7 +315,7 @@ defmodule Doggo.Components do
     </.alert>
     ```
     """,
-    type: :components,
+    type: :feedback,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -435,7 +435,7 @@ defmodule Doggo.Components do
     library consumers to add additional JavaScript code. To ensure proper
     modal semantics, the `aria-modal` attribute is added to the dialog element.
     """,
-    type: :components,
+    type: :feedback,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -550,7 +550,7 @@ defmodule Doggo.Components do
     </.app_bar>
     ```
     """,
-    type: :navigation,
+    type: :layout,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -642,7 +642,7 @@ defmodule Doggo.Components do
     <.avatar src={@user.avatar_url} placeholder="A" />
     ```
     """,
-    type: :components,
+    type: :media,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -743,7 +743,7 @@ defmodule Doggo.Components do
     <.badge>8</.badge>
     ```
     """,
-    type: :components,
+    type: :feedback,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -905,7 +905,7 @@ defmodule Doggo.Components do
     </box>
     ```
     """,
-    type: :components,
+    type: :layout,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -1240,7 +1240,7 @@ defmodule Doggo.Components do
     </.callout>
     ```
     """,
-    type: :components,
+    type: :miscellaneous,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -1299,7 +1299,7 @@ defmodule Doggo.Components do
     </.card>
     ```
     """,
-    type: :components,
+    type: :data,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -1391,7 +1391,7 @@ defmodule Doggo.Components do
     </.carousel>
     ```
     """,
-    type: :components,
+    type: :media,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -1558,7 +1558,7 @@ defmodule Doggo.Components do
     </.cluster>
     ```
     """,
-    type: :components,
+    type: :layout,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -1647,7 +1647,7 @@ defmodule Doggo.Components do
     />
     ```
     """,
-    type: :components,
+    type: :miscellaneous,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -1820,7 +1820,7 @@ defmodule Doggo.Components do
     </time>
     ```
     """,
-    type: :components,
+    type: :data,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -1926,7 +1926,7 @@ defmodule Doggo.Components do
     </time>
     ```
     """,
-    type: :components,
+    type: :data,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -2146,7 +2146,7 @@ defmodule Doggo.Components do
     </.drawer>
     ```
     """,
-    type: :components,
+    type: :layout,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -2277,7 +2277,7 @@ defmodule Doggo.Components do
     />
     ```
     """,
-    type: :components,
+    type: :data,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -2377,7 +2377,7 @@ defmodule Doggo.Components do
     </.frame>
     ```
     """,
-    type: :components,
+    type: :media,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -2424,7 +2424,7 @@ defmodule Doggo.Components do
     > Not all icon libraries set the `aria-hidden` attribute by default. Always
     > make sure that it is set on the `<svg>` element that the library renders.
     """,
-    type: :components,
+    type: :media,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -2490,7 +2490,7 @@ defmodule Doggo.Components do
     <.icon name="arrow-left" label="Go back" label_placement={:right} />
     ```
     """,
-    type: :components,
+    type: :media,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -2579,7 +2579,7 @@ defmodule Doggo.Components do
       </:caption>
     </.image>
     """,
-    type: :components,
+    type: :media,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -3361,7 +3361,7 @@ defmodule Doggo.Components do
     library consumers to add additional JavaScript code. To ensure proper
     modal semantics, the `aria-modal` attribute is added to the dialog element.
     """,
-    type: :components,
+    type: :miscellaneous,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -3607,7 +3607,7 @@ defmodule Doggo.Components do
     </main>
     ```
     """,
-    type: :components,
+    type: :layout,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -3654,7 +3654,7 @@ defmodule Doggo.Components do
     </.property_list>
     ```
     """,
-    type: :components,
+    type: :data,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -3710,7 +3710,7 @@ defmodule Doggo.Components do
     [role="radio-group"] {}
     ```
     """,
-    type: :components,
+    type: :miscellaneous,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -3898,7 +3898,7 @@ defmodule Doggo.Components do
     </.async_result>
     ```
     """,
-    type: :components,
+    type: :feedback,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -3979,7 +3979,7 @@ defmodule Doggo.Components do
     </.split_pane>
     ```
     """,
-    type: :components,
+    type: :layout,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -4218,7 +4218,7 @@ defmodule Doggo.Components do
     />
     ```
     """,
-    type: :components,
+    type: :buttons,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -4285,7 +4285,7 @@ defmodule Doggo.Components do
     </.stack>
     ```
     """,
-    type: :components,
+    type: :layout,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -4430,7 +4430,7 @@ defmodule Doggo.Components do
     </.table>
     ```
     """,
-    type: :components,
+    type: :data,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -4617,7 +4617,7 @@ defmodule Doggo.Components do
     </.tabs>
     ```
     """,
-    type: :components,
+    type: :data,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -4741,7 +4741,7 @@ defmodule Doggo.Components do
     </.tag>
     ```
     """,
-    type: :components,
+    type: :data,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -4799,7 +4799,7 @@ defmodule Doggo.Components do
     </time>
     ```
     """,
-    type: :components,
+    type: :data,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -5014,7 +5014,7 @@ defmodule Doggo.Components do
     </.toolbar>
     ```
     """,
-    type: :components,
+    type: :miscellaneous,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -5139,7 +5139,7 @@ defmodule Doggo.Components do
     </p>
     ```
     """,
-    type: :components,
+    type: :miscellaneous,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -5229,7 +5229,7 @@ defmodule Doggo.Components do
     </.tree>
     ```
     """,
-    type: :components,
+    type: :data,
     since: "0.6.0",
     attrs_and_slots:
       quote do
@@ -5338,7 +5338,7 @@ defmodule Doggo.Components do
       </:items>
     </.tree_item>
     """,
-    type: :components,
+    type: :data,
     since: "0.6.0",
     attrs_and_slots:
       quote do
