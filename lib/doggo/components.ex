@@ -154,6 +154,7 @@ defmodule Doggo.Components do
     """,
     type: :data,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :id, :string, required: true
@@ -230,16 +231,6 @@ defmodule Doggo.Components do
     application.
 
     It is typically positioned to float above other content.
-
-    > #### In Development {: .warning}
-    >
-    > The necessary JavaScript for making this component fully functional and
-    > accessible will be added in a future version.
-    >
-    > **Missing features**
-    >
-    > - Roving tabindex
-    > - Move focus with arrow keys
     """,
     usage: """
     ```heex
@@ -258,6 +249,16 @@ defmodule Doggo.Components do
     """,
     type: :miscellaneous,
     since: "0.6.0",
+    maturity: :experimental,
+    maturity_note: """
+    The necessary JavaScript for making this component fully functional and
+    accessible will be added in a future version.
+
+    **Missing features**
+
+    - Roving tabindex
+    - Move focus with arrow keys
+    """,
     attrs_and_slots:
       quote do
         attr :rest, :global, doc: "Any additional HTML attributes."
@@ -317,6 +318,7 @@ defmodule Doggo.Components do
     """,
     type: :feedback,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :id, :string, required: true
@@ -437,6 +439,7 @@ defmodule Doggo.Components do
     """,
     type: :feedback,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :id, :string, required: true
@@ -552,6 +555,7 @@ defmodule Doggo.Components do
     """,
     type: :layout,
     since: "0.6.0",
+    maturity: :experimental,
     attrs_and_slots:
       quote do
         attr :title, :string,
@@ -644,6 +648,7 @@ defmodule Doggo.Components do
     """,
     type: :media,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :src, :any,
@@ -745,6 +750,7 @@ defmodule Doggo.Components do
     """,
     type: :feedback,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :rest, :global, doc: "Any additional HTML attributes."
@@ -795,6 +801,7 @@ defmodule Doggo.Components do
     """,
     type: :navigation,
     since: "0.6.0",
+    maturity: :experimental,
     attrs_and_slots:
       quote do
         attr :label, :string,
@@ -907,6 +914,7 @@ defmodule Doggo.Components do
     """,
     type: :layout,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         slot :title, doc: "The title for the box."
@@ -965,6 +973,7 @@ defmodule Doggo.Components do
     """,
     type: :navigation,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :label, :string,
@@ -1082,6 +1091,7 @@ defmodule Doggo.Components do
     """,
     type: :buttons,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :type, :string,
@@ -1146,6 +1156,7 @@ defmodule Doggo.Components do
     """,
     type: :buttons,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :disabled, :boolean,
@@ -1242,6 +1253,7 @@ defmodule Doggo.Components do
     """,
     type: :miscellaneous,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :id, :string, required: true
@@ -1301,6 +1313,7 @@ defmodule Doggo.Components do
     """,
     type: :data,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :rest, :global, doc: "Any additional HTML attributes."
@@ -1343,20 +1356,6 @@ defmodule Doggo.Components do
     modifiers: [],
     doc: """
     Renders a carousel for presenting a sequence of items, such as images or text.
-
-    > #### In Development {: .warning}
-    >
-    > The necessary JavaScript for making this component fully functional and
-    > accessible will be added in a future version.
-    >
-    > **Missing features**
-    >
-    > - Handle previous/next buttons
-    > - Handle pagination tabs
-    > - Auto rotation
-    > - Disable auto rotation when controls are used
-    > - Disable previous/next button on first/last item.
-    > - Focus management and keyboard support for pagination
     """,
     usage: """
     ```heex
@@ -1393,6 +1392,20 @@ defmodule Doggo.Components do
     """,
     type: :media,
     since: "0.6.0",
+    maturity: :experimental,
+    maturity_note: """
+    The necessary JavaScript for making this component fully functional and
+    accessible will be added in a future version.
+
+    **Missing features**
+
+    - Handle previous/next buttons
+    - Handle pagination tabs
+    - Auto rotation
+    - Disable auto rotation when controls are used
+    - Disable previous/next button on first/last item.
+    - Focus management and keyboard support for pagination
+    """,
     attrs_and_slots:
       quote do
         attr :id, :string, required: true
@@ -1560,6 +1573,7 @@ defmodule Doggo.Components do
     """,
     type: :layout,
     since: "0.6.0",
+    maturity: :refining,
     attrs_and_slots:
       quote do
         attr :rest, :global, doc: "Any additional HTML attributes."
@@ -1581,19 +1595,6 @@ defmodule Doggo.Components do
     doc: """
     Renders a text input with a popup that allows users to select a value from
     a list of suggestions.
-
-    > #### In Development {: .warning}
-    >
-    > The necessary JavaScript for making this component fully functional and
-    > accessible will be added in a future version.
-    >
-    > **Missing features**
-    >
-    > - Showing/hiding suggestions
-    > - Filtering suggestions
-    > - Selecting a value
-    > - Focus management
-    > - Keyboard support
     """,
     usage: """
     With simple values:
@@ -1649,6 +1650,19 @@ defmodule Doggo.Components do
     """,
     type: :miscellaneous,
     since: "0.6.0",
+    maturity: :experimental,
+    maturity_note: """
+    The necessary JavaScript for making this component fully functional and
+    accessible will be added in a future version.
+
+    **Missing features**
+
+    - Showing/hiding suggestions
+    - Filtering suggestions
+    - Selecting a value
+    - Focus management
+    - Keyboard support
+    """,
     attrs_and_slots:
       quote do
         attr :id, :string, required: true, doc: "Sets the DOM ID for the input."
@@ -1822,6 +1836,7 @@ defmodule Doggo.Components do
     """,
     type: :data,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :value, :any,
@@ -1928,6 +1943,7 @@ defmodule Doggo.Components do
     """,
     type: :data,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :value, :any,
@@ -2046,6 +2062,7 @@ defmodule Doggo.Components do
     """,
     type: :buttons,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :controls, :string,
@@ -2148,6 +2165,7 @@ defmodule Doggo.Components do
     """,
     type: :layout,
     since: "0.6.0",
+    maturity: :experimental,
     attrs_and_slots:
       quote do
         attr :rest, :global, doc: "Any additional HTML attributes."
@@ -2213,6 +2231,7 @@ defmodule Doggo.Components do
     """,
     type: :buttons,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :label, :string, required: true
@@ -2279,6 +2298,7 @@ defmodule Doggo.Components do
     """,
     type: :data,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :value, :any,
@@ -2379,6 +2399,7 @@ defmodule Doggo.Components do
     """,
     type: :media,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         slot :inner_block
@@ -2426,6 +2447,7 @@ defmodule Doggo.Components do
     """,
     type: :media,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         slot :inner_block, doc: "Slot for the SVG element.", required: true
@@ -2471,6 +2493,7 @@ defmodule Doggo.Components do
   component(
     :icon_sprite,
     base_class: "icon",
+    maturity: :developing,
     modifiers: [
       size: [values: ["small", "normal", "medium", "large"], default: "normal"]
     ],
@@ -2568,6 +2591,7 @@ defmodule Doggo.Components do
     the `frame` component are generated with the same values.
     """,
     usage: """
+    ```heex
     <.image
       src="https://github.com/woylie/doggo/blob/main/assets/dog_poncho.jpg?raw=true"
       alt="A dog wearing a colorful poncho walks down a fashion show runway."
@@ -2578,9 +2602,11 @@ defmodule Doggo.Components do
         dazzle the runway with the latest in pet apparel.
       </:caption>
     </.image>
+    ```
     """,
     type: :media,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :src, :string,
@@ -2665,16 +2691,6 @@ defmodule Doggo.Components do
 
     See also `menu_bar/1`, `menu_group/1`, `menu_button/1`, `menu_item/1`, and
     `menu_item_checkbox/1`.
-
-    > #### In Development {: .warning}
-    >
-    > The necessary JavaScript for making this component fully functional and
-    > accessible will be added in a future version.
-    >
-    > **Missing features**
-    >
-    > - Focus management
-    > - keyboard support
     """,
     usage: """
     If the menu is always visible or can only be toggled by a keyboard shortcut,
@@ -2700,6 +2716,16 @@ defmodule Doggo.Components do
     """,
     type: :menu,
     since: "0.6.0",
+    maturity: :experimental,
+    maturity_note: """
+    The necessary JavaScript for making this component fully functional and
+    accessible will be added in a future version.
+
+    **Missing features**
+
+    - Focus management
+    - keyboard support
+    """,
     attrs_and_slots:
       quote do
         attr :label, :string,
@@ -2777,16 +2803,6 @@ defmodule Doggo.Components do
 
     See also `menu/1`, `menu_group/1`, `menu_button/1`, `menu_item/1`, and
     `menu_item_checkbox/1`.
-
-    > #### In Development {: .warning}
-    >
-    > The necessary JavaScript for making this component fully functional and
-    > accessible will be added in a future version.
-    >
-    > **Missing features**
-    >
-    > - Focus management
-    > - keyboard support
     """,
     usage: """
     ```heex
@@ -2825,6 +2841,16 @@ defmodule Doggo.Components do
     """,
     type: :menu,
     since: "0.6.0",
+    maturity: :experimental,
+    maturity_note: """
+    The necessary JavaScript for making this component fully functional and
+    accessible will be added in a future version.
+
+    **Missing features**
+
+    - Focus management
+    - keyboard support
+    """,
     attrs_and_slots:
       quote do
         attr :label, :string,
@@ -2953,6 +2979,7 @@ defmodule Doggo.Components do
     """,
     type: :menu,
     since: "0.6.0",
+    maturity: :experimental,
     attrs_and_slots:
       quote do
         attr :id, :string,
@@ -3006,16 +3033,6 @@ defmodule Doggo.Components do
     This component can be used to group items within a `menu/1` or `menu_bar/1`.
 
     See also `menu_button/1`, `menu_item/1`, and `menu_item_checkbox/1`.
-
-    > #### In Development {: .warning}
-    >
-    > The necessary JavaScript for making this component fully functional and
-    > accessible will be added in a future version.
-    >
-    > **Missing features**
-    >
-    > - Focus management
-    > - Keyboard support
     """,
     usage: """
     ```heex
@@ -3048,6 +3065,16 @@ defmodule Doggo.Components do
     """,
     type: :menu,
     since: "0.6.0",
+    maturity: :experimental,
+    maturity_note: """
+    The necessary JavaScript for making this component fully functional and
+    accessible will be added in a future version.
+
+    **Missing features**
+
+    - Focus management
+    - Keyboard support
+    """,
     attrs_and_slots:
       quote do
         attr :label, :string,
@@ -3110,6 +3137,7 @@ defmodule Doggo.Components do
     """,
     type: :menu,
     since: "0.6.0",
+    maturity: :experimental,
     attrs_and_slots:
       quote do
         attr :on_click, Phoenix.LiveView.JS, required: true
@@ -3140,16 +3168,6 @@ defmodule Doggo.Components do
     Renders a menu item checkbox as part of a `menu/1` or `menu_bar/1`.
 
     See also `menu_item/1`.
-
-    > #### In Development {: .warning}
-    >
-    > The necessary JavaScript for making this component fully functional and
-    > accessible will be added in a future version.
-    >
-    > **Missing features**
-    >
-    > - State management
-    > - Keyboard support
     """,
     usage: """
     ```heex
@@ -3164,6 +3182,16 @@ defmodule Doggo.Components do
     """,
     type: :menu,
     since: "0.6.0",
+    maturity: :experimental,
+    maturity_note: """
+    The necessary JavaScript for making this component fully functional and
+    accessible will be added in a future version.
+
+    **Missing features**
+
+    - State management
+    - Keyboard support
+    """,
     attrs_and_slots:
       quote do
         attr :checked, :boolean, default: false
@@ -3195,17 +3223,6 @@ defmodule Doggo.Components do
     Renders a group of menu item radios as part of a `menu/1` or `menu_bar/1`.
 
     See also `menu_button/1`, `menu_item/1`, and `menu_item_checkbox/1`.
-
-    > #### In Development {: .warning}
-    >
-    > The necessary JavaScript for making this component fully functional and
-    > accessible will be added in a future version.
-    >
-    > **Missing features**
-    >
-    > - Focus management
-    > - State management
-    > - Keyboard support
     """,
     usage: """
     ```heex
@@ -3225,6 +3242,17 @@ defmodule Doggo.Components do
     """,
     type: :menu,
     since: "0.6.0",
+    maturity: :experimental,
+    maturity_note: """
+    The necessary JavaScript for making this component fully functional and
+    accessible will be added in a future version.
+
+    **Missing features**
+
+    - Focus management
+    - State management
+    - Keyboard support
+    """,
     attrs_and_slots:
       quote do
         attr :label, :string,
@@ -3363,6 +3391,7 @@ defmodule Doggo.Components do
     """,
     type: :miscellaneous,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :id, :string, required: true
@@ -3502,6 +3531,7 @@ defmodule Doggo.Components do
     """,
     type: :navigation,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :label, :string,
@@ -3559,6 +3589,7 @@ defmodule Doggo.Components do
     """,
     type: :navigation,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :rest, :global, doc: "Any additional HTML attributes."
@@ -3609,6 +3640,7 @@ defmodule Doggo.Components do
     """,
     type: :layout,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :title, :string,
@@ -3656,6 +3688,7 @@ defmodule Doggo.Components do
     """,
     type: :data,
     since: "0.6.0",
+    maturity: :refining,
     attrs_and_slots:
       quote do
         slot :prop, doc: "A property to be rendered." do
@@ -3712,6 +3745,7 @@ defmodule Doggo.Components do
     """,
     type: :miscellaneous,
     since: "0.6.0",
+    maturity: :experimental,
     attrs_and_slots:
       quote do
         attr :id, :string, required: true
@@ -3900,6 +3934,7 @@ defmodule Doggo.Components do
     """,
     type: :feedback,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :rest, :global, doc: "Any additional HTML attributes."
@@ -3917,16 +3952,6 @@ defmodule Doggo.Components do
     modifiers: [],
     doc: """
     Renders a horizontal or vertical resizable split pane.
-
-    > #### In Development {: .warning}
-    >
-    > The necessary JavaScript for making this component fully functional and
-    > accessible will be added in a future version.
-    >
-    > **Missing features**
-    >
-    > - Resize panes with the mouse
-    > - Resize panes with the keyboard
     """,
     usage: """
     Horizontal separator with label:
@@ -3981,6 +4006,16 @@ defmodule Doggo.Components do
     """,
     type: :layout,
     since: "0.6.0",
+    maturity: :experimental,
+    maturity_note: """
+    The necessary JavaScript for making this component fully functional and
+    accessible will be added in a future version.
+
+    **Missing features**
+
+    - Resize panes with the mouse
+    - Resize panes with the keyboard
+    """,
     attrs_and_slots:
       quote do
         attr :label, :string,
@@ -4083,6 +4118,7 @@ defmodule Doggo.Components do
     """,
     type: :navigation,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :label, :string, default: "Form steps"
@@ -4220,6 +4256,7 @@ defmodule Doggo.Components do
     """,
     type: :buttons,
     since: "0.6.0",
+    maturity: :experimental,
     attrs_and_slots:
       quote do
         attr :label, :string, required: true
@@ -4287,6 +4324,7 @@ defmodule Doggo.Components do
     """,
     type: :layout,
     since: "0.6.0",
+    maturity: :refining,
     attrs_and_slots:
       quote do
         attr :recursive, :boolean,
@@ -4358,6 +4396,7 @@ defmodule Doggo.Components do
     """,
     type: :navigation,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :label, :string,
@@ -4432,6 +4471,7 @@ defmodule Doggo.Components do
     """,
     type: :data,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :id, :string, required: true
@@ -4583,16 +4623,6 @@ defmodule Doggo.Components do
     This component is meant for tabs that toggle content panels within the page.
     If you want to link to a different view or live action, use
     `tab_navigation/1` instead.
-
-    > #### In Development {: .warning}
-    >
-    > The necessary JavaScript for making this component fully functional and
-    > accessible will be added in a future version.
-    >
-    > **Missing features**
-    >
-    > - Roving tabindex
-    > - Move focus with arrow keys
     """,
     usage: """
     ```heex
@@ -4619,6 +4649,16 @@ defmodule Doggo.Components do
     """,
     type: :data,
     since: "0.6.0",
+    maturity: :developing,
+    maturity_note: """
+    The necessary JavaScript for making this component fully functional and
+    accessible will be added in a future version.
+
+    **Missing features**
+
+    - Roving tabindex
+    - Move focus with arrow keys
+    """,
     attrs_and_slots:
       quote do
         attr :id, :string, required: true
@@ -4743,6 +4783,7 @@ defmodule Doggo.Components do
     """,
     type: :data,
     since: "0.6.0",
+    maturity: :refining,
     attrs_and_slots:
       quote do
         attr :rest, :global, doc: "Any additional HTML attributes."
@@ -4801,6 +4842,7 @@ defmodule Doggo.Components do
     """,
     type: :data,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :value, :any,
@@ -4935,6 +4977,7 @@ defmodule Doggo.Components do
     """,
     type: :buttons,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :pressed, :boolean, default: false
@@ -4978,16 +5021,6 @@ defmodule Doggo.Components do
     modifiers: [],
     doc: """
     Renders a container for a set of controls.
-
-    > #### In Development {: .warning}
-    >
-    > The necessary JavaScript for making this component fully functional and
-    > accessible will be added in a future version.
-    >
-    > **Missing features**
-    >
-    > - Roving tabindex
-    > - Move focus with arrow keys
     """,
     usage: """
     Direct children of this component can be any types buttons or groups of
@@ -5016,6 +5049,16 @@ defmodule Doggo.Components do
     """,
     type: :miscellaneous,
     since: "0.6.0",
+    maturity: :experimental,
+    maturity_note: """
+    The necessary JavaScript for making this component fully functional and
+    accessible will be added in a future version.
+
+    **Missing features**
+
+    - Roving tabindex
+    - Move focus with arrow keys
+    """,
     attrs_and_slots:
       quote do
         attr :label, :string,
@@ -5141,6 +5184,7 @@ defmodule Doggo.Components do
     """,
     type: :miscellaneous,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :id, :string, required: true
@@ -5189,25 +5233,6 @@ defmodule Doggo.Components do
 
     A good use case for this component is a folder structure. For navigation and
     other menus, a regular nested list should be preferred.
-
-    > #### In Development {: .warning}
-    >
-    > The necessary JavaScript for making this component fully functional and
-    > accessible will be added in a future version.
-    >
-    > **Missing features**
-    >
-    > - Expand and collapse nodes
-    > - Select nodes
-    > - Navigate tree with arrow keys
-
-    ## CSS
-
-    You can target the wrapper with an attribute selector for the role:
-
-    ```css
-    [role="tree"] {}
-    ```
     """,
     usage: """
     ```heex
@@ -5228,9 +5253,28 @@ defmodule Doggo.Components do
       </.tree_item>
     </.tree>
     ```
+
+    ## CSS
+
+    You can target the wrapper with an attribute selector for the role:
+
+    ```css
+    [role="tree"] {}
+    ```
     """,
     type: :data,
     since: "0.6.0",
+    maturity: :experimental,
+    maturity_note: """
+    The necessary JavaScript for making this component fully functional and
+    accessible will be added in a future version.
+
+    **Missing features**
+
+    - Expand and collapse nodes
+    - Select nodes
+    - Navigate tree with arrow keys
+    """,
     attrs_and_slots:
       quote do
         attr :label, :string,
@@ -5296,17 +5340,6 @@ defmodule Doggo.Components do
 
     This component can be used as a direct child of `tree/1` or within the `items`
     slot of this component.
-
-    > #### In Development {: .warning}
-    >
-    > The necessary JavaScript for making this component fully functional and
-    > accessible will be added in a future version.
-    >
-    > **Missing featumres**
-    >
-    > - Expand and collapse nodes
-    > - Select nodes
-    > - Navigate tree with arrow keys
     """,
     usage: """
     ```heex
@@ -5340,6 +5373,17 @@ defmodule Doggo.Components do
     """,
     type: :data,
     since: "0.6.0",
+    maturity: :experimental,
+    maturity_note: """
+    The necessary JavaScript for making this component fully functional and
+    accessible will be added in a future version.
+
+    **Missing featumres**
+
+    - Expand and collapse nodes
+    - Select nodes
+    - Navigate tree with arrow keys
+    """,
     attrs_and_slots:
       quote do
         attr :rest, :global, doc: "Any additional HTML attributes."
@@ -5412,6 +5456,7 @@ defmodule Doggo.Components do
     """,
     type: :navigation,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :id, :string, default: nil
@@ -5472,6 +5517,7 @@ defmodule Doggo.Components do
     """,
     type: :navigation,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :id, :string, required: true
@@ -5522,6 +5568,7 @@ defmodule Doggo.Components do
     """,
     type: :navigation,
     since: "0.6.0",
+    maturity: :developing,
     attrs_and_slots:
       quote do
         attr :id, :string, required: true
