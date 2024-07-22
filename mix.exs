@@ -87,10 +87,14 @@ defmodule Doggo.MixProject do
       source_ref: @version,
       skip_undefined_reference_warnings_on: ["CHANGELOG.md"],
       groups_for_docs: [
-        Components: &(&1[:type] == :components),
         Buttons: &(&1[:type] == :buttons),
+        Data: &(&1[:type] == :data),
+        Feedback: &(&1[:type] == :feedback),
         Form: &(&1[:type] == :form),
+        Layout: &(&1[:type] == :layout),
+        Media: &(&1[:type] == :media),
         Menu: &(&1[:type] == :menu),
+        Miscellaneous: &(&1[:type] == :miscellaneous),
         Navigation: &(&1[:type] == :navigation),
         JS: &(&1[:type] == :js)
       ]
