@@ -95,6 +95,10 @@ defmodule Doggo.Components do
   - `class_name_fun` - A 2-arity function that takes a modifier attribute name
     and a value and returns a CSS class name. Defaults to
     `Doggo.modifier_class_name/2`.
+
+  Some components have an `extra` option, which is used to pass additional
+  arguments to the component at compile time. This is mostly used to allow
+  the customization of certain class names.
   """
 
   use Phoenix.Component
@@ -2484,7 +2488,8 @@ defmodule Doggo.Components do
 
       quote do
         var!(assigns) =
-          var!(assigns)
+          assigns
+          |> var!()
           |> Map.update!(
             :class,
             &(&1 ++
@@ -2567,7 +2572,8 @@ defmodule Doggo.Components do
 
       quote do
         var!(assigns) =
-          var!(assigns)
+          assigns
+          |> var!()
           |> Map.update!(
             :class,
             &(&1 ++
