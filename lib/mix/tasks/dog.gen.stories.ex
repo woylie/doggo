@@ -7,6 +7,11 @@ defmodule Mix.Tasks.Dog.Gen.Stories do
   ## Usage
 
       mix dog.gen.stories -m MyAppWeb.CoreComponents -o storybook
+
+  ## Options
+
+  - --module/-m: The module where the Doggo components are compiled.
+  - --output/-o: The Storybook folder.
   """
 
   use Mix.Task
@@ -24,12 +29,34 @@ defmodule Mix.Tasks.Dog.Gen.Stories do
 
     with {:ok, module} <- Keyword.fetch(opts, :module),
          {:ok, path} <- Keyword.fetch(opts, :output) do
+      ensure_folder_exists(path)
       module = Module.safe_concat([module])
       components = module.__dog_components__()
       Enum.each(components, &write_story(&1, module, path))
     else
       _ ->
         IO.puts(@moduledoc)
+    end
+  end
+
+  defp ensure_folder_exists(path) do
+    if File.exists?(path) do
+      if File.dir?(path) do
+        :ok
+      else
+        IO.puts("Error: Output path is not a directory.")
+        exit({:shutdown, 1})
+      end
+    else
+      IO.puts("Output directory '#{path}' does not exist.")
+      prompt_create_directory(path)
+    end
+  end
+
+  defp prompt_create_directory(path) do
+    case IO.gets("Do you want to create the directory? (y/n)\n") do
+      "y\n" -> File.mkdir_p!(path)
+      _ -> exit({:shutdown, 1})
     end
   end
 
