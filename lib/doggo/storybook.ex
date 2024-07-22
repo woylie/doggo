@@ -47,7 +47,7 @@ defmodule Doggo.Storybook do
         ]
       end
 
-    story_opts = [dependent_components: dependent_components]
+    story_opts = [dependent_components: dependent_components, name: name]
 
     quote do
       if unquote(imports) do
@@ -61,7 +61,16 @@ defmodule Doggo.Storybook do
       end
 
       if unquote(function_exported?(storybook_module, :template, 0)) do
-        def template, do: unquote(storybook_module).template()
+        def template,
+          do: unquote(storybook_module).template()
+      end
+
+      if unquote(function_exported?(storybook_module, :template, 1)) do
+        def template,
+          do:
+            unquote(storybook_module).template(
+              unquote(Macro.escape(story_opts))
+            )
       end
 
       def variations do

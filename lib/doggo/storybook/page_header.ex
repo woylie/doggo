@@ -1,21 +1,25 @@
 defmodule Doggo.Storybook.PageHeader do
   @moduledoc false
+
+  import Doggo.Storybook.Shared
   alias PhoenixStorybook.Stories.Variation
 
-  def variations(_opts) do
+  def dependent_components, do: [:button_link]
+
+  def variations(opts) do
     [
       %Variation{
         id: :default,
         attributes: attributes(),
-        slots: slots()
+        slots: slots(opts)
       }
     ]
   end
 
-  def modifier_variation_base(_id, _name, _value, _opts) do
+  def modifier_variation_base(_id, _name, _value, opts) do
     %{
       attributes: attributes(),
-      slots: slots()
+      slots: slots(opts)
     }
   end
 
@@ -26,13 +30,13 @@ defmodule Doggo.Storybook.PageHeader do
     }
   end
 
-  defp slots do
+  defp slots(opts) do
+    dependent_components = opts[:dependent_components]
+
     [
       """
       <:action>
-        <Doggo.button_link
-          patch="/puppies/new"
-        >Add New Profile</Doggo.button_link>
+        #{patch_link("/puppies/new", "Add New Profile", dependent_components)}
       </:action>
       """
     ]

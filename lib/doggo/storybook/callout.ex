@@ -1,8 +1,14 @@
 defmodule Doggo.Storybook.Callout do
   @moduledoc false
+
+  import Doggo.Storybook.Shared
   alias PhoenixStorybook.Stories.Variation
 
-  def variations(_opts) do
+  def dependent_components, do: [:icon]
+
+  def variations(opts) do
+    dependent_components = opts[:dependent_components]
+
     [
       %Variation{
         id: :default,
@@ -14,7 +20,7 @@ defmodule Doggo.Storybook.Callout do
         id: :with_icon,
         slots: [
           "<p>Chewing on a bone can help keep your dog's teeth clean and strong.</p>",
-          "<:icon>#{icon()}</:icon>"
+          "<:icon>#{icon(:info, dependent_components)}</:icon>"
         ]
       },
       %Variation{
@@ -34,7 +40,7 @@ defmodule Doggo.Storybook.Callout do
             routine is changed.
           </p>
           """,
-          "<:icon>#{icon()}</:icon>"
+          "<:icon>#{icon(:info, dependent_components)}</:icon>"
         ]
       }
     ]
@@ -47,25 +53,5 @@ defmodule Doggo.Storybook.Callout do
         "<p>Regular exercise is essential for keeping your dog healthy and happy.</p>"
       ]
     }
-  end
-
-  defp icon do
-    """
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="lucide lucide-info"
-    >
-      <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/>
-      <path d="M12 8h.01"/>
-    </svg>
-    """
   end
 end
