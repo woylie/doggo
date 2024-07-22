@@ -662,13 +662,13 @@ defmodule Doggo.Components do
     Use a placeholder image in case the avatar is not set:
 
     ```heex
-    <.avatar src={@user.avatar_url} placeholder={{:src, "fallback.png"}} />
+    <.avatar src={@user.avatar_url} placeholder_src="fallback.png" />
     ```
 
     Render an text as the placeholder value:
 
     ```heex
-    <.avatar src={@user.avatar_url} placeholder="A" />
+    <.avatar src={@user.avatar_url} placeholder_content="A" />
     ```
     """,
     type: :media,
@@ -683,18 +683,25 @@ defmodule Doggo.Components do
           provided in the placeholder attribute.
           """
 
-        attr :placeholder, :any,
+        attr :placeholder_src, :any,
           default: nil,
           doc: """
-          Fallback value to render in case the `src` attribute is `nil`.
+          Fallback image src to use in case the `src` attribute is `nil`.
 
-          - For a placeholder image, pass a tuple `{:src, url}`.
-          - For other types of placeholder content, such as text initials or inline
-            SVG, pass the content directly. The component will render this content
-            as-is.
+          If neither `placeholder_src` nor `placeholder_text` are set and the
+          `src` is `nil`, no element will be rendered.
+          """
 
-          If the placeholder value is set to `nil`, no avatar will be rendered if the
-          `src` is `nil`.
+        attr :placeholder_content, :any,
+          default: nil,
+          doc: """
+          Fallback content to render in case the `src` attribute is `nil`,
+          such as text initials or inline SVG.
+
+          If `placeholder_src` is set, this attribute is ignored.
+
+          If neither `placeholder_src` nor `placeholder_text` are set and the
+          `src` is `nil`, no element will be rendered.
           """
 
         attr :alt, :string,
@@ -713,10 +720,15 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <div :if={@src || @placeholder} class={@class} {@rest}>
+        <div
+          :if={@src || @placeholder_src || @placeholder_content}
+          class={@class}
+          {@rest}
+        >
           <Doggo.Components.inner_avatar
             src={@src}
-            placeholder={@placeholder}
+            placeholder_src={@placeholder_src}
+            placeholder_content={@placeholder_content}
             alt={@alt}
             loading={@loading}
           />
@@ -732,18 +744,15 @@ defmodule Doggo.Components do
     """
   end
 
-  def inner_avatar(%{placeholder: {:src, src}} = assigns)
-      when is_binary(src) do
-    assigns = assign(assigns, :src, src)
-
+  def inner_avatar(%{placeholder_src: src} = assigns) when is_binary(src) do
     ~H"""
-    <img src={@src} alt={@alt} loading={@loading} />
+    <img src={@placeholder_src} alt={@alt} loading={@loading} />
     """
   end
 
   def inner_avatar(assigns) do
     ~H"""
-    <span><%= @placeholder %></span>
+    <span><%= @placeholder_content %></span>
     """
   end
 
