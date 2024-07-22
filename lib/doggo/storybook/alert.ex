@@ -16,7 +16,9 @@ defmodule Doggo.Storybook.Alert do
       },
       %Variation{
         id: :close_button,
-        attributes: %{on_close: Phoenix.LiveView.JS.push("close-alert")},
+        attributes: %{
+          on_close: {:eval, ~s|JS.hide(to: "#alert-single-close-button")|}
+        },
         slots: slots()
       }
     ]

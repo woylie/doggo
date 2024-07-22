@@ -1,6 +1,6 @@
 defmodule Doggo.Storybook.ToggleButton do
   @moduledoc false
-  alias Phoenix.LiveView.JS
+
   alias PhoenixStorybook.Stories.Variation
 
   def variations do
@@ -50,8 +50,11 @@ defmodule Doggo.Storybook.ToggleButton do
   end
 
   defp toggle_indicator(id) do
-    %JS{}
-    |> JS.toggle(to: "#indicator-on-#{id}")
-    |> JS.toggle(to: "#indicator-off-#{id}")
+    {:eval,
+     """
+     %JS{}
+     |> JS.toggle(to: "#indicator-on-#{id}")
+     |> JS.toggle(to: "#indicator-off-#{id}")
+     """}
   end
 end

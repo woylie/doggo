@@ -33,7 +33,7 @@ defmodule Doggo.Storybook.Table do
           """
           <:col :let={p} label="name"><%= p.name %></:col>
           <:col :let={p} label="age"><%= p.age %></:col>
-          <:action :let={p}>
+          <:action>
             <.link>Edit</.link>
           </:action>
           """
