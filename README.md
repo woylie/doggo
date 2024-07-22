@@ -36,16 +36,56 @@ defmodule MyAppWeb.CoreComponents do
   alert()
   alert_dialog()
 
-  button(
-    modifiers: [
-      variant: [
-        values: ["primary", "secondary", "outline"],
-        default: "primary"
-      ],
-      size: [values: ["small", "normal"], default: "normal"]
-    ]
-  )
+  button(modifiers: [size: [values: ["normal", "small"], default: "normal"]])
 end
+```
+
+Each modifier results in an additional attribute that is translated into a CSS
+class. You can use the button defined above like this:
+
+```html
+<.button size="small">Edit</.button>
+```
+
+Most of the components have a base class that matches the component name.
+By default, `Doggo.modifier_class_name/2` is used to build the CSS class name
+for modifier attributes. The button above would be rendered with the class
+`"button is-small"`.
+
+You can override both the base class and the modifier class function:
+
+```elixir
+defmodule MyAppWeb.CoreComponents do
+  use Doggo.Components
+  use Phoenix.Component
+
+  button(
+    base_class: "alt-button",
+    modifiers: [small: [size: ["normal", "small"], default: "normal"]],
+    class_name_fun: &MyAppWeb.CoreComponents.modifier_class/2
+  )
+
+  def modifier_class(name, value) do
+    "#{name} #{value}"
+  end
+end
+```
+
+With these changes, the class would now be `"alt-button size-small`. To remove
+the base class, just set it to `nil`.
+
+It is also possible to change the name of the generated component, which can be
+useful if you want to compile multiple variants of the same component, or if
+your design system uses different names.
+
+```elixir
+button(name: :alt_button, base_class: "alt-button")
+```
+
+This button could be used with:
+
+```elixir
+<.alt_button>Edit</alt_button>
 ```
 
 Refer to the `Doggo.Components` module documentation for more information about
@@ -65,43 +105,20 @@ gettext module as an attribute to the component instead.
 
 ### Storybook
 
-The library is equipped with story modules for
-[Phoenix Storybook](https://hex.pm/packages/phoenix_storybook). After you
-followed the installation instructions of Phoenix Storybook, you can configure a
-storybook module for Doggo in your application as follows:
+Doggo can generate
+[Phoenix Storybook](https://hex.pm/packages/phoenix_storybook) stories for the
+generated components. After you followed the installation instructions of
+Phoenix Storybook, you can run a mix task to generate the stories:
 
-```elixir
-defmodule MyAppWeb.Storybook.Doggo do
-  use PhoenixStorybook,
-    otp_app: :my_app_web,
-    content_path: Path.join(:code.priv_dir(:doggo), "/storybook"),
-    title: "Doggo Storybook",
-    css_path: "/assets/storybook.css",
-    js_path: "/assets/storybook.js",
-    sandbox_class: "my-app-web"
-end
+```bash
+mix dog.gen.stories -m MyAppWeb.CoreComponents -o storybook
 ```
 
-The important option here is `content_path`, which points to the storybook
-directory in the `priv` folder of Doggo. Adjust the rest of the option to the
-needs of your application.
+Here, `MyAppWeb.CoreComponents` is the module in which you added
+`use Doggo.Components`, and `storybook` is the path to the storybook folder.
 
-In your router, add the Doggo storybook as a second storybook and change the
-path of your application storybook to avoid path conflicts.
-
-```elixir
-scope "/", MyAppWeb do
-  pipe_through :browser
-
-  live_storybook("/storybook/app", backend_module: MyAppWeb.Storybook)
-
-  live_storybook("/storybook/doggo",
-    backend_module: MyAppWeb.Storybook.Doggo,
-    session_name: :live_storybook_doggo,
-    pipeline: false
-  )
-end
-```
+The task will only generate story modules for the components that you
+configured. The stories will include variations for all configured modifiers.
 
 ### PurgeCSS
 
@@ -114,7 +131,7 @@ find them in the source code. You can use `mix dog.modifiers` to save a
 list of all modifier class names to a file:
 
 ```bash
-mix dog.modifiers -o assets/modifiers.txt
+mix dog.modifiers -m MyAppWeb.CoreComponents -o assets/modifiers.txt
 ```
 
 Add the generated file to your PurgeCSS configuration as well.

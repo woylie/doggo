@@ -13,6 +13,9 @@ defmodule Doggo.Storybook do
         use PhoenixStorybook.Story, :component
         use Doggo.Storybook, module: MyAppWeb.CoreComponents, name: :accordion
       end
+
+  You can automatically generate story modules for all configured components
+  with `mix dog.gen.stories`.
   """
 
   alias PhoenixStorybook.Stories.Variation
