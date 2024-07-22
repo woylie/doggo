@@ -697,7 +697,6 @@ defmodule DoggoTest do
   end
 
   describe "modifier_classes/1" do
-    @tag :this
     test "returns a map of modifier classes" do
       assert Doggo.modifier_classes(TestComponents) == [
                "is-large",

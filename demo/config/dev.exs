@@ -13,9 +13,11 @@ config :demo, DemoWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "7I09KWxcUUDVCHxt1eWTxz/zRZ4K9839EiL/iutqCNQORX+I2K62EM4/Y8HH+60G",
+  secret_key_base:
+    "7I09KWxcUUDVCHxt1eWTxz/zRZ4K9839EiL/iutqCNQORX+I2K62EM4/Y8HH+60G",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    esbuild:
+      {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
 # ## SSL Support

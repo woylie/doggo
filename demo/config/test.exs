@@ -4,7 +4,8 @@ import Config
 # you can enable the server option below.
 config :demo, DemoWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "UwBHokdfX1j1Z/VYF+Cj4RHuS8iaMV2xTzmET+mbzBUF7dVI9wvgo+quplDOVGws",
+  secret_key_base:
+    "UwBHokdfX1j1Z/VYF+Cj4RHuS8iaMV2xTzmET+mbzBUF7dVI9wvgo+quplDOVGws",
   server: false
 
 # Print only warnings and errors during test

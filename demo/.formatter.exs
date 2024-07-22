@@ -1,5 +1,10 @@
 [
   import_deps: [:phoenix],
   plugins: [Phoenix.LiveView.HTMLFormatter],
-  inputs: ["*.{heex,ex,exs}", "{config,lib,test}/**/*.{heex,ex,exs}", "storybook/**/*.exs"]
+  inputs: [
+    "*.{heex,ex,exs}",
+    "{config,lib,test}/**/*.{heex,ex,exs}",
+    "storybook/**/*.exs"
+  ],
+  line_length: 80
 ]
