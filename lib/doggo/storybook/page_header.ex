@@ -2,7 +2,7 @@ defmodule Doggo.Storybook.PageHeader do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :default,
@@ -12,7 +12,7 @@ defmodule Doggo.Storybook.PageHeader do
     ]
   end
 
-  def modifier_variation_base(_id, _name, _value) do
+  def modifier_variation_base(_id, _name, _value, _opts) do
     %{
       attributes: attributes(),
       slots: slots()

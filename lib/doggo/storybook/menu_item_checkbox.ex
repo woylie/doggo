@@ -12,7 +12,7 @@ defmodule Doggo.Storybook.MenuItemCheckbox do
     """
   end
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :default,
@@ -24,7 +24,7 @@ defmodule Doggo.Storybook.MenuItemCheckbox do
     ]
   end
 
-  def modifier_variation_base(_id, _name, _value) do
+  def modifier_variation_base(_id, _name, _value, _opts) do
     %{
       attributes: %{
         on_click: Phoenix.LiveView.JS.dispatch("myapp:toggle-word-wrap")

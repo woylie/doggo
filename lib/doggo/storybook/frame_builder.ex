@@ -1,13 +1,13 @@
 defmodule Doggo.Storybook.FrameBuilder do
   @moduledoc false
 
-  def variations do
+  def variations(_opts) do
     # The frame component only becomes useful through the ratio modifier, which
     # is covered by the modifier variation groups.
     []
   end
 
-  def modifier_variation_base(_id, _name, _value) do
+  def modifier_variation_base(_id, _name, _value, _opts) do
     %{
       slots: slots()
     }

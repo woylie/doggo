@@ -11,7 +11,7 @@ defmodule Doggo.Storybook.Modal do
     """
   end
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :default,
@@ -21,7 +21,7 @@ defmodule Doggo.Storybook.Modal do
     ]
   end
 
-  def modifier_variation_base(id, _name, _value) do
+  def modifier_variation_base(id, _name, _value, _opts) do
     %{
       attributes: %{id: id},
       slots: slots()

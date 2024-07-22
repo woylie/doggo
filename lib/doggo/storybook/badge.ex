@@ -2,7 +2,7 @@ defmodule Doggo.Storybook.Badge do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :default,
@@ -15,7 +15,7 @@ defmodule Doggo.Storybook.Badge do
     ]
   end
 
-  def modifier_variation_base(_id, _name, _value) do
+  def modifier_variation_base(_id, _name, _value, _opts) do
     %{
       slots: ["8"]
     }

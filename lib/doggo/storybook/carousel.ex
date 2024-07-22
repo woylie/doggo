@@ -4,7 +4,7 @@ defmodule Doggo.Storybook.Carousel do
 
   def layout, do: :one_column
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :default,
@@ -14,7 +14,7 @@ defmodule Doggo.Storybook.Carousel do
     ]
   end
 
-  def modifier_variation_base(_id, _name, _value) do
+  def modifier_variation_base(_id, _name, _value, _opts) do
     %{
       attributes: %{label: "Our Dogs", pagination: true},
       slots: slots()

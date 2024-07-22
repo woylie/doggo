@@ -4,7 +4,7 @@ defmodule Doggo.Storybook.Box do
 
   def layout, do: :one_column
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :minimal,
@@ -46,7 +46,7 @@ defmodule Doggo.Storybook.Box do
     ]
   end
 
-  def modifier_variation_base(_id, _name, _value) do
+  def modifier_variation_base(_id, _name, _value, _opts) do
     %{
       slots: slots()
     }

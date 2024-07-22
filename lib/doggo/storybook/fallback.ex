@@ -3,7 +3,7 @@ defmodule Doggo.Storybook.Fallback do
   alias PhoenixStorybook.Stories.Variation
   alias PhoenixStorybook.Stories.VariationGroup
 
-  def variations do
+  def variations(_opts) do
     [
       %VariationGroup{
         id: :default,
@@ -61,7 +61,7 @@ defmodule Doggo.Storybook.Fallback do
     ]
   end
 
-  def modifier_variation_base(_id, _name, _value) do
+  def modifier_variation_base(_id, _name, _value, _opts) do
     %{
       attributes: %{value: nil}
     }

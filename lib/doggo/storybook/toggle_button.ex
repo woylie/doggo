@@ -3,7 +3,7 @@ defmodule Doggo.Storybook.ToggleButton do
 
   alias PhoenixStorybook.Stories.Variation
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :default,
@@ -25,11 +25,11 @@ defmodule Doggo.Storybook.ToggleButton do
     ]
   end
 
-  def modifier_variation_group_template(name) do
+  def modifier_variation_group_template(name, _opts) do
     indicator_template(name)
   end
 
-  def modifier_variation_base(_id, name, value) do
+  def modifier_variation_base(_id, name, value, _opts) do
     %{
       attributes: %{
         :on_click => toggle_indicator(name),

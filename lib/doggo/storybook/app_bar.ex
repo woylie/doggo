@@ -2,7 +2,7 @@ defmodule Doggo.Storybook.AppBar do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :default,
@@ -14,7 +14,7 @@ defmodule Doggo.Storybook.AppBar do
     ]
   end
 
-  def modifier_variation_base(_id, _name, value) do
+  def modifier_variation_base(_id, _name, value, _opts) do
     %{
       attributes: %{title: value},
       slots: slots()

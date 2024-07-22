@@ -2,7 +2,7 @@ defmodule Doggo.Storybook.Alert do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :default,
@@ -24,7 +24,7 @@ defmodule Doggo.Storybook.Alert do
     ]
   end
 
-  def modifier_variation_base(_id, name, value) do
+  def modifier_variation_base(_id, name, value, _opts) do
     %{
       slots: ["This is an alert with #{name}: #{value}."]
     }

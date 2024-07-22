@@ -2,7 +2,7 @@ defmodule Doggo.Storybook.Tooltip do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :with_text,
@@ -22,7 +22,7 @@ defmodule Doggo.Storybook.Tooltip do
     ]
   end
 
-  def modifier_variation_base(id, _name, _value) do
+  def modifier_variation_base(id, _name, _value, _opts) do
     %{
       attributes: %{id: id},
       slots: slots_with_text()

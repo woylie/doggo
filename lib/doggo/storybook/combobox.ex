@@ -2,7 +2,7 @@ defmodule Doggo.Storybook.Combobox do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :only_values,
@@ -56,7 +56,7 @@ defmodule Doggo.Storybook.Combobox do
     ]
   end
 
-  def modifier_variation_base(id, _name, _value) do
+  def modifier_variation_base(id, _name, _value, _opts) do
     %{
       attributes: %{
         id: id,

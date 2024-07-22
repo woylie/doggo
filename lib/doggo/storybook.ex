@@ -34,7 +34,26 @@ defmodule Doggo.Storybook do
     storybook_module = storybook_module(component)
     function = Function.capture(module, name, 1)
 
+    dependent_components =
+      find_dependent_components(components, storybook_module)
+
+    imports =
+      if dependent_components != [] do
+        [
+          {module,
+           Enum.map(dependent_components, fn {_component, name} ->
+             {name, 1}
+           end)}
+        ]
+      end
+
+    story_opts = [dependent_components: dependent_components]
+
     quote do
+      if unquote(imports) do
+        def imports, do: unquote(imports)
+      end
+
       def function, do: unquote(function)
 
       if unquote(function_exported?(storybook_module, :layout, 0)) do
@@ -46,10 +65,11 @@ defmodule Doggo.Storybook do
       end
 
       def variations do
-        unquote(storybook_module).variations() ++
+        unquote(storybook_module).variations(unquote(Macro.escape(story_opts))) ++
           Doggo.Storybook.modifier_groups(
             unquote(modifiers),
-            unquote(storybook_module)
+            unquote(storybook_module),
+            unquote(Macro.escape(story_opts))
           )
       end
     end
@@ -58,6 +78,26 @@ defmodule Doggo.Storybook do
   defp storybook_module(component) when is_atom(component) do
     component_module = component |> Atom.to_string() |> Macro.camelize()
     Module.concat([Doggo.Storybook, component_module])
+  end
+
+  defp find_dependent_components(components, storybook_module) do
+    if function_exported?(storybook_module, :dependent_components, 0) do
+      storybook_module.dependent_components()
+      |> Enum.map(fn component ->
+        find_component_name(components, component)
+      end)
+      |> Enum.reject(&is_nil/1)
+      |> Map.new()
+    else
+      []
+    end
+  end
+
+  defp find_component_name(components, component) do
+    Enum.find_value(components, fn
+      {name, info} ->
+        if Keyword.get(info, :component) == component, do: {component, name}
+    end)
   end
 
   @doc false
@@ -87,42 +127,43 @@ defmodule Doggo.Storybook do
   end
 
   @doc false
-  def modifier_groups(modifiers, storybook_module) do
-    Enum.map(modifiers, &modifier_group(&1, storybook_module))
+  def modifier_groups(modifiers, storybook_module, opts) do
+    Enum.map(modifiers, &modifier_group(&1, storybook_module, opts))
   end
 
   @doc false
-  def modifier_group({name, modifier_opts}, storybook_module) do
+  def modifier_group({name, modifier_opts}, storybook_module, opts) do
     template =
       if function_exported?(
            storybook_module,
            :modifier_variation_group_template,
-           1
+           2
          ) do
-        storybook_module.modifier_variation_group_template(name)
+        storybook_module.modifier_variation_group_template(name, opts)
       end
 
     %VariationGroup{
       id: name,
-      variations: modifier_variations(name, modifier_opts, storybook_module),
+      variations:
+        modifier_variations(name, modifier_opts, storybook_module, opts),
       template: template
     }
   end
 
   @doc false
-  def modifier_variations(name, modifier_opts, storybook_module) do
+  def modifier_variations(name, modifier_opts, storybook_module, opts) do
     values = Keyword.fetch!(modifier_opts, :values)
-    Enum.map(values, &modifier_variation_base(name, &1, storybook_module))
+    Enum.map(values, &modifier_variation_base(name, &1, storybook_module, opts))
   end
 
   @doc false
-  def modifier_variation_base(name, value, storybook_module) do
+  def modifier_variation_base(name, value, storybook_module, opts) do
     variation_id = String.to_atom(~s(dog_mod_var_#{name}_#{value || "unset"}))
     component_id = String.to_atom(~s(dog-mod-com-#{name}-#{value || "unset"}))
 
     attrs =
       component_id
-      |> storybook_module.modifier_variation_base(name, value)
+      |> storybook_module.modifier_variation_base(name, value, opts)
       |> Map.put(:id, variation_id)
       |> Map.update(:attributes, %{}, &Map.put(&1, name, value))
 
