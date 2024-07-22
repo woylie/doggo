@@ -2071,7 +2071,7 @@ defmodule Doggo.Components do
           The DOM ID of the element that this button controls.
           """
 
-        attr :rest, :global
+        attr :rest, :global, include: ~w(autofocus form name value)
 
         slot :inner_block, required: true
       end,
@@ -2236,7 +2236,7 @@ defmodule Doggo.Components do
       quote do
         attr :label, :string, required: true
         attr :disabled, :boolean, default: false
-        attr :rest, :global
+        attr :rest, :global, include: ~w(autofocus form name value)
 
         slot :inner_block, required: true
       end,
