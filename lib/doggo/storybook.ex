@@ -93,9 +93,19 @@ defmodule Doggo.Storybook do
 
   @doc false
   def modifier_group({name, modifier_opts}, storybook_module) do
+    template =
+      if function_exported?(
+           storybook_module,
+           :modifier_variation_group_template,
+           1
+         ) do
+        storybook_module.modifier_variation_group_template(name)
+      end
+
     %VariationGroup{
       id: name,
-      variations: modifier_variations(name, modifier_opts, storybook_module)
+      variations: modifier_variations(name, modifier_opts, storybook_module),
+      template: template
     }
   end
 
