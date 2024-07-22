@@ -11,9 +11,8 @@ defmodule Doggo.Storybook.ActionBar do
     ]
   end
 
-  def modifier_variation(_, _) do
+  def modifier_variation_base(_, _, _) do
     %{
-      attributes: %{},
       slots: slots()
     }
   end

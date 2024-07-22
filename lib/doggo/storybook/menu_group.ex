@@ -28,9 +28,9 @@ defmodule Doggo.Storybook.MenuGroup do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(_id, _name, _value) do
     %{
-      attributes: %{name => value, label: "Dog actions"},
+      attributes: %{label: "Dog actions"},
       slots: slots()
     }
   end

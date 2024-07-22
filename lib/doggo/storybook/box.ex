@@ -44,9 +44,8 @@ defmodule Doggo.Storybook.Box do
     ]
   end
 
-  def modifier_variation(_, _) do
+  def modifier_variation_base(_id, _name, _value) do
     %{
-      attributes: %{},
       slots: slots()
     }
   end

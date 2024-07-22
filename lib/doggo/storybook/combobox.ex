@@ -56,11 +56,10 @@ defmodule Doggo.Storybook.Combobox do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(id, _name, _value) do
     %{
       attributes: %{
-        name => value,
-        id: "dog-modifier-#{name}-#{value}",
+        id: id,
         name: "breed",
         list_label: "Dog breeds",
         value: "labrador",

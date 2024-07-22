@@ -37,9 +37,9 @@ defmodule Doggo.Storybook.Time do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(_id, _name, _value) do
     %{
-      attributes: %{name => value, value: ~T[12:22:06.003Z]}
+      attributes: %{value: ~T[12:22:06.003Z]}
     }
   end
 

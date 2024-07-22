@@ -155,7 +155,7 @@
           ## Checks disabled by default
           #
 
-          {Credo.Check.Consistency.UnusedVariableNames, []},
+          {Credo.Check.Consistency.UnusedVariableNames, false},
           {Credo.Check.Readability.SinglePipe, []},
           {Credo.Check.Readability.StrictModuleLayout, []},
           {Credo.Check.Readability.WithCustomTaggedTuple, []},

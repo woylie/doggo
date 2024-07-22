@@ -30,17 +30,12 @@ defmodule Doggo.Storybook.Accordion do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(id, _name, _value) do
     %{
-      attributes:
-        Map.put(
-          %{
-            id: "dog-breeds-#{name}-#{value}",
-            expanded: :first
-          },
-          name,
-          value
-        ),
+      attributes: %{
+        id: id,
+        expanded: :first
+      },
       slots: slots()
     }
   end

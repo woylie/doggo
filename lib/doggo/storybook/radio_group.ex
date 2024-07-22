@@ -11,9 +11,9 @@ defmodule Doggo.Storybook.RadioGroup do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(_id, _name, _value) do
     %{
-      attributes: Map.put(attributes(), name, value)
+      attributes: attributes()
     }
   end
 

@@ -83,17 +83,19 @@ defmodule Doggo.Storybook do
   @doc false
   def modifier_variations(name, modifier_opts, storybook_module) do
     values = Keyword.fetch!(modifier_opts, :values)
-    Enum.map(values, &modifier_variation(name, &1, storybook_module))
+    Enum.map(values, &modifier_variation_base(name, &1, storybook_module))
   end
 
   @doc false
-  def modifier_variation(name, value, storybook_module) do
-    id = String.to_atom(~s(#{name}_#{value || "unset"}))
+  def modifier_variation_base(name, value, storybook_module) do
+    variation_id = String.to_atom(~s(dog_mod_var_#{name}_#{value || "unset"}))
+    component_id = String.to_atom(~s(dog-mod-com-#{name}-#{value || "unset"}))
 
     attrs =
-      name
-      |> storybook_module.modifier_variation(value)
-      |> Map.put(:id, id)
+      component_id
+      |> storybook_module.modifier_variation_base(name, value)
+      |> Map.put(:id, variation_id)
+      |> Map.update(:attributes, %{}, &Map.put(&1, name, value))
 
     struct!(Variation, attrs)
   end

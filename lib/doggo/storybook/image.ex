@@ -20,9 +20,9 @@ defmodule Doggo.Storybook.Image do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(_id, _name, _value) do
     %{
-      attributes: Map.merge(%{name => value}, attributes())
+      attributes: attributes()
     }
   end
 

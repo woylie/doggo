@@ -14,9 +14,9 @@ defmodule Doggo.Storybook.AppBar do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(_id, _name, value) do
     %{
-      attributes: %{name => value, title: value},
+      attributes: %{title: value},
       slots: slots()
     }
   end
