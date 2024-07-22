@@ -17,9 +17,9 @@ defmodule Doggo.Storybook.Fab do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(_id, _name, _value) do
     %{
-      attributes: %{name => value, label: "Add item"},
+      attributes: %{label: "Add item"},
       slots: slots()
     }
   end

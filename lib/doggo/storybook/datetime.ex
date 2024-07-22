@@ -33,9 +33,9 @@ defmodule Doggo.Storybook.Datetime do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(_id, _name, _value) do
     %{
-      attributes: %{name => value, value: ~U[2023-02-05 12:22:06.003Z]}
+      attributes: %{value: ~U[2023-02-05 12:22:06.003Z]}
     }
   end
 end

@@ -33,9 +33,8 @@ defmodule Doggo.Storybook.Icon do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(_id, _name, _value) do
     %{
-      attributes: %{name => value},
       slots: slots()
     }
   end

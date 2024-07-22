@@ -14,9 +14,9 @@ defmodule Doggo.Storybook.Carousel do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(_id, _name, _value) do
     %{
-      attributes: %{name => value, label: "Our Dogs", pagination: true},
+      attributes: %{label: "Our Dogs", pagination: true},
       slots: slots()
     }
   end

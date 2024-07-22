@@ -29,12 +29,11 @@ defmodule Doggo.Storybook.MenuButton do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(id, _name, _value) do
     %{
       attributes: %{
-        name => value,
-        controls: "actions-menu",
-        id: "actions-button"
+        id: id,
+        controls: "actions-menu"
       },
       slots: ["Actions"]
     }

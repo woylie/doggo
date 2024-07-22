@@ -81,10 +81,9 @@ defmodule Doggo.Storybook.Table do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(_id, _name, _value) do
     %{
       attributes: %{
-        name => value,
         rows: [
           %{id: 1, name: "George", age: 8},
           %{id: 2, name: "Mary", age: 5}

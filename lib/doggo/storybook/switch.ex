@@ -52,10 +52,9 @@ defmodule Doggo.Storybook.Switch do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(_id, _name, _value) do
     %{
       attributes: %{
-        name => value,
         label: "Subscribe",
         checked: true,
         phx_click: "toggle-subscription"

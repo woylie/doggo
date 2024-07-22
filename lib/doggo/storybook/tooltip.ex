@@ -22,9 +22,9 @@ defmodule Doggo.Storybook.Tooltip do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(id, _name, _value) do
     %{
-      attributes: %{name => value, id: "dog-modifier-#{name}-#{value}"},
+      attributes: %{id: id},
       slots: slots_with_text()
     }
   end

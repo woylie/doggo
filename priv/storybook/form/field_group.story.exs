@@ -15,7 +15,6 @@ defmodule Storybook.Components.FieldGroup do
     [
       %Variation{
         id: :default,
-        attributes: %{},
         slots: [
           """
           <Doggo.input type="text" field={f[:given_name]} label="Given name" />

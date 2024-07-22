@@ -21,9 +21,9 @@ defmodule Doggo.Storybook.Tree do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(_id, _name, _value) do
     %{
-      attributes: %{name => value, label: "Dogs"},
+      attributes: %{label: "Dogs"},
       slots: slots()
     }
   end

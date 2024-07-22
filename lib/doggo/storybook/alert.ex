@@ -22,9 +22,8 @@ defmodule Doggo.Storybook.Alert do
     ]
   end
 
-  def modifier_variation(name, value) do
+  def modifier_variation_base(_id, name, value) do
     %{
-      attributes: %{name => value},
       slots: ["This is an alert with #{name}: #{value}."]
     }
   end
