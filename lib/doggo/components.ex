@@ -2453,7 +2453,8 @@ defmodule Doggo.Components do
           Map.update!(
             var!(assigns),
             :class,
-            &(&1 ++ [Doggo.label_placement_class(var!(assigns).label_placement)])
+            &(&1 ++
+                [Doggo.label_placement_class(var!(assigns).label_placement)])
           )
 
         ~H"""
@@ -2524,7 +2525,8 @@ defmodule Doggo.Components do
           Map.update!(
             var!(assigns),
             :class,
-            &(&1 ++ [Doggo.label_placement_class(var!(assigns).label_placement)])
+            &(&1 ++
+                [Doggo.label_placement_class(var!(assigns).label_placement)])
           )
 
         ~H"""
