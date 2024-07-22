@@ -185,7 +185,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <div id={@id} class={[@base_class | @modifier_classes]} {@rest}>
+        <div id={@id} class={@class} {@rest}>
           <div :for={{section, index} <- Enum.with_index(@section, 1)}>
             <.dynamic_tag name={@heading}>
               <button
@@ -270,7 +270,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <div role="toolbar" class={[@base_class | @modifier_classes]} {@rest}>
+        <div role="toolbar" class={@class} {@rest}>
           <button :for={item <- @item} phx-click={item.on_click} title={item.label}>
             <%= render_slot(item) %>
           </button>
@@ -350,7 +350,7 @@ defmodule Doggo.Components do
           id={@id}
           role="alert"
           aria-labelledby={@title && "#{@id}-title"}
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           {@rest}
         >
           <div :if={@icon != []} class="alert-icon">
@@ -480,7 +480,7 @@ defmodule Doggo.Components do
         <dialog
           id={@id}
           role="alertdialog"
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           aria-modal={(@open && "true") || "false"}
           aria-labelledby={"#{@id}-title"}
           aria-describedby={"#{@id}-content"}
@@ -583,7 +583,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <header class={[@base_class | @modifier_classes]} {@rest}>
+        <header class={@class} {@rest}>
           <div :if={@navigation != []} class="app-bar-navigation">
             <.link
               :for={navigation <- @navigation}
@@ -683,11 +683,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <div
-          :if={@src || @placeholder}
-          class={[@base_class | @modifier_classes]}
-          {@rest}
-        >
+        <div :if={@src || @placeholder} class={@class} {@rest}>
           <Doggo.Components.inner_avatar
             src={@src}
             placeholder={@placeholder}
@@ -757,7 +753,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <span class={[@base_class | @modifier_classes]} {@rest}>
+        <span class={@class} {@rest}>
           <%= render_slot(@inner_block) %>
         </span>
         """
@@ -854,7 +850,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <nav aria-label={@label} class={[@base_class | @modifier_classes]} {@rest}>
+        <nav aria-label={@label} class={@class} {@rest}>
           <ul>
             <li :for={item <- @item}>
               <.link
@@ -931,7 +927,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <section class={[@base_class | @modifier_classes]} {@rest}>
+        <section class={@class} {@rest}>
           <header :if={@title != [] || @banner != [] || @action != []}>
             <h2 :if={@title != []}><%= render_slot(@title) %></h2>
             <div :if={@action != []} class="box-actions">
@@ -1000,7 +996,7 @@ defmodule Doggo.Components do
           )
 
         ~H"""
-        <nav aria-label={@label} class={[@base_class | @modifier_classes]} {@rest}>
+        <nav aria-label={@label} class={@class} {@rest}>
           <ol>
             <li :for={item <- @item}>
               <Doggo.Components.breadcrumb_link item={item} />
@@ -1100,12 +1096,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <button
-          type={@type}
-          class={[@base_class | @modifier_classes]}
-          disabled={@disabled}
-          {@rest}
-        >
+        <button type={@type} class={@class} disabled={@disabled} {@rest}>
           <%= render_slot(@inner_block) %>
         </button>
         """
@@ -1189,14 +1180,18 @@ defmodule Doggo.Components do
 
       quote do
         var!(assigns) =
-          assign(
-            var!(assigns),
-            :disabled_class,
-            var!(assigns)[:disabled] && unquote(disabled_class)
-          )
+          if var!(assigns)[:disabled] do
+            Map.update!(
+              var!(assigns),
+              :class,
+              &(&1 ++ [unquote(disabled_class)])
+            )
+          else
+            var!(assigns)
+          end
 
         ~H"""
-        <.link class={[@base_class | @modifier_classes] ++ [@disabled_class]} {@rest}>
+        <.link class={@class} {@rest}>
           <%= render_slot(@inner_block) %>
         </.link>
         """
@@ -1261,7 +1256,7 @@ defmodule Doggo.Components do
         ~H"""
         <aside
           id={@id}
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           aria-labelledby={@title && "#{@id}-title"}
           {@rest}
         >
@@ -1333,7 +1328,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <article class={[@base_class | @modifier_classes]} {@rest}>
+        <article class={@class} {@rest}>
           <figure :if={@image != []}><%= render_slot(@image) %></figure>
           <header :if={@header != []}><%= render_slot(@header) %></header>
           <main :if={@main != []}><%= render_slot(@main) %></main>
@@ -1485,7 +1480,7 @@ defmodule Doggo.Components do
         ~H"""
         <section
           id={@id}
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           aria-label={@label}
           aria-labelledby={@labelledby}
           aria-roledescription={@carousel_roledescription}
@@ -1573,7 +1568,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <div class={[@base_class | @modifier_classes]} {@rest}>
+        <div class={@class} {@rest}>
           <%= render_slot(@inner_block) %>
         </div>
         """
@@ -1716,7 +1711,7 @@ defmodule Doggo.Components do
           )
 
         ~H"""
-        <div class={[@base_class | @modifier_classes]} {@rest}>
+        <div class={@class} {@rest}>
           <div role="group">
             <input
               id={@id}
@@ -1879,7 +1874,7 @@ defmodule Doggo.Components do
         ~H"""
         <time
           :if={@value}
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           datetime={Date.to_iso8601(@value)}
           title={Doggo.time_title_attr(@value, @title_formatter)}
           {@rest}
@@ -1994,7 +1989,7 @@ defmodule Doggo.Components do
         ~H"""
         <time
           :if={@value}
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           datetime={Doggo.datetime_attr(@value)}
           title={Doggo.time_title_attr(@value, @title_formatter)}
           {@rest}
@@ -2071,7 +2066,7 @@ defmodule Doggo.Components do
           aria-expanded="false"
           aria-controls={@controls}
           phx-click={Doggo.toggle_disclosure(@controls)}
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           {@rest}
         >
           <%= render_slot(@inner_block) %>
@@ -2174,7 +2169,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <aside class={[@base_class | @modifier_classes]} {@rest}>
+        <aside class={@class} {@rest}>
           <div :if={@header != []} class="drawer-header">
             <%= render_slot(@header) %>
           </div>
@@ -2232,7 +2227,7 @@ defmodule Doggo.Components do
         <button
           type="button"
           aria-label={@label}
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           disabled={@disabled}
           {@rest}
         >
@@ -2330,7 +2325,7 @@ defmodule Doggo.Components do
         ~H"""
         <%= @value %><span
           :if={is_nil(@value)}
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           aria-label={@accessibility_text}
           {@rest}
         ><%= @placeholder %></span>
@@ -2391,7 +2386,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <div class={[@base_class | @modifier_classes]}>
+        <div class={@class}>
           <%= render_slot(@inner_block) %>
         </div>
         """
@@ -2455,17 +2450,14 @@ defmodule Doggo.Components do
     heex:
       quote do
         var!(assigns) =
-          assign(
+          Map.update!(
             var!(assigns),
-            :label_placement_class,
-            Doggo.label_placement_class(var!(assigns).label_placement)
+            :class,
+            &(&1 ++ [Doggo.label_placement_class(var!(assigns).label_placement)])
           )
 
         ~H"""
-        <span
-          class={[@base_class | @modifier_classes] ++ [@label_placement_class]}
-          {@rest}
-        >
+        <span class={@class} {@rest}>
           <%= render_slot(@inner_block) %>
           <span :if={@label} class={@label_placement == :hidden && "is-visually-hidden"}>
             <%= @label %>
@@ -2529,17 +2521,14 @@ defmodule Doggo.Components do
     heex:
       quote do
         var!(assigns) =
-          assign(
+          Map.update!(
             var!(assigns),
-            :label_placement_class,
-            Doggo.label_placement_class(var!(assigns).label_placement)
+            :class,
+            &(&1 ++ [Doggo.label_placement_class(var!(assigns).label_placement)])
           )
 
         ~H"""
-        <span
-          class={[@base_class | @modifier_classes] ++ [@label_placement_class]}
-          {@rest}
-        >
+        <span class={@class} {@rest}>
           <svg aria-hidden="true"><use href={"#{@sprite_url}##{@name}"} /></svg>
           <span :if={@label} class={@label_placement == :hidden && "is-visually-hidden"}>
             <%= @label %>
@@ -2645,7 +2634,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <figure class={[@base_class | @modifier_classes]} {@rest}>
+        <figure class={@class} {@rest}>
           <.frame ratio={@ratio}>
             <img
               src={@src}
@@ -2759,7 +2748,7 @@ defmodule Doggo.Components do
 
         ~H"""
         <ul
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           role="menu"
           aria-label={@label}
           aria-labelledby={@labelledby}
@@ -2880,7 +2869,7 @@ defmodule Doggo.Components do
 
         ~H"""
         <ul
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           role="menubar"
           aria-label={@label}
           aria-labelledby={@labelledby}
@@ -2992,7 +2981,7 @@ defmodule Doggo.Components do
       quote do
         ~H"""
         <button
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           id={@id}
           type="button"
           role={@menuitem && "menuitem"}
@@ -3081,12 +3070,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <ul
-          class={[@base_class | @modifier_classes]}
-          role="group"
-          aria-label={@label}
-          {@rest}
-        >
+        <ul class={@class} role="group" aria-label={@label} {@rest}>
           <li :for={item <- @item} role={Map.get(item, :role, "none")}>
             <%= if item[:role] != "separator" do %>
               <%= render_slot(item) %>
@@ -3135,7 +3119,7 @@ defmodule Doggo.Components do
       quote do
         ~H"""
         <button
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           type="button"
           role="menuitem"
           phx-click={@on_click}
@@ -3190,7 +3174,7 @@ defmodule Doggo.Components do
       quote do
         ~H"""
         <div
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           role="menuitemcheckbox"
           aria-checked={to_string(@checked)}
           phx-click={@on_click}
@@ -3257,12 +3241,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <ul
-          class={[@base_class | @modifier_classes]}
-          role="group"
-          aria-label={@label}
-          {@rest}
-        >
+        <ul class={@class} role="group" aria-label={@label} {@rest}>
           <li :for={item <- @item} role="none">
             <div
               role="menuitemradio"
@@ -3424,7 +3403,7 @@ defmodule Doggo.Components do
         ~H"""
         <dialog
           id={@id}
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           aria-modal={(@open && "true") || "false"}
           aria-labelledby={"#{@id}-title"}
           open={@open}
@@ -3547,7 +3526,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <nav class={[@base_class | @modifier_classes]} aria-label={@label} {@rest}>
+        <nav class={@class} aria-label={@label} {@rest}>
           <div :if={@brand != []} class="navbar-brand">
             <%= render_slot(@brand) %>
           </div>
@@ -3591,7 +3570,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <ul class={[@base_class | @modifier_classes]} {@rest}>
+        <ul class={@class} {@rest}>
           <li :for={item <- @item} class={item[:class]}><%= render_slot(item) %></li>
         </ul>
         """
@@ -3644,7 +3623,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <header class={[@base_class | @modifier_classes]} {@rest}>
+        <header class={@class} {@rest}>
           <div class="page-header-title">
             <h1><%= @title %></h1>
             <p :if={@subtitle}><%= @subtitle %></p>
@@ -3686,7 +3665,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <dl class={[@base_class | @modifier_classes]} {@rest}>
+        <dl class={@class} {@rest}>
           <div :for={prop <- @prop}>
             <dt><%= prop.label %></dt>
             <dd><%= render_slot(prop) %></dd>
@@ -3790,7 +3769,7 @@ defmodule Doggo.Components do
           role="radiogroup"
           aria-label={@label}
           aria-labelledby={@labelledby}
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           {@rest}
         >
           <Doggo.Components.radio
@@ -3926,7 +3905,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <div class={[@base_class | @modifier_classes]} {@rest}></div>
+        <div class={@class} {@rest}></div>
         """
       end
   )
@@ -4037,12 +4016,7 @@ defmodule Doggo.Components do
         Doggo.ensure_label!(var!(assigns), ".split_pane", "Sidebar")
 
         ~H"""
-        <div
-          id={@id}
-          class={[@base_class | @modifier_classes]}
-          data-orientation={@orientation}
-          {@rest}
-        >
+        <div id={@id} class={@class} data-orientation={@orientation} {@rest}>
           <div id={"#{@id}-primary"}><%= render_slot(@primary) %></div>
           <div
             role="separator"
@@ -4159,7 +4133,7 @@ defmodule Doggo.Components do
           )
 
         ~H"""
-        <nav aria-label={@label} class={[@base_class | @modifier_classes]} {@rest}>
+        <nav aria-label={@label} class={@class} {@rest}>
           <ol>
             <Doggo.Components.step
               :for={{step, index} <- Enum.with_index(@step)}
@@ -4256,7 +4230,7 @@ defmodule Doggo.Components do
       quote do
         ~H"""
         <button
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           type="button"
           role="switch"
           aria-checked={to_string(@checked)}
@@ -4327,14 +4301,18 @@ defmodule Doggo.Components do
 
       quote do
         var!(assigns) =
-          assign(
-            var!(assigns),
-            :recursive_class,
-            var!(assigns)[:recursive] && unquote(recursive_class)
-          )
+          if var!(assigns)[:recursive] do
+            Map.update!(
+              var!(assigns),
+              :class,
+              &(&1 ++ [unquote(recursive_class)])
+            )
+          else
+            var!(assigns)
+          end
 
         ~H"""
-        <div class={[@base_class | @modifier_classes] ++ [@recursive_class]} {@rest}>
+        <div class={@class} {@rest}>
           <%= render_slot(@inner_block) %>
         </div>
         """
@@ -4417,7 +4395,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <nav aria-label={@label} class={[@base_class | @modifier_classes]} {@rest}>
+        <nav aria-label={@label} class={@class} {@rest}>
           <ul>
             <li :for={item <- @item}>
               <.link
@@ -4559,7 +4537,7 @@ defmodule Doggo.Components do
           end
 
         ~H"""
-        <div class={[@base_class | @modifier_classes]} {@rest}>
+        <div class={@class} {@rest}>
           <table id={@id}>
             <caption :if={@caption}><%= @caption %></caption>
             <colgroup :if={
@@ -4682,7 +4660,7 @@ defmodule Doggo.Components do
         Doggo.ensure_label!(var!(assigns), ".tabs", "Dog Facts")
 
         ~H"""
-        <div id={@id} class={[@base_class | @modifier_classes]} {@rest}>
+        <div id={@id} class={@class} {@rest}>
           <div role="tablist" aria-label={@label} aria-labelledby={@labelledby}>
             <button
               :for={{panel, index} <- Enum.with_index(@panel, 1)}
@@ -4771,7 +4749,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <span class={[@base_class | @modifier_classes]} {@rest}>
+        <span class={@class} {@rest}>
           <%= render_slot(@inner_block) %>
         </span>
         """
@@ -4884,7 +4862,7 @@ defmodule Doggo.Components do
         ~H"""
         <time
           :if={@value}
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           datetime={Time.to_iso8601(@value)}
           title={Doggo.time_title_attr(@value, @title_formatter)}
           {@rest}
@@ -4983,7 +4961,7 @@ defmodule Doggo.Components do
             )
           }
           aria-pressed={to_string(@pressed)}
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           disabled={@disabled}
           {@rest}
         >
@@ -5089,7 +5067,7 @@ defmodule Doggo.Components do
 
         ~H"""
         <div
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           role="toolbar"
           aria-label={@label}
           aria-labelledby={@labelledby}
@@ -5185,7 +5163,7 @@ defmodule Doggo.Components do
       quote do
         ~H"""
         <span
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           aria-describedby={"#{@id}-tooltip"}
           data-aria-tooltip
           {@rest}
@@ -5296,7 +5274,7 @@ defmodule Doggo.Components do
 
         ~H"""
         <ul
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           role="tree"
           aria-label={@label}
           aria-labelledby={@labelledby}
@@ -5380,7 +5358,7 @@ defmodule Doggo.Components do
       quote do
         ~H"""
         <li
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           role="treeitem"
           aria-selected="false"
           aria-expanded={@items != [] && "false"}
@@ -5448,12 +5426,7 @@ defmodule Doggo.Components do
     heex:
       quote do
         ~H"""
-        <nav
-          class={[@base_class | @modifier_classes]}
-          id={@id}
-          aria-label={@label}
-          {@rest}
-        >
+        <nav class={@class} id={@id} aria-label={@label} {@rest}>
           <div :if={@title != []} class="drawer-nav-title">
             <%= render_slot(@title) %>
           </div>
@@ -5565,7 +5538,7 @@ defmodule Doggo.Components do
         ~H"""
         <div
           id={@id}
-          class={[@base_class | @modifier_classes]}
+          class={@class}
           aria-labelledby={@title != [] && "#{@id}-title"}
           {@rest}
         >
@@ -5582,14 +5555,4 @@ defmodule Doggo.Components do
         """
       end
   )
-
-  @doc false
-  def modifier_classes(modifier_names, class_name_fun, assigns) do
-    for name <- modifier_names do
-      case assigns do
-        %{^name => value} when is_binary(value) -> class_name_fun.(name, value)
-        _ -> nil
-      end
-    end
-  end
 end
