@@ -95,6 +95,10 @@ defmodule Doggo.Components do
   - `class_name_fun` - A 2-arity function that takes a modifier attribute name
     and a value and returns a CSS class name. Defaults to
     `Doggo.modifier_class_name/2`.
+
+  Some components have an `extra` option, which is used to pass additional
+  arguments to the component at compile time. This is mostly used to allow
+  the customization of certain class names.
   """
 
   use Phoenix.Component
@@ -355,14 +359,14 @@ defmodule Doggo.Components do
           class={@class}
           {@rest}
         >
-          <div :if={@icon != []} class="alert-icon">
+          <div :if={@icon != []} class={"#{@base_class}-icon"}>
             <%= render_slot(@icon) %>
           </div>
-          <div class="alert-body">
-            <div :if={@title} id={"#{@id}-title"} class="alert-title">
+          <div class={"#{@base_class}-body"}>
+            <div :if={@title} id={"#{@id}-title"} class={"#{@base_class}-title"}>
               <%= @title %>
             </div>
-            <div class="alert-message"><%= render_slot(@inner_block) %></div>
+            <div class={"#{@base_class}-message"}><%= render_slot(@inner_block) %></div>
           </div>
           <button :if={@on_close} phx-click={@on_close}>
             <%= @close_label %>
@@ -495,7 +499,7 @@ defmodule Doggo.Components do
         >
           <.focus_wrap
             id={"#{@id}-container"}
-            class="alert-dialog-container"
+            class={"#{@base_class}-container"}
             phx-window-keydown={
               @dismissable && Phoenix.LiveView.JS.exec("data-cancel", to: "##{@id}")
             }
@@ -509,7 +513,7 @@ defmodule Doggo.Components do
                 <button
                   :if={@dismissable}
                   href="#"
-                  class="alert-dialog-close"
+                  class={"#{@base_class}-close"}
                   aria-label={@close_label}
                   phx-click={Phoenix.LiveView.JS.exec("data-cancel", to: "##{@id}")}
                 >
@@ -518,7 +522,7 @@ defmodule Doggo.Components do
                 </button>
                 <h2 id={"#{@id}-title"}><%= render_slot(@title) %></h2>
               </header>
-              <div id={"#{@id}-content"} class="alert-dialog-content">
+              <div id={"#{@id}-content"} class={"#{@base_class}-content"}>
                 <%= render_slot(@inner_block) %>
               </div>
               <footer :if={@footer != []}>
@@ -588,7 +592,7 @@ defmodule Doggo.Components do
       quote do
         ~H"""
         <header class={@class} {@rest}>
-          <div :if={@navigation != []} class="app-bar-navigation">
+          <div :if={@navigation != []} class={"#{@base_class}-navigation"}>
             <.link
               :for={navigation <- @navigation}
               phx-click={navigation.on_click}
@@ -598,7 +602,7 @@ defmodule Doggo.Components do
             </.link>
           </div>
           <h1 :if={@title}><%= @title %></h1>
-          <div :if={@action != []} class="app-bar-actions">
+          <div :if={@action != []} class={"#{@base_class}-actions"}>
             <.link
               :for={action <- @action}
               phx-click={action.on_click}
@@ -867,7 +871,7 @@ defmodule Doggo.Components do
                 aria-current={@current_value in List.wrap(item.value) && "page"}
                 aria-label={item.label}
               >
-                <span class="icon"><%= render_slot(item) %></span>
+                <span class={"#{@base_class}-icon"}><%= render_slot(item) %></span>
                 <span :if={!@hide_labels}><%= item.label %></span>
               </.link>
             </li>
@@ -938,12 +942,12 @@ defmodule Doggo.Components do
         <section class={@class} {@rest}>
           <header :if={@title != [] || @banner != [] || @action != []}>
             <h2 :if={@title != []}><%= render_slot(@title) %></h2>
-            <div :if={@action != []} class="box-actions">
+            <div :if={@action != []} class={"#{@base_class}-actions"}>
               <%= for action <- @action do %>
                 <%= render_slot(action) %>
               <% end %>
             </div>
-            <div :if={@banner != []} class="box-banner">
+            <div :if={@banner != []} class={"#{@base_class}-banner"}>
               <%= render_slot(@banner) %>
             </div>
           </header>
@@ -1272,14 +1276,16 @@ defmodule Doggo.Components do
           aria-labelledby={@title && "#{@id}-title"}
           {@rest}
         >
-          <div :if={@icon != []} class="callout-icon">
+          <div :if={@icon != []} class={"#{@base_class}-icon"}>
             <%= render_slot(@icon) %>
           </div>
-          <div class="callout-body">
-            <div :if={@title} id={"#{@id}-title"} class="callout-title">
+          <div class={"#{@base_class}-body"}>
+            <div :if={@title} id={"#{@id}-title"} class={"#{@base_class}-title"}>
               <%= @title %>
             </div>
-            <div class="callout-message"><%= render_slot(@inner_block) %></div>
+            <div class={"#{@base_class}-message"}>
+              <%= render_slot(@inner_block) %>
+            </div>
           </div>
         </aside>
         """
@@ -1499,12 +1505,12 @@ defmodule Doggo.Components do
           aria-roledescription={@carousel_roledescription}
           {@rest}
         >
-          <div class="carousel-inner">
-            <div class="carousel-controls">
+          <div class={"#{@base_class}-inner"}>
+            <div class={"#{@base_class}-controls"}>
               <button
                 :for={previous <- @previous}
                 type="button"
-                class="carousel-previous"
+                class={"#{@base_class}-previous"}
                 aria-controls={"#{@id}-items"}
                 aria-label={previous.label}
               >
@@ -1513,13 +1519,13 @@ defmodule Doggo.Components do
               <button
                 :for={next <- @next}
                 type="button"
-                class="carousel-next"
+                class={"#{@base_class}-next"}
                 aria-controls={"#{@id}-items"}
                 aria-label={next.label}
               >
                 <%= render_slot(next) %>
               </button>
-              <div :if={@pagination} class="carousel-pagination">
+              <div :if={@pagination} class={"#{@base_class}-pagination"}>
                 <div role="tablist" aria-label={@pagination_label}>
                   <button
                     :for={{_, index} <- Enum.with_index(@item, 1)}
@@ -1535,13 +1541,13 @@ defmodule Doggo.Components do
             </div>
             <div
               id={"#{@id}-items"}
-              class="carousel-items"
+              class={"#{@base_class}-items"}
               aria-live={if @auto_rotation, do: "off", else: "polite"}
             >
               <div
                 :for={{item, index} <- Enum.with_index(@item, 1)}
                 id={"#{@id}-item-#{index}"}
-                class="carousel-item"
+                class={"#{@base_class}-item"}
                 role="group"
                 aria-roledescription={@slide_roledescription}
                 aria-label={item.label}
@@ -1749,7 +1755,11 @@ defmodule Doggo.Components do
             </button>
           </div>
           <ul id={"#{@id}-listbox"} role="listbox" aria-label={@list_label} hidden>
-            <Doggo.Components.combobox_option :for={option <- @options} option={option} />
+            <Doggo.Components.combobox_option
+              :for={option <- @options}
+              base_class={@base_class}
+              option={option}
+            />
           </ul>
           <input type="hidden" id={"#{@id}-value"} name={@name} value={@value} />
         </div>
@@ -1763,7 +1773,7 @@ defmodule Doggo.Components do
 
     ~H"""
     <li role="option" data-value={@value}>
-      <span class="combobox-option-label"><%= @label %></span>
+      <span class={"#{@base_class}-option-label"}><%= @label %></span>
     </li>
     """
   end
@@ -1779,8 +1789,8 @@ defmodule Doggo.Components do
 
     ~H"""
     <li role="option" data-value={@value}>
-      <span class="combobox-option-label"><%= @label %></span>
-      <span class="combobox-option-description"><%= @description %></span>
+      <span class={"#{@base_class}-option-label"}><%= @label %></span>
+      <span class={"#{@base_class}-option-description"}><%= @description %></span>
     </li>
     """
   end
@@ -1788,7 +1798,7 @@ defmodule Doggo.Components do
   def combobox_option(assigns) do
     ~H"""
     <li role="option" data-value={@option}>
-      <span class="combobox-option-label"><%= @option %></span>
+      <span class={"#{@base_class}-option-label"}><%= @option %></span>
     </li>
     """
   end
@@ -2188,13 +2198,13 @@ defmodule Doggo.Components do
       quote do
         ~H"""
         <aside class={@class} {@rest}>
-          <div :if={@header != []} class="drawer-header">
+          <div :if={@header != []} class={"#{@base_class}-header"}>
             <%= render_slot(@header) %>
           </div>
-          <div :if={@main != []} class="drawer-main">
+          <div :if={@main != []} class={"#{@base_class}-main"}>
             <%= render_slot(@main) %>
           </div>
-          <div :if={@footer != []} class="drawer-footer">
+          <div :if={@footer != []} class={"#{@base_class}-footer"}>
             <%= render_slot(@footer) %>
           </div>
         </aside>
@@ -2420,6 +2430,9 @@ defmodule Doggo.Components do
     modifiers: [
       size: [values: ["small", "normal", "medium", "large"], default: "normal"]
     ],
+    extra: [
+      visually_hidden_class: "is-visually-hidden"
+    ],
     doc: """
     Renders a customizable icon using a slot for SVG content.
 
@@ -2470,25 +2483,33 @@ defmodule Doggo.Components do
 
         attr :rest, :global, doc: "Any additional HTML attributes."
       end,
-    heex:
+    heex: fn extra ->
+      visually_hidden_class = Keyword.fetch!(extra, :visually_hidden_class)
+
       quote do
         var!(assigns) =
-          Map.update!(
-            var!(assigns),
+          assigns
+          |> var!()
+          |> Map.update!(
             :class,
             &(&1 ++
                 [Doggo.label_placement_class(var!(assigns).label_placement)])
           )
+          |> assign(:visually_hidden_class, unquote(visually_hidden_class))
 
         ~H"""
         <span class={@class} {@rest}>
           <%= render_slot(@inner_block) %>
-          <span :if={@label} class={@label_placement == :hidden && "is-visually-hidden"}>
+          <span
+            :if={@label}
+            class={@label_placement == :hidden && @visually_hidden_class}
+          >
             <%= @label %>
           </span>
         </span>
         """
       end
+    end
   )
 
   component(
@@ -2497,6 +2518,9 @@ defmodule Doggo.Components do
     maturity: :developing,
     modifiers: [
       size: [values: ["small", "normal", "medium", "large"], default: "normal"]
+    ],
+    extra: [
+      visually_hidden_class: "is-visually-hidden"
     ],
     doc: """
     Renders an icon using an SVG sprite.
@@ -2543,25 +2567,33 @@ defmodule Doggo.Components do
 
         attr :rest, :global, doc: "Any additional HTML attributes."
       end,
-    heex:
+    heex: fn extra ->
+      visually_hidden_class = Keyword.fetch!(extra, :visually_hidden_class)
+
       quote do
         var!(assigns) =
-          Map.update!(
-            var!(assigns),
+          assigns
+          |> var!()
+          |> Map.update!(
             :class,
             &(&1 ++
                 [Doggo.label_placement_class(var!(assigns).label_placement)])
           )
+          |> assign(:visually_hidden_class, unquote(visually_hidden_class))
 
         ~H"""
         <span class={@class} {@rest}>
           <svg aria-hidden="true"><use href={"#{@sprite_url}##{@name}"} /></svg>
-          <span :if={@label} class={@label_placement == :hidden && "is-visually-hidden"}>
+          <span
+            :if={@label}
+            class={@label_placement == :hidden && @visually_hidden_class}
+          >
             <%= @label %>
           </span>
         </span>
         """
       end
+    end
   )
 
   component(
@@ -3446,7 +3478,7 @@ defmodule Doggo.Components do
         >
           <.focus_wrap
             id={"#{@id}-container"}
-            class="modal-container"
+            class={"#{@base_class}-container"}
             phx-window-keydown={
               @dismissable && Phoenix.LiveView.JS.exec("data-cancel", to: "##{@id}")
             }
@@ -3460,7 +3492,7 @@ defmodule Doggo.Components do
                 <button
                   :if={@dismissable}
                   href="#"
-                  class="modal-close"
+                  class={"#{@base_class}-close"}
                   aria-label={@close_label}
                   phx-click={Phoenix.LiveView.JS.exec("data-cancel", to: "##{@id}")}
                 >
@@ -3469,7 +3501,7 @@ defmodule Doggo.Components do
                 </button>
                 <h2 id={"#{@id}-title"}><%= render_slot(@title) %></h2>
               </header>
-              <div id={"#{@id}-content"} class="modal-content">
+              <div id={"#{@id}-content"} class={"#{@base_class}-content"}>
                 <%= render_slot(@inner_block) %>
               </div>
               <footer :if={@footer != []}>
@@ -3560,7 +3592,7 @@ defmodule Doggo.Components do
       quote do
         ~H"""
         <nav class={@class} aria-label={@label} {@rest}>
-          <div :if={@brand != []} class="navbar-brand">
+          <div :if={@brand != []} class={"#{@base_class}-brand"}>
             <%= render_slot(@brand) %>
           </div>
           <%= render_slot(@inner_block) %>
@@ -3659,11 +3691,11 @@ defmodule Doggo.Components do
       quote do
         ~H"""
         <header class={@class} {@rest}>
-          <div class="page-header-title">
+          <div class={"#{@base_class}-title"}>
             <h1><%= @title %></h1>
             <p :if={@subtitle}><%= @subtitle %></p>
           </div>
-          <div :if={@action != []} class="page-header-actions">
+          <div :if={@action != []} class={"#{@base_class}-actions"}>
             <%= for action <- @action do %>
               <%= render_slot(action) %>
             <% end %>
@@ -4079,7 +4111,8 @@ defmodule Doggo.Components do
     extra: [
       current_class: "is-current",
       completed_class: "is-completed",
-      upcoming_class: "is-upcoming"
+      upcoming_class: "is-upcoming",
+      visually_hidden_class: "is-visually-hidden"
     ],
     doc: """
     Renders a navigation for form steps.
@@ -4162,13 +4195,15 @@ defmodule Doggo.Components do
       current_class = Keyword.fetch!(extra, :current_class)
       completed_class = Keyword.fetch!(extra, :completed_class)
       upcoming_class = Keyword.fetch!(extra, :upcoming_class)
+      visually_hidden_class = Keyword.fetch!(extra, :visually_hidden_class)
 
       quote do
         var!(assigns) =
           assign(var!(assigns),
             current_class: unquote(current_class),
             completed_class: unquote(completed_class),
-            upcoming_class: unquote(upcoming_class)
+            upcoming_class: unquote(upcoming_class),
+            visually_hidden_class: unquote(visually_hidden_class)
           )
 
         ~H"""
@@ -4182,6 +4217,7 @@ defmodule Doggo.Components do
               current_class={@current_class}
               completed_class={@completed_class}
               upcoming_class={@upcoming_class}
+              visually_hidden_class={@visually_hidden_class}
               completed_label={@completed_label}
               linear={@linear}
             />
@@ -4219,7 +4255,7 @@ defmodule Doggo.Components do
 
     ~H"""
     <li class={@class} aria-current={@index == @current_step && "step"}>
-      <span :if={@index < @current_step} class="is-visually-hidden">
+      <span :if={@index < @current_step} class={@visually_hidden_class}>
         <%= @completed_label %>
       </span>
       <%= if @step[:on_click] && ((@linear && @index < @current_step) || (!@linear && @index != @current_step)) do %>
@@ -4276,11 +4312,15 @@ defmodule Doggo.Components do
           aria-checked={to_string(@checked)}
           {@rest}
         >
-          <span class="switch-label"><%= @label %></span>
-          <span class="switch-control"><span></span></span>
-          <span class="switch-state">
+          <span class={"#{@base_class}-label"}><%= @label %></span>
+          <span class={"#{@base_class}-control"}><span></span></span>
+          <span class={"#{@base_class}-state"}>
             <span
-              class={if @checked, do: "switch-state-on", else: "switch-state-off"}
+              class={
+                if @checked,
+                  do: "#{@base_class}-state-on",
+                  else: "#{@base_class}-state-off"
+              }
               aria-hidden="true"
             >
               <%= if @checked do %>
@@ -5475,7 +5515,7 @@ defmodule Doggo.Components do
       quote do
         ~H"""
         <nav class={@class} id={@id} aria-label={@label} {@rest}>
-          <div :if={@title != []} class="drawer-nav-title">
+          <div :if={@title != []} class={"#{@base_class}-title"}>
             <%= render_slot(@title) %>
           </div>
           <ul>
@@ -5536,7 +5576,7 @@ defmodule Doggo.Components do
       quote do
         ~H"""
         <div class={@class} {@rest}>
-          <div :if={@title != []} id={"#{@id}-title"} class="drawer-nav-title">
+          <div :if={@title != []} id={"#{@id}-title"} class={"#{@base_class}-title"}>
             <%= render_slot(@title) %>
           </div>
           <ul id={@id} aria-labelledby={@title != [] && "#{@id}-title"}>
@@ -5595,12 +5635,12 @@ defmodule Doggo.Components do
           aria-labelledby={@title != [] && "#{@id}-title"}
           {@rest}
         >
-          <div :if={@title != []} id={"#{@id}-title"} class="drawer-section-title">
+          <div :if={@title != []} id={"#{@id}-title"} class={"#{@base_class}-title"}>
             <%= render_slot(@title) %>
           </div>
           <div
             :for={item <- @item}
-            class={["drawer-item" | item |> Map.get(:class, []) |> List.wrap()]}
+            class={["#{@base_class}-item" | item |> Map.get(:class, []) |> List.wrap()]}
           >
             <%= render_slot(item) %>
           </div>

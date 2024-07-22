@@ -115,6 +115,7 @@ defmodule Doggo.Macros do
           def unquote(name)(var!(assigns)) do
             var!(assigns) =
               assign(var!(assigns),
+                base_class: unquote(base_class),
                 class:
                   Doggo.build_class(
                     unquote(base_class),
