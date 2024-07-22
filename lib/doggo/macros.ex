@@ -10,6 +10,8 @@ defmodule Doggo.Macros do
         :doc,
         :extra,
         :heex,
+        :maturity,
+        :maturity_note,
         :modifiers,
         :name,
         :since,
@@ -17,6 +19,8 @@ defmodule Doggo.Macros do
         :usage
       ])
 
+    maturity = Keyword.fetch!(opts, :maturity)
+    maturity_note = Keyword.get(opts, :maturity_note)
     doc = Keyword.fetch!(opts, :doc)
     usage = Keyword.fetch!(opts, :usage)
     modifiers = Keyword.fetch!(opts, :modifiers)
@@ -42,9 +46,13 @@ defmodule Doggo.Macros do
     attrs_and_slots = Keyword.fetch!(opts, :attrs_and_slots)
     heex = Keyword.fetch!(opts, :heex)
 
+    maturity_info = build_maturity_info(maturity, maturity_note)
+
     quote do
       @doc """
       #{unquote(doc)}
+
+      #{unquote(maturity_info)}
 
       ## Generate Component
 
@@ -125,4 +133,29 @@ defmodule Doggo.Macros do
 
   def unpack_heex(heex, extra) when is_function(heex), do: heex.(extra)
   def unpack_heex(heex, _), do: heex
+
+  defp build_maturity_info(maturity, nil) do
+    """
+    > #### Maturity: #{maturity_to_string(maturity)} {: .info}
+    """
+  end
+
+  defp build_maturity_info(maturity, note) do
+    """
+    > #### Maturity: #{maturity_to_string(maturity)} {: .info}
+    >
+    #{quote_note(note)}
+    """
+  end
+
+  defp maturity_to_string(maturity)
+       when maturity in [:experimental, :developing, :refining, :stable] do
+    maturity |> to_string() |> String.capitalize()
+  end
+
+  defp quote_note(note) do
+    note
+    |> String.split("\n")
+    |> Enum.map_join("\n", &String.trim("> #{&1}"))
+  end
 end

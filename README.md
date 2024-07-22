@@ -165,8 +165,29 @@ The storybook can be accessed at http://localhost:4000.
 ## Status
 
 The library is actively developed. Being in its early stages, the library may
-still undergo significant changes, potentially leading to breaking changes.
+still undergo significant changes, including potential breaking changes.
 
-If you miss a component, if you have trouble with an existing component, or if a
-component doesn't work for you in a certain use case, please don't hesitate to
-open a [Github issue](https://github.com/woylie/doggo/issues).
+### Maturity Levels
+
+Each component in the library is marked with one of four maturity levels.
+
+- **Experimental**: These components are in the early development phase. They
+  are incomplete, have unstable APIs, and are subject to significant changes.
+  Not recommended for production use.
+- **Developing**: Components at this stage have complete semantics, but
+  interactivity features may still be missing. The API may still change based on
+  feedback and testing. Suitable for internal testing and early feedback.
+- **Refining**: Feature-complete components with a stable API, full
+  configurability, and all required keyboard interactivity for accessibility
+  implemented. The focus is on identifying and fixing remaining issues. Suitable
+  for broader testing and cautious production use.
+- **Stable**: Fully developed, tested, and ready for production use. These
+  components have a stable API, are fully interactive, include a complete
+  storybook module, and have exemplary CSS styles defined.
+
+## Feedback
+
+If you encounter any issues with a component, have suggestions for improvements,
+or need a component for a specific use case that isn't currently available,
+please don't hesitate to open a
+[Github issue](https://github.com/woylie/doggo/issues).
