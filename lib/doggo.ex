@@ -1027,8 +1027,22 @@ defmodule Doggo do
   @spec modifier_class_name(atom, String.t()) :: String.t()
   def modifier_class_name(_, value) when is_binary(value), do: "is-#{value}"
 
-  @doc false
-  def modifier_classes(module) do
+  @doc """
+  Returns all modifier classes defined in the given components module.
+
+  ## Usage
+
+      iex> modifier_classes(MyAppWeb.CoreComponents)
+      [
+        "is-large",
+        "is-medium",
+        "is-primary",
+        "is-secondary",
+        "is-small"
+      ]
+  """
+  @spec modifier_classes(module) :: [String.t()]
+  def modifier_classes(module) when is_atom(module) do
     module.__dog_components__()
     |> Enum.flat_map(&get_modifier_classes/1)
     |> Enum.uniq()
