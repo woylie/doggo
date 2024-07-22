@@ -2,7 +2,7 @@ defmodule Doggo.Storybook.SplitPane do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :horizontal,
@@ -58,7 +58,7 @@ defmodule Doggo.Storybook.SplitPane do
     ]
   end
 
-  def modifier_variation_base(_id, _name, _value) do
+  def modifier_variation_base(_id, _name, _value, _opts) do
     %{
       attributes: %{
         orientation: :horizontal,

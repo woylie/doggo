@@ -2,7 +2,7 @@ defmodule Doggo.Storybook.Table do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :basic,
@@ -81,7 +81,7 @@ defmodule Doggo.Storybook.Table do
     ]
   end
 
-  def modifier_variation_base(_id, _name, _value) do
+  def modifier_variation_base(_id, _name, _value, _opts) do
     %{
       attributes: %{
         rows: [

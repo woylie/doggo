@@ -2,7 +2,7 @@ defmodule Doggo.Storybook.Accordion do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :all_expanded,
@@ -30,7 +30,7 @@ defmodule Doggo.Storybook.Accordion do
     ]
   end
 
-  def modifier_variation_base(id, _name, _value) do
+  def modifier_variation_base(id, _name, _value, _opts) do
     %{
       attributes: %{
         id: id,

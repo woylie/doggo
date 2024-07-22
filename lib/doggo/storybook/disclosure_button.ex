@@ -2,7 +2,7 @@ defmodule Doggo.Storybook.DisclosureButton do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :default,
@@ -15,11 +15,11 @@ defmodule Doggo.Storybook.DisclosureButton do
     ]
   end
 
-  def modifier_variation_group_template(name) do
+  def modifier_variation_group_template(name, _opts) do
     table("data-table-#{name}")
   end
 
-  def modifier_variation_base(_id, name, value) do
+  def modifier_variation_base(_id, name, value, _opts) do
     %{
       attributes: %{controls: "data-table-#{name}"},
       slots: [value || "nil"]

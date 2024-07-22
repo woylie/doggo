@@ -1,48 +1,36 @@
 defmodule Doggo.Storybook.Fab do
   @moduledoc false
+
+  alias Doggo.Storybook.Shared
   alias PhoenixStorybook.Stories.Variation
 
-  def variations do
+  def dependent_components, do: [:icon]
+
+  def variations(opts) do
     [
       %Variation{
         id: :default,
         attributes: %{label: "Add item"},
-        slots: slots()
+        slots: slots(opts)
       },
       %Variation{
         id: :disabled,
         attributes: %{label: "Add item", disabled: true},
-        slots: slots()
+        slots: slots(opts)
       }
     ]
   end
 
-  def modifier_variation_base(_id, _name, _value) do
+  def modifier_variation_base(_id, _name, _value, opts) do
     %{
       attributes: %{label: "Add item"},
-      slots: slots()
+      slots: slots(opts)
     }
   end
 
-  defp slots do
+  defp slots(opts) do
     [
-      """
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="lucide lucide-plus"
-      >
-        <path d="M5 12h14"/>
-        <path d="M12 5v14"/>
-      </svg>
-      """
+      Shared.icon(:add, opts[:dependent_components])
     ]
   end
 end

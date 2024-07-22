@@ -2,7 +2,7 @@ defmodule Doggo.Storybook.Datetime do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :default,
@@ -33,7 +33,7 @@ defmodule Doggo.Storybook.Datetime do
     ]
   end
 
-  def modifier_variation_base(_id, _name, _value) do
+  def modifier_variation_base(_id, _name, _value, _opts) do
     %{
       attributes: %{value: ~U[2023-02-05 12:22:06.003Z]}
     }

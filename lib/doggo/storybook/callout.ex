@@ -2,7 +2,7 @@ defmodule Doggo.Storybook.Callout do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :default,
@@ -40,7 +40,7 @@ defmodule Doggo.Storybook.Callout do
     ]
   end
 
-  def modifier_variation_base(_id, _name, _value) do
+  def modifier_variation_base(_id, _name, _value, _opts) do
     %{
       attributes: %{title: "Dog Care Tip"},
       slots: [
