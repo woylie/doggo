@@ -1,7 +1,4 @@
-defmodule Storybook.Components.Accordion do
+defmodule Storybook.Components.AlertDialog do
   use PhoenixStorybook.Story, :component
-
-  use Doggo.Storybook,
-    module: Elixir.DemoWeb.CoreComponents,
-    name: :alert_dialog
+  use Doggo.Storybook, module: DemoWeb.CoreComponents, name: :alert_dialog
 end

@@ -1,7 +1,4 @@
-defmodule Storybook.Components.Accordion do
+defmodule Storybook.Components.DisclosureButton do
   use PhoenixStorybook.Story, :component
-
-  use Doggo.Storybook,
-    module: Elixir.DemoWeb.CoreComponents,
-    name: :disclosure_button
+  use Doggo.Storybook, module: DemoWeb.CoreComponents, name: :disclosure_button
 end

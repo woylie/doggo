@@ -1,4 +1,4 @@
-defmodule Storybook.Components.Accordion do
+defmodule Storybook.Components.Fallback do
   use PhoenixStorybook.Story, :component
-  use Doggo.Storybook, module: Elixir.DemoWeb.CoreComponents, name: :fallback
+  use Doggo.Storybook, module: DemoWeb.CoreComponents, name: :fallback
 end

@@ -1,4 +1,4 @@
-defmodule Storybook.Components.Accordion do
+defmodule Storybook.Components.Cluster do
   use PhoenixStorybook.Story, :component
-  use Doggo.Storybook, module: Elixir.DemoWeb.CoreComponents, name: :cluster
+  use Doggo.Storybook, module: DemoWeb.CoreComponents, name: :cluster
 end
