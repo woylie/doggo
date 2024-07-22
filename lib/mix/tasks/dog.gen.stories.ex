@@ -86,8 +86,7 @@ defmodule Mix.Tasks.Dog.Gen.Stories do
 
       cond do
         !exists? || opts[:force] ->
-          File.write!(file_path, template)
-          IO.puts("Story written to #{file_path}.")
+          write_file(file_path, template)
           write_stories(rest, module, base_path, opts)
 
         exists? && opts[:skip_all] ->
@@ -120,13 +119,11 @@ defmodule Mix.Tasks.Dog.Gen.Stories do
 
     case prompt_overwrite() do
       :overwrite ->
-        File.write!(file_path, template)
-        IO.puts("Story written to #{file_path}")
+        write_file(file_path, template)
         write_stories(rest, module, base_path, opts)
 
       :overwrite_all ->
-        File.write!(file_path, template)
-        IO.puts("Story written to #{file_path}")
+        write_file(file_path, template)
         opts = Keyword.put(opts, :force, true)
         write_stories(rest, module, base_path, opts)
 
@@ -153,5 +150,11 @@ defmodule Mix.Tasks.Dog.Gen.Stories do
       "q\n" -> :quit
       _ -> prompt_overwrite()
     end
+  end
+
+  defp write_file(file_path, template) do
+    {formatter, _} = Mix.Tasks.Format.formatter_for_file(file_path)
+    File.write!(file_path, formatter.(template))
+    IO.puts("Story written to #{file_path}.")
   end
 end

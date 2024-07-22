@@ -33,12 +33,16 @@ defmodule Mix.Tasks.Dog.GenStoriesTest do
 
     assert File.exists?(button_path)
 
+    {formatter, _} = Mix.Tasks.Format.formatter_for_file(button_path)
+
     assert File.read!(button_path) ==
-             Doggo.Storybook.story_template(TestComponents, :button)
+             formatter.(Doggo.Storybook.story_template(TestComponents, :button))
 
     assert File.exists?(menu_path)
 
     assert File.read!(menu_path) ==
-             Doggo.Storybook.story_template(TestComponents, :context_menu)
+             formatter.(
+               Doggo.Storybook.story_template(TestComponents, :context_menu)
+             )
   end
 end
