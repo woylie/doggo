@@ -8,6 +8,6 @@ defmodule Doggo.Storybook.Skeleton do
   end
 
   def modifier_variation_base(_id, _name, _value, _opts) do
-    %{}
+    %{attributes: %{}}
   end
 end

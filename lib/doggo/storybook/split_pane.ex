@@ -2,7 +2,9 @@ defmodule Doggo.Storybook.SplitPane do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def variations(_opts) do
+  def variations(opts) do
+    function_name = Keyword.fetch!(opts, :name)
+
     [
       %Variation{
         id: :horizontal,
@@ -42,7 +44,7 @@ defmodule Doggo.Storybook.SplitPane do
           "<:primary>One</:primary>",
           """
           <:secondary>
-            <Doggo.split_pane
+            <.#{function_name}
               id="filter-splitter"
               label="Filters"
               orientation="vertical"
@@ -50,7 +52,7 @@ defmodule Doggo.Storybook.SplitPane do
             >
               <:primary>Two</:primary>
               <:secondary>Three</:secondary>
-            </Doggo.split_pane>
+            </.#{function_name}>
           </:secondary>
           """
         ]

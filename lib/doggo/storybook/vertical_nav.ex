@@ -2,7 +2,9 @@ defmodule Doggo.Storybook.VerticalNav do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def variations(_opts) do
+  def dependent_components, do: [:vertical_nav_nested, :vertical_nav_section]
+
+  def variations(opts) do
     [
       %Variation{
         id: :default,
@@ -10,33 +12,29 @@ defmodule Doggo.Storybook.VerticalNav do
           id: "main-nav",
           label: "Main"
         },
-        slots: slots()
+        slots: slots("main-nav", opts)
       }
     ]
   end
 
-  def modifier_variation_base(id, _name, _value, _opts) do
+  def modifier_variation_base(id, _name, _value, opts) do
     %{
       attributes: %{
         id: id,
         label: "Main"
       },
-      slots: slots()
+      slots: slots(id, opts)
     }
   end
 
-  defp slots do
-    [
-      """
-      <:item>
-        <Phoenix.Component.link navigate="/dashboard">
-          Dashboard
-        </Phoenix.Component.link>
-      </:item>
-      """,
-      """
-      <:item>
-        <Doggo.vertical_nav_nested id="main-nav-content">
+  defp slots(id, opts) do
+    dependent_components = opts[:dependent_components]
+    nested_fun = dependent_components[:vertical_nav_nested]
+
+    nested =
+      if nested_fun do
+        """
+        <.#{nested_fun} id="#{id}-content">
           <:title>Content</:title>
           <:item current_page>
             <Phoenix.Component.link navigate="/posts">
@@ -48,7 +46,25 @@ defmodule Doggo.Storybook.VerticalNav do
               Comments
             </Phoenix.Component.link>
           </:item>
-        </Doggo.vertical_nav_nested>
+        </.#{nested_fun}>
+        """
+      else
+        """
+        <p>Please compile the <code>vertical_nav_nested</code> component for a complete preview.</p>
+        """
+      end
+
+    [
+      """
+      <:item>
+        <Phoenix.Component.link navigate="/dashboard">
+          Dashboard
+        </Phoenix.Component.link>
+      </:item>
+      """,
+      """
+      <:item>
+        #{nested}
       </:item>
       """
     ]
