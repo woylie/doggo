@@ -8,7 +8,21 @@ defmodule Doggo do
   alias Phoenix.HTML.Form
   alias Phoenix.LiveView.JS
 
-  ## Components
+  @doc false
+  def build_class(base_class, modifier_names, class_name_fun, assigns) do
+    class =
+      for name <- modifier_names do
+        case assigns do
+          %{^name => value} when is_binary(value) ->
+            class_name_fun.(name, value)
+
+          _ ->
+            nil
+        end
+      end
+
+    if base_class, do: [base_class | class], else: class
+  end
 
   @doc false
   def slide_label(n), do: "Slide #{n}"
