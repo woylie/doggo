@@ -22,6 +22,8 @@ defmodule Mix.Tasks.Dog.Modifiers do
     strict: [module: :string, output: :string]
   ]
 
+  @requirements ["app.config"]
+
   @impl Mix.Task
   def run(args) do
     with {switches, [], []} <- OptionParser.parse(args, @parser_opts),
