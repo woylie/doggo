@@ -191,35 +191,56 @@ defmodule Doggo.Components do
       quote do
         ~H"""
         <div id={@id} class={@class} {@rest}>
-          <div :for={{section, index} <- Enum.with_index(@section, 1)}>
-            <.dynamic_tag name={@heading}>
-              <button
-                id={"#{@id}-trigger-#{index}"}
-                type="button"
-                aria-expanded={
-                  to_string(
-                    Doggo.Components.accordion_section_expanded?(index, @expanded)
-                  )
-                }
-                aria-controls={"#{@id}-section-#{index}"}
-                phx-click={Doggo.toggle_accordion_section(@id, index)}
-              >
-                <span><%= section.title %></span>
-              </button>
-            </.dynamic_tag>
-            <div
-              id={"#{@id}-section-#{index}"}
-              role="region"
-              aria-labelledby={"#{@id}-trigger-#{index}"}
-              hidden={!Doggo.Components.accordion_section_expanded?(index, @expanded)}
-            >
-              <%= render_slot(section) %>
-            </div>
-          </div>
+          <Doggo.Components.accordion_section
+            :for={{section, index} <- Enum.with_index(@section, 1)}
+            section={section}
+            index={index}
+            id={@id}
+            expanded={@expanded}
+            heading={@heading}
+          />
         </div>
         """
       end
   )
+
+  @doc false
+  def accordion_section(
+        %{
+          index: index,
+          expanded: expanded_initial
+        } = assigns
+      ) do
+    expanded =
+      Doggo.Components.accordion_section_expanded?(index, expanded_initial)
+
+    assigns =
+      assign(assigns, aria_expanded: to_string(expanded))
+
+    ~H"""
+    <div>
+      <.dynamic_tag name={@heading}>
+        <button
+          id={"#{@id}-trigger-#{@index}"}
+          type="button"
+          aria-expanded={@aria_expanded}
+          aria-controls={"#{@id}-section-#{@index}"}
+          phx-click={Doggo.toggle_accordion_section(@id, @index)}
+        >
+          <span><%= @section.title %></span>
+        </button>
+      </.dynamic_tag>
+      <div
+        id={"#{@id}-section-#{@index}"}
+        role="region"
+        aria-labelledby={"#{@id}-trigger-#{@index}"}
+        hidden={@aria_expanded != "true"}
+      >
+        <%= render_slot(@section) %>
+      </div>
+    </div>
+    """
+  end
 
   @doc false
   def accordion_section_expanded?(_, :all), do: true
@@ -1856,6 +1877,7 @@ defmodule Doggo.Components do
           """
 
         attr :formatter, :any,
+          default: nil,
           doc: """
           A function that takes a `Date` as an argument and returns the value
           formatted for display. Defaults to `to_string/1`.
@@ -1883,7 +1905,14 @@ defmodule Doggo.Components do
       end,
     heex:
       quote do
-        %{value: value, timezone: timezone} = var!(assigns)
+        %{
+          value: value,
+          timezone: timezone,
+          formatter: formatter,
+          title_formatter: title_formatter
+        } = var!(assigns)
+
+        formatter = formatter || (&to_string/1)
 
         value =
           value
@@ -1893,18 +1922,16 @@ defmodule Doggo.Components do
         var!(assigns) =
           assigns
           |> var!()
-          |> assign(:value, value)
-          |> assign_new(:formatter, fn -> &to_string/1 end)
+          |> assign(:datetime, value && Date.to_iso8601(value))
+          |> assign(
+            :title,
+            value && Doggo.time_title_attr(value, title_formatter)
+          )
+          |> assign(:value, value && formatter.(value))
 
         ~H"""
-        <time
-          :if={@value}
-          class={@class}
-          datetime={Date.to_iso8601(@value)}
-          title={Doggo.time_title_attr(@value, @title_formatter)}
-          {@rest}
-        >
-          <%= @formatter.(@value) %>
+        <time :if={@value} class={@class} datetime={@datetime} title={@title} {@rest}>
+          <%= @value %>
         </time>
         """
       end
@@ -1963,6 +1990,7 @@ defmodule Doggo.Components do
           """
 
         attr :formatter, :any,
+          default: nil,
           doc: """
           A function that takes a `DateTime` or a `NaiveDateTime` as an argument and
           returns the value formatted for display. Defaults to `to_string/1`.
@@ -1998,8 +2026,15 @@ defmodule Doggo.Components do
       end,
     heex:
       quote do
-        %{value: value, precision: precision, timezone: timezone} =
-          var!(assigns)
+        %{
+          value: value,
+          precision: precision,
+          timezone: timezone,
+          formatter: formatter,
+          title_formatter: title_formatter
+        } = var!(assigns)
+
+        formatter = formatter || (&to_string/1)
 
         value =
           value
@@ -2009,18 +2044,16 @@ defmodule Doggo.Components do
         var!(assigns) =
           assigns
           |> var!()
-          |> assign(:value, value)
-          |> assign_new(:formatter, fn -> &to_string/1 end)
+          |> assign(:datetime, value && Doggo.datetime_attr(value))
+          |> assign(
+            :title,
+            value && Doggo.time_title_attr(value, title_formatter)
+          )
+          |> assign(:value, value && formatter.(value))
 
         ~H"""
-        <time
-          :if={@value}
-          class={@class}
-          datetime={Doggo.datetime_attr(@value)}
-          title={Doggo.time_title_attr(@value, @title_formatter)}
-          {@rest}
-        >
-          <%= @formatter.(@value) %>
+        <time :if={@value} class={@class} datetime={@datetime} title={@title} {@rest}>
+          <%= @value %>
         </time>
         """
       end
@@ -2815,7 +2848,7 @@ defmodule Doggo.Components do
           aria-labelledby={@labelledby}
           {@rest}
         >
-          <li :for={item <- @item} role={Map.get(item, :role, "none")}>
+          <li :for={item <- @item} role={item[:role] || "none"}>
             <%= if item[:role] != "separator" do %>
               <%= render_slot(item) %>
             <% end %>
@@ -2936,7 +2969,7 @@ defmodule Doggo.Components do
           aria-labelledby={@labelledby}
           {@rest}
         >
-          <li :for={item <- @item} role={Map.get(item, :role, "none")}>
+          <li :for={item <- @item} role={item[:role] || "none"}>
             <%= if item[:role] != "separator" do %>
               <%= render_slot(item) %>
             <% end %>
@@ -3133,7 +3166,7 @@ defmodule Doggo.Components do
       quote do
         ~H"""
         <ul class={@class} role="group" aria-label={@label} {@rest}>
-          <li :for={item <- @item} role={Map.get(item, :role, "none")}>
+          <li :for={item <- @item} role={item[:role] || "none"}>
             <%= if item[:role] != "separator" do %>
               <%= render_slot(item) %>
             <% end %>
@@ -3235,11 +3268,14 @@ defmodule Doggo.Components do
       end,
     heex:
       quote do
+        %{checked: checked} = var!(assigns)
+        var!(assigns) = assign(var!(assigns), :checked, to_string(checked))
+
         ~H"""
         <div
           class={@class}
           role="menuitemcheckbox"
-          aria-checked={to_string(@checked)}
+          aria-checked={@checked}
           phx-click={@on_click}
           {@rest}
         >
@@ -3309,7 +3345,7 @@ defmodule Doggo.Components do
             <div
               role="menuitemradio"
               phx-click={item.on_click}
-              aria-checked={item |> Map.get(:checked, false) |> to_string()}
+              aria-checked={to_string(item[:checked] || false)}
             >
               <%= render_slot(item) %>
             </div>
@@ -3856,7 +3892,17 @@ defmodule Doggo.Components do
   )
 
   @doc false
-  def radio(%{option_value: _} = assigns) do
+  def radio(
+        %{option_value: _, id: id, description: description, errors: errors} =
+          assigns
+      ) do
+    assigns =
+      assign(assigns,
+        describedby: Doggo.input_aria_describedby(id, description),
+        errormessage: Doggo.input_aria_errormessage(id, errors),
+        invalid: errors != [] && "true"
+      )
+
     ~H"""
     <Doggo.label>
       <input
@@ -3865,9 +3911,9 @@ defmodule Doggo.Components do
         id={@id <> "_#{@option_value}"}
         value={@option_value}
         checked={Doggo.checked?(@option_value, @value)}
-        aria-describedby={Doggo.input_aria_describedby(@id, @description)}
-        aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
-        aria-invalid={@errors != [] && "true"}
+        aria-describedby={@describedby}
+        aria-errormessage={@errormessage}
+        aria-invalid={@invalid}
       />
       <%= @label %>
     </Doggo.label>
@@ -4893,6 +4939,7 @@ defmodule Doggo.Components do
           """
 
         attr :formatter, :any,
+          default: nil,
           doc: """
           A function that takes a `Time`, `DateTime`, or `NaiveDateTime` as an
           argument and returns the value formatted for display. Defaults to
@@ -4929,8 +4976,15 @@ defmodule Doggo.Components do
       end,
     heex:
       quote do
-        %{value: value, precision: precision, timezone: timezone} =
-          var!(assigns)
+        %{
+          value: value,
+          precision: precision,
+          timezone: timezone,
+          formatter: formatter,
+          title_formatter: title_formatter
+        } = var!(assigns)
+
+        formatter = formatter || (&to_string/1)
 
         value =
           value
@@ -4941,18 +4995,16 @@ defmodule Doggo.Components do
         var!(assigns) =
           assigns
           |> var!()
-          |> assign(:value, value)
-          |> assign_new(:formatter, fn -> &to_string/1 end)
+          |> assign(:datetime, value && Time.to_iso8601(value))
+          |> assign(
+            :title,
+            value && Doggo.time_title_attr(value, title_formatter)
+          )
+          |> assign(:value, value && formatter.(value))
 
         ~H"""
-        <time
-          :if={@value}
-          class={@class}
-          datetime={Time.to_iso8601(@value)}
-          title={Doggo.time_title_attr(@value, @title_formatter)}
-          {@rest}
-        >
-          <%= @formatter.(@value) %>
+        <time :if={@value} class={@class} datetime={@datetime} title={@title} {@rest}>
+          <%= @value %>
         </time>
         """
       end
@@ -5037,6 +5089,9 @@ defmodule Doggo.Components do
       end,
     heex:
       quote do
+        %{pressed: pressed} = var!(assigns)
+        var!(assigns) = assign(var!(assigns), :pressed, to_string(pressed))
+
         ~H"""
         <button
           type="button"
@@ -5046,7 +5101,7 @@ defmodule Doggo.Components do
               {"aria-pressed", "true", "false"}
             )
           }
-          aria-pressed={to_string(@pressed)}
+          aria-pressed={@pressed}
           class={@class}
           disabled={@disabled}
           {@rest}
@@ -5522,7 +5577,7 @@ defmodule Doggo.Components do
             <li
               :for={item <- @item}
               class={item[:class]}
-              aria-current={Map.get(item, :current_page, false) && "page"}
+              aria-current={item[:current_page] && "page"}
             >
               <%= render_slot(item) %>
             </li>
@@ -5583,7 +5638,7 @@ defmodule Doggo.Components do
             <li
               :for={item <- @item}
               class={item[:class]}
-              aria-current={Map.get(item, :current_page, false) && "page"}
+              aria-current={item[:current_page] && "page"}
             >
               <%= render_slot(item) %>
             </li>
@@ -5640,7 +5695,7 @@ defmodule Doggo.Components do
           </div>
           <div
             :for={item <- @item}
-            class={["#{@base_class}-item" | item |> Map.get(:class, []) |> List.wrap()]}
+            class={["#{@base_class}-item" | List.wrap(item[:class] || [])]}
           >
             <%= render_slot(item) %>
           </div>
