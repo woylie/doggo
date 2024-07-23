@@ -952,6 +952,48 @@ defmodule Doggo.ComponentsTest do
       assert text(button) == "Confirm"
     end
 
+    test "with additional class as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button class="mt-4">Confirm</TestComponents.button>
+        """)
+
+      button = find_one(html, "button:root")
+
+      assert attribute(button, "class") ==
+               "button is-primary is-normal is-solid mt-4"
+    end
+
+    test "with multiple additional classes as string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button class="mt-4 mb-2">Confirm</TestComponents.button>
+        """)
+
+      button = find_one(html, "button:root")
+
+      assert attribute(button, "class") ==
+               "button is-primary is-normal is-solid mt-4 mb-2"
+    end
+
+    test "with multiple additional classes as list" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button class={["mt-4", "mb-2"]}>Confirm</TestComponents.button>
+        """)
+
+      button = find_one(html, "button:root")
+
+      assert attribute(button, "class") ==
+               "button is-primary is-normal is-solid mt-4 mb-2"
+    end
+
     test "disabled" do
       assigns = %{}
 
