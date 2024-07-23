@@ -4766,7 +4766,7 @@ defmodule Doggo.Components do
       )
 
     ~H"""
-    <Doggo.label>
+    <label>
       <input
         type="radio"
         name={@name}
@@ -4778,7 +4778,7 @@ defmodule Doggo.Components do
         aria-invalid={@invalid}
       />
       <%= @label %>
-    </Doggo.label>
+    </label>
     """
   end
 
