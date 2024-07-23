@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.6.0] - 2024-07-23
+
 ### Added
 
 - Add `Doggo.Storybook` and `mix dog.gen.stories` for generating
