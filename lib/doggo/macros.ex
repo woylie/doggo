@@ -111,6 +111,20 @@ defmodule Doggo.Macros do
             attr name, :string, modifier_opts
           end
 
+          attr :class, :any,
+            default: nil,
+            doc: """
+            Any additional classes to be added.
+
+            Variations of the component should be expressed via modifier
+            attributes, and it is preferable to use styles on the parent
+            container to arrange components on the page, but if you have to,
+            you can use this attribute to pass additional utility classes to
+            the component.
+
+            The value can be a string or a list of strings.
+            """
+
           unquote(attrs_and_slots)
 
           def unquote(name)(var!(assigns)) do

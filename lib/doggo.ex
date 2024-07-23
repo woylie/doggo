@@ -23,7 +23,14 @@ defmodule Doggo do
         end
       end
 
-    if base_class, do: [base_class | class], else: class
+    additional_classes =
+      if value = assigns[:class] do
+        List.wrap(value)
+      else
+        []
+      end
+
+    if base_class, do: [base_class | class] ++ additional_classes, else: class
   end
 
   @doc false
