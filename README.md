@@ -115,7 +115,7 @@ generated components. After you followed the installation instructions of
 Phoenix Storybook, you can run a mix task to generate the stories:
 
 ```bash
-mix dog.gen.stories -m MyAppWeb.CoreComponents -o storybook
+mix dog.gen.stories -m MyAppWeb.CoreComponents -o storybook --all
 ```
 
 Here, `MyAppWeb.CoreComponents` is the module in which you added
@@ -123,6 +123,18 @@ Here, `MyAppWeb.CoreComponents` is the module in which you added
 
 The task will only generate story modules for the components that you
 configured. The stories will include variations for all configured modifiers.
+
+You don't need to update the stories after changing the modifiers of a
+component. However, you'll need to run the task again after adding new
+components to your module, or potentially after a new Doggo version was
+released.
+
+The task will ask for confirmation to overwrite existing stories. To only
+write the story for a single component, you can run:
+
+```bash
+mix dog.gen.stories -m MyAppWeb.CoreComponents -o storybook -c button
+```
 
 ### PurgeCSS
 
