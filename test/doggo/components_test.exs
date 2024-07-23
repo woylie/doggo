@@ -38,6 +38,7 @@ defmodule Doggo.ComponentsTest do
     build_drawer()
     build_fab()
     build_fallback()
+    build_field(gettext_module: Doggo.Gettext)
     build_field_description()
     build_field_errors()
     build_field_group()
@@ -45,7 +46,6 @@ defmodule Doggo.ComponentsTest do
     build_icon()
     build_icon_sprite()
     build_image()
-    build_input(gettext_module: Doggo.Gettext)
     build_label()
     build_menu()
     build_menu_bar()
@@ -2686,7 +2686,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input field={@form[:age]} label="Age" />
+          <TestComponents.field field={@form[:age]} label="Age" />
         </.form>
         """)
 
@@ -2708,9 +2708,9 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input field={@form[:age]} label="Age">
+          <TestComponents.field field={@form[:age]} label="Age">
             <:description>How old?</:description>
-          </TestComponents.input>
+          </TestComponents.field>
         </.form>
         """)
 
@@ -2725,13 +2725,13 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input
+          <TestComponents.field
             field={@form[:subscribe]}
             label="Subscribe"
             type="checkbox"
           >
             <:description>Please do.</:description>
-          </TestComponents.input>
+          </TestComponents.field>
         </.form>
         """)
 
@@ -2755,14 +2755,14 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input
+          <TestComponents.field
             field={@form[:subscribe]}
             label="Subscribe"
             type="checkbox"
             checked_value="yes"
           >
             <:description>Please do.</:description>
-          </TestComponents.input>
+          </TestComponents.field>
         </.form>
         """)
 
@@ -2775,7 +2775,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input
+          <TestComponents.field
             field={@form[:animals]}
             label="Animals"
             type="checkbox-group"
@@ -2783,7 +2783,7 @@ defmodule Doggo.ComponentsTest do
             value={["dog", "elk"]}
           >
             <:description>Which animals?</:description>
-          </TestComponents.input>
+          </TestComponents.field>
         </.form>
         """)
 
@@ -2804,14 +2804,14 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input
+          <TestComponents.field
             field={@form[:animals]}
             label="Animals"
             type="radio-group"
             options={[{"Dog", "dog"}, "cat", "rabbit_id", :elk]}
           >
             <:description>Which animals?</:description>
-          </TestComponents.input>
+          </TestComponents.field>
         </.form>
         """)
 
@@ -2830,13 +2830,13 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input
+          <TestComponents.field
             field={@form[:subscribe]}
             label="Subscribe"
             type="switch"
           >
             <:description>Subscribe?</:description>
-          </TestComponents.input>
+          </TestComponents.field>
         </.form>
         """)
 
@@ -2849,14 +2849,14 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input
+          <TestComponents.field
             field={@form[:subscribe]}
             label="Subscribe"
             type="switch"
             checked
           >
             <:description>Subscribe?</:description>
-          </TestComponents.input>
+          </TestComponents.field>
         </.form>
         """)
 
@@ -2869,14 +2869,14 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input
+          <TestComponents.field
             field={@form[:animals]}
             label="Animals"
             type="select"
             options={[{"Dog", "dog"}, {"Cat", "cat"}]}
           >
             <:description>Which animals?</:description>
-          </TestComponents.input>
+          </TestComponents.field>
         </.form>
         """)
 
@@ -2890,7 +2890,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input
+          <TestComponents.field
             field={@form[:animals]}
             label="Animals"
             type="select"
@@ -2898,7 +2898,7 @@ defmodule Doggo.ComponentsTest do
             multiple
           >
             <:description>Which animals?</:description>
-          </TestComponents.input>
+          </TestComponents.field>
         </.form>
         """)
 
@@ -2911,9 +2911,9 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input field={@form[:bio]} label="Bio" type="textarea">
+          <TestComponents.field field={@form[:bio]} label="Bio" type="textarea">
             <:description>Tell us more about you.</:description>
-          </TestComponents.input>
+          </TestComponents.field>
         </.form>
         """)
 
@@ -2932,7 +2932,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input field={@form[:sentiment]} type="hidden" value="jaja" />
+          <TestComponents.field field={@form[:sentiment]} type="hidden" value="jaja" />
         </.form>
         """)
 
@@ -2947,7 +2947,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input
+          <TestComponents.field
             field={@form[:sentiment]}
             type="hidden"
             value={["ja", "ne"]}
@@ -2969,10 +2969,10 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input field={@form[:addons]} type="text">
+          <TestComponents.field field={@form[:addons]} type="text">
             <:addon_left>left</:addon_left>
             <:addon_right>right</:addon_right>
-          </TestComponents.input>
+          </TestComponents.field>
         </.form>
         """)
 
@@ -2989,7 +2989,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input
+          <TestComponents.field
             field={@form[:species]}
             type="text"
             options={["option_a", {"Option B", "option_b"}]}
@@ -3016,7 +3016,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input field={@form[:species]} type="text" errors={["wrong"]} />
+          <TestComponents.field field={@form[:species]} type="text" errors={["wrong"]} />
         </.form>
         """)
 
@@ -3033,9 +3033,9 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input field={@form[:species]} type="text" errors={["wrong"]}>
+          <TestComponents.field field={@form[:species]} type="text" errors={["wrong"]}>
             <:description>What are you?</:description>
-          </TestComponents.input>
+          </TestComponents.field>
         </.form>
         """)
 
@@ -3061,7 +3061,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input
+          <TestComponents.field
             field={@form[:when]}
             type="date"
             value={~U[1900-01-01T12:00:00Z]}
@@ -3078,7 +3078,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input
+          <TestComponents.field
             field={@form[:when]}
             type="date"
             value="1900-01-01T12:00:00Z"
@@ -3095,7 +3095,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input field={@form[:when]} type="date" value="1900-01" />
+          <TestComponents.field field={@form[:when]} type="date" value="1900-01" />
         </.form>
         """)
 
@@ -3108,7 +3108,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input field={%{@form[:what] | errors: [{"weird", []}]}} />
+          <TestComponents.field field={%{@form[:what] | errors: [{"weird", []}]}} />
         </.form>
         """)
 
@@ -3119,7 +3119,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input field={%{@form[:what] | errors: [{"weird", []}]}} />
+          <TestComponents.field field={%{@form[:what] | errors: [{"weird", []}]}} />
         </.form>
         """)
 
@@ -3132,7 +3132,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input field={
+          <TestComponents.field field={
             %{@form[:what] | errors: [{"weird %{animal}", [animal: "dog"]}]}
           } />
         </.form>
@@ -3147,7 +3147,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input field={%{@form[:what] | errors: [{"weird dog", []}]}} />
+          <TestComponents.field field={%{@form[:what] | errors: [{"weird dog", []}]}} />
         </.form>
         """)
 
@@ -3160,7 +3160,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input
+          <TestComponents.field
             field={
               %{
                 @form[:what]

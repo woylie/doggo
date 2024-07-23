@@ -1,4 +1,4 @@
-defmodule Doggo.Storybook.Input do
+defmodule Doggo.Storybook.Field do
   @moduledoc false
 
   import Doggo.Storybook.Shared

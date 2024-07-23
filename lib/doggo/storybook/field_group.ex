@@ -2,7 +2,7 @@ defmodule Doggo.Storybook.FieldGroup do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def dependent_components, do: [:input]
+  def dependent_components, do: [:field]
 
   def template do
     """
@@ -30,19 +30,19 @@ defmodule Doggo.Storybook.FieldGroup do
 
   defp slots(opts) do
     dependent_components = opts[:dependent_components]
-    input_fun = dependent_components[:input]
+    field_fun = dependent_components[:field]
 
-    if input_fun do
+    if field_fun do
       [
         """
-        <.#{input_fun} type="text" field={f[:given_name]} label="Given name" />
-        <.#{input_fun} type="text" field={f[:family_name]} label="Family name" />
+        <.#{field_fun} type="text" field={f[:given_name]} label="Given name" />
+        <.#{field_fun} type="text" field={f[:family_name]} label="Family name" />
         """
       ]
     else
       [
         """
-        <p>Please compile the <code>input</code> component for a complete preview.</p>
+        <p>Please compile the <code>field</code> component for a complete preview.</p>
         """
       ]
     end
