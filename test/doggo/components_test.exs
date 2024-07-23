@@ -2976,8 +2976,11 @@ defmodule Doggo.ComponentsTest do
         </.form>
         """)
 
-      assert text(html, ".input-wrapper > .input-addon-left") == "left"
-      assert text(html, ".input-wrapper > .input-addon-right") == "right"
+      assert text(html, ".field-input-wrapper > .field-input-addon-left") ==
+               "left"
+
+      assert text(html, ".field-input-wrapper > .field-input-addon-right") ==
+               "right"
     end
 
     test "with datalist" do

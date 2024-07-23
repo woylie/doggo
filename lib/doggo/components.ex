@@ -2887,12 +2887,14 @@ defmodule Doggo.Components do
       end
   )
 
-
   component(
     :input,
+    base_class: "field",
     modifiers: [],
     extra: [
-      gettext_module: nil
+      gettext_module: nil,
+      addon_left_class: "has-addon-left",
+      addon_right_class: "has-addon-right"
     ],
     doc: """
     Renders a form field including input, label, errors, and description.
@@ -2911,6 +2913,11 @@ defmodule Doggo.Components do
     - `"checkbox-group"`
     - `"radio-group"`
     - `"switch"`
+
+    ### Class and Global Attribute
+
+    Note that the `class` attribute is applied to the outer container, while
+    the `rest` global attribute is applied to the `<input>` element.
 
     ### Gettext
 
@@ -3130,6 +3137,8 @@ defmodule Doggo.Components do
       end,
     component_function: fn opts, extra ->
       base_class = Keyword.fetch!(opts, :base_class)
+      addon_left_class = Keyword.fetch!(extra, :addon_left_class)
+      addon_right_class = Keyword.fetch!(extra, :addon_right_class)
       modifier_names = opts |> Keyword.fetch!(:modifiers) |> Keyword.keys()
       class_name_fun = Keyword.fetch!(opts, :class_name_fun)
       gettext_module = Keyword.get(extra, :gettext_module)
@@ -3188,7 +3197,7 @@ defmodule Doggo.Components do
             end)
 
           ~H"""
-          <div class={["field", Doggo.field_error_class(@errors)]}>
+          <div class={@class ++ [Doggo.field_error_class(@errors)]}>
             <.label required={@validations[:required] || false} class="checkbox">
               <input type="hidden" name={@name} value="false" />
               <input
@@ -3215,7 +3224,7 @@ defmodule Doggo.Components do
 
         def input(%{type: "checkbox-group"} = var!(assigns)) do
           ~H"""
-          <div class={["field", Doggo.field_error_class(@errors)]}>
+          <div class={@class ++ [Doggo.field_error_class(@errors)]}>
             <fieldset class="checkbox-group">
               <legend>
                 <%= @label %>
@@ -3261,7 +3270,7 @@ defmodule Doggo.Components do
 
         def input(%{type: "radio-group"} = var!(assigns)) do
           ~H"""
-          <div class={["field", Doggo.field_error_class(@errors)]}>
+          <div class={@class ++ [Doggo.field_error_class(@errors)]}>
             <fieldset class="radio-group">
               <legend>
                 <%= @label %>
@@ -3293,7 +3302,7 @@ defmodule Doggo.Components do
 
         def input(%{type: "select"} = var!(assigns)) do
           ~H"""
-          <div class={["field", Doggo.field_error_class(@errors)]}>
+          <div class={@class ++ [Doggo.field_error_class(@errors)]}>
             <.label
               for={@id}
               required={@validations[:required] || false}
@@ -3336,7 +3345,7 @@ defmodule Doggo.Components do
             end)
 
           ~H"""
-          <div class={["field", Doggo.field_error_class(@errors)]}>
+          <div class={@class ++ [Doggo.field_error_class(@errors)]}>
             <.label required={@validations[:required] || false} class="switch">
               <span class="switch-label"><%= @label %></span>
               <input type="hidden" name={@name} value="false" />
@@ -3376,7 +3385,7 @@ defmodule Doggo.Components do
 
         def input(%{type: "textarea"} = var!(assigns)) do
           ~H"""
-          <div class={["field", Doggo.field_error_class(@errors)]}>
+          <div class={@class ++ [Doggo.field_error_class(@errors)]}>
             <.label
               for={@id}
               required={@validations[:required] || false}
@@ -3404,8 +3413,16 @@ defmodule Doggo.Components do
         end
 
         def input(var!(assigns)) do
+          var!(assigns) =
+            assign(
+              var!(assigns),
+              addon_left_class: unquote(addon_left_class),
+              addon_right_class: unquote(addon_right_class),
+              base_class: unquote(base_class)
+            )
+
           ~H"""
-          <div class={["field", Doggo.field_error_class(@errors)]}>
+          <div class={@class ++ [Doggo.field_error_class(@errors)]}>
             <.label
               for={@id}
               required={@validations[:required] || false}
@@ -3416,9 +3433,9 @@ defmodule Doggo.Components do
               <%= @label %>
             </.label>
             <div class={[
-              "input-wrapper",
-              @addon_left != [] && "has-addon-left",
-              @addon_right != [] && "has-addon-right"
+              "#{@base_class}-input-wrapper",
+              @addon_left != [] && @addon_left_class,
+              @addon_right != [] && @addon_right_class
             ]}>
               <input
                 name={@name}
@@ -3432,10 +3449,10 @@ defmodule Doggo.Components do
                 {@validations}
                 {@rest}
               />
-              <div :if={@addon_left != []} class="input-addon-left">
+              <div :if={@addon_left != []} class={"#{@base_class}-input-addon-left"}>
                 <%= render_slot(@addon_left) %>
               </div>
-              <div :if={@addon_right != []} class="input-addon-right">
+              <div :if={@addon_right != []} class={"#{@base_class}-input-addon-right"}>
                 <%= render_slot(@addon_right) %>
               </div>
             </div>
