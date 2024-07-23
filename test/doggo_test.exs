@@ -490,7 +490,7 @@ defmodule DoggoTest do
     use Doggo.Components
     use Phoenix.Component
 
-    button(
+    build_button(
       modifiers: [
         size: [values: ["small", "normal"], default: "normal"],
         variant: [
@@ -504,7 +504,7 @@ defmodule DoggoTest do
       ]
     )
 
-    callout(
+    build_callout(
       class_name_fun: &__MODULE__.modifier_class_name/2,
       modifiers: [
         variant: [
@@ -514,7 +514,7 @@ defmodule DoggoTest do
       ]
     )
 
-    tag(
+    build_tag(
       modifiers: [
         size: [values: ["small", "normal", "large"], default: "normal"]
       ]

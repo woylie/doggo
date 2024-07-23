@@ -1,4 +1,4 @@
-defmodule Doggo.Storybook.LabelBuilder do
+defmodule Doggo.Storybook.Label do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 

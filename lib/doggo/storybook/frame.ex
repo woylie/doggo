@@ -1,4 +1,4 @@
-defmodule Doggo.Storybook.FrameBuilder do
+defmodule Doggo.Storybook.Frame do
   @moduledoc false
 
   def variations(_opts) do

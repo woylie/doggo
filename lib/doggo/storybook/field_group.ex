@@ -1,4 +1,4 @@
-defmodule Doggo.Storybook.FieldGroupBuilder do
+defmodule Doggo.Storybook.FieldGroup do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 

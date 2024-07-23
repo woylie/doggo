@@ -13,8 +13,8 @@ defmodule Mix.Tasks.Dog.GenStoriesTest do
     use Doggo.Components
     use Phoenix.Component
 
-    button()
-    menu(name: :context_menu)
+    build_button()
+    build_menu(name: :context_menu)
   end
 
   @tag :tmp_dir
