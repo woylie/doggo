@@ -6,20 +6,34 @@ defmodule Mix.Tasks.Dog.Gen.Stories do
 
   ## Usage
 
-      mix dog.gen.stories -m MyAppWeb.CoreComponents -o storybook
+  Write stories for all configured components:
+
+      mix dog.gen.stories -m MyAppWeb.CoreComponents -o storybook -a
+
+  Write the story for a single component:
+
+      mix dog.gen.stories -m MyAppWeb.CoreComponents -o storybook -c button
 
   ## Options
 
   - -m, --module: The module where the Doggo components are compiled.
   - -o, --output: The Storybook folder.
+  - -c, --component: The name of the component.
+  - -a, --all: Write stories for all configured components.
   - -f, --force: Force folder creation and overwrite existing stories.
   """
 
   use Mix.Task
 
   @switches [
-    aliases: [f: :force, m: :module, o: :output],
-    strict: [force: :boolean, module: :string, output: :string]
+    aliases: [a: :all, c: :component, f: :force, m: :module, o: :output],
+    strict: [
+      all: :boolean,
+      component: :string,
+      force: :boolean,
+      module: :string,
+      output: :string
+    ]
   ]
 
   @requirements ["app.config"]
@@ -30,16 +44,52 @@ defmodule Mix.Tasks.Dog.Gen.Stories do
 
     with {:ok, module} <- Keyword.fetch(opts, :module),
          {:ok, path} <- Keyword.fetch(opts, :output) do
+      component = component_option(opts)
       force = Keyword.get(opts, :force, false)
       ensure_folder_exists(path, force: force)
       module = Module.safe_concat([module])
+      components = Enum.to_list(module.__dog_components__())
 
-      module.__dog_components__()
-      |> Enum.to_list()
-      |> write_stories(module, path, force: force)
+      if component == :all do
+        write_stories(components, module, path, force: force)
+      else
+        component = find_component(components, component)
+        write_stories([component], module, path, force: force)
+      end
     else
       _ ->
         IO.puts(@moduledoc)
+    end
+  end
+
+  defp component_option(opts) do
+    all = Keyword.get(opts, :all, false)
+    component = Keyword.get(opts, :component)
+
+    if all && component do
+      IO.puts("Error: expected either --all or --component, got both.")
+      exit({:shutdown, 1})
+    end
+
+    if !all && is_nil(component) do
+      IO.puts("Error: expected either --all or --component, got none.")
+      exit({:shutdown, 1})
+    end
+
+    if all, do: :all, else: component
+  end
+
+  defp find_component(components, component) when is_binary(component) do
+    result =
+      Enum.find(components, fn {name, _info} ->
+        Atom.to_string(name) == component
+      end)
+
+    if result do
+      result
+    else
+      IO.puts("Error: Component '#{component}' not found.")
+      exit({:shutdown, 1})
     end
   end
 
