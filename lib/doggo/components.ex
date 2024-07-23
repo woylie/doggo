@@ -43,6 +43,7 @@ defmodule Doggo.Components do
         drawer()
         fab()
         fallback()
+        field_description_builder()
         field_group_builder()
         frame_builder()
         icon()
@@ -2402,6 +2403,46 @@ defmodule Doggo.Components do
           aria-label={@accessibility_text}
           {@rest}
         ><%= @placeholder %></span>
+        """
+      end
+  )
+
+  component(
+    :field_description_builder,
+    name: :field_description,
+    base_class: "field-description",
+    modifiers: [],
+    doc: """
+    Renders the description of an input.
+    """,
+    usage: """
+    ```heex
+    <.field_description for="name">
+      max. 100 characters
+    </.field_description>
+    ```
+    """,
+    type: :form,
+    since: "0.6.0",
+    maturity: :developing,
+    attrs_and_slots:
+      quote do
+        attr :for, :string, required: true, doc: "The ID of the input."
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :inner_block, required: true
+      end,
+    heex:
+      quote do
+        %{for: for} = var!(assigns)
+
+        var!(assigns) =
+          assign(var!(assigns), :id, Doggo.field_description_id(for))
+
+        ~H"""
+        <div id={@id} class={@class}>
+          <%= render_slot(@inner_block) %>
+        </div>
         """
       end
   )

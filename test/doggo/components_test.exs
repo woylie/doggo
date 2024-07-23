@@ -38,6 +38,7 @@ defmodule Doggo.ComponentsTest do
     drawer()
     fab()
     fallback()
+    field_description_builder()
     field_group_builder()
     frame_builder()
     icon()
@@ -2080,6 +2081,23 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "aside", "data-what") == "ever"
+    end
+  end
+
+  describe "field_description/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.field_description for="some-input">
+          text
+        </TestComponents.field_description>
+        """)
+
+      div = find_one(html, "div:root")
+      assert attribute(div, "class") == "field-description"
+      assert attribute(div, "id") == "some-input_description"
     end
   end
 

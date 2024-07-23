@@ -833,7 +833,8 @@ defmodule Doggo do
     """
   end
 
-  defp field_description_id(id) when is_binary(id), do: "#{id}_description"
+  @doc false
+  def field_description_id(id) when is_binary(id), do: "#{id}_description"
 
   defp translate_error({msg, opts}, nil) do
     Enum.reduce(opts, msg, fn {key, value}, acc ->
