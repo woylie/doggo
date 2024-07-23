@@ -35,7 +35,7 @@ defmodule Doggo.Storybook.Tree do
   defp slots(opts) do
     dependent_components = opts[:dependent_components]
 
-    if tree_item_component = Map.get(dependent_components, :tree_item) do
+    if tree_item_component = dependent_components[:tree_item] do
       [
         """
         <.#{tree_item_component}>
@@ -66,7 +66,7 @@ defmodule Doggo.Storybook.Tree do
   defp slots_with_icons(opts) do
     dependent_components = opts[:dependent_components]
 
-    if tree_item_component = Map.get(dependent_components, :tree_item) do
+    if tree_item_component = dependent_components[:tree_item] do
       folder_icon = icon(:folder, dependent_components)
       paw_icon = icon(:paw, dependent_components)
 
