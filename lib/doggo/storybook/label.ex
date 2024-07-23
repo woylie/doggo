@@ -2,7 +2,7 @@ defmodule Doggo.Storybook.Label do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def dependent_components, do: [:input]
+  def dependent_components, do: [:field]
 
   def variations(_opts) do
     [
