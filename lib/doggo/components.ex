@@ -100,9 +100,8 @@ defmodule Doggo.Components do
     and a value and returns a CSS class name. Defaults to
     `Doggo.modifier_class_name/2`.
 
-  Some components have an `extra` option, which is used to pass additional
-  arguments to the component at compile time. This is mostly used to allow
-  the customization of certain class names.
+  Some components have additional options that are mostly used to allow the
+  customization of certain class names or to set the Gettext module.
   """
 
   use Phoenix.Component
