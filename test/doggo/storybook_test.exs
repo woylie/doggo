@@ -65,6 +65,7 @@ defmodule Doggo.StorybookTest do
     build_frame()
     build_icon(modifiers: [variant: [values: [nil, "yes"], default: nil]])
     build_image(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_input()
 
     build_label(modifiers: [variant: [values: [nil, "yes"], default: nil]])
     build_menu(modifiers: [variant: [values: [nil, "yes"], default: nil]])
