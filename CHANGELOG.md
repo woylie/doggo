@@ -29,6 +29,9 @@
 - Replace `phx-feedback-for` attribute in favor of
   `Phoenix.Component.used_input?/1`.
 - Don't use `h2` for `Doggo.page_header/1` sub title.
+- Nest `vertical_nav_nested` component into `<div>`.
+- Rename `drawer-nav-title` class in `vertical_nav_nested` component to be
+  based on configured component name (default: `vertical-nav-nested-title`).
 - Better consistency, various improvements and optimizations in all components.
 - Revise The component type classification.
 - Add maturity levels for all components (experimental, developing, refining,
