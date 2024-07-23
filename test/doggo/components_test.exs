@@ -45,6 +45,7 @@ defmodule Doggo.ComponentsTest do
     icon()
     icon_sprite()
     image()
+    label_builder()
     menu()
     menu_bar()
     menu_button()
@@ -2629,6 +2630,63 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <TestComponents.image src="image.png" alt="some text" data-test="hello" />
+        """)
+
+      assert attribute(html, ":root", "data-test") == "hello"
+    end
+  end
+
+  describe "label/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.label for="some-input">text</TestComponents.label>
+        """)
+
+      label = find_one(html, "label")
+      assert attribute(label, "class") == "label"
+      assert attribute(label, "for") == "some-input"
+      assert text(label) == "text"
+      assert Floki.find(html, ".label-required") == []
+    end
+
+    test "with required mark" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.label required>text</TestComponents.label>
+        """)
+
+      mark = find_one(html, "label > span.label-required")
+      assert attribute(mark, "title") == "required"
+
+      # inputs with `required` attribute are already announced as required
+      assert attribute(mark, "aria-hidden") == "true"
+    end
+
+    test "with required mark and custom text" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.label required_title="necessary" required>
+          text
+        </TestComponents.label>
+        """)
+
+      assert attribute(html, "label > span.label-required", "title") ==
+               "necessary"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.label data-test="hello">text</TestComponents.label>
         """)
 
       assert attribute(html, ":root", "data-test") == "hello"

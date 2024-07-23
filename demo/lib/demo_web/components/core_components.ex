@@ -35,6 +35,7 @@ defmodule DemoWeb.CoreComponents do
   icon()
   icon_sprite()
   image()
+  label_builder()
   menu()
   menu_bar()
   menu_button()
