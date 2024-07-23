@@ -2,11 +2,58 @@
 
 ## Unreleased
 
+### Added
+
+- Add `Doggo.Storybook` and `mix dog.gen.stories` for generating
+  `Phoenix.Storybook` stories for the configured components. The generated
+  stories automatically render variation groups for all configured modifiers.
+- Add `Doggo.modifier_classes/1`.
+- Add `Doggo.modifier_class_name/2`.
+
 ### Changed
 
+- Replace all function components defined in `Doggo` with build macros
+  in `Doggo.Components`. This allows you to customize the modifier attributes,
+  component names, base classes, and some other options at compile time.
+- Make modifier class name builder configurable.
+- Rename build macro for former `input` component to `field`.
+- Configure `Gettext` module for `field` component (formerly `input`) via
+  compile-time option instead of global attribute.
 - Allow to set required text and required title attributes for input and label.
-- Require `live_view ~> 1.0.0-rc.0`.
+- Add `module` argument to `mix dog.modifiers` that points to the module
+  in which the Doggo components are configured.
+- Replace `placeholder` attribute with `placeholder_src` and
+  `placeholder_content` attributes in `avatar` component.
+- Replace `phx-feedback-for` attribute in favor of
+  `Phoenix.Component.used_input?/1`.
 - Don't use `h2` for `Doggo.page_header/1` sub title.
+- Better consistency, various improvements and optimizations in all components.
+- Revise The component type classification.
+- Add maturity levels for all components (experimental, developing, refining,
+  stable).
+- Require `live_view ~> 1.0.0-rc.6`.
+
+### Removed
+
+- Remove `Phoenix.Storybook` stories bundled in the `priv` folder in favor of
+  `mix dog.gen.stories` and `Doggo.Storybook`.
+- Remove `Doggo.flash_group/1`.
+
+### Upgrade Guide
+
+1. For all Doggo components you were using, call the corresponding `build`
+   macros in `Doggo.Components` in one of your modules and update your HEEx
+   templates to call the generated functions instead of the ones from the
+   `Doggo` module. See readme for installation details.
+2. The previous Doggo version instructed you to configure a separate Storybook
+   that reads the stories from the `priv` folder of the dependency. Remove that
+   second Storybook and run
+   `mix dog.gen.stories -m [component-module] -o [storybook-folder] -a` to
+   generate stories for the configured Doggo components in the primary
+   Storybook.
+3. If you use `mix dog.modifiers` in a script, add the `--module` argument.
+4. If you were setting the `gettext` attribute on the `input` component, pass
+   the `gettext_module` option to `Doggo.Components.build_field/1` instead.
 
 ## [0.5.0] - 2024-02-12
 
