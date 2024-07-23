@@ -20,68 +20,68 @@ defmodule Doggo.Components do
         use Doggo.Components
         use Phoenix.Component
 
-        accordion()
-        action_bar()
-        alert()
-        alert_dialog()
-        app_bar()
-        avatar()
-        badge()
-        bottom_navigation()
-        box()
-        breadcrumb()
-        button()
-        button_link()
-        callout()
-        card()
-        carousel()
-        cluster()
-        combobox()
-        date()
-        datetime()
-        disclosure_button()
-        drawer()
-        fab()
-        fallback()
-        field_description_builder()
-        field_errors_builder()
-        field_group_builder()
-        frame_builder()
-        icon()
-        icon_sprite()
-        image()
-        label_builder()
-        menu()
-        menu_bar()
-        menu_button()
-        menu_group()
-        menu_item()
-        menu_item_checkbox()
-        menu_item_radio_group()
-        modal()
-        navbar()
-        navbar_items()
-        page_header()
-        property_list()
-        radio_group()
-        skeleton()
-        split_pane()
-        stack()
-        steps()
-        switch()
-        tab_navigation()
-        table()
-        tabs()
-        tag()
-        time()
-        toggle_button()
-        toolbar()
-        tooltip()
-        tree()
-        tree_item()
-        vertical_nav()
-        vertical_nav_nested()
-        vertical_nav_section()
+        build_accordion()
+        build_action_bar()
+        build_alert()
+        build_alert_dialog()
+        build_app_bar()
+        build_avatar()
+        build_badge()
+        build_bottom_navigation()
+        build_box()
+        build_breadcrumb()
+        build_button()
+        build_button_link()
+        build_callout()
+        build_card()
+        build_carousel()
+        build_cluster()
+        build_combobox()
+        build_date()
+        build_datetime()
+        build_disclosure_button()
+        build_drawer()
+        build_fab()
+        build_fallback()
+        build_field_description()
+        build_field_errors()
+        build_field_group()
+        build_frame()
+        build_icon()
+        build_icon_sprite()
+        build_image()
+        build_label()
+        build_menu()
+        build_menu_bar()
+        build_menu_button()
+        build_menu_group()
+        build_menu_item()
+        build_menu_item_checkbox()
+        build_menu_item_radio_group()
+        build_modal()
+        build_navbar()
+        build_navbar_items()
+        build_page_header()
+        build_property_list()
+        build_radio_group()
+        build_skeleton()
+        build_split_pane()
+        build_stack()
+        build_steps()
+        build_switch()
+        build_tab_navigation()
+        build_table()
+        build_tabs()
+        build_tag()
+        build_time()
+        build_toggle_button()
+        build_toolbar()
+        build_tooltip()
+        build_tree()
+        build_tree_item()
+        build_vertical_nav()
+        build_vertical_nav_nested()
+        build_vertical_nav_section()
       end
 
   ## Common Options
@@ -414,7 +414,7 @@ defmodule Doggo.Components do
     other scenarios where an immediate decision is necessary.
 
     For non-critical dialogs, such as those containing forms or additional
-    information, use `Doggo.Components.modal/1` instead.
+    information, use `Doggo.Components.build_modal/1` instead.
     """,
     usage: """
     ```heex
@@ -2410,7 +2410,7 @@ defmodule Doggo.Components do
   )
 
   component(
-    :field_description_builder,
+    :field_description,
     name: :field_description,
     base_class: "field-description",
     modifiers: [],
@@ -2450,7 +2450,7 @@ defmodule Doggo.Components do
   )
 
   component(
-    :field_errors_builder,
+    :field_errors,
     name: :field_errors,
     base_class: "field-errors",
     modifiers: [],
@@ -2487,7 +2487,7 @@ defmodule Doggo.Components do
   )
 
   component(
-    :field_group_builder,
+    :field_group,
     name: :field_group,
     base_class: "field-group",
     modifiers: [],
@@ -2538,7 +2538,7 @@ defmodule Doggo.Components do
   )
 
   component(
-    :frame_builder,
+    :frame,
     name: :frame,
     base_class: "frame",
     modifiers: [
@@ -2793,7 +2793,7 @@ defmodule Doggo.Components do
     Renders an image with an optional caption.
 
     Note that this component relies on the frame component being compiled in the
-    same module with `frame_builder/1` with the default name (`:frame`). If you
+    same module with `frame/1` with the default name (`:frame`). If you
     override the default ratios, ensure that both the `image` component and
     the `frame` component are generated with the same values.
     """,
@@ -2888,7 +2888,7 @@ defmodule Doggo.Components do
   )
 
   component(
-    :label_builder,
+    :label,
     name: :label,
     base_class: "label",
     modifiers: [],

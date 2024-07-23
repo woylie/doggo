@@ -13,7 +13,7 @@ defmodule Mix.Tasks.Dog.ModifiersTest do
     use Doggo.Components
     use Phoenix.Component
 
-    button(
+    build_button(
       modifiers: [
         size: [values: ["small", "normal"], default: "normal"],
         variant: [

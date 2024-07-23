@@ -19,6 +19,7 @@ defmodule Doggo.Macros do
         :usage
       ])
 
+    builder_name = :"build_#{name}"
     maturity = Keyword.fetch!(opts, :maturity)
     maturity_note = Keyword.get(opts, :maturity_note)
     doc = Keyword.fetch!(opts, :doc)
@@ -58,7 +59,7 @@ defmodule Doggo.Macros do
 
       Generate component with default options:
 
-          #{unquote(to_string(name))}()
+          #{unquote(to_string(builder_name))}()
 
       ## Default options
 
@@ -74,7 +75,7 @@ defmodule Doggo.Macros do
       @doc type: unquote(type)
       @doc since: unquote(since)
 
-      defmacro unquote(name)(opts \\ []) do
+      defmacro unquote(builder_name)(opts \\ []) do
         opts = Keyword.validate!(opts, unquote(defaults))
 
         {opts, extra} =

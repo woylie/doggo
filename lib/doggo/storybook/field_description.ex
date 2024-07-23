@@ -1,4 +1,4 @@
-defmodule Doggo.Storybook.FieldDescriptionBuilder do
+defmodule Doggo.Storybook.FieldDescription do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 

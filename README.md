@@ -33,10 +33,14 @@ defmodule MyAppWeb.CoreComponents do
   use Doggo.Components
   use Phoenix.Component
 
-  alert()
-  alert_dialog()
+  build_alert()
+  build_alert_dialog()
 
-  button(modifiers: [size: [values: ["normal", "small"], default: "normal"]])
+  build_button(
+    modifiers: [
+      size: [values: ["normal", "small"], default: "normal"]
+    ]
+  )
 end
 ```
 
@@ -59,7 +63,7 @@ defmodule MyAppWeb.CoreComponents do
   use Doggo.Components
   use Phoenix.Component
 
-  button(
+  build_button(
     base_class: "alt-button",
     modifiers: [small: [size: ["normal", "small"], default: "normal"]],
     class_name_fun: &MyAppWeb.CoreComponents.modifier_class/2
@@ -79,7 +83,7 @@ useful if you want to compile multiple variants of the same component, or if
 your design system uses different names.
 
 ```elixir
-button(name: :alt_button, base_class: "alt-button")
+build_button(name: :alt_button, base_class: "alt-button")
 ```
 
 This button could be used with:

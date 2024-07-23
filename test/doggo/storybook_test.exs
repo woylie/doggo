@@ -10,89 +10,122 @@ defmodule Doggo.StorybookTest do
     use Doggo.Components
     use Phoenix.Component
 
-    accordion(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    action_bar(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    alert(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    alert_dialog(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    app_bar(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    avatar(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    badge(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_accordion(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_action_bar(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_alert(modifiers: [variant: [values: [nil, "yes"], default: nil]])
 
-    bottom_navigation(
+    build_alert_dialog(
       modifiers: [variant: [values: [nil, "yes"], default: nil]]
     )
 
-    box(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    breadcrumb(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    button(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    button_link(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    callout(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    card(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    carousel(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    cluster(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    combobox(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    date(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    datetime(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_app_bar(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_avatar(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_badge(modifiers: [variant: [values: [nil, "yes"], default: nil]])
 
-    disclosure_button(
+    build_bottom_navigation(
       modifiers: [variant: [values: [nil, "yes"], default: nil]]
     )
 
-    drawer(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    fab(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    fallback(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_box(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_breadcrumb(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_button(modifiers: [variant: [values: [nil, "yes"], default: nil]])
 
-    field_description_builder(
+    build_button_link(
       modifiers: [variant: [values: [nil, "yes"], default: nil]]
     )
 
-    field_errors_builder(
+    build_callout(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_card(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_carousel(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_cluster(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_combobox(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_date(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_datetime(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+
+    build_disclosure_button(
       modifiers: [variant: [values: [nil, "yes"], default: nil]]
     )
 
-    field_group_builder(
+    build_drawer(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_fab(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_fallback(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+
+    build_field_description(
       modifiers: [variant: [values: [nil, "yes"], default: nil]]
     )
 
-    frame_builder()
-    icon(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    image(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-
-    label_builder(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    menu(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    menu_bar(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    menu_button(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    menu_group(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    menu_item(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-
-    menu_item_checkbox(
+    build_field_errors(
       modifiers: [variant: [values: [nil, "yes"], default: nil]]
     )
 
-    menu_item_radio_group(
+    build_field_group(
       modifiers: [variant: [values: [nil, "yes"], default: nil]]
     )
 
-    modal(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    navbar(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    page_header(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    property_list(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    radio_group(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    skeleton(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    split_pane(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    stack(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    steps(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    switch(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    tab_navigation(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    table(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    tabs(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    tag(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    time(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    toggle_button(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    toolbar(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    tooltip(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    tree(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    vertical_nav(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_frame()
+    build_icon(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_image(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+
+    build_label(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_menu(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_menu_bar(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+
+    build_menu_button(
+      modifiers: [variant: [values: [nil, "yes"], default: nil]]
+    )
+
+    build_menu_group(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_menu_item(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+
+    build_menu_item_checkbox(
+      modifiers: [variant: [values: [nil, "yes"], default: nil]]
+    )
+
+    build_menu_item_radio_group(
+      modifiers: [variant: [values: [nil, "yes"], default: nil]]
+    )
+
+    build_modal(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_navbar(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+
+    build_page_header(
+      modifiers: [variant: [values: [nil, "yes"], default: nil]]
+    )
+
+    build_property_list(
+      modifiers: [variant: [values: [nil, "yes"], default: nil]]
+    )
+
+    build_radio_group(
+      modifiers: [variant: [values: [nil, "yes"], default: nil]]
+    )
+
+    build_skeleton(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_split_pane(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_stack(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_steps(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_switch(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+
+    build_tab_navigation(
+      modifiers: [variant: [values: [nil, "yes"], default: nil]]
+    )
+
+    build_table(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_tabs(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_tag(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_time(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+
+    build_toggle_button(
+      modifiers: [variant: [values: [nil, "yes"], default: nil]]
+    )
+
+    build_toolbar(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_tooltip(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+    build_tree(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+
+    build_vertical_nav(
+      modifiers: [variant: [values: [nil, "yes"], default: nil]]
+    )
   end
 
   for {name, info} <- TestComponents.__dog_components__() do
