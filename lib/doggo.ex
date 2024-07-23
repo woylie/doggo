@@ -409,7 +409,7 @@ defmodule Doggo do
         </legend>
         <div>
           <input type="hidden" name={@name <> "[]"} value="" />
-          <.checkbox
+          <Doggo.Components.checkbox
             :for={option <- @options}
             option={option}
             name={@name}
@@ -642,18 +642,19 @@ defmodule Doggo do
     """
   end
 
-  defp normalize_value("date", %struct{} = value)
-       when struct in [Date, NaiveDateTime, DateTime] do
+  @doc false
+  def normalize_value("date", %struct{} = value)
+      when struct in [Date, NaiveDateTime, DateTime] do
     <<date::10-binary, _::binary>> = struct.to_string(value)
     {:safe, date}
   end
 
-  defp normalize_value("date", <<date::10-binary, _::binary>>) do
+  def normalize_value("date", <<date::10-binary, _::binary>>) do
     {:safe, date}
   end
 
-  defp normalize_value("date", _), do: ""
-  defp normalize_value(type, value), do: Form.normalize_value(type, value)
+  def normalize_value("date", _), do: ""
+  def normalize_value(type, value), do: Form.normalize_value(type, value)
 
   @doc false
   def input_aria_describedby(_, []), do: nil
@@ -663,42 +664,9 @@ defmodule Doggo do
   def input_aria_errormessage(_, []), do: nil
   def input_aria_errormessage(id, _), do: field_errors_id(id)
 
-  defp field_error_class([]), do: nil
-  defp field_error_class(_), do: "has-errors"
-
-  defp checkbox(%{option_value: _} = assigns) do
-    ~H"""
-    <.label class="checkbox">
-      <input
-        type="checkbox"
-        name={@name <> "[]"}
-        id={@id <> "_#{@option_value}"}
-        value={@option_value}
-        checked={checked?(@option_value, @value)}
-        aria-describedby={input_aria_describedby(@id, @description)}
-        aria-errormessage={input_aria_errormessage(@id, @errors)}
-        aria-invalid={@errors != [] && "true"}
-      />
-      <%= @label %>
-    </.label>
-    """
-  end
-
-  defp checkbox(%{option: {option_label, option_value}} = assigns) do
-    assigns
-    |> assign(label: option_label, option_value: option_value, option: nil)
-    |> checkbox()
-  end
-
-  defp checkbox(%{option: option_value} = assigns) do
-    assigns
-    |> assign(
-      label: humanize(option_value),
-      option_value: option_value,
-      option: nil
-    )
-    |> checkbox()
-  end
+  @doc false
+  def field_error_class([]), do: nil
+  def field_error_class(_), do: "has-errors"
 
   @doc false
   def checked?(option, value) when is_list(value) do
@@ -844,14 +812,15 @@ defmodule Doggo do
   @doc false
   def field_description_id(id) when is_binary(id), do: "#{id}_description"
 
-  defp translate_error({msg, opts}, nil) do
+  @doc false
+  def translate_error({msg, opts}, nil) do
     Enum.reduce(opts, msg, fn {key, value}, acc ->
       String.replace(acc, "%{#{key}}", fn _ -> to_string(value) end)
     end)
   end
 
-  defp translate_error({msg, opts}, gettext_module)
-       when is_atom(gettext_module) do
+  def translate_error({msg, opts}, gettext_module)
+      when is_atom(gettext_module) do
     if count = opts[:count] do
       # credo:disable-for-next-line
       apply(Gettext, :dngettext, [

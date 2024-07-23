@@ -2887,6 +2887,628 @@ defmodule Doggo.Components do
       end
   )
 
+
+  component(
+    :input,
+    modifiers: [],
+    doc: """
+    Renders a form field including input, label, errors, and description.
+
+    A `Phoenix.HTML.FormField` may be passed as argument,
+    which is used to retrieve the input name, id, and values.
+    Otherwise all attributes may be passed explicitly.
+    """,
+    usage: """
+    ### Types
+
+    In addition to all HTML input types, the following type values are also
+    supported:
+
+    - `"select"`
+    - `"checkbox-group"`
+    - `"radio-group"`
+    - `"switch"`
+
+    ### Gettext
+
+    To translate field errors using Gettext, configure your Gettext module in
+    `config/config.exs`.
+
+        config :doggo, gettext: MyApp.Gettext
+
+    Alternatively, pass the Gettext module as an attribute:
+
+    ```heex
+    <.input field={@form[:name]} gettext={MyApp.Gettext} />
+    ```
+
+    ### Label positioning
+
+    The component does not provide an attribute to modify label positioning
+    directly. Instead, label positioning should be handled with CSS. If your
+    application requires different label positions, such as horizontal and
+    vertical layouts, it is recommended to add a modifier class to the form.
+
+    For example, the default style could position labels above inputs. To place
+    labels to the left of the inputs in a horizontal form layout, you can add an
+    `is-horizontal` class to the form:
+
+    ```heex
+    <.form class="is-horizontal">
+      <!-- inputs -->
+    </.form>
+    ```
+
+    Then, in your CSS, apply the necessary styles to the `.field` class within
+    forms having the `is-horizontal` class:
+
+    ```css
+    form.is-horizontal .field {
+      // styles to position label left of the input
+    }
+    ```
+
+    The component has a `hide_label` attribute to visually hide labels while still
+    making them accessible to screen readers. If all labels within a form need to
+    be visually hidden, it may be more convenient to define a
+    `.has-visually-hidden-labels` modifier class for the `<form>`.
+
+    ```heex
+    <.form class="has-visually-hidden-labels">
+      <!-- inputs -->
+    </.form>
+    ```
+
+    Ensure to take checkbox and radio labels into consideration when writing the
+    CSS styles.
+
+    ### Examples
+
+    ```heex
+    <.input field={@form[:name]} />
+    ```
+
+    ```heex
+    <.input field={@form[:email]} type="email" />
+    ```
+
+    #### Radio group and checkbox group
+
+    The `radio-group` and `checkbox-group` types allow you to easily render groups
+    of radio buttons or checkboxes with a single component invocation. The
+    `options` attribute is required for these types and has the same format as
+    the options for the `select` type, except that options may not be nested.
+
+    ```heex
+    <.input
+      field={@form[:email]}
+      type="checkbox-group"
+      label="Cuisine"
+      options={[
+        {"Mexican", "mexican"},
+        {"Japanese", "japanese"},
+        {"Libanese", "libanese"}
+      ]}
+    />
+    ```
+
+    Note that the `checkbox-group` type renders an additional hidden input with
+    an empty value before the checkboxes. This ensures that a value exists in case
+    all checkboxes are unchecked. Consequently, the resulting list value includes
+    an extra empty string. While `Ecto.Changeset.cast/3` filters out empty strings
+    in array fields by default, you may need to handle the additional empty string
+    manual in other contexts.
+    """,
+    type: :form,
+    since: "0.6.0",
+    maturity: :developing,
+    attrs_and_slots:
+      quote do
+        attr :id, :any, default: nil
+        attr :name, :any
+
+        attr :label, :string,
+          default: nil,
+          doc: """
+          Required for all types except `"hidden"`.
+          """
+
+        attr :hide_label, :boolean,
+          default: false,
+          doc: """
+          Adds an "is-visually-hidden" class to the `<label>`. This option does not
+          apply to checkbox and radio inputs.
+          """
+
+        attr :value, :any
+
+        attr :type, :string,
+          default: "text",
+          values:
+            ~w(checkbox checkbox-group color date datetime-local email file
+         hidden month number password range radio radio-group search select
+         switch tel text textarea time url week)
+
+        attr :field, Phoenix.HTML.FormField,
+          doc: "A form field struct, for example: @form[:name]"
+
+        attr :errors, :list
+
+        attr :validations, :list,
+          doc: """
+          A list of HTML input validation attributes (`required`, `minlength`,
+          `maxlength`, `min`, `max`, `pattern`). The attributes are derived
+          automatically from the form.
+          """
+
+        attr :checked_value, :string,
+          default: "true",
+          doc: "The value that is sent when the checkbox is checked."
+
+        attr :checked, :boolean, doc: "The checked attribute for checkboxes."
+
+        attr :on_text, :string,
+          default: "On",
+          doc: "The state text for a switch when on."
+
+        attr :off_text, :string,
+          default: "Off",
+          doc: "The state text for a switch when off."
+
+        attr :prompt, :string,
+          default: nil,
+          doc: "An optional prompt for select elements."
+
+        attr :options, :list,
+          default: nil,
+          doc: """
+          A list of options.
+
+          This attribute is supported for the following types:
+
+          - `"select"`
+          - `"radio-group"`
+          - `"checkbox-group"`
+          - other text types, date and time types, and the `"range"` type
+
+          If this attribute is set for types other than select, radio, and checkbox,
+          a [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist)
+          is rendered for the input.
+
+          See `Phoenix.HTML.Form.options_for_select/2` for the format. Note that only
+          the select supports nested options.
+          """
+
+        attr :multiple, :boolean,
+          default: false,
+          doc: """
+          Sets the `multiple` attribute on a select element to allow selecting
+          multiple options.
+          """
+
+        attr :rest, :global,
+          include:
+            ~w(accept autocomplete capture cols disabled form list max maxlength min
+         minlength multiple passwordrules pattern placeholder readonly required
+         rows size step)
+
+        attr :gettext, :atom,
+          doc: """
+          The Gettext module to use for translating error messages. This option can
+          also be set globally, see above.
+          """
+
+        attr :required_text, :atom,
+          doc: """
+          The presentational text or symbol to be added to labels of required inputs.
+
+          This option can also be set globally:
+
+              config :doggo, required_text: "required"
+          """
+
+        attr :required_title, :atom,
+          doc: """
+          The `title` attribute for the `required_text`.
+
+          This option can also be set globally:
+
+              config :doggo, required_title: "required"
+          """
+
+        slot :description,
+          doc: "A field description to render underneath the input."
+
+        slot :addon_left,
+          doc: """
+          Can be used to render an icon left in the input. Only supported for
+          single-line inputs.
+          """
+
+        slot :addon_right,
+          doc: """
+          Can be used to render an icon left in the input. Only supported for
+          single-line inputs.
+          """
+      end,
+    component_function: fn opts, _extra ->
+      base_class = Keyword.fetch!(opts, :base_class)
+      modifier_names = opts |> Keyword.fetch!(:modifiers) |> Keyword.keys()
+      class_name_fun = Keyword.fetch!(opts, :class_name_fun)
+
+      # credo:disable-for-next-line
+      quote do
+        def input(%{field: %Phoenix.HTML.FormField{} = field} = var!(assigns)) do
+          unquote(
+            prepare_class(
+              base_class,
+              modifier_names,
+              class_name_fun
+            )
+          )
+
+          errors =
+            if Phoenix.Component.used_input?(field), do: field.errors, else: []
+
+          gettext_module =
+            Map.get(
+              var!(assigns),
+              :gettext,
+              Application.get_env(:doggo, :gettext)
+            )
+
+          assigns
+          |> var!()
+          |> assign(field: nil, id: var!(assigns).id || field.id)
+          |> assign_new(
+            :errors,
+            fn ->
+              Enum.map(errors, &Doggo.translate_error(&1, gettext_module))
+            end
+          )
+          |> assign_new(
+            :required_text,
+            fn -> Application.get_env(:doggo, :required_text, "*") end
+          )
+          |> assign_new(
+            :required_title,
+            fn -> Application.get_env(:doggo, :required_title, "required") end
+          )
+          |> assign_new(:validations, fn ->
+            Phoenix.HTML.Form.input_validations(field.form, field.field)
+          end)
+          |> assign_new(:name, fn ->
+            if var!(assigns).multiple, do: field.name <> "[]", else: field.name
+          end)
+          |> assign_new(:value, fn -> field.value end)
+          |> input()
+        end
+
+        def input(%{type: "checkbox"} = var!(assigns)) do
+          var!(assigns) =
+            assign_new(var!(assigns), :checked, fn ->
+              Phoenix.HTML.Form.normalize_value(
+                "checkbox",
+                var!(assigns)[:value]
+              )
+            end)
+
+          ~H"""
+          <div class={["field", Doggo.field_error_class(@errors)]}>
+            <.label required={@validations[:required] || false} class="checkbox">
+              <input type="hidden" name={@name} value="false" />
+              <input
+                type="checkbox"
+                name={@name}
+                id={@id}
+                value={@checked_value}
+                checked={@checked}
+                aria-describedby={Doggo.input_aria_describedby(@id, @description)}
+                aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+                aria-invalid={@errors != [] && "true"}
+                {@validations}
+                {@rest}
+              />
+              <%= @label %>
+            </.label>
+            <.field_errors for={@id} errors={@errors} />
+            <.field_description :if={@description != []} for={@id}>
+              <%= render_slot(@description) %>
+            </.field_description>
+          </div>
+          """
+        end
+
+        def input(%{type: "checkbox-group"} = var!(assigns)) do
+          ~H"""
+          <div class={["field", Doggo.field_error_class(@errors)]}>
+            <fieldset class="checkbox-group">
+              <legend>
+                <%= @label %>
+                <Doggo.Components.required_mark
+                  :if={@validations[:required]}
+                  text={@required_text}
+                  title={@required_title}
+                />
+              </legend>
+              <div>
+                <input type="hidden" name={@name <> "[]"} value="" />
+                <Doggo.Components.checkbox
+                  :for={option <- @options}
+                  option={option}
+                  name={@name}
+                  id={@id}
+                  value={@value}
+                  errors={@errors}
+                  description={@description}
+                />
+              </div>
+            </fieldset>
+            <.field_errors for={@id} errors={@errors} />
+            <.field_description :if={@description != []} for={@id}>
+              <%= render_slot(@description) %>
+            </.field_description>
+          </div>
+          """
+        end
+
+        def input(%{type: "hidden", value: values} = var!(assigns))
+            when is_list(values) do
+          ~H"""
+          <input :for={value <- @value} type="hidden" name={@name <> "[]"} value={value} />
+          """
+        end
+
+        def input(%{type: "hidden"} = var!(assigns)) do
+          ~H"""
+          <input type="hidden" name={@name} value={@value} />
+          """
+        end
+
+        def input(%{type: "radio-group"} = var!(assigns)) do
+          ~H"""
+          <div class={["field", Doggo.field_error_class(@errors)]}>
+            <fieldset class="radio-group">
+              <legend>
+                <%= @label %>
+                <Doggo.Components.required_mark
+                  :if={@validations[:required]}
+                  text={@required_text}
+                  title={@required_title}
+                />
+              </legend>
+              <div>
+                <Doggo.Components.radio
+                  :for={option <- @options}
+                  option={option}
+                  name={@name}
+                  id={@id}
+                  value={@value}
+                  errors={@errors}
+                  description={@description}
+                />
+              </div>
+            </fieldset>
+            <.field_errors for={@id} errors={@errors} />
+            <.field_description :if={@description != []} for={@id}>
+              <%= render_slot(@description) %>
+            </.field_description>
+          </div>
+          """
+        end
+
+        def input(%{type: "select"} = var!(assigns)) do
+          ~H"""
+          <div class={["field", Doggo.field_error_class(@errors)]}>
+            <.label
+              for={@id}
+              required={@validations[:required] || false}
+              required_text={@required_text}
+              required_title={@required_title}
+              visually_hidden={@hide_label}
+            >
+              <%= @label %>
+            </.label>
+            <div class={["select", @multiple && "is-multiple"]}>
+              <select
+                name={@name}
+                id={@id}
+                multiple={@multiple}
+                aria-describedby={Doggo.input_aria_describedby(@id, @description)}
+                aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+                aria-invalid={@errors != [] && "true"}
+                {@validations}
+                {@rest}
+              >
+                <option :if={@prompt} value=""><%= @prompt %></option>
+                <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
+              </select>
+            </div>
+            <.field_errors for={@id} errors={@errors} />
+            <.field_description :if={@description != []} for={@id}>
+              <%= render_slot(@description) %>
+            </.field_description>
+          </div>
+          """
+        end
+
+        def input(%{type: "switch"} = var!(assigns)) do
+          var!(assigns) =
+            assign_new(var!(assigns), :checked, fn ->
+              Phoenix.HTML.Form.normalize_value(
+                "checkbox",
+                var!(assigns)[:value]
+              )
+            end)
+
+          ~H"""
+          <div class={["field", Doggo.field_error_class(@errors)]}>
+            <.label required={@validations[:required] || false} class="switch">
+              <span class="switch-label"><%= @label %></span>
+              <input type="hidden" name={@name} value="false" />
+              <input
+                type="checkbox"
+                role="switch"
+                name={@name}
+                id={@id}
+                value={@checked_value}
+                checked={@checked}
+                aria-describedby={Doggo.input_aria_describedby(@id, @description)}
+                aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+                aria-invalid={@errors != [] && "true"}
+                {@validations}
+                {@rest}
+              />
+              <span class="switch-state">
+                <span
+                  class={if @checked, do: "switch-state-on", else: "switch-state-off"}
+                  aria-hidden="true"
+                >
+                  <%= if @checked do %>
+                    <%= @on_text %>
+                  <% else %>
+                    <%= @off_text %>
+                  <% end %>
+                </span>
+              </span>
+            </.label>
+            <.field_errors for={@id} errors={@errors} />
+            <.field_description :if={@description != []} for={@id}>
+              <%= render_slot(@description) %>
+            </.field_description>
+          </div>
+          """
+        end
+
+        def input(%{type: "textarea"} = var!(assigns)) do
+          ~H"""
+          <div class={["field", Doggo.field_error_class(@errors)]}>
+            <.label
+              for={@id}
+              required={@validations[:required] || false}
+              required_text={@required_text}
+              required_title={@required_title}
+              visually_hidden={@hide_label}
+            >
+              <%= @label %>
+            </.label>
+            <textarea
+              name={@name}
+              id={@id}
+              aria-describedby={Doggo.input_aria_describedby(@id, @description)}
+              aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+              aria-invalid={@errors != [] && "true"}
+              {@validations}
+              {@rest}
+            ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
+            <.field_errors for={@id} errors={@errors} />
+            <.field_description :if={@description != []} for={@id}>
+              <%= render_slot(@description) %>
+            </.field_description>
+          </div>
+          """
+        end
+
+        def input(var!(assigns)) do
+          ~H"""
+          <div class={["field", Doggo.field_error_class(@errors)]}>
+            <.label
+              for={@id}
+              required={@validations[:required] || false}
+              required_text={@required_text}
+              required_title={@required_title}
+              visually_hidden={@hide_label}
+            >
+              <%= @label %>
+            </.label>
+            <div class={[
+              "input-wrapper",
+              @addon_left != [] && "has-addon-left",
+              @addon_right != [] && "has-addon-right"
+            ]}>
+              <input
+                name={@name}
+                id={@id}
+                list={@options && "#{@id}_datalist"}
+                type={@type}
+                value={Doggo.normalize_value(@type, @value)}
+                aria-describedby={Doggo.input_aria_describedby(@id, @description)}
+                aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+                aria-invalid={@errors != [] && "true"}
+                {@validations}
+                {@rest}
+              />
+              <div :if={@addon_left != []} class="input-addon-left">
+                <%= render_slot(@addon_left) %>
+              </div>
+              <div :if={@addon_right != []} class="input-addon-right">
+                <%= render_slot(@addon_right) %>
+              </div>
+            </div>
+            <datalist :if={@options} id={"#{@id}_datalist"}>
+              <Doggo.Components.option :for={option <- @options} option={option} />
+            </datalist>
+            <.field_errors for={@id} errors={@errors} />
+            <.field_description :if={@description != []} for={@id}>
+              <%= render_slot(@description) %>
+            </.field_description>
+          </div>
+          """
+        end
+      end
+    end
+  )
+
+  @doc false
+  def option(%{option: {label, value}} = assigns) do
+    assigns = assign(assigns, label: label, value: value)
+
+    ~H"""
+    <option value={@value}><%= @label %></option>
+    """
+  end
+
+  def option(%{option: _} = assigns) do
+    ~H"""
+    <option value={@option}><%= @option %></option>
+    """
+  end
+
+  @doc false
+  def checkbox(%{option_value: _} = assigns) do
+    ~H"""
+    <label class="checkbox">
+      <input
+        type="checkbox"
+        name={@name <> "[]"}
+        id={@id <> "_#{@option_value}"}
+        value={@option_value}
+        checked={Doggo.checked?(@option_value, @value)}
+        aria-describedby={Doggo.input_aria_describedby(@id, @description)}
+        aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+        aria-invalid={@errors != [] && "true"}
+      />
+      <%= @label %>
+    </label>
+    """
+  end
+
+  def checkbox(%{option: {option_label, option_value}} = assigns) do
+    assigns
+    |> assign(label: option_label, option_value: option_value, option: nil)
+    |> checkbox()
+  end
+
+  def checkbox(%{option: option_value} = assigns) do
+    assigns
+    |> assign(
+      label: Doggo.humanize(option_value),
+      option_value: option_value,
+      option: nil
+    )
+    |> checkbox()
+  end
+
   component(
     :label,
     name: :label,
