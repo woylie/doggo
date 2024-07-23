@@ -4,33 +4,6 @@ defmodule DoggoTest do
 
   import Doggo.TestHelpers
 
-  describe "field_errors/1" do
-    test "without errors" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.field_errors for="some-input" errors={[]} />
-        """)
-
-      assert html == []
-    end
-
-    test "with errors" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.field_errors for="some-input" errors={["some error"]} />
-        """)
-
-      ul = find_one(html, "ul:root")
-      assert attribute(ul, "class") == "field-errors"
-      assert attribute(ul, "id") == "some-input_errors"
-      assert text(html, "ul > li") == "some error"
-    end
-  end
-
   describe "input/1" do
     test "with text input" do
       assigns = %{form: to_form(%{})}

@@ -806,7 +806,8 @@ defmodule Doggo do
     """
   end
 
-  defp field_errors_id(id) when is_binary(id), do: "#{id}_errors"
+  @doc false
+  def field_errors_id(id) when is_binary(id), do: "#{id}_errors"
 
   @doc """
   Renders the description of an input.

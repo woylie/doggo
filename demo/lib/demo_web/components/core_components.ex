@@ -29,6 +29,7 @@ defmodule DemoWeb.CoreComponents do
   fab()
   fallback()
   field_description_builder()
+  field_errors_builder()
   field_group_builder()
   frame_builder()
   icon()

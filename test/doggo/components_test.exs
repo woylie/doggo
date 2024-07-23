@@ -39,6 +39,7 @@ defmodule Doggo.ComponentsTest do
     fab()
     fallback()
     field_description_builder()
+    field_errors_builder()
     field_group_builder()
     frame_builder()
     icon()
@@ -2098,6 +2099,33 @@ defmodule Doggo.ComponentsTest do
       div = find_one(html, "div:root")
       assert attribute(div, "class") == "field-description"
       assert attribute(div, "id") == "some-input_description"
+    end
+  end
+
+  describe "field_errors/1" do
+    test "without errors" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.field_errors for="some-input" errors={[]} />
+        """)
+
+      assert html == []
+    end
+
+    test "with errors" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.field_errors for="some-input" errors={["some error"]} />
+        """)
+
+      ul = find_one(html, "ul:root")
+      assert attribute(ul, "class") == "field-errors"
+      assert attribute(ul, "id") == "some-input_errors"
+      assert text(html, "ul > li") == "some error"
     end
   end
 

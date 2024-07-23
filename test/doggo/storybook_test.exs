@@ -46,6 +46,10 @@ defmodule Doggo.StorybookTest do
       modifiers: [variant: [values: [nil, "yes"], default: nil]]
     )
 
+    field_errors_builder(
+      modifiers: [variant: [values: [nil, "yes"], default: nil]]
+    )
+
     field_group_builder(
       modifiers: [variant: [values: [nil, "yes"], default: nil]]
     )

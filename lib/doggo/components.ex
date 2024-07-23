@@ -44,6 +44,7 @@ defmodule Doggo.Components do
         fab()
         fallback()
         field_description_builder()
+        field_errors_builder()
         field_group_builder()
         frame_builder()
         icon()
@@ -2443,6 +2444,43 @@ defmodule Doggo.Components do
         <div id={@id} class={@class}>
           <%= render_slot(@inner_block) %>
         </div>
+        """
+      end
+  )
+
+  component(
+    :field_errors_builder,
+    name: :field_errors,
+    base_class: "field-errors",
+    modifiers: [],
+    doc: """
+    Renders the errors for an input.
+    """,
+    usage: """
+    ```heex
+    <.field_errors for="name" errors={["too many characters"]} />
+    ```
+    """,
+    type: :form,
+    since: "0.6.0",
+    maturity: :developing,
+    attrs_and_slots:
+      quote do
+        attr :for, :string, required: true, doc: "The ID of the input."
+        attr :errors, :list, required: true, doc: "A list of errors as strings."
+        attr :rest, :global, doc: "Any additional HTML attributes."
+      end,
+    heex:
+      quote do
+        %{for: for} = var!(assigns)
+
+        var!(assigns) =
+          assign(var!(assigns), :id, Doggo.field_errors_id(for))
+
+        ~H"""
+        <ul :if={@errors != []} id={@id} class={@class} {@rest}>
+          <li :for={error <- @errors}><%= error %></li>
+        </ul>
         """
       end
   )
