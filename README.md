@@ -95,18 +95,6 @@ This button could be used with:
 Refer to the `Doggo.Components` module documentation for more information about
 the options and the individual components.
 
-### Gettext
-
-To allow Doggo to translate certain strings such as form field errors with
-Gettext, set your Gettext module in `config/config.exs`:
-
-```elixir
-config :doggo, gettext: MyApp.Gettext
-```
-
-This only affects the `input` component. If you prefer, you can pass the
-gettext module as an attribute to the component instead.
-
 ### Storybook
 
 Doggo can generate

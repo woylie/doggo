@@ -32,6 +32,7 @@ defmodule DemoWeb.CoreComponents do
   build_icon()
   build_icon_sprite()
   build_image()
+  build_input()
   build_label()
   build_menu()
   build_menu_bar()

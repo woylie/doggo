@@ -7,6 +7,7 @@ defmodule Doggo.Macros do
       Keyword.validate!(opts, [
         :attrs_and_slots,
         :base_class,
+        :component_function,
         :doc,
         :extra,
         :heex,
@@ -45,7 +46,8 @@ defmodule Doggo.Macros do
     type = Keyword.fetch!(opts, :type)
     since = Keyword.fetch!(opts, :since)
     attrs_and_slots = Keyword.fetch!(opts, :attrs_and_slots)
-    heex = Keyword.fetch!(opts, :heex)
+    heex = Keyword.get(opts, :heex)
+    component_function = Keyword.get(opts, :component_function)
 
     maturity_info = build_maturity_info(maturity, maturity_note)
 
@@ -92,63 +94,94 @@ defmodule Doggo.Macros do
         modifier_names = Keyword.keys(modifiers)
         class_name_fun = Keyword.fetch!(opts, :class_name_fun)
         heex = Doggo.Macros.unpack_heex(unquote(heex), extra)
+
+        component_function =
+          unpack_component_function(unquote(component_function), opts, extra)
+
         attrs_and_slots = unquote(attrs_and_slots)
         usage = unquote(usage)
         doc = unquote(doc)
 
-        quote do
-          @dog_components unquote(component_info)
+        preamble =
+          quote do
+            @dog_components unquote(component_info)
 
-          @doc """
-          #{unquote(doc)}
+            @doc """
+            #{unquote(doc)}
 
-          ## Usage
+            ## Usage
 
-          #{unquote(usage)}
-          """
-
-          for {name, modifier_opts} <- unquote(modifiers) do
-            attr name, :string, modifier_opts
-          end
-
-          attr :class, :any,
-            default: nil,
-            doc: """
-            Any additional classes to be added.
-
-            Variations of the component should be expressed via modifier
-            attributes, and it is preferable to use styles on the parent
-            container to arrange components on the page, but if you have to,
-            you can use this attribute to pass additional utility classes to
-            the component.
-
-            The value can be a string or a list of strings.
+            #{unquote(usage)}
             """
 
-          unquote(attrs_and_slots)
+            for {name, modifier_opts} <- unquote(modifiers) do
+              attr name, :string, modifier_opts
+            end
 
-          def unquote(name)(var!(assigns)) do
-            var!(assigns) =
-              assign(var!(assigns),
-                base_class: unquote(base_class),
-                class:
-                  Doggo.build_class(
-                    unquote(base_class),
-                    unquote(modifier_names),
-                    unquote(class_name_fun),
-                    var!(assigns)
-                  )
-              )
+            attr :class, :any,
+              default: nil,
+              doc: """
+              Any additional classes to be added.
 
-            unquote(heex)
+              Variations of the component should be expressed via modifier
+              attributes, and it is preferable to use styles on the parent
+              container to arrange components on the page, but if you have to,
+              you can use this attribute to pass additional utility classes to
+              the component.
+
+              The value can be a string or a list of strings.
+              """
+
+            unquote(attrs_and_slots)
           end
-        end
+
+        function =
+          if heex do
+            quote do
+              def unquote(name)(var!(assigns)) do
+                unquote(
+                  prepare_class(
+                    base_class,
+                    Keyword.keys(modifiers),
+                    class_name_fun
+                  )
+                )
+
+                unquote(heex)
+              end
+            end
+          else
+            component_function
+          end
+
+        [preamble, function]
       end
+    end
+  end
+
+  def prepare_class(base_class, modifier_names, class_name_fun) do
+    quote do
+      var!(assigns) =
+        assign(var!(assigns),
+          base_class: unquote(base_class),
+          class:
+            Doggo.build_class(
+              unquote(base_class),
+              unquote(modifier_names),
+              unquote(class_name_fun),
+              var!(assigns)
+            )
+        )
     end
   end
 
   def unpack_heex(heex, extra) when is_function(heex), do: heex.(extra)
   def unpack_heex(heex, _), do: heex
+
+  def unpack_component_function(fun, opts, extra) when is_function(fun),
+    do: fun.(opts, extra)
+
+  def unpack_component_function(fun, _, _), do: fun
 
   defp build_maturity_info(maturity, nil) do
     """
