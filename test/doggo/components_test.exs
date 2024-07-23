@@ -45,7 +45,7 @@ defmodule Doggo.ComponentsTest do
     build_icon()
     build_icon_sprite()
     build_image()
-    build_input()
+    build_input(gettext_module: Doggo.Gettext)
     build_label()
     build_menu()
     build_menu_bar()
@@ -3144,10 +3144,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.input
-            field={%{@form[:what] | errors: [{"weird dog", []}]}}
-            gettext={Doggo.Gettext}
-          />
+          <TestComponents.input field={%{@form[:what] | errors: [{"weird dog", []}]}} />
         </.form>
         """)
 

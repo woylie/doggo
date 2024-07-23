@@ -2891,6 +2891,9 @@ defmodule Doggo.Components do
   component(
     :input,
     modifiers: [],
+    extra: [
+      gettext_module: nil
+    ],
     doc: """
     Renders a form field including input, label, errors, and description.
 
@@ -2911,16 +2914,10 @@ defmodule Doggo.Components do
 
     ### Gettext
 
-    To translate field errors using Gettext, configure your Gettext module in
-    `config/config.exs`.
+    To translate field errors using Gettext, set the `gettext_module` option
+    when building the component:
 
-        config :doggo, gettext: MyApp.Gettext
-
-    Alternatively, pass the Gettext module as an attribute:
-
-    ```heex
-    <.input field={@form[:name]} gettext={MyApp.Gettext} />
-    ```
+        build_input(gettext_module: MyApp.Gettext)
 
     ### Label positioning
 
@@ -3131,10 +3128,11 @@ defmodule Doggo.Components do
           single-line inputs.
           """
       end,
-    component_function: fn opts, _extra ->
+    component_function: fn opts, extra ->
       base_class = Keyword.fetch!(opts, :base_class)
       modifier_names = opts |> Keyword.fetch!(:modifiers) |> Keyword.keys()
       class_name_fun = Keyword.fetch!(opts, :class_name_fun)
+      gettext_module = Keyword.get(extra, :gettext_module)
 
       # credo:disable-for-next-line
       quote do
@@ -3150,20 +3148,16 @@ defmodule Doggo.Components do
           errors =
             if Phoenix.Component.used_input?(field), do: field.errors, else: []
 
-          gettext_module =
-            Map.get(
-              var!(assigns),
-              :gettext,
-              Application.get_env(:doggo, :gettext)
-            )
-
           assigns
           |> var!()
           |> assign(field: nil, id: var!(assigns).id || field.id)
           |> assign_new(
             :errors,
             fn ->
-              Enum.map(errors, &Doggo.translate_error(&1, gettext_module))
+              Enum.map(
+                errors,
+                &Doggo.translate_error(&1, unquote(gettext_module))
+              )
             end
           )
           |> assign_new(
