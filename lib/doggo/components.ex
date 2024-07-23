@@ -2425,6 +2425,12 @@ defmodule Doggo.Components do
     Otherwise all attributes may be passed explicitly.
     """,
     usage: """
+    ### Dependencies
+
+    This component requires the `field_description`, `field_errors`,
+    `field_group`, and `label` components to be compiled with their default
+    names in the same module.
+
     ### Types
 
     In addition to all HTML input types, the following type values are also
