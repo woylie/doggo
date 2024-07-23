@@ -806,7 +806,8 @@ defmodule Doggo do
     """
   end
 
-  defp field_errors_id(id) when is_binary(id), do: "#{id}_errors"
+  @doc false
+  def field_errors_id(id) when is_binary(id), do: "#{id}_errors"
 
   @doc """
   Renders the description of an input.
@@ -833,7 +834,8 @@ defmodule Doggo do
     """
   end
 
-  defp field_description_id(id) when is_binary(id), do: "#{id}_description"
+  @doc false
+  def field_description_id(id) when is_binary(id), do: "#{id}_description"
 
   defp translate_error({msg, opts}, nil) do
     Enum.reduce(opts, msg, fn {key, value}, acc ->
@@ -857,53 +859,6 @@ defmodule Doggo do
       # credo:disable-for-next-line
       apply(Gettext, :dgettext, [gettext_module, "errors", msg, opts])
     end
-  end
-
-  @doc """
-  Use the field group component to visually group multiple inputs in a form.
-
-  This component is intended for styling purposes and does not provide semantic
-  grouping. For semantic grouping of related form elements, use the `<fieldset>`
-  and `<legend>` HTML elements instead.
-
-  ## Examples
-
-  Visual grouping of inputs:
-
-  ```heex
-  <Doggo.field_group>
-    <Doggo.input field={@form[:given_name]} label="Given name" />
-    <Doggo.input field={@form[:family_name]} label="Family name"/>
-  </Doggo.field_group>
-  ```
-
-  Semantic grouping (for reference):
-
-  ```heex
-  <fieldset>
-    <legend>Personal Information</legend>
-    <Doggo.input field={@form[:given_name]} label="Given name" />
-    <Doggo.input field={@form[:family_name]} label="Family name"/>
-  </fieldset>
-  ```
-  """
-  @doc type: :form
-  @doc since: "0.3.0"
-
-  attr :class, :any,
-    default: [],
-    doc: "Additional CSS classes. Can be a string or a list of strings."
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-
-  slot :inner_block, required: true
-
-  def field_group(assigns) do
-    ~H"""
-    <div class={["field-group" | List.wrap(@class)]} {@rest}>
-      <%= render_slot(@inner_block) %>
-    </div>
-    """
   end
 
   ## Helpers

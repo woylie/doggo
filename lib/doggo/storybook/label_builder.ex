@@ -1,9 +1,10 @@
-defmodule Storybook.Components.Label do
-  use PhoenixStorybook.Story, :component
+defmodule Doggo.Storybook.LabelBuilder do
+  @moduledoc false
+  alias PhoenixStorybook.Stories.Variation
 
-  def function, do: &Doggo.label/1
+  def dependent_components, do: [:input]
 
-  def variations do
+  def variations(_opts) do
     [
       %Variation{
         id: :default,
@@ -20,5 +21,12 @@ defmodule Storybook.Components.Label do
         slots: ["E-mail"]
       }
     ]
+  end
+
+  def modifier_variation_base(id, _name, _value, _opts) do
+    %{
+      attributes: %{id: id},
+      slots: ["E-mail"]
+    }
   end
 end

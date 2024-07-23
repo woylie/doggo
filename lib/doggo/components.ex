@@ -43,10 +43,14 @@ defmodule Doggo.Components do
         drawer()
         fab()
         fallback()
+        field_description_builder()
+        field_errors_builder()
+        field_group_builder()
         frame_builder()
         icon()
         icon_sprite()
         image()
+        label_builder()
         menu()
         menu_bar()
         menu_button()
@@ -2406,6 +2410,134 @@ defmodule Doggo.Components do
   )
 
   component(
+    :field_description_builder,
+    name: :field_description,
+    base_class: "field-description",
+    modifiers: [],
+    doc: """
+    Renders the description of an input.
+    """,
+    usage: """
+    ```heex
+    <.field_description for="name">
+      max. 100 characters
+    </.field_description>
+    ```
+    """,
+    type: :form,
+    since: "0.6.0",
+    maturity: :developing,
+    attrs_and_slots:
+      quote do
+        attr :for, :string, required: true, doc: "The ID of the input."
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :inner_block, required: true
+      end,
+    heex:
+      quote do
+        %{for: for} = var!(assigns)
+
+        var!(assigns) =
+          assign(var!(assigns), :id, Doggo.field_description_id(for))
+
+        ~H"""
+        <div id={@id} class={@class}>
+          <%= render_slot(@inner_block) %>
+        </div>
+        """
+      end
+  )
+
+  component(
+    :field_errors_builder,
+    name: :field_errors,
+    base_class: "field-errors",
+    modifiers: [],
+    doc: """
+    Renders the errors for an input.
+    """,
+    usage: """
+    ```heex
+    <.field_errors for="name" errors={["too many characters"]} />
+    ```
+    """,
+    type: :form,
+    since: "0.6.0",
+    maturity: :developing,
+    attrs_and_slots:
+      quote do
+        attr :for, :string, required: true, doc: "The ID of the input."
+        attr :errors, :list, required: true, doc: "A list of errors as strings."
+        attr :rest, :global, doc: "Any additional HTML attributes."
+      end,
+    heex:
+      quote do
+        %{for: for} = var!(assigns)
+
+        var!(assigns) =
+          assign(var!(assigns), :id, Doggo.field_errors_id(for))
+
+        ~H"""
+        <ul :if={@errors != []} id={@id} class={@class} {@rest}>
+          <li :for={error <- @errors}><%= error %></li>
+        </ul>
+        """
+      end
+  )
+
+  component(
+    :field_group_builder,
+    name: :field_group,
+    base_class: "field-group",
+    modifiers: [],
+    doc: """
+    Use the field group component to visually group multiple inputs in a form.
+
+    This component is intended for styling purposes and does not provide semantic
+    grouping. For semantic grouping of related form elements, use the `<fieldset>`
+    and `<legend>` HTML elements instead.
+    """,
+    usage: """
+    Visual grouping of inputs:
+
+    ```heex
+    <.field_group>
+      <.input field={@form[:given_name]} label="Given name" />
+      <.input field={@form[:family_name]} label="Family name"/>
+    </.field_group>
+    ```
+
+    Semantic grouping (for reference):
+
+    ```heex
+    <fieldset>
+      <legend>Personal Information</legend>
+      <.input field={@form[:given_name]} label="Given name" />
+      <.input field={@form[:family_name]} label="Family name"/>
+    </fieldset>
+    ```
+    """,
+    type: :form,
+    since: "0.6.0",
+    maturity: :developing,
+    attrs_and_slots:
+      quote do
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :inner_block, required: true
+      end,
+    heex:
+      quote do
+        ~H"""
+        <div class={@class} {@rest}>
+          <%= render_slot(@inner_block) %>
+        </div>
+        """
+      end
+  )
+
+  component(
     :frame_builder,
     name: :frame,
     base_class: "frame",
@@ -2754,6 +2886,105 @@ defmodule Doggo.Components do
         """
       end
   )
+
+  component(
+    :label_builder,
+    name: :label,
+    base_class: "label",
+    modifiers: [],
+    extra: [
+      visually_hidden_class: "is-visually-hidden"
+    ],
+    doc: """
+    Renders the label for an input.
+    """,
+    usage: """
+    ```heex
+    <.label for="name" required>
+      Name
+    </.label>
+    ```
+    """,
+    type: :form,
+    since: "0.6.0",
+    maturity: :developing,
+    attrs_and_slots:
+      quote do
+        attr :for, :string, default: nil, doc: "The ID of the input."
+
+        attr :required, :boolean,
+          default: false,
+          doc: "If set to `true`, a 'required' mark is rendered."
+
+        attr :required_text, :any,
+          default: "*",
+          doc: """
+          Sets the presentational text or symbol to mark an input as required.
+          """
+
+        attr :required_title, :any,
+          default: "required",
+          doc: """
+          Sets the `title` attribute of the required mark.
+          """
+
+        attr :visually_hidden, :boolean,
+          default: false,
+          doc: """
+          Adds an "is-visually-hidden" class to the `<label>`.
+          """
+
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :inner_block, required: true
+      end,
+    heex: fn extra ->
+      visually_hidden_class = Keyword.fetch!(extra, :visually_hidden_class)
+
+      quote do
+        %{class: class, visually_hidden: visually_hidden} = var!(assigns)
+
+        class =
+          if visually_hidden,
+            do: class ++ [unquote(visually_hidden_class)],
+            else: class
+
+        var!(assigns) = assign(var!(assigns), :class, class)
+
+        ~H"""
+        <label
+          for={@for}
+          class={[@visually_hidden && "is-visually-hidden" | @class]}
+          {@rest}
+        >
+          <%= render_slot(@inner_block) %>
+          <Doggo.Components.required_mark
+            :if={@required}
+            title={@required_title}
+            text={@required_text}
+          />
+        </label>
+        """
+      end
+    end
+  )
+
+  # inputs are announced as required by screen readers if the `required`
+  # attribute is set. This makes this mark purely visual. `aria-hidden="true"`
+  # is added so that screen readers don't announce redundant information. The
+  # title attribute has poor accessibility characteristics, but since this is
+  # purely presentational, this is acceptable.
+  # It is good practice to add a sentence explaining that fields marked with an
+  # asterisk (*) are required to the form.
+  # Alternatively, the word `required` might be used instead of an asterisk.
+  @doc false
+  def required_mark(assigns) do
+    ~H"""
+    <span :if={@text} class="label-required" aria-hidden="true" title={@title}>
+      <%= @text %>
+    </span>
+    """
+  end
 
   component(
     :menu,
