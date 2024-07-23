@@ -38,6 +38,7 @@ defmodule Doggo.ComponentsTest do
     drawer()
     fab()
     fallback()
+    field_group_builder()
     frame_builder()
     icon()
     icon_sprite()
@@ -2079,6 +2080,32 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "aside", "data-what") == "ever"
+    end
+  end
+
+  describe "field_group/1" do
+    test "default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.field_group>fields</TestComponents.field_group>
+        """)
+
+      div = find_one(html, "div")
+      assert attribute(div, "class") == "field-group"
+      assert text(div) == "fields"
+    end
+
+    test "with global attribute" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.field_group data-what="ever">fields</TestComponents.field_group>
+        """)
+
+      assert attribute(html, "div", "data-what") == "ever"
     end
   end
 

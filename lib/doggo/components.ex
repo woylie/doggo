@@ -43,6 +43,7 @@ defmodule Doggo.Components do
         drawer()
         fab()
         fallback()
+        field_group_builder()
         frame_builder()
         icon()
         icon_sprite()
@@ -2401,6 +2402,57 @@ defmodule Doggo.Components do
           aria-label={@accessibility_text}
           {@rest}
         ><%= @placeholder %></span>
+        """
+      end
+  )
+
+  component(
+    :field_group_builder,
+    name: :field_group,
+    base_class: "field-group",
+    modifiers: [],
+    doc: """
+    Use the field group component to visually group multiple inputs in a form.
+
+    This component is intended for styling purposes and does not provide semantic
+    grouping. For semantic grouping of related form elements, use the `<fieldset>`
+    and `<legend>` HTML elements instead.
+    """,
+    usage: """
+    Visual grouping of inputs:
+
+    ```heex
+    <.field_group>
+      <.input field={@form[:given_name]} label="Given name" />
+      <.input field={@form[:family_name]} label="Family name"/>
+    </.field_group>
+    ```
+
+    Semantic grouping (for reference):
+
+    ```heex
+    <fieldset>
+      <legend>Personal Information</legend>
+      <.input field={@form[:given_name]} label="Given name" />
+      <.input field={@form[:family_name]} label="Family name"/>
+    </fieldset>
+    ```
+    """,
+    type: :form,
+    since: "0.6.0",
+    maturity: :developing,
+    attrs_and_slots:
+      quote do
+        attr :rest, :global, doc: "Any additional HTML attributes."
+
+        slot :inner_block, required: true
+      end,
+    heex:
+      quote do
+        ~H"""
+        <div class={@class} {@rest}>
+          <%= render_slot(@inner_block) %>
+        </div>
         """
       end
   )

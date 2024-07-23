@@ -46,56 +46,6 @@ defmodule DoggoTest do
     end
   end
 
-  describe "field_group/1" do
-    test "default" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.field_group>fields</Doggo.field_group>
-        """)
-
-      div = find_one(html, "div")
-      assert attribute(div, "class") == "field-group"
-      assert text(div) == "fields"
-    end
-
-    test "with additional class as string" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.field_group class="is-narrow">fields</Doggo.field_group>
-        """)
-
-      assert attribute(html, "div", "class") == "field-group is-narrow"
-    end
-
-    test "with additional classes as list" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.field_group class={["is-narrow", "is-crisp"]}>
-          fields
-        </Doggo.field_group>
-        """)
-
-      assert attribute(html, "div", "class") == "field-group is-narrow is-crisp"
-    end
-
-    test "with global attribute" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <Doggo.field_group data-what="ever">fields</Doggo.field_group>
-        """)
-
-      assert attribute(html, "div", "data-what") == "ever"
-    end
-  end
-
   describe "input/1" do
     test "with text input" do
       assigns = %{form: to_form(%{})}

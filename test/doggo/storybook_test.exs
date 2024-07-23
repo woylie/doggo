@@ -41,6 +41,11 @@ defmodule Doggo.StorybookTest do
     drawer(modifiers: [variant: [values: [nil, "yes"], default: nil]])
     fab(modifiers: [variant: [values: [nil, "yes"], default: nil]])
     fallback(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+
+    field_group_builder(
+      modifiers: [variant: [values: [nil, "yes"], default: nil]]
+    )
+
     frame_builder()
     icon(modifiers: [variant: [values: [nil, "yes"], default: nil]])
     image(modifiers: [variant: [values: [nil, "yes"], default: nil]])

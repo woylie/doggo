@@ -859,53 +859,6 @@ defmodule Doggo do
     end
   end
 
-  @doc """
-  Use the field group component to visually group multiple inputs in a form.
-
-  This component is intended for styling purposes and does not provide semantic
-  grouping. For semantic grouping of related form elements, use the `<fieldset>`
-  and `<legend>` HTML elements instead.
-
-  ## Examples
-
-  Visual grouping of inputs:
-
-  ```heex
-  <Doggo.field_group>
-    <Doggo.input field={@form[:given_name]} label="Given name" />
-    <Doggo.input field={@form[:family_name]} label="Family name"/>
-  </Doggo.field_group>
-  ```
-
-  Semantic grouping (for reference):
-
-  ```heex
-  <fieldset>
-    <legend>Personal Information</legend>
-    <Doggo.input field={@form[:given_name]} label="Given name" />
-    <Doggo.input field={@form[:family_name]} label="Family name"/>
-  </fieldset>
-  ```
-  """
-  @doc type: :form
-  @doc since: "0.3.0"
-
-  attr :class, :any,
-    default: [],
-    doc: "Additional CSS classes. Can be a string or a list of strings."
-
-  attr :rest, :global, doc: "Any additional HTML attributes."
-
-  slot :inner_block, required: true
-
-  def field_group(assigns) do
-    ~H"""
-    <div class={["field-group" | List.wrap(@class)]} {@rest}>
-      <%= render_slot(@inner_block) %>
-    </div>
-    """
-  end
-
   ## Helpers
 
   @doc false
