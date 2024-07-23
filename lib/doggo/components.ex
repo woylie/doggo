@@ -6339,6 +6339,7 @@ defmodule Doggo.Components do
 
     Icons can be added before the label:
 
+    ```heex
     <.tree_item>
       <Heroicon.folder /> Breeds
       <:items>
@@ -6346,6 +6347,7 @@ defmodule Doggo.Components do
         <.tree_item><Heroicon.document /> Labrador Retriever</.tree_item>
       </:items>
     </.tree_item>
+    ```
     """,
     type: :data,
     since: "0.6.0",
