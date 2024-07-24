@@ -51,14 +51,6 @@ defmodule Doggo.StorybookTest do
     build_fallback(modifiers: [variant: [values: [nil, "yes"], default: nil]])
     build_field()
 
-    build_field_description(
-      modifiers: [variant: [values: [nil, "yes"], default: nil]]
-    )
-
-    build_field_errors(
-      modifiers: [variant: [values: [nil, "yes"], default: nil]]
-    )
-
     build_field_group(
       modifiers: [variant: [values: [nil, "yes"], default: nil]]
     )
@@ -67,7 +59,6 @@ defmodule Doggo.StorybookTest do
     build_icon(modifiers: [variant: [values: [nil, "yes"], default: nil]])
     build_image(modifiers: [variant: [values: [nil, "yes"], default: nil]])
 
-    build_label(modifiers: [variant: [values: [nil, "yes"], default: nil]])
     build_menu(modifiers: [variant: [values: [nil, "yes"], default: nil]])
     build_menu_bar(modifiers: [variant: [values: [nil, "yes"], default: nil]])
 

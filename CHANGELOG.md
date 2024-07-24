@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+## [0.7.0] - 2024-07-24
+
+### Changed
+
+- Use private `field_description`, `field_errors`, and `label` components in
+  `field` component. Apply base class to `field_description` and `field_errors`
+  components.
+- Use plain `div` with `{base_class}-frame` class instead of nested `frame`
+  component in `image` component. This `div` does not receive the `ratio`
+  attribute anymore. Apply the ratio with a CSS selector on the root div
+  instead (e.g. `.image.is-4-by-3 > .image-frame`).
+
+### Removed
+
+- `field_description` component.
+- `field_errors` component.
+- `label` component.
+
 ## [0.6.0] - 2024-07-23
 
 ### Added

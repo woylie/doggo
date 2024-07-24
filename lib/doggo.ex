@@ -92,16 +92,6 @@ defmodule Doggo do
   def label_placement_class(:right), do: "has-text-right"
 
   @doc false
-  def build_srcset(nil), do: nil
-  def build_srcset(srcset) when is_binary(srcset), do: srcset
-
-  def build_srcset(%{} = srcset) do
-    Enum.map_join(srcset, ", ", fn {width_or_density, url} ->
-      "#{url} #{width_or_density}"
-    end)
-  end
-
-  @doc false
   def normalize_value("date", %struct{} = value)
       when struct in [Date, NaiveDateTime, DateTime] do
     <<date::10-binary, _::binary>> = struct.to_string(value)
@@ -122,10 +112,6 @@ defmodule Doggo do
   @doc false
   def input_aria_errormessage(_, []), do: nil
   def input_aria_errormessage(id, _), do: field_errors_id(id)
-
-  @doc false
-  def field_error_class([]), do: nil
-  def field_error_class(_), do: "has-errors"
 
   @doc false
   def checked?(option, value) when is_list(value) do
