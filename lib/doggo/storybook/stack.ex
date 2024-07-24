@@ -6,10 +6,12 @@ defmodule Doggo.Storybook.Stack do
     [
       %Variation{
         id: :default,
+        description: "Default (margin only applied to direct children)",
         slots: slots()
       },
       %Variation{
         id: :recursive,
+        description: "Recursive (margin applied to nested children)",
         attributes: %{recursive: true},
         slots: recursive_slots()
       }

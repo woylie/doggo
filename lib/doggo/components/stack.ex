@@ -22,11 +22,12 @@ defmodule Doggo.Components.Stack do
     </.stack>
     ```
 
-    To apply a vertical margin on nested elements as well, set `recursive` to
-    `true`.
+    By default, the margin is only applied to the direct children of the
+    component. To apply a vertical margin on children at any nesting level, set
+    the `recursive` attribute.
 
     ```heex
-    <.stack recursive={true}>
+    <.stack recursive>
       <div>
         <div>some nested block</div>
         <div>another nested block</div>
@@ -42,7 +43,7 @@ defmodule Doggo.Components.Stack do
     [
       type: :layout,
       since: "0.6.0",
-      maturity: :refining,
+      maturity: :stable,
       modifiers: [],
       extra: [recursive_class: "is-recursive"]
     ]
@@ -54,7 +55,7 @@ defmodule Doggo.Components.Stack do
       attr :recursive, :boolean,
         default: false,
         doc:
-          "If `true`, the stack margins will be applied to nested elements as well."
+          "If `true`, the stack margins will be applied to nested children as well."
 
       attr :rest, :global, doc: "Any additional HTML attributes."
 
