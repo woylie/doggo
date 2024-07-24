@@ -89,7 +89,7 @@ build_button(name: :alt_button, base_class: "alt-button")
 This button could be used with:
 
 ```elixir
-<.alt_button>Edit</alt_button>
+<.alt_button>Edit</.alt_button>
 ```
 
 Refer to the `Doggo.Components` module documentation for more information about
