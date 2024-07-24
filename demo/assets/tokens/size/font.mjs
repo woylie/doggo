@@ -19,7 +19,7 @@ const addSmallerSizes = (sizes, scale, smallerSizes) => {
 
 const addLargerSizes = (sizes, scale, largerSizes) => {
   for (let i = 1; i <= largerSizes; i++) {
-    let rem = Math.pow(scale, -1 * i);
+    let rem = Math.pow(scale, 1 * i);
     let xCount = i - 1;
     let name = "x".repeat(xCount) + "l";
     sizes[name] = { $value: rem.toFixed(3) };
