@@ -1,0 +1,13 @@
+/**
+ * This module defines all mixins.
+ *
+ * To use any of the mixins in this module, you need to `@use` it:
+ *
+ *     @use "../mixins" as m;
+ *
+ *     .some-class {
+ *       @include m.some-mixin;
+ *     }
+ */
+
+@use "sass:map";

@@ -1,0 +1,30 @@
+/**
+ * Layouts are concerned with the relationship of components to each other. They
+ * should not be concerned with the styling of the components themselves.
+ *
+ * While layouts can be page layouts, like a layout with a header, sidebar, and
+ * footer, most layouts are micro-layouts with a narrow purpose. For example,
+ * the stack layout only applies a margin in between its child elements.
+ *
+ * The styles of a layout should be scoped by a single class. Modifier
+ * classes should be named `is-*` or `has-*` (not `are-*` or `have-*`).
+ *
+ *     .some-layout {
+ *       --max-width: 40rem;
+ *
+ *       display: flex;
+ *       max-width: var(--max-width);
+ *       gap: f.spacer(4);
+ *
+ *       &.is-narrow {
+ *         --max-width: 10rem;
+ *       }
+ *     }
+ */
+
+@use "container";
+@use "grid";
+@use "group";
+@use "level";
+@use "stack";
+@use "with-sidebar";

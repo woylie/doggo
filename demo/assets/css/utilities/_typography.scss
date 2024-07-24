@@ -1,0 +1,26 @@
+/**
+ * This module defines typography-related utility classes based on the theme
+ * configuration.
+ */
+
+@use "../functions" as f;
+
+@each $key, $value in f.token(size, font) {
+  #{".size-" + $key} {
+    font-size: var(#{"--size-font-" + $key}) !important;
+  }
+}
+
+@each $key, $value in f.token(weight) {
+  #{".weight-" + $key} {
+    font-weight: var(#{"--weight-" + $key}) !important;
+  }
+}
+
+$aligns: (left, center, right);
+
+@each $value in $aligns {
+  #{".text-" + $value} {
+    text-align: $value !important;
+  }
+}

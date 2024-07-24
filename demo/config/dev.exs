@@ -16,8 +16,7 @@ config :demo, DemoWeb.Endpoint,
   secret_key_base:
     "7I09KWxcUUDVCHxt1eWTxz/zRZ4K9839EiL/iutqCNQORX+I2K62EM4/Y8HH+60G",
   watchers: [
-    esbuild:
-      {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    pnpm: ["build:dev:watch", cd: Path.expand("../assets", __DIR__)]
   ]
 
 # ## SSL Support

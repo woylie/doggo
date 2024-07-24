@@ -1,0 +1,66 @@
+/**
+ * This module adds utility classes for paddings and margins based on the theme
+ * configuration.
+ *
+ * By default, the classes for horizontal margins and paddings are based on
+ * the spacer and spacer factors defined as part of the design tokens, while the
+ * classes for vertical margins and paddings are based on the configured line
+ * heights. Also, utility classes for top margins have been omitted, since
+ * mixing top and bottom margins is error-prone.
+ */
+
+@use "../functions" as f;
+
+$spacer: f.token(size, spacer);
+
+@each $key, $value in f.token(size, line) {
+  $key-string: f.decimal-to-string($key);
+  $line-value: var(#{"--size-line-" + $key-string});
+
+  #{".pt-l-" + $key-string} {
+    padding-top: $line-value !important;
+  }
+
+  #{".pb-l-" + $key-string} {
+    padding-bottom: $line-value !important;
+  }
+
+  #{".py-l-" + $key-string} {
+    padding-top: $line-value !important;
+    padding-bottom: $line-value !important;
+  }
+
+  #{".mb-l-" + $key-string} {
+    margin-bottom: $line-value !important;
+  }
+}
+
+@each $factor in f.token(internal, size, spacer, factors) {
+  $spacer-value: $spacer * $factor;
+
+  #{".pl-s-" + $factor} {
+    padding-left: $spacer-value !important;
+  }
+
+  #{".pr-s-" + $factor} {
+    padding-right: $spacer-value !important;
+  }
+
+  #{".px-s-" + $factor} {
+    padding-right: $spacer-value !important;
+    padding-left: $spacer-value !important;
+  }
+
+  #{".ml-s-" + $factor} {
+    margin-left: $spacer-value !important;
+  }
+
+  #{".mr-s-" + $factor} {
+    margin-right: $spacer-value !important;
+  }
+
+  #{".mx-s-" + $factor} {
+    margin-right: $spacer-value !important;
+    margin-left: $spacer-value !important;
+  }
+}

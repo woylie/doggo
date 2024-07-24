@@ -1,0 +1,15 @@
+/**
+ * Utility classes are generated from the base theme. The values reference
+ * custom properties.
+ *
+ * You can add additional utility classes the same way as needed and remove
+ * those you don't need. You can consider using PurgeCSS to remove classes
+ * that are not needed from the final output.
+ *
+ * In general, use utility classes wisely. Most of the styling should be done
+ * with component and layout classes.
+ */
+
+@use "colors";
+@use "spacing";
+@use "typography";

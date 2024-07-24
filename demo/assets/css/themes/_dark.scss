@@ -1,0 +1,7 @@
+@use "../../build/tokens/scss/mixin.dark" as tm;
+
+.theme-dark {
+  @include tm.tokens;
+
+  color-scheme: dark;
+}

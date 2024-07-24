@@ -1,0 +1,21 @@
+/**
+ * This module forwards the variables for the design tokens and defines
+ * additional variables.
+ *
+ * The variables forwarded from the token definitions have CSS custom properties
+ * as values. This way, the final CSS output will use custom properties, but
+ * you have the additional safety that unknown variables will result in a
+ * build failure.
+ *
+ * Example:
+ *
+ *    @use "../tokens" as t;
+ *
+ *    .my-component {
+ *      color: t.$color-text-default;
+ *    }
+ *
+ * Alternatively, use the accessor functions defined in _functions.scss.
+ */
+
+@forward "../../build/tokens/scss/variables";

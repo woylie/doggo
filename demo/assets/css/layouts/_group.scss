@@ -1,0 +1,32 @@
+/**
+ * Groups any kind of child elements in one or multiple rows. Applies a gap
+ * between the elements. Can be set to scroll horizontally instead of wrapping
+ * into multiple rows.
+ *
+ * This layout can be used to group buttons, tags, tabs etc.
+ */
+
+@use "../functions" as f;
+
+.group {
+  --gap: #{f.lines(0.5)} #{f.spacer(2)};
+  --wrap: wrap;
+
+  display: flex;
+  flex-wrap: var(--wrap);
+  gap: var(--gap);
+
+  &.is-scrollable {
+    --wrap: no-wrap;
+
+    overflow-x: auto;
+  }
+
+  /*
+  For modifier classes, override the --gap property:
+
+      &.is-small {
+        --gap: f.spacer(1);
+      }
+  */
+}

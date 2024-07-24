@@ -1,0 +1,30 @@
+/**
+ * A container with a max width and optional centering.
+ */
+
+@use "../functions" as f;
+
+.container {
+  --max-width: #{f.measure()};
+
+  max-width: var(--max-width);
+
+  &.is-centered {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  &.has-centered-children {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /*
+  To add width variations, override the --max-width value like this:
+
+      &.is-narrow {
+        --max-width: 32ch;
+      }
+  */
+}

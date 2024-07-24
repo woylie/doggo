@@ -1,0 +1,34 @@
+{
+  "ignoreFiles": ["node_modules"],
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-recess-order"
+  ],
+  "plugins": ["stylelint-declaration-strict-value"],
+  "rules": {
+    "scale-unlimited/declaration-strict-value": [
+      [
+        "/color/",
+        "border-radius",
+        "font-family",
+        "font-size",
+        "font-weight",
+        "letter-spacing",
+        "line-height",
+        "border-radius",
+        "border-size"
+      ],
+      {
+        "disableFix": true,
+        "ignoreKeywords": [
+          "0",
+          "1em",
+          "inherit",
+          "transparent",
+          "dark",
+          "light"
+        ]
+      }
+    ]
+  }
+}
