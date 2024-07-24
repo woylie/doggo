@@ -1,0 +1,60 @@
+@use "../functions" as f;
+
+.icon {
+  display: inline-flex;
+  align-items: baseline;
+  gap: f.spacer(1);
+
+  /* For LTR languages */
+  &.has-text-before {
+    > svg {
+      order: 1;
+    }
+
+    > span {
+      order: 0;
+    }
+  }
+
+  &.has-text-after {
+    > svg {
+      order: 0;
+    }
+
+    > span {
+      order: 1;
+    }
+  }
+
+  > svg {
+    width: 0.75em;
+    width: 1cap;
+    height: 0.75em;
+    height: 1cap;
+  }
+}
+
+/* For RTL languages */
+html[dir="rtl"] {
+  .icon {
+    &.has-text-before {
+      > svg {
+        order: 0;
+      }
+
+      > span {
+        order: 1;
+      }
+    }
+
+    &.has-text-after {
+      > svg {
+        order: 1;
+      }
+
+      > span {
+        order: 0;
+      }
+    }
+  }
+}

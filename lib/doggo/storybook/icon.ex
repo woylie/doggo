@@ -11,30 +11,58 @@ defmodule Doggo.Storybook.Icon do
         slots: slots()
       },
       %VariationGroup{
-        id: :label,
+        id: :text_ltr,
+        description: "With text (ltr)",
         variations: [
           %Variation{
-            id: :left,
-            attributes: %{label: "info", label_placement: :left},
+            id: :after,
+            attributes: %{text: "text after icon", text_position: "after"},
             slots: slots()
           },
           %Variation{
-            id: :right,
-            attributes: %{label: "info", label_placement: :right},
+            id: :before,
+            attributes: %{text: "text before icon", text_position: "before"},
             slots: slots()
           },
           %Variation{
             id: :hidden,
-            attributes: %{label: "info", label_placement: :hidden},
+            attributes: %{text: "text hidden", text_position: "hidden"},
             slots: slots()
           }
         ]
+      },
+      %VariationGroup{
+        id: :text_rtl,
+        description: "With text (rtl)",
+        variations: [
+          %Variation{
+            id: :after,
+            attributes: %{text: "متن بعد از نماد", text_position: "after"},
+            slots: slots()
+          },
+          %Variation{
+            id: :before,
+            attributes: %{text: "متن قبل از نماد", text_position: "before"},
+            slots: slots()
+          },
+          %Variation{
+            id: :hidden,
+            attributes: %{text: "متن مخفی", text_position: "hidden"},
+            slots: slots()
+          }
+        ],
+        template: """
+        <div dir="rtl">
+          <.psb-variation />
+        </div>
+        """
       }
     ]
   end
 
   def modifier_variation_base(_id, _name, _value, _opts) do
     %{
+      attributes: %{},
       slots: slots()
     }
   end

@@ -87,11 +87,6 @@ defmodule Doggo do
   def to_time(nil), do: nil
 
   @doc false
-  def label_placement_class(:hidden), do: nil
-  def label_placement_class(:left), do: "has-text-left"
-  def label_placement_class(:right), do: "has-text-right"
-
-  @doc false
   def normalize_value("date", %struct{} = value)
       when struct in [Date, NaiveDateTime, DateTime] do
     <<date::10-binary, _::binary>> = struct.to_string(value)
