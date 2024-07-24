@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.7.0] - 2024-07-24
+
 ### Changed
 
 - Use private `field_description`, `field_errors`, and `label` components in
