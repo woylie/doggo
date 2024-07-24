@@ -1,0 +1,227 @@
+/**
+ * This module defines all the functions, including the accessor functions for
+ * the theme variables.
+ *
+ * While you define all variables in the theme modules and custom properties are
+ * defined based on those variables, you should use the accessor functions in
+ * this module to reference the value. This ensures that you don't accidentally
+ * use a custom property that wasn't defined.
+ *
+ * Example:
+ *
+ *    @use "../functions" as f;
+ *
+ *    .my-component {
+ *      color: f.color(text, default);
+ *    }
+ *
+ * Alternatively, use the tokens forwarded by _tokens.scss.
+ */
+
+@use "../build/tokens/scss/tokens.scss" as t;
+@use "sass:list";
+@use "sass:map";
+@use "sass:math";
+@use "sass:meta";
+@use "sass:string";
+
+@function base-size() {
+  @return 100%;
+}
+
+/// Returns the color with the given ID by referencing a custom property.
+///
+/// @arg {String} $id
+/// @arg {List} $ids
+@function color($id, $ids...) {
+  $value: map.get(token(color), $id, $ids...);
+  $list: list.join(($id), $ids);
+  $identifier: join-with-dashes($list);
+
+  @if not $value or meta.type-of($value) == "map" {
+    @error "Invalid color: #{$identifier}";
+  }
+
+  @return var(--color-#{$identifier});
+}
+
+/// Returns the font family with the given ID by referencing a custom property.
+///
+/// @arg {String} $id
+@function font-family($id) {
+  @if not map.has-key(token(font, family), $id) {
+    @error "Invalid font family #{$id}. Allowed values: #{map.keys(token(font, family))}.";
+  }
+
+  @return var(--font-family-#{"" + $id});
+}
+
+/// Returns the font size with the given ID by referencing a custom property.
+///
+/// @arg {String} $id
+@function size($id) {
+  @if not map.has-key(token(size, font), $id) {
+    @error "Invalid size #{$id}. Allowed values: #{map.keys(token(size, font))}.";
+  }
+
+  @return var(--size-font-#{"" + $id});
+}
+
+/// Returns the a vertical distance based on the given number of lines.
+/// References a custom property.
+///
+/// @arg {Number} $factor
+@function lines($factor) {
+  $factor: to-string($factor);
+
+  @if not map.has-key(token(size, line), $factor) {
+    @error "Invalid line height #{$factor}. Allowed values: #{map.keys(token(size, line))}.";
+  }
+
+  $key: decimal-to-string($factor);
+
+  @return var(--size-line-#{"" + $key});
+}
+
+/// Returns the letter spacing value with the given ID by referencing a custom
+/// property.
+///
+/// @arg {String} $id
+@function letter-spacing($id) {
+  @if not map.has-key(token(letter-spacing), $id) {
+    @error "Invalid letter spacing #{$id}. Allowed values: #{map.keys(token(letter-spacing))}.";
+  }
+
+  @return var(--letter-spacing-#{"" + $id});
+}
+
+/// Returns the custom property reference defining the measure (max width for
+/// paragraphs).
+@function measure() {
+  @return var(--size-measure);
+}
+
+/// Returns the font weight value with the given ID by referencing a custom
+/// property.
+///
+/// @arg {String} $id
+@function weight($id) {
+  @if not map.has-key(token(weight), $id) {
+    @error "Invalid font weight #{$id}. Allowed values: #{map.keys(token(weight))}.";
+  }
+
+  @return var(--weight-#{"" + $id});
+}
+
+/// Returns the border radius value with the given ID by referencing a custom
+/// property.
+///
+/// @arg {String} $id
+@function radius($id) {
+  @if not map.has-key(token(radius), $id) {
+    @error "Invalid radius #{$id}. Allowed values: #{map.keys(token(radius))}.";
+  }
+
+  @return var(--radius-#{"" + $id});
+}
+
+/// Returns the box shadow value with the given ID by referencing a custom
+/// property.
+///
+/// @arg {String} $id
+@function shadow($id) {
+  @if not map.has-key(token(shadow, elevation), $id) {
+    @error "Invalid shadow #{$id}. Allowed values: #{map.keys(token(shadow, elevation))}.";
+  }
+
+  @return var(--shadow-elevation-#{"" + $id});
+}
+
+/// Returns the spacer value based on the given factor. This function does _not_
+/// reference a custom property.
+///
+/// The given factor is not validated. The spacer factors defined as part of the
+/// design tokens are only used for defining the utility classes for paddings
+/// and margins.
+///
+/// @arg {Number} $factor
+@function spacer($factor) {
+  @return $factor * token(size, spacer);
+}
+
+/// Returns the border width value with the given ID by referencing a custom
+/// property.
+///
+/// @arg {String} $id
+@function border-width($id) {
+  @if not map.has-key(token(border, width), $id) {
+    @error "Invalid border-width #{$id}. Allowed values: #{map.keys(token(border, width))}.";
+  }
+
+  @return var(--border-width-#{"" + $id});
+}
+
+/// Returns the breakpoint value with the given ID.
+///
+/// @arg {String} $id
+@function breakpoint($id) {
+  @if not map.has-key(token(breakpoint), $id) {
+    @error "Invalid breakpoint #{$id}. Allowed values: #{map.keys(token(breakpoint))}.";
+  }
+
+  @return map.get(token(breakpoint), $id);
+}
+
+/* Internal functions you won't need in your style modules. */
+
+@function token($key, $keys...) {
+  $key: to-string($key);
+
+  @if not map.has-key(t.$tokens, $key, $keys...) {
+    @error "Invalid token #{$key}.";
+  }
+
+  @return map.get(t.$tokens, $key, $keys...);
+}
+
+@function to-string($value) {
+  @if meta.type-of($value) == "string" {
+    @return $value;
+  } @else {
+    @return #{$value};
+  }
+}
+
+@function decimal-to-string($value) {
+  @return replace("#{$value}", ".", "-");
+}
+
+@function replace($string, $pattern, $replacement) {
+  $index: string.index($string, $pattern);
+
+  @if $index {
+    $beginning: string.slice($string, 1, $index - 1);
+    $end: replace(
+      string.slice($string, $index + string.length($pattern)),
+      $pattern,
+      $replacement
+    );
+
+    @return $beginning + $replacement + $end;
+  } @else {
+    @return $string;
+  }
+}
+
+@function join-with-dashes($list) {
+  $result: list.nth($list, 1);
+
+  @if list.length($list) > 1 {
+    @for $i from 2 through list.length($list) {
+      $item: list.nth($list, $i);
+      $result: "#{$result}-#{$item}";
+    }
+  }
+
+  @return $result;
+}

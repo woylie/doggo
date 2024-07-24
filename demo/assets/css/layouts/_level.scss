@@ -1,0 +1,35 @@
+/**
+ * Aligns two child elements side by side, if there is enough space. Remaining
+ * space is evenly distributed among the children.
+ *
+ * See also layouts/with-sidebar.
+ */
+
+@use "../functions" as f;
+
+.level {
+  --gap: #{f.spacer(4)};
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+
+  > :first-child {
+    flex-basis: var(--width-left, 50%);
+    flex-grow: 1;
+  }
+
+  > :last-child {
+    flex-basis: var(--width-right, 50%);
+    flex-grow: 1;
+  }
+
+  /*
+  You can add modifier classes for different ratios like this:
+
+      &.is-20-80 {
+        --width-left: 20%;
+        --width-right: 80%;
+      }
+  */
+}

@@ -1,0 +1,29 @@
+/**
+ * This module defines `.color-{id}` and `.bg-{id}` utility classes based on
+ * the theme configuration.
+ */
+
+@use "../functions" as f;
+@use "sass:meta";
+
+@mixin colors($value, $acc: "") {
+  @if meta.type-of($value) == map {
+    @if $acc != "" {
+      $acc: $acc + "-";
+    }
+
+    @each $key, $value in $value {
+      @include colors($value, $acc: $acc + $key);
+    }
+  } @else {
+    #{".color-" + $acc} {
+      color: var(#{"--color-" + $acc}) !important;
+    }
+
+    #{".bg-" + $acc} {
+      background-color: var(#{"--color-" + $acc}) !important;
+    }
+  }
+}
+
+@include colors(f.token(color));

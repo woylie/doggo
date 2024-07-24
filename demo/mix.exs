@@ -56,9 +56,9 @@ defmodule Demo.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "assets.setup", "assets.build"],
-      "assets.setup": ["esbuild.install --if-missing"],
-      "assets.build": ["esbuild default"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      "assets.setup": ["cmd pnpm --dir assets install"],
+      "assets.build": ["cmd pnpm --dir assets build:dev"],
+      "assets.deploy": ["cmd pnpm --dir assets build:prod", "phx.digest"]
     ]
   end
 end

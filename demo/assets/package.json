@@ -1,0 +1,39 @@
+{
+  "name": "Doggo Demo",
+  "version": "0.1.0",
+  "description": "Demo application for Doggo",
+  "repository": "https://github.com/woylie/doggo",
+  "author": "Mathias Polligkeit",
+  "license": "MIT",
+  "scripts": {
+    "build:dev": "pnpm run build:tokens && node build.mjs --development",
+    "build:dev:watch": "pnpm run build:tokens && node build.mjs --watch",
+    "build:prod": "pnpm run build:tokens && node build.mjs --production",
+    "build:tokens": "node style-dictionary.mjs",
+    "lint": "pnpm run lint:prettier && pnpm run lint:stylelint",
+    "lint:fix": "pnpm run lint:prettier:fix && pnpm run lint:stylelint:fix",
+    "lint:prettier": "prettier . --check",
+    "lint:prettier:fix": "prettier . --write",
+    "lint:stylelint": "stylelint css",
+    "lint:stylelint:fix": "stylelint css --fix"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "css-loader": "^7.1.2",
+    "esbuild": "^0.23.0",
+    "esbuild-sass-plugin": "^3.3.1",
+    "postcss": "^8.4.39",
+    "postcss-scss": "^4.0.9",
+    "prettier": "^3.3.3",
+    "style-dictionary": "^4.0.1",
+    "stylelint": "^16.7.0",
+    "stylelint-config-recess-order": "^5.0.1",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "stylelint-declaration-strict-value": "^1.10.4"
+  },
+  "dependencies": {
+    "phoenix": "link:../deps/phoenix",
+    "phoenix_html": "link:../deps/phoenix_html",
+    "phoenix_live_view": "link:../deps/phoenix_live_view"
+  }
+}

@@ -1,0 +1,18 @@
+/**
+ * This folder contains reusable components. Each component should be isolated
+ * and only concerned about its own styling. The relationship of components to
+ * its siblings should be handled by layouts.
+ *
+ * The styles of a component should be scoped by a single class. Modifier
+ * classes should be named `is-*` or `has-*` (not `are-*` or `have-*`).
+ *
+ *     @use "../functions" as f;
+ *
+ *     .some-component {
+ *       color: f.color(primary);
+ *
+ *       &.is-narrow {
+ *         max-width: 10rem;
+ *       }
+ *     }
+ */

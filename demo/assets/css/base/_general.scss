@@ -1,0 +1,24 @@
+@use "../functions" as f;
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+.psb-sandbox {
+  padding: 0;
+  margin: 0;
+  font-family: f.font-family(main);
+  font-size: f.base-size();
+  line-height: f.lines(1);
+  color: f.color(text, default);
+  background: f.color(background, foundation);
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

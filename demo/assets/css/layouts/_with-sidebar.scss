@@ -1,0 +1,64 @@
+/**
+ * Aligns a sidebar and a content element side by side, if there is enough
+ * space. Remaining space is given to the content.
+ *
+ *     <div class="with-sidebar">
+ *       <div>sidebar</div>
+ *       <div>content</div>
+ *     </div>
+ *
+ *     <div class="with-sidebar has-sidebar-right">
+ *       <div>content</div>
+ *       <div>sidebar</div>
+ *     </div>
+ *
+ * See also layouts/level.
+ */
+
+@use "../functions" as f;
+
+.with-sidebar {
+  --sidebar-width: 10rem;
+  --content-min-width: 60%;
+  --gap: #{f.spacer(4)};
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+
+  &:not(.has-sidebar-right) {
+    > :first-child {
+      flex-basis: var(--sidebar-width);
+      flex-grow: 1;
+    }
+
+    > :last-child {
+      flex-basis: 0;
+      flex-grow: 666;
+      min-width: var(--content-min-width);
+    }
+  }
+
+  &.has-sidebar-right {
+    > :last-child {
+      flex-basis: var(--sidebar-width);
+      flex-grow: 1;
+    }
+
+    > :first-child {
+      flex-basis: 0;
+      flex-grow: 666;
+      min-width: var(--content-min-width);
+    }
+  }
+
+  /*
+  You can add modifier classes like this:
+
+      .is-main {
+        --sidebar-width: 15rem;
+        --content-min-width: 65%;
+        --gap: #{f.lines(1.5)} #{f.spacer(6)};
+      }
+  */
+}
