@@ -2,6 +2,30 @@
 
 ## Unreleased
 
+### Added
+
+- Set up design tokens and CSS for demo application based on Barker. Styles for
+  all components will be added in the future.
+
+### Changed
+
+#### Stack component
+
+- Add styles to demo application.
+- Improve story and documentation.
+- Mark component as `stable`.
+
+#### Icon and icon sprite component
+
+- Add styles to demo application.
+- Rename `label_placement` attribute to `text_position`. Change type from
+  atom to string for consistency.
+- Use `before` and `after` as values for `text_position` instead of `left` and
+  `right` to better apply to right-to-left languages. Rename default classes
+  to `has-text-before` and `has-text-after` accordingly.
+- Make `text_position` classes configurable.
+- Add `right-to-left` variation group to icon story.
+
 ## [0.7.0] - 2024-07-24
 
 ### Changed
