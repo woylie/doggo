@@ -2,29 +2,27 @@ defmodule Doggo.Macros do
   @moduledoc false
   use Phoenix.Component
 
-  defmacro component(name, opts) do
+  defmacro component(name) do
+    module_name = name |> Atom.to_string() |> Macro.camelize()
+    module = Module.concat([Doggo.Components, module_name])
+
+    config = module.config()
+
     opts =
-      Keyword.validate!(opts, [
-        :attrs_and_slots,
+      Keyword.validate!(config, [
         :base_class,
-        :component_function,
-        :doc,
         :extra,
-        :heex,
         :maturity,
         :maturity_note,
         :modifiers,
-        :name,
         :since,
-        :type,
-        :usage
+        :type
       ])
 
     builder_name = :"build_#{name}"
-    maturity = Keyword.fetch!(opts, :maturity)
-    maturity_note = Keyword.get(opts, :maturity_note)
-    doc = Keyword.fetch!(opts, :doc)
-    usage = Keyword.fetch!(opts, :usage)
+
+    doc = module.doc()
+    usage = module.usage()
     modifiers = Keyword.fetch!(opts, :modifiers)
     extra = Keyword.get(opts, :extra, [])
 
@@ -45,10 +43,8 @@ defmodule Doggo.Macros do
 
     type = Keyword.fetch!(opts, :type)
     since = Keyword.fetch!(opts, :since)
-    attrs_and_slots = Keyword.fetch!(opts, :attrs_and_slots)
-    heex = Keyword.get(opts, :heex)
-    component_function = Keyword.get(opts, :component_function)
-
+    maturity = Keyword.fetch!(opts, :maturity)
+    maturity_note = Keyword.get(opts, :maturity_note)
     maturity_info = build_maturity_info(maturity, maturity_note)
 
     quote do
@@ -78,6 +74,7 @@ defmodule Doggo.Macros do
       @doc since: unquote(since)
 
       defmacro unquote(builder_name)(opts \\ []) do
+        module = unquote(module)
         opts = Keyword.validate!(opts, unquote(defaults))
 
         {opts, extra} =
@@ -93,68 +90,54 @@ defmodule Doggo.Macros do
         modifiers = Keyword.fetch!(opts, :modifiers)
         modifier_names = Keyword.keys(modifiers)
         class_name_fun = Keyword.fetch!(opts, :class_name_fun)
-        heex = Doggo.Macros.unpack_heex(unquote(heex), extra)
+        attrs_and_slots = module.attrs_and_slots()
+        usage = module.usage()
+        doc = module.doc()
 
-        component_function =
-          unpack_component_function(unquote(component_function), opts, extra)
+        quote do
+          @dog_components unquote(component_info)
 
-        attrs_and_slots = unquote(attrs_and_slots)
-        usage = unquote(usage)
-        doc = unquote(doc)
+          @doc """
+          #{unquote(doc)}
 
-        preamble =
-          quote do
-            @dog_components unquote(component_info)
+          ## Usage
 
-            @doc """
-            #{unquote(doc)}
+          #{unquote(usage)}
+          """
 
-            ## Usage
+          for {name, modifier_opts} <- unquote(modifiers) do
+            attr name, :string, modifier_opts
+          end
 
-            #{unquote(usage)}
+          attr :class, :any,
+            default: nil,
+            doc: """
+            Any additional classes to be added.
+
+            Variations of the component should be expressed via modifier
+            attributes, and it is preferable to use styles on the parent
+            container to arrange components on the page, but if you have to,
+            you can use this attribute to pass additional utility classes to
+            the component.
+
+            The value can be a string or a list of strings.
             """
 
-            for {name, modifier_opts} <- unquote(modifiers) do
-              attr name, :string, modifier_opts
-            end
+          unquote(attrs_and_slots)
 
-            attr :class, :any,
-              default: nil,
-              doc: """
-              Any additional classes to be added.
+          def unquote(name)(var!(assigns)) do
+            unquote(
+              prepare_class(
+                base_class,
+                Keyword.keys(modifiers),
+                class_name_fun
+              )
+            )
 
-              Variations of the component should be expressed via modifier
-              attributes, and it is preferable to use styles on the parent
-              container to arrange components on the page, but if you have to,
-              you can use this attribute to pass additional utility classes to
-              the component.
-
-              The value can be a string or a list of strings.
-              """
-
-            unquote(attrs_and_slots)
+            unquote(module.init_block(opts, extra))
+            unquote(module).render(var!(assigns))
           end
-
-        function =
-          if heex do
-            quote do
-              def unquote(name)(var!(assigns)) do
-                unquote(
-                  prepare_class(
-                    base_class,
-                    Keyword.keys(modifiers),
-                    class_name_fun
-                  )
-                )
-
-                unquote(heex)
-              end
-            end
-          else
-            component_function
-          end
-
-        [preamble, function]
+        end
       end
     end
   end

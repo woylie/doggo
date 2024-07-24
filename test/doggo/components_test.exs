@@ -39,14 +39,11 @@ defmodule Doggo.ComponentsTest do
     build_fab()
     build_fallback()
     build_field(gettext_module: Doggo.Gettext)
-    build_field_description()
-    build_field_errors()
     build_field_group()
     build_frame()
     build_icon()
     build_icon_sprite()
     build_image()
-    build_label()
     build_menu()
     build_menu_bar()
     build_menu_button()
@@ -2129,50 +2126,6 @@ defmodule Doggo.ComponentsTest do
     end
   end
 
-  describe "field_description/1" do
-    test "default" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.field_description for="some-input">
-          text
-        </TestComponents.field_description>
-        """)
-
-      div = find_one(html, "div:root")
-      assert attribute(div, "class") == "field-description"
-      assert attribute(div, "id") == "some-input_description"
-    end
-  end
-
-  describe "field_errors/1" do
-    test "without errors" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.field_errors for="some-input" errors={[]} />
-        """)
-
-      assert html == []
-    end
-
-    test "with errors" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.field_errors for="some-input" errors={["some error"]} />
-        """)
-
-      ul = find_one(html, "ul:root")
-      assert attribute(ul, "class") == "field-errors"
-      assert attribute(ul, "id") == "some-input_errors"
-      assert text(html, "ul > li") == "some error"
-    end
-  end
-
   describe "field_group/1" do
     test "default" do
       assigns = %{}
@@ -2571,7 +2524,7 @@ defmodule Doggo.ComponentsTest do
       figure = find_one(html, "figure:root")
       assert attribute(figure, "class") == "image"
 
-      img = find_one(html, ":root > .frame > img")
+      img = find_one(html, ":root > .image-frame > img")
       assert attribute(img, "src") == "image.png"
       assert attribute(img, "alt") == "some text"
       assert attribute(img, "loading") == "lazy"
@@ -2586,7 +2539,7 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.image src="image.png" alt="some text" width={300} height={200} />
         """)
 
-      img = find_one(html, ":root > .frame > img")
+      img = find_one(html, ":root > .image-frame > img")
       assert attribute(img, "width") == "300"
       assert attribute(img, "height") == "200"
     end
@@ -2610,7 +2563,7 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.image src="image.png" alt="some text" ratio="3-by-2" />
         """)
 
-      assert attribute(html, ".frame", "class") == "frame is-3-by-2"
+      assert attribute(html, ":root", "class") == "image is-3-by-2"
     end
 
     test "with caption" do
@@ -2679,7 +2632,7 @@ defmodule Doggo.ComponentsTest do
     end
   end
 
-  describe "input/1" do
+  describe "field/1" do
     test "with text input" do
       assigns = %{form: to_form(%{})}
 
@@ -2735,7 +2688,7 @@ defmodule Doggo.ComponentsTest do
         </.form>
         """)
 
-      assert attribute(html, "label", "class") == "label checkbox"
+      assert attribute(html, "label", "class") == "checkbox"
       assert attribute(html, "input[type='hidden']", "value") == "false"
 
       assert text(html, ".field-description") == "Please do."
@@ -3175,63 +3128,6 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert text(html, ".field-errors > li") == "seulement 5 chiens autorisés"
-    end
-  end
-
-  describe "label/1" do
-    test "default" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.label for="some-input">text</TestComponents.label>
-        """)
-
-      label = find_one(html, "label")
-      assert attribute(label, "class") == "label"
-      assert attribute(label, "for") == "some-input"
-      assert text(label) == "text"
-      assert Floki.find(html, ".label-required") == []
-    end
-
-    test "with required mark" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.label required>text</TestComponents.label>
-        """)
-
-      mark = find_one(html, "label > span.label-required")
-      assert attribute(mark, "title") == "required"
-
-      # inputs with `required` attribute are already announced as required
-      assert attribute(mark, "aria-hidden") == "true"
-    end
-
-    test "with required mark and custom text" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.label required_title="necessary" required>
-          text
-        </TestComponents.label>
-        """)
-
-      assert attribute(html, "label > span.label-required", "title") ==
-               "necessary"
-    end
-
-    test "with global attribute" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.label data-test="hello">text</TestComponents.label>
-        """)
-
-      assert attribute(html, ":root", "data-test") == "hello"
     end
   end
 
