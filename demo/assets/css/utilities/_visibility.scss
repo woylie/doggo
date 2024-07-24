@@ -1,0 +1,5 @@
+@use "../extends";
+
+.is-visually-hidden {
+  @extend %visually-hidden;
+}
