@@ -19,12 +19,6 @@ defmodule Doggo.Components.Field do
   @impl true
   def usage do
     """
-    ### Dependencies
-
-    This component requires the `field_description`, `field_errors`,
-    `field_group`, and `label` components to be compiled with their default
-    names in the same module.
-
     ### Types
 
     In addition to all HTML input types, the following type values are also
