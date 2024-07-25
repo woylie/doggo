@@ -67,7 +67,7 @@ defmodule Doggo.Macros do
           end
 
           attr :class, :any,
-            default: nil,
+            default: [],
             doc: """
             Any additional classes to be added.
 
@@ -210,19 +210,59 @@ defmodule Doggo.Macros do
     modifier_names = Keyword.keys(modifiers)
     base_class = Keyword.fetch!(opts, :base_class)
     class_name_fun = Keyword.fetch!(opts, :class_name_fun)
+    modifier_class_fun = modifier_class_fun(modifier_names, class_name_fun)
 
     quote do
+      unquote(modifier_class_fun)
+
+      additional_classes =
+        if value = var!(assigns)[:class], do: List.wrap(value), else: []
+
+      unquote(combine_classes(base_class, modifier_names))
+
       var!(assigns) =
-        assign(var!(assigns),
-          base_class: unquote(base_class),
-          class:
-            Doggo.build_class(
-              unquote(base_class),
-              unquote(modifier_names),
-              unquote(class_name_fun),
-              var!(assigns)
-            )
-        )
+        assign(var!(assigns), base_class: unquote(base_class), class: class)
+    end
+  end
+
+  defp modifier_class_fun([], _), do: nil
+
+  defp modifier_class_fun(modifier_names, class_name_fun) do
+    quote do
+      var!(class) =
+        for name <- unquote(modifier_names) do
+          case var!(assigns) do
+            %{^name => value} when is_binary(value) ->
+              unquote(class_name_fun).(name, value)
+
+            _ ->
+              nil
+          end
+        end
+    end
+  end
+
+  defp combine_classes(nil, []) do
+    quote do
+      class = additional_classes
+    end
+  end
+
+  defp combine_classes(nil, _modifier_names) do
+    quote do
+      class = var!(class) ++ additional_classes
+    end
+  end
+
+  defp combine_classes(base_class, []) do
+    quote do
+      class = [unquote(base_class) | additional_classes]
+    end
+  end
+
+  defp combine_classes(base_class, _modifier_namess) do
+    quote do
+      class = [unquote(base_class) | var!(class)] ++ additional_classes
     end
   end
 
