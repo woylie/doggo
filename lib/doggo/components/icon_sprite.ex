@@ -34,7 +34,7 @@ defmodule Doggo.Components.IconSprite do
     [
       type: :media,
       since: "0.6.0",
-      maturity: :developing,
+      maturity: :refining,
       base_class: "icon",
       modifiers: [],
       extra: [

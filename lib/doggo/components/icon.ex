@@ -44,7 +44,7 @@ defmodule Doggo.Components.Icon do
     [
       type: :media,
       since: "0.6.0",
-      maturity: :developing,
+      maturity: :refining,
       modifiers: [],
       extra: [
         text_position_after_class: "has-text-after",
