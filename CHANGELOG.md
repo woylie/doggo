@@ -27,6 +27,8 @@
   to `has-text-before` and `has-text-after` accordingly.
 - Make `text_position` classes configurable.
 - Add `right-to-left` variation group to icon story.
+- Set `sprite_url` as a compile time option.
+- Mark both components as `refining`.
 
 ## [0.7.0] - 2024-07-24
 
