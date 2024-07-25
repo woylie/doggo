@@ -15,16 +15,16 @@ defmodule Doggo.Components.IconSprite do
   @impl true
   def usage do
     """
-    Render an icon with text as `aria-label`:
+    Render an icon with visually hidden text:
 
     ```heex
-    <.icon name="arrow-left" label="Go back" />
+    <.icon name="arrow-left" text="Go back" />
     ```
 
     To display the text visibly:
 
     ```heex
-    <.icon name="arrow-left" label="Go back" text_position={:right} />
+    <.icon name="arrow-left" text="Go back" text_position={:right} />
     ```
     """
   end
@@ -34,10 +34,11 @@ defmodule Doggo.Components.IconSprite do
     [
       type: :media,
       since: "0.6.0",
-      maturity: :developing,
+      maturity: :refining,
       base_class: "icon",
       modifiers: [],
       extra: [
+        sprite_url: "/assets/icons/sprite.svg",
         text_position_after_class: "has-text-after",
         text_position_before_class: "has-text-before",
         text_position_hidden_class: nil,
@@ -52,10 +53,6 @@ defmodule Doggo.Components.IconSprite do
       attr :name, :string,
         required: true,
         doc: "Icon name as used in the sprite."
-
-      attr :sprite_url, :string,
-        default: "/assets/icons/sprite.svg",
-        doc: "The URL of the SVG sprite."
 
       attr :text, :string,
         default: nil,
@@ -77,6 +74,8 @@ defmodule Doggo.Components.IconSprite do
 
   @impl true
   def init_block(_opts, extra) do
+    sprite_url = Keyword.fetch!(extra, :sprite_url)
+
     text_position_after_class =
       Keyword.fetch!(extra, :text_position_after_class)
 
@@ -106,6 +105,7 @@ defmodule Doggo.Components.IconSprite do
         |> var!()
         |> Map.update!(:class, &(&1 ++ [text_position_class]))
         |> assign(:text_class, text_class)
+        |> assign(:sprite_url, unquote(sprite_url))
     end
   end
 

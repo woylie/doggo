@@ -18,16 +18,16 @@ defmodule Doggo.Components.Icon do
   @impl true
   def usage do
     """
-    Render an icon with text as `aria-label` using the `heroicons` library:
+    Render an icon with visually hidden text using the `heroicons` library:
 
     ```heex
-    <.icon label="report bug"><Heroicons.bug_ant /></.icon>
+    <.icon text="report bug"><Heroicons.bug_ant /></.icon>
     ```
 
     To display the text visibly:
 
     ```heex
-    <.icon label="report bug" text_position="after">
+    <.icon text="report bug" text_position="after">
       <Heroicons.bug_ant />
     </.icon>
     ```
@@ -44,7 +44,7 @@ defmodule Doggo.Components.Icon do
     [
       type: :media,
       since: "0.6.0",
-      maturity: :developing,
+      maturity: :refining,
       modifiers: [],
       extra: [
         text_position_after_class: "has-text-after",
