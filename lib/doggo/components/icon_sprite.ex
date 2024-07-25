@@ -13,6 +13,20 @@ defmodule Doggo.Components.IconSprite do
   end
 
   @impl true
+  def builder_doc do
+    """
+    - `:text_position_after_class` - This class is added to the root element if
+      `:text_position` is set to `"after"`.
+    - `:text_position_before_class` - This class is added to the root element if
+      `:text_position` is set to `"before"`.
+    - `:text_position_hidden_class` - This class is added to the root element
+      if `:text_position` is set to `"hidden"`.
+    - `:visually_hidden_class` - This class is added to the `<span>` containing
+      the text if `:text_position` is set to `"hidden"`.
+    """
+  end
+
+  @impl true
   def usage do
     """
     Render an icon with visually hidden text:

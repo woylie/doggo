@@ -3,9 +3,8 @@ defmodule Doggo.Macros do
   use Phoenix.Component
 
   defmacro component(name) do
-    module_name = name |> Atom.to_string() |> Macro.camelize()
-    module = Module.concat([Doggo.Components, module_name])
-
+    module = component_module(name)
+    builder_name = :"build_#{name}"
     config = module.config()
 
     opts =
@@ -19,19 +18,9 @@ defmodule Doggo.Macros do
         :type
       ])
 
-    builder_name = :"build_#{name}"
-
-    doc = module.doc()
-    usage = module.usage()
     modifiers = Keyword.fetch!(opts, :modifiers)
     extra = Keyword.get(opts, :extra, [])
-
-    base_class =
-      Keyword.get(
-        opts,
-        :base_class,
-        name |> to_string |> String.replace("_", "-")
-      )
+    base_class = Keyword.get(opts, :base_class, default_base_class(name))
 
     defaults =
       [
@@ -43,33 +32,10 @@ defmodule Doggo.Macros do
 
     type = Keyword.fetch!(opts, :type)
     since = Keyword.fetch!(opts, :since)
-    maturity = Keyword.fetch!(opts, :maturity)
-    maturity_note = Keyword.get(opts, :maturity_note)
-    maturity_info = build_maturity_info(maturity, maturity_note)
+    docstring = assemble_builder_doc(module, builder_name, defaults, opts)
 
     quote do
-      @doc """
-      #{unquote(doc)}
-
-      #{unquote(maturity_info)}
-
-      ## Generate Component
-
-      Generate component with default options:
-
-          #{unquote(to_string(builder_name))}()
-
-      ## Default options
-
-      ```elixir
-      #{unquote(inspect(defaults, pretty: true))}
-      ```
-
-      ## Usage
-
-      #{unquote(usage)}
-      """
-
+      @doc unquote(docstring)
       @doc type: unquote(type)
       @doc since: unquote(since)
 
@@ -86,24 +52,15 @@ defmodule Doggo.Macros do
           |> Keyword.put(:type, unquote(type))
 
         name = Keyword.fetch!(opts, :name)
-        base_class = Keyword.fetch!(opts, :base_class)
         modifiers = Keyword.fetch!(opts, :modifiers)
         modifier_names = Keyword.keys(modifiers)
-        class_name_fun = Keyword.fetch!(opts, :class_name_fun)
         attrs_and_slots = module.attrs_and_slots()
-        usage = module.usage()
-        doc = module.doc()
+        docstring = Doggo.Macros.assemble_component_doc(module)
 
         quote do
           @dog_components unquote(component_info)
 
-          @doc """
-          #{unquote(doc)}
-
-          ## Usage
-
-          #{unquote(usage)}
-          """
+          @doc unquote(docstring)
 
           for {name, modifier_opts} <- unquote(modifiers) do
             attr name, :string, modifier_opts
@@ -126,14 +83,7 @@ defmodule Doggo.Macros do
           unquote(attrs_and_slots)
 
           def unquote(name)(var!(assigns)) do
-            unquote(
-              prepare_class(
-                base_class,
-                Keyword.keys(modifiers),
-                class_name_fun
-              )
-            )
-
+            unquote(prepare_class(opts))
             unquote(module.init_block(opts, extra))
             unquote(module).render(var!(assigns))
           end
@@ -142,29 +92,73 @@ defmodule Doggo.Macros do
     end
   end
 
-  def prepare_class(base_class, modifier_names, class_name_fun) do
-    quote do
-      var!(assigns) =
-        assign(var!(assigns),
-          base_class: unquote(base_class),
-          class:
-            Doggo.build_class(
-              unquote(base_class),
-              unquote(modifier_names),
-              unquote(class_name_fun),
-              var!(assigns)
-            )
-        )
-    end
+  defp component_module(name) when is_atom(name) do
+    module_name = name |> Atom.to_string() |> Macro.camelize()
+    Module.concat([Doggo.Components, module_name])
   end
 
-  def unpack_heex(heex, extra) when is_function(heex), do: heex.(extra)
-  def unpack_heex(heex, _), do: heex
+  defp default_base_class(name) when is_atom(name) do
+    name |> to_string |> String.replace("_", "-")
+  end
 
-  def unpack_component_function(fun, opts, extra) when is_function(fun),
-    do: fun.(opts, extra)
+  defp assemble_builder_doc(module, builder_name, defaults, opts) do
+    doc = module.doc()
+    usage = module.usage()
 
-  def unpack_component_function(fun, _, _), do: fun
+    builder_doc =
+      if function_exported?(module, :builder_doc, 0) do
+        """
+        In addition to the common options `name`, `base_class`, `modifiers`, and
+        `class_name_fun`, the build macro also supports the following options.
+
+        #{module.builder_doc()}
+        """
+      end
+
+    maturity = Keyword.fetch!(opts, :maturity)
+    maturity_note = Keyword.get(opts, :maturity_note)
+    maturity_info_block = build_maturity_info(maturity, maturity_note)
+
+    [
+      doc,
+      maturity_info_block,
+      """
+      ## Configuration
+
+      Generate component with default options:
+
+          #{to_string(builder_name)}()
+      """,
+      builder_doc,
+      """
+      ### Default options
+
+      ```elixir
+      #{inspect(defaults, pretty: true)}
+      ```
+      """,
+      """
+      ## Usage
+
+      #{usage}
+      """
+    ]
+    |> Enum.reject(&is_nil/1)
+    |> Enum.join("\n\n")
+  end
+
+  def assemble_component_doc(module) do
+    usage = module.usage()
+    doc = module.doc()
+
+    """
+    #{doc}
+
+    ## Usage
+
+    #{usage}
+    """
+  end
 
   defp build_maturity_info(maturity, nil) do
     """
@@ -190,4 +184,33 @@ defmodule Doggo.Macros do
     |> String.split("\n")
     |> Enum.map_join("\n", &String.trim("> #{&1}"))
   end
+
+  def prepare_class(opts) do
+    modifiers = Keyword.fetch!(opts, :modifiers)
+    modifier_names = Keyword.keys(modifiers)
+    base_class = Keyword.fetch!(opts, :base_class)
+    class_name_fun = Keyword.fetch!(opts, :class_name_fun)
+
+    quote do
+      var!(assigns) =
+        assign(var!(assigns),
+          base_class: unquote(base_class),
+          class:
+            Doggo.build_class(
+              unquote(base_class),
+              unquote(modifier_names),
+              unquote(class_name_fun),
+              var!(assigns)
+            )
+        )
+    end
+  end
+
+  def unpack_heex(heex, extra) when is_function(heex), do: heex.(extra)
+  def unpack_heex(heex, _), do: heex
+
+  def unpack_component_function(fun, opts, extra) when is_function(fun),
+    do: fun.(opts, extra)
+
+  def unpack_component_function(fun, _, _), do: fun
 end

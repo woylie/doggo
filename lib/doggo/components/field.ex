@@ -17,6 +17,21 @@ defmodule Doggo.Components.Field do
   end
 
   @impl true
+  def builder_doc do
+    """
+    - `:gettext_module` - If set, errors are automatically translated using this
+      module. This only works if the `:field` attribute is set. Without it,
+      errors passed to the component are rendered unchanged.
+    - `:addon_left_class` - This class is added to the input wrapper if the
+      `:addon_left` slot is used.
+    - `:addon_right_class` - This class is added to the input wrapper if the
+      `:addon_right` slot is used.
+    - `:visually_hidden_class` - This class is added to labels if `:hide_label`
+      is set to `true`.
+    """
+  end
+
+  @impl true
   def usage do
     """
     ### Types
