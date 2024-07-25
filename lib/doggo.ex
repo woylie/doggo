@@ -11,29 +11,6 @@ defmodule Doggo do
   alias Phoenix.LiveView.JS
 
   @doc false
-  def build_class(base_class, modifier_names, class_name_fun, assigns) do
-    class =
-      for name <- modifier_names do
-        case assigns do
-          %{^name => value} when is_binary(value) ->
-            class_name_fun.(name, value)
-
-          _ ->
-            nil
-        end
-      end
-
-    additional_classes =
-      if value = assigns[:class] do
-        List.wrap(value)
-      else
-        []
-      end
-
-    if base_class, do: [base_class | class] ++ additional_classes, else: class
-  end
-
-  @doc false
   def slide_label(n), do: "Slide #{n}"
 
   @doc false
