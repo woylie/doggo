@@ -28,6 +28,11 @@ defmodule Doggo.Components.Cluster do
   end
 
   @impl true
+  def css_path do
+    "layouts/_cluster.scss"
+  end
+
+  @impl true
   def config do
     [
       type: :layout,

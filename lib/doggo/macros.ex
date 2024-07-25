@@ -125,29 +125,33 @@ defmodule Doggo.Macros do
     maturity_note = Keyword.get(opts, :maturity_note)
     maturity_info_block = build_maturity_info(maturity, maturity_note)
 
-    """
-    #{doc}
+    [
+      doc,
+      maturity_info_block,
+      """
+      ## Configuration
 
-    #{maturity_info_block}
+      Generate the component with default options:
 
-    ## Configuration
+          #{to_string(builder_name)}()
+      """,
+      builder_doc,
+      """
+      ### Default options
 
-    Generate the component with default options:
+      ```elixir
+      #{inspect(defaults, pretty: true)}
+      ```
+      """,
+      """
+      ## Usage
 
-        #{to_string(builder_name)}()
-
-    #{builder_doc}
-
-    ### Default options
-
-    ```elixir
-    #{inspect(defaults, pretty: true)}
-    ```
-
-    ## Usage
-
-    #{usage}
-    """
+      #{usage}
+      """,
+      css_example_doc(module)
+    ]
+    |> Enum.reject(&is_nil/1)
+    |> Enum.join("\n\n")
   end
 
   def assemble_component_doc(module) do
@@ -161,6 +165,19 @@ defmodule Doggo.Macros do
 
     #{usage}
     """
+  end
+
+  defp css_example_doc(module) do
+    if function_exported?(module, :css_path, 0) do
+      base_url = "https://github.com/woylie/doggo/blob/main/demo/assets/css/"
+      url = base_url <> module.css_path()
+
+      """
+      ## Example CSS
+
+      For example CSS, you can have a look at the [demo styles](#{url}).
+      """
+    end
   end
 
   defp build_maturity_info(maturity, nil) do

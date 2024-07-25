@@ -32,6 +32,11 @@ defmodule Doggo.Components.PropertyList do
   end
 
   @impl true
+  def css_path do
+    "components/_property-list.scss"
+  end
+
+  @impl true
   def config do
     [
       type: :data,

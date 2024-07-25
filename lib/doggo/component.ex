@@ -23,6 +23,11 @@ defmodule Doggo.Component do
   @callback usage() :: String.t()
 
   @doc """
+  Returns the path to the example CSS styles.
+  """
+  @callback css_path() :: String.t()
+
+  @doc """
   Returns the component configuration.
   """
   @callback config() :: keyword
@@ -44,5 +49,5 @@ defmodule Doggo.Component do
   """
   @callback render(assigns :: map()) :: Phoenix.LiveView.Rendered.t()
 
-  @optional_callbacks builder_doc: 0
+  @optional_callbacks builder_doc: 0, css_path: 0
 end
