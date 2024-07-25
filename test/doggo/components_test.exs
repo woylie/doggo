@@ -2412,21 +2412,6 @@ defmodule Doggo.ComponentsTest do
       assert attribute(svg, "use", "href") == "/assets/icons/sprite.svg#edit"
     end
 
-    test "with sprite URL" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.icon_sprite sprite_url="/images/icons.svg" name="edit" />
-        """)
-
-      span = find_one(html, "span:root")
-      assert attribute(span, "class") == "icon"
-      svg = find_one(span, "svg")
-      assert attribute(svg, "aria-hidden") == "true"
-      assert attribute(svg, "use", "href") == "/images/icons.svg#edit"
-    end
-
     test "with label" do
       assigns = %{}
 

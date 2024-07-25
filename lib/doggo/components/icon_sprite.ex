@@ -38,6 +38,7 @@ defmodule Doggo.Components.IconSprite do
       base_class: "icon",
       modifiers: [],
       extra: [
+        sprite_url: "/assets/icons/sprite.svg",
         text_position_after_class: "has-text-after",
         text_position_before_class: "has-text-before",
         text_position_hidden_class: nil,
@@ -52,10 +53,6 @@ defmodule Doggo.Components.IconSprite do
       attr :name, :string,
         required: true,
         doc: "Icon name as used in the sprite."
-
-      attr :sprite_url, :string,
-        default: "/assets/icons/sprite.svg",
-        doc: "The URL of the SVG sprite."
 
       attr :text, :string,
         default: nil,
@@ -77,6 +74,8 @@ defmodule Doggo.Components.IconSprite do
 
   @impl true
   def init_block(_opts, extra) do
+    sprite_url = Keyword.fetch!(extra, :sprite_url)
+
     text_position_after_class =
       Keyword.fetch!(extra, :text_position_after_class)
 
@@ -106,6 +105,7 @@ defmodule Doggo.Components.IconSprite do
         |> var!()
         |> Map.update!(:class, &(&1 ++ [text_position_class]))
         |> assign(:text_class, text_class)
+        |> assign(:sprite_url, unquote(sprite_url))
     end
   end
 
