@@ -9,6 +9,10 @@
 
 ### Changed
 
+#### General
+
+- Add documentation for the compile-time options of the builder macros.
+
 #### Property list component
 
 - Add styles to demo application.

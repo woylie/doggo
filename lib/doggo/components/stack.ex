@@ -13,6 +13,13 @@ defmodule Doggo.Components.Stack do
   end
 
   @impl true
+  def builder_doc do
+    """
+    - `:recursive_class` - This class is added if `:recursive` is set to `true`.
+    """
+  end
+
+  @impl true
   def usage do
     """
     ```heex

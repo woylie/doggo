@@ -20,6 +20,14 @@ defmodule Doggo.Components.ButtonLink do
   end
 
   @impl true
+  def builder_doc do
+    """
+    - `:disabled_class` - This class name is added if the `:disabled` attribute
+      is set to `true`.
+    """
+  end
+
+  @impl true
   def usage do
     """
     ```heex

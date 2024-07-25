@@ -9,6 +9,13 @@ defmodule Doggo.Component do
   @callback doc() :: String.t()
 
   @doc """
+  Returns the documentation section for the builder macro.
+
+  This documentation is not used for the compiled component.
+  """
+  @callback builder_doc() :: String.t()
+
+  @doc """
   Returns the 'Usage' section of the documentation.
 
   Used for both the component builder macro and the compiled component.
@@ -36,4 +43,6 @@ defmodule Doggo.Component do
   attributes from the init block.
   """
   @callback render(assigns :: map()) :: Phoenix.LiveView.Rendered.t()
+
+  @optional_callbacks builder_doc: 0
 end
