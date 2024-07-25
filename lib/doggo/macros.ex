@@ -108,8 +108,9 @@ defmodule Doggo.Macros do
     builder_doc =
       if function_exported?(module, :builder_doc, 0) do
         """
-        In addition to the common options `name`, `base_class`, `modifiers`, and
-        `class_name_fun`, the build macro also supports the following options.
+        In addition to the [common options](`m:Doggo.Components#module-common-options`)
+        `name`, `base_class`, `modifiers`, and `class_name_fun`, the build macro
+        also supports the following options.
 
         #{module.builder_doc()}
         """
