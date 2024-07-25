@@ -114,38 +114,40 @@ defmodule Doggo.Macros do
 
         #{module.builder_doc()}
         """
+      else
+        """
+        The build macro supports the [common options](`m:Doggo.Components#module-common-options`)
+        `name`, `base_class`, `modifiers`, and `class_name_fun`.
+        """
       end
 
     maturity = Keyword.fetch!(opts, :maturity)
     maturity_note = Keyword.get(opts, :maturity_note)
     maturity_info_block = build_maturity_info(maturity, maturity_note)
 
-    [
-      doc,
-      maturity_info_block,
-      """
-      ## Configuration
+    """
+    #{doc}
 
-      Generate component with default options:
+    #{maturity_info_block}
 
-          #{to_string(builder_name)}()
-      """,
-      builder_doc,
-      """
-      ### Default options
+    ## Configuration
 
-      ```elixir
-      #{inspect(defaults, pretty: true)}
-      ```
-      """,
-      """
-      ## Usage
+    Generate the component with default options:
 
-      #{usage}
-      """
-    ]
-    |> Enum.reject(&is_nil/1)
-    |> Enum.join("\n\n")
+        #{to_string(builder_name)}()
+
+    #{builder_doc}
+
+    ### Default options
+
+    ```elixir
+    #{inspect(defaults, pretty: true)}
+    ```
+
+    ## Usage
+
+    #{usage}
+    """
   end
 
   def assemble_component_doc(module) do
