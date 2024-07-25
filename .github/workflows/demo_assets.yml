@@ -1,0 +1,57 @@
+name: Demo Assets
+
+env:
+  ELIXIR_VERSION: "1.17"
+  OTP_VERSION: "27"
+  NODE_VERSION: "22"
+  PNPM_VERSION: "9"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./demo/assets
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        id: beam
+        with:
+          otp-version: ${{ env.OTP_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+      - name: Restore dependencies cache
+        uses: actions/cache@v4
+        with:
+          path: demo/deps
+          key: ${{ runner.os }}-otp-${{ steps.beam.outputs.otp-version }}-elixir-${{ steps.beam.outputs.elixir-version }}-mix-${{ hashFiles('demo/mix.lock') }}
+          restore-keys: ${{ runner.os }}-otp-${{ steps.beam.outputs.otp-version }}-elixir-${{ steps.beam.outputs.elixir-version }}-
+      - name: Install Dependencies
+        run: mix deps.get
+        working-directory: ./demo
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+          cache-dependency-path: ./demo/assets
+      - name: Install dependencies
+        run: pnpm install
+      - name: Prettier
+        run: pnpm lint:prettier
+      - name: Stylelint
+        run: pnpm lint:stylelint
+      - name: Development build
+        run: pnpm build:dev
