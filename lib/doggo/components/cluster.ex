@@ -8,9 +8,10 @@ defmodule Doggo.Components.Cluster do
   @impl true
   def doc do
     """
-    Use the cluster component to visually group children.
+    The cluster component is used to visually group child elements while
+    applying a consistent gap between them.
 
-    Common use cases are groups of buttons, or group of tags.
+    Common use cases are groups of buttons, groups of tags, or similar items.
     """
   end
 
@@ -31,7 +32,7 @@ defmodule Doggo.Components.Cluster do
     [
       type: :layout,
       since: "0.6.0",
-      maturity: :refining,
+      maturity: :stable,
       modifiers: []
     ]
   end
@@ -52,7 +53,7 @@ defmodule Doggo.Components.Cluster do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class={@class} {@rest}>
+    <div role="group" class={@class} {@rest}>
       <%= render_slot(@inner_block) %>
     </div>
     """

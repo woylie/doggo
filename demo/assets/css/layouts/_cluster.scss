@@ -8,25 +8,26 @@
 
 @use "../functions" as f;
 
-.group {
-  --gap: #{f.lines(0.5)} #{f.spacer(2)};
-  --wrap: wrap;
-
+.cluster {
   display: flex;
-  flex-wrap: var(--wrap);
-  gap: var(--gap);
-
-  &.is-scrollable {
-    --wrap: no-wrap;
-
-    overflow-x: auto;
-  }
+  flex-wrap: wrap;
+  gap: var(--space, #{f.spacer(2)});
 
   /*
-  For modifier classes, override the --gap property:
+  For modifying the spacing, override the --gap property:
 
       &.is-small {
         --gap: f.spacer(1);
       }
+
+  You may want to add a modifier for scrolling:
+
+      &.is-scrollable {
+        flex-wrap: no-wrap;
+        overflow-x: auto;
+      }
+
+  Or you may want to add modifiers for the justify-content and align-items
+  properties.
   */
 }

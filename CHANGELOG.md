@@ -21,6 +21,12 @@
 - Improve story and documentation.
 - Mark component as `stable`.
 
+#### Cluster component
+
+- Add styles to demo application.
+- Improve story and documentation.
+- Mark component as `stable`.
+
 #### Icon and icon sprite component
 
 - Add styles to demo application.
