@@ -15,16 +15,16 @@ defmodule Doggo.Components.IconSprite do
   @impl true
   def usage do
     """
-    Render an icon with text as `aria-label`:
+    Render an icon with visually hidden text:
 
     ```heex
-    <.icon name="arrow-left" label="Go back" />
+    <.icon name="arrow-left" text="Go back" />
     ```
 
     To display the text visibly:
 
     ```heex
-    <.icon name="arrow-left" label="Go back" text_position={:right} />
+    <.icon name="arrow-left" text="Go back" text_position={:right} />
     ```
     """
   end
