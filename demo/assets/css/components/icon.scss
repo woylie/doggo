@@ -2,8 +2,15 @@
 
 .icon {
   display: inline-flex;
-  align-items: baseline;
   gap: f.spacer(1);
+  align-items: baseline;
+
+  > svg {
+    width: 0.75em;
+    width: 1cap;
+    height: 0.75em;
+    height: 1cap;
+  }
 
   /* For LTR languages */
   &.has-text-before {
@@ -24,13 +31,6 @@
     > span {
       order: 1;
     }
-  }
-
-  > svg {
-    width: 0.75em;
-    width: 1cap;
-    height: 0.75em;
-    height: 1cap;
   }
 }
 

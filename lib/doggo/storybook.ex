@@ -56,6 +56,10 @@ defmodule Doggo.Storybook do
 
       def function, do: unquote(function)
 
+      if unquote(function_exported?(storybook_module, :container, 0)) do
+        def container, do: unquote(storybook_module).container()
+      end
+
       if unquote(function_exported?(storybook_module, :layout, 0)) do
         def layout, do: unquote(storybook_module).layout()
       end
