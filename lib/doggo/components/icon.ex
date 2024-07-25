@@ -54,6 +54,11 @@ defmodule Doggo.Components.Icon do
   end
 
   @impl true
+  def css_path do
+    "components/_icon.scss"
+  end
+
+  @impl true
   def config do
     [
       type: :media,

@@ -46,6 +46,11 @@ defmodule Doggo.Components.Stack do
   end
 
   @impl true
+  def css_path do
+    "layouts/_stack.scss"
+  end
+
+  @impl true
   def config do
     [
       type: :layout,
