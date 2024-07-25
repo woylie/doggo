@@ -18,6 +18,7 @@
 #### Icon and icon sprite component
 
 - Add styles to demo application.
+- Add story for icon sprite.
 - Rename `label` attribute to `text`.
 - Rename `label_placement` attribute to `text_position`.
 - Change type of `label_placement` attribute from atom to string for
