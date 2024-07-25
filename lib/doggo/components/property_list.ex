@@ -8,13 +8,20 @@ defmodule Doggo.Components.PropertyList do
   @impl true
   def doc do
     """
-    Renders a list of properties, i.e. key/value pairs.
+    Renders a list of properties as key/value pairs.
+
+    This component is useful for displaying data in a structured format, such as
+    a list of attributes for an entity. Each property is rendered as a `<dt>`
+    element for the label and a `<dd>` element for the value.
     """
   end
 
   @impl true
   def usage do
     """
+    Each property is specified using the `:prop` slot with a `label` attribute
+    and an inner block.
+
     ```heex
     <.property_list>
       <:prop label={gettext("Name")}>George</:prop>
@@ -29,7 +36,7 @@ defmodule Doggo.Components.PropertyList do
     [
       type: :data,
       since: "0.6.0",
-      maturity: :refining,
+      maturity: :stable,
       modifiers: []
     ]
   end

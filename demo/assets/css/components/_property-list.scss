@@ -1,0 +1,31 @@
+@use "../functions" as f;
+
+.property-list {
+  > div {
+    > dt {
+      font-weight: f.weight(medium);
+      margin: 0;
+    }
+
+    > dd {
+      margin: 0;
+    }
+  }
+
+  & > div + div {
+    margin-block-start: f.lines(1);
+  }
+
+  @media (width >= 768px) {
+    > div {
+      display: flex;
+      flex-direction: row;
+      gap: f.spacer(2);
+      align-items: baseline;
+
+      > dt {
+        flex: 0 0 8rem;
+      }
+    }
+  }
+}

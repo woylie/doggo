@@ -9,6 +9,12 @@
 
 ### Changed
 
+#### Property list component
+
+- Add styles to demo application.
+- Improve story and documentation.
+- Mark component as `stable`.
+
 #### Stack component
 
 - Add styles to demo application.
