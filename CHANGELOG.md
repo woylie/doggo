@@ -18,8 +18,10 @@
 #### Icon and icon sprite component
 
 - Add styles to demo application.
-- Rename `label_placement` attribute to `text_position`. Change type from
-  atom to string for consistency.
+- Rename `label` attribute to `text`.
+- Rename `label_placement` attribute to `text_position`.
+- Change type of `label_placement` attribute from atom to string for
+  consistency.
 - Use `before` and `after` as values for `text_position` instead of `left` and
   `right` to better apply to right-to-left languages. Rename default classes
   to `has-text-before` and `has-text-after` accordingly.
