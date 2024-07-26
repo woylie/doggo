@@ -48,6 +48,48 @@ defmodule Doggo.Components.Datetime do
       Feb 2, 2023, 14:22:06 PM
     </time>
     ```
+
+    The component can also truncate the value before passing it to the
+    formatter.
+
+    ```heex
+    <.datetime
+      value={~U[2023-02-05 12:22:06.003Z]}
+      precision={:minute}
+    />
+    ```
+
+    If you pass a `title_formatter`, a `title` attribute is added to the
+    element. This can be useful if you want to render the value in a shortened
+    or relative format, but still give the user access to the complete value.
+    Note that the title attribute is only be accessible to users who use
+    a pointer device. Some screen readers may however announce the `datetime`
+    attribute that is always added.
+
+    ```heex
+    <.datetime
+      value={@datetime}
+      formatter={&relative_date/1}
+      title_formatter={&MyApp.Cldr.DateTime.to_string!/1}
+    />
+    ```
+
+    Finally, the component can shift a `DateTime` to a different time zone:
+
+    ```heex
+    <.datetime
+      value={~U[2023-02-05 23:22:05Z]}
+      timezone="Asia/Tokyo"
+    />
+    ```
+
+    Which would be rendered as:
+
+    ```html
+    <time datetime="2023-02-06T08:22:05+09:00">
+      2023-02-06 08:22:05+09:00 JST Asia/Tokyo
+    </time>
+    ```
     """
   end
 
@@ -56,7 +98,7 @@ defmodule Doggo.Components.Datetime do
     [
       type: :data,
       since: "0.6.0",
-      maturity: :developing,
+      maturity: :refining,
       base_class: nil,
       modifiers: []
     ]

@@ -19,7 +19,7 @@ defmodule Doggo.Components.Time do
     By default, the given value is formatted for display with `to_string/1`. This:
 
     ```heex
-    <Doggo.time value={~T[12:22:06.003Z]} />
+    <.time value={~T[12:22:06.003Z]} />
     ```
 
     Will be rendered as:
@@ -35,7 +35,7 @@ defmodule Doggo.Components.Time do
     application, you could do this:
 
     ```heex
-    <Doggo.time
+    <.time
       value={~T[12:22:06.003]}
       formatter={&MyApp.Cldr.Time.to_string!/1}
     />
@@ -48,6 +48,48 @@ defmodule Doggo.Components.Time do
       14:22:06 PM
     </time>
     ```
+
+    The component can also truncate the value before passing it to the
+    formatter.
+
+    ```heex
+    <.time
+      value={~U[2023-02-05 12:22:06.003Z]}
+      precision={:minute}
+    />
+    ```
+
+    If you pass a `title_formatter`, a `title` attribute is added to the
+    element. This can be useful if you want to render the value in a shortened
+    or relative format, but still give the user access to the complete value.
+    Note that the title attribute is only be accessible to users who use
+    a pointer device. Some screen readers may however announce the `datetime`
+    attribute that is always added.
+
+    ```heex
+    <.time
+      value={@time}
+      formatter={&relative_time/1}
+      title_formatter={&MyApp.Cldr.Time.to_string!/1}
+    />
+    ```
+
+    Finally, the component can shift a `DateTime` to a different time zone:
+
+    ```heex
+    <.time
+      value={~U[2023-02-05 23:22:05Z]}
+      timezone="Asia/Tokyo"
+    />
+    ```
+
+    Which would be rendered as:
+
+    ```html
+    <time datetime="08:22:05">
+      08:22:05
+    </time>
+    ```
     """
   end
 
@@ -56,7 +98,7 @@ defmodule Doggo.Components.Time do
     [
       type: :data,
       since: "0.6.0",
-      maturity: :developing,
+      maturity: :refining,
       base_class: nil,
       modifiers: []
     ]

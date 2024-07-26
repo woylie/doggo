@@ -47,10 +47,10 @@
 - Set `sprite_url` as a compile time option.
 - Mark both components as `refining`.
 
-#### Date component
+#### Date, datetime, and time component
 
 - Improve story and documentation.
-- Mark component as `refining`.
+- Mark components as `refining`.
 
 ## [0.7.0] - 2024-07-24
 
