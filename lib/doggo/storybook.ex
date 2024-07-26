@@ -178,7 +178,7 @@ defmodule Doggo.Storybook do
       component_id
       |> storybook_module.modifier_variation_base(name, value, opts)
       |> Map.put(:id, variation_id)
-      |> Map.update(:attributes, %{}, &Map.put(&1, name, value))
+      |> Map.update(:attributes, %{name => value}, &Map.put(&1, name, value))
 
     struct!(Variation, attrs)
   end
