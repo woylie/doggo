@@ -99,6 +99,12 @@ defmodule Doggo.Components.Time do
       type: :data,
       since: "0.6.0",
       maturity: :refining,
+      maturity_note: """
+      The API of this component can be considered fairly stable, but there
+      are still uncertainties about accessibility aspects, such as the
+      handling of the `<time>` element and its `datetime` attribute by screen
+      readers and the limited accessibility of the title attribute.
+      """,
       base_class: nil,
       modifiers: []
     ]
