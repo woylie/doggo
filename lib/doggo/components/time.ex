@@ -8,7 +8,8 @@ defmodule Doggo.Components.Time do
   @impl true
   def doc do
     """
-    Renders a `Time`, `DateTime`, or `NaiveDateTime` in a `<time>` tag.
+    Formats a `Time`, `DateTime`, or `NaiveDateTime` as a time and renders it
+    in a `<time>` element.
     """
   end
 
