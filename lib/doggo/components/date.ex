@@ -8,7 +8,8 @@ defmodule Doggo.Components.Date do
   @impl true
   def doc do
     """
-    Renders a `Date`, `DateTime`, or `NaiveDateTime` in a `<time>` tag.
+    Formats a `Date`, `DateTime`, or `NaiveDateTime` as a date and renders it
+    in a `<time>` element.
     """
   end
 
@@ -47,6 +48,39 @@ defmodule Doggo.Components.Date do
       Feb 2, 2023
     </time>
     ```
+
+    If you pass a `title_formatter`, a `title` attribute is added to the
+    element. This can be useful if you want to render the value in a shortened
+    or relative format, but still give the user access to the complete value.
+    Note that the title attribute is only be accessible to users who use
+    a pointer device. Some screen readers may however announce the `datetime`
+    attribute that is always added.
+
+    ```heex
+    <.date
+      value={@date}
+      formatter={relative_date(@date)}
+      title_formatter={&MyApp.Cldr.Date.to_string!/1}
+    />
+    ```
+
+    Finally, the component can shift a `DateTime` to a different time zone
+    before converting it to a date:
+
+    ```heex
+    <.date
+      value={~U[2023-02-05 23:22:05Z]}
+      timezone="Asia/Tokyo"
+    />
+    ```
+
+    Which would be rendered as:
+
+    ```html
+    <time datetime="2023-02-06">
+      2023-02-06
+    </time>
+    ```
     """
   end
 
@@ -55,7 +89,7 @@ defmodule Doggo.Components.Date do
     [
       type: :data,
       since: "0.6.0",
-      maturity: :developing,
+      maturity: :refining,
       base_class: nil,
       modifiers: []
     ]

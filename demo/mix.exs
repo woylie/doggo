@@ -43,7 +43,8 @@ defmodule Demo.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:phoenix_storybook, "~> 0.6.0"},
       {:heroicons, "~> 0.5.3"},
-      {:doggo, path: ".."}
+      {:doggo, path: ".."},
+      {:tzdata, "~> 1.1"}
     ]
   end
 
