@@ -59,7 +59,7 @@ defmodule Doggo.Components.Date do
     ```heex
     <.date
       value={@date}
-      formatter={relative_date(@date)}
+      formatter={&relative_date/1}
       title_formatter={&MyApp.Cldr.Date.to_string!/1}
     />
     ```
