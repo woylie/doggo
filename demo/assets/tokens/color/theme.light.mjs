@@ -12,19 +12,19 @@ export default {
         $value: "{color.base.white}",
       },
       secondary: {
-        $value: "{color.gray.600}",
+        $value: "{color.blue.600}",
       },
       info: {
-        $value: "{color.indigo.600}",
+        $value: "{color.base.white}",
       },
       success: {
-        $value: "{color.green.500}",
+        $value: "{color.base.white}",
       },
       warning: {
-        $value: "{color.yellow.500}",
+        $value: "{color.base.white}",
       },
       danger: {
-        $value: "{color.red.500}",
+        $value: "{color.base.white}",
       },
       disabled: {
         $value: "{color.gray.200}",
@@ -38,19 +38,19 @@ export default {
         $value: "{color.blue.400}",
       },
       secondary: {
-        $value: "{color.gray.0}",
+        $value: "{color.blue.0}",
       },
       info: {
-        $value: "{color.indigo.0}",
+        $value: "{color.indigo.400}",
       },
       success: {
-        $value: "{color.green.0}",
+        $value: "{color.green.400}",
       },
       warning: {
-        $value: "{color.yellow.0}",
+        $value: "{color.yellow.400}",
       },
       danger: {
-        $value: "{color.red.0}",
+        $value: "{color.red.400}",
       },
       disabled: {
         $value: "{color.gray.0}",
@@ -61,19 +61,19 @@ export default {
         $value: "{color.blue.500}",
       },
       secondary: {
-        $value: "{color.gray.100}",
+        $value: "{color.blue.200}",
       },
       info: {
-        $value: "{color.indigo.100}",
+        $value: "{color.indigo.500}",
       },
       success: {
-        $value: "{color.green.100}",
+        $value: "{color.green.500}",
       },
       warning: {
-        $value: "{color.yellow.100}",
+        $value: "{color.yellow.500}",
       },
       danger: {
-        $value: "{color.red.100}",
+        $value: "{color.red.500}",
       },
       disabled: {
         $value: "{color.gray.100}",
