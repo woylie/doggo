@@ -13,23 +13,11 @@
 
 - Add documentation for the compile-time options of the builder macros.
 
-#### Property list component
+#### Property list, stack, cluster, button, and button link component
 
 - Add styles to demo application.
 - Improve story and documentation.
-- Mark component as `stable`.
-
-#### Stack component
-
-- Add styles to demo application.
-- Improve story and documentation.
-- Mark component as `stable`.
-
-#### Cluster component
-
-- Add styles to demo application.
-- Improve story and documentation.
-- Mark component as `stable`.
+- Mark components as `stable`.
 
 #### Icon and icon sprite component
 
@@ -51,6 +39,11 @@
 
 - Improve story and documentation.
 - Mark components as `refining`.
+
+### Fixed
+
+- `attributes` for modifier variations weren't set correctly when map was
+  lacking key.
 
 ## [0.7.0] - 2024-07-24
 
