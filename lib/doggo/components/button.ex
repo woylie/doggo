@@ -45,6 +45,11 @@ defmodule Doggo.Components.Button do
   end
 
   @impl true
+  def css_path do
+    "components/_button.scss"
+  end
+
+  @impl true
   def config do
     [
       base_class: "button",
