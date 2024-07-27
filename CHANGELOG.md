@@ -52,6 +52,11 @@
 - Improve story and documentation.
 - Mark components as `refining`.
 
+### Fixed
+
+- `attributes` for modifier variations weren't set correctly when map was
+  lacking key.
+
 ## [0.7.0] - 2024-07-24
 
 ### Changed
