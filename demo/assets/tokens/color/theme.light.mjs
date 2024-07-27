@@ -26,6 +26,9 @@ export default {
       danger: {
         $value: "{color.red.500}",
       },
+      disabled: {
+        $value: "{color.gray.200}",
+      },
     },
     background: {
       foundation: {
@@ -49,6 +52,9 @@ export default {
       danger: {
         $value: "{color.red.0}",
       },
+      disabled: {
+        $value: "{color.gray.0}",
+      },
     },
     border: {
       primary: {
@@ -68,6 +74,9 @@ export default {
       },
       danger: {
         $value: "{color.red.100}",
+      },
+      disabled: {
+        $value: "{color.gray.100}",
       },
     },
   },

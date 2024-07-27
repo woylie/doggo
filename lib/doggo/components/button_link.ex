@@ -8,7 +8,7 @@ defmodule Doggo.Components.ButtonLink do
   @impl true
   def doc do
     """
-    Renders a link (`<a>`) that has the role and style of a button.
+    Renders a link (`<a>`) that has the style of a button.
 
     Use this component when you need to style a link to a different page or a
     specific section within the same page as a button.
@@ -48,7 +48,7 @@ defmodule Doggo.Components.ButtonLink do
       base_class: "button",
       type: :buttons,
       since: "0.6.0",
-      maturity: :developing,
+      maturity: :stable,
       extra: [disabled_class: "is-disabled"],
       modifiers: [
         variant: [

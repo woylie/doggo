@@ -1,0 +1,143 @@
+@use "../functions" as f;
+
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: f.spacer(1) f.spacer(3);
+  font-size: f.size(s);
+  line-height: f.lines(1);
+  text-decoration: none;
+  cursor: pointer;
+  background: blanchedalmond;
+  border: f.border-width(s) solid black;
+  border-radius: f.radius(s);
+
+  &:disabled,
+  &.is-disabled {
+    color: f.color(text, disabled);
+    cursor: not-allowed;
+    background: f.color(background, disabled);
+    border-color: f.color(border, disabled);
+  }
+
+  &:not(:disabled, .is-disabled) {
+    &:active {
+      filter: brightness(95%);
+    }
+
+    &.is-primary {
+      color: f.color(text, primary);
+      background: f.color(background, primary);
+      border-color: f.color(border, primary);
+    }
+
+    &.is-secondary {
+      color: f.color(text, secondary);
+      background: f.color(background, secondary);
+      border-color: f.color(border, secondary);
+    }
+
+    &.is-info {
+      color: f.color(text, info);
+      background: f.color(background, info);
+      border-color: f.color(border, info);
+    }
+
+    &.is-success {
+      color: f.color(text, success);
+      background: f.color(background, success);
+      border-color: f.color(border, success);
+    }
+
+    &.is-warning {
+      color: f.color(text, warning);
+      background: f.color(background, warning);
+      border-color: f.color(border, warning);
+    }
+
+    &.is-danger {
+      color: f.color(text, danger);
+      background: f.color(background, danger);
+      border-color: f.color(border, danger);
+    }
+
+    &.is-outline {
+      background: transparent;
+    }
+
+    &.is-text {
+      background: none;
+      border-color: transparent;
+    }
+
+    &.is-outline,
+    &.is-text {
+      &.is-primary {
+        color: f.color(border, primary);
+      }
+
+      &.is-secondary {
+        color: f.color(border, secondary);
+      }
+
+      &.is-info {
+        color: f.color(border, info);
+      }
+
+      &.is-success {
+        color: f.color(border, success);
+      }
+
+      &.is-warning {
+        color: f.color(border, warning);
+      }
+
+      &.is-danger {
+        color: f.color(border, danger);
+      }
+    }
+  }
+
+  &.is-small {
+    padding: f.spacer(1);
+    font-size: f.size(xs);
+  }
+
+  &.is-medium {
+    font-size: f.size(m);
+  }
+
+  &.is-large {
+    padding: f.spacer(2) f.spacer(4);
+    font-size: f.size(l);
+  }
+
+  &.is-circle {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: f.radius(circle);
+  }
+
+  &.is-pill {
+    min-width: 8ch;
+    border-radius: f.radius(pill);
+  }
+
+  &[aria-busy] {
+    color: transparent !important;
+    pointer-events: none;
+  }
+
+  &[aria-busy]::after {
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    content: "";
+    border: 2px solid rgb(255 255 255 / 30%);
+    border-top-color: f.color(background, foundation);
+    border-radius: f.radius(circle);
+    animation: spin 0.6s linear infinite;
+  }
+}

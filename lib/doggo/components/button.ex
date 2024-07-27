@@ -10,15 +10,15 @@ defmodule Doggo.Components.Button do
     """
     Renders a button.
 
-    Use this component when you need to perform an action that doesn't involve
-    navigating to a different page, such as submitting a form, confirming an
-    action, or deleting an item.
+    Use this component when you need to perform an action such as submitting a
+    form, confirming an action, deleting an item, toggling a setting, etc.
 
     If you need to navigate to a different page or a specific section on the
     current page and want to style the link like a button, use `button_link/1`
     instead.
 
-    See also `button_link/1`, `toggle_button/1`, and `disclosure_button/1`.
+    See also `button_link/1`, `toggle_button/1`, `disclosure_button/1`, and
+    `fab/1`.
     """
   end
 
@@ -50,7 +50,7 @@ defmodule Doggo.Components.Button do
       base_class: "button",
       type: :buttons,
       since: "0.6.0",
-      maturity: :developing,
+      maturity: :stable,
       modifiers: [
         variant: [
           values: [
