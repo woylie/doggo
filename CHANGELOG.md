@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## [0.8.1] - 2024-07-28
+
+### Fixed
+
+- Declare `phoenix_storybook` as required dependency.
+
 ## [0.8.0] - 2024-07-28
 
 ### Added
