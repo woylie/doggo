@@ -34,6 +34,11 @@ export default {
       foundation: {
         $value: "{color.base.white}",
       },
+      surface: {
+        1: {
+          $value: "{color.gray.100}",
+        },
+      },
       primary: {
         $value: "{color.blue.400}",
       },

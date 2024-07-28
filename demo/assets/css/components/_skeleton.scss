@@ -1,0 +1,38 @@
+@use "../functions" as f;
+
+.skeleton {
+  cursor: progress;
+  background: f.color(background, surface, "1");
+  border-radius: f.radius(m);
+
+  &.is-text-line {
+    width: 100%;
+    height: f.lines(1);
+  }
+
+  &.is-text-block {
+    width: 100%;
+    height: calc(4 * #{f.lines(1)});
+  }
+
+  &.is-image {
+    width: 100%;
+    height: 200px;
+  }
+
+  &.is-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: f.radius(circle);
+  }
+
+  &.is-rectangle {
+    width: 200px;
+    height: 100px;
+  }
+
+  &.is-square {
+    width: 100px;
+    height: 100px;
+  }
+}
