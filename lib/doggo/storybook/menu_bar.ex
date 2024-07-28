@@ -77,7 +77,9 @@ defmodule Doggo.Storybook.MenuBar do
     else
       [
         """
-        <p>Please compile the <code>menu</code> and <code>menu_item</code> components to see a complete preview.</p>
+        <:item>
+          <p>Please compile the <code>menu</code> and <code>menu_item</code> components to see a complete preview.</p>
+        </:item>
         """
       ]
     end
