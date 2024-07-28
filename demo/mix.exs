@@ -82,16 +82,7 @@ defmodule Demo.MixProject do
     with {str, _} <- System.cmd("git", ["describe", "--tags", "--always"]),
          str = String.trim(str),
          {:ok, version} <- Version.parse(str) do
-      version
-      |> Map.update!(:pre, fn
-        nil ->
-          nil
-
-        [pre] when is_binary(pre) ->
-          [commits | _] = String.split(pre, "-")
-          [commits]
-      end)
-      |> to_string()
+      to_string(version)
     else
       _ -> "0.1.0"
     end
