@@ -13,7 +13,7 @@ config :demo,
 # Configures the endpoint
 config :demo, DemoWeb.Endpoint,
   url: [host: "localhost"],
-  adapter: Phoenix.Endpoint.Cowboy2Adapter,
+  adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [html: DemoWeb.ErrorHTML, json: DemoWeb.ErrorJSON],
     layout: false
