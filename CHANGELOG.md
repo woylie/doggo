@@ -19,6 +19,12 @@
 - Improve story and documentation.
 - Mark components as `stable`.
 
+#### Tab navigation
+
+- Add styles to demo application.
+- Improve documentation.
+- Mark component as `refining`.
+
 #### Icon and icon sprite component
 
 - Add styles to demo application.

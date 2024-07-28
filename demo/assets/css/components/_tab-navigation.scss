@@ -1,0 +1,34 @@
+@use "../functions" as f;
+
+.tab-navigation {
+  width: 100%;
+  overflow-x: auto;
+
+  > ul {
+    display: flex;
+    gap: f.spacer(1);
+    align-items: center;
+    padding-left: f.spacer(2);
+    margin-left: 0;
+    list-style-type: none;
+    border-bottom: f.border-width(s) solid f.color(border, neutral, "1");
+
+    > li {
+      > a {
+        display: block;
+        padding: f.spacer(2) f.spacer(4);
+        color: f.color(text, secondary);
+        text-decoration: none;
+        border-top-left-radius: f.radius(m);
+        border-top-right-radius: f.radius(m);
+
+        &[aria-current] {
+          font-weight: f.weight(medium);
+          background: f.color(background, secondary);
+          border: f.border-width(s) solid f.color(border, neutral, "1");
+          border-bottom-width: 0;
+        }
+      }
+    }
+  }
+}

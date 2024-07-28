@@ -62,6 +62,17 @@ export default {
       },
     },
     border: {
+      neutral: {
+        1: {
+          $value: "{color.gray.100}",
+        },
+        2: {
+          $value: "{color.gray.200}",
+        },
+        3: {
+          $value: "{color.gray.300}",
+        },
+      },
       primary: {
         $value: "{color.blue.500}",
       },
