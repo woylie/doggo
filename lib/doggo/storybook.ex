@@ -32,6 +32,7 @@ defmodule Doggo.Storybook do
     modifiers = Keyword.fetch!(info, :modifiers)
 
     storybook_module = storybook_module(component)
+    {:module, _} = Code.ensure_loaded(module)
     {:module, _} = Code.ensure_loaded(storybook_module)
     function = Function.capture(module, name, 1)
 
