@@ -12,7 +12,7 @@ defmodule Storybook.MyPage do
       <p>This storybook presents the components with their default options. Some components already include example styles, while others remain unstyled and will receive example styles in the future.</p>
       <p>You can override the default options, including component names, base classes, and modifier attributes such as button sizes or variants.</p>
       <p>The library includes a mix task to generate storybook stories for the components configured in your application.</p>
-      <p>For details about component maturity and configuration options, please refer to the <a href="https://hexdocs.pm/doggo/Doggo.Components.html" target="_blank">Components documentation</a></p>
+      <p>Not all components are feature-complete regarding interactivity or accessibility aspects. For details about component maturity and configuration options, please refer to the <a href="https://hexdocs.pm/doggo/Doggo.Components.html" target="_blank">Components documentation</a></p>
 
       <h2>Resources</h2>
       <ul>

@@ -10,7 +10,6 @@
   line-height: f.lines(1);
   text-decoration: none;
   cursor: pointer;
-  background: blanchedalmond;
   border: f.border-width(s) solid black;
   border-radius: f.radius(s);
 
@@ -23,8 +22,12 @@
   }
 
   &:not(:disabled, .is-disabled) {
+    &:hover {
+      filter: brightness(110%);
+    }
+
     &:active {
-      filter: brightness(90%);
+      filter: brightness(95%);
     }
 
     &.is-primary {
