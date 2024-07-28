@@ -40,7 +40,7 @@ defmodule Demo.MixProject do
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"},
+      {:bandit, "~> 1.0"},
       {:phoenix_storybook, "~> 0.6.0"},
       {:heroicons, "~> 0.5.3"},
       {:doggo, path: ".."},
@@ -57,13 +57,21 @@ defmodule Demo.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "assets.setup", "assets.build"],
-      "assets.setup": ["cmd pnpm --dir assets install"],
+      "assets.setup": ["cmd pnpm --dir assets install --force"],
       "assets.build": ["cmd pnpm --dir assets build:dev"],
       "assets.deploy": ["cmd pnpm --dir assets build:prod", "phx.digest"]
     ]
   end
 
   defp version do
+    if version = System.get_env("VERSION") do
+      version
+    else
+      version_from_git()
+    end
+  end
+
+  defp version_from_git do
     with {str, _} <- System.cmd("git", ["describe", "--tags", "--always"]),
          str = String.trim(str),
          {:ok, version} <- Version.parse(str) do

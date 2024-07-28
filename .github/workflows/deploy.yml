@@ -1,0 +1,20 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy demo app
+    runs-on: ubuntu-latest
+    concurrency: deploy-group
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Store build timestamp
+        run: echo "DOGGO_VERSION=$(git", ["describe", "--tags", "--always"])" >> $GITHUB_ENV
+      - run: flyctl deploy --remote-only --build-arg="DOGGO_VERSION=${DOGGO_VERSION}"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
