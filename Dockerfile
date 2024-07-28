@@ -52,14 +52,13 @@ COPY demo/mix.exs demo/mix.lock ./demo
 RUN cd demo && mix deps.get --only $MIX_ENV
 RUN cd demo && mkdir config
 
-COPY mix.exs mix.exs
-COPY mix.lock mix.lock
+COPY mix.exs mix.lock ./
 COPY lib lib
 
 # copy compile-time config files before we compile dependencies
 # to ensure any relevant config change will trigger the dependencies
 # to be re-compiled.
-COPY demo/config/config.exs demo/config/${MIX_ENV}.exs config/
+COPY demo/config/config.exs demo/config/${MIX_ENV}.exs ./demo/config/
 RUN cd demo && mix deps.compile
 
 COPY demo/priv demo/priv
