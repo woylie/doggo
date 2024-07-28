@@ -13,7 +13,7 @@ jobs:
         with:
           fetch-depth: 0
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: Store build timestamp
+      - name: Set version
         run: echo "DOGGO_VERSION=$(git describe --tags --always)" >> $GITHUB_ENV
       - run: flyctl deploy --remote-only --build-arg="DOGGO_VERSION=${DOGGO_VERSION}"
         env:
