@@ -143,4 +143,20 @@
     border-radius: f.radius(circle);
     animation: spin 0.6s linear infinite;
   }
+
+  &[aria-controls][aria-expanded] {
+    &::before {
+      display: inline-block;
+      margin-right: f.spacer(2);
+      font-size: f.size(xs);
+    }
+
+    &[aria-expanded="false"]::before {
+      content: "\25B6"; /* Right-pointing triangle (▶) */
+    }
+
+    &[aria-expanded="true"]::before {
+      content: "\25BC"; /* Down-pointing triangle (▼) */
+    }
+  }
 }

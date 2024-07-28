@@ -2,21 +2,25 @@ defmodule Doggo.Storybook.DisclosureButton do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def variations(_opts) do
+  def dependent_components, do: [:cluster]
+
+  def container, do: {:div, class: :container}
+
+  def variations(opts) do
     [
       %Variation{
         id: :default,
         attributes: %{
           controls: "data-table-default"
         },
-        slots: ["Data Table"],
-        template: table("data-table-default")
+        slots: ["Learn More About Dog Breeds"],
+        template: table("data-table-default", opts)
       }
     ]
   end
 
-  def modifier_variation_group_template(name, _opts) do
-    table("data-table-#{name}")
+  def modifier_variation_group_template(name, opts) do
+    table("data-table-#{name}", opts)
   end
 
   def modifier_variation_base(_id, name, value, _opts) do
@@ -26,10 +30,12 @@ defmodule Doggo.Storybook.DisclosureButton do
     }
   end
 
-  defp table(id) do
+  defp table(id, _opts) do
     """
     <div>
-      <.psb-variation-group/>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+        <.psb-variation-group/>
+      </div>
       <table id="#{id}" hidden>
         <tr>
           <th>Breed Name</th>

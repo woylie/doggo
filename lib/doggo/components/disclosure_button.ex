@@ -35,7 +35,28 @@ defmodule Doggo.Components.DisclosureButton do
 
     <table id="data-table" hidden></table>
     ```
+
+    ### CSS
+
+    To select disclosure buttons without class names and to apply styles
+    depending on the state (e.g. to render a caret), you can use the
+    `aria-controls` and `aria-expanded` attributes.
+
+    ```css
+    button[aria-controls][aria-expanded] {
+      /* Base styles for disclosure buttons */
+    }
+
+    button[aria-controls][aria-expanded="true"] {
+      /* Styles when content is visible */
+    }
+    ```
     """
+  end
+
+  @impl true
+  def css_path do
+    "components/_button.scss"
   end
 
   @impl true
@@ -43,7 +64,7 @@ defmodule Doggo.Components.DisclosureButton do
     [
       type: :buttons,
       since: "0.6.0",
-      maturity: :developing,
+      maturity: :refining,
       base_class: "button",
       modifiers: [
         variant: [
@@ -56,13 +77,7 @@ defmodule Doggo.Components.DisclosureButton do
             "danger"
           ],
           default: "primary"
-        ],
-        size: [
-          values: ["small", "normal", "medium", "large"],
-          default: "normal"
-        ],
-        fill: [values: ["solid", "outline", "text"], default: "solid"],
-        shape: [values: [nil, "circle", "pill"], default: nil]
+        ]
       ]
     ]
   end
