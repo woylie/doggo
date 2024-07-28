@@ -2,14 +2,25 @@ defmodule Doggo.Storybook.MenuItem do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def template do
-    """
-    <Doggo.menu label="Actions">
-      <:item>
-        <.psb-variation/>
-      </:item>
-    </Doggo.menu>
-    """
+  def dependent_components, do: [:menu]
+
+  def template(opts) do
+    dependent_components = opts[:dependent_components]
+    menu_fun = dependent_components[:menu]
+
+    if menu_fun do
+      """
+      <.#{menu_fun} label="Actions">
+        <:item>
+          <.psb-variation/>
+        </:item>
+      </.#{menu_fun}>
+      """
+    else
+      """
+      <p>Please compile the <code>menu</code> component to see a complete preview.</p>
+      """
+    end
   end
 
   def variations(_opts) do
