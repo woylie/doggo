@@ -32,6 +32,7 @@ defmodule Doggo.Storybook do
     modifiers = Keyword.fetch!(info, :modifiers)
 
     storybook_module = storybook_module(component)
+    {:module, _} = Code.ensure_loaded(storybook_module)
     function = Function.capture(module, name, 1)
 
     dependent_components =
@@ -146,6 +147,8 @@ defmodule Doggo.Storybook do
 
   @doc false
   def modifier_group({name, modifier_opts}, storybook_module, opts) do
+    {:module, _} = Code.ensure_loaded(storybook_module)
+
     template =
       if function_exported?(
            storybook_module,
