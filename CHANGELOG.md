@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.8.0] - 2024-07-28
+
 ### Added
 
 - Set up design tokens and CSS for demo application based on Barker. Styles for
