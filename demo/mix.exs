@@ -9,7 +9,14 @@ defmodule Demo.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      releases: [
+        demo: [
+          strip_beams: [
+            keep: ["Docs"]
+          ]
+        ]
+      ]
     ]
   end
 
