@@ -3,17 +3,17 @@ defmodule Doggo.Storybook.Shared do
 
   def navigate_link(url, text, dependent_components) do
     if function_name = dependent_components[:button_link] do
-      ~s|<.#{function_name} navigate="#{url}">#{text}</.#{function_name}>"|
+      ~s|<.#{function_name} navigate="#{url}">#{text}</.#{function_name}>|
     else
-      ~s|<Phoenix.Component.link patch="#{url}">#{text}</Phoenix.Component.link>"|
+      ~s|<Phoenix.Component.link patch="#{url}">#{text}</Phoenix.Component.link>|
     end
   end
 
   def patch_link(url, text, dependent_components) do
     if function_name = dependent_components[:button_link] do
-      ~s|<.#{function_name} patch="#{url}">#{text}</.#{function_name}>"|
+      ~s|<.#{function_name} patch="#{url}">#{text}</.#{function_name}>|
     else
-      ~s|<Phoenix.Component.link patch="#{url}">#{text}</Phoenix.Component.link>"|
+      ~s|<Phoenix.Component.link patch="#{url}">#{text}</Phoenix.Component.link>|
     end
   end
 
