@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## [0.8.2] - 2024-07-28
+
+### Fixed
+
+- Ensure storybook module and components module are loaded before checking
+  whether module exports function.
+- Fix menu stories not compiling under certain circumstances.
+
 ## [0.8.1] - 2024-07-28
 
 ### Fixed
