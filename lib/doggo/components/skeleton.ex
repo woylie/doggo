@@ -8,11 +8,11 @@ defmodule Doggo.Components.Skeleton do
   @impl true
   def doc do
     """
-    Renders a skeleton loader, a placeholder for content that is in the process of
-    loading.
+    Renders a skeleton loader, a placeholder for content that is in the process
+    of loading.
 
-    It mimics the layout of the actual content, providing a better user experience
-    during loading phases.
+    It mimics the layout of the actual content, providing a better user
+    experience during loading phases.
     """
   end
 
@@ -37,8 +37,8 @@ defmodule Doggo.Components.Skeleton do
     </div>
     ```
 
-    To modify the primitives for your use cases, you can either configure additional
-    modifiers or use CSS properties:
+    To modify the primitives for your use cases, you can either configure
+    additional modifiers or use CSS properties:
 
     ```heex
     <Doggo.skeleton type="text-line" variant="header" />
@@ -50,9 +50,9 @@ defmodule Doggo.Components.Skeleton do
 
     ## Aria-busy attribute
 
-    When using skeleton loaders, apply `aria-busy="true"` to the container element
-    that contains the skeleton layout. For standalone use, add the attribute
-    directly to the individual skeleton loader.
+    When using skeleton loaders, apply `aria-busy="true"` to the container
+    element that contains the skeleton layout. For standalone use, add the
+    attribute directly to the individual skeleton loader.
 
     ## Async result component
 
@@ -74,11 +74,19 @@ defmodule Doggo.Components.Skeleton do
   end
 
   @impl true
+  def css_path do
+    "components/_skeleton.scss"
+  end
+
+  @impl true
   def config do
     [
       type: :feedback,
       since: "0.6.0",
       maturity: :developing,
+      maturity_note: """
+      This component may not address all accessibility aspects.
+      """,
       modifiers: [
         type: [
           values: [

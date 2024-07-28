@@ -4,7 +4,7 @@ defmodule Demo.MixProject do
   def project do
     [
       app: :demo,
-      version: "0.1.0",
+      version: version(),
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
@@ -61,5 +61,24 @@ defmodule Demo.MixProject do
       "assets.build": ["cmd pnpm --dir assets build:dev"],
       "assets.deploy": ["cmd pnpm --dir assets build:prod", "phx.digest"]
     ]
+  end
+
+  defp version do
+    with {str, _} <- System.cmd("git", ["describe", "--tags", "--always"]),
+         str = String.trim(str),
+         {:ok, version} <- Version.parse(str) do
+      version
+      |> Map.update!(:pre, fn
+        nil ->
+          nil
+
+        [pre] when is_binary(pre) ->
+          [commits | _] = String.split(pre, "-")
+          [commits]
+      end)
+      |> to_string()
+    else
+      _ -> "0.1.0"
+    end
   end
 end

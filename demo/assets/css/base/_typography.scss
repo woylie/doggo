@@ -1,1 +1,9 @@
-// todo
+@use "../functions" as f;
+
+table {
+  th,
+  td {
+    padding: f.spacer(1);
+    text-align: left;
+  }
+}

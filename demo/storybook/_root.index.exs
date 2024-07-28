@@ -7,9 +7,9 @@ defmodule Storybook.Root do
   def folder_icon, do: {:fa, "book-open", :light, "psb-mr-1"}
   def folder_name, do: "Storybook"
 
-  def entry("welcome") do
+  def entry("introduction") do
     [
-      name: "Welcome Page",
+      name: "Introduction",
       icon: {:fa, "hand-wave", :thin}
     ]
   end
