@@ -153,9 +153,13 @@ Add the generated file to your PurgeCSS configuration as well.
 
 ## Demo app
 
-The repository contains a demo application that renders the plain storybook.
-Note that it doesn't come with any CSS, so all components will be rendered with
-default browser styles.
+The repository contains a demo application that renders a storybook with all
+components using their default options. For some of the components, CSS was
+added, while others are still unstyled.
+
+The demo application is deployed at: https://woylie-doggo.fly.dev
+
+To run the application locally:
 
 ```bash
 git clone git@github.com:woylie/doggo.git
