@@ -23,7 +23,6 @@ defmodule DemoWeb.CoreComponents do
   build_datetime()
   build_disclosure_button()
   build_drawer()
-  build_fab()
   build_fallback()
   build_field()
   build_field_group()

@@ -47,7 +47,6 @@ defmodule Doggo.StorybookTest do
     )
 
     build_drawer(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    build_fab(modifiers: [variant: [values: [nil, "yes"], default: nil]])
     build_fallback(modifiers: [variant: [values: [nil, "yes"], default: nil]])
     build_field()
 
