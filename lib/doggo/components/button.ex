@@ -17,8 +17,7 @@ defmodule Doggo.Components.Button do
     current page and want to style the link like a button, use `button_link/1`
     instead.
 
-    See also `button_link/1`, `toggle_button/1`, `disclosure_button/1`, and
-    `fab/1`.
+    See also `button_link/1`, `toggle_button/1`, and `disclosure_button/1`.
     """
   end
 

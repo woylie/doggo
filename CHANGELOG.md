@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Removed
+
+- The `fab` component was removed. It might have made sense to have it as a
+  separate component before components could be customized, but since the
+  semantics are the same as a regular button, you can just make one with
+  `build_button(name: :fab, base_class: "fab")` if you need it.
+
 ## [0.8.2] - 2024-07-28
 
 ### Fixed

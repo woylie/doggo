@@ -36,7 +36,6 @@ defmodule Doggo.ComponentsTest do
     build_datetime()
     build_disclosure_button()
     build_drawer()
-    build_fab()
     build_fallback()
     build_field(gettext_module: Doggo.Gettext)
     build_field_group()
@@ -2265,61 +2264,6 @@ defmodule Doggo.ComponentsTest do
                {"span",
                 [{"class", "fallback"}, {"aria-label", "not available"}], ["-"]}
              ]
-    end
-  end
-
-  describe "fab/1" do
-    test "default" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.fab label="Add toy">add-icon</TestComponents.fab>
-        """)
-
-      button = find_one(html, "button:root")
-      assert attribute(button, "type") == "button"
-      assert attribute(button, "class") == "fab is-primary is-normal is-circle"
-      assert attribute(button, "aria-label") == "Add toy"
-      assert text(button) == "add-icon"
-    end
-
-    test "disabled" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.fab label="Add toy" disabled>add-icon</TestComponents.fab>
-        """)
-
-      assert attribute(html, "button:root", "disabled") == "disabled"
-    end
-
-    test "with variant" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.fab label="Add toy" variant="success">
-          add-icon
-        </TestComponents.fab>
-        """)
-
-      assert attribute(html, "button:root", "class") ==
-               "fab is-success is-normal is-circle"
-    end
-
-    test "with global attribute" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.fab label="Add toy" phx-click="add">
-          add-icon
-        </TestComponents.fab>
-        """)
-
-      assert attribute(html, "button:root", "phx-click") == "add"
     end
   end
 
