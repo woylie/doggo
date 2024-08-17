@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Add example styles for tag component.
+
 ### Removed
 
 - The `fab` component was removed. It might have made sense to have it as a
