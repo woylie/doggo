@@ -15,10 +15,10 @@
 
   &:disabled,
   &.is-disabled {
-    color: f.color(text, disabled);
+    color: f.color(text, disabled, normal);
     cursor: not-allowed;
-    background: f.color(background, disabled);
-    border-color: f.color(border, disabled);
+    background: f.color(background, disabled, normal);
+    border-color: f.color(border, disabled, normal);
   }
 
   &:not(:disabled, .is-disabled) {
@@ -31,39 +31,39 @@
     }
 
     &.is-primary {
-      color: f.color(text, primary);
-      background: f.color(background, primary);
-      border-color: f.color(border, primary);
+      color: f.color(text, primary, subdued);
+      background: f.color(background, primary, normal);
+      border-color: f.color(border, primary, normal);
     }
 
     &.is-secondary {
-      color: f.color(text, secondary);
-      background: f.color(background, secondary);
-      border-color: f.color(border, secondary);
+      color: f.color(text, secondary, subdued);
+      background: f.color(background, secondary, normal);
+      border-color: f.color(border, secondary, normal);
     }
 
     &.is-info {
-      color: f.color(text, info);
-      background: f.color(background, info);
-      border-color: f.color(border, info);
+      color: f.color(text, info, subdued);
+      background: f.color(background, info, normal);
+      border-color: f.color(border, info, normal);
     }
 
     &.is-success {
-      color: f.color(text, success);
-      background: f.color(background, success);
-      border-color: f.color(border, success);
+      color: f.color(text, success, subdued);
+      background: f.color(background, success, normal);
+      border-color: f.color(border, success, normal);
     }
 
     &.is-warning {
-      color: f.color(text, warning);
-      background: f.color(background, warning);
-      border-color: f.color(border, warning);
+      color: f.color(text, warning, subdued);
+      background: f.color(background, warning, normal);
+      border-color: f.color(border, warning, normal);
     }
 
     &.is-danger {
-      color: f.color(text, danger);
-      background: f.color(background, danger);
-      border-color: f.color(border, danger);
+      color: f.color(text, danger, subdued);
+      background: f.color(background, danger, normal);
+      border-color: f.color(border, danger, normal);
     }
 
     &.is-outline {
@@ -78,27 +78,27 @@
     &.is-outline,
     &.is-text {
       &.is-primary {
-        color: f.color(border, primary);
+        color: f.color(border, primary, normal);
       }
 
       &.is-secondary {
-        color: f.color(border, secondary);
+        color: f.color(border, secondary, normal);
       }
 
       &.is-info {
-        color: f.color(border, info);
+        color: f.color(border, info, normal);
       }
 
       &.is-success {
-        color: f.color(border, success);
+        color: f.color(border, success, normal);
       }
 
       &.is-warning {
-        color: f.color(border, warning);
+        color: f.color(border, warning, normal);
       }
 
       &.is-danger {
-        color: f.color(border, danger);
+        color: f.color(border, danger, normal);
       }
     }
   }
