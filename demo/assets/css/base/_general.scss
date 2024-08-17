@@ -12,7 +12,7 @@ body,
   font-family: f.font-family(main);
   font-size: f.base-size();
   line-height: f.lines(1);
-  color: f.color(text, default);
+  color: f.color(text, default, normal);
   background: f.color(background, foundation);
 }
 

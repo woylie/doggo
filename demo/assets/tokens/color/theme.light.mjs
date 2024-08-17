@@ -6,28 +6,65 @@ export default {
     $type: "color",
     text: {
       default: {
-        $value: "{color.base.black}",
+        normal: {
+          $value: "{color.base.black}",
+        },
       },
       primary: {
-        $value: "{color.base.white}",
+        normal: {
+          $value: "{color.blue.500}",
+        },
+        subdued: {
+          $value: "{color.base.white}",
+        },
       },
       secondary: {
-        $value: "{color.blue.600}",
+        normal: {
+          $value: "{color.blue.600}",
+        },
+        subdued: {
+          $value: "{color.blue.500}",
+        },
       },
       info: {
-        $value: "{color.base.white}",
+        normal: {
+          $value: "{color.indigo.500}",
+        },
+        subdued: {
+          $value: "{color.base.white}",
+        },
       },
       success: {
-        $value: "{color.base.white}",
+        normal: {
+          $value: "{color.green.500}",
+        },
+        subdued: {
+          $value: "{color.base.white}",
+        },
       },
       warning: {
-        $value: "{color.base.white}",
+        normal: {
+          $value: "{color.yellow.500}",
+        },
+        subdued: {
+          $value: "{color.base.white}",
+        },
       },
       danger: {
-        $value: "{color.base.white}",
+        normal: {
+          $value: "{color.red.500}",
+        },
+        subdued: {
+          $value: "{color.base.white}",
+        },
       },
       disabled: {
-        $value: "{color.gray.200}",
+        normal: {
+          $value: "{color.gray.500}",
+        },
+        subdued: {
+          $value: "{color.gray.200}",
+        },
       },
     },
     background: {
@@ -40,25 +77,57 @@ export default {
         },
       },
       primary: {
-        $value: "{color.blue.400}",
+        normal: {
+          $value: "{color.blue.400}",
+        },
+        subdued: {
+          $value: "{color.blue.0}",
+        },
       },
       secondary: {
-        $value: "{color.blue.0}",
+        normal: {
+          $value: "{color.blue.0}",
+        },
+        subdued: {
+          $value: "{color.blue.0}",
+        },
       },
       info: {
-        $value: "{color.indigo.400}",
+        normal: {
+          $value: "{color.indigo.400}",
+        },
+        subdued: {
+          $value: "{color.indigo.0}",
+        },
       },
       success: {
-        $value: "{color.green.400}",
+        normal: {
+          $value: "{color.green.400}",
+        },
+        subdued: {
+          $value: "{color.green.0}",
+        },
       },
       warning: {
-        $value: "{color.yellow.400}",
+        normal: {
+          $value: "{color.yellow.400}",
+        },
+        subdued: {
+          $value: "{color.yellow.0}",
+        },
       },
       danger: {
-        $value: "{color.red.400}",
+        normal: {
+          $value: "{color.red.400}",
+        },
+        subdued: {
+          $value: "{color.red.0}",
+        },
       },
       disabled: {
-        $value: "{color.gray.0}",
+        normal: {
+          $value: "{color.gray.0}",
+        },
       },
     },
     border: {
@@ -74,25 +143,57 @@ export default {
         },
       },
       primary: {
-        $value: "{color.blue.500}",
+        normal: {
+          $value: "{color.blue.500}",
+        },
+        subdued: {
+          $value: "{color.blue.100}",
+        },
       },
       secondary: {
-        $value: "{color.blue.200}",
+        normal: {
+          $value: "{color.blue.200}",
+        },
+        subdued: {
+          $value: "{color.blue.100}",
+        },
       },
       info: {
-        $value: "{color.indigo.500}",
+        normal: {
+          $value: "{color.indigo.500}",
+        },
+        subdued: {
+          $value: "{color.indigo.100}",
+        },
       },
       success: {
-        $value: "{color.green.500}",
+        normal: {
+          $value: "{color.green.500}",
+        },
+        subdued: {
+          $value: "{color.green.100}",
+        },
       },
       warning: {
-        $value: "{color.yellow.500}",
+        normal: {
+          $value: "{color.yellow.500}",
+        },
+        subdued: {
+          $value: "{color.yellow.100}",
+        },
       },
       danger: {
-        $value: "{color.red.500}",
+        normal: {
+          $value: "{color.red.500}",
+        },
+        subdued: {
+          $value: "{color.blue.100}",
+        },
       },
       disabled: {
-        $value: "{color.gray.100}",
+        normal: {
+          $value: "{color.gray.100}",
+        },
       },
     },
   },

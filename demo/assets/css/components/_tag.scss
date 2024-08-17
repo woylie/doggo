@@ -1,0 +1,73 @@
+@use "../functions" as f;
+
+.tag {
+  display: inline-flex;
+  gap: f.spacer(1);
+  align-items: center;
+  justify-content: center;
+  padding: 0 f.spacer(2);
+  font-size: f.size(s);
+  line-height: f.lines(1);
+  color: f.color(text, default, normal);
+  background-color: f.color(background, disabled, normal);
+  border: f.border-width(s) solid f.color(border, neutral, "1");
+  border-radius: f.radius(s);
+
+  &.is-primary {
+    color: f.color(text, primary, normal);
+    background: f.color(background, primary, subdued);
+    border-color: f.color(border, primary, subdued);
+  }
+
+  &.is-secondary {
+    color: f.color(text, secondary, normal);
+    background: f.color(background, secondary, subdued);
+    border-color: f.color(border, secondary, subdued);
+  }
+
+  &.is-info {
+    color: f.color(text, info, normal);
+    background: f.color(background, info, subdued);
+    border-color: f.color(border, info, subdued);
+  }
+
+  &.is-success {
+    color: f.color(text, success, normal);
+    background: f.color(background, success, subdued);
+    border-color: f.color(border, success, subdued);
+  }
+
+  &.is-warning {
+    color: f.color(text, warning, normal);
+    background: f.color(background, warning, subdued);
+    border-color: f.color(border, warning, subdued);
+  }
+
+  &.is-danger {
+    color: f.color(text, danger, normal);
+    background: f.color(background, danger, subdued);
+    border-color: f.color(border, danger, subdued);
+  }
+
+  &.is-small {
+    padding: f.spacer(1);
+    font-size: f.size(xs);
+    line-height: f.lines(0.5);
+  }
+
+  &.is-medium {
+    font-size: f.size(m);
+  }
+
+  &.is-large {
+    padding: 0 f.spacer(4);
+    font-size: f.size(l);
+    line-height: f.lines(1.5);
+  }
+
+  &.is-pill {
+    padding-right: f.spacer(3);
+    padding-left: f.spacer(3);
+    border-radius: f.radius(pill);
+  }
+}

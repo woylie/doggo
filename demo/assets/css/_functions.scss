@@ -12,7 +12,7 @@
  *    @use "../functions" as f;
  *
  *    .my-component {
- *      color: f.color(text, default);
+ *      color: f.color(text, default, normal);
  *    }
  *
  * Alternatively, use the tokens forwarded by _tokens.scss.

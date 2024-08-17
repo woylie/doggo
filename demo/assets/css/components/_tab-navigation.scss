@@ -17,14 +17,14 @@
       > a {
         display: block;
         padding: f.spacer(2) f.spacer(4);
-        color: f.color(text, secondary);
+        color: f.color(text, secondary, normal);
         text-decoration: none;
         border-top-left-radius: f.radius(m);
         border-top-right-radius: f.radius(m);
 
         &[aria-current] {
           font-weight: f.weight(medium);
-          background: f.color(background, secondary);
+          background: f.color(background, secondary, normal);
           border: f.border-width(s) solid f.color(border, neutral, "1");
           border-bottom-width: 0;
         }
