@@ -46,8 +46,8 @@ importers:
         specifier: ^16.8.2
         version: 16.8.2
       stylelint-config-recess-order:
-        specifier: ^5.0.1
-        version: 5.0.1(stylelint@16.8.2)
+        specifier: ^5.1.0
+        version: 5.1.0(stylelint@16.8.2)
       stylelint-config-standard-scss:
         specifier: ^13.1.0
         version: 13.1.0(postcss@8.4.41)(stylelint@16.8.2)
@@ -1502,8 +1502,8 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  stylelint-config-recess-order@5.0.1:
-    resolution: {integrity: sha512-rKbGkoa3h0rINrGln9TFVowvSCLgPJC5O0EuPiqlqWcJMb1lImEtXktcjFCVz+hwtSUiHD3ijJc3vP9muFOgJg==}
+  stylelint-config-recess-order@5.1.0:
+    resolution: {integrity: sha512-ddapCF6B/kEtQYIFhQFReQ0dvK1ZdgJDM/SGFtIyeooYDbqaJqcOlGkRRGaVErCQYJY/bPSPsLRS2LdQtLJUVQ==}
     peerDependencies:
       stylelint: '>=16'
 
@@ -3107,7 +3107,7 @@ snapshots:
       path-unified: 0.1.0
       tinycolor2: 1.6.0
 
-  stylelint-config-recess-order@5.0.1(stylelint@16.8.2):
+  stylelint-config-recess-order@5.1.0(stylelint@16.8.2):
     dependencies:
       stylelint: 16.8.2
       stylelint-order: 6.0.4(stylelint@16.8.2)
