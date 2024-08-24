@@ -43,7 +43,7 @@ defmodule DemoWeb do
         layouts: [html: DemoWeb.Layouts]
 
       import Plug.Conn
-      import DemoWeb.Gettext
+      use Gettext, backend: DemoWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -84,7 +84,7 @@ defmodule DemoWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # translation
-      import DemoWeb.Gettext
+      use Gettext, backend: DemoWeb.Gettext
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
