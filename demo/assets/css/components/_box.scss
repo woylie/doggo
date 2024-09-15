@@ -1,0 +1,41 @@
+@use "../functions" as f;
+
+.box {
+  padding: f.spacer(6) 0;
+  border: f.border-width(s) solid f.color(border, neutral, "1");
+  border-radius: f.radius(m);
+  box-shadow: f.shadow(medium);
+
+  > * + * {
+    margin-top: f.spacer(4);
+  }
+
+  > header,
+  > .box-body,
+  > footer {
+    padding: 0 f.spacer(6);
+  }
+
+  > header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+
+    > h2 {
+      margin: 0;
+      font-size: f.size(l);
+      font-weight: f.weight(medium);
+    }
+
+    > .box-banner {
+      flex: 0 0 100%;
+      order: -1;
+    }
+  }
+
+  > footer {
+    font-size: f.size(xs);
+    color: f.color(text, secondary, subdued);
+  }
+}

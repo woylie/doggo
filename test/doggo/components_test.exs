@@ -804,7 +804,8 @@ defmodule Doggo.ComponentsTest do
 
       section = find_one(html, "section:root")
       assert attribute(section, "class") == "box"
-      assert text(section) == "Content"
+      body = find_one(section, ".box-body")
+      assert text(body) == "Content"
     end
 
     test "with title" do

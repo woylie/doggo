@@ -4,7 +4,8 @@
 
 ### Changed
 
-- Add example styles for tag component.
+- Wrap inner block of `box` component into `div`.
+- Add example styles for box and tag components.
 
 ### Removed
 

@@ -15,7 +15,7 @@
 
   &:disabled,
   &.is-disabled {
-    color: f.color(text, disabled, normal);
+    color: f.color(text, disabled, subdued);
     cursor: not-allowed;
     background: f.color(background, disabled, normal);
     border-color: f.color(border, disabled, normal);

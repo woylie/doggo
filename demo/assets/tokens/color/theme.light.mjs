@@ -20,10 +20,10 @@ export default {
       },
       secondary: {
         normal: {
-          $value: "{color.blue.600}",
+          $value: "{color.gray.600}",
         },
         subdued: {
-          $value: "{color.blue.500}",
+          $value: "{color.gray.500}",
         },
       },
       info: {
@@ -86,10 +86,10 @@ export default {
       },
       secondary: {
         normal: {
-          $value: "{color.blue.0}",
+          $value: "{color.gray.0}",
         },
         subdued: {
-          $value: "{color.blue.0}",
+          $value: "{color.gray.0}",
         },
       },
       info: {
@@ -152,10 +152,10 @@ export default {
       },
       secondary: {
         normal: {
-          $value: "{color.blue.200}",
+          $value: "{color.gray.200}",
         },
         subdued: {
-          $value: "{color.blue.100}",
+          $value: "{color.gray.100}",
         },
       },
       info: {
