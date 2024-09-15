@@ -26,7 +26,7 @@ defmodule Doggo.Components.Box do
     With title, banner, action, and footer:
 
     ```heex
-    <box>
+    <.box>
       <:title>Profile</:title>
       <:banner>
         <img src="banner-image.png" alt="" />
@@ -40,9 +40,14 @@ defmodule Doggo.Components.Box do
       <:footer>
         <p>Last edited: <%= @profile.updated_at %></p>
       </:footer>
-    </box>
+    </.box>
     ```
     """
+  end
+
+  @impl true
+  def css_path do
+    "components/_box.scss"
   end
 
   @impl true
@@ -95,7 +100,9 @@ defmodule Doggo.Components.Box do
           <%= render_slot(@banner) %>
         </div>
       </header>
-      <%= render_slot(@inner_block) %>
+      <div class={"#{@base_class}-body"}>
+        <%= render_slot(@inner_block) %>
+      </div>
       <footer :if={@footer != []}>
         <%= render_slot(@footer) %>
       </footer>

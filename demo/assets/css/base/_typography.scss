@@ -1,9 +1,35 @@
 @use "../functions" as f;
 
+h1,
+h2,
+h3,
+h4,
+h5,
+figure,
+p,
+ol,
+ul {
+  margin: 0;
+}
+
 table {
   th,
   td {
     padding: f.spacer(1);
     text-align: left;
   }
+}
+
+a {
+  color: f.color(text, primary, normal);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
 }
