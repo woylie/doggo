@@ -92,6 +92,15 @@ defmodule Doggo.Components.Drawer do
   end
 
   @impl true
+  def nested_classes(base_class) do
+    [
+      "#{base_class}-footer",
+      "#{base_class}-header",
+      "#{base_class}-main"
+    ]
+  end
+
+  @impl true
   def attrs_and_slots do
     quote do
       attr :rest, :global, doc: "Any additional HTML attributes."

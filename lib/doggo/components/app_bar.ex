@@ -43,6 +43,14 @@ defmodule Doggo.Components.AppBar do
   end
 
   @impl true
+  def nested_classes(base_class) do
+    [
+      "#{base_class}-actions",
+      "#{base_class}-navigation"
+    ]
+  end
+
+  @impl true
   def attrs_and_slots do
     quote do
       attr :title, :string,

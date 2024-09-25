@@ -152,6 +152,17 @@ defmodule Doggo.Components.Field do
   end
 
   @impl true
+  def nested_classes(base_class) do
+    [
+      "#{base_class}-description",
+      "#{base_class}-errors",
+      "#{base_class}-input-addon-left",
+      "#{base_class}-input-addon-right",
+      "#{base_class}-input-wrapper"
+    ]
+  end
+
+  @impl true
   def attrs_and_slots do
     quote do
       attr :id, :any, default: nil

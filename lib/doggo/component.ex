@@ -33,6 +33,11 @@ defmodule Doggo.Component do
   @callback config() :: keyword
 
   @doc """
+  Returns a list of all nested classes used by the component.
+  """
+  @callback nested_classes(base_class :: String.t() | nil) :: [String.t()]
+
+  @doc """
   Returns a quoted block with the attributes and slots.
   """
   @callback attrs_and_slots() :: Macro.t()

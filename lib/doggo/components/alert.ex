@@ -57,6 +57,16 @@ defmodule Doggo.Components.Alert do
   end
 
   @impl true
+  def nested_classes(base_class) do
+    [
+      "#{base_class}-icon",
+      "#{base_class}-body",
+      "#{base_class}-title",
+      "#{base_class}-message"
+    ]
+  end
+
+  @impl true
   def attrs_and_slots do
     quote do
       attr :id, :string, required: true

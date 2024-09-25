@@ -124,6 +124,15 @@ defmodule Doggo.Components.Modal do
   end
 
   @impl true
+  def nested_classes(base_class) do
+    [
+      "#{base_class}-close",
+      "#{base_class}-container",
+      "#{base_class}-content"
+    ]
+  end
+
+  @impl true
   def attrs_and_slots do
     quote do
       attr :id, :string, required: true

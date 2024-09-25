@@ -126,19 +126,14 @@ mix dog.gen.stories -m MyAppWeb.CoreComponents -o storybook -c button
 
 ### PurgeCSS
 
-If you use PurgeCSS, you will need to add `deps/doggo/lib/doggo.ex` to your
-PurgeCSS configuration.
-
-Doggo also uses modifier CSS classes to alter the appearance of components. The
-class names are generated dynamically, which means PurgeCSS won't be able to
-find them in the source code. You can use `mix dog.modifiers` to save a
-list of all modifier class names to a file:
+If you use PurgeCSS, you can get a list of CSS class names of all configured
+components:
 
 ```bash
-mix dog.modifiers -m MyAppWeb.CoreComponents -o assets/modifiers.txt
+mix dog.classes -m MyAppWeb.CoreComponents -o assets/modifiers.txt
 ```
 
-Add the generated file to your PurgeCSS configuration as well.
+Add the generated file to your PurgeCSS configuration.
 
 ## Design decisions
 

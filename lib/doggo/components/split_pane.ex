@@ -87,6 +87,11 @@ defmodule Doggo.Components.SplitPane do
   end
 
   @impl true
+  def nested_classes(_) do
+    []
+  end
+
+  @impl true
   def attrs_and_slots do
     quote do
       attr :label, :string,

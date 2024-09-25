@@ -73,6 +73,19 @@ defmodule Doggo.Components.Carousel do
   end
 
   @impl true
+  def nested_classes(base_class) do
+    [
+      "#{base_class}-controls",
+      "#{base_class}-inner",
+      "#{base_class}-item",
+      "#{base_class}-items",
+      "#{base_class}-next",
+      "#{base_class}-pagination",
+      "#{base_class}-previous"
+    ]
+  end
+
+  @impl true
   def attrs_and_slots do
     quote do
       attr :id, :string, required: true

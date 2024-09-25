@@ -49,6 +49,7 @@ defmodule Doggo.Macros do
         component_info =
           opts
           |> Keyword.put(:component, unquote(name))
+          |> Keyword.put(:extra, extra)
           |> Keyword.put(:type, unquote(type))
 
         name = Keyword.fetch!(opts, :name)

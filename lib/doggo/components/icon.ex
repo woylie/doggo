@@ -75,6 +75,11 @@ defmodule Doggo.Components.Icon do
   end
 
   @impl true
+  def nested_classes(_) do
+    []
+  end
+
+  @impl true
   def attrs_and_slots do
     quote do
       slot :inner_block, doc: "Slot for the SVG element.", required: true
