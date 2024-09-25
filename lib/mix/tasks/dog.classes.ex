@@ -1,18 +1,18 @@
-defmodule Mix.Tasks.Dog.Modifiers do
-  @shortdoc "Lists all modifier classes"
+defmodule Mix.Tasks.Dog.Classes do
+  @shortdoc "Lists all component classes"
 
   @moduledoc """
-  Returns a list of all modifier classes.
+  Returns a list of all component classes.
 
   ## Usage
 
-  List modifier classes:
+  List all component classes:
 
-      mix dog.modifiers
+      mix dog.modifiers -m MyAppWeb.CoreComponents
 
-  Write modifier classes to file:
+  Write classes to file:
 
-      mix dog.modifiers -m MyAppWeb.CoreComponents -o assets/modifiers.txt
+      mix dog.classes -m MyAppWeb.CoreComponents -o assets/classes.txt
   """
 
   use Mix.Task
@@ -44,7 +44,7 @@ defmodule Mix.Tasks.Dog.Modifiers do
   defp list_modifiers(module) do
     [module]
     |> Module.safe_concat()
-    |> Doggo.modifier_classes()
+    |> Doggo.classes()
     |> Enum.join("\n")
   end
 end

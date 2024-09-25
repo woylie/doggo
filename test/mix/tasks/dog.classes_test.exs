@@ -1,9 +1,9 @@
-defmodule Mix.Tasks.Dog.ModifiersTest do
+defmodule Mix.Tasks.Dog.ClassesTest do
   use ExUnit.Case
 
   import ExUnit.CaptureIO
 
-  alias Mix.Tasks.Dog.Modifiers
+  alias Mix.Tasks.Dog.Classes
 
   defmodule TestComponents do
     @moduledoc """
@@ -14,6 +14,7 @@ defmodule Mix.Tasks.Dog.ModifiersTest do
     use Phoenix.Component
 
     build_button(
+      base_class: "my-button",
       modifiers: [
         size: [values: ["small", "normal"], default: "normal"],
         variant: [
@@ -28,33 +29,47 @@ defmodule Mix.Tasks.Dog.ModifiersTest do
     )
   end
 
-  test "prints modifiers" do
+  test "prints classes" do
     assert capture_io(fn ->
-             Modifiers.run([
+             Classes.run([
                "--module",
-               "Mix.Tasks.Dog.ModifiersTest.TestComponents"
+               "Mix.Tasks.Dog.ClassesTest.TestComponents"
              ])
-           end) == "is-normal\nis-primary\nis-secondary\nis-small\n"
+           end) == """
+           is-normal
+           is-primary
+           is-secondary
+           is-small
+           my-button
+           """
   end
 
   test "prints usage instructions with invalid arguments" do
-    assert capture_io(fn -> Modifiers.run(["--nope"]) end) =~ "## Usage"
+    assert capture_io(fn -> Classes.run(["--nope"]) end) =~ "## Usage"
   end
 
   @tag :tmp_dir
   test "saves modifiers to file", %{tmp_dir: tmp_dir} do
-    path = Path.join(tmp_dir, "modifiers.txt")
+    path = Path.join(tmp_dir, "classes.txt")
 
     assert capture_io(fn ->
-             Modifiers.run([
+             Classes.run([
                "--module",
-               "Mix.Tasks.Dog.ModifiersTest.TestComponents",
+               "Mix.Tasks.Dog.ClassesTest.TestComponents",
                "-o",
                path
              ])
            end)
 
     assert File.exists?(path)
-    assert File.read!(path) == "is-normal\nis-primary\nis-secondary\nis-small"
+
+    assert File.read!(path) ==
+             String.trim("""
+             is-normal
+             is-primary
+             is-secondary
+             is-small
+             my-button
+             """)
   end
 end

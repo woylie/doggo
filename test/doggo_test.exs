@@ -34,6 +34,8 @@ defmodule DoggoTest do
       ]
     )
 
+    build_stack(recursive_class: "very-recursive")
+
     build_tag(
       modifiers: [
         size: [values: ["small", "normal", "large"], default: "normal"]
@@ -43,16 +45,25 @@ defmodule DoggoTest do
     def modifier_class_name(name, value), do: "#{name}-#{value}"
   end
 
-  describe "modifier_classes/1" do
-    test "returns a map of modifier classes" do
-      assert Doggo.modifier_classes(TestComponents) == [
+  describe "classes/1" do
+    test "returns a list of base, modifier, and nested classes" do
+      assert Doggo.classes(TestComponents) == [
+               "button",
+               "callout",
+               "callout-body",
+               "callout-icon",
+               "callout-message",
+               "callout-title",
                "is-large",
                "is-normal",
                "is-primary",
                "is-secondary",
                "is-small",
+               "stack",
+               "tag",
                "variant-info",
-               "variant-warning"
+               "variant-warning",
+               "very-recursive"
              ]
     end
   end

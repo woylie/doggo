@@ -49,6 +49,11 @@ defmodule Doggo.Components.MenuItemCheckbox do
   end
 
   @impl true
+  def nested_classes(_) do
+    []
+  end
+
+  @impl true
   def attrs_and_slots do
     quote do
       attr :checked, :boolean, default: false

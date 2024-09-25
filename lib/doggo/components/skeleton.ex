@@ -104,6 +104,11 @@ defmodule Doggo.Components.Skeleton do
   end
 
   @impl true
+  def nested_classes(_) do
+    []
+  end
+
+  @impl true
   def attrs_and_slots do
     quote do
       attr :rest, :global, doc: "Any additional HTML attributes."

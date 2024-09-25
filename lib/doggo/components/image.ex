@@ -57,6 +57,13 @@ defmodule Doggo.Components.Image do
   end
 
   @impl true
+  def nested_classes(base_class) do
+    [
+      "#{base_class}-frame"
+    ]
+  end
+
+  @impl true
   def attrs_and_slots do
     quote do
       attr :src, :string,

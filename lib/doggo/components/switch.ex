@@ -43,6 +43,17 @@ defmodule Doggo.Components.Switch do
   end
 
   @impl true
+  def nested_classes(base_class) do
+    [
+      "#{base_class}-control",
+      "#{base_class}-label",
+      "#{base_class}-state",
+      "#{base_class}-state-off",
+      "#{base_class}-state-on"
+    ]
+  end
+
+  @impl true
   def attrs_and_slots do
     quote do
       attr :label, :string, required: true

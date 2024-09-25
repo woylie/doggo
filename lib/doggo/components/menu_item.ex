@@ -46,6 +46,11 @@ defmodule Doggo.Components.MenuItem do
   end
 
   @impl true
+  def nested_classes(_) do
+    []
+  end
+
+  @impl true
   def attrs_and_slots do
     quote do
       attr :on_click, Phoenix.LiveView.JS, required: true

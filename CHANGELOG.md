@@ -4,6 +4,10 @@
 
 ### Changed
 
+- Rename `Doggo.modifier_classes/1` to `Doggo.classes/1` and `mix dog.modifiers`
+  to `mix dog.classes`. The function and mix task return all base classes,
+  nested classes, and additional customizable classes in addition to the
+  modifier classes now.
 - Wrap inner block of `box` component into `div`.
 - Add example styles for box and tag components.
 

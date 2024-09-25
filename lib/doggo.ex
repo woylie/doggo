@@ -252,12 +252,16 @@ defmodule Doggo do
   def modifier_class_name(_, value) when is_binary(value), do: "is-#{value}"
 
   @doc """
-  Returns all modifier classes defined in the given components module.
+  Returns all component classes used in the given components module.
+
+  This includes the base classes, nested classes (based on the base class)
+  and modifier classes.
 
   ## Usage
 
-      iex> modifier_classes(MyAppWeb.CoreComponents)
+      iex> classes(MyAppWeb.CoreComponents)
       [
+        "button",
         "is-large",
         "is-medium",
         "is-primary",
@@ -265,12 +269,22 @@ defmodule Doggo do
         "is-small"
       ]
   """
-  @spec modifier_classes(module) :: [String.t()]
-  def modifier_classes(module) when is_atom(module) do
-    module.__dog_components__()
-    |> Enum.flat_map(&get_modifier_classes/1)
+  @spec classes(module) :: [String.t()]
+  def classes(module) when is_atom(module) do
+    components = module.__dog_components__()
+    base_classes = Enum.map(components, &get_base_class/1)
+    modifier_classes = Enum.flat_map(components, &get_modifier_classes/1)
+    nested_classes = Enum.flat_map(components, &get_nested_classes/1)
+    extra_classes = Enum.flat_map(components, &get_extra_classes/1)
+
+    (base_classes ++ modifier_classes ++ nested_classes ++ extra_classes)
+    |> Enum.reject(&is_nil/1)
     |> Enum.uniq()
     |> Enum.sort()
+  end
+
+  defp get_base_class({_, info}) do
+    Keyword.get(info, :base_class)
   end
 
   defp get_modifier_classes({_, info}) do
@@ -284,6 +298,25 @@ defmodule Doggo do
       |> Enum.reject(&is_nil/1)
       |> Enum.map(&class_name_fun.(name, &1))
     end)
+  end
+
+  defp get_nested_classes({_, info}) do
+    base_class = Keyword.get(info, :base_class)
+    component_module = info |> Keyword.fetch!(:component) |> component_module()
+    component_module.nested_classes(base_class)
+  end
+
+  defp get_extra_classes({_, info}) do
+    info
+    |> Keyword.fetch!(:extra)
+    |> Enum.map(fn {key, value} ->
+      if key |> to_string() |> String.ends_with?("_class"), do: value
+    end)
+  end
+
+  defp component_module(name) when is_atom(name) do
+    module_name = name |> Atom.to_string() |> Macro.camelize()
+    Module.safe_concat([Doggo.Components, module_name])
   end
 
   @doc false

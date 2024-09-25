@@ -61,6 +61,15 @@ defmodule Doggo.Components.Box do
   end
 
   @impl true
+  def nested_classes(base_class) do
+    [
+      "#{base_class}-actions",
+      "#{base_class}-banner",
+      "#{base_class}-body"
+    ]
+  end
+
+  @impl true
   def attrs_and_slots do
     quote do
       slot :title, doc: "The title for the box."
