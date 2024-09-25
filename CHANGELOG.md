@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.9.0] - 2024-09-25
+
 ### Changed
 
 - Rename `Doggo.modifier_classes/1` to `Doggo.classes/1` and `mix dog.modifiers`
