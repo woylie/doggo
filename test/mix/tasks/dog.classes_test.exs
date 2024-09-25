@@ -63,13 +63,19 @@ defmodule Mix.Tasks.Dog.ClassesTest do
 
     assert File.exists?(path)
 
-    assert File.read!(path) ==
-             String.trim("""
-             is-normal
-             is-primary
-             is-secondary
-             is-small
-             my-button
-             """)
+    classes_in_file =
+      path
+      |> File.read!()
+      |> String.split("\n")
+      |> Enum.reject(fn s -> s == "" || String.starts_with?(s, "#") end)
+
+    assert classes_in_file ==
+             [
+               "is-normal",
+               "is-primary",
+               "is-secondary",
+               "is-small",
+               "my-button"
+             ]
   end
 end

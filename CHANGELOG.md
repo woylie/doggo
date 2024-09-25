@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Add header to file output of `mix dog.classes`.
+
 ## [0.9.0] - 2024-09-25
 
 ### Changed
