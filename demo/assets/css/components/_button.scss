@@ -19,10 +19,17 @@
     cursor: not-allowed;
     background: f.color(background, disabled, normal);
     border-color: f.color(border, disabled, normal);
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
   }
 
   &:not(:disabled, .is-disabled) {
-    &:hover {
+    &:hover,
+    &:focus {
+      text-decoration: none;
       filter: brightness(110%);
     }
 
