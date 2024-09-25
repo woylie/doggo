@@ -28,26 +28,26 @@
 
   &:not(.has-sidebar-right) {
     > :first-child {
-      flex-basis: var(--sidebar-width);
       flex-grow: 1;
+      flex-basis: var(--sidebar-width);
     }
 
     > :last-child {
-      flex-basis: 0;
       flex-grow: 666;
+      flex-basis: 0;
       min-width: var(--content-min-width);
     }
   }
 
   &.has-sidebar-right {
     > :last-child {
-      flex-basis: var(--sidebar-width);
       flex-grow: 1;
+      flex-basis: var(--sidebar-width);
     }
 
     > :first-child {
-      flex-basis: 0;
       flex-grow: 666;
+      flex-basis: 0;
       min-width: var(--content-min-width);
     }
   }

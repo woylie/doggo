@@ -15,13 +15,13 @@
   gap: var(--gap);
 
   > :first-child {
-    flex-basis: var(--width-left, 50%);
     flex-grow: 1;
+    flex-basis: var(--width-left, 50%);
   }
 
   > :last-child {
-    flex-basis: var(--width-right, 50%);
     flex-grow: 1;
+    flex-basis: var(--width-right, 50%);
   }
 
   /*
