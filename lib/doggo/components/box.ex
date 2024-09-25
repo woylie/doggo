@@ -55,7 +55,7 @@ defmodule Doggo.Components.Box do
     [
       type: :layout,
       since: "0.6.0",
-      maturity: :developing,
+      maturity: :refining,
       modifiers: []
     ]
   end
