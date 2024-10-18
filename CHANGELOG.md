@@ -2,9 +2,15 @@
 
 ## Unreleased
 
+## [0.9.1] - 2024-10-18
+
 ### Changed
 
 - Add header to file output of `mix dog.classes`.
+
+### Fixed
+
+- Fix deprecation warning in Phoenix LiveView 1.0.7-rc.7.
 
 ## [0.9.0] - 2024-09-25
 
