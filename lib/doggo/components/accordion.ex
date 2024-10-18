@@ -119,7 +119,7 @@ defmodule Doggo.Components.Accordion do
 
     ~H"""
     <div>
-      <.dynamic_tag name={@heading}>
+      <.dynamic_tag tag_name={@heading}>
         <button
           id={"#{@id}-trigger-#{@index}"}
           type="button"
