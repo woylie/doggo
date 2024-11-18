@@ -13,6 +13,14 @@ defmodule Doggo.Components.FieldTest do
     use Phoenix.Component
 
     build_field(gettext_module: Doggo.Gettext)
+
+    build_field(
+      name: :field_with_optional_text,
+      gettext_module: Doggo.Gettext,
+      optional_text: "(optional)"
+    )
+
+    build_field(name: :field_without_gettext, optional_text: "(optional)")
   end
 
   describe "field/1" do
@@ -53,6 +61,84 @@ defmodule Doggo.Components.FieldTest do
       assert text(html, ".field-description") == "How old?"
       assert attribute(html, ".field-description", "id") == "age_description"
       assert attribute(html, "input", "aria-describedby") == "age_description"
+    end
+
+    test "with hidden label" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field field={@form[:age]} label="Age" hide_label />
+        </.form>
+        """)
+
+      label = find_one(html, "label")
+      assert attribute(label, "class") == "is-visually-hidden"
+    end
+
+    test "with required text" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:age]}
+            label="Age"
+            validations={[required: true]}
+          />
+        </.form>
+        """)
+
+      span = find_one(html, "label > span.field-required-mark")
+      assert text(span) == "(required)"
+    end
+
+    test "with required text, without gettext" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_without_gettext
+            field={@form[:age]}
+            label="Age"
+            validations={[required: true]}
+          />
+        </.form>
+        """)
+
+      span = find_one(html, "label > span.field-required-mark")
+      assert text(span) == "(required)"
+    end
+
+    test "with optional text" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_with_optional_text field={@form[:age]} label="Age" />
+        </.form>
+        """)
+
+      span = find_one(html, "label > span.field-optional-mark")
+      assert text(span) == "(optional)"
+    end
+
+    test "with optional text, without_gettext" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_without_gettext field={@form[:age]} label="Age" />
+        </.form>
+        """)
+
+      span = find_one(html, "label > span.field-optional-mark")
+      assert text(span) == "(optional)"
     end
 
     test "with checkbox" do
