@@ -40,8 +40,8 @@ importers:
         specifier: ^3.3.3
         version: 3.3.3
       style-dictionary:
-        specifier: ^4.1.4
-        version: 4.1.4
+        specifier: ^4.2.0
+        version: 4.2.0(prettier@3.3.3)
       stylelint:
         specifier: ^16.10.0
         version: 16.10.0
@@ -1478,10 +1478,12 @@ packages:
     resolution: {integrity: sha512-iq6eVVI64nQQTRYq2KtEg2d2uU7LElhTJwsH4YzIHZshxlgZms/wIc4VoDQTlG/IvVIrBKG06CrZnp0qv7hkcQ==}
     engines: {node: '>=12'}
 
-  style-dictionary@4.1.4:
-    resolution: {integrity: sha512-JCfF5/my6yTBp8qtcxdEY1JwR3JDq9fyosoJ+mpl/jMVZ0zVNsseIDJA/xMmm0P3GwuryHkwJwBMkm99HlXhfQ==}
+  style-dictionary@4.2.0:
+    resolution: {integrity: sha512-bjynavc9g80Zl9GpR3cw+ibqtbMbak9YXpuZteTsRTzoacUTjh7GLu1nlT1ukf264Nw5Vhu/ICQpY5xxOquvtA==}
     engines: {node: '>=18.0.0'}
     hasBin: true
+    peerDependencies:
+      prettier: 3.x
 
   stylelint-config-recess-order@5.1.1:
     resolution: {integrity: sha512-eDAHWVBelzDbMbdMj15pSw0Ycykv5eLeriJdbGCp0zd44yvhgZLI+wyVHegzXp5NrstxTPSxl0fuOVKdMm0XLA==}
@@ -3050,7 +3052,7 @@ snapshots:
     dependencies:
       ansi-regex: 6.1.0
 
-  style-dictionary@4.1.4:
+  style-dictionary@4.2.0(prettier@3.3.3):
     dependencies:
       '@bundled-es-modules/deepmerge': 4.3.1
       '@bundled-es-modules/glob': 10.4.2
@@ -3063,6 +3065,7 @@ snapshots:
       json5: 2.2.3
       patch-package: 8.0.0
       path-unified: 0.1.0
+      prettier: 3.3.3
       tinycolor2: 1.6.0
 
   stylelint-config-recess-order@5.1.1(stylelint@16.10.0):
