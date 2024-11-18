@@ -258,7 +258,7 @@ defmodule Doggo.Components.Field do
         also be set globally, see above.
         """
 
-      attr :required_text, :atom,
+      attr :required_text, :string,
         doc: """
         The presentational text or symbol to be added to labels of required inputs.
 
@@ -267,7 +267,7 @@ defmodule Doggo.Components.Field do
             config :doggo, required_text: "required"
         """
 
-      attr :required_title, :atom,
+      attr :required_title, :string,
         doc: """
         The `title` attribute for the `required_text`.
 
