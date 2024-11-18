@@ -315,18 +315,30 @@ defmodule Doggo.Components.Field do
   @impl true
   def render(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     errors =
-      if Phoenix.Component.used_input?(field) do
-        Enum.map(
-          field.errors,
-          &Doggo.translate_error(&1, assigns.gettext_module)
-        )
-      else
-        []
+      cond do
+        errors = assigns[:errors] ->
+          errors
+
+        Phoenix.Component.used_input?(field) ->
+          Enum.map(
+            field.errors,
+            &Doggo.translate_error(&1, assigns.gettext_module)
+          )
+
+        true ->
+          []
       end
 
+    id = assigns.id || field.id
+
     assigns
-    |> assign(field: nil, id: assigns.id || field.id)
+    |> assign(field: nil, id: id)
     |> assign(:class, assigns.class ++ [field_error_class(errors)])
+    |> assign(
+      :describedby,
+      Doggo.input_aria_describedby(id, assigns.description)
+    )
+    |> assign(:errormessage, Doggo.input_aria_errormessage(id, errors))
     |> assign_new(:errors, fn -> errors end)
     |> assign_new(
       :required_text,
@@ -366,8 +378,8 @@ defmodule Doggo.Components.Field do
           id={@id}
           value={@checked_value}
           checked={@checked}
-          aria-describedby={Doggo.input_aria_describedby(@id, @description)}
-          aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+          aria-describedby={@describedby}
+          aria-errormessage={@errormessage}
           aria-invalid={@errors != [] && "true"}
           {@validations}
           {@rest}
@@ -408,6 +420,8 @@ defmodule Doggo.Components.Field do
             value={@value}
             errors={@errors}
             description={@description}
+            describedby={@describedby}
+            errormessage={@errormessage}
           />
         </div>
       </fieldset>
@@ -490,8 +504,8 @@ defmodule Doggo.Components.Field do
           name={@name}
           id={@id}
           multiple={@multiple}
-          aria-describedby={Doggo.input_aria_describedby(@id, @description)}
-          aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+          aria-describedby={@describedby}
+          aria-errormessage={@errormessage}
           aria-invalid={@errors != [] && "true"}
           {@validations}
           {@rest}
@@ -534,8 +548,8 @@ defmodule Doggo.Components.Field do
           id={@id}
           value={@checked_value}
           checked={@checked}
-          aria-describedby={Doggo.input_aria_describedby(@id, @description)}
-          aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+          aria-describedby={@describedby}
+          aria-errormessage={@errormessage}
           aria-invalid={@errors != [] && "true"}
           {@validations}
           {@rest}
@@ -581,8 +595,8 @@ defmodule Doggo.Components.Field do
       <textarea
         name={@name}
         id={@id}
-        aria-describedby={Doggo.input_aria_describedby(@id, @description)}
-        aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+        aria-describedby={@describedby}
+        aria-errormessage={@errormessage}
         aria-invalid={@errors != [] && "true"}
         {@validations}
         {@rest}
@@ -623,8 +637,8 @@ defmodule Doggo.Components.Field do
           list={@options && "#{@id}_datalist"}
           type={@type}
           value={Doggo.normalize_value(@type, @value)}
-          aria-describedby={Doggo.input_aria_describedby(@id, @description)}
-          aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+          aria-describedby={@describedby}
+          aria-errormessage={@errormessage}
           aria-invalid={@errors != [] && "true"}
           {@validations}
           {@rest}
@@ -769,8 +783,8 @@ defmodule Doggo.Components.Field do
         id={@id <> "_#{@option_value}"}
         value={@option_value}
         checked={Doggo.checked?(@option_value, @value)}
-        aria-describedby={Doggo.input_aria_describedby(@id, @description)}
-        aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+        aria-describedby={@describedby}
+        aria-errormessage={@errormessage}
         aria-invalid={@errors != [] && "true"}
       />
       <%= @label %>
