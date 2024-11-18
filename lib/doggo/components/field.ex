@@ -267,15 +267,6 @@ defmodule Doggo.Components.Field do
             config :doggo, required_text: "required"
         """
 
-      attr :required_title, :string,
-        doc: """
-        The `title` attribute for the `required_text`.
-
-        This option can also be set globally:
-
-            config :doggo, required_title: "required"
-        """
-
       slot :description,
         doc: "A field description to render underneath the input."
 
@@ -344,10 +335,6 @@ defmodule Doggo.Components.Field do
       :required_text,
       fn -> Application.get_env(:doggo, :required_text, "*") end
     )
-    |> assign_new(
-      :required_title,
-      fn -> Application.get_env(:doggo, :required_title, "required") end
-    )
     |> assign_new(:validations, fn ->
       Phoenix.HTML.Form.input_validations(field.form, field.field)
     end)
@@ -404,11 +391,7 @@ defmodule Doggo.Components.Field do
       <fieldset class="checkbox-group">
         <legend>
           <%= @label %>
-          <.required_mark
-            :if={@validations[:required]}
-            text={@required_text}
-            title={@required_title}
-          />
+          <.required_mark :if={@validations[:required]} text={@required_text} />
         </legend>
         <div>
           <input type="hidden" name={@name <> "[]"} value="" />
@@ -456,11 +439,7 @@ defmodule Doggo.Components.Field do
       <fieldset class="radio-group">
         <legend>
           <%= @label %>
-          <.required_mark
-            :if={@validations[:required]}
-            text={@required_text}
-            title={@required_title}
-          />
+          <.required_mark :if={@validations[:required]} text={@required_text} />
         </legend>
         <div>
           <Doggo.Components.RadioGroup.radio
@@ -493,7 +472,6 @@ defmodule Doggo.Components.Field do
         for={@id}
         required={@validations[:required] || false}
         required_text={@required_text}
-        required_title={@required_title}
         visually_hidden={@hide_label}
         visually_hidden_class={@visually_hidden_class}
       >
@@ -586,7 +564,6 @@ defmodule Doggo.Components.Field do
         for={@id}
         required={@validations[:required] || false}
         required_text={@required_text}
-        required_title={@required_title}
         visually_hidden={@hide_label}
         visually_hidden_class={@visually_hidden_class}
       >
@@ -620,7 +597,6 @@ defmodule Doggo.Components.Field do
         for={@id}
         required={@validations[:required] || false}
         required_text={@required_text}
-        required_title={@required_title}
         visually_hidden={@hide_label}
         visually_hidden_class={@visually_hidden_class}
       >
@@ -706,12 +682,6 @@ defmodule Doggo.Components.Field do
     Sets the presentational text or symbol to mark an input as required.
     """
 
-  attr :required_title, :any,
-    default: "required",
-    doc: """
-    Sets the `title` attribute of the required mark.
-    """
-
   attr :visually_hidden, :boolean,
     default: false,
     doc: """
@@ -739,7 +709,7 @@ defmodule Doggo.Components.Field do
     ~H"""
     <label for={@for} class={@class}>
       <%= render_slot(@inner_block) %>
-      <.required_mark :if={@required} title={@required_title} text={@required_text} />
+      <.required_mark :if={@required} text={@required_text} />
     </label>
     """
   end
