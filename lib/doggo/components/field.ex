@@ -390,8 +390,6 @@ defmodule Doggo.Components.Field do
           <%= @label %>
           <.required_mark
             :if={@validations[:required]}
-            []
-            end
             text={@required_text}
             title={@required_title}
           />
@@ -442,8 +440,6 @@ defmodule Doggo.Components.Field do
           <%= @label %>
           <.required_mark
             :if={@validations[:required]}
-            []
-            end
             text={@required_text}
             title={@required_title}
           />
