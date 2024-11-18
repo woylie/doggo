@@ -165,11 +165,22 @@ defmodule Doggo.Components.Field do
   @impl true
   def nested_classes(base_class) do
     [
+      "#{base_class}-checkbox",
+      "#{base_class}-checkbox-group",
       "#{base_class}-description",
       "#{base_class}-errors",
       "#{base_class}-input-addon-left",
       "#{base_class}-input-addon-right",
-      "#{base_class}-input-wrapper"
+      "#{base_class}-input-wrapper",
+      "#{base_class}-optional-mark",
+      "#{base_class}-radio-group",
+      "#{base_class}-required-mark",
+      "#{base_class}-select",
+      "#{base_class}-switch",
+      "#{base_class}-switch-label",
+      "#{base_class}-switch-state",
+      "#{base_class}-switch-state-off",
+      "#{base_class}-switch-state-on"
     ]
   end
 
