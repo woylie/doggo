@@ -356,6 +356,7 @@ defmodule Doggo.Components.Field do
       <.label
         required={@validations[:required] || false}
         class="checkbox"
+        base_class={@base_class}
         visually_hidden_class={@visually_hidden_class}
       >
         <input type="hidden" name={@name} value="false" />
@@ -391,7 +392,11 @@ defmodule Doggo.Components.Field do
       <fieldset class="checkbox-group">
         <legend>
           <%= @label %>
-          <.required_mark :if={@validations[:required]} text={@required_text} />
+          <.required_mark
+            :if={@validations[:required]}
+            text={@required_text}
+            base_class={@base_class}
+          />
         </legend>
         <div>
           <input type="hidden" name={@name <> "[]"} value="" />
@@ -439,7 +444,11 @@ defmodule Doggo.Components.Field do
       <fieldset class="radio-group">
         <legend>
           <%= @label %>
-          <.required_mark :if={@validations[:required]} text={@required_text} />
+          <.required_mark
+            :if={@validations[:required]}
+            text={@required_text}
+            base_class={@base_class}
+          />
         </legend>
         <div>
           <Doggo.Components.RadioGroup.radio
@@ -472,6 +481,7 @@ defmodule Doggo.Components.Field do
         for={@id}
         required={@validations[:required] || false}
         required_text={@required_text}
+        base_class={@base_class}
         visually_hidden={@hide_label}
         visually_hidden_class={@visually_hidden_class}
       >
@@ -515,6 +525,7 @@ defmodule Doggo.Components.Field do
       <.label
         required={@validations[:required] || false}
         class="switch"
+        base_class={@base_class}
         visually_hidden_class={@visually_hidden_class}
       >
         <span class="switch-label"><%= @label %></span>
@@ -564,6 +575,7 @@ defmodule Doggo.Components.Field do
         for={@id}
         required={@validations[:required] || false}
         required_text={@required_text}
+        base_class={@base_class}
         visually_hidden={@hide_label}
         visually_hidden_class={@visually_hidden_class}
       >
@@ -597,6 +609,7 @@ defmodule Doggo.Components.Field do
         for={@id}
         required={@validations[:required] || false}
         required_text={@required_text}
+        base_class={@base_class}
         visually_hidden={@hide_label}
         visually_hidden_class={@visually_hidden_class}
       >
@@ -671,6 +684,7 @@ defmodule Doggo.Components.Field do
 
   attr :for, :string, default: nil, doc: "The ID of the input."
   attr :class, :string, default: nil
+  attr :base_class, :string, required: true
 
   attr :required, :boolean,
     default: false,
@@ -709,7 +723,11 @@ defmodule Doggo.Components.Field do
     ~H"""
     <label for={@for} class={@class}>
       <%= render_slot(@inner_block) %>
-      <.required_mark :if={@required} text={@required_text} />
+      <.required_mark
+        :if={@required}
+        text={@required_text}
+        base_class={@base_class}
+      />
     </label>
     """
   end
@@ -722,9 +740,13 @@ defmodule Doggo.Components.Field do
   # It is good practice to add a sentence explaining that fields marked with an
   # asterisk (*) are required to the form.
   # Alternatively, the word `required` might be used instead of an asterisk.
+
+  attr :text, :string, required: true
+  attr :base_class, :string, required: true
+
   defp required_mark(assigns) do
     ~H"""
-    <span :if={@text} class="field-required-mark" aria-hidden="true" title={@title}>
+    <span :if={@text} class={"#{@base_class}-required-mark"} aria-hidden="true">
       <%= @text %>
     </span>
     """
