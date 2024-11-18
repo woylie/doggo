@@ -183,6 +183,63 @@ defmodule Doggo.Storybook.Field do
         ]
       },
       %VariationGroup{
+        id: :required_inputs,
+        variations: [
+          %Variation{
+            id: :text,
+            attributes: %{
+              type: "text",
+              label: "Text",
+              placeholder: "Some text",
+              validations: [required: true]
+            }
+          },
+          %Variation{
+            id: :select,
+            attributes: %{
+              label: "Select",
+              type: "select",
+              options: ["Option 1", "Option 2", "Option 3"],
+              validations: [required: true]
+            }
+          },
+          %Variation{
+            id: :radio_group,
+            attributes: %{
+              label: "Radio group",
+              type: "radio-group",
+              options: ["Option 1", "Option 2", "Option 3"],
+              validations: [required: true]
+            }
+          },
+          %Variation{
+            id: :checkbox,
+            attributes: %{
+              label: "Checkbox",
+              type: "checkbox",
+              validations: [required: true]
+            }
+          },
+          %Variation{
+            id: :switch,
+            attributes: %{
+              label: "Switch",
+              type: "switch",
+              validations: [required: true]
+            }
+          },
+          %Variation{
+            id: :checkbox_group,
+            attributes: %{
+              label: "Checkbox group",
+              type: "checkbox-group",
+              options: ["Option 1", "Option 2", "Option 3"],
+              validations: [required: true]
+            }
+          }
+        ]
+      },
+      %VariationGroup{
         id: :description_and_errors,
         description: "Autocomplete with datalist",
         variations: [
