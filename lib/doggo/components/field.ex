@@ -314,13 +314,20 @@ defmodule Doggo.Components.Field do
 
   @impl true
   def render(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
-    errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
+    errors =
+      if Phoenix.Component.used_input?(field) do
+        Enum.map(
+          field.errors,
+          &Doggo.translate_error(&1, assigns.gettext_module)
+        )
+      else
+        []
+      end
 
     assigns
     |> assign(field: nil, id: assigns.id || field.id)
-    |> assign_new(:errors, fn ->
-      Enum.map(errors, &Doggo.translate_error(&1, assigns.gettext_module))
-    end)
+    |> assign(:class, assigns.class ++ [field_error_class(errors)])
+    |> assign_new(:errors, fn -> errors end)
     |> assign_new(
       :required_text,
       fn -> Application.get_env(:doggo, :required_text, "*") end
@@ -342,14 +349,11 @@ defmodule Doggo.Components.Field do
   def render(%{type: "checkbox"} = assigns) do
     assigns =
       assign_new(assigns, :checked, fn ->
-        Phoenix.HTML.Form.normalize_value(
-          "checkbox",
-          assigns[:value]
-        )
+        Phoenix.HTML.Form.normalize_value("checkbox", assigns[:value])
       end)
 
     ~H"""
-    <div class={@class ++ [field_error_class(@errors)]}>
+    <div class={@class}>
       <.label
         required={@validations[:required] || false}
         class="checkbox"
@@ -384,7 +388,7 @@ defmodule Doggo.Components.Field do
 
   def render(%{type: "checkbox-group"} = assigns) do
     ~H"""
-    <div class={@class ++ [field_error_class(@errors)]}>
+    <div class={@class}>
       <fieldset class="checkbox-group">
         <legend>
           <%= @label %>
@@ -434,7 +438,7 @@ defmodule Doggo.Components.Field do
 
   def render(%{type: "radio-group"} = assigns) do
     ~H"""
-    <div class={@class ++ [field_error_class(@errors)]}>
+    <div class={@class}>
       <fieldset class="radio-group">
         <legend>
           <%= @label %>
@@ -470,7 +474,7 @@ defmodule Doggo.Components.Field do
 
   def render(%{type: "select"} = assigns) do
     ~H"""
-    <div class={@class ++ [field_error_class(@errors)]}>
+    <div class={@class}>
       <.label
         for={@id}
         required={@validations[:required] || false}
@@ -511,14 +515,11 @@ defmodule Doggo.Components.Field do
   def render(%{type: "switch"} = assigns) do
     assigns =
       assign_new(assigns, :checked, fn ->
-        Phoenix.HTML.Form.normalize_value(
-          "checkbox",
-          assigns[:value]
-        )
+        Phoenix.HTML.Form.normalize_value("checkbox", assigns[:value])
       end)
 
     ~H"""
-    <div class={@class ++ [field_error_class(@errors)]}>
+    <div class={@class}>
       <.label
         required={@validations[:required] || false}
         class="switch"
@@ -566,7 +567,7 @@ defmodule Doggo.Components.Field do
 
   def render(%{type: "textarea"} = assigns) do
     ~H"""
-    <div class={@class ++ [field_error_class(@errors)]}>
+    <div class={@class}>
       <.label
         for={@id}
         required={@validations[:required] || false}
@@ -600,7 +601,7 @@ defmodule Doggo.Components.Field do
 
   def render(assigns) do
     ~H"""
-    <div class={@class ++ [field_error_class(@errors)]}>
+    <div class={@class}>
       <.label
         for={@id}
         required={@validations[:required] || false}
