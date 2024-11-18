@@ -11,7 +11,7 @@ defmodule Doggo.Components.Field do
     Renders a form field including input, label, errors, and description.
 
     A `Phoenix.HTML.FormField` may be passed as argument,
-    which is used to retrieve the input name, id, and values.
+    which is used to retrieve the input name, ID, and values.
     Otherwise all attributes may be passed explicitly.
     """
   end
