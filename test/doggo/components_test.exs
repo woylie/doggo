@@ -2589,7 +2589,7 @@ defmodule Doggo.ComponentsTest do
         </.form>
         """)
 
-      assert attribute(html, "label", "class") == "checkbox"
+      assert attribute(html, "label", "class") == "field-checkbox"
       assert attribute(html, "input[type='hidden']", "value") == "false"
 
       assert text(html, ".field-description") == "Please do."
@@ -2694,7 +2694,7 @@ defmodule Doggo.ComponentsTest do
         </.form>
         """)
 
-      assert text(html, ".switch-state-off") == "Off"
+      assert text(html, ".field-switch-state-off") == "Off"
     end
 
     test "with switch on" do
@@ -2714,7 +2714,7 @@ defmodule Doggo.ComponentsTest do
         </.form>
         """)
 
-      assert text(html, ".switch-state-on") == "On"
+      assert text(html, ".field-switch-state-on") == "On"
     end
 
     test "with select" do

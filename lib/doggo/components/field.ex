@@ -355,7 +355,7 @@ defmodule Doggo.Components.Field do
     <div class={@class}>
       <.label
         required={@validations[:required] || false}
-        class="checkbox"
+        class={"#{@base_class}-checkbox"}
         base_class={@base_class}
         visually_hidden_class={@visually_hidden_class}
       >
@@ -389,7 +389,7 @@ defmodule Doggo.Components.Field do
   def render(%{type: "checkbox-group"} = assigns) do
     ~H"""
     <div class={@class}>
-      <fieldset class="checkbox-group">
+      <fieldset class={"#{@base_class}-checkbox-group"}>
         <legend>
           <%= @label %>
           <.required_mark
@@ -410,6 +410,7 @@ defmodule Doggo.Components.Field do
             description={@description}
             describedby={@describedby}
             errormessage={@errormessage}
+            base_class={@base_class}
           />
         </div>
       </fieldset>
@@ -441,7 +442,7 @@ defmodule Doggo.Components.Field do
   def render(%{type: "radio-group"} = assigns) do
     ~H"""
     <div class={@class}>
-      <fieldset class="radio-group">
+      <fieldset class={"#{@base_class}-radio-group"}>
         <legend>
           <%= @label %>
           <.required_mark
@@ -487,7 +488,7 @@ defmodule Doggo.Components.Field do
       >
         <%= @label %>
       </.label>
-      <div class={["select", @multiple && "is-multiple"]}>
+      <div class={["#{@base_class}-select", @multiple && "is-multiple"]}>
         <select
           name={@name}
           id={@id}
@@ -524,11 +525,11 @@ defmodule Doggo.Components.Field do
     <div class={@class}>
       <.label
         required={@validations[:required] || false}
-        class="switch"
+        class={"#{@base_class}-switch"}
         base_class={@base_class}
         visually_hidden_class={@visually_hidden_class}
       >
-        <span class="switch-label"><%= @label %></span>
+        <span class={"#{@base_class}-switch-label"}><%= @label %></span>
         <input type="hidden" name={@name} value="false" />
         <input
           type="checkbox"
@@ -543,9 +544,13 @@ defmodule Doggo.Components.Field do
           {@validations}
           {@rest}
         />
-        <span class="switch-state">
+        <span class={"#{@base_class}-switch-state"}>
           <span
-            class={if @checked, do: "switch-state-on", else: "switch-state-off"}
+            class={
+              if @checked,
+                do: "#{@base_class}-switch-state-on",
+                else: "#{@base_class}-switch-state-off"
+            }
             aria-hidden="true"
           >
             <%= if @checked do %>
@@ -768,7 +773,7 @@ defmodule Doggo.Components.Field do
 
   defp checkbox(%{option_value: _} = assigns) do
     ~H"""
-    <label class="checkbox">
+    <label class={"#{@base_class}-checkbox"}>
       <input
         type="checkbox"
         name={@name <> "[]"}
