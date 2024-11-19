@@ -141,6 +141,44 @@ defmodule Doggo.Components.FieldTest do
       assert text(span) == "(optional)"
     end
 
+    test "checkbox-group with optional text" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_with_optional_text
+            field={@form[:color]}
+            type="checkbox-group"
+            options={["blue", "green"]}
+            label="Color"
+          />
+        </.form>
+        """)
+
+      span = find_one(html, "legend > span.field-optional-mark")
+      assert text(span) == "(optional)"
+    end
+
+    test "radio-group with optional text" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_with_optional_text
+            field={@form[:color]}
+            type="radio-group"
+            options={["blue", "green"]}
+            label="Color"
+          />
+        </.form>
+        """)
+
+      span = find_one(html, "legend > span.field-optional-mark")
+      assert text(span) == "(optional)"
+    end
+
     test "with checkbox" do
       assigns = %{form: to_form(%{})}
 
