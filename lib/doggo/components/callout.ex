@@ -22,7 +22,7 @@ defmodule Doggo.Components.Callout do
     Standard callout:
 
     ```heex
-    <.callout title="Dog Care Tip">
+    <.callout id="callout-dog-care-tip" title="Dog Care Tip">
       <p>Regular exercise is essential for keeping your dog healthy and happy.</p>
     </.callout>
     ```
@@ -30,7 +30,7 @@ defmodule Doggo.Components.Callout do
     Callout with an icon:
 
     ```heex
-    <.callout title="Fun Dog Fact">
+    <.callout id="callout-fun-dog-fact" title="Fun Dog Fact">
       <:icon><Heroicons.information_circle /></:icon>
       <p>
         Did you know? Dogs have a sense of time and can get upset when their
