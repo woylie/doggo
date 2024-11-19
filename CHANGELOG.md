@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.10.0] - 2024-11-19
+
 ### Changed
 
 - `field` component:
