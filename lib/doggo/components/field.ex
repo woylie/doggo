@@ -11,7 +11,7 @@ defmodule Doggo.Components.Field do
     Renders a form field including input, label, errors, and description.
 
     A `Phoenix.HTML.FormField` may be passed as argument,
-    which is used to retrieve the input name, id, and values.
+    which is used to retrieve the input name, ID, and values.
     Otherwise all attributes may be passed explicitly.
     """
   end
@@ -19,9 +19,18 @@ defmodule Doggo.Components.Field do
   @impl true
   def builder_doc do
     """
-    - `:gettext_module` - If set, errors are automatically translated using this
-      module. This only works if the `:field` attribute is set. Without it,
+    - `:gettext_module` - If set, errors as well as the `required_text` and
+      `optional_text` are automatically translated using this module. This only
+      works if the `:field` attribute is set. Without it,
       errors passed to the component are rendered unchanged.
+    - `:required_text` - Defines a text that is rendered next to the label
+      in required fields. Defaults to `"(required)"`. This value is translated
+      if `gettext_module` is set. If you use a symbol like an asterisk, it is
+      good practice to add a sentence explaining that fields marked with an
+      that symbol are required.
+    - `:optional_text` - Defines a text that is rendered next to the label
+      in optional fields. Defaults to `nil`. This value is translated
+      if `gettext_module` is set.
     - `:addon_left_class` - This class is added to the input wrapper if the
       `:addon_left` slot is used.
     - `:addon_right_class` - This class is added to the input wrapper if the
@@ -51,8 +60,8 @@ defmodule Doggo.Components.Field do
 
     ### Gettext
 
-    To translate field errors using Gettext, set the `gettext_module` option
-    when building the component:
+    To translate field errors as well as the `required_text` and `optional_text`
+    using Gettext, set the `gettext_module` option when building the component:
 
         build_field(gettext_module: MyApp.Gettext)
 
@@ -146,7 +155,9 @@ defmodule Doggo.Components.Field do
         gettext_module: nil,
         addon_left_class: "has-addon-left",
         addon_right_class: "has-addon-right",
-        visually_hidden_class: "is-visually-hidden"
+        visually_hidden_class: "is-visually-hidden",
+        required_text: "(required)",
+        optional_text: nil
       ]
     ]
   end
@@ -154,11 +165,22 @@ defmodule Doggo.Components.Field do
   @impl true
   def nested_classes(base_class) do
     [
+      "#{base_class}-checkbox",
+      "#{base_class}-checkbox-group",
       "#{base_class}-description",
       "#{base_class}-errors",
       "#{base_class}-input-addon-left",
       "#{base_class}-input-addon-right",
-      "#{base_class}-input-wrapper"
+      "#{base_class}-input-wrapper",
+      "#{base_class}-optional-mark",
+      "#{base_class}-radio-group",
+      "#{base_class}-required-mark",
+      "#{base_class}-select",
+      "#{base_class}-switch",
+      "#{base_class}-switch-label",
+      "#{base_class}-switch-state",
+      "#{base_class}-switch-state-off",
+      "#{base_class}-switch-state-on"
     ]
   end
 
@@ -258,24 +280,6 @@ defmodule Doggo.Components.Field do
         also be set globally, see above.
         """
 
-      attr :required_text, :atom,
-        doc: """
-        The presentational text or symbol to be added to labels of required inputs.
-
-        This option can also be set globally:
-
-            config :doggo, required_text: "required"
-        """
-
-      attr :required_title, :atom,
-        doc: """
-        The `title` attribute for the `required_text`.
-
-        This option can also be set globally:
-
-            config :doggo, required_title: "required"
-        """
-
       slot :description,
         doc: "A field description to render underneath the input."
 
@@ -298,6 +302,8 @@ defmodule Doggo.Components.Field do
     addon_left_class = Keyword.fetch!(extra, :addon_left_class)
     addon_right_class = Keyword.fetch!(extra, :addon_right_class)
     visually_hidden_class = Keyword.fetch!(extra, :visually_hidden_class)
+    required_text = Keyword.fetch!(extra, :required_text)
+    optional_text = Keyword.fetch!(extra, :optional_text)
     gettext_module = Keyword.get(extra, :gettext_module)
 
     quote do
@@ -307,28 +313,41 @@ defmodule Doggo.Components.Field do
           gettext_module: unquote(gettext_module),
           addon_left_class: unquote(addon_left_class),
           addon_right_class: unquote(addon_right_class),
-          visually_hidden_class: unquote(visually_hidden_class)
+          visually_hidden_class: unquote(visually_hidden_class),
+          required_text: unquote(required_text),
+          optional_text: unquote(optional_text)
         )
     end
   end
 
   @impl true
   def render(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
-    errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
+    errors =
+      cond do
+        errors = assigns[:errors] ->
+          errors
+
+        Phoenix.Component.used_input?(field) ->
+          Enum.map(
+            field.errors,
+            &Doggo.translate_error(&1, assigns.gettext_module)
+          )
+
+        true ->
+          []
+      end
+
+    id = assigns.id || field.id
 
     assigns
-    |> assign(field: nil, id: assigns.id || field.id)
-    |> assign_new(:errors, fn ->
-      Enum.map(errors, &Doggo.translate_error(&1, assigns.gettext_module))
-    end)
-    |> assign_new(
-      :required_text,
-      fn -> Application.get_env(:doggo, :required_text, "*") end
+    |> assign(field: nil, id: id)
+    |> assign(:class, assigns.class ++ [field_error_class(errors)])
+    |> assign(
+      :describedby,
+      Doggo.input_aria_describedby(id, assigns.description)
     )
-    |> assign_new(
-      :required_title,
-      fn -> Application.get_env(:doggo, :required_title, "required") end
-    )
+    |> assign(:errormessage, Doggo.input_aria_errormessage(id, errors))
+    |> assign_new(:errors, fn -> errors end)
     |> assign_new(:validations, fn ->
       Phoenix.HTML.Form.input_validations(field.form, field.field)
     end)
@@ -342,18 +361,19 @@ defmodule Doggo.Components.Field do
   def render(%{type: "checkbox"} = assigns) do
     assigns =
       assign_new(assigns, :checked, fn ->
-        Phoenix.HTML.Form.normalize_value(
-          "checkbox",
-          assigns[:value]
-        )
+        Phoenix.HTML.Form.normalize_value("checkbox", assigns[:value])
       end)
 
     ~H"""
-    <div class={@class ++ [field_error_class(@errors)]}>
+    <div class={@class}>
       <.label
         required={@validations[:required] || false}
-        class="checkbox"
+        required_text={@required_text}
+        optional_text={@optional_text}
+        class={"#{@base_class}-checkbox"}
+        base_class={@base_class}
         visually_hidden_class={@visually_hidden_class}
+        gettext_module={@gettext_module}
       >
         <input type="hidden" name={@name} value="false" />
         <input
@@ -362,8 +382,8 @@ defmodule Doggo.Components.Field do
           id={@id}
           value={@checked_value}
           checked={@checked}
-          aria-describedby={Doggo.input_aria_describedby(@id, @description)}
-          aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+          aria-describedby={@describedby}
+          aria-errormessage={@errormessage}
           aria-invalid={@errors != [] && "true"}
           {@validations}
           {@rest}
@@ -384,16 +404,16 @@ defmodule Doggo.Components.Field do
 
   def render(%{type: "checkbox-group"} = assigns) do
     ~H"""
-    <div class={@class ++ [field_error_class(@errors)]}>
-      <fieldset class="checkbox-group">
+    <div class={@class}>
+      <fieldset class={"#{@base_class}-checkbox-group"}>
         <legend>
           <%= @label %>
-          <.required_mark
-            :if={@validations[:required]}
-            []
-            end
-            text={@required_text}
-            title={@required_title}
+          <.required_optional_mark
+            required={@validations[:required] || false}
+            required_text={@required_text}
+            optional_text={@optional_text}
+            base_class={@base_class}
+            gettext_module={@gettext_module}
           />
         </legend>
         <div>
@@ -406,6 +426,9 @@ defmodule Doggo.Components.Field do
             value={@value}
             errors={@errors}
             description={@description}
+            describedby={@describedby}
+            errormessage={@errormessage}
+            base_class={@base_class}
           />
         </div>
       </fieldset>
@@ -436,16 +459,16 @@ defmodule Doggo.Components.Field do
 
   def render(%{type: "radio-group"} = assigns) do
     ~H"""
-    <div class={@class ++ [field_error_class(@errors)]}>
-      <fieldset class="radio-group">
+    <div class={@class}>
+      <fieldset class={"#{@base_class}-radio-group"}>
         <legend>
           <%= @label %>
-          <.required_mark
-            :if={@validations[:required]}
-            []
-            end
-            text={@required_text}
-            title={@required_title}
+          <.required_optional_mark
+            required={@validations[:required] || false}
+            required_text={@required_text}
+            optional_text={@optional_text}
+            base_class={@base_class}
+            gettext_module={@gettext_module}
           />
         </legend>
         <div>
@@ -474,24 +497,26 @@ defmodule Doggo.Components.Field do
 
   def render(%{type: "select"} = assigns) do
     ~H"""
-    <div class={@class ++ [field_error_class(@errors)]}>
+    <div class={@class}>
       <.label
         for={@id}
         required={@validations[:required] || false}
         required_text={@required_text}
-        required_title={@required_title}
+        optional_text={@optional_text}
+        base_class={@base_class}
         visually_hidden={@hide_label}
         visually_hidden_class={@visually_hidden_class}
+        gettext_module={@gettext_module}
       >
         <%= @label %>
       </.label>
-      <div class={["select", @multiple && "is-multiple"]}>
+      <div class={["#{@base_class}-select", @multiple && "is-multiple"]}>
         <select
           name={@name}
           id={@id}
           multiple={@multiple}
-          aria-describedby={Doggo.input_aria_describedby(@id, @description)}
-          aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+          aria-describedby={@describedby}
+          aria-errormessage={@errormessage}
           aria-invalid={@errors != [] && "true"}
           {@validations}
           {@rest}
@@ -515,20 +540,21 @@ defmodule Doggo.Components.Field do
   def render(%{type: "switch"} = assigns) do
     assigns =
       assign_new(assigns, :checked, fn ->
-        Phoenix.HTML.Form.normalize_value(
-          "checkbox",
-          assigns[:value]
-        )
+        Phoenix.HTML.Form.normalize_value("checkbox", assigns[:value])
       end)
 
     ~H"""
-    <div class={@class ++ [field_error_class(@errors)]}>
+    <div class={@class}>
       <.label
         required={@validations[:required] || false}
-        class="switch"
+        required_text={@required_text}
+        optional_text={@optional_text}
+        class={"#{@base_class}-switch"}
+        base_class={@base_class}
         visually_hidden_class={@visually_hidden_class}
+        gettext_module={@gettext_module}
       >
-        <span class="switch-label"><%= @label %></span>
+        <span class={"#{@base_class}-switch-label"}><%= @label %></span>
         <input type="hidden" name={@name} value="false" />
         <input
           type="checkbox"
@@ -537,15 +563,19 @@ defmodule Doggo.Components.Field do
           id={@id}
           value={@checked_value}
           checked={@checked}
-          aria-describedby={Doggo.input_aria_describedby(@id, @description)}
-          aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+          aria-describedby={@describedby}
+          aria-errormessage={@errormessage}
           aria-invalid={@errors != [] && "true"}
           {@validations}
           {@rest}
         />
-        <span class="switch-state">
+        <span class={"#{@base_class}-switch-state"}>
           <span
-            class={if @checked, do: "switch-state-on", else: "switch-state-off"}
+            class={
+              if @checked,
+                do: "#{@base_class}-switch-state-on",
+                else: "#{@base_class}-switch-state-off"
+            }
             aria-hidden="true"
           >
             <%= if @checked do %>
@@ -570,22 +600,24 @@ defmodule Doggo.Components.Field do
 
   def render(%{type: "textarea"} = assigns) do
     ~H"""
-    <div class={@class ++ [field_error_class(@errors)]}>
+    <div class={@class}>
       <.label
         for={@id}
         required={@validations[:required] || false}
         required_text={@required_text}
-        required_title={@required_title}
+        optional_text={@optional_text}
+        base_class={@base_class}
         visually_hidden={@hide_label}
         visually_hidden_class={@visually_hidden_class}
+        gettext_module={@gettext_module}
       >
         <%= @label %>
       </.label>
       <textarea
         name={@name}
         id={@id}
-        aria-describedby={Doggo.input_aria_describedby(@id, @description)}
-        aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+        aria-describedby={@describedby}
+        aria-errormessage={@errormessage}
         aria-invalid={@errors != [] && "true"}
         {@validations}
         {@rest}
@@ -604,14 +636,16 @@ defmodule Doggo.Components.Field do
 
   def render(assigns) do
     ~H"""
-    <div class={@class ++ [field_error_class(@errors)]}>
+    <div class={@class}>
       <.label
         for={@id}
         required={@validations[:required] || false}
         required_text={@required_text}
-        required_title={@required_title}
+        optional_text={@optional_text}
+        base_class={@base_class}
         visually_hidden={@hide_label}
         visually_hidden_class={@visually_hidden_class}
+        gettext_module={@gettext_module}
       >
         <%= @label %>
       </.label>
@@ -626,8 +660,8 @@ defmodule Doggo.Components.Field do
           list={@options && "#{@id}_datalist"}
           type={@type}
           value={Doggo.normalize_value(@type, @value)}
-          aria-describedby={Doggo.input_aria_describedby(@id, @description)}
-          aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+          aria-describedby={@describedby}
+          aria-errormessage={@errormessage}
           aria-invalid={@errors != [] && "true"}
           {@validations}
           {@rest}
@@ -684,21 +718,20 @@ defmodule Doggo.Components.Field do
 
   attr :for, :string, default: nil, doc: "The ID of the input."
   attr :class, :string, default: nil
-
-  attr :required, :boolean,
-    default: false,
-    doc: "If set to `true`, a 'required' mark is rendered."
+  attr :base_class, :string, required: true
+  attr :gettext_module, :atom, required: true
+  attr :required, :boolean, default: false
 
   attr :required_text, :any,
-    default: "*",
+    required: true,
     doc: """
     Sets the presentational text or symbol to mark an input as required.
     """
 
-  attr :required_title, :any,
-    default: "required",
+  attr :optional_text, :any,
+    required: true,
     doc: """
-    Sets the `title` attribute of the required mark.
+    Sets the presentational text or symbol to mark an input as optional.
     """
 
   attr :visually_hidden, :boolean,
@@ -728,25 +761,75 @@ defmodule Doggo.Components.Field do
     ~H"""
     <label for={@for} class={@class}>
       <%= render_slot(@inner_block) %>
-      <.required_mark :if={@required} title={@required_title} text={@required_text} />
+      <.required_optional_mark
+        required={@required}
+        required_text={@required_text}
+        optional_text={@optional_text}
+        base_class={@base_class}
+        gettext_module={@gettext_module}
+      />
     </label>
     """
   end
 
-  # inputs are announced as required by screen readers if the `required`
+  # Inputs are announced as required by screen readers if the `required`
   # attribute is set. This makes this mark purely visual. `aria-hidden="true"`
-  # is added so that screen readers don't announce redundant information. The
-  # title attribute has poor accessibility characteristics, but since this is
-  # purely presentational, this is acceptable.
-  # It is good practice to add a sentence explaining that fields marked with an
-  # asterisk (*) are required to the form.
-  # Alternatively, the word `required` might be used instead of an asterisk.
-  defp required_mark(assigns) do
+  # is added so that screen readers don't announce redundant information.
+
+  attr :required, :boolean, required: true
+  attr :required_text, :any, required: true
+  attr :optional_text, :any, required: true
+  attr :base_class, :string, required: true
+  attr :gettext_module, :atom, required: true
+
+  defp required_optional_mark(
+         %{
+           required: true,
+           required_text: required_text,
+           gettext_module: gettext_module
+         } = assigns
+       )
+       when is_binary(required_text) do
+    required_text =
+      if gettext_module,
+        # credo:disable-for-next-line
+        do: apply(Gettext, :gettext, [gettext_module, required_text]),
+        else: required_text
+
+    assigns = assign(assigns, :required_text, required_text)
+
     ~H"""
-    <span :if={@text} class="field-required-mark" aria-hidden="true" title={@title}>
-      <%= @text %>
+    <span class={"#{@base_class}-required-mark"} aria-hidden="true">
+      <%= @required_text %>
     </span>
     """
+  end
+
+  defp required_optional_mark(
+         %{
+           required: false,
+           optional_text: optional_text,
+           gettext_module: gettext_module
+         } = assigns
+       )
+       when is_binary(optional_text) do
+    optional_text =
+      if gettext_module,
+        # credo:disable-for-next-line
+        do: apply(Gettext, :gettext, [gettext_module, optional_text]),
+        else: optional_text
+
+    assigns = assign(assigns, :optional_text, optional_text)
+
+    ~H"""
+    <span class={"#{@base_class}-optional-mark"} aria-hidden="true">
+      <%= @optional_text %>
+    </span>
+    """
+  end
+
+  defp required_optional_mark(assigns) do
+    ~H""
   end
 
   defp option(%{option: {label, value}} = assigns) do
@@ -765,15 +848,15 @@ defmodule Doggo.Components.Field do
 
   defp checkbox(%{option_value: _} = assigns) do
     ~H"""
-    <label class="checkbox">
+    <label class={"#{@base_class}-checkbox"}>
       <input
         type="checkbox"
         name={@name <> "[]"}
         id={@id <> "_#{@option_value}"}
         value={@option_value}
         checked={Doggo.checked?(@option_value, @value)}
-        aria-describedby={Doggo.input_aria_describedby(@id, @description)}
-        aria-errormessage={Doggo.input_aria_errormessage(@id, @errors)}
+        aria-describedby={@describedby}
+        aria-errormessage={@errormessage}
         aria-invalid={@errors != [] && "true"}
       />
       <%= @label %>

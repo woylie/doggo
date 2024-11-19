@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+### Changed
+
+- `field` component:
+  - Remove `required_text` attribute in favor of a compile-time option passed to
+    `build_field/1`.
+  - Remove `required_title` attribute; remove `title` from `span` element.
+  - Change default for `required_text` from `*` to `(required)`.
+  - Translate `required_text` with Gettext module, if set.
+  - Add `optional_text` option to `build_field/1` to mark optional fields with
+    a label suffix. Defaults to `nil`.
+  - Prefix `checkbox`, `checkbox-group`, `radio-group`, `required-mark`,
+    `select`, `switch`, `switch-label`, `switch-state`, `switch-state-off`, and
+    `switch-state-on` classes with base class for consistency.
+
 ## [0.9.1] - 2024-10-18
 
 ### Changed
