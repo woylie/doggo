@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## [0.10.1] - 2024-11-20
+
+### Changed
+
+- Support Phoenix Storybook 0.7.x.
+
 ## [0.10.0] - 2024-11-19
 
 ### Changed
