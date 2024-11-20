@@ -56,7 +56,7 @@ defmodule Doggo.MixProject do
       {:jason, "~> 1.0", only: [:dev, :test]},
       {:makeup_diff, "~> 0.1.0", only: :dev},
       {:phoenix_live_view, "~> 1.0.0-rc.7"},
-      {:phoenix_storybook, "~> 0.6.0"},
+      {:phoenix_storybook, "~> 0.6.0 or ~> 0.7.0"},
       {:tzdata, "~> 1.1", only: [:test]}
     ]
   end
