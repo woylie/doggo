@@ -139,7 +139,7 @@ defmodule Doggo.Components.IconSprite do
     <span class={@class} {@rest}>
       <svg aria-hidden="true"><use href={"#{@sprite_url}##{@name}"} /></svg>
       <span :if={@text} class={@text_class}>
-        <%= @text %>
+        {@text}
       </span>
     </span>
     """

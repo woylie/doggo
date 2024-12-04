@@ -100,7 +100,7 @@ defmodule Doggo.Components.Tag do
   def render(assigns) do
     ~H"""
     <span class={@class} {@rest}>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </span>
     """
   end

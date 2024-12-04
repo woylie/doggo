@@ -196,7 +196,7 @@ defmodule Doggo.Components.Time do
 
     ~H"""
     <time :if={@value} class={@class} datetime={@datetime} title={@title} {@rest}>
-      <%= @value %>
+      {@value}
     </time>
     """
   end

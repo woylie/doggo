@@ -136,7 +136,7 @@ defmodule Doggo.Components.ButtonLink do
   def render(assigns) do
     ~H"""
     <.link class={@class} {@rest}>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </.link>
     """
   end

@@ -81,7 +81,7 @@ defmodule Doggo.Components.MenuItemCheckbox do
       phx-click={@on_click}
       {@rest}
     >
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </div>
     """
   end

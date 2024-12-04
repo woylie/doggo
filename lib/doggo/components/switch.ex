@@ -79,7 +79,7 @@ defmodule Doggo.Components.Switch do
       aria-checked={to_string(@checked)}
       {@rest}
     >
-      <span class={"#{@base_class}-label"}><%= @label %></span>
+      <span class={"#{@base_class}-label"}>{@label}</span>
       <span class={"#{@base_class}-control"}><span></span></span>
       <span class={"#{@base_class}-state"}>
         <span
@@ -91,9 +91,9 @@ defmodule Doggo.Components.Switch do
           aria-hidden="true"
         >
           <%= if @checked do %>
-            <%= @on_text %>
+            {@on_text}
           <% else %>
-            <%= @off_text %>
+            {@off_text}
           <% end %>
         </span>
       </span>

@@ -130,7 +130,7 @@ defmodule Doggo.Components.Tabs do
           tabindex={index != 1 && "-1"}
           phx-click={Doggo.show_tab(@id, index)}
         >
-          <%= panel.label %>
+          {panel.label}
         </button>
       </div>
       <div
@@ -140,7 +140,7 @@ defmodule Doggo.Components.Tabs do
         aria-labelledby={"#{@id}-tab-#{index}"}
         hidden={index != 1}
       >
-        <%= render_slot(panel) %>
+        {render_slot(panel)}
       </div>
     </div>
     """

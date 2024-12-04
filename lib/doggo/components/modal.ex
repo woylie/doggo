@@ -211,16 +211,16 @@ defmodule Doggo.Components.Modal do
               aria-label={@close_label}
               phx-click={Phoenix.LiveView.JS.exec("data-cancel", to: "##{@id}")}
             >
-              <%= render_slot(@close) %>
+              {render_slot(@close)}
               <span :if={@close == []}>close</span>
             </button>
-            <h2 id={"#{@id}-title"}><%= render_slot(@title) %></h2>
+            <h2 id={"#{@id}-title"}>{render_slot(@title)}</h2>
           </header>
           <div id={"#{@id}-content"} class={"#{@base_class}-content"}>
-            <%= render_slot(@inner_block) %>
+            {render_slot(@inner_block)}
           </div>
           <footer :if={@footer != []}>
-            <%= render_slot(@footer) %>
+            {render_slot(@footer)}
           </footer>
         </section>
       </.focus_wrap>

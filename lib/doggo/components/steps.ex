@@ -189,14 +189,14 @@ defmodule Doggo.Components.Steps do
     ~H"""
     <li class={@class} aria-current={@index == @current_step && "step"}>
       <span :if={@index < @current_step} class={@visually_hidden_class}>
-        <%= @completed_label %>
+        {@completed_label}
       </span>
       <%= if @step[:on_click] && ((@linear && @index < @current_step) || (!@linear && @index != @current_step)) do %>
         <.link phx-click={@step[:on_click]}>
-          <%= render_slot(@step) %>
+          {render_slot(@step)}
         </.link>
       <% else %>
-        <span><%= render_slot(@step) %></span>
+        <span>{render_slot(@step)}</span>
       <% end %>
     </li>
     """

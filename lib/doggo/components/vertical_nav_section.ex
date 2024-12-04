@@ -76,13 +76,13 @@ defmodule Doggo.Components.VerticalNavSection do
       {@rest}
     >
       <div :if={@title != []} id={"#{@id}-title"} class={"#{@base_class}-title"}>
-        <%= render_slot(@title) %>
+        {render_slot(@title)}
       </div>
       <div
         :for={item <- @item}
         class={["#{@base_class}-item" | List.wrap(item[:class] || [])]}
       >
-        <%= render_slot(item) %>
+        {render_slot(item)}
       </div>
     </div>
     """

@@ -118,7 +118,7 @@ defmodule Doggo.Components.DisclosureButton do
       class={@class}
       {@rest}
     >
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </button>
     """
   end

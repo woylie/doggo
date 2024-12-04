@@ -111,16 +111,16 @@ defmodule Doggo.Components.Alert do
       {@rest}
     >
       <div :if={@icon != []} class={"#{@base_class}-icon"}>
-        <%= render_slot(@icon) %>
+        {render_slot(@icon)}
       </div>
       <div class={"#{@base_class}-body"}>
         <div :if={@title} id={"#{@id}-title"} class={"#{@base_class}-title"}>
-          <%= @title %>
+          {@title}
         </div>
-        <div class={"#{@base_class}-message"}><%= render_slot(@inner_block) %></div>
+        <div class={"#{@base_class}-message"}>{render_slot(@inner_block)}</div>
       </div>
       <button :if={@on_close} phx-click={@on_close}>
-        <%= @close_label %>
+        {@close_label}
       </button>
     </div>
     """

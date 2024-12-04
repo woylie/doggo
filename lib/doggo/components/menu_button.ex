@@ -137,7 +137,7 @@ defmodule Doggo.Components.MenuButton do
       phx-click={Doggo.toggle_disclosure(@controls)}
       {@rest}
     >
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </button>
     """
   end

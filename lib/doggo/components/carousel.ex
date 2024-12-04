@@ -195,7 +195,7 @@ defmodule Doggo.Components.Carousel do
             aria-controls={"#{@id}-items"}
             aria-label={previous.label}
           >
-            <%= render_slot(previous) %>
+            {render_slot(previous)}
           </button>
           <button
             :for={next <- @next}
@@ -204,7 +204,7 @@ defmodule Doggo.Components.Carousel do
             aria-controls={"#{@id}-items"}
             aria-label={next.label}
           >
-            <%= render_slot(next) %>
+            {render_slot(next)}
           </button>
           <div :if={@pagination} class={"#{@base_class}-pagination"}>
             <div role="tablist" aria-label={@pagination_label}>
@@ -233,7 +233,7 @@ defmodule Doggo.Components.Carousel do
             aria-roledescription={@slide_roledescription}
             aria-label={item.label}
           >
-            <%= render_slot(item) %>
+            {render_slot(item)}
           </div>
         </div>
       </div>

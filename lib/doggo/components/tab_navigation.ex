@@ -139,7 +139,7 @@ defmodule Doggo.Components.TabNavigation do
             patch={item[:patch]}
             aria-current={@current_value in List.wrap(item.value) && "page"}
           >
-            <%= render_slot(item) %>
+            {render_slot(item)}
           </.link>
         </li>
       </ul>

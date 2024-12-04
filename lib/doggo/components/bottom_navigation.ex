@@ -131,8 +131,8 @@ defmodule Doggo.Components.BottomNavigation do
             aria-current={@current_value in List.wrap(item.value) && "page"}
             aria-label={item.label}
           >
-            <span class={"#{@base_class}-icon"}><%= render_slot(item) %></span>
-            <span :if={!@hide_labels}><%= item.label %></span>
+            <span class={"#{@base_class}-icon"}>{render_slot(item)}</span>
+            <span :if={!@hide_labels}>{item.label}</span>
           </.link>
         </li>
       </ul>

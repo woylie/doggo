@@ -96,17 +96,17 @@ defmodule Doggo.Components.AppBar do
           phx-click={navigation.on_click}
           title={navigation.label}
         >
-          <%= render_slot(navigation) %>
+          {render_slot(navigation)}
         </.link>
       </div>
-      <h1 :if={@title}><%= @title %></h1>
+      <h1 :if={@title}>{@title}</h1>
       <div :if={@action != []} class={"#{@base_class}-actions"}>
         <.link
           :for={action <- @action}
           phx-click={action.on_click}
           title={action.label}
         >
-          <%= render_slot(action) %>
+          {render_slot(action)}
         </.link>
       </div>
     </header>

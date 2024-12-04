@@ -82,12 +82,12 @@ defmodule Doggo.Components.PageHeader do
     ~H"""
     <header class={@class} {@rest}>
       <div class={"#{@base_class}-title"}>
-        <h1><%= @title %></h1>
-        <p :if={@subtitle}><%= @subtitle %></p>
+        <h1>{@title}</h1>
+        <p :if={@subtitle}>{@subtitle}</p>
       </div>
       <div :if={@action != []} class={"#{@base_class}-actions"}>
         <%= for action <- @action do %>
-          <%= render_slot(action) %>
+          {render_slot(action)}
         <% end %>
       </div>
     </header>

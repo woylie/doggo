@@ -111,9 +111,9 @@ defmodule Doggo.Components.Navbar do
     ~H"""
     <nav class={@class} aria-label={@label} {@rest}>
       <div :if={@brand != []} class={"#{@base_class}-brand"}>
-        <%= render_slot(@brand) %>
+        {render_slot(@brand)}
       </div>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </nav>
     """
   end

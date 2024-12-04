@@ -99,21 +99,21 @@ defmodule Doggo.Components.Box do
     ~H"""
     <section class={@class} {@rest}>
       <header :if={@title != [] || @banner != [] || @action != []}>
-        <h2 :if={@title != []}><%= render_slot(@title) %></h2>
+        <h2 :if={@title != []}>{render_slot(@title)}</h2>
         <div :if={@action != []} class={"#{@base_class}-actions"}>
           <%= for action <- @action do %>
-            <%= render_slot(action) %>
+            {render_slot(action)}
           <% end %>
         </div>
         <div :if={@banner != []} class={"#{@base_class}-banner"}>
-          <%= render_slot(@banner) %>
+          {render_slot(@banner)}
         </div>
       </header>
       <div class={"#{@base_class}-body"}>
-        <%= render_slot(@inner_block) %>
+        {render_slot(@inner_block)}
       </div>
       <footer :if={@footer != []}>
-        <%= render_slot(@footer) %>
+        {render_slot(@footer)}
       </footer>
     </section>
     """

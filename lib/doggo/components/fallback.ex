@@ -115,12 +115,13 @@ defmodule Doggo.Components.Fallback do
     assigns = assign(assigns, :value, value)
 
     ~H"""
-    <%= @value %><span
+    {@value}<span
       :if={is_nil(@value)}
       class={@class}
       aria-label={@accessibility_text}
       {@rest}
-    ><%= @placeholder %></span>
+      phx-no-format
+    >{@placeholder}</span>
     """
   end
 end

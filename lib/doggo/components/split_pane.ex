@@ -137,7 +137,7 @@ defmodule Doggo.Components.SplitPane do
 
     ~H"""
     <div id={@id} class={@class} data-orientation={@orientation} {@rest}>
-      <div id={"#{@id}-primary"}><%= render_slot(@primary) %></div>
+      <div id={"#{@id}-primary"}>{render_slot(@primary)}</div>
       <div
         role="separator"
         aria-label={@label}
@@ -149,7 +149,7 @@ defmodule Doggo.Components.SplitPane do
         aria-valuemax={@max_size}
       >
       </div>
-      <div id={"#{@id}-secondary"}><%= render_slot(@secondary) %></div>
+      <div id={"#{@id}-secondary"}>{render_slot(@secondary)}</div>
     </div>
     """
   end

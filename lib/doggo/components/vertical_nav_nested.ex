@@ -77,7 +77,7 @@ defmodule Doggo.Components.VerticalNavNested do
     ~H"""
     <div class={@class} {@rest}>
       <div :if={@title != []} id={"#{@id}-title"} class={"#{@base_class}-title"}>
-        <%= render_slot(@title) %>
+        {render_slot(@title)}
       </div>
       <ul id={@id} aria-labelledby={@title != [] && "#{@id}-title"}>
         <li
@@ -85,7 +85,7 @@ defmodule Doggo.Components.VerticalNavNested do
           class={item[:class]}
           aria-current={item[:current_page] && "page"}
         >
-          <%= render_slot(item) %>
+          {render_slot(item)}
         </li>
       </ul>
     </div>

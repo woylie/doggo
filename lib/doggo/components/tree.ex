@@ -131,7 +131,7 @@ defmodule Doggo.Components.Tree do
       aria-labelledby={@labelledby}
       {@rest}
     >
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </ul>
     """
   end

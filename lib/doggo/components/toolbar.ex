@@ -133,7 +133,7 @@ defmodule Doggo.Components.Toolbar do
       aria-controls={@controls}
       {@rest}
     >
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </div>
     """
   end

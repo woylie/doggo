@@ -99,7 +99,7 @@ defmodule Doggo.Components.Breadcrumb do
       href={@item[:href]}
       aria-current="page"
     >
-      <%= render_slot(@item) %>
+      {render_slot(@item)}
     </.link>
     """
   end
@@ -107,7 +107,7 @@ defmodule Doggo.Components.Breadcrumb do
   defp breadcrumb_link(assigns) do
     ~H"""
     <.link navigate={@item[:navigate]} patch={@item[:patch]} href={@item[:href]}>
-      <%= render_slot(@item) %>
+      {render_slot(@item)}
     </.link>
     """
   end

@@ -131,13 +131,13 @@ defmodule Doggo.Components.Drawer do
     ~H"""
     <aside class={@class} {@rest}>
       <div :if={@header != []} class={"#{@base_class}-header"}>
-        <%= render_slot(@header) %>
+        {render_slot(@header)}
       </div>
       <div :if={@main != []} class={"#{@base_class}-main"}>
-        <%= render_slot(@main) %>
+        {render_slot(@main)}
       </div>
       <div :if={@footer != []} class={"#{@base_class}-footer"}>
-        <%= render_slot(@footer) %>
+        {render_slot(@footer)}
       </div>
     </aside>
     """

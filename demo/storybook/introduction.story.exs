@@ -32,7 +32,7 @@ defmodule Storybook.MyPage do
           target="_blank"
         >Components documentation</a>.
       </p>
-      <p>This storybook was compiled with Doggo <%= @version %>.</p>
+      <p>This storybook was compiled with Doggo {@version}.</p>
 
       <h2>Resources</h2>
       <ul>
