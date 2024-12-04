@@ -165,7 +165,7 @@ defmodule Doggo.Components.RadioGroup do
         aria-errormessage={@errormessage}
         aria-invalid={@invalid}
       />
-      <%= @label %>
+      {@label}
     </label>
     """
   end

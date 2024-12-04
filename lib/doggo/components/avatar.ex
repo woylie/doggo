@@ -146,7 +146,7 @@ defmodule Doggo.Components.Avatar do
 
   defp inner_avatar(assigns) do
     ~H"""
-    <span><%= @placeholder_content %></span>
+    <span>{@placeholder_content}</span>
     """
   end
 end

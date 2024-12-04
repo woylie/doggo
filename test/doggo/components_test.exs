@@ -3203,8 +3203,8 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <TestComponents.table id="pets" rows={@pets}>
-          <:col :let={p} label="Name"><%= p.name %></:col>
-          <:action :let={p} label="Link">link-to-<%= p.id %></:action>
+          <:col :let={p} label="Name">{p.name}</:col>
+          <:action :let={p} label="Link">link-to-{p.id}</:action>
         </TestComponents.table>
         """)
 
@@ -3223,7 +3223,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <TestComponents.table id="pets" rows={@pets} caption="some text">
-          <:col :let={p} label="Name"><%= p.name %></:col>
+          <:col :let={p} label="Name">{p.name}</:col>
         </TestComponents.table>
         """)
 
@@ -3237,9 +3237,9 @@ defmodule Doggo.ComponentsTest do
         parse_heex(~H"""
         <TestComponents.table id="pets" rows={@pets}>
           <:col :let={p} label="Name" col_attrs={[style: "width: 20%;"]}>
-            <%= p.name %>
+            {p.name}
           </:col>
-          <:action :let={p} label="Link">link-to-<%= p.id %></:action>
+          <:action :let={p} label="Link">link-to-{p.id}</:action>
         </TestComponents.table>
         """)
 
@@ -3253,9 +3253,9 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <TestComponents.table id="pets" rows={@pets}>
-          <:col :let={p} label="Name"><%= p.name %></:col>
+          <:col :let={p} label="Name">{p.name}</:col>
           <:action :let={p} label="Link" col_attrs={[style: "width: 20%;"]}>
-            link-to-<%= p.id %>
+            link-to-{p.id}
           </:action>
         </TestComponents.table>
         """)
@@ -3270,7 +3270,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <TestComponents.table id="pets" rows={@pets}>
-          <:col :let={p} label="Name"><%= p.name %></:col>
+          <:col :let={p} label="Name">{p.name}</:col>
           <:foot>some foot</:foot>
         </TestComponents.table>
         """)
@@ -3284,7 +3284,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <TestComponents.table id="pets" rows={@pets} row_id={&"row-#{&1.id}"}>
-          <:col :let={p} label="Name"><%= p.name %></:col>
+          <:col :let={p} label="Name">{p.name}</:col>
         </TestComponents.table>
         """)
 
@@ -3297,7 +3297,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <TestComponents.table id="pets" rows={@pets} row_click={&"clicked-#{&1.id}"}>
-          <:col :let={p} label="Name"><%= p.name %></:col>
+          <:col :let={p} label="Name">{p.name}</:col>
         </TestComponents.table>
         """)
 
@@ -3310,7 +3310,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <TestComponents.table id="pets" rows={@pets} row_item={&Map.put(&1, :name, "G")}>
-          <:col :let={p} label="Name"><%= p.name %></:col>
+          <:col :let={p} label="Name">{p.name}</:col>
         </TestComponents.table>
         """)
 
@@ -3331,7 +3331,7 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <TestComponents.table id="pets" rows={@pets}>
-          <:col :let={{id, p}} label="Name"><%= id %> <%= p.name %></:col>
+          <:col :let={{id, p}} label="Name">{id} {p.name}</:col>
         </TestComponents.table>
         """)
 

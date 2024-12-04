@@ -140,9 +140,9 @@ defmodule Doggo.Components.Icon do
   def render(assigns) do
     ~H"""
     <span class={@class} {@rest}>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
       <span :if={@text} class={@text_class}>
-        <%= @text %>
+        {@text}
       </span>
     </span>
     """

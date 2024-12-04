@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Require Phoenix LiveView ~> 1.0.0.
+
 ## [0.10.1] - 2024-11-20
 
 ### Changed

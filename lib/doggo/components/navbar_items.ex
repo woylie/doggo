@@ -66,7 +66,7 @@ defmodule Doggo.Components.NavbarItems do
   def render(assigns) do
     ~H"""
     <ul class={@class} {@rest}>
-      <li :for={item <- @item} class={item[:class]}><%= render_slot(item) %></li>
+      <li :for={item <- @item} class={item[:class]}>{render_slot(item)}</li>
     </ul>
     """
   end

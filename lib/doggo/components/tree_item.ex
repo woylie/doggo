@@ -110,9 +110,9 @@ defmodule Doggo.Components.TreeItem do
       aria-expanded={@items != [] && "false"}
       {@rest}
     >
-      <span><%= render_slot(@inner_block) %></span>
+      <span>{render_slot(@inner_block)}</span>
       <ul :if={@items != []} role="group">
-        <%= render_slot(@items) %>
+        {render_slot(@items)}
       </ul>
     </li>
     """

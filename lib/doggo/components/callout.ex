@@ -98,14 +98,14 @@ defmodule Doggo.Components.Callout do
       {@rest}
     >
       <div :if={@icon != []} class={"#{@base_class}-icon"}>
-        <%= render_slot(@icon) %>
+        {render_slot(@icon)}
       </div>
       <div class={"#{@base_class}-body"}>
         <div :if={@title} id={"#{@id}-title"} class={"#{@base_class}-title"}>
-          <%= @title %>
+          {@title}
         </div>
         <div class={"#{@base_class}-message"}>
-          <%= render_slot(@inner_block) %>
+          {render_slot(@inner_block)}
         </div>
       </div>
     </aside>

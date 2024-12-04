@@ -388,7 +388,7 @@ defmodule Doggo.Components.Field do
           {@validations}
           {@rest}
         />
-        <%= @label %>
+        {@label}
       </.label>
       <.field_errors for={@id} errors={@errors} base_class={@base_class} />
       <.field_description
@@ -396,7 +396,7 @@ defmodule Doggo.Components.Field do
         for={@id}
         base_class={@base_class}
       >
-        <%= render_slot(@description) %>
+        {render_slot(@description)}
       </.field_description>
     </div>
     """
@@ -407,7 +407,7 @@ defmodule Doggo.Components.Field do
     <div class={@class}>
       <fieldset class={"#{@base_class}-checkbox-group"}>
         <legend>
-          <%= @label %>
+          {@label}
           <.required_optional_mark
             required={@validations[:required] || false}
             required_text={@required_text}
@@ -438,7 +438,7 @@ defmodule Doggo.Components.Field do
         for={@id}
         base_class={@base_class}
       >
-        <%= render_slot(@description) %>
+        {render_slot(@description)}
       </.field_description>
     </div>
     """
@@ -462,7 +462,7 @@ defmodule Doggo.Components.Field do
     <div class={@class}>
       <fieldset class={"#{@base_class}-radio-group"}>
         <legend>
-          <%= @label %>
+          {@label}
           <.required_optional_mark
             required={@validations[:required] || false}
             required_text={@required_text}
@@ -489,7 +489,7 @@ defmodule Doggo.Components.Field do
         for={@id}
         base_class={@base_class}
       >
-        <%= render_slot(@description) %>
+        {render_slot(@description)}
       </.field_description>
     </div>
     """
@@ -508,7 +508,7 @@ defmodule Doggo.Components.Field do
         visually_hidden_class={@visually_hidden_class}
         gettext_module={@gettext_module}
       >
-        <%= @label %>
+        {@label}
       </.label>
       <div class={["#{@base_class}-select", @multiple && "is-multiple"]}>
         <select
@@ -521,8 +521,8 @@ defmodule Doggo.Components.Field do
           {@validations}
           {@rest}
         >
-          <option :if={@prompt} value=""><%= @prompt %></option>
-          <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
+          <option :if={@prompt} value="">{@prompt}</option>
+          {Phoenix.HTML.Form.options_for_select(@options, @value)}
         </select>
       </div>
       <.field_errors for={@id} errors={@errors} base_class={@base_class} />
@@ -531,7 +531,7 @@ defmodule Doggo.Components.Field do
         for={@id}
         base_class={@base_class}
       >
-        <%= render_slot(@description) %>
+        {render_slot(@description)}
       </.field_description>
     </div>
     """
@@ -554,7 +554,7 @@ defmodule Doggo.Components.Field do
         visually_hidden_class={@visually_hidden_class}
         gettext_module={@gettext_module}
       >
-        <span class={"#{@base_class}-switch-label"}><%= @label %></span>
+        <span class={"#{@base_class}-switch-label"}>{@label}</span>
         <input type="hidden" name={@name} value="false" />
         <input
           type="checkbox"
@@ -579,9 +579,9 @@ defmodule Doggo.Components.Field do
             aria-hidden="true"
           >
             <%= if @checked do %>
-              <%= @on_text %>
+              {@on_text}
             <% else %>
-              <%= @off_text %>
+              {@off_text}
             <% end %>
           </span>
         </span>
@@ -592,7 +592,7 @@ defmodule Doggo.Components.Field do
         for={@id}
         base_class={@base_class}
       >
-        <%= render_slot(@description) %>
+        {render_slot(@description)}
       </.field_description>
     </div>
     """
@@ -611,7 +611,7 @@ defmodule Doggo.Components.Field do
         visually_hidden_class={@visually_hidden_class}
         gettext_module={@gettext_module}
       >
-        <%= @label %>
+        {@label}
       </.label>
       <textarea
         name={@name}
@@ -628,7 +628,7 @@ defmodule Doggo.Components.Field do
         for={@id}
         base_class={@base_class}
       >
-        <%= render_slot(@description) %>
+        {render_slot(@description)}
       </.field_description>
     </div>
     """
@@ -647,7 +647,7 @@ defmodule Doggo.Components.Field do
         visually_hidden_class={@visually_hidden_class}
         gettext_module={@gettext_module}
       >
-        <%= @label %>
+        {@label}
       </.label>
       <div class={[
         "#{@base_class}-input-wrapper",
@@ -667,10 +667,10 @@ defmodule Doggo.Components.Field do
           {@rest}
         />
         <div :if={@addon_left != []} class={"#{@base_class}-input-addon-left"}>
-          <%= render_slot(@addon_left) %>
+          {render_slot(@addon_left)}
         </div>
         <div :if={@addon_right != []} class={"#{@base_class}-input-addon-right"}>
-          <%= render_slot(@addon_right) %>
+          {render_slot(@addon_right)}
         </div>
       </div>
       <datalist :if={@options} id={"#{@id}_datalist"}>
@@ -682,7 +682,7 @@ defmodule Doggo.Components.Field do
         for={@id}
         base_class={@base_class}
       >
-        <%= render_slot(@description) %>
+        {render_slot(@description)}
       </.field_description>
     </div>
     """
@@ -697,7 +697,7 @@ defmodule Doggo.Components.Field do
 
     ~H"""
     <div id={@id} class={"#{@base_class}-description"}>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </div>
     """
   end
@@ -711,7 +711,7 @@ defmodule Doggo.Components.Field do
 
     ~H"""
     <ul :if={@errors != []} id={@id} class={"#{@base_class}-errors"}>
-      <li :for={error <- @errors}><%= error %></li>
+      <li :for={error <- @errors}>{error}</li>
     </ul>
     """
   end
@@ -760,7 +760,7 @@ defmodule Doggo.Components.Field do
 
     ~H"""
     <label for={@for} class={@class}>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
       <.required_optional_mark
         required={@required}
         required_text={@required_text}
@@ -800,7 +800,7 @@ defmodule Doggo.Components.Field do
 
     ~H"""
     <span class={"#{@base_class}-required-mark"} aria-hidden="true">
-      <%= @required_text %>
+      {@required_text}
     </span>
     """
   end
@@ -823,7 +823,7 @@ defmodule Doggo.Components.Field do
 
     ~H"""
     <span class={"#{@base_class}-optional-mark"} aria-hidden="true">
-      <%= @optional_text %>
+      {@optional_text}
     </span>
     """
   end
@@ -836,13 +836,13 @@ defmodule Doggo.Components.Field do
     assigns = assign(assigns, label: label, value: value)
 
     ~H"""
-    <option value={@value}><%= @label %></option>
+    <option value={@value}>{@label}</option>
     """
   end
 
   defp option(%{option: _} = assigns) do
     ~H"""
-    <option value={@option}><%= @option %></option>
+    <option value={@option}>{@option}</option>
     """
   end
 
@@ -859,7 +859,7 @@ defmodule Doggo.Components.Field do
         aria-errormessage={@errormessage}
         aria-invalid={@errors != [] && "true"}
       />
-      <%= @label %>
+      {@label}
     </label>
     """
   end

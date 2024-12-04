@@ -207,7 +207,7 @@ defmodule Doggo.Components.Combobox do
 
     ~H"""
     <li role="option" data-value={@value}>
-      <span class={"#{@base_class}-option-label"}><%= @label %></span>
+      <span class={"#{@base_class}-option-label"}>{@label}</span>
     </li>
     """
   end
@@ -223,8 +223,8 @@ defmodule Doggo.Components.Combobox do
 
     ~H"""
     <li role="option" data-value={@value}>
-      <span class={"#{@base_class}-option-label"}><%= @label %></span>
-      <span class={"#{@base_class}-option-description"}><%= @description %></span>
+      <span class={"#{@base_class}-option-label"}>{@label}</span>
+      <span class={"#{@base_class}-option-description"}>{@description}</span>
     </li>
     """
   end
@@ -232,7 +232,7 @@ defmodule Doggo.Components.Combobox do
   defp combobox_option(assigns) do
     ~H"""
     <li role="option" data-value={@option}>
-      <span class={"#{@base_class}-option-label"}><%= @option %></span>
+      <span class={"#{@base_class}-option-label"}>{@option}</span>
     </li>
     """
   end

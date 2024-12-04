@@ -105,7 +105,7 @@ defmodule Doggo.Components.Button do
   def render(assigns) do
     ~H"""
     <button type={@type} class={@class} disabled={@disabled} {@rest}>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </button>
     """
   end

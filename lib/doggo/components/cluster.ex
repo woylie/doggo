@@ -64,7 +64,7 @@ defmodule Doggo.Components.Cluster do
   def render(assigns) do
     ~H"""
     <div role="group" class={@class} {@rest}>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </div>
     """
   end

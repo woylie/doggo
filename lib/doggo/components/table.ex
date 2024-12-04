@@ -157,7 +157,7 @@ defmodule Doggo.Components.Table do
     ~H"""
     <div class={@class} {@rest}>
       <table id={@id}>
-        <caption :if={@caption}><%= @caption %></caption>
+        <caption :if={@caption}>{@caption}</caption>
         <colgroup :if={
           Enum.any?(@col, & &1[:col_attrs]) or Enum.any?(@action, & &1[:col_attrs])
         }>
@@ -166,8 +166,8 @@ defmodule Doggo.Components.Table do
         </colgroup>
         <thead>
           <tr>
-            <th :for={col <- @col}><%= col[:label] %></th>
-            <th :for={action <- @action}><%= action[:label] %></th>
+            <th :for={col <- @col}>{col[:label]}</th>
+            <th :for={action <- @action}>{action[:label]}</th>
           </tr>
         </thead>
         <tbody
@@ -176,14 +176,14 @@ defmodule Doggo.Components.Table do
         >
           <tr :for={row <- @rows} id={@row_id && @row_id.(row)}>
             <td :for={col <- @col} phx-click={@row_click && @row_click.(row)}>
-              <%= render_slot(col, @row_item.(row)) %>
+              {render_slot(col, @row_item.(row))}
             </td>
             <td :for={action <- @action}>
-              <%= render_slot(action, @row_item.(row)) %>
+              {render_slot(action, @row_item.(row))}
             </td>
           </tr>
         </tbody>
-        <tfoot :if={@foot != []}><%= render_slot(@foot) %></tfoot>
+        <tfoot :if={@foot != []}>{render_slot(@foot)}</tfoot>
       </table>
     </div>
     """

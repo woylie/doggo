@@ -128,7 +128,7 @@ defmodule Doggo.Components.ToggleButton do
       disabled={@disabled}
       {@rest}
     >
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </button>
     """
   end

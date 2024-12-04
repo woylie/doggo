@@ -92,7 +92,7 @@ defmodule Doggo.Components.MenuItemRadioGroup do
           phx-click={item.on_click}
           aria-checked={to_string(item[:checked] || false)}
         >
-          <%= render_slot(item) %>
+          {render_slot(item)}
         </div>
       </li>
     </ul>

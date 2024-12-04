@@ -143,7 +143,7 @@ defmodule Doggo.Components.MenuBar do
     >
       <li :for={item <- @item} role={item[:role] || "none"}>
         <%= if item[:role] != "separator" do %>
-          <%= render_slot(item) %>
+          {render_slot(item)}
         <% end %>
       </li>
     </ul>

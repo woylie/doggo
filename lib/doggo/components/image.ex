@@ -138,7 +138,7 @@ defmodule Doggo.Components.Image do
           sizes={@sizes}
         />
       </div>
-      <figcaption :if={@caption != []}><%= render_slot(@caption) %></figcaption>
+      <figcaption :if={@caption != []}>{render_slot(@caption)}</figcaption>
     </figure>
     """
   end

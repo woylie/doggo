@@ -127,7 +127,7 @@ defmodule Doggo.Components.Accordion do
           aria-controls={"#{@id}-section-#{@index}"}
           phx-click={Doggo.toggle_accordion_section(@id, @index)}
         >
-          <span><%= @section.title %></span>
+          <span>{@section.title}</span>
         </button>
       </.dynamic_tag>
       <div
@@ -136,7 +136,7 @@ defmodule Doggo.Components.Accordion do
         aria-labelledby={"#{@id}-trigger-#{@index}"}
         hidden={@aria_expanded != "true"}
       >
-        <%= render_slot(@section) %>
+        {render_slot(@section)}
       </div>
     </div>
     """

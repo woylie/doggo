@@ -88,7 +88,7 @@ defmodule Doggo.Components.VerticalNav do
     ~H"""
     <nav class={@class} id={@id} aria-label={@label} {@rest}>
       <div :if={@title != []} class={"#{@base_class}-title"}>
-        <%= render_slot(@title) %>
+        {render_slot(@title)}
       </div>
       <ul>
         <li
@@ -96,7 +96,7 @@ defmodule Doggo.Components.VerticalNav do
           class={item[:class]}
           aria-current={item[:current_page] && "page"}
         >
-          <%= render_slot(item) %>
+          {render_slot(item)}
         </li>
       </ul>
     </nav>

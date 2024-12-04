@@ -120,10 +120,10 @@ defmodule Doggo.Components.Tooltip do
       {@rest}
     >
       <span tabindex={!@contains_link && "0"}>
-        <%= render_slot(@inner_block) %>
+        {render_slot(@inner_block)}
       </span>
       <div role="tooltip" id={"#{@id}-tooltip"}>
-        <%= render_slot(@tooltip) %>
+        {render_slot(@tooltip)}
       </div>
     </span>
     """
