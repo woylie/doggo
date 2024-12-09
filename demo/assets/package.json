@@ -28,7 +28,7 @@
     "style-dictionary": "^4.2.0",
     "stylelint": "^16.11.0",
     "stylelint-config-recess-order": "^5.1.1",
-    "stylelint-config-standard-scss": "^13.1.0",
+    "stylelint-config-standard-scss": "^14.0.0",
     "stylelint-declaration-strict-value": "^1.10.6"
   },
   "dependencies": {
