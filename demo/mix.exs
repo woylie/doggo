@@ -16,6 +16,11 @@ defmodule Demo.MixProject do
             keep: ["Docs"]
           ]
         ]
+      ],
+      dialyzer: [
+        list_unused_filters: true,
+        plt_add_apps: [:ex_unit, :mix],
+        plt_file: {:no_warn, ".plts/demo.plt"}
       ]
     ]
   end
@@ -51,7 +56,9 @@ defmodule Demo.MixProject do
       {:phoenix_storybook, "~> 0.7.0"},
       {:heroicons, "~> 0.5.3"},
       {:doggo, path: ".."},
-      {:tzdata, "~> 1.1"}
+      {:tzdata, "~> 1.1"},
+      {:credo, "~> 1.6", runtime: false, only: [:dev, :test]},
+      {:dialyxir, "~> 1.2", runtime: false, only: [:dev, :test]}
     ]
   end
 

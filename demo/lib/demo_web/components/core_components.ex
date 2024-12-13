@@ -1,4 +1,8 @@
 defmodule DemoWeb.CoreComponents do
+  @moduledoc """
+  Defines all Doggo components.
+  """
+
   use Doggo.Components
   use Phoenix.Component
 
