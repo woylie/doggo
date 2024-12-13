@@ -1,4 +1,6 @@
 defmodule DemoWeb.Storybook do
+  @moduledoc false
+
   use PhoenixStorybook,
     otp_app: :demo_web,
     content_path: Path.expand("../../storybook", __DIR__),
