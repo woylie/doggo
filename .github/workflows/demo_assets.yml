@@ -1,7 +1,7 @@
 name: Demo Assets
 
 env:
-  ELIXIR_VERSION: "1.17"
+  ELIXIR_VERSION: "1.18"
   OTP_VERSION: "27"
   NODE_VERSION: "22"
   PNPM_VERSION: "9"
