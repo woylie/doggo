@@ -5,6 +5,7 @@
 ### Changed
 
 - Require Phoenix LiveView ~> 1.0.0.
+- Support Phoenix Storybook 0.8.
 
 ## [0.10.1] - 2024-11-20
 
