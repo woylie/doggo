@@ -43,17 +43,17 @@ importers:
         specifier: ^4.3.0
         version: 4.3.0
       stylelint:
-        specifier: ^16.13.2
-        version: 16.13.2
+        specifier: ^16.14.0
+        version: 16.14.0
       stylelint-config-recess-order:
         specifier: ^6.0.0
-        version: 6.0.0(stylelint@16.13.2)
+        version: 6.0.0(stylelint@16.14.0)
       stylelint-config-standard-scss:
         specifier: ^14.0.0
-        version: 14.0.0(postcss@8.5.1)(stylelint@16.13.2)
+        version: 14.0.0(postcss@8.5.1)(stylelint@16.14.0)
       stylelint-declaration-strict-value:
         specifier: ^1.10.7
-        version: 1.10.7(stylelint@16.13.2)
+        version: 1.10.7(stylelint@16.14.0)
 
 packages:
 
@@ -403,8 +403,8 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/node@22.10.7':
-    resolution: {integrity: sha512-V09KvXxFiutGp6B7XkpaDXlNadZxrzajcY50EuoLIpQ6WWYCSvf19lVIazzfIzQvhUN2HjX12spLojTnhuKlGg==}
+  '@types/node@22.10.10':
+    resolution: {integrity: sha512-X47y/mPNzxviAGY5TcYPtYL8JsY3kAq2n8fMmKoRCxq/c4v4pyGNCzM2R6+M5/umG4ZfHuT+sgqDYqWc9rJ6ww==}
 
   '@webassemblyjs/ast@1.14.1':
     resolution: {integrity: sha512-nuBEDgQfm1ccRp/8bCQrx1frohyufl4JlbMMZ4P1wpeOfDhF6FQkxZJ1b/e+PLwr6X1Nhw6OLme5usuBWYBvuQ==}
@@ -581,8 +581,8 @@ packages:
   buffer@6.0.3:
     resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
 
-  cacheable@1.8.7:
-    resolution: {integrity: sha512-AbfG7dAuYNjYxFUtL1lAqmlWdxczCJ47w7cFjhGcnGnUdwSo6VgmSojfoW3tUI12HUkgTJ5kqj78yyq6TsFtlg==}
+  cacheable@1.8.8:
+    resolution: {integrity: sha512-OE1/jlarWxROUIpd0qGBSKFLkNsotY8pt4GeiVErUYh/NUeTNrT+SBksUgllQv4m6a0W/VZsLuiHb88maavqEw==}
 
   call-bind-apply-helpers@1.0.1:
     resolution: {integrity: sha512-BhYE+WDaywFg2TBWYNXAE+8B1ATnThNBqXHP5nQu0jWJdVvY2hvkpyB3qOmtmDePiS5/BDQ8wASEWGMWRG148g==}
@@ -731,8 +731,8 @@ packages:
   electron-to-chromium@1.5.75:
     resolution: {integrity: sha512-Lf3++DumRE/QmweGjU+ZcKqQ+3bKkU/qjaKYhIJKEOhgIO9Xs6IiAQFkfFoj+RhgDk4LUeNsLo6plExHqSyu6Q==}
 
-  electron-to-chromium@1.5.83:
-    resolution: {integrity: sha512-LcUDPqSt+V0QmI47XLzZrz5OqILSMGsPFkDYus22rIbgorSvBYEFqq854ltTmUdHkY92FSdAAvsh4jWEULMdfQ==}
+  electron-to-chromium@1.5.88:
+    resolution: {integrity: sha512-K3C2qf1o+bGzbilTDCTBhTQcMS9KW60yTAaTeeXsfvQuTDDwlokLam/AdqlqcSy9u4UainDgsHV23ksXAOgamw==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -811,8 +811,8 @@ packages:
   fast-json-stable-stringify@2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
 
-  fast-uri@3.0.5:
-    resolution: {integrity: sha512-5JnBCWpFlMo0a3ciDy/JckMzzv1U9coZrIhedq+HXxxUfDTAiS0LA8OKVao4G9BxmCVck/jtA5r3KAtRWEyD8Q==}
+  fast-uri@3.0.6:
+    resolution: {integrity: sha512-Atfo14OibSv5wAp4VWNsFYE1AchQRTv9cBGWET4pZWHzYshFSS9NQI6I57rdKn9croWVMbYFbLhJ+yJvmZIIHw==}
 
   fastest-levenshtein@1.0.16:
     resolution: {integrity: sha512-eRnCtTTtGZFpQCwhJiUOuxPQWRXVKYDn0b2PeHfXL6/Zi53SLAzAHfVhVWK2AryC/WH05kGfxhFIPvTF0SXQzg==}
@@ -1668,8 +1668,8 @@ packages:
     peerDependencies:
       stylelint: ^16.0.2
 
-  stylelint@16.13.2:
-    resolution: {integrity: sha512-wDlgh0mRO9RtSa3TdidqHd0nOG8MmUyVKl+dxA6C1j8aZRzpNeEgdhFmU5y4sZx4Fc6r46p0fI7p1vR5O2DZqA==}
+  stylelint@16.14.0:
+    resolution: {integrity: sha512-orePw2dKxzXC0hd1VmxrDBqgf1KUV9DYsZY4guKLE9XcQD7m0BxVnWMaoQqMNsQIG14MyyTHf6zoajvOnDra8g==}
     engines: {node: '>=18.12.0'}
     hasBin: true
 
@@ -2104,7 +2104,7 @@ snapshots:
   '@types/json-schema@7.0.15':
     optional: true
 
-  '@types/node@22.10.7':
+  '@types/node@22.10.10':
     dependencies:
       undici-types: 6.20.0
     optional: true
@@ -2245,7 +2245,7 @@ snapshots:
   ajv@8.17.1:
     dependencies:
       fast-deep-equal: 3.1.3
-      fast-uri: 3.0.5
+      fast-uri: 3.0.6
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
 
@@ -2318,7 +2318,7 @@ snapshots:
   browserslist@4.24.4:
     dependencies:
       caniuse-lite: 1.0.30001695
-      electron-to-chromium: 1.5.83
+      electron-to-chromium: 1.5.88
       node-releases: 2.0.19
       update-browserslist-db: 1.1.2(browserslist@4.24.4)
     optional: true
@@ -2333,7 +2333,7 @@ snapshots:
       base64-js: 1.5.1
       ieee754: 1.2.1
 
-  cacheable@1.8.7:
+  cacheable@1.8.8:
     dependencies:
       hookified: 1.7.0
       keyv: 5.2.3
@@ -2467,7 +2467,7 @@ snapshots:
 
   electron-to-chromium@1.5.75: {}
 
-  electron-to-chromium@1.5.83:
+  electron-to-chromium@1.5.88:
     optional: true
 
   emoji-regex@8.0.0: {}
@@ -2567,7 +2567,7 @@ snapshots:
   fast-json-stable-stringify@2.1.0:
     optional: true
 
-  fast-uri@3.0.5: {}
+  fast-uri@3.0.6: {}
 
   fastest-levenshtein@1.0.16: {}
 
@@ -2589,7 +2589,7 @@ snapshots:
 
   flat-cache@6.1.5:
     dependencies:
-      cacheable: 1.8.7
+      cacheable: 1.8.8
       flatted: 3.3.2
       hookified: 1.7.0
 
@@ -2792,7 +2792,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 22.10.7
+      '@types/node': 22.10.10
       merge-stream: 2.0.0
       supports-color: 8.1.1
     optional: true
@@ -3330,48 +3330,48 @@ snapshots:
       prettier: 3.4.2
       tinycolor2: 1.6.0
 
-  stylelint-config-recess-order@6.0.0(stylelint@16.13.2):
+  stylelint-config-recess-order@6.0.0(stylelint@16.14.0):
     dependencies:
-      stylelint: 16.13.2
-      stylelint-order: 6.0.4(stylelint@16.13.2)
+      stylelint: 16.14.0
+      stylelint-order: 6.0.4(stylelint@16.14.0)
 
-  stylelint-config-recommended-scss@14.1.0(postcss@8.5.1)(stylelint@16.13.2):
+  stylelint-config-recommended-scss@14.1.0(postcss@8.5.1)(stylelint@16.14.0):
     dependencies:
       postcss-scss: 4.0.9(postcss@8.5.1)
-      stylelint: 16.13.2
-      stylelint-config-recommended: 14.0.1(stylelint@16.13.2)
-      stylelint-scss: 6.10.0(stylelint@16.13.2)
+      stylelint: 16.14.0
+      stylelint-config-recommended: 14.0.1(stylelint@16.14.0)
+      stylelint-scss: 6.10.0(stylelint@16.14.0)
     optionalDependencies:
       postcss: 8.5.1
 
-  stylelint-config-recommended@14.0.1(stylelint@16.13.2):
+  stylelint-config-recommended@14.0.1(stylelint@16.14.0):
     dependencies:
-      stylelint: 16.13.2
+      stylelint: 16.14.0
 
-  stylelint-config-standard-scss@14.0.0(postcss@8.5.1)(stylelint@16.13.2):
+  stylelint-config-standard-scss@14.0.0(postcss@8.5.1)(stylelint@16.14.0):
     dependencies:
-      stylelint: 16.13.2
-      stylelint-config-recommended-scss: 14.1.0(postcss@8.5.1)(stylelint@16.13.2)
-      stylelint-config-standard: 36.0.1(stylelint@16.13.2)
+      stylelint: 16.14.0
+      stylelint-config-recommended-scss: 14.1.0(postcss@8.5.1)(stylelint@16.14.0)
+      stylelint-config-standard: 36.0.1(stylelint@16.14.0)
     optionalDependencies:
       postcss: 8.5.1
 
-  stylelint-config-standard@36.0.1(stylelint@16.13.2):
+  stylelint-config-standard@36.0.1(stylelint@16.14.0):
     dependencies:
-      stylelint: 16.13.2
-      stylelint-config-recommended: 14.0.1(stylelint@16.13.2)
+      stylelint: 16.14.0
+      stylelint-config-recommended: 14.0.1(stylelint@16.14.0)
 
-  stylelint-declaration-strict-value@1.10.7(stylelint@16.13.2):
+  stylelint-declaration-strict-value@1.10.7(stylelint@16.14.0):
     dependencies:
-      stylelint: 16.13.2
+      stylelint: 16.14.0
 
-  stylelint-order@6.0.4(stylelint@16.13.2):
+  stylelint-order@6.0.4(stylelint@16.14.0):
     dependencies:
       postcss: 8.5.1
       postcss-sorting: 8.0.2(postcss@8.5.1)
-      stylelint: 16.13.2
+      stylelint: 16.14.0
 
-  stylelint-scss@6.10.0(stylelint@16.13.2):
+  stylelint-scss@6.10.0(stylelint@16.14.0):
     dependencies:
       css-tree: 3.1.0
       is-plain-object: 5.0.0
@@ -3381,9 +3381,9 @@ snapshots:
       postcss-resolve-nested-selector: 0.1.6
       postcss-selector-parser: 7.0.0
       postcss-value-parser: 4.2.0
-      stylelint: 16.13.2
+      stylelint: 16.14.0
 
-  stylelint@16.13.2:
+  stylelint@16.14.0:
     dependencies:
       '@csstools/css-parser-algorithms': 3.0.4(@csstools/css-tokenizer@3.0.3)
       '@csstools/css-tokenizer': 3.0.3
