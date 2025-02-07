@@ -42,6 +42,7 @@ defmodule Doggo.Components do
         build_disclosure_button()
         build_drawer()
         build_fallback()
+        build_field()
         build_field_group()
         build_frame()
         build_icon()
