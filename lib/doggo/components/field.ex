@@ -901,7 +901,8 @@ defmodule Doggo.Components.Field do
 
   defp option(%{option: [{:key, key}, {:value, value}]} = assigns) do
     assigns =
-      assign(assigns, :key, key)
+      assigns
+      |> assign(:key, key)
       |> assign(:value, value)
       |> assign_new(:selected_value, fn -> nil end)
       |> assign_new(:multiple, fn -> nil end)
@@ -931,7 +932,8 @@ defmodule Doggo.Components.Field do
 
   defp option(%{option: _key_and_value} = assigns) do
     assigns =
-      assign_new(assigns, :selected_value, fn -> nil end)
+      assigns
+      |> assign_new(:selected_value, fn -> nil end)
       |> assign_new(:multiple, fn -> nil end)
 
     ~H"""

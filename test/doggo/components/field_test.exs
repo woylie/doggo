@@ -347,7 +347,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "option:last-child", "selected") == nil
 
       # Check if the <hr /> is the middle option
-      options = Floki.find(html, "select") |> hd() |> elem(2)
+      options = html |> Floki.find("select") |> hd() |> elem(2)
       assert [_, {"hr", [], []}, _] = options
     end
 
