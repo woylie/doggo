@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Changed
+
+- Build select options with function components instead of
+  `Phoenix.HTML.Form.options_for_select/2`.
+
 ## [0.10.2] - 2025-01-08
 
 ### Changed
