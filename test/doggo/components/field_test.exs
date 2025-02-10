@@ -333,7 +333,8 @@ defmodule Doggo.Components.FieldTest do
             field={@form[:animals]}
             label="Animals"
             type="select"
-            options={[{"Dog", "dog"}, {"Cat", "cat"}]}
+            options={[{"Dog", "dog"}, :hr, {"Cat", "cat"}]}
+            value="dog"
           >
             <:description>Which animals?</:description>
           </TestComponents.field>
@@ -341,7 +342,13 @@ defmodule Doggo.Components.FieldTest do
         """)
 
       assert attribute(html, "option:first-child", "value") == "dog"
+      assert attribute(html, "option:first-child", "selected") == "selected"
       assert attribute(html, "option:last-child", "value") == "cat"
+      assert attribute(html, "option:last-child", "selected") == nil
+
+      # Check if the <hr /> is the middle option
+      options = html |> Floki.find("select") |> hd() |> elem(2)
+      assert [_, {"hr", [], []}, _] = options
     end
 
     test "with multiple select" do
@@ -354,8 +361,9 @@ defmodule Doggo.Components.FieldTest do
             field={@form[:animals]}
             label="Animals"
             type="select"
-            options={[{"Dog", "dog"}, {"Cat", "cat"}]}
+            options={[[key: "Dog", value: "dog"], %{"Cat" => "cat"}]}
             multiple
+            value={["dog", "cat"]}
           >
             <:description>Which animals?</:description>
           </TestComponents.field>
@@ -363,6 +371,45 @@ defmodule Doggo.Components.FieldTest do
         """)
 
       assert attribute(html, "select", "multiple") == "multiple"
+      assert attribute(html, "option:first-child", "selected") == "selected"
+      assert attribute(html, "option:last-child", "selected") == "selected"
+    end
+
+    test "with select, with groups" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:animals]}
+            label="Animals"
+            type="select"
+            options={[{"Canines", %{"Dog" => "dog"}}, {"Felines", [{"Cat", "cat"}]}]}
+            multiple
+            value={["dog", "cat"]}
+          >
+            <:description>Which animals?</:description>
+          </TestComponents.field>
+        </.form>
+        """)
+
+      assert attribute(html, "select", "multiple") == "multiple"
+
+      assert attribute(html, "optgroup:first-child", "label") == "Canines"
+      assert attribute(html, "optgroup:last-child", "label") == "Felines"
+
+      assert attribute(
+               html,
+               "optgroup:first-child option:first-child",
+               "selected"
+             ) == "selected"
+
+      assert attribute(
+               html,
+               "optgroup:last-child option:last-child",
+               "selected"
+             ) == "selected"
     end
 
     test "with textarea" do

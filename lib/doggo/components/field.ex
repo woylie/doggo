@@ -522,7 +522,12 @@ defmodule Doggo.Components.Field do
           {@rest}
         >
           <option :if={@prompt} value="">{@prompt}</option>
-          {Phoenix.HTML.Form.options_for_select(@options, @value)}
+          <.option
+            :for={option <- @options}
+            selected_value={@value}
+            option={option}
+            multiple={@multiple}
+          />
         </select>
       </div>
       <.field_errors for={@id} errors={@errors} base_class={@base_class} />
@@ -832,17 +837,111 @@ defmodule Doggo.Components.Field do
     ~H""
   end
 
-  defp option(%{option: {label, value}} = assigns) do
-    assigns = assign(assigns, label: label, value: value)
-
+  defp option(%{option: :hr} = assigns) do
     ~H"""
-    <option value={@value}>{@label}</option>
+    <hr />
     """
   end
 
-  defp option(%{option: _} = assigns) do
+  defp option(%{option: {group_label, options}} = assigns)
+       when is_list(options) or is_map(options) do
+    assigns =
+      assigns
+      |> assign(:group_label, group_label)
+      |> assign(:options, options)
+
     ~H"""
-    <option value={@option}>{@option}</option>
+    <optgroup label={@group_label}>
+      <.option
+        :for={option <- @options}
+        option={option}
+        selected_value={@selected_value}
+        multiple={@multiple}
+      />
+    </optgroup>
+    """
+  end
+
+  defp option(%{option: {key, value}} = assigns) do
+    assigns =
+      assigns
+      |> assign(:key, key)
+      |> assign(:value, value)
+      |> assign_new(:selected_value, fn -> nil end)
+      |> assign_new(:multiple, fn -> nil end)
+
+    ~H"""
+    <option
+      value={@value}
+      selected={
+        (@multiple && @value in (@selected_value || [])) ||
+          @value == @selected_value
+      }
+    >
+      {@key}
+    </option>
+    """
+  end
+
+  defp option(%{option: options} = assigns) when is_map(options) do
+    assigns =
+      assigns
+      |> assign_new(:selected_value, fn -> nil end)
+      |> assign_new(:multiple, fn -> nil end)
+
+    ~H"""
+    <.option
+      :for={{key, value} <- @option}
+      option={{key, value}}
+      selected_value={@selected_value}
+      multiple={@multiple}
+    />
+    """
+  end
+
+  defp option(%{option: [{:key, key}, {:value, value}]} = assigns) do
+    assigns =
+      assigns
+      |> assign(:key, key)
+      |> assign(:value, value)
+      |> assign_new(:selected_value, fn -> nil end)
+      |> assign_new(:multiple, fn -> nil end)
+
+    ~H"""
+    <.option
+      option={{@key, @value}}
+      selected_value={@selected_value}
+      multiple={@multiple}
+    />
+    """
+  end
+
+  defp option(%{option: options}) when is_list(options) do
+    {option_key, options} = Keyword.pop(options, :key)
+
+    option_key ||
+      raise ArgumentError,
+            "expected :key key when building <option> from keyword list: #{inspect(options)}"
+
+    {option_value, options} = Keyword.pop(options, :value)
+
+    option_value ||
+      raise ArgumentError,
+            "expected :value key when building <option> from keyword list: #{inspect(options)}"
+  end
+
+  defp option(%{option: _key_and_value} = assigns) do
+    assigns =
+      assigns
+      |> assign_new(:selected_value, fn -> nil end)
+      |> assign_new(:multiple, fn -> nil end)
+
+    ~H"""
+    <.option
+      option={{@option, @option}}
+      selected_value={@selected_value}
+      multiple={@multiple}
+    />
     """
   end
 
