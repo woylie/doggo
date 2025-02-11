@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.10.3] - 2025-02-11
+
 ### Changed
 
 - Build select options with function components instead of
