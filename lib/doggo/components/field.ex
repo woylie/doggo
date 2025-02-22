@@ -496,6 +496,13 @@ defmodule Doggo.Components.Field do
   end
 
   def render(%{type: "select"} = assigns) do
+    assigns =
+      assign(
+        assigns,
+        :value,
+        assigns[:value] |> List.wrap() |> Enum.map(&Phoenix.HTML.html_escape/1)
+      )
+
     ~H"""
     <div class={@class}>
       <.label
@@ -524,9 +531,8 @@ defmodule Doggo.Components.Field do
           <option :if={@prompt} value="">{@prompt}</option>
           <.option
             :for={option <- @options}
-            selected_value={@value}
+            selected_values={@value}
             option={option}
-            multiple={@multiple}
           />
         </select>
       </div>
@@ -837,6 +843,9 @@ defmodule Doggo.Components.Field do
     ~H""
   end
 
+  attr :option, :any, required: true
+  attr :selected_values, :list, default: []
+
   defp option(%{option: :hr} = assigns) do
     ~H"""
     <hr />
@@ -855,8 +864,7 @@ defmodule Doggo.Components.Field do
       <.option
         :for={option <- @options}
         option={option}
-        selected_value={@selected_value}
-        multiple={@multiple}
+        selected_values={@selected_values}
       />
     </optgroup>
     """
@@ -866,35 +874,21 @@ defmodule Doggo.Components.Field do
     assigns =
       assigns
       |> assign(:key, key)
-      |> assign(:value, value)
-      |> assign_new(:selected_value, fn -> nil end)
-      |> assign_new(:multiple, fn -> nil end)
+      |> assign(:value, Phoenix.HTML.html_escape(value))
 
     ~H"""
-    <option
-      value={@value}
-      selected={
-        (@multiple && @value in (@selected_value || [])) ||
-          @value == @selected_value
-      }
-    >
+    <option value={@value} selected={@value in @selected_values}>
       {@key}
     </option>
     """
   end
 
   defp option(%{option: options} = assigns) when is_map(options) do
-    assigns =
-      assigns
-      |> assign_new(:selected_value, fn -> nil end)
-      |> assign_new(:multiple, fn -> nil end)
-
     ~H"""
     <.option
       :for={{key, value} <- @option}
       option={{key, value}}
-      selected_value={@selected_value}
-      multiple={@multiple}
+      selected_values={@selected_values}
     />
     """
   end
@@ -904,15 +898,9 @@ defmodule Doggo.Components.Field do
       assigns
       |> assign(:key, key)
       |> assign(:value, value)
-      |> assign_new(:selected_value, fn -> nil end)
-      |> assign_new(:multiple, fn -> nil end)
 
     ~H"""
-    <.option
-      option={{@key, @value}}
-      selected_value={@selected_value}
-      multiple={@multiple}
-    />
+    <.option option={{@key, @value}} selected_values={@selected_values} />
     """
   end
 
@@ -931,17 +919,8 @@ defmodule Doggo.Components.Field do
   end
 
   defp option(%{option: _key_and_value} = assigns) do
-    assigns =
-      assigns
-      |> assign_new(:selected_value, fn -> nil end)
-      |> assign_new(:multiple, fn -> nil end)
-
     ~H"""
-    <.option
-      option={{@option, @option}}
-      selected_value={@selected_value}
-      multiple={@multiple}
-    />
+    <.option option={{@option, @option}} selected_values={@selected_values} />
     """
   end
 
