@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.10.4] - 2025-02-22
+
 ### Fixed
 
 - Escape select option values in `field` component.
