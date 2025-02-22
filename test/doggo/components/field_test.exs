@@ -351,6 +351,33 @@ defmodule Doggo.Components.FieldTest do
       assert [_, {"hr", [], []}, _] = options
     end
 
+    test "escapes select options" do
+      assigns = %{form: to_form(%{"animals" => "dog"})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:animals]}
+            label="Animals"
+            type="select"
+            options={[{"Dog", :dog}, :hr, {"Cat", :cat}]}
+          >
+            <:description>Which animals?</:description>
+          </TestComponents.field>
+        </.form>
+        """)
+
+      assert attribute(html, "option:first-child", "value") == "dog"
+      assert attribute(html, "option:first-child", "selected") == "selected"
+      assert attribute(html, "option:last-child", "value") == "cat"
+      assert attribute(html, "option:last-child", "selected") == nil
+
+      # Check if the <hr /> is the middle option
+      options = html |> Floki.find("select") |> hd() |> elem(2)
+      assert [_, {"hr", [], []}, _] = options
+    end
+
     test "with multiple select" do
       assigns = %{form: to_form(%{})}
 
