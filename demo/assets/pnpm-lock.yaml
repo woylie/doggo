@@ -43,17 +43,17 @@ importers:
         specifier: ^4.3.3
         version: 4.3.3
       stylelint:
-        specifier: ^16.14.1
-        version: 16.14.1
+        specifier: ^16.15.0
+        version: 16.15.0
       stylelint-config-recess-order:
         specifier: ^6.0.0
-        version: 6.0.0(stylelint@16.14.1)
+        version: 6.0.0(stylelint@16.15.0)
       stylelint-config-standard-scss:
         specifier: ^14.0.0
-        version: 14.0.0(postcss@8.5.3)(stylelint@16.14.1)
+        version: 14.0.0(postcss@8.5.3)(stylelint@16.15.0)
       stylelint-declaration-strict-value:
         specifier: ^1.10.10
-        version: 1.10.10(stylelint@16.14.1)
+        version: 1.10.10(stylelint@16.15.0)
 
 packages:
 
@@ -820,8 +820,8 @@ packages:
     resolution: {integrity: sha512-eRnCtTTtGZFpQCwhJiUOuxPQWRXVKYDn0b2PeHfXL6/Zi53SLAzAHfVhVWK2AryC/WH05kGfxhFIPvTF0SXQzg==}
     engines: {node: '>= 4.9.1'}
 
-  fastq@1.19.0:
-    resolution: {integrity: sha512-7SFSRCNjBQIZH/xZR3iy5iQYR8aGBE0h3VG6/cwlbrpdciNYBMotQav8c1XI3HjHH+NikUpP53nPdlZSdWmFzA==}
+  fastq@1.19.1:
+    resolution: {integrity: sha512-GwLTyxkCXjXbxqIhTsMI2Nui8huMPtnxg7krajPJAjnEG/iiOS7i+zCtWGZR9G0NBKbXKh6X9m9UIsYX/N6vvQ==}
 
   file-entry-cache@10.0.6:
     resolution: {integrity: sha512-0wvv16mVo9nN0Md3k7DMjgAPKG/TY4F/gYMBVb/wMThFRJvzrpaqBFqF6km9wf8QfYTN+mNg5aeaBLfy8k35uA==}
@@ -1087,8 +1087,8 @@ packages:
   jsonify@0.0.1:
     resolution: {integrity: sha512-2/Ki0GcmuqSrgFyelQq9M05y7PS0mEwuIzrf3f1fPqkVDVRvZrPZtVSMHxdgo8Aq0sxAOb/cr2aqqA3LeWHVPg==}
 
-  keyv@5.2.3:
-    resolution: {integrity: sha512-AGKecUfzrowabUv0bH1RIR5Vf7w+l4S3xtQAypKaUpTdIR1EbrAcTxHCrpo9Q+IWeUlFE2palRtgIQcgm+PQJw==}
+  keyv@5.3.1:
+    resolution: {integrity: sha512-13hQT2q2VIwOoaJdJa7nY3J8UVbYtMTJFHnwm9LI+SaQRfUiM6Em9KZeOVTCKbMnGcRIL3NSUFpAdjZCq24nLQ==}
 
   kind-of@6.0.3:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
@@ -1123,8 +1123,8 @@ packages:
   mdn-data@2.12.2:
     resolution: {integrity: sha512-IEn+pegP1aManZuckezWCO+XZQDplx1366JoVhTpMpBB1sPey/SbveZQUosKiKiGYjg1wH4pMlNgXbCiYgihQA==}
 
-  mdn-data@2.15.0:
-    resolution: {integrity: sha512-KIrS0lFPOqA4DgeO16vI5fkAsy8p++WBlbXtB5P1EQs8ubBgguAInNd1DnrCeTRfGchY0kgThgDOOIPyOLH2dQ==}
+  mdn-data@2.17.0:
+    resolution: {integrity: sha512-VT5LJBdLRI+cc3DPXJD89PGwI8yXuciE5gZJoSPnH4yeGzMPqxwkZv3BjFSoaWpmOlJNBhVT6HKeQPcZKlNEvA==}
 
   memfs@4.17.0:
     resolution: {integrity: sha512-4eirfZ7thblFmqFjywlTmuWVSvccHAJbn1r8qQLzmTO11qcqpohOjmY2mFce6x7x7WtskzRqApPD0hv+Oa74jg==}
@@ -1379,8 +1379,8 @@ packages:
     engines: {node: '>= 0.4'}
     hasBin: true
 
-  reusify@1.0.4:
-    resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
+  reusify@1.1.0:
+    resolution: {integrity: sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
   rimraf@2.7.1:
@@ -1689,8 +1689,8 @@ packages:
     peerDependencies:
       stylelint: ^16.0.2
 
-  stylelint@16.14.1:
-    resolution: {integrity: sha512-oqCL7AC3786oTax35T/nuLL8p2C3k/8rHKAooezrPGRvUX0wX+qqs5kMWh5YYT4PHQgVDobHT4tw55WgpYG6Sw==}
+  stylelint@16.15.0:
+    resolution: {integrity: sha512-OK6Rs7EPdcdmjqiDycadZY4fw3f5/TC1X6/tGjnF3OosbwCeNs7nG+79MCAtjEg7ckwqTJTsku08e0Rmaz5nUw==}
     engines: {node: '>=18.12.0'}
     hasBin: true
 
@@ -2047,7 +2047,7 @@ snapshots:
   '@nodelib/fs.walk@1.2.8':
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
-      fastq: 1.19.0
+      fastq: 1.19.1
 
   '@parcel/watcher-android-arm64@2.5.1':
     optional: true
@@ -2343,7 +2343,7 @@ snapshots:
   cacheable@1.8.8:
     dependencies:
       hookified: 1.7.1
-      keyv: 5.2.3
+      keyv: 5.3.1
 
   call-bind-apply-helpers@1.0.2:
     dependencies:
@@ -2584,9 +2584,9 @@ snapshots:
 
   fastest-levenshtein@1.0.16: {}
 
-  fastq@1.19.0:
+  fastq@1.19.1:
     dependencies:
-      reusify: 1.0.4
+      reusify: 1.1.0
 
   file-entry-cache@10.0.6:
     dependencies:
@@ -2856,7 +2856,7 @@ snapshots:
 
   jsonify@0.0.1: {}
 
-  keyv@5.2.3:
+  keyv@5.3.1:
     dependencies:
       '@keyv/serialize': 1.0.3
 
@@ -2883,7 +2883,7 @@ snapshots:
 
   mdn-data@2.12.2: {}
 
-  mdn-data@2.15.0: {}
+  mdn-data@2.17.0: {}
 
   memfs@4.17.0:
     dependencies:
@@ -3112,7 +3112,7 @@ snapshots:
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
 
-  reusify@1.0.4: {}
+  reusify@1.1.0: {}
 
   rimraf@2.7.1:
     dependencies:
@@ -3370,62 +3370,62 @@ snapshots:
       prettier: 3.5.2
       tinycolor2: 1.6.0
 
-  stylelint-config-recess-order@6.0.0(stylelint@16.14.1):
+  stylelint-config-recess-order@6.0.0(stylelint@16.15.0):
     dependencies:
-      stylelint: 16.14.1
-      stylelint-order: 6.0.4(stylelint@16.14.1)
+      stylelint: 16.15.0
+      stylelint-order: 6.0.4(stylelint@16.15.0)
 
-  stylelint-config-recommended-scss@14.1.0(postcss@8.5.3)(stylelint@16.14.1):
+  stylelint-config-recommended-scss@14.1.0(postcss@8.5.3)(stylelint@16.15.0):
     dependencies:
       postcss-scss: 4.0.9(postcss@8.5.3)
-      stylelint: 16.14.1
-      stylelint-config-recommended: 14.0.1(stylelint@16.14.1)
-      stylelint-scss: 6.11.1(stylelint@16.14.1)
+      stylelint: 16.15.0
+      stylelint-config-recommended: 14.0.1(stylelint@16.15.0)
+      stylelint-scss: 6.11.1(stylelint@16.15.0)
     optionalDependencies:
       postcss: 8.5.3
 
-  stylelint-config-recommended@14.0.1(stylelint@16.14.1):
+  stylelint-config-recommended@14.0.1(stylelint@16.15.0):
     dependencies:
-      stylelint: 16.14.1
+      stylelint: 16.15.0
 
-  stylelint-config-standard-scss@14.0.0(postcss@8.5.3)(stylelint@16.14.1):
+  stylelint-config-standard-scss@14.0.0(postcss@8.5.3)(stylelint@16.15.0):
     dependencies:
-      stylelint: 16.14.1
-      stylelint-config-recommended-scss: 14.1.0(postcss@8.5.3)(stylelint@16.14.1)
-      stylelint-config-standard: 36.0.1(stylelint@16.14.1)
+      stylelint: 16.15.0
+      stylelint-config-recommended-scss: 14.1.0(postcss@8.5.3)(stylelint@16.15.0)
+      stylelint-config-standard: 36.0.1(stylelint@16.15.0)
     optionalDependencies:
       postcss: 8.5.3
 
-  stylelint-config-standard@36.0.1(stylelint@16.14.1):
+  stylelint-config-standard@36.0.1(stylelint@16.15.0):
     dependencies:
-      stylelint: 16.14.1
-      stylelint-config-recommended: 14.0.1(stylelint@16.14.1)
+      stylelint: 16.15.0
+      stylelint-config-recommended: 14.0.1(stylelint@16.15.0)
 
-  stylelint-declaration-strict-value@1.10.10(stylelint@16.14.1):
+  stylelint-declaration-strict-value@1.10.10(stylelint@16.15.0):
     dependencies:
       css-values: 0.1.0
       shortcss: 0.1.3
-      stylelint: 16.14.1
+      stylelint: 16.15.0
 
-  stylelint-order@6.0.4(stylelint@16.14.1):
+  stylelint-order@6.0.4(stylelint@16.15.0):
     dependencies:
       postcss: 8.5.3
       postcss-sorting: 8.0.2(postcss@8.5.3)
-      stylelint: 16.14.1
+      stylelint: 16.15.0
 
-  stylelint-scss@6.11.1(stylelint@16.14.1):
+  stylelint-scss@6.11.1(stylelint@16.15.0):
     dependencies:
       css-tree: 3.1.0
       is-plain-object: 5.0.0
       known-css-properties: 0.35.0
-      mdn-data: 2.15.0
+      mdn-data: 2.17.0
       postcss-media-query-parser: 0.2.3
       postcss-resolve-nested-selector: 0.1.6
       postcss-selector-parser: 7.1.0
       postcss-value-parser: 4.2.0
-      stylelint: 16.14.1
+      stylelint: 16.15.0
 
-  stylelint@16.14.1:
+  stylelint@16.15.0:
     dependencies:
       '@csstools/css-parser-algorithms': 3.0.4(@csstools/css-tokenizer@3.0.3)
       '@csstools/css-tokenizer': 3.0.3
