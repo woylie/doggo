@@ -5,16 +5,31 @@ updates:
     schedule:
       interval: weekly
       day: saturday
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+      development-dependencies:
+        dependency-type: "development"
   - package-ecosystem: mix
     directory: "/demo"
     schedule:
       interval: weekly
       day: saturday
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+      development-dependencies:
+        dependency-type: "development"
   - package-ecosystem: npm
     directory: "/demo/assets"
     schedule:
       interval: weekly
       day: saturday
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+      development-dependencies:
+        dependency-type: "development"
   - package-ecosystem: docker
     directory: "/"
     schedule:
