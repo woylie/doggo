@@ -43,17 +43,17 @@ importers:
         specifier: ^4.3.3
         version: 4.3.3
       stylelint:
-        specifier: ^16.16.0
-        version: 16.16.0
+        specifier: ^16.17.0
+        version: 16.17.0
       stylelint-config-recess-order:
         specifier: ^6.0.0
-        version: 6.0.0(stylelint@16.16.0)
+        version: 6.0.0(stylelint@16.17.0)
       stylelint-config-standard-scss:
         specifier: ^14.0.0
-        version: 14.0.0(postcss@8.5.3)(stylelint@16.16.0)
+        version: 14.0.0(postcss@8.5.3)(stylelint@16.17.0)
       stylelint-declaration-strict-value:
         specifier: ^1.10.11
-        version: 1.10.11(stylelint@16.16.0)
+        version: 1.10.11(stylelint@16.17.0)
 
 packages:
 
@@ -397,14 +397,14 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@types/estree@1.0.6':
-    resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
+  '@types/estree@1.0.7':
+    resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/node@22.13.10':
-    resolution: {integrity: sha512-I6LPUvlRH+O6VRUqYOcMudhaIdUVWfsjnZavnsraHvpBwaEyMN29ry+0UVJhImYL16xsscu0aske3yA+uPOWfw==}
+  '@types/node@22.13.14':
+    resolution: {integrity: sha512-Zs/Ollc1SJ8nKUAgc7ivOEdIBM8JAKgrqqUYi2J997JuKO7/tpQC+WCetQ1sypiKCQWHdvdg9wBNpUPEWZae7w==}
 
   '@webassemblyjs/ast@1.14.1':
     resolution: {integrity: sha512-nuBEDgQfm1ccRp/8bCQrx1frohyufl4JlbMMZ4P1wpeOfDhF6FQkxZJ1b/e+PLwr6X1Nhw6OLme5usuBWYBvuQ==}
@@ -1074,8 +1074,8 @@ packages:
   jsonify@0.0.1:
     resolution: {integrity: sha512-2/Ki0GcmuqSrgFyelQq9M05y7PS0mEwuIzrf3f1fPqkVDVRvZrPZtVSMHxdgo8Aq0sxAOb/cr2aqqA3LeWHVPg==}
 
-  keyv@5.3.1:
-    resolution: {integrity: sha512-13hQT2q2VIwOoaJdJa7nY3J8UVbYtMTJFHnwm9LI+SaQRfUiM6Em9KZeOVTCKbMnGcRIL3NSUFpAdjZCq24nLQ==}
+  keyv@5.3.2:
+    resolution: {integrity: sha512-Lji2XRxqqa5Wg+CHLVfFKBImfJZ4pCSccu9eVWK6w4c2SDFLd8JAn1zqTuSFnsxb7ope6rMsnIHfp+eBbRBRZQ==}
 
   kind-of@6.0.3:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
@@ -1670,8 +1670,8 @@ packages:
     peerDependencies:
       stylelint: ^16.0.2
 
-  stylelint@16.16.0:
-    resolution: {integrity: sha512-40X5UOb/0CEFnZVEHyN260HlSSUxPES+arrUphOumGWgXERHfwCD0kNBVILgQSij8iliYVwlc0V7M5bcLP9vPg==}
+  stylelint@16.17.0:
+    resolution: {integrity: sha512-I9OwVIWRMqVm2Br5iTbrfSqGRPWQUlvm6oXO1xZuYYu0Gpduy67N8wXOZv15p6E/JdlZiAtQaIoLKZEWk5hrjw==}
     engines: {node: '>=18.12.0'}
     hasBin: true
 
@@ -2094,13 +2094,13 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@types/estree@1.0.6':
+  '@types/estree@1.0.7':
     optional: true
 
   '@types/json-schema@7.0.15':
     optional: true
 
-  '@types/node@22.13.10':
+  '@types/node@22.13.14':
     dependencies:
       undici-types: 6.20.0
     optional: true
@@ -2324,7 +2324,7 @@ snapshots:
   cacheable@1.8.9:
     dependencies:
       hookified: 1.8.1
-      keyv: 5.3.1
+      keyv: 5.3.2
 
   call-bind-apply-helpers@1.0.2:
     dependencies:
@@ -2789,7 +2789,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 22.13.10
+      '@types/node': 22.13.14
       merge-stream: 2.0.0
       supports-color: 8.1.1
     optional: true
@@ -2825,7 +2825,7 @@ snapshots:
 
   jsonify@0.0.1: {}
 
-  keyv@5.3.1:
+  keyv@5.3.2:
     dependencies:
       '@keyv/serialize': 1.0.3
 
@@ -3333,48 +3333,48 @@ snapshots:
       prettier: 3.5.3
       tinycolor2: 1.6.0
 
-  stylelint-config-recess-order@6.0.0(stylelint@16.16.0):
+  stylelint-config-recess-order@6.0.0(stylelint@16.17.0):
     dependencies:
-      stylelint: 16.16.0
-      stylelint-order: 6.0.4(stylelint@16.16.0)
+      stylelint: 16.17.0
+      stylelint-order: 6.0.4(stylelint@16.17.0)
 
-  stylelint-config-recommended-scss@14.1.0(postcss@8.5.3)(stylelint@16.16.0):
+  stylelint-config-recommended-scss@14.1.0(postcss@8.5.3)(stylelint@16.17.0):
     dependencies:
       postcss-scss: 4.0.9(postcss@8.5.3)
-      stylelint: 16.16.0
-      stylelint-config-recommended: 14.0.1(stylelint@16.16.0)
-      stylelint-scss: 6.11.1(stylelint@16.16.0)
+      stylelint: 16.17.0
+      stylelint-config-recommended: 14.0.1(stylelint@16.17.0)
+      stylelint-scss: 6.11.1(stylelint@16.17.0)
     optionalDependencies:
       postcss: 8.5.3
 
-  stylelint-config-recommended@14.0.1(stylelint@16.16.0):
+  stylelint-config-recommended@14.0.1(stylelint@16.17.0):
     dependencies:
-      stylelint: 16.16.0
+      stylelint: 16.17.0
 
-  stylelint-config-standard-scss@14.0.0(postcss@8.5.3)(stylelint@16.16.0):
+  stylelint-config-standard-scss@14.0.0(postcss@8.5.3)(stylelint@16.17.0):
     dependencies:
-      stylelint: 16.16.0
-      stylelint-config-recommended-scss: 14.1.0(postcss@8.5.3)(stylelint@16.16.0)
-      stylelint-config-standard: 36.0.1(stylelint@16.16.0)
+      stylelint: 16.17.0
+      stylelint-config-recommended-scss: 14.1.0(postcss@8.5.3)(stylelint@16.17.0)
+      stylelint-config-standard: 36.0.1(stylelint@16.17.0)
     optionalDependencies:
       postcss: 8.5.3
 
-  stylelint-config-standard@36.0.1(stylelint@16.16.0):
+  stylelint-config-standard@36.0.1(stylelint@16.17.0):
     dependencies:
-      stylelint: 16.16.0
-      stylelint-config-recommended: 14.0.1(stylelint@16.16.0)
+      stylelint: 16.17.0
+      stylelint-config-recommended: 14.0.1(stylelint@16.17.0)
 
-  stylelint-declaration-strict-value@1.10.11(stylelint@16.16.0):
+  stylelint-declaration-strict-value@1.10.11(stylelint@16.17.0):
     dependencies:
-      stylelint: 16.16.0
+      stylelint: 16.17.0
 
-  stylelint-order@6.0.4(stylelint@16.16.0):
+  stylelint-order@6.0.4(stylelint@16.17.0):
     dependencies:
       postcss: 8.5.3
       postcss-sorting: 8.0.2(postcss@8.5.3)
-      stylelint: 16.16.0
+      stylelint: 16.17.0
 
-  stylelint-scss@6.11.1(stylelint@16.16.0):
+  stylelint-scss@6.11.1(stylelint@16.17.0):
     dependencies:
       css-tree: 3.1.0
       is-plain-object: 5.0.0
@@ -3384,9 +3384,9 @@ snapshots:
       postcss-resolve-nested-selector: 0.1.6
       postcss-selector-parser: 7.1.0
       postcss-value-parser: 4.2.0
-      stylelint: 16.16.0
+      stylelint: 16.17.0
 
-  stylelint@16.16.0:
+  stylelint@16.17.0:
     dependencies:
       '@csstools/css-parser-algorithms': 3.0.4(@csstools/css-tokenizer@3.0.3)
       '@csstools/css-tokenizer': 3.0.3
@@ -3546,7 +3546,7 @@ snapshots:
 
   webpack@5.94.0(esbuild@0.25.1):
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
       '@webassemblyjs/ast': 1.14.1
       '@webassemblyjs/wasm-edit': 1.14.1
       '@webassemblyjs/wasm-parser': 1.14.1
