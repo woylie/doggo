@@ -4,7 +4,7 @@ env:
   ELIXIR_VERSION: "1.18"
   OTP_VERSION: "27"
   NODE_VERSION: "22"
-  PNPM_VERSION: "9"
+  PNPM_VERSION: "10"
 
 on:
   push:

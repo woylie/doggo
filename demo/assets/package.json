@@ -26,7 +26,7 @@
     "postcss-scss": "^4.0.9",
     "prettier": "^3.5.3",
     "style-dictionary": "^4.3.3",
-    "stylelint": "^16.16.0",
+    "stylelint": "^16.17.0",
     "stylelint-config-recess-order": "^6.0.0",
     "stylelint-config-standard-scss": "^14.0.0",
     "stylelint-declaration-strict-value": "^1.10.11"

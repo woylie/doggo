@@ -10,7 +10,7 @@ kill_signal = 'SIGTERM'
 [build]
 
 [env]
-  PHX_HOST = 'woylie-doggo.fly.dev'
+  PHX_HOST = 'doggo.wlyx.dev'
   PORT = '8080'
 
 [http_service]
