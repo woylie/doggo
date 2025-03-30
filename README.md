@@ -152,7 +152,7 @@ The repository contains a demo application that renders a storybook with all
 components using their default options. For some of the components, CSS was
 added, while others are still unstyled.
 
-The demo application is deployed at: https://woylie-doggo.fly.dev
+The demo application is deployed at: https://doggo.wlyx.dev
 
 To run the application locally:
 
