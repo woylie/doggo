@@ -1,6 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: mix
+    open-pull-requests-limit: 0
     directory: "/"
     schedule:
       interval: weekly
@@ -11,6 +12,7 @@ updates:
       development-dependencies:
         dependency-type: "development"
   - package-ecosystem: mix
+    open-pull-requests-limit: 0
     directory: "/demo"
     schedule:
       interval: weekly
@@ -21,6 +23,7 @@ updates:
       development-dependencies:
         dependency-type: "development"
   - package-ecosystem: npm
+    open-pull-requests-limit: 0
     directory: "/demo/assets"
     schedule:
       interval: weekly
@@ -31,11 +34,13 @@ updates:
       development-dependencies:
         dependency-type: "development"
   - package-ecosystem: docker
+    open-pull-requests-limit: 0
     directory: "/"
     schedule:
       interval: weekly
       day: saturday
   - package-ecosystem: github-actions
+    open-pull-requests-limit: 0
     directory: "/"
     schedule:
       interval: weekly
