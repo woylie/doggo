@@ -27,7 +27,7 @@
       ],
       "automerge": true,
       "rangeStrategy": "pin"
-    },
+    }
   ],
   "ignoreDeps": [
     "postgres"
