@@ -46,9 +46,9 @@ defmodule Demo.MixProject do
     [
       {:phoenix, "~> 1.7.10"},
       {:phoenix_html, "~> 4.0"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:phoenix_live_reload, "== 1.5.3", only: :dev},
       {:phoenix_live_view, "~> 1.0.0"},
-      {:floki, ">= 0.30.0", only: :test},
+      {:floki, "== 0.37.1", only: :test},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
@@ -57,8 +57,8 @@ defmodule Demo.MixProject do
       {:heroicons, "~> 0.5.3"},
       {:doggo, path: ".."},
       {:tzdata, "~> 1.1"},
-      {:credo, "~> 1.6", runtime: false, only: [:dev, :test]},
-      {:dialyxir, "~> 1.2", runtime: false, only: [:dev, :test]}
+      {:credo, "== 1.7.11", runtime: false, only: [:dev, :test]},
+      {:dialyxir, "== 1.4.5", runtime: false, only: [:dev, :test]}
     ]
   end
 

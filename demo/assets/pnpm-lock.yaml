@@ -19,40 +19,40 @@ importers:
         version: link:../deps/phoenix_live_view
     devDependencies:
       autoprefixer:
-        specifier: ^10.4.21
+        specifier: 10.4.21
         version: 10.4.21(postcss@8.5.3)
       css-loader:
-        specifier: ^7.1.2
+        specifier: 7.1.2
         version: 7.1.2(webpack@5.94.0(esbuild@0.25.2))
       esbuild:
-        specifier: ^0.25.2
+        specifier: 0.25.2
         version: 0.25.2
       esbuild-sass-plugin:
-        specifier: ^3.3.1
+        specifier: 3.3.1
         version: 3.3.1(esbuild@0.25.2)(sass-embedded@1.78.0)
       postcss:
-        specifier: ^8.5.3
+        specifier: 8.5.3
         version: 8.5.3
       postcss-scss:
-        specifier: ^4.0.9
+        specifier: 4.0.9
         version: 4.0.9(postcss@8.5.3)
       prettier:
-        specifier: ^3.5.3
+        specifier: 3.5.3
         version: 3.5.3
       style-dictionary:
-        specifier: ^4.3.3
+        specifier: 4.3.3
         version: 4.3.3
       stylelint:
-        specifier: ^16.18.0
+        specifier: 16.18.0
         version: 16.18.0
       stylelint-config-recess-order:
-        specifier: ^6.0.0
+        specifier: 6.0.0
         version: 6.0.0(stylelint@16.18.0)
       stylelint-config-standard-scss:
-        specifier: ^14.0.0
+        specifier: 14.0.0
         version: 14.0.0(postcss@8.5.3)(stylelint@16.18.0)
       stylelint-declaration-strict-value:
-        specifier: ^1.10.11
+        specifier: 1.10.11
         version: 1.10.11(stylelint@16.18.0)
 
 packages:
