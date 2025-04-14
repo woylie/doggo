@@ -27,6 +27,11 @@
       ],
       "automerge": true,
       "rangeStrategy": "pin"
+    },
+    {
+      "matchFileNames": ["demo/**"],
+      "automerge": true,
+      "rangeStrategy": "pin"
     }
   ],
   "ignoreDeps": [
