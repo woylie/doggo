@@ -49,7 +49,7 @@ defmodule Demo.MixProject do
       {:phoenix_live_reload, "== 1.6.0", only: :dev},
       {:phoenix_live_view, "~> 1.0.0"},
       {:floki, "== 0.37.1", only: :test},
-      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.8 or ~> 0.9", runtime: Mix.env() == :dev},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:bandit, "~> 1.0"},
