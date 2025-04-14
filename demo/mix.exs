@@ -50,7 +50,7 @@ defmodule Demo.MixProject do
       {:phoenix_live_view, "~> 1.0.0"},
       {:floki, "== 0.37.1", only: :test},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
-      {:gettext, "~> 0.20"},
+      {:gettext, "~> 0.26"},
       {:jason, "~> 1.2"},
       {:bandit, "~> 1.0"},
       {:phoenix_storybook, "~> 0.8.0"},
