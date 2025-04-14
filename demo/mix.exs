@@ -44,19 +44,19 @@ defmodule Demo.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.7.10"},
-      {:phoenix_html, "~> 4.0"},
+      {:phoenix, "== 1.7.21"},
+      {:phoenix_html, "== 4.2.1"},
       {:phoenix_live_reload, "== 1.6.0", only: :dev},
-      {:phoenix_live_view, "~> 1.0.0"},
+      {:phoenix_live_view, "== 1.0.9"},
       {:floki, "== 0.37.1", only: :test},
-      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
-      {:gettext, "~> 0.26"},
-      {:jason, "~> 1.2"},
-      {:bandit, "~> 1.0"},
-      {:phoenix_storybook, "~> 0.8.0"},
-      {:heroicons, "~> 0.5.3"},
+      {:esbuild, "== 0.9.0", runtime: Mix.env() == :dev},
+      {:gettext, "== 0.26.2"},
+      {:jason, "== 1.4.4"},
+      {:bandit, "== 1.6.11"},
+      {:phoenix_storybook, "== 0.8.1"},
+      {:heroicons, "== 0.5.6"},
       {:doggo, path: ".."},
-      {:tzdata, "~> 1.1"},
+      {:tzdata, "== 1.1.3"},
       {:credo, "== 1.7.11", runtime: false, only: [:dev, :test]},
       {:dialyxir, "== 1.4.5", runtime: false, only: [:dev, :test]}
     ]
