@@ -57,7 +57,7 @@ defmodule Demo.MixProject do
       {:heroicons, "== 0.5.6"},
       {:doggo, path: ".."},
       {:tzdata, "== 1.1.3"},
-      {:credo, "== 1.7.11", runtime: false, only: [:dev, :test]},
+      {:credo, "== 1.7.12", runtime: false, only: [:dev, :test]},
       {:dialyxir, "== 1.4.5", runtime: false, only: [:dev, :test]}
     ]
   end
