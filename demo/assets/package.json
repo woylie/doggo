@@ -20,7 +20,7 @@
   "devDependencies": {
     "autoprefixer": "10.4.21",
     "css-loader": "7.1.2",
-    "esbuild": "0.25.2",
+    "esbuild": "0.25.3",
     "esbuild-sass-plugin": "3.3.1",
     "postcss": "8.5.3",
     "postcss-scss": "4.0.9",
