@@ -53,7 +53,7 @@ defmodule Demo.MixProject do
       {:gettext, "== 0.26.2"},
       {:jason, "== 1.4.4"},
       {:bandit, "== 1.6.11"},
-      {:phoenix_storybook, "== 0.8.1"},
+      {:phoenix_storybook, "== 0.8.2"},
       {:heroicons, "== 0.5.6"},
       {:doggo, path: ".."},
       {:tzdata, "== 1.1.3"},
