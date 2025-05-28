@@ -1,40 +1,4 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
-  "enabled": true,
-  "enabledManagers": [
-    "dockerfile",
-    "github-actions",
-    "mix",
-    "npm"
-  ],
-  "reviewersFromCodeOwners": true,
-  "schedule": [
-    "every weekend"
-  ],
-  "timezone": "Europe/Copenhagen",
-  "lockFileMaintenance": {
-    "enabled": true
-  },
-  "rangeStrategy": "widen",
-  "packageRules": [
-    {
-      "matchDepTypes": [
-        "dev",
-        "devDependencies"
-      ],
-      "automerge": true,
-      "rangeStrategy": "pin"
-    },
-    {
-      "matchFileNames": ["demo/**"],
-      "automerge": true,
-      "rangeStrategy": "pin"
-    }
-  ],
-  "ignoreDeps": [
-    "postgres"
-  ]
+  "extends": ["github>woylie/renovate-presets:library"]
 }
