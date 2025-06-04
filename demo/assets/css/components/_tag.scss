@@ -7,7 +7,7 @@
   justify-content: center;
   padding: 0 f.spacer(2);
   font-size: f.size(s);
-  line-height: f.lines(1);
+  line-height: f.lines(single);
   color: f.color(text, default, normal);
   background-color: f.color(background, disabled, normal);
   border: f.border-width(s) solid f.color(border, neutral, "1");
@@ -52,7 +52,7 @@
   &.is-small {
     padding: f.spacer(1);
     font-size: f.size(xs);
-    line-height: f.lines(0.5);
+    line-height: f.lines(half);
   }
 
   &.is-medium {
@@ -62,7 +62,7 @@
   &.is-large {
     padding: 0 f.spacer(4);
     font-size: f.size(l);
-    line-height: f.lines(1.5);
+    line-height: f.lines(one_and_a_half);
   }
 
   &.is-pill {

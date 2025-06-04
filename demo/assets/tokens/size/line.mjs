@@ -2,10 +2,20 @@
 const baseLineHeight = 1.5;
 
 // multiples of the base line height
-const factors = [0.25, 0.5, 0.75, 1, 1.5, 2];
+const factorNames = {
+  0.25: "quarter",
+  0.5: "half",
+  0.75: "three_quarters",
+  1: "single",
+  1.5: "one_and_a_half",
+  2: "double",
+};
 
-var lines = factors.reduce(
-  (a, v) => ({ ...a, [v]: { $value: baseLineHeight * v } }),
+var lines = Object.entries(factorNames).reduce(
+  (a, [factor, name]) => ({
+    ...a,
+    [name]: { $value: baseLineHeight * parseFloat(factor) },
+  }),
   {},
 );
 
