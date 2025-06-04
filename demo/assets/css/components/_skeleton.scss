@@ -7,12 +7,12 @@
 
   &.is-text-line {
     width: 100%;
-    height: f.lines(1);
+    height: f.lines(single);
   }
 
   &.is-text-block {
     width: 100%;
-    height: calc(4 * #{f.lines(1)});
+    height: calc(4 * #{f.lines(single)});
   }
 
   &.is-image {

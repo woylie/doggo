@@ -13,7 +13,7 @@
   }
 
   & > div + div {
-    margin-block-start: f.lines(1);
+    margin-block-start: f.lines(single);
   }
 
   @media (width >= 768px) {

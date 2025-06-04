@@ -14,7 +14,7 @@
   }
 
   & > * + * {
-    margin-block-start: var(--space, f.lines(1));
+    margin-block-start: var(--space, f.lines(single));
   }
 
   &.is-recursive {
@@ -23,7 +23,7 @@
     }
 
     & * + * {
-      margin-block-start: var(--space, f.lines(1));
+      margin-block-start: var(--space, f.lines(single));
     }
   }
 
@@ -31,13 +31,13 @@
   You can add modifiers like this:
 
       &.is-small > * + * {
-        margin-top: var(--space, f.lines(0.5));
+        margin-top: var(--space, f.lines(half));
       }
 
   Or you can add exceptions like this:
 
       & > .some-component + * {
-        margin-top: var(--space, f.lines(1.5));
+        margin-top: var(--space, f.lines(one_and_a_half));
       }
 
   This would apply a different margin between `.some-component` and the next
@@ -45,7 +45,7 @@
   component and the previous element:
 
       & > * + .some-component {
-        margin-top: var(--space, f.lines(1.5));
+        margin-top: var(--space, f.lines(one_and_a_half));
       }
   */
 }
