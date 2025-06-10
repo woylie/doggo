@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## [0.10.5] - 2025-06-10
+
+### Fixed
+
+- Add `required` attribute to radio inputs.
+
 ## [0.10.4] - 2025-02-22
 
 ### Fixed
