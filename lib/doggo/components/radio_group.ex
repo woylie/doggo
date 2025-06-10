@@ -106,6 +106,8 @@ defmodule Doggo.Components.RadioGroup do
         determine whether a radio button is checked.
         """
 
+      attr :required, :boolean, default: false
+
       attr :rest, :global, doc: "Any additional HTML attributes."
     end
   end
@@ -136,6 +138,7 @@ defmodule Doggo.Components.RadioGroup do
         value={@value}
         errors={[]}
         description={[]}
+        required={@required}
       />
     </div>
     """
@@ -164,6 +167,7 @@ defmodule Doggo.Components.RadioGroup do
         aria-describedby={@describedby}
         aria-errormessage={@errormessage}
         aria-invalid={@invalid}
+        required={@required}
       />
       {@label}
     </label>
