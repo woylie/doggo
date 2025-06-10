@@ -480,6 +480,7 @@ defmodule Doggo.Components.Field do
             value={@value}
             errors={@errors}
             description={@description}
+            required={@validations[:required] || false}
           />
         </div>
       </fieldset>
