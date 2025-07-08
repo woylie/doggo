@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## [0.10.6] - 2025-07-08
+
+### Changed
+
+- Loosen version requirement for `phoenix_storybook`.
+
 ## [0.10.5] - 2025-06-10
 
 ### Fixed

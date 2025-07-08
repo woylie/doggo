@@ -2,7 +2,7 @@ defmodule Doggo.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/woylie/doggo"
-  @version "0.10.5"
+  @version "0.10.6"
 
   def project do
     [
@@ -56,7 +56,7 @@ defmodule Doggo.MixProject do
       {:jason, "== 1.4.4", only: [:dev, :test]},
       {:makeup_diff, "== 0.1.1", only: :dev},
       {:phoenix_live_view, "~> 1.0.0"},
-      {:phoenix_storybook, ">= 0.6.0 and < 0.9.0"},
+      {:phoenix_storybook, "~> 0.6"},
       {:tzdata, "== 1.1.3", only: [:test]}
     ]
   end
