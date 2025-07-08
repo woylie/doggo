@@ -18,7 +18,7 @@ The package can be installed by adding `doggo` to your list of dependencies in
 ```elixir
 def deps do
   [
-    {:doggo, "~> 0.10.5"}
+    {:doggo, "~> 0.10.6"}
   ]
 end
 ```
