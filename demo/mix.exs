@@ -10,6 +10,7 @@ defmodule Demo.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
+      compilers: [:phoenix_live_view] ++ Mix.compilers(),
       releases: [
         demo: [
           strip_beams: [
@@ -47,7 +48,8 @@ defmodule Demo.MixProject do
       {:phoenix, "== 1.7.21"},
       {:phoenix_html, "== 4.2.1"},
       {:phoenix_live_reload, "== 1.6.0", only: :dev},
-      {:phoenix_live_view, "== 1.0.12"},
+      {:phoenix_live_view, "== 1.1.1"},
+      {:lazy_html, ">= 0.0.0", only: :test},
       {:floki, "== 0.37.1", only: :test},
       {:esbuild, "== 0.9.0", runtime: Mix.env() == :dev},
       {:gettext, "== 0.26.2"},

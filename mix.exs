@@ -54,8 +54,9 @@ defmodule Doggo.MixProject do
       {:floki, "== 0.37.1", only: :test},
       {:gettext, "~> 0.20 or ~> 0.26", optional: true},
       {:jason, "== 1.4.4", only: [:dev, :test]},
+      {:lazy_html, ">= 0.0.0", only: :test},
       {:makeup_diff, "== 0.1.1", only: :dev},
-      {:phoenix_live_view, "~> 1.0.0"},
+      {:phoenix_live_view, "~> 1.0.0 or ~> 1.1.0"},
       {:phoenix_storybook, "~> 0.6"},
       {:tzdata, "== 1.1.3", only: [:test]}
     ]

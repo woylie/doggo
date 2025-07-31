@@ -67,4 +67,7 @@ config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
 # Include HEEx debug annotations as HTML comments in rendered markup
-config :phoenix_live_view, :debug_heex_annotations, true
+config :phoenix_live_view,
+  debug_heex_annotations: true,
+  debug_attributes: true,
+  enable_expensive_runtime_checks: true
