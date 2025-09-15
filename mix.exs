@@ -48,8 +48,8 @@ defmodule Doggo.MixProject do
   defp deps do
     [
       {:credo, "== 1.7.12", runtime: false, only: [:dev, :test]},
-      {:dialyxir, "== 1.4.5", runtime: false, only: [:dev, :test]},
-      {:ex_doc, "== 0.38.2", only: :dev, runtime: false},
+      {:dialyxir, "== 1.4.6", runtime: false, only: [:dev, :test]},
+      {:ex_doc, "== 0.38.4", only: :dev, runtime: false},
       {:excoveralls, "== 0.18.5", runtime: false, only: [:test]},
       {:floki, "== 0.38.0", only: :test},
       {:gettext, "~> 0.20 or ~> 0.26 or ~> 1.0", optional: true},
