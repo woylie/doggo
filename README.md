@@ -65,12 +65,12 @@ defmodule MyAppWeb.CoreComponents do
 
   build_button(
     base_class: "alt-button",
-    modifiers: [small: [size: ["normal", "small"], default: "normal"]],
+    modifiers: [size: [values: ["normal", "small"], default: "normal"]],
     class_name_fun: &MyAppWeb.CoreComponents.modifier_class/2
   )
 
   def modifier_class(name, value) do
-    "#{name} #{value}"
+    "#{name}-#{value}"
   end
 end
 ```
