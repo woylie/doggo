@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## [0.10.8] - 2025-09-15
+
+### Changed
+
+- Support `gettext` `~> 1.0`.
+
 ## [0.10.7] - 2025-07-31
 
 ### Changed
