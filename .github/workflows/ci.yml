@@ -1,8 +1,8 @@
 name: CI
 
 env:
-  ELIXIR_VERSION: "1.18"
-  OTP_VERSION: "27"
+  ELIXIR_VERSION: "1.19"
+  OTP_VERSION: "28"
 
 on:
   push:
@@ -58,6 +58,9 @@ jobs:
           - { elixir: 1.18, otp: 25 }
           - { elixir: 1.18, otp: 26 }
           - { elixir: 1.18, otp: 27 }
+          - { elixir: 1.19, otp: 26 }
+          - { elixir: 1.19, otp: 27 }
+          - { elixir: 1.19, otp: 28 }
     steps:
       - uses: actions/checkout@v4
       - uses: erlef/setup-beam@v1

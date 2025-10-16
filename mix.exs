@@ -13,13 +13,6 @@ defmodule Doggo.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: [
-        coveralls: :test,
-        "coveralls.detail": :test,
-        "coveralls.github": :test,
-        "coveralls.html": :test,
-        "coveralls.json": :test
-      ],
       dialyzer: [
         list_unused_filters: true,
         plt_add_apps: [:ex_unit, :mix],
@@ -36,6 +29,18 @@ defmodule Doggo.MixProject do
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
+
+  def cli do
+    [
+      preferred_envs: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.github": :test,
+        "coveralls.html": :test,
+        "coveralls.json": :test
+      ]
+    ]
+  end
 
   # Run "mix help compile.app" to learn about applications.
   def application do
