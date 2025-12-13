@@ -45,22 +45,22 @@ defmodule Demo.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "== 1.7.21"},
-      {:phoenix_html, "== 4.2.1"},
-      {:phoenix_live_reload, "== 1.6.1", only: :dev},
-      {:phoenix_live_view, "== 1.1.12"},
-      {:lazy_html, "== 0.1.7", only: :test},
-      {:floki, "== 0.38.0", only: :test},
+      {:phoenix, "1.7.21"},
+      {:phoenix_html, "4.2.1"},
+      {:phoenix_live_reload, "1.6.1", only: :dev},
+      {:phoenix_live_view, "1.1.12"},
+      {:lazy_html, "0.1.7", only: :test},
+      {:floki, "0.38.0", only: :test},
       {:esbuild, "== 0.10.0", runtime: Mix.env() == :dev},
-      {:gettext, "== 1.0.0"},
-      {:jason, "== 1.4.4"},
-      {:bandit, "== 1.8.0"},
-      {:phoenix_storybook, "== 0.9.1"},
-      {:heroicons, "== 0.5.6"},
+      {:gettext, "1.0.0"},
+      {:jason, "1.4.4"},
+      {:bandit, "1.8.0"},
+      {:phoenix_storybook, "0.9.1"},
+      {:heroicons, "0.5.6"},
       {:doggo, path: ".."},
-      {:tzdata, "== 1.1.3"},
-      {:credo, "== 1.7.13", runtime: false, only: [:dev, :test]},
-      {:dialyxir, "== 1.4.6", runtime: false, only: [:dev, :test]}
+      {:tzdata, "1.1.3"},
+      {:credo, "1.7.13", runtime: false, only: [:dev, :test]},
+      {:dialyxir, "1.4.6", runtime: false, only: [:dev, :test]}
     ]
   end
 
