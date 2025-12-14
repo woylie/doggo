@@ -60,7 +60,7 @@ defmodule Demo.MixProject do
       {:doggo, path: ".."},
       {:tzdata, "1.1.3"},
       {:credo, "1.7.14", runtime: false, only: [:dev, :test]},
-      {:dialyxir, "== 1.4.7", runtime: false, only: [:dev, :test]}
+      {:dialyxir, "1.4.7", runtime: false, only: [:dev, :test]}
     ]
   end
 
