@@ -6,6 +6,7 @@
   ],
   "plugins": ["stylelint-declaration-strict-value"],
   "rules": {
+    "declaration-property-value-keyword-no-deprecated": null,
     "scale-unlimited/declaration-strict-value": [
       [
         "/color/",
