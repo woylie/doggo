@@ -45,8 +45,8 @@ defmodule Demo.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "1.7.21"},
-      {:phoenix_html, "4.2.1"},
+      {:phoenix, "1.8.3"},
+      {:phoenix_html, "4.3.0"},
       {:phoenix_live_reload, "1.6.2", only: :dev},
       {:phoenix_live_view, "1.1.19"},
       {:lazy_html, "0.1.8", only: :test},
@@ -55,7 +55,7 @@ defmodule Demo.MixProject do
       {:gettext, "1.0.2"},
       {:jason, "1.4.4"},
       {:bandit, "1.9.0"},
-      {:phoenix_storybook, "0.9.1"},
+      {:phoenix_storybook, "0.9.3"},
       {:heroicons, "0.5.6"},
       {:doggo, path: ".."},
       {:tzdata, "1.1.3"},
