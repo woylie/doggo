@@ -20,15 +20,15 @@
   "devDependencies": {
     "autoprefixer": "10.4.22",
     "css-loader": "7.1.2",
-    "esbuild": "0.25.9",
+    "esbuild": "0.27.1",
     "esbuild-sass-plugin": "3.3.1",
     "postcss": "8.5.6",
     "postcss-scss": "4.0.9",
-    "prettier": "3.6.2",
-    "style-dictionary": "5.0.4",
-    "stylelint": "16.24.0",
-    "stylelint-config-recess-order": "7.3.0",
-    "stylelint-config-standard-scss": "14.0.0",
+    "prettier": "3.7.4",
+    "style-dictionary": "5.1.1",
+    "stylelint": "16.26.1",
+    "stylelint-config-recess-order": "7.4.0",
+    "stylelint-config-standard-scss": "16.0.0",
     "stylelint-declaration-strict-value": "1.10.11"
   },
   "dependencies": {
