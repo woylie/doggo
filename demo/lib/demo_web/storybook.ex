@@ -2,7 +2,7 @@ defmodule DemoWeb.Storybook do
   @moduledoc false
 
   use PhoenixStorybook,
-    otp_app: :demo_web,
+    otp_app: :demo,
     content_path: Path.expand("../../storybook", __DIR__),
     # assets path are remote path, not local file-system paths
     css_path: "/assets/app.css",
