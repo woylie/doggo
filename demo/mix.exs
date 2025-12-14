@@ -51,7 +51,7 @@ defmodule Demo.MixProject do
       {:phoenix_live_view, "1.1.19"},
       {:lazy_html, "0.1.8", only: :test},
       {:floki, "0.38.0", only: :test},
-      {:esbuild, "== 0.10.0", runtime: Mix.env() == :dev},
+      {:esbuild, "0.10.0", runtime: Mix.env() == :dev},
       {:gettext, "1.0.2"},
       {:jason, "1.4.4"},
       {:bandit, "1.9.0"},
