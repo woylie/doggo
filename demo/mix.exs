@@ -47,7 +47,7 @@ defmodule Demo.MixProject do
     [
       {:phoenix, "1.7.21"},
       {:phoenix_html, "4.2.1"},
-      {:phoenix_live_reload, "1.6.1", only: :dev},
+      {:phoenix_live_reload, "== 1.6.2", only: :dev},
       {:phoenix_live_view, "1.1.12"},
       {:lazy_html, "0.1.8", only: :test},
       {:floki, "0.38.0", only: :test},
