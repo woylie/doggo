@@ -26,7 +26,7 @@ jobs:
           otp-version: ${{ env.OTP_VERSION }}
           elixir-version: ${{ env.ELIXIR_VERSION }}
       - name: Restore dependencies and build cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             _build
@@ -69,7 +69,7 @@ jobs:
           otp-version: ${{ matrix.otp }}
           elixir-version: ${{ matrix.elixir }}
       - name: Restore dependencies and build cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             _build
@@ -112,7 +112,7 @@ jobs:
           otp-version: ${{ env.OTP_VERSION }}
           elixir-version: ${{ env.ELIXIR_VERSION }}
       - name: Restore dependencies and build cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             _build
@@ -120,7 +120,7 @@ jobs:
           key: ${{ runner.os }}-otp-${{ steps.beam.outputs.otp-version }}-elixir-${{ steps.beam.outputs.elixir-version }}-mix-${{ hashFiles('mix.lock') }}
           restore-keys: ${{ runner.os }}-otp-${{ steps.beam.outputs.otp-version }}-elixir-${{ steps.beam.outputs.elixir-version }}-
       - name: Restore PLT cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: plt_cache
         with:
           key: |
@@ -163,7 +163,7 @@ jobs:
           otp-version: ${{ env.OTP_VERSION }}
           elixir-version: ${{ env.ELIXIR_VERSION }}
       - name: Restore dependencies and build cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             demo/_build
@@ -171,7 +171,7 @@ jobs:
           key: ${{ runner.os }}-otp-${{ steps.beam.outputs.otp-version }}-elixir-${{ steps.beam.outputs.elixir-version }}-demo-mix-${{ hashFiles('demo/mix.lock') }}
           restore-keys: ${{ runner.os }}-otp-${{ steps.beam.outputs.otp-version }}-elixir-${{ steps.beam.outputs.elixir-version }}-demo-
       - name: Restore PLT cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: plt_cache
         with:
           key: |
