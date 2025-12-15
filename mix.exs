@@ -62,7 +62,7 @@ defmodule Doggo.MixProject do
       {:lazy_html, "0.1.8", only: :test},
       {:makeup_diff, "0.1.1", only: :dev},
       {:phoenix_live_view, "~> 1.0.0 or ~> 1.1.0"},
-      {:phoenix_storybook, "~> 0.6"},
+      {:phoenix_storybook, "~> 0.6 or ~> 0.9"},
       {:tzdata, "1.1.3", only: [:test]}
     ]
   end
