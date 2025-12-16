@@ -63,11 +63,7 @@ defmodule Mix.Tasks.Dog.ClassesTest do
 
     assert File.exists?(path)
 
-    classes_in_file =
-      path
-      |> File.read!()
-      |> String.split("\n")
-      |> Enum.reject(fn s -> s == "" || String.starts_with?(s, "#") end)
+    classes_in_file = extract_classes(path)
 
     assert classes_in_file ==
              [
@@ -77,5 +73,52 @@ defmodule Mix.Tasks.Dog.ClassesTest do
                "is-small",
                "my-button"
              ]
+  end
+
+  @tag :tmp_dir
+  test "checks whether existing file is up-to-date", %{tmp_dir: tmp_dir} do
+    path = Path.join(tmp_dir, "classes.txt")
+
+    assert capture_io(fn ->
+             Classes.run([
+               "--module",
+               "Mix.Tasks.Dog.ClassesTest.TestComponents",
+               "-o",
+               path
+             ])
+           end)
+
+    assert File.exists?(path)
+
+    assert capture_io(fn ->
+             Classes.run([
+               "--module",
+               "Mix.Tasks.Dog.ClassesTest.TestComponents",
+               "-o",
+               path,
+               "--check"
+             ])
+           end) =~ "up to date"
+
+    File.write!(path, "is-normal\n")
+
+    assert catch_exit(
+             capture_io(fn ->
+               Classes.run([
+                 "--module",
+                 "Mix.Tasks.Dog.ClassesTest.TestComponents",
+                 "-o",
+                 path,
+                 "--check"
+               ])
+             end)
+           ) == {:shutdown, 1}
+  end
+
+  defp extract_classes(path) do
+    path
+    |> File.read!()
+    |> String.split("\n")
+    |> Enum.reject(fn s -> s == "" || String.starts_with?(s, "#") end)
   end
 end
