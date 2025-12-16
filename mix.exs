@@ -2,7 +2,7 @@ defmodule Doggo.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/woylie/doggo"
-  @version "0.10.8"
+  @version "0.11.0"
 
   def project do
     [
