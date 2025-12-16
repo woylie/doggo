@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## [0.11.0] - 2025-12-16
+
+### Added
+
+- Add `--check` switch to `mix dog.classes`.
+
+### Changed
+
+- Require `phoenix_live_view` `~> 1.1.0` and `phoenix_storybook` `~> 0.9`.
+
 ## [0.10.8] - 2025-09-15
 
 ### Changed
