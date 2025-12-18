@@ -56,7 +56,7 @@ defmodule Demo.MixProject do
       {:jason, "1.4.4"},
       {:bandit, "1.9.0"},
       {:phoenix_storybook, "0.9.3"},
-      {:heroicons, "0.5.6"},
+      {:heroicons, "== 0.5.7"},
       {:doggo, path: ".."},
       {:tzdata, "1.1.3"},
       {:credo, "1.7.14", runtime: false, only: [:dev, :test]},
