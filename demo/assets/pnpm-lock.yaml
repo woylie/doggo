@@ -47,7 +47,7 @@ importers:
         version: 16.26.1
       stylelint-config-recess-order:
         specifier: 7.4.0
-        version: 7.4.0(stylelint-order@7.0.0(stylelint@16.26.1))(stylelint@16.26.1)
+        version: 7.4.0(stylelint-order@7.0.1(stylelint@16.26.1))(stylelint@16.26.1)
       stylelint-config-standard-scss:
         specifier: 16.0.0
         version: 16.0.0(postcss@8.5.6)(stylelint@16.26.1)
@@ -77,11 +77,11 @@ packages:
   '@bundled-es-modules/memfs@4.17.0':
     resolution: {integrity: sha512-ykdrkEmQr9BV804yd37ikXfNnvxrwYfY9Z2/EtMHFEFadEjsQXJ1zL9bVZrKNLDtm91UdUOEHso6Aweg93K6xQ==}
 
-  '@cacheable/memory@2.0.6':
-    resolution: {integrity: sha512-7e8SScMocHxcAb8YhtkbMhGG+EKLRIficb1F5sjvhSYsWTZGxvg4KIDp8kgxnV2PUJ3ddPe6J9QESjKvBWRDkg==}
+  '@cacheable/memory@2.0.7':
+    resolution: {integrity: sha512-RbxnxAMf89Tp1dLhXMS7ceft/PGsDl1Ip7T20z5nZ+pwIAsQ1p2izPjVG69oCLv/jfQ7HDPHTWK0c9rcAWXN3A==}
 
-  '@cacheable/utils@2.3.2':
-    resolution: {integrity: sha512-8kGE2P+HjfY8FglaOiW+y8qxcaQAfAhVML+i66XJR3YX5FtyDqn6Txctr3K2FrbxLKixRRYYBWMbuGciOhYNDg==}
+  '@cacheable/utils@2.3.3':
+    resolution: {integrity: sha512-JsXDL70gQ+1Vc2W/KUFfkAJzgb4puKwwKehNLuB+HrNKWf91O736kGfxn4KujXCCSuh6mRRL4XEB0PkAFjWS0A==}
 
   '@csstools/css-parser-algorithms@3.0.5':
     resolution: {integrity: sha512-DaDeUkXZKjdGhgYaHNJTV9pV7Y9B3b644jCLs9Upc3VeNGg6LWARAT6O+Q+/COo+2gg/bM5rhpMAtf70WqfBdQ==}
@@ -1399,14 +1399,14 @@ packages:
     peerDependencies:
       stylelint: '>=7 <=16'
 
-  stylelint-order@7.0.0:
-    resolution: {integrity: sha512-rSWxx0KscYfxU02wEskKXES9lkRzuuONMMNkZ7SUc6uiF3tDKm7e+sE0Ax/SBlG4TUf1sp1R6f3/SlsPGmzthg==}
+  stylelint-order@7.0.1:
+    resolution: {integrity: sha512-GWPei1zBVDDjxM+/BmcSCiOcHNd8rSqW6FUZtqQGlTRpD0Z5nSzspzWD8rtKif5KPdzUG68DApKEV/y/I9VbTw==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
-      stylelint: ^16.18.0
+      stylelint: ^16.18.0 || ^17.0.0
 
-  stylelint-scss@6.13.0:
-    resolution: {integrity: sha512-kZPwFUJkfup2gP1enlrS2h9U5+T5wFoqzJ1n/56AlpwSj28kmFe7ww/QFydvPsg5gLjWchAwWWBLtterynZrOw==}
+  stylelint-scss@6.14.0:
+    resolution: {integrity: sha512-ZKmHMZolxeuYsnB+PCYrTpFce0/QWX9i9gh0hPXzp73WjuIMqUpzdQaBCrKoLWh6XtCFSaNDErkMPqdjy1/8aA==}
     engines: {node: '>=18.12.0'}
     peerDependencies:
       stylelint: ^16.8.2
@@ -1552,14 +1552,14 @@ snapshots:
       stream: 0.0.3
       util: 0.12.5
 
-  '@cacheable/memory@2.0.6':
+  '@cacheable/memory@2.0.7':
     dependencies:
-      '@cacheable/utils': 2.3.2
+      '@cacheable/utils': 2.3.3
       '@keyv/bigmap': 1.3.0(keyv@5.5.5)
       hookified: 1.14.0
       keyv: 5.5.5
 
-  '@cacheable/utils@2.3.2':
+  '@cacheable/utils@2.3.3':
     dependencies:
       hashery: 1.3.0
       keyv: 5.5.5
@@ -1866,8 +1866,8 @@ snapshots:
 
   cacheable@2.3.1:
     dependencies:
-      '@cacheable/memory': 2.0.6
-      '@cacheable/utils': 2.3.2
+      '@cacheable/memory': 2.0.7
+      '@cacheable/utils': 2.3.3
       hookified: 1.14.0
       keyv: 5.5.5
       qified: 0.5.3
@@ -2677,17 +2677,17 @@ snapshots:
       prettier: 3.7.4
       tinycolor2: 1.6.0
 
-  stylelint-config-recess-order@7.4.0(stylelint-order@7.0.0(stylelint@16.26.1))(stylelint@16.26.1):
+  stylelint-config-recess-order@7.4.0(stylelint-order@7.0.1(stylelint@16.26.1))(stylelint@16.26.1):
     dependencies:
       stylelint: 16.26.1
-      stylelint-order: 7.0.0(stylelint@16.26.1)
+      stylelint-order: 7.0.1(stylelint@16.26.1)
 
   stylelint-config-recommended-scss@16.0.2(postcss@8.5.6)(stylelint@16.26.1):
     dependencies:
       postcss-scss: 4.0.9(postcss@8.5.6)
       stylelint: 16.26.1
       stylelint-config-recommended: 17.0.0(stylelint@16.26.1)
-      stylelint-scss: 6.13.0(stylelint@16.26.1)
+      stylelint-scss: 6.14.0(stylelint@16.26.1)
     optionalDependencies:
       postcss: 8.5.6
 
@@ -2712,13 +2712,13 @@ snapshots:
     dependencies:
       stylelint: 16.26.1
 
-  stylelint-order@7.0.0(stylelint@16.26.1):
+  stylelint-order@7.0.1(stylelint@16.26.1):
     dependencies:
       postcss: 8.5.6
       postcss-sorting: 9.1.0(postcss@8.5.6)
       stylelint: 16.26.1
 
-  stylelint-scss@6.13.0(stylelint@16.26.1):
+  stylelint-scss@6.14.0(stylelint@16.26.1):
     dependencies:
       css-tree: 3.1.0
       is-plain-object: 5.0.0
