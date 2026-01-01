@@ -11,7 +11,12 @@ defmodule Doggo.Storybook.PageHeader do
       %Variation{
         id: :default,
         attributes: attributes(),
-        slots: slots(opts)
+        slots: slots(:default, opts)
+      },
+      %Variation{
+        id: :with_navigation,
+        attributes: attributes(),
+        slots: slots(:with_navigation, opts)
       }
     ]
   end
@@ -19,7 +24,7 @@ defmodule Doggo.Storybook.PageHeader do
   def modifier_variation_base(_id, _name, _value, opts) do
     %{
       attributes: attributes(),
-      slots: slots(opts)
+      slots: slots(:default, opts)
     }
   end
 
@@ -30,13 +35,28 @@ defmodule Doggo.Storybook.PageHeader do
     }
   end
 
-  defp slots(opts) do
+  defp slots(:default, opts) do
     dependent_components = opts[:dependent_components]
 
     [
       """
       <:action>
         #{patch_link("/puppies/new", "Add New Profile", dependent_components)}
+      </:action>
+      """
+    ]
+  end
+
+  defp slots(:with_navigation, opts) do
+    dependent_components = opts[:dependent_components]
+
+    [
+      """
+      <:navigation navigate="/puppies">
+        Back to puppy list
+      </:navigation>
+      <:action>
+        #{patch_link("/puppies/1/edit", "Edit Profile", dependent_components)}
       </:action>
       """
     ]
