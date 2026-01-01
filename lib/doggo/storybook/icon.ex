@@ -3,12 +3,13 @@ defmodule Doggo.Storybook.Icon do
   alias PhoenixStorybook.Stories.Variation
   alias PhoenixStorybook.Stories.VariationGroup
 
-  def variations(_opts) do
+  def variations(opts) do
+    [first_name | _] = names = get_names(opts)
+
     [
       %Variation{
         id: :default,
-        attributes: %{},
-        slots: slots()
+        attributes: %{name: first_name}
       },
       %VariationGroup{
         id: :text_ltr,
@@ -16,18 +17,27 @@ defmodule Doggo.Storybook.Icon do
         variations: [
           %Variation{
             id: :after,
-            attributes: %{text: "text after icon", text_position: "after"},
-            slots: slots()
+            attributes: %{
+              name: first_name,
+              text: "text after icon",
+              text_position: "after"
+            }
           },
           %Variation{
             id: :before,
-            attributes: %{text: "text before icon", text_position: "before"},
-            slots: slots()
+            attributes: %{
+              name: first_name,
+              text: "text before icon",
+              text_position: "before"
+            }
           },
           %Variation{
             id: :hidden,
-            attributes: %{text: "text hidden", text_position: "hidden"},
-            slots: slots()
+            attributes: %{
+              name: first_name,
+              text: "text hidden",
+              text_position: "hidden"
+            }
           }
         ]
       },
@@ -37,18 +47,27 @@ defmodule Doggo.Storybook.Icon do
         variations: [
           %Variation{
             id: :after,
-            attributes: %{text: "متن بعد از نماد", text_position: "after"},
-            slots: slots()
+            attributes: %{
+              name: first_name,
+              text: "متن بعد از نماد",
+              text_position: "after"
+            }
           },
           %Variation{
             id: :before,
-            attributes: %{text: "متن قبل از نماد", text_position: "before"},
-            slots: slots()
+            attributes: %{
+              name: first_name,
+              text: "متن قبل از نماد",
+              text_position: "before"
+            }
           },
           %Variation{
             id: :hidden,
-            attributes: %{text: "متن مخفی", text_position: "hidden"},
-            slots: slots()
+            attributes: %{
+              name: first_name,
+              text: "متن مخفی",
+              text_position: "hidden"
+            }
           }
         ],
         template: """
@@ -56,38 +75,57 @@ defmodule Doggo.Storybook.Icon do
           <.psb-variation />
         </div>
         """
+      },
+      %VariationGroup{
+        id: :names,
+        variations:
+          for name <- names do
+            %Variation{
+              id: :"name_#{name}",
+              attributes: %{
+                name: first_name
+              }
+            }
+          end
       }
     ]
   end
 
-  def modifier_variation_base(_id, _name, _value, _opts) do
+  def modifier_variation_base(_id, _name, _value, opts) do
+    [first_name | _] = get_names(opts)
+
     %{
-      attributes: %{},
-      slots: slots()
+      attributes: %{name: first_name}
     }
   end
 
-  def slots do
-    [
+  defp get_names(opts) do
+    names = opts |> Keyword.get(:extra, []) |> Keyword.get(:names, [])
+
+    names =
+      case names do
+        names when is_list(names) -> names
+        fun when is_function(fun) -> fun.()
+      end
+
+    if names == [] do
+      raise """
+      no names configured
+
+      To render a preview for the icon component, you need to pass a list of
+      icon names as a build option.
+
+          build_icon(icon_module: MyIcons, names: ["info", "question-mark"])
+
+      It is also possible to pass a function that returns such a list.
+
+          build_icon(icon_module: MyIcons, names: &MyIcons.names/0)
+
+      The list of names is only used in the storybook and does not have to be
+      comprehensive.
       """
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="lucide lucide-info"
-        aria-hidden="true"
-      >
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M12 16v-4"/>
-        <path d="M12 8h.01"/>
-      </svg>
-      """
-    ]
+    end
+
+    names
   end
 end

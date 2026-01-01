@@ -1,9 +1,13 @@
 # Changelog
 
+**Note:** You may need to force-compile your application when upgrading Doggo.
+
 ## Unreleased
 
 ### Changed
 
+- Breaking: The icon component renders the inner SVG with a referenced icon
+  module now instead of using an inner block.
 - Add `navigation` slot to `page_header` component.
 
 ## [0.11.0] - 2025-12-16
