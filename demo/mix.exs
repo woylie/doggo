@@ -11,6 +11,7 @@ defmodule Demo.MixProject do
       aliases: aliases(),
       deps: deps(),
       compilers: [:phoenix_live_view] ++ Mix.compilers(),
+      listeners: [Phoenix.CodeReloader],
       releases: [
         demo: [
           strip_beams: [

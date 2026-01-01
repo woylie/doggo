@@ -35,6 +35,25 @@ defmodule Doggo.Components.PageHeader do
       </section>
     </main>
     ```
+
+    With back link:
+
+    ```heex
+    <main>
+      <.page_header title="Puppy Profile">
+        <:navigation navigate={~p"/puppies"}>
+          Back to puppy list
+        </:navigation>
+        <:action>
+          <.button_link patch={~p"/puppies/new"}>Add New Profile</.button_link>
+        </:action>
+      </.page_header>
+
+      <section>
+        <!-- Content -->
+      </section>
+    </main>
+    ```
     """
   end
 
@@ -52,6 +71,7 @@ defmodule Doggo.Components.PageHeader do
   def nested_classes(base_class) do
     [
       "#{base_class}-actions",
+      "#{base_class}-navigation",
       "#{base_class}-title"
     ]
   end
@@ -67,6 +87,21 @@ defmodule Doggo.Components.PageHeader do
 
       attr :rest, :global, doc: "Any additional HTML attributes."
 
+      slot :navigation,
+        doc: """
+        Slot for a single link rendered before the title, typically used for a
+        back link.
+        """ do
+        attr :label, :string,
+          doc: """
+          Optional aria label for the link. Use if the link has no text content.
+          """
+
+        attr :href, :string
+        attr :navigate, :string
+        attr :patch, :string
+      end
+
       slot :action,
         doc: "A slot for action buttons related to the current page."
     end
@@ -81,6 +116,18 @@ defmodule Doggo.Components.PageHeader do
   def render(assigns) do
     ~H"""
     <header class={@class} {@rest}>
+      <div :if={@navigation != []} class={"#{@base_class}-navigation"}>
+        <.link
+          :for={navigation <- @navigation}
+          href={navigation[:href]}
+          navigate={navigation[:navigate]}
+          patch={navigation[:patch]}
+          phx-click={navigation[:on_click]}
+          aria-label={navigation[:label]}
+        >
+          {render_slot(navigation)}
+        </.link>
+      </div>
       <div class={"#{@base_class}-title"}>
         <h1>{@title}</h1>
         <p :if={@subtitle}>{@subtitle}</p>

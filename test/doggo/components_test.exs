@@ -2564,6 +2564,22 @@ defmodule Doggo.ComponentsTest do
       assert text(html, ":root > .page-header-title > p") == "All of them"
     end
 
+    test "with navigation" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.page_header title="Pets">
+          <:navigation navigate="/pets">Back to pets</:navigation>
+        </TestComponents.page_header>
+        """)
+
+      assert text(html, ":root > .page-header-navigation > a") == "Back to pets"
+
+      assert attribute(html, ":root > .page-header-navigation > a", "href") ==
+               "/pets"
+    end
+
     test "with action" do
       assigns = %{}
 

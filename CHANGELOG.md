@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Add `navigation` slot to `page_header` component.
+
 ## [0.11.0] - 2025-12-16
 
 ### Added
