@@ -49,7 +49,11 @@ defmodule Doggo.Storybook do
         ]
       end
 
-    story_opts = [dependent_components: dependent_components, name: name]
+    story_opts =
+      Keyword.merge(info,
+        dependent_components: dependent_components,
+        name: name
+      )
 
     quote do
       if unquote(imports) do

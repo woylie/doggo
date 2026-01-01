@@ -31,7 +31,7 @@ defmodule DemoWeb.CoreComponents do
   build_field()
   build_field_group()
   build_frame()
-  build_icon()
+  build_icon(icon_module: DemoWeb.Icons, names: &DemoWeb.Icons.names/0)
   build_icon_sprite()
   build_image()
   build_menu()

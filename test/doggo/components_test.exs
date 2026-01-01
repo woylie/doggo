@@ -34,7 +34,14 @@ defmodule Doggo.ComponentsTest do
     build_field(gettext_module: Doggo.Gettext)
     build_field_group()
     build_frame()
-    build_icon()
+    build_icon(icon_module: __MODULE__.Icons)
+
+    build_icon(
+      icon_module: __MODULE__.Icons,
+      icon_fun: :render,
+      name: :icon_with_fun
+    )
+
     build_icon_sprite()
     build_image()
     build_menu()
@@ -75,6 +82,22 @@ defmodule Doggo.ComponentsTest do
     )
 
     build_stack(name: :stack_with_recursive_class, recursive_class: "recursive")
+
+    defmodule Icons do
+      use Phoenix.Component
+
+      def render(assigns) do
+        ~H"""
+        <svg class={@name}></svg>
+        """
+      end
+
+      def info(assigns) do
+        ~H"""
+        <svg class="info"></svg>
+        """
+      end
+    end
   end
 
   describe "__dog_components__/0" do
@@ -1716,17 +1739,32 @@ defmodule Doggo.ComponentsTest do
   end
 
   describe "icon/1" do
-    test "default" do
+    test "with module" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
-        <TestComponents.icon>some-icon</TestComponents.icon>
+        <TestComponents.icon name="info" />
         """)
 
       span = find_one(html, "span:root")
       assert attribute(span, "class") == "icon"
-      assert text(span) == "some-icon"
+
+      assert find_one(html, "svg.info")
+    end
+
+    test "with module and function" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.icon_with_fun name="warning" />
+        """)
+
+      span = find_one(html, "span:root")
+      assert attribute(span, "class") == "icon"
+
+      assert find_one(html, "svg.warning")
     end
 
     test "with text" do
@@ -1734,12 +1772,14 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.icon text="some-text">some-icon</TestComponents.icon>
+        <TestComponents.icon name="info" text="some-text" />
         """)
 
       assert span = find_one(html, "span > span")
       assert attribute(span, "class") == "is-visually-hidden"
       assert text(span) == "some-text"
+
+      assert find_one(html, "svg.info")
     end
 
     test "with text before" do
@@ -1747,9 +1787,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.icon text="some-text" text_position="before">
-          some-icon
-        </TestComponents.icon>
+        <TestComponents.icon name="info" text="some-text" text_position="before" />
         """)
 
       span = find_one(html, "span:root")
@@ -1764,9 +1802,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.icon text="some-text" text_position="after">
-          some-icon
-        </TestComponents.icon>
+        <TestComponents.icon name="info" text="some-text" text_position="after" />
         """)
 
       span = find_one(html, "span:root")
@@ -1781,7 +1817,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.icon data-test="hello">some-icon</TestComponents.icon>
+        <TestComponents.icon name="info" data-test="hello" />
         """)
 
       assert attribute(html, ":root", "data-test") == "hello"

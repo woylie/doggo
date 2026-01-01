@@ -55,7 +55,21 @@ defmodule Doggo.StorybookTest do
     )
 
     build_frame()
-    build_icon(modifiers: [variant: [values: [nil, "yes"], default: nil]])
+
+    build_icon(
+      icon_module: __MODULE__.Icons,
+      names: ["info"],
+      modifiers: [variant: [values: [nil, "yes"], default: nil]]
+    )
+
+    build_icon(
+      icon_module: __MODULE__.Icons,
+      icon_fun: :render,
+      names: ["warning"],
+      name: :icon_with_fun,
+      modifiers: [variant: [values: [nil, "yes"], default: nil]]
+    )
+
     build_image(modifiers: [variant: [values: [nil, "yes"], default: nil]])
 
     build_menu(modifiers: [variant: [values: [nil, "yes"], default: nil]])
@@ -117,15 +131,29 @@ defmodule Doggo.StorybookTest do
     build_vertical_nav(
       modifiers: [variant: [values: [nil, "yes"], default: nil]]
     )
+
+    defmodule Icons do
+      use Phoenix.Component
+
+      def render(assigns) do
+        ~H"""
+        <svg class={@name}></svg>
+        """
+      end
+
+      def info(assigns) do
+        ~H"""
+        <svg class="info"></svg>
+        """
+      end
+    end
   end
 
   for {name, info} <- TestComponents.__dog_components__() do
-    component = Keyword.fetch!(info, :component)
-
     story_module =
       Module.concat([
         "Story",
-        component |> Atom.to_string() |> Macro.camelize()
+        name |> Atom.to_string() |> Macro.camelize()
       ])
 
     @tag name: name

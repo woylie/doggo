@@ -17,12 +17,15 @@ defmodule Doggo.Storybook.Shared do
     end
   end
 
-  def icon(name, dependent_components) do
-    if function_name = dependent_components[:icon] do
-      "<.#{function_name}>#{icon_svg(name)}</.#{function_name}>"
-    else
-      icon_svg(name)
-    end
+  def icon(name, _dependent_components) do
+    # This used to work before removing the inner block from the icon component.
+    # Now we'd have to get the available icon names and pick one.
+    # if function_name = dependent_components[:icon] do
+    #   "<.#{function_name}>#{icon_svg(name)}</.#{function_name}>"
+    # else
+    #   icon_svg(name)
+    # end
+    icon_svg(name)
   end
 
   defp icon_svg(:add) do
