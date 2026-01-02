@@ -214,7 +214,7 @@ defmodule Doggo do
     |> JS.remove_attribute("hidden", to: "##{id}-panel-#{index}")
     |> JS.set_attribute({"aria-selected", "false"}, to: other_tabs)
     |> JS.set_attribute({"tabindex", "-1"}, to: other_tabs)
-    |> JS.set_attribute({"hidden", "hidden"}, to: other_panels)
+    |> JS.set_attribute({"hidden", ""}, to: other_panels)
   end
 
   @doc false
@@ -224,7 +224,7 @@ defmodule Doggo do
     |> JS.toggle_attribute({"aria-expanded", "true", "false"},
       to: "##{id}-trigger-#{index}"
     )
-    |> JS.toggle_attribute({"hidden", "hidden"},
+    |> JS.toggle_attribute({"hidden", ""},
       to: "##{id}-section-#{index}"
     )
   end
@@ -233,7 +233,7 @@ defmodule Doggo do
   def toggle_disclosure(target_id) when is_binary(target_id) do
     %JS{}
     |> JS.toggle_attribute({"aria-expanded", "true", "false"})
-    |> JS.toggle_attribute({"hidden", "hidden"}, to: "##{target_id}")
+    |> JS.toggle_attribute({"hidden", ""}, to: "##{target_id}")
   end
 
   ## Modifier classes
