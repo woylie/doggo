@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## [0.12.0] - 2026-01-15
+
 ### Changed
 
 - Breaking: The icon component renders the inner SVG with a referenced icon
