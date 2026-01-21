@@ -54,7 +54,7 @@ defmodule Doggo.MixProject do
     [
       {:credo, "1.7.15", runtime: false, only: [:dev, :test]},
       {:dialyxir, "1.4.7", runtime: false, only: [:dev, :test]},
-      {:ex_doc, "== 0.40.0", only: :dev, runtime: false},
+      {:ex_doc, "0.40.0", only: :dev, runtime: false},
       {:excoveralls, "0.18.5", runtime: false, only: [:test]},
       {:floki, "0.38.0", only: :test},
       {:gettext, "~> 0.20 or ~> 0.26 or ~> 1.0", optional: true},
