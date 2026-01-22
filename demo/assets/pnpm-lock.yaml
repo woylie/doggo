@@ -40,8 +40,8 @@ importers:
         specifier: 3.8.1
         version: 3.8.1
       style-dictionary:
-        specifier: 5.1.4
-        version: 5.1.4
+        specifier: 5.2.0
+        version: 5.2.0
       stylelint:
         specifier: 17.0.0
         version: 17.0.0
@@ -1357,8 +1357,8 @@ packages:
     resolution: {integrity: sha512-gmBGslpoQJtgnMAvOVqGZpEz9dyoKTCzy2nfz/n8aIFhN/jCE/rCmcxabB6jOOHV+0WNnylOxaxBQPSvcWklhA==}
     engines: {node: '>=12'}
 
-  style-dictionary@5.1.4:
-    resolution: {integrity: sha512-ig12xIuflWzvIQ+q+WlOynKS7B3+sE6Tj2XUeqtjv8mB+ljcomWJcc8PGcgrbYWXWY1GXw1rBEcsKY31qsmcNQ==}
+  style-dictionary@5.2.0:
+    resolution: {integrity: sha512-9jPX4uVOc+EXFaRFk7kR9+IzvW3Yy0DJTRAqrndvV5rOTAPF+DSDK7q+YKTzCIB2MGjv1KXtKzMcozprZcRfcg==}
     engines: {node: '>=22.0.0'}
     hasBin: true
 
@@ -2678,7 +2678,7 @@ snapshots:
     dependencies:
       ansi-regex: 6.2.2
 
-  style-dictionary@5.1.4:
+  style-dictionary@5.2.0:
     dependencies:
       '@bundled-es-modules/deepmerge': 4.3.1
       '@bundled-es-modules/glob': 11.1.0
