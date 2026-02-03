@@ -43,17 +43,17 @@ importers:
         specifier: 5.2.0
         version: 5.2.0(tslib@2.8.1)
       stylelint:
-        specifier: 17.1.0
-        version: 17.1.0
+        specifier: 17.1.1
+        version: 17.1.1
       stylelint-config-recess-order:
         specifier: 7.6.0
-        version: 7.6.0(stylelint-order@7.0.1(stylelint@17.1.0))(stylelint@17.1.0)
+        version: 7.6.0(stylelint-order@7.0.1(stylelint@17.1.1))(stylelint@17.1.1)
       stylelint-config-standard-scss:
         specifier: 17.0.0
-        version: 17.0.0(postcss@8.5.6)(stylelint@17.1.0)
+        version: 17.0.0(postcss@8.5.6)(stylelint@17.1.1)
       stylelint-declaration-strict-value:
         specifier: 1.10.11
-        version: 1.10.11(stylelint@17.1.0)
+        version: 1.10.11(stylelint@17.1.1)
 
 packages:
 
@@ -827,6 +827,7 @@ packages:
   glob@11.1.0:
     resolution: {integrity: sha512-vuNwKSaKiqm7g0THUBu2x7ckSs3XJLXE+2ssL7/MfTGPLLcrJQ/4Uq1CjPTtO5cCIiRxqvN6Twy1qOwhL0Xjcw==}
     engines: {node: 20 || >=22}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
   global-modules@2.0.0:
@@ -1514,8 +1515,8 @@ packages:
     peerDependencies:
       stylelint: ^16.8.2 || ^17.0.0
 
-  stylelint@17.1.0:
-    resolution: {integrity: sha512-+cUX1FxkkbLX5qJRAPapUv/+v+YU3pGbWu+pHVqTXpiY0mYh3Dxfxa0bLBtVtYgOC8hIWIyX2H/3Y3LWlAevDg==}
+  stylelint@17.1.1:
+    resolution: {integrity: sha512-SBHVcLEcRF1M9OkD3oT0hT2PayDNLw2hd+aovmzfNQ2ys4Xd3oS9ZNizILWqhQvW802AqKN/vUTMwJqQYMBlWw==}
     engines: {node: '>=20.19.0'}
     hasBin: true
 
@@ -2889,48 +2890,48 @@ snapshots:
     transitivePeerDependencies:
       - tslib
 
-  stylelint-config-recess-order@7.6.0(stylelint-order@7.0.1(stylelint@17.1.0))(stylelint@17.1.0):
+  stylelint-config-recess-order@7.6.0(stylelint-order@7.0.1(stylelint@17.1.1))(stylelint@17.1.1):
     dependencies:
-      stylelint: 17.1.0
-      stylelint-order: 7.0.1(stylelint@17.1.0)
+      stylelint: 17.1.1
+      stylelint-order: 7.0.1(stylelint@17.1.1)
 
-  stylelint-config-recommended-scss@17.0.0(postcss@8.5.6)(stylelint@17.1.0):
+  stylelint-config-recommended-scss@17.0.0(postcss@8.5.6)(stylelint@17.1.1):
     dependencies:
       postcss-scss: 4.0.9(postcss@8.5.6)
-      stylelint: 17.1.0
-      stylelint-config-recommended: 18.0.0(stylelint@17.1.0)
-      stylelint-scss: 7.0.0(stylelint@17.1.0)
+      stylelint: 17.1.1
+      stylelint-config-recommended: 18.0.0(stylelint@17.1.1)
+      stylelint-scss: 7.0.0(stylelint@17.1.1)
     optionalDependencies:
       postcss: 8.5.6
 
-  stylelint-config-recommended@18.0.0(stylelint@17.1.0):
+  stylelint-config-recommended@18.0.0(stylelint@17.1.1):
     dependencies:
-      stylelint: 17.1.0
+      stylelint: 17.1.1
 
-  stylelint-config-standard-scss@17.0.0(postcss@8.5.6)(stylelint@17.1.0):
+  stylelint-config-standard-scss@17.0.0(postcss@8.5.6)(stylelint@17.1.1):
     dependencies:
-      stylelint: 17.1.0
-      stylelint-config-recommended-scss: 17.0.0(postcss@8.5.6)(stylelint@17.1.0)
-      stylelint-config-standard: 40.0.0(stylelint@17.1.0)
+      stylelint: 17.1.1
+      stylelint-config-recommended-scss: 17.0.0(postcss@8.5.6)(stylelint@17.1.1)
+      stylelint-config-standard: 40.0.0(stylelint@17.1.1)
     optionalDependencies:
       postcss: 8.5.6
 
-  stylelint-config-standard@40.0.0(stylelint@17.1.0):
+  stylelint-config-standard@40.0.0(stylelint@17.1.1):
     dependencies:
-      stylelint: 17.1.0
-      stylelint-config-recommended: 18.0.0(stylelint@17.1.0)
+      stylelint: 17.1.1
+      stylelint-config-recommended: 18.0.0(stylelint@17.1.1)
 
-  stylelint-declaration-strict-value@1.10.11(stylelint@17.1.0):
+  stylelint-declaration-strict-value@1.10.11(stylelint@17.1.1):
     dependencies:
-      stylelint: 17.1.0
+      stylelint: 17.1.1
 
-  stylelint-order@7.0.1(stylelint@17.1.0):
+  stylelint-order@7.0.1(stylelint@17.1.1):
     dependencies:
       postcss: 8.5.6
       postcss-sorting: 9.1.0(postcss@8.5.6)
-      stylelint: 17.1.0
+      stylelint: 17.1.1
 
-  stylelint-scss@7.0.0(stylelint@17.1.0):
+  stylelint-scss@7.0.0(stylelint@17.1.1):
     dependencies:
       css-tree: 3.1.0
       is-plain-object: 5.0.0
@@ -2940,9 +2941,9 @@ snapshots:
       postcss-resolve-nested-selector: 0.1.6
       postcss-selector-parser: 7.1.1
       postcss-value-parser: 4.2.0
-      stylelint: 17.1.0
+      stylelint: 17.1.1
 
-  stylelint@17.1.0:
+  stylelint@17.1.1:
     dependencies:
       '@csstools/css-parser-algorithms': 4.0.0(@csstools/css-tokenizer@4.0.0)
       '@csstools/css-syntax-patches-for-csstree': 1.0.26
