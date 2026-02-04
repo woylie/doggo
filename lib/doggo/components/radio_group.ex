@@ -128,6 +128,7 @@ defmodule Doggo.Components.RadioGroup do
       aria-label={@label}
       aria-labelledby={@labelledby}
       class={@class}
+      {@data_attrs}
       {@rest}
     >
       <.radio

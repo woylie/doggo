@@ -84,7 +84,7 @@ defmodule Doggo.Macros do
           unquote(attrs_and_slots)
 
           def unquote(name)(var!(assigns)) do
-            unquote(prepare_class(opts))
+            unquote(prepare_class_and_data_attrs(opts))
             unquote(module.init_block(opts, extra))
             unquote(module).render(var!(assigns))
           end
@@ -206,64 +206,50 @@ defmodule Doggo.Macros do
     |> Enum.map_join("\n", &String.trim("> #{&1}"))
   end
 
-  def prepare_class(opts) do
+  def prepare_class_and_data_attrs(opts) do
     modifiers = Keyword.fetch!(opts, :modifiers)
     modifier_names = Keyword.keys(modifiers)
     base_class = Keyword.fetch!(opts, :base_class)
-    class_name_fun = Keyword.fetch!(opts, :class_name_fun)
-    modifier_class_fun = modifier_class_fun(modifier_names, class_name_fun)
 
     quote do
-      unquote(modifier_class_fun)
-
       additional_classes =
         if value = var!(assigns)[:class], do: List.wrap(value), else: []
 
-      unquote(combine_classes(base_class, modifier_names))
+      unquote(combine_classes(base_class))
+      unquote(build_data_attrs(modifier_names))
 
       var!(assigns) =
         assign(var!(assigns), base_class: unquote(base_class), class: class)
     end
   end
 
-  defp modifier_class_fun([], _), do: nil
-
-  defp modifier_class_fun(modifier_names, class_name_fun) do
-    quote do
-      var!(class) =
-        for name <- unquote(modifier_names) do
-          case var!(assigns) do
-            %{^name => value} when is_binary(value) ->
-              unquote(class_name_fun).(name, value)
-
-            _ ->
-              nil
-          end
-        end
-    end
-  end
-
-  defp combine_classes(nil, []) do
+  defp combine_classes(nil) do
     quote do
       class = additional_classes
     end
   end
 
-  defp combine_classes(nil, _modifier_names) do
-    quote do
-      class = var!(class) ++ additional_classes
-    end
-  end
-
-  defp combine_classes(base_class, []) do
+  defp combine_classes(base_class) do
     quote do
       class = [unquote(base_class) | additional_classes]
     end
   end
 
-  defp combine_classes(base_class, _modifier_namess) do
+  defp build_data_attrs([]) do
     quote do
-      class = [unquote(base_class) | var!(class)] ++ additional_classes
+      var!(assigns) = assign(var!(assigns), :data_attrs, [])
+    end
+  end
+
+  defp build_data_attrs(modifier_names) do
+    quote do
+      {modifier_assigns, var!(assigns)} =
+        Map.split(var!(assigns), unquote(modifier_names))
+
+      var!(assigns) =
+        assign(var!(assigns), :data_attrs, %{
+          data: Keyword.new(modifier_assigns)
+        })
     end
   end
 

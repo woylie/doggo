@@ -136,7 +136,7 @@ defmodule Doggo.Components.IconSprite do
   @impl true
   def render(assigns) do
     ~H"""
-    <span class={@class} {@rest}>
+    <span class={@class} {@data_attrs} {@rest}>
       <svg aria-hidden="true"><use href={"#{@sprite_url}##{@name}"} /></svg>
       <span :if={@text} class={@text_class}>
         {@text}

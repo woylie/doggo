@@ -94,7 +94,7 @@ defmodule Doggo.Components.Accordion do
   @impl true
   def render(assigns) do
     ~H"""
-    <div id={@id} class={@class} {@rest}>
+    <div id={@id} class={@class} {@data_attrs} {@rest}>
       <.section
         :for={{section, index} <- Enum.with_index(@section, 1)}
         section={section}

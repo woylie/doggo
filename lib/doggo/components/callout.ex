@@ -95,6 +95,7 @@ defmodule Doggo.Components.Callout do
       id={@id}
       class={@class}
       aria-labelledby={@title && "#{@id}-title"}
+      {@data_attrs}
       {@rest}
     >
       <div :if={@icon != []} class={"#{@base_class}-icon"}>

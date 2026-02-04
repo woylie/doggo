@@ -167,7 +167,7 @@ defmodule Doggo.Components.Combobox do
       )
 
     ~H"""
-    <div class={@class} {@rest}>
+    <div class={@class} {@data_attrs} {@rest}>
       <div role="group">
         <input
           id={@id}

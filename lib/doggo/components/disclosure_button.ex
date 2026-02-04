@@ -116,6 +116,7 @@ defmodule Doggo.Components.DisclosureButton do
       aria-controls={@controls}
       phx-click={Doggo.toggle_disclosure(@controls)}
       class={@class}
+      {@data_attrs}
       {@rest}
     >
       {render_slot(@inner_block)}

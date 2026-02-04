@@ -20,14 +20,6 @@ defmodule Doggo.Components.ButtonLink do
   end
 
   @impl true
-  def builder_doc do
-    """
-    - `:disabled_class` - This class name is added if the `:disabled` attribute
-      is set to `true`.
-    """
-  end
-
-  @impl true
   def usage do
     """
     ```heex
@@ -54,7 +46,7 @@ defmodule Doggo.Components.ButtonLink do
       type: :buttons,
       since: "0.6.0",
       maturity: :stable,
-      extra: [disabled_class: "is-disabled"],
+      extra: [],
       modifiers: [
         variant: [
           values: [
@@ -115,27 +107,14 @@ defmodule Doggo.Components.ButtonLink do
   end
 
   @impl true
-  def init_block(_opts, extra) do
-    disabled_class = Keyword.fetch!(extra, :disabled_class)
-
-    quote do
-      var!(assigns) =
-        if var!(assigns)[:disabled] do
-          Map.update!(
-            var!(assigns),
-            :class,
-            &(&1 ++ [unquote(disabled_class)])
-          )
-        else
-          var!(assigns)
-        end
-    end
+  def init_block(_opts, _extra) do
+    []
   end
 
   @impl true
   def render(assigns) do
     ~H"""
-    <.link class={@class} {@rest}>
+    <.link class={@class} data-disabled={@disabled} {@data_attrs} {@rest}>
       {render_slot(@inner_block)}
     </.link>
     """

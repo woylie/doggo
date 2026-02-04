@@ -131,6 +131,7 @@ defmodule Doggo.Components.Toolbar do
       aria-label={@label}
       aria-labelledby={@labelledby}
       aria-controls={@controls}
+      {@data_attrs}
       {@rest}
     >
       {render_slot(@inner_block)}

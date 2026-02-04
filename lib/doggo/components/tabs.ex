@@ -118,7 +118,7 @@ defmodule Doggo.Components.Tabs do
     Doggo.ensure_label!(assigns, ".tabs", "Dog Facts")
 
     ~H"""
-    <div id={@id} class={@class} {@rest}>
+    <div id={@id} class={@class} {@data_attrs} {@rest}>
       <div role="tablist" aria-label={@label} aria-labelledby={@labelledby}>
         <button
           :for={{panel, index} <- Enum.with_index(@panel, 1)}

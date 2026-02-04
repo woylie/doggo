@@ -40,15 +40,15 @@ defmodule Doggo.Components.Image do
         ratio: [
           values: [
             nil,
-            "1-by-1",
-            "3-by-2",
-            "2-by-3",
-            "4-by-3",
-            "3-by-4",
-            "5-by-4",
-            "4-by-5",
-            "16-by-9",
-            "9-by-16"
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "16:9",
+            "9:16"
           ],
           default: nil
         ]

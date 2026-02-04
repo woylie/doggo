@@ -117,6 +117,7 @@ defmodule Doggo.Components.Tooltip do
       class={@class}
       aria-describedby={"#{@id}-tooltip"}
       data-aria-tooltip
+      {@data_attrs}
       {@rest}
     >
       <span tabindex={!@contains_link && "0"}>

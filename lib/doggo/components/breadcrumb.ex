@@ -79,7 +79,7 @@ defmodule Doggo.Components.Breadcrumb do
       )
 
     ~H"""
-    <nav aria-label={@label} class={@class} {@rest}>
+    <nav aria-label={@label} class={@class} {@data_attrs} {@rest}>
       <ol>
         <li :for={current_item <- @item}>
           <.breadcrumb_link item={current_item} />

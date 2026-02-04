@@ -27,7 +27,8 @@ defmodule Doggo.Components.AlertTest do
       div = find_one(html, "div:root")
       assert attribute(div, "id") == "some-alert"
       assert attribute(div, "role") == "alert"
-      assert attribute(div, "class") == "alert is-info"
+      assert attribute(div, "class") == "alert"
+      assert attribute(div, "data-level") == "info"
       assert attribute(div, "aria-labelledby") == nil
 
       assert text(html, ":root > .alert-body > .alert-message") == "message"
@@ -47,7 +48,8 @@ defmodule Doggo.Components.AlertTest do
         </TestComponents.alert>
         """)
 
-      assert attribute(html, ":root", "class") == "alert is-warning"
+      assert attribute(html, ":root", "class") == "alert"
+      assert attribute(html, ":root", "data-level") == "warning"
     end
 
     test "with title" do

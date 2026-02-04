@@ -103,7 +103,7 @@ defmodule Doggo.Components.MenuGroup do
   @impl true
   def render(assigns) do
     ~H"""
-    <ul class={@class} role="group" aria-label={@label} {@rest}>
+    <ul class={@class} role="group" aria-label={@label} {@data_attrs} {@rest}>
       <li :for={item <- @item} role={item[:role] || "none"}>
         <%= if item[:role] != "separator" do %>
           {render_slot(item)}

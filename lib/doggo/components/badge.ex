@@ -70,7 +70,7 @@ defmodule Doggo.Components.Badge do
   @impl true
   def render(assigns) do
     ~H"""
-    <span class={@class} {@rest}>
+    <span class={@class} {@data_attrs} {@rest}>
       {render_slot(@inner_block)}
     </span>
     """

@@ -155,7 +155,7 @@ defmodule Doggo.Components.Table do
       end
 
     ~H"""
-    <div class={@class} {@rest}>
+    <div class={@class} {@data_attrs} {@rest}>
       <table id={@id}>
         <caption :if={@caption}>{@caption}</caption>
         <colgroup :if={

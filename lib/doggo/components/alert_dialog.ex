@@ -153,6 +153,7 @@ defmodule Doggo.Components.AlertDialog do
       phx-mounted={@open && Doggo.show_modal(@id)}
       phx-remove={Doggo.hide_modal(@id)}
       data-cancel={Phoenix.LiveView.JS.exec(@on_cancel, "phx-remove")}
+      {@data_attrs}
       {@rest}
     >
       <.focus_wrap

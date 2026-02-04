@@ -24,7 +24,8 @@ defmodule Doggo.Components.AvatarTest do
         <TestComponents.avatar src="avatar.png" />
         """)
 
-      assert attribute(html, "div:root", "class") == "avatar is-normal"
+      assert attribute(html, "div:root", "class") == "avatar"
+      assert attribute(html, "div:root", "data-size") == "normal"
 
       img = find_one(html, ":root > img")
       assert attribute(img, "src") == "avatar.png"
@@ -40,7 +41,8 @@ defmodule Doggo.Components.AvatarTest do
         <TestComponents.avatar src="avatar.png" size="large" />
         """)
 
-      assert attribute(html, "div:root", "class") == "avatar is-large"
+      assert attribute(html, "div:root", "class") == "avatar"
+      assert attribute(html, "div:root", "data-size") == "large"
     end
 
     test "with circle" do
@@ -51,8 +53,9 @@ defmodule Doggo.Components.AvatarTest do
         <TestComponents.avatar src="avatar.png" shape="circle" />
         """)
 
-      assert attribute(html, "div:root", "class") ==
-               "avatar is-normal is-circle"
+      assert attribute(html, "div:root", "class") == "avatar"
+      assert attribute(html, "div:root", "data-size") == "normal"
+      assert attribute(html, "div:root", "data-shape") == "circle"
     end
 
     test "with loading" do

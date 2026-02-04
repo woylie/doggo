@@ -365,7 +365,7 @@ defmodule Doggo.Components.Field do
       end)
 
     ~H"""
-    <div class={@class}>
+    <div class={@class} {@data_attrs}>
       <.label
         required={@validations[:required] || false}
         required_text={@required_text}
@@ -404,7 +404,7 @@ defmodule Doggo.Components.Field do
 
   def render(%{type: "checkbox-group"} = assigns) do
     ~H"""
-    <div class={@class}>
+    <div class={@class} {@data_attrs}>
       <fieldset class={"#{@base_class}-checkbox-group"}>
         <legend>
           {@label}
@@ -459,7 +459,7 @@ defmodule Doggo.Components.Field do
 
   def render(%{type: "radio-group"} = assigns) do
     ~H"""
-    <div class={@class}>
+    <div class={@class} {@data_attrs}>
       <fieldset class={"#{@base_class}-radio-group"}>
         <legend>
           {@label}
@@ -505,7 +505,7 @@ defmodule Doggo.Components.Field do
       )
 
     ~H"""
-    <div class={@class}>
+    <div class={@class} {@data_attrs}>
       <.label
         for={@id}
         required={@validations[:required] || false}
@@ -556,7 +556,7 @@ defmodule Doggo.Components.Field do
       end)
 
     ~H"""
-    <div class={@class}>
+    <div class={@class} {@data_attrs}>
       <.label
         required={@validations[:required] || false}
         required_text={@required_text}
@@ -612,7 +612,7 @@ defmodule Doggo.Components.Field do
 
   def render(%{type: "textarea"} = assigns) do
     ~H"""
-    <div class={@class}>
+    <div class={@class} {@data_attrs}>
       <.label
         for={@id}
         required={@validations[:required] || false}
@@ -648,7 +648,7 @@ defmodule Doggo.Components.Field do
 
   def render(assigns) do
     ~H"""
-    <div class={@class}>
+    <div class={@class} {@data_attrs}>
       <.label
         for={@id}
         required={@validations[:required] || false}

@@ -78,7 +78,7 @@ defmodule Doggo.Components.ActionBar do
   @impl true
   def render(assigns) do
     ~H"""
-    <div role="toolbar" class={@class} {@rest}>
+    <div role="toolbar" class={@class} {@data_attrs} {@rest}>
       <button :for={item <- @item} phx-click={item.on_click} title={item.label}>
         {render_slot(item)}
       </button>

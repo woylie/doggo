@@ -232,7 +232,7 @@ defmodule Doggo.Components.Icon do
   @impl true
   def render(assigns) do
     ~H"""
-    <span class={@class} {@rest}>
+    <span class={@class} {@data_attrs} {@rest}>
       <Doggo.Components.Icon.dynamic_icon
         name={@name}
         module={@icon_module}

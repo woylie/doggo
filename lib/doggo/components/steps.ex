@@ -143,7 +143,7 @@ defmodule Doggo.Components.Steps do
   @impl true
   def render(assigns) do
     ~H"""
-    <nav aria-label={@label} class={@class} {@rest}>
+    <nav aria-label={@label} class={@class} {@data_attrs} {@rest}>
       <ol>
         <.step
           :for={{step, index} <- Enum.with_index(@step)}

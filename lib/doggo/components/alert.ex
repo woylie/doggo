@@ -108,6 +108,7 @@ defmodule Doggo.Components.Alert do
       role="alert"
       aria-labelledby={@title && "#{@id}-title"}
       class={@class}
+      {@data_attrs}
       {@rest}
     >
       <div :if={@icon != []} class={"#{@base_class}-icon"}>

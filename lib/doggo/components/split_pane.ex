@@ -136,7 +136,13 @@ defmodule Doggo.Components.SplitPane do
     Doggo.ensure_label!(assigns, ".split_pane", "Sidebar")
 
     ~H"""
-    <div id={@id} class={@class} data-orientation={@orientation} {@rest}>
+    <div
+      id={@id}
+      class={@class}
+      data-orientation={@orientation}
+      {@data_attrs}
+      {@rest}
+    >
       <div id={"#{@id}-primary"}>{render_slot(@primary)}</div>
       <div
         role="separator"

@@ -76,11 +76,6 @@ defmodule Doggo.ComponentsTest do
     build_vertical_nav_nested()
     build_vertical_nav_section()
 
-    build_button_link(
-      name: :button_link_with_disabled_class,
-      disabled_class: "disabled"
-    )
-
     build_stack(name: :stack_with_recursive_class, recursive_class: "recursive")
 
     defmodule Icons do
@@ -102,8 +97,7 @@ defmodule Doggo.ComponentsTest do
 
   describe "__dog_components__/0" do
     test "returns map of components" do
-      assert %{button_link: _, button_link_with_disabled_class: _} =
-               TestComponents.__dog_components__()
+      assert %{button_link: _} = TestComponents.__dog_components__()
     end
   end
 
@@ -117,7 +111,8 @@ defmodule Doggo.ComponentsTest do
         """)
 
       span = find_one(html, "span")
-      assert attribute(span, "class") == "badge is-normal"
+      assert attribute(span, "class") == "badge"
+      assert attribute(span, "data-size") == "normal"
       assert text(span) == "value"
     end
 
@@ -130,7 +125,8 @@ defmodule Doggo.ComponentsTest do
         """)
 
       span = find_one(html, "span")
-      assert attribute(span, "class") == "badge is-large"
+      assert attribute(span, "class") == "badge"
+      assert attribute(span, "data-size") == "large"
     end
 
     test "with variant" do
@@ -142,7 +138,9 @@ defmodule Doggo.ComponentsTest do
         """)
 
       span = find_one(html, "span")
-      assert attribute(span, "class") == "badge is-normal is-secondary"
+      assert attribute(span, "class") == "badge"
+      assert attribute(span, "data-variant") == "secondary"
+      assert attribute(span, "data-size") == "normal"
     end
 
     test "with global attribute" do
@@ -414,8 +412,10 @@ defmodule Doggo.ComponentsTest do
       button = find_one(html, "button:root")
       assert attribute(button, "type") == "button"
 
-      assert attribute(button, "class") ==
-               "button is-primary is-normal is-solid"
+      assert attribute(button, "class") == "button"
+      assert attribute(button, "data-variant") == "primary"
+      assert attribute(button, "data-size") == "normal"
+      assert attribute(button, "data-fill") == "solid"
 
       assert text(button) == "Confirm"
     end
@@ -430,8 +430,7 @@ defmodule Doggo.ComponentsTest do
 
       button = find_one(html, "button:root")
 
-      assert attribute(button, "class") ==
-               "button is-primary is-normal is-solid mt-4"
+      assert attribute(button, "class") == "button mt-4"
     end
 
     test "with multiple additional classes as string" do
@@ -444,8 +443,7 @@ defmodule Doggo.ComponentsTest do
 
       button = find_one(html, "button:root")
 
-      assert attribute(button, "class") ==
-               "button is-primary is-normal is-solid mt-4 mb-2"
+      assert attribute(button, "class") == "button mt-4 mb-2"
     end
 
     test "with multiple additional classes as list" do
@@ -458,8 +456,7 @@ defmodule Doggo.ComponentsTest do
 
       button = find_one(html, "button:root")
 
-      assert attribute(button, "class") ==
-               "button is-primary is-normal is-solid mt-4 mb-2"
+      assert attribute(button, "class") == "button mt-4 mb-2"
     end
 
     test "disabled" do
@@ -492,8 +489,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.button variant="danger">Confirm</TestComponents.button>
         """)
 
-      assert attribute(html, "button:root", "class") ==
-               "button is-danger is-normal is-solid"
+      assert attribute(html, "button:root", "class") == "button"
+      assert attribute(html, "button:root", "data-variant") == "danger"
     end
 
     test "with size" do
@@ -504,8 +501,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.button size="large">Confirm</TestComponents.button>
         """)
 
-      assert attribute(html, "button:root", "class") ==
-               "button is-primary is-large is-solid"
+      assert attribute(html, "button:root", "class") == "button"
+      assert attribute(html, "button:root", "data-size") == "large"
     end
 
     test "with shape" do
@@ -516,8 +513,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.button shape="pill">Confirm</TestComponents.button>
         """)
 
-      assert attribute(html, "button:root", "class") ==
-               "button is-primary is-normal is-solid is-pill"
+      assert attribute(html, "button:root", "class") == "button"
+      assert attribute(html, "button:root", "data-shape") == "pill"
     end
 
     test "with fill" do
@@ -528,8 +525,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.button fill="outline">Confirm</TestComponents.button>
         """)
 
-      assert attribute(html, "button:root", "class") ==
-               "button is-primary is-normal is-outline"
+      assert attribute(html, "button:root", "class") == "button"
+      assert attribute(html, "button:root", "data-fill") == "outline"
     end
   end
 
@@ -546,7 +543,10 @@ defmodule Doggo.ComponentsTest do
 
       a = find_one(html, "a:root")
       assert attribute(a, "role") == nil
-      assert attribute(a, "class") == "button is-primary is-normal is-solid"
+      assert attribute(a, "class") == "button"
+      assert attribute(a, "data-variant") == "primary"
+      assert attribute(a, "data-size") == "normal"
+      assert attribute(a, "data-fill") == "solid"
       assert attribute(a, "href") == "/confirm"
       assert text(a) == "Confirm"
     end
@@ -559,22 +559,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.button_link disabled>Confirm</TestComponents.button_link>
         """)
 
-      assert attribute(html, "a:root", "class") ==
-               "button is-primary is-normal is-solid is-disabled"
-    end
-
-    test "disabled with custom disabled class" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.button_link_with_disabled_class disabled>
-          Confirm
-        </TestComponents.button_link_with_disabled_class>
-        """)
-
-      assert attribute(html, "a:root", "class") ==
-               "button is-primary is-normal is-solid disabled"
+      assert attribute(html, "a:root", "class") == "button"
+      assert attribute(html, "a:root", "data-disabled") == "data-disabled"
     end
 
     test "with variant" do
@@ -585,8 +571,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.button_link variant="info">Confirm</TestComponents.button_link>
         """)
 
-      assert attribute(html, "a:root", "class") ==
-               "button is-info is-normal is-solid"
+      assert attribute(html, "a:root", "class") == "button"
+      assert attribute(html, "a:root", "data-variant") == "info"
     end
 
     test "with size" do
@@ -597,8 +583,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.button_link size="small">Confirm</TestComponents.button_link>
         """)
 
-      assert attribute(html, "a:root", "class") ==
-               "button is-primary is-small is-solid"
+      assert attribute(html, "a:root", "class") == "button"
+      assert attribute(html, "a:root", "data-size") == "small"
     end
 
     test "with shape" do
@@ -609,8 +595,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.button_link shape="pill">Confirm</TestComponents.button_link>
         """)
 
-      assert attribute(html, "a:root", "class") ==
-               "button is-primary is-normal is-solid is-pill"
+      assert attribute(html, "a:root", "class") == "button"
+      assert attribute(html, "a:root", "data-shape") == "pill"
     end
 
     test "with fill" do
@@ -621,8 +607,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.button_link fill="text">Confirm</TestComponents.button_link>
         """)
 
-      assert attribute(html, "a:root", "class") ==
-               "button is-primary is-normal is-text"
+      assert attribute(html, "a:root", "class") == "button"
+      assert attribute(html, "a:root", "data-fill") == "text"
     end
 
     test "with global attribute" do
@@ -649,7 +635,8 @@ defmodule Doggo.ComponentsTest do
         """)
 
       aside = find_one(html, "aside:root")
-      assert attribute(aside, "class") == "callout is-info"
+      assert attribute(aside, "class") == "callout"
+      assert attribute(aside, "data-variant") == "info"
       assert attribute(aside, "id") == "my-callout"
       assert attribute(aside, "aria-labelledby") == nil
 
@@ -1640,10 +1627,12 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.frame ratio="16-by-9">image</TestComponents.frame>
+        <TestComponents.frame ratio="16:9">image</TestComponents.frame>
         """)
 
-      assert attribute(html, "div", "class") == "frame is-16-by-9"
+      assert attribute(html, "div", "class") == "frame"
+      assert attribute(html, "div", "data-numerator") == "16"
+      assert attribute(html, "div", "data-denominator") == "9"
     end
 
     test "with circle" do
@@ -1654,7 +1643,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.frame shape="circle">image</TestComponents.frame>
         """)
 
-      assert attribute(html, "div", "class") == "frame is-circle"
+      assert attribute(html, "div", "class") == "frame"
+      assert attribute(html, "div", "data-shape") == "circle"
     end
   end
 
@@ -1943,10 +1933,12 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.image src="image.png" alt="some text" ratio="3-by-2" />
+        <TestComponents.image src="image.png" alt="some text" ratio="3:2" />
         """)
 
-      assert attribute(html, ":root", "class") == "image is-3-by-2"
+      assert attribute(html, ":root", "class") == "image"
+      assert attribute(html, ":root", "data-numerator") == "3"
+      assert attribute(html, ":root", "data-denominator") == "2"
     end
 
     test "with caption" do
@@ -2781,7 +2773,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.skeleton type="circle" />
         """)
 
-      assert attribute(html, "div:root", "class") == "skeleton is-circle"
+      assert attribute(html, "div:root", "class") == "skeleton"
+      assert attribute(html, "div:root", "data-type") == "circle"
     end
 
     test "with text block" do
@@ -2792,7 +2785,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.skeleton type="text-block" />
         """)
 
-      assert attribute(html, "div:root", "class") == "skeleton is-text-block"
+      assert attribute(html, "div:root", "class") == "skeleton"
+      assert attribute(html, "div:root", "data-type") == "text-block"
     end
 
     test "with global attribute" do
@@ -3512,7 +3506,8 @@ defmodule Doggo.ComponentsTest do
         """)
 
       span = find_one(html, "span")
-      assert attribute(span, "class") == "tag is-normal"
+      assert attribute(span, "class") == "tag"
+      assert attribute(span, "data-size") == "normal"
       assert text(span) == "value"
     end
 
@@ -3524,7 +3519,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.tag size="medium">value</TestComponents.tag>
         """)
 
-      assert attribute(html, "span", "class") == "tag is-medium"
+      assert attribute(html, "span", "class") == "tag"
+      assert attribute(html, "span", "data-size") == "medium"
     end
 
     test "with variant" do
@@ -3535,7 +3531,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.tag variant="primary">value</TestComponents.tag>
         """)
 
-      assert attribute(html, "span", "class") == "tag is-normal is-primary"
+      assert attribute(html, "span", "class") == "tag"
+      assert attribute(html, "span", "data-variant") == "primary"
     end
 
     test "with shape" do
@@ -3546,7 +3543,9 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.tag shape="pill">value</TestComponents.tag>
         """)
 
-      assert attribute(html, "span", "class") == "tag is-normal is-pill"
+      assert attribute(html, "span", "class") == "tag"
+      assert attribute(html, "span", "data-shape") == "pill"
+      assert attribute(html, "span", "data-size") == "normal"
     end
   end
 
@@ -3900,8 +3899,8 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.toggle_button>
         """)
 
-      assert attribute(html, "button:root", "class") ==
-               "button is-danger is-normal is-solid"
+      assert attribute(html, "button:root", "class") == "button"
+      assert attribute(html, "button:root", "data-variant") == "danger"
     end
 
     test "with global attribute" do

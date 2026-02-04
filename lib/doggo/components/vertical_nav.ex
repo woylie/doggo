@@ -86,7 +86,7 @@ defmodule Doggo.Components.VerticalNav do
   @impl true
   def render(assigns) do
     ~H"""
-    <nav class={@class} id={@id} aria-label={@label} {@rest}>
+    <nav class={@class} id={@id} aria-label={@label} {@data_attrs} {@rest}>
       <div :if={@title != []} class={"#{@base_class}-title"}>
         {render_slot(@title)}
       </div>

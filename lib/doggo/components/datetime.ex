@@ -193,7 +193,14 @@ defmodule Doggo.Components.Datetime do
       |> assign(:value, value && formatter.(value))
 
     ~H"""
-    <time :if={@value} class={@class} datetime={@datetime} title={@title} {@rest}>
+    <time
+      :if={@value}
+      class={@class}
+      datetime={@datetime}
+      title={@title}
+      {@data_attrs}
+      {@rest}
+    >
       {@value}
     </time>
     """

@@ -123,7 +123,7 @@ defmodule Doggo.Components.Skeleton do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class={@class} {@rest}></div>
+    <div class={@class} {@data_attrs} {@rest}></div>
     """
   end
 end

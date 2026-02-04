@@ -70,7 +70,7 @@ defmodule Doggo.Components.PropertyList do
   @impl true
   def render(assigns) do
     ~H"""
-    <dl class={@class} {@rest}>
+    <dl class={@class} {@data_attrs} {@rest}>
       <div :for={prop <- @prop}>
         <dt>{prop.label}</dt>
         <dd>{render_slot(prop)}</dd>
