@@ -28,7 +28,6 @@ defmodule Doggo.Macros do
       [
         name: opts[:name] || name,
         base_class: base_class,
-        data_attrs: data_attrs,
         modifiers: modifiers
       ] ++ extra
 
@@ -51,6 +50,7 @@ defmodule Doggo.Macros do
         component_info =
           opts
           |> Keyword.put(:component, unquote(name))
+          |> Keyword.put(:data_attrs, unquote(data_attrs))
           |> Keyword.put(:extra, extra)
           |> Keyword.put(:type, unquote(type))
 
