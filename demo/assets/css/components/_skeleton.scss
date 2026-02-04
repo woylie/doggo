@@ -5,33 +5,33 @@
   background: f.color(background, surface, "1");
   border-radius: f.radius(m);
 
-  &.is-text-line {
+  &[data-type="text-line"] {
     width: 100%;
     height: f.lines(single);
   }
 
-  &.is-text-block {
+  &[data-type="text-block"] {
     width: 100%;
     height: calc(4 * #{f.lines(single)});
   }
 
-  &.is-image {
+  &[data-type="image"] {
     width: 100%;
     height: 200px;
   }
 
-  &.is-circle {
+  &[data-type="circle"] {
     width: 64px;
     height: 64px;
     border-radius: f.radius(circle);
   }
 
-  &.is-rectangle {
+  &[data-type="rectangle"] {
     width: 200px;
     height: 100px;
   }
 
-  &.is-square {
+  &[data-type="square"] {
     width: 100px;
     height: 100px;
   }

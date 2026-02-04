@@ -17,7 +17,7 @@
     margin-block-start: var(--space, f.lines(single));
   }
 
-  &.is-recursive {
+  &[data-recursive] {
     & * {
       margin-block: 0;
     }
@@ -30,7 +30,7 @@
   /*
   You can add modifiers like this:
 
-      &.is-small > * + * {
+      &[data-size="small"] > * + * {
         margin-top: var(--space, f.lines(half));
       }
 

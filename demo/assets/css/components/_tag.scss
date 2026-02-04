@@ -13,59 +13,59 @@
   border: f.border-width(s) solid f.color(border, neutral, "1");
   border-radius: f.radius(s);
 
-  &.is-primary {
+  &[data-variant="primary"] {
     color: f.color(text, primary, normal);
     background: f.color(background, primary, subdued);
     border-color: f.color(border, primary, subdued);
   }
 
-  &.is-secondary {
+  &[data-variant="secondary"] {
     color: f.color(text, secondary, normal);
     background: f.color(background, secondary, subdued);
     border-color: f.color(border, secondary, subdued);
   }
 
-  &.is-info {
+  &[data-variant="info"] {
     color: f.color(text, info, normal);
     background: f.color(background, info, subdued);
     border-color: f.color(border, info, subdued);
   }
 
-  &.is-success {
+  &[data-variant="success"] {
     color: f.color(text, success, normal);
     background: f.color(background, success, subdued);
     border-color: f.color(border, success, subdued);
   }
 
-  &.is-warning {
+  &[data-variant="warning"] {
     color: f.color(text, warning, normal);
     background: f.color(background, warning, subdued);
     border-color: f.color(border, warning, subdued);
   }
 
-  &.is-danger {
+  &[data-variant="danger"] {
     color: f.color(text, danger, normal);
     background: f.color(background, danger, subdued);
     border-color: f.color(border, danger, subdued);
   }
 
-  &.is-small {
+  &[data-size="small"] {
     padding: f.spacer(1);
     font-size: f.size(xs);
     line-height: f.lines(half);
   }
 
-  &.is-medium {
+  &[data-size="medium"] {
     font-size: f.size(m);
   }
 
-  &.is-large {
+  &[data-size="large"] {
     padding: 0 f.spacer(4);
     font-size: f.size(l);
     line-height: f.lines(one_and_a_half);
   }
 
-  &.is-pill {
+  &[data-shape="pill"] {
     padding-right: f.spacer(3);
     padding-left: f.spacer(3);
     border-radius: f.radius(pill);
