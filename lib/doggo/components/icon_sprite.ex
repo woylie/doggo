@@ -15,14 +15,7 @@ defmodule Doggo.Components.IconSprite do
   @impl true
   def builder_doc do
     """
-    - `:text_position_after_class` - This class is added to the root element if
-      `:text_position` is set to `"after"`.
-    - `:text_position_before_class` - This class is added to the root element if
-      `:text_position` is set to `"before"`.
-    - `:text_position_hidden_class` - This class is added to the root element
-      if `:text_position` is set to `"hidden"`.
-    - `:visually_hidden_class` - This class is added to the `<span>` containing
-      the text if `:text_position` is set to `"hidden"`.
+    - `:sprite_url` - URL of the icon sprite.
     """
   end
 
@@ -57,11 +50,7 @@ defmodule Doggo.Components.IconSprite do
       base_class: "icon",
       modifiers: [],
       extra: [
-        sprite_url: "/assets/icons/sprite.svg",
-        text_position_after_class: "has-text-after",
-        text_position_before_class: "has-text-before",
-        text_position_hidden_class: nil,
-        visually_hidden_class: "is-visually-hidden"
+        sprite_url: "/assets/icons/sprite.svg"
       ]
     ]
   end
@@ -100,45 +89,18 @@ defmodule Doggo.Components.IconSprite do
   def init_block(_opts, extra) do
     sprite_url = Keyword.fetch!(extra, :sprite_url)
 
-    text_position_after_class =
-      Keyword.fetch!(extra, :text_position_after_class)
-
-    text_position_before_class =
-      Keyword.fetch!(extra, :text_position_before_class)
-
-    text_position_hidden_class =
-      Keyword.fetch!(extra, :text_position_hidden_class)
-
-    visually_hidden_class = Keyword.fetch!(extra, :visually_hidden_class)
-
     quote do
-      text_position_class =
-        case var!(assigns).text_position do
-          "after" -> unquote(text_position_after_class)
-          "before" -> unquote(text_position_before_class)
-          "hidden" -> unquote(text_position_hidden_class)
-        end
-
-      text_class =
-        if var!(assigns).text_position == "hidden",
-          do: unquote(visually_hidden_class),
-          else: nil
-
       var!(assigns) =
-        assigns
-        |> var!()
-        |> Map.update!(:class, &(&1 ++ [text_position_class]))
-        |> assign(:text_class, text_class)
-        |> assign(:sprite_url, unquote(sprite_url))
+        assign(var!(assigns), :sprite_url, unquote(sprite_url))
     end
   end
 
   @impl true
   def render(assigns) do
     ~H"""
-    <span class={@class} {@data_attrs} {@rest}>
+    <span class={@class} data-text-position={@text_position} {@data_attrs} {@rest}>
       <svg aria-hidden="true"><use href={"#{@sprite_url}##{@name}"} /></svg>
-      <span :if={@text} class={@text_class}>
+      <span :if={@text} data-visually-hidden={@text_position == "hidden"}>
         {@text}
       </span>
     </span>
