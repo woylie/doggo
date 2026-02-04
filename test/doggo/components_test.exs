@@ -2963,9 +2963,9 @@ defmodule Doggo.ComponentsTest do
       assert text(li2, "span") == "Plan"
       assert text(li3, "span") == "Add-ons"
 
-      assert attribute(li1, "class") == "is-current"
-      assert attribute(li2, "class") == "is-upcoming"
-      assert attribute(li3, "class") == "is-upcoming"
+      assert attribute(li1, "data-state") == "current"
+      assert attribute(li2, "data-state") == "upcoming"
+      assert attribute(li3, "data-state") == "upcoming"
 
       assert attribute(li1, "aria-current") == "step"
       assert attribute(li2, "aria-current") == nil
@@ -3018,7 +3018,7 @@ defmodule Doggo.ComponentsTest do
       ol = find_one(nav, "ol")
       assert [li1, li2, li3] = Floki.children(ol)
 
-      assert text(li1, "span.is-visually-hidden") == "Completed:"
+      assert text(li1, "span[data-visually-hidden]") == "Completed:"
       assert text(li1, "a") == "Customer Information"
       assert text(li2, "span") == "Plan"
       assert text(li3, "a") == "Add-ons"
@@ -3026,9 +3026,9 @@ defmodule Doggo.ComponentsTest do
       assert attribute(li1, "a", "phx-click") == "to-customer-info"
       assert attribute(li3, "a", "phx-click") == "to-add-ons"
 
-      assert attribute(li1, "class") == "is-completed"
-      assert attribute(li2, "class") == "is-current"
-      assert attribute(li3, "class") == "is-upcoming"
+      assert attribute(li1, "data-state") == "completed"
+      assert attribute(li2, "data-state") == "current"
+      assert attribute(li3, "data-state") == "upcoming"
     end
 
     test "with completed step and linear" do
@@ -3050,7 +3050,7 @@ defmodule Doggo.ComponentsTest do
       ol = find_one(nav, "ol")
       assert [li1, li2, li3] = Floki.children(ol)
 
-      assert text(li1, "span.is-visually-hidden") == "Completed:"
+      assert text(li1, "span[data-visually-hidden]") == "Completed:"
       assert text(li1, "a") == "Customer Information"
       assert text(li2, "span") == "Plan"
       assert text(li3, "span") == "Add-ons"
@@ -3084,7 +3084,7 @@ defmodule Doggo.ComponentsTest do
 
       ol = find_one(html, "nav:root ol")
       assert [li1, _] = Floki.children(ol)
-      assert text(li1, "span.is-visually-hidden") == "Done:"
+      assert text(li1, "span[data-visually-hidden]") == "Done:"
     end
 
     test "with global attribute" do
