@@ -72,7 +72,7 @@ defmodule Doggo.Components.FieldGroup do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class={@class} {@data_attrs} {@data_attrs} {@rest}>
+    <div class={@class} {@data_attrs} {@rest}>
       {render_slot(@inner_block)}
     </div>
     """
