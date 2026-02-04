@@ -54,15 +54,10 @@ defmodule DoggoTest do
                "callout-icon",
                "callout-message",
                "callout-title",
-               "is-large",
-               "is-normal",
-               "is-primary",
-               "is-secondary",
-               "is-small",
+               "data-size",
+               "data-variant",
                "stack",
                "tag",
-               "variant-info",
-               "variant-warning",
                "very-recursive"
              ]
     end

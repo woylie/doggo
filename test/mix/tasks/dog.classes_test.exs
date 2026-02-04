@@ -36,10 +36,8 @@ defmodule Mix.Tasks.Dog.ClassesTest do
                "Mix.Tasks.Dog.ClassesTest.TestComponents"
              ])
            end) == """
-           is-normal
-           is-primary
-           is-secondary
-           is-small
+           data-size
+           data-variant
            my-button
            """
   end
@@ -67,10 +65,8 @@ defmodule Mix.Tasks.Dog.ClassesTest do
 
     assert classes_in_file ==
              [
-               "is-normal",
-               "is-primary",
-               "is-secondary",
-               "is-small",
+               "data-size",
+               "data-variant",
                "my-button"
              ]
   end

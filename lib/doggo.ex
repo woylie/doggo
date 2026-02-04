@@ -273,11 +273,11 @@ defmodule Doggo do
   def classes(module) when is_atom(module) do
     components = module.__dog_components__()
     base_classes = Enum.map(components, &get_base_class/1)
-    modifier_classes = Enum.flat_map(components, &get_modifier_classes/1)
+    modifier_data_attrs = Enum.flat_map(components, &modifier_data_attrs/1)
     nested_classes = Enum.flat_map(components, &get_nested_classes/1)
     extra_classes = Enum.flat_map(components, &get_extra_classes/1)
 
-    (base_classes ++ modifier_classes ++ nested_classes ++ extra_classes)
+    (base_classes ++ modifier_data_attrs ++ nested_classes ++ extra_classes)
     |> Enum.reject(&is_nil/1)
     |> Enum.uniq()
     |> Enum.sort()
@@ -287,17 +287,10 @@ defmodule Doggo do
     Keyword.get(info, :base_class)
   end
 
-  defp get_modifier_classes({_, info}) do
-    class_name_fun = Keyword.fetch!(info, :class_name_fun)
-
+  defp modifier_data_attrs({_, info}) do
     info
     |> Keyword.fetch!(:modifiers)
-    |> Enum.flat_map(fn {name, modifier_opts} ->
-      modifier_opts
-      |> Keyword.fetch!(:values)
-      |> Enum.reject(&is_nil/1)
-      |> Enum.map(&class_name_fun.(name, &1))
-    end)
+    |> Enum.map(fn {name, _} -> "data-#{name}" end)
   end
 
   defp get_nested_classes({_, info}) do
