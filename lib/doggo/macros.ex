@@ -26,8 +26,7 @@ defmodule Doggo.Macros do
       [
         name: opts[:name] || name,
         base_class: base_class,
-        modifiers: modifiers,
-        class_name_fun: &Doggo.modifier_class_name/2
+        modifiers: modifiers
       ] ++ extra
 
     type = Keyword.fetch!(opts, :type)
@@ -42,9 +41,7 @@ defmodule Doggo.Macros do
       defmacro unquote(builder_name)(opts \\ []) do
         module = unquote(module)
         opts = Keyword.validate!(opts, unquote(defaults))
-
-        {opts, extra} =
-          Keyword.split(opts, [:name, :base_class, :modifiers, :class_name_fun])
+        {opts, extra} = Keyword.split(opts, [:name, :base_class, :modifiers])
 
         component_info =
           opts
@@ -110,7 +107,7 @@ defmodule Doggo.Macros do
       if function_exported?(module, :builder_doc, 0) do
         """
         In addition to the [common options](`m:Doggo.Components#module-common-options`)
-        `name`, `base_class`, `modifiers`, and `class_name_fun`, the build macro
+        `name`, `base_class`, and `modifiers`, the build macro
         also supports the following options.
 
         #{module.builder_doc()}
@@ -118,7 +115,7 @@ defmodule Doggo.Macros do
       else
         """
         The build macro supports the [common options](`m:Doggo.Components#module-common-options`)
-        `name`, `base_class`, `modifiers`, and `class_name_fun`.
+        `name`, `base_class`, and `modifiers`.
         """
       end
 

@@ -25,7 +25,6 @@ defmodule DoggoTest do
     )
 
     build_callout(
-      class_name_fun: &__MODULE__.modifier_class_name/2,
       modifiers: [
         variant: [
           values: ["info", "warning"],

@@ -93,9 +93,6 @@ defmodule Doggo.Components do
     attribute with the type `:string` is added. The options will be passed to
     `Phoenix.Component.attr/3`. Most components define a set of default
     modifiers that can be overridden.
-  - `class_name_fun` - A 2-arity function that takes a modifier attribute name
-    and a value and returns a CSS class name. Defaults to
-    `Doggo.modifier_class_name/2`.
 
   Some components have additional options that are mostly used to allow the
   customization of certain class names or to set the Gettext module.
