@@ -40,8 +40,6 @@ defmodule DoggoTest do
         size: [values: ["small", "normal", "large"], default: "normal"]
       ]
     )
-
-    def modifier_class_name(name, value), do: "#{name}-#{value}"
   end
 
   describe "classes/1" do
