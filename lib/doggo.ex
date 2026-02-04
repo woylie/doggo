@@ -239,25 +239,23 @@ defmodule Doggo do
   ## Modifier classes
 
   @doc """
-  Returns all component classes used in the given components module.
+  Returns all component classes and data attributes used in the given components
+  module.
 
   This includes the base classes, nested classes (based on the base class)
   and modifier classes.
 
   ## Usage
 
-      iex> classes(MyAppWeb.CoreComponents)
+      iex> safelist(MyAppWeb.CoreComponents)
       [
         "button",
-        "is-large",
-        "is-medium",
-        "is-primary",
-        "is-secondary",
-        "is-small"
+        "data-size",
+        "data-variant"
       ]
   """
-  @spec classes(module) :: [String.t()]
-  def classes(module) when is_atom(module) do
+  @spec safelist(module) :: [String.t()]
+  def safelist(module) when is_atom(module) do
     components = module.__dog_components__()
     base_classes = Enum.map(components, &get_base_class/1)
     modifier_data_attrs = Enum.flat_map(components, &modifier_data_attrs/1)

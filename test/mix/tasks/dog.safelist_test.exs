@@ -1,9 +1,9 @@
-defmodule Mix.Tasks.Dog.ClassesTest do
+defmodule Mix.Tasks.Dog.SafelistTest do
   use ExUnit.Case
 
   import ExUnit.CaptureIO
 
-  alias Mix.Tasks.Dog.Classes
+  alias Mix.Tasks.Dog.Safelist
 
   defmodule TestComponents do
     @moduledoc """
@@ -29,11 +29,11 @@ defmodule Mix.Tasks.Dog.ClassesTest do
     )
   end
 
-  test "prints classes" do
+  test "prints classes and data attributes" do
     assert capture_io(fn ->
-             Classes.run([
+             Safelist.run([
                "--module",
-               "Mix.Tasks.Dog.ClassesTest.TestComponents"
+               "Mix.Tasks.Dog.SafelistTest.TestComponents"
              ])
            end) == """
            data-size
@@ -43,17 +43,17 @@ defmodule Mix.Tasks.Dog.ClassesTest do
   end
 
   test "prints usage instructions with invalid arguments" do
-    assert capture_io(fn -> Classes.run(["--nope"]) end) =~ "## Usage"
+    assert capture_io(fn -> Safelist.run(["--nope"]) end) =~ "## Usage"
   end
 
   @tag :tmp_dir
   test "saves modifiers to file", %{tmp_dir: tmp_dir} do
-    path = Path.join(tmp_dir, "classes.txt")
+    path = Path.join(tmp_dir, "Safelist.txt")
 
     assert capture_io(fn ->
-             Classes.run([
+             Safelist.run([
                "--module",
-               "Mix.Tasks.Dog.ClassesTest.TestComponents",
+               "Mix.Tasks.Dog.SafelistTest.TestComponents",
                "-o",
                path
              ])
@@ -73,12 +73,12 @@ defmodule Mix.Tasks.Dog.ClassesTest do
 
   @tag :tmp_dir
   test "checks whether existing file is up-to-date", %{tmp_dir: tmp_dir} do
-    path = Path.join(tmp_dir, "classes.txt")
+    path = Path.join(tmp_dir, "Safelist.txt")
 
     assert capture_io(fn ->
-             Classes.run([
+             Safelist.run([
                "--module",
-               "Mix.Tasks.Dog.ClassesTest.TestComponents",
+               "Mix.Tasks.Dog.SafelistTest.TestComponents",
                "-o",
                path
              ])
@@ -87,9 +87,9 @@ defmodule Mix.Tasks.Dog.ClassesTest do
     assert File.exists?(path)
 
     assert capture_io(fn ->
-             Classes.run([
+             Safelist.run([
                "--module",
-               "Mix.Tasks.Dog.ClassesTest.TestComponents",
+               "Mix.Tasks.Dog.SafelistTest.TestComponents",
                "-o",
                path,
                "--check"
@@ -100,9 +100,9 @@ defmodule Mix.Tasks.Dog.ClassesTest do
 
     assert catch_exit(
              capture_io(fn ->
-               Classes.run([
+               Safelist.run([
                  "--module",
-                 "Mix.Tasks.Dog.ClassesTest.TestComponents",
+                 "Mix.Tasks.Dog.SafelistTest.TestComponents",
                  "-o",
                  path,
                  "--check"

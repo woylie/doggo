@@ -45,8 +45,8 @@ defmodule DoggoTest do
   end
 
   describe "classes/1" do
-    test "returns a list of base, modifier, and nested classes" do
-      assert Doggo.classes(TestComponents) == [
+    test "returns a list of base and nested classes and data attributes" do
+      assert Doggo.safelist(TestComponents) == [
                "button",
                "callout",
                "callout-body",

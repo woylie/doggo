@@ -123,11 +123,11 @@ mix dog.gen.stories -m MyAppWeb.CoreComponents -o storybook -c button
 
 ### PurgeCSS
 
-If you use PurgeCSS, you can get a list of CSS class names of all configured
-components:
+If you use PurgeCSS, you can get a list of CSS classes and data attributes of
+all configured components:
 
 ```bash
-mix dog.classes -m MyAppWeb.CoreComponents -o assets/modifiers.txt
+mix dog.safelist -m MyAppWeb.CoreComponents -o assets/doggo_safelist.txt
 ```
 
 Add the generated file to your PurgeCSS configuration.
