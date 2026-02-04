@@ -7,12 +7,16 @@
 **This release contains significant breaking changes. Check your component
 styles carefully when upgrading.**
 
+### Added
+
+- Add `:type` option to modifiers, so that any attribute type can be used
+  instead of only strings.
+
 ### Changed
 
 - Rename `mix dog.classes` to `mix dog.safelist`.
 - Rename `Doggo.classes/1` to `Doggo.safelist/1`.
 - Include data attributes in `mix dog.safelist` and `Doggo.safelist/1` output.
-- Support `:type` option in modifiers instead of requiring string attributes.
 - Use `data-` attributes instead of classes for modifiers (see upgrade guide
   below).
 - `button_link` component
