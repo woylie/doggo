@@ -55,6 +55,34 @@ The resulting HTML code will look similar to:
 <button data-size="small">Edit</button>
 ```
 
+If no `type` option is set, a `string` attribute is added, but you can use any
+attribute type, as long as the value can be converted to a string. Boolean
+attributes result in a presence-only boolean data attribute.
+
+```elixir
+build_button(modifiers: [full_width: [type: :boolean]])
+```
+
+If the value is `true`, the attribute is added:
+
+```html
+<!-- code -->
+<.button full_width>Edit</.button>
+
+<!-- output -->
+<button data-full-width>Edit</button>
+```
+
+If the attribute is omitted or the value is `false`, the attribute is omitted:
+
+```html
+<!-- code -->
+<.button full_width={false}>Edit</.button>
+
+<!-- output -->
+<button>Edit</button>
+```
+
 Most of the components have a base class that matches the component name.
 
 You can override the base class in the component options:

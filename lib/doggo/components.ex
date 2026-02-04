@@ -90,9 +90,11 @@ defmodule Doggo.Components do
   - `base_class` - The base class used on the root element of the component. If
     not set, a default base class is used.
   - `modifiers` - A keyword list of modifier attributes. For each item, an
-    attribute with the type `:string` is added. The options will be passed to
+    attribute is added. The options will be passed to
     `Phoenix.Component.attr/3`. Most components define a set of default
-    modifiers that can be overridden.
+    modifiers that can be overridden. Any attribute type is allowed, but since
+    the value will be used as data attribute value, it needs to be possible to
+    convert the value to a string. The `:type` option defaults to `:string`.
 
   Some components have additional options that are mostly used to allow the
   customization of certain class names or to set the Gettext module.
