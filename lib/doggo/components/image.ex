@@ -124,9 +124,39 @@ defmodule Doggo.Components.Image do
   end
 
   @impl true
-  def render(assigns) do
+  def render(%{data_attrs: %{data: data}} = assigns) do
+    {ratio, data} = Keyword.pop(data, :ratio)
+
+    {numerator, denominator} =
+      case ratio && String.split(ratio, ":") do
+        [n, d] ->
+          {n, d}
+
+        nil ->
+          {nil, nil}
+
+        v ->
+          raise """
+          invalid ratio
+
+          Expected a ratio in the format n:d, e.g. "16:9", got: #{inspect(v)}
+          """
+      end
+
+    assigns =
+      assign(assigns,
+        data_attrs: %{data: data},
+        numerator: numerator,
+        denominator: denominator
+      )
+
     ~H"""
-    <figure class={@class} {@rest}>
+    <figure
+      class={@class}
+      data-numerator={@numerator}
+      data-denominator={@denominator}
+      {@rest}
+    >
       <div class={"#{@base_class}-frame"}>
         <img
           src={@src}

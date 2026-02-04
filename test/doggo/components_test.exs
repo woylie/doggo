@@ -1608,18 +1608,6 @@ defmodule Doggo.ComponentsTest do
   end
 
   describe "frame/1" do
-    test "default" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.frame>image</TestComponents.frame>
-        """)
-
-      assert attribute(html, "div", "class") == "frame"
-      assert text(html, "div") == "image"
-    end
-
     test "with ratio" do
       assigns = %{}
 
@@ -1638,7 +1626,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.frame shape="circle">image</TestComponents.frame>
+        <TestComponents.frame ratio="16:9" shape="circle">image</TestComponents.frame>
         """)
 
       assert attribute(html, "div", "class") == "frame"

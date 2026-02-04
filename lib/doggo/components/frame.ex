@@ -18,7 +18,7 @@ defmodule Doggo.Components.Frame do
     Rendering an image with the aspect ratio 4:3.
 
     ```heex
-    <.frame ratio={{4, 3}}>
+    <.frame ratio="4:3">
       <img src="image.png" alt="An example image illustrating the usage." />
     </.frame>
     ```
@@ -42,7 +42,6 @@ defmodule Doggo.Components.Frame do
       modifiers: [
         ratio: [
           values: [
-            nil,
             "1:1",
             "3:2",
             "2:3",
@@ -53,7 +52,7 @@ defmodule Doggo.Components.Frame do
             "16:9",
             "9:16"
           ],
-          default: nil
+          required: true
         ],
         shape: [values: [nil, "circle"], default: nil]
       ]
@@ -79,9 +78,37 @@ defmodule Doggo.Components.Frame do
   end
 
   @impl true
-  def render(assigns) do
+  def render(%{data_attrs: %{data: data}} = assigns) do
+    {ratio, data} = Keyword.pop(data, :ratio)
+
+    {numerator, denominator} =
+      case ratio && String.split(ratio, ":") do
+        [n, d] ->
+          {n, d}
+
+        v ->
+          raise """
+          invalid ratio
+
+          Expected a ratio in the format n:d, e.g. "16:9", got: #{inspect(v)}
+          """
+      end
+
+    assigns =
+      assign(assigns,
+        data_attrs: %{data: data},
+        numerator: numerator,
+        denominator: denominator
+      )
+
     ~H"""
-    <div class={@class} {@data_attrs} {@rest}>
+    <div
+      class={@class}
+      data-numerator={@numerator}
+      data-denominator={@denominator}
+      {@data_attrs}
+      {@rest}
+    >
       {render_slot(@inner_block)}
     </div>
     """
