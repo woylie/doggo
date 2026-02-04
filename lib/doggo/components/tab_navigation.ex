@@ -130,7 +130,7 @@ defmodule Doggo.Components.TabNavigation do
   @impl true
   def render(assigns) do
     ~H"""
-    <nav aria-label={@label} class={@class} {@rest}>
+    <nav aria-label={@label} class={@class} {@data_attrs} {@rest}>
       <ul>
         <li :for={item <- @item}>
           <.link

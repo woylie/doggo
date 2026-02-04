@@ -85,7 +85,7 @@ defmodule Doggo.Components.MenuItemRadioGroup do
   @impl true
   def render(assigns) do
     ~H"""
-    <ul class={@class} role="group" aria-label={@label} {@rest}>
+    <ul class={@class} role="group" aria-label={@label} {@data_attrs} {@rest}>
       <li :for={item <- @item} role="none">
         <div
           role="menuitemradio"

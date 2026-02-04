@@ -129,6 +129,7 @@ defmodule Doggo.Components.Tree do
       role="tree"
       aria-label={@label}
       aria-labelledby={@labelledby}
+      {@data_attrs}
       {@rest}
     >
       {render_slot(@inner_block)}

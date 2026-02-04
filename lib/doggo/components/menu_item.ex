@@ -73,6 +73,7 @@ defmodule Doggo.Components.MenuItem do
       type="button"
       role="menuitem"
       phx-click={@on_click}
+      {@data_attrs}
       {@rest}
     >
       {render_slot(@inner_block)}

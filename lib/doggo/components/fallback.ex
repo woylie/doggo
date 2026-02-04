@@ -119,6 +119,7 @@ defmodule Doggo.Components.Fallback do
       :if={is_nil(@value)}
       class={@class}
       aria-label={@accessibility_text}
+      {@data_attrs}
       {@rest}
       phx-no-format
     >{@placeholder}</span>

@@ -27,14 +27,6 @@ defmodule Doggo.Components.Icon do
       with the same name as the icon name and not set any attributes.
     - `:names` - Either a list of available icon names or a 0-arity function
       that returns the list. This is only used in the generated storybook.
-    - `:text_position_after_class` - This class is added to the root element if
-      `:text_position` is set to `"after"`.
-    - `:text_position_before_class` - This class is added to the root element if
-      `:text_position` is set to `"before"`.
-    - `:text_position_hidden_class` - This class is added to the root element
-      if `:text_position` is set to `"hidden"`.
-    - `:visually_hidden_class` - This class is added to the `<span>` containing
-      the text if `:text_position` is set to `"hidden"`.
     """
   end
 
@@ -134,14 +126,11 @@ defmodule Doggo.Components.Icon do
       since: "0.6.0",
       maturity: :refining,
       modifiers: [],
+      data_attrs: ["data-text-position", "data-visually-hidden"],
       extra: [
         icon_module: nil,
         icon_fun: nil,
-        names: [],
-        text_position_after_class: "has-text-after",
-        text_position_before_class: "has-text-before",
-        text_position_hidden_class: nil,
-        visually_hidden_class: "is-visually-hidden"
+        names: []
       ]
     ]
   end
@@ -195,35 +184,10 @@ defmodule Doggo.Components.Icon do
       """
     end
 
-    text_position_after_class =
-      Keyword.fetch!(extra, :text_position_after_class)
-
-    text_position_before_class =
-      Keyword.fetch!(extra, :text_position_before_class)
-
-    text_position_hidden_class =
-      Keyword.fetch!(extra, :text_position_hidden_class)
-
-    visually_hidden_class = Keyword.fetch!(extra, :visually_hidden_class)
-
     quote do
-      text_position_class =
-        case var!(assigns).text_position do
-          "after" -> unquote(text_position_after_class)
-          "before" -> unquote(text_position_before_class)
-          "hidden" -> unquote(text_position_hidden_class)
-        end
-
-      text_class =
-        if var!(assigns).text_position == "hidden",
-          do: unquote(visually_hidden_class),
-          else: nil
-
       var!(assigns) =
         assigns
         |> var!()
-        |> Map.update!(:class, &(&1 ++ [text_position_class]))
-        |> assign(:text_class, text_class)
         |> assign(:icon_module, unquote(icon_module))
         |> assign(:icon_fun, unquote(icon_fun))
     end
@@ -232,13 +196,13 @@ defmodule Doggo.Components.Icon do
   @impl true
   def render(assigns) do
     ~H"""
-    <span class={@class} {@rest}>
+    <span class={@class} data-text-position={@text_position} {@data_attrs} {@rest}>
       <Doggo.Components.Icon.dynamic_icon
         name={@name}
         module={@icon_module}
         fun={@icon_fun}
       />
-      <span :if={@text} class={@text_class}>
+      <span :if={@text} data-visually-hidden={@text_position == "hidden"}>
         {@text}
       </span>
     </span>

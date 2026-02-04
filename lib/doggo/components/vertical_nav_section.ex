@@ -73,6 +73,7 @@ defmodule Doggo.Components.VerticalNavSection do
       id={@id}
       class={@class}
       aria-labelledby={@title != [] && "#{@id}-title"}
+      {@data_attrs}
       {@rest}
     >
       <div :if={@title != []} id={"#{@id}-title"} class={"#{@base_class}-title"}>

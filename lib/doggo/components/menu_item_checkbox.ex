@@ -79,6 +79,7 @@ defmodule Doggo.Components.MenuItemCheckbox do
       role="menuitemcheckbox"
       aria-checked={@checked}
       phx-click={@on_click}
+      {@data_attrs}
       {@rest}
     >
       {render_slot(@inner_block)}

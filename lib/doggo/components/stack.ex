@@ -13,13 +13,6 @@ defmodule Doggo.Components.Stack do
   end
 
   @impl true
-  def builder_doc do
-    """
-    - `:recursive_class` - This class is added if `:recursive` is set to `true`.
-    """
-  end
-
-  @impl true
   def usage do
     """
     ```heex
@@ -57,7 +50,7 @@ defmodule Doggo.Components.Stack do
       since: "0.6.0",
       maturity: :stable,
       modifiers: [],
-      extra: [recursive_class: "is-recursive"]
+      data_attrs: ["data-recursive"]
     ]
   end
 
@@ -81,27 +74,14 @@ defmodule Doggo.Components.Stack do
   end
 
   @impl true
-  def init_block(_opts, extra) do
-    recursive_class = Keyword.fetch!(extra, :recursive_class)
-
-    quote do
-      var!(assigns) =
-        if var!(assigns)[:recursive] do
-          Map.update!(
-            var!(assigns),
-            :class,
-            &(&1 ++ [unquote(recursive_class)])
-          )
-        else
-          var!(assigns)
-        end
-    end
+  def init_block(_opts, _extra) do
+    []
   end
 
   @impl true
   def render(assigns) do
     ~H"""
-    <div class={@class} {@rest}>
+    <div class={@class} data-recursive={@recursive} {@data_attrs} {@rest}>
       {render_slot(@inner_block)}
     </div>
     """

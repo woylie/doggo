@@ -108,6 +108,7 @@ defmodule Doggo.Components.TreeItem do
       role="treeitem"
       aria-selected="false"
       aria-expanded={@items != [] && "false"}
+      {@data_attrs}
       {@rest}
     >
       <span>{render_slot(@inner_block)}</span>

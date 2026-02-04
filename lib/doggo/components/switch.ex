@@ -77,6 +77,7 @@ defmodule Doggo.Components.Switch do
       type="button"
       role="switch"
       aria-checked={to_string(@checked)}
+      {@data_attrs}
       {@rest}
     >
       <span class={"#{@base_class}-label"}>{@label}</span>

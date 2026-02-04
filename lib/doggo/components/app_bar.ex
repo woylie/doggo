@@ -89,7 +89,7 @@ defmodule Doggo.Components.AppBar do
   @impl true
   def render(assigns) do
     ~H"""
-    <header class={@class} {@rest}>
+    <header class={@class} {@data_attrs} {@rest}>
       <div :if={@navigation != []} class={"#{@base_class}-navigation"}>
         <.link
           :for={navigation <- @navigation}

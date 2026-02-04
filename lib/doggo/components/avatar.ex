@@ -119,6 +119,7 @@ defmodule Doggo.Components.Avatar do
     <div
       :if={@src || @placeholder_src || @placeholder_content}
       class={@class}
+      {@data_attrs}
       {@rest}
     >
       <.inner_avatar

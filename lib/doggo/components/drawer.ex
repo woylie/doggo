@@ -129,7 +129,7 @@ defmodule Doggo.Components.Drawer do
   @impl true
   def render(assigns) do
     ~H"""
-    <aside class={@class} {@rest}>
+    <aside class={@class} {@data_attrs} {@rest}>
       <div :if={@header != []} class={"#{@base_class}-header"}>
         {render_slot(@header)}
       </div>

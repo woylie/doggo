@@ -85,7 +85,7 @@ defmodule Doggo.Components.Card do
   @impl true
   def render(assigns) do
     ~H"""
-    <article class={@class} {@rest}>
+    <article class={@class} {@data_attrs} {@rest}>
       <figure :if={@image != []}>{render_slot(@image)}</figure>
       <header :if={@header != []}>{render_slot(@header)}</header>
       <main :if={@main != []}>{render_slot(@main)}</main>

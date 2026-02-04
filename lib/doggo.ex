@@ -239,45 +239,30 @@ defmodule Doggo do
   ## Modifier classes
 
   @doc """
-  Takes a modifier attribute name and value and returns a CSS class name.
-
-  This function is used as a default for the `class_name_fun` option.
-
-  ## Example
-
-      iex> modifier_class_name(:size, "large")
-      "is-large"
-  """
-  @spec modifier_class_name(atom, String.t()) :: String.t()
-  def modifier_class_name(_, value) when is_binary(value), do: "is-#{value}"
-
-  @doc """
-  Returns all component classes used in the given components module.
+  Returns all component classes and data attributes used in the given components
+  module.
 
   This includes the base classes, nested classes (based on the base class)
   and modifier classes.
 
   ## Usage
 
-      iex> classes(MyAppWeb.CoreComponents)
+      iex> safelist(MyAppWeb.CoreComponents)
       [
         "button",
-        "is-large",
-        "is-medium",
-        "is-primary",
-        "is-secondary",
-        "is-small"
+        "data-size",
+        "data-variant"
       ]
   """
-  @spec classes(module) :: [String.t()]
-  def classes(module) when is_atom(module) do
+  @spec safelist(module) :: [String.t()]
+  def safelist(module) when is_atom(module) do
     components = module.__dog_components__()
     base_classes = Enum.map(components, &get_base_class/1)
-    modifier_classes = Enum.flat_map(components, &get_modifier_classes/1)
+    data_attrs = Enum.flat_map(components, &data_attrs/1)
+    modifier_data_attrs = Enum.flat_map(components, &modifier_data_attrs/1)
     nested_classes = Enum.flat_map(components, &get_nested_classes/1)
-    extra_classes = Enum.flat_map(components, &get_extra_classes/1)
 
-    (base_classes ++ modifier_classes ++ nested_classes ++ extra_classes)
+    (base_classes ++ data_attrs ++ modifier_data_attrs ++ nested_classes)
     |> Enum.reject(&is_nil/1)
     |> Enum.uniq()
     |> Enum.sort()
@@ -287,31 +272,20 @@ defmodule Doggo do
     Keyword.get(info, :base_class)
   end
 
-  defp get_modifier_classes({_, info}) do
-    class_name_fun = Keyword.fetch!(info, :class_name_fun)
+  defp data_attrs({_, info}) do
+    Keyword.get(info, :data_attrs, [])
+  end
 
+  defp modifier_data_attrs({_, info}) do
     info
     |> Keyword.fetch!(:modifiers)
-    |> Enum.flat_map(fn {name, modifier_opts} ->
-      modifier_opts
-      |> Keyword.fetch!(:values)
-      |> Enum.reject(&is_nil/1)
-      |> Enum.map(&class_name_fun.(name, &1))
-    end)
+    |> Enum.map(fn {name, _} -> "data-#{name}" end)
   end
 
   defp get_nested_classes({_, info}) do
     base_class = Keyword.get(info, :base_class)
     component_module = info |> Keyword.fetch!(:component) |> component_module()
     component_module.nested_classes(base_class)
-  end
-
-  defp get_extra_classes({_, info}) do
-    info
-    |> Keyword.fetch!(:extra)
-    |> Enum.map(fn {key, value} ->
-      if key |> to_string() |> String.ends_with?("_class"), do: value
-    end)
   end
 
   defp component_module(name) when is_atom(name) do

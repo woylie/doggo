@@ -126,6 +126,7 @@ defmodule Doggo.Components.ToggleButton do
       aria-pressed={@pressed}
       class={@class}
       disabled={@disabled}
+      {@data_attrs}
       {@rest}
     >
       {render_slot(@inner_block)}

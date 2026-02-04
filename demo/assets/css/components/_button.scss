@@ -14,7 +14,7 @@
   border-radius: f.radius(s);
 
   &:disabled,
-  &.is-disabled {
+  &[data-disabled] {
     color: f.color(text, disabled, subdued);
     cursor: not-allowed;
     background: f.color(background, disabled, normal);
@@ -26,7 +26,7 @@
     }
   }
 
-  &:not(:disabled, .is-disabled) {
+  &:not(:disabled, [data-disabled]) {
     &:hover,
     &:focus {
       text-decoration: none;
@@ -37,100 +37,100 @@
       filter: brightness(95%);
     }
 
-    &.is-primary {
+    &[data-variant="primary"] {
       color: f.color(text, primary, subdued);
       background: f.color(background, primary, normal);
       border-color: f.color(border, primary, normal);
     }
 
-    &.is-secondary {
+    &[data-variant="secondary"] {
       color: f.color(text, secondary, subdued);
       background: f.color(background, secondary, normal);
       border-color: f.color(border, secondary, normal);
     }
 
-    &.is-info {
+    &[data-variant="info"] {
       color: f.color(text, info, subdued);
       background: f.color(background, info, normal);
       border-color: f.color(border, info, normal);
     }
 
-    &.is-success {
+    &[data-variant="success"] {
       color: f.color(text, success, subdued);
       background: f.color(background, success, normal);
       border-color: f.color(border, success, normal);
     }
 
-    &.is-warning {
+    &[data-variant="warning"] {
       color: f.color(text, warning, subdued);
       background: f.color(background, warning, normal);
       border-color: f.color(border, warning, normal);
     }
 
-    &.is-danger {
+    &[data-variant="danger"] {
       color: f.color(text, danger, subdued);
       background: f.color(background, danger, normal);
       border-color: f.color(border, danger, normal);
     }
 
-    &.is-outline {
+    &[data-fill="outline"] {
       background: transparent;
     }
 
-    &.is-text {
+    &[data-fill="text"] {
       background: none;
       border-color: transparent;
     }
 
-    &.is-outline,
-    &.is-text {
-      &.is-primary {
+    &[data-fill="outline"],
+    &[data-fill="text"] {
+      &[data-variant="primary"] {
         color: f.color(border, primary, normal);
       }
 
-      &.is-secondary {
+      &[data-variant="secondary"] {
         color: f.color(border, secondary, normal);
       }
 
-      &.is-info {
+      &[data-variant="info"] {
         color: f.color(border, info, normal);
       }
 
-      &.is-success {
+      &[data-variant="success"] {
         color: f.color(border, success, normal);
       }
 
-      &.is-warning {
+      &[data-variant="warning"] {
         color: f.color(border, warning, normal);
       }
 
-      &.is-danger {
+      &[data-variant="danger"] {
         color: f.color(border, danger, normal);
       }
     }
   }
 
-  &.is-small {
+  &[data-size="small"] {
     padding: f.spacer(1);
     font-size: f.size(xs);
   }
 
-  &.is-medium {
+  &[data-size="medium"] {
     font-size: f.size(m);
   }
 
-  &.is-large {
+  &[data-size="large"] {
     padding: f.spacer(2) f.spacer(4);
     font-size: f.size(l);
   }
 
-  &.is-circle {
+  &[data-shape="circle"] {
     width: 3.5rem;
     height: 3.5rem;
     border-radius: f.radius(circle);
   }
 
-  &.is-pill {
+  &[data-shape="pill"] {
     min-width: 8ch;
     border-radius: f.radius(pill);
   }

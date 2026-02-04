@@ -4,6 +4,81 @@
 
 ## Unreleased
 
+**This release contains significant breaking changes. Check your component
+styles careful when upgrading.**
+
+### Changed
+
+- Rename `mix dog.classes` to `mix dog.safelist`.
+- Rename `Doggo.classes/1` to `Doggo.safelist/1`.
+- Include data attributes in `mix dog.safelist` and `Doggo.classes/1` output.
+- `button_link` component
+  - Remove `disabled_class` option.
+  - Use `data-disabled` attribute instead of the `disabled_class`
+    (selector: `[data-disabled]`).
+- `field` component
+  - Remove `addon_left_class`, `addon_right_class`, and `visually_hidden_class`
+    options.
+  - Use `data-addon` attribute instead of `addon_left_class` and
+    `addon_right_class` (selectors: `[data-addon~="left"]`,
+    `[data-addon~="right"])`.
+  - Use `data-visually-hidden` attribute instead of `visually_hidden_class`
+    (selector: `[data-visually-hidden]`).
+  - Use `data-invalid` attribute instead of `has-errors` class
+    (selector: `[data-invalid]`).
+  - Use `data-state` attribute instead of `{base_class}-switch-state-{on|off}`
+    classes (selectors: `[data-state="on"]`, `[data-state="off"]`).
+- `frame` and `image` component
+  - Make `ratio` required for `frame` component.
+  - Change format of `ratio` attribute (before: `16-by-9`, after: `16:9`).
+  - Use `data-numerator` and `data-denominator` attributes instead of adding
+    a class for the ratio (before: `class="is-16-by-9"`, after:
+    `data-numerator="16" data-denominator="9"`).
+- `icon` and `icon_sprite` component
+  - Remove `text_position_after_class`, `text_position_before_class`,
+    `text_position_hidden_class`, and `visually_hidden_class` options.
+  - Use `data-text-position` class instead of `text_position_*` classes
+    (selectors: `[data-text-position="before"]`,
+    `[data-text-position="after"]`, `[data-text-position="hidden"]`).
+  - Use `data-visually-hidden` attribute instead of `visually_hidden_class`
+    (selector: `[data-visually-hidden]`).
+- `stack` component
+  - Remove `recursive_class` option.
+  - Use `data-recursive` attribute instead of `recursive_class`
+    (selector: `[data-recursive]`).
+- `steps` component
+  - Remove `current_class`, `completed_class`, `upcoming_class`, and
+    `visually_hidden_class` options.
+  - Use `data-visually-hidden` attribute instead of `visually_hidden_class`
+    (selector: `[data-visually-hidden]`).
+  - Use `data-state` attribute instead of `current_class`, `completed_class`,
+    and `upcoming_class` (selectors: `[data-state="current"]`,
+    `[data-state="completed"]`, `[data-state="upcoming"]`).
+
+### Removed
+
+- Remove `class_name_fun` option.
+- Remove `Doggo.modifier_class_name/2`.
+
+- Breaking: Use `data-` attributes instead of classes for modifiers.
+- Breaking: Use `data-` attributes instead of classes to reflect state.
+  - button component
+  - icon component
+    - `.has-text-after` -> `[data-text-position="after"]`
+    - `.has-text-before` -> `[data-text-position="before"]`
+    - `.has-text-hidden` -> `[data-text-position="hidden"]`
+  - stack component
+    - `.is-recursive` -> `[data-recursive]`
+
+.is-visually-hidden -> [data-visually-hidden]
+
+.my-component.is-primary {} -> .my-component[data-variant="primary"]
+is-disabled -> [data-disabled]
+
+### Removed
+
+- `class_name_fun` option
+
 ## [0.12.0] - 2026-01-15
 
 ### Changed

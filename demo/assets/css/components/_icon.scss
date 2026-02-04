@@ -13,7 +13,7 @@
   }
 
   /* For LTR languages */
-  &.has-text-before {
+  &[data-text-position="before"] {
     > svg {
       order: 1;
     }
@@ -23,7 +23,7 @@
     }
   }
 
-  &.has-text-after {
+  &[data-text-position="after"] {
     > svg {
       order: 0;
     }
@@ -37,7 +37,7 @@
 /* For RTL languages */
 html[dir="rtl"] {
   .icon {
-    &.has-text-before {
+    &[data-text-position="before"] {
       > svg {
         order: 0;
       }
@@ -47,7 +47,7 @@ html[dir="rtl"] {
       }
     }
 
-    &.has-text-after {
+    &[data-text-position="after"] {
       > svg {
         order: 1;
       }

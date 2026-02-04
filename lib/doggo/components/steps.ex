@@ -67,12 +67,7 @@ defmodule Doggo.Components.Steps do
       since: "0.6.0",
       maturity: :developing,
       modifiers: [],
-      extra: [
-        current_class: "is-current",
-        completed_class: "is-completed",
-        upcoming_class: "is-upcoming",
-        visually_hidden_class: "is-visually-hidden"
-      ]
+      data_attrs: ["data-state", "data-visually-hidden"]
     ]
   end
 
@@ -123,37 +118,20 @@ defmodule Doggo.Components.Steps do
   end
 
   @impl true
-  def init_block(_opts, extra) do
-    current_class = Keyword.fetch!(extra, :current_class)
-    completed_class = Keyword.fetch!(extra, :completed_class)
-    upcoming_class = Keyword.fetch!(extra, :upcoming_class)
-    visually_hidden_class = Keyword.fetch!(extra, :visually_hidden_class)
-
-    quote do
-      var!(assigns) =
-        assign(var!(assigns),
-          current_class: unquote(current_class),
-          completed_class: unquote(completed_class),
-          upcoming_class: unquote(upcoming_class),
-          visually_hidden_class: unquote(visually_hidden_class)
-        )
-    end
+  def init_block(_opts, _extra) do
+    []
   end
 
   @impl true
   def render(assigns) do
     ~H"""
-    <nav aria-label={@label} class={@class} {@rest}>
+    <nav aria-label={@label} class={@class} {@data_attrs} {@rest}>
       <ol>
         <.step
           :for={{step, index} <- Enum.with_index(@step)}
           step={step}
           index={index}
           current_step={@current_step}
-          current_class={@current_class}
-          completed_class={@completed_class}
-          upcoming_class={@upcoming_class}
-          visually_hidden_class={@visually_hidden_class}
           completed_label={@completed_label}
           linear={@linear}
         />
@@ -162,33 +140,19 @@ defmodule Doggo.Components.Steps do
     """
   end
 
-  defp step(
-         %{
-           index: index,
-           current_step: current_step,
-           current_class: current_class,
-           completed_class: completed_class,
-           upcoming_class: upcoming_class
-         } = assigns
-       ) do
-    class =
+  defp step(%{index: index, current_step: current_step} = assigns) do
+    state =
       cond do
-        index == current_step -> current_class
-        index < current_step -> completed_class
-        index > current_step -> upcoming_class
+        index == current_step -> "current"
+        index < current_step -> "completed"
+        index > current_step -> "upcoming"
       end
 
-    assigns =
-      assign(assigns,
-        class: class,
-        current_class: nil,
-        completed_class: nil,
-        upcoming_class: nil
-      )
+    assigns = assign(assigns, state: state)
 
     ~H"""
-    <li class={@class} aria-current={@index == @current_step && "step"}>
-      <span :if={@index < @current_step} class={@visually_hidden_class}>
+    <li data-state={@state} aria-current={@index == @current_step && "step"}>
+      <span :if={@index < @current_step} data-visually-hidden>
         {@completed_label}
       </span>
       <%= if @step[:on_click] && ((@linear && @index < @current_step) || (!@linear && @index != @current_step)) do %>

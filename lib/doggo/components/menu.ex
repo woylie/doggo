@@ -130,6 +130,7 @@ defmodule Doggo.Components.Menu do
       role="menu"
       aria-label={@label}
       aria-labelledby={@labelledby}
+      {@data_attrs}
       {@rest}
     >
       <li :for={item <- @item} role={item[:role] || "none"}>

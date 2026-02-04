@@ -97,7 +97,7 @@ defmodule Doggo.Components.Box do
   @impl true
   def render(assigns) do
     ~H"""
-    <section class={@class} {@rest}>
+    <section class={@class} {@data_attrs} {@rest}>
       <header :if={@title != [] || @banner != [] || @action != []}>
         <h2 :if={@title != []}>{render_slot(@title)}</h2>
         <div :if={@action != []} class={"#{@base_class}-actions"}>

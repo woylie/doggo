@@ -31,12 +31,6 @@ defmodule Doggo.Components.Field do
     - `:optional_text` - Defines a text that is rendered next to the label
       in optional fields. Defaults to `nil`. This value is translated
       if `gettext_module` is set.
-    - `:addon_left_class` - This class is added to the input wrapper if the
-      `:addon_left` slot is used.
-    - `:addon_right_class` - This class is added to the input wrapper if the
-      `:addon_right` slot is used.
-    - `:visually_hidden_class` - This class is added to labels if `:hide_label`
-      is set to `true`.
     """
   end
 
@@ -151,11 +145,9 @@ defmodule Doggo.Components.Field do
       since: "0.6.0",
       maturity: :developing,
       modifiers: [],
+      data_attrs: ["data-invalid", "data-state"],
       extra: [
         gettext_module: nil,
-        addon_left_class: "has-addon-left",
-        addon_right_class: "has-addon-right",
-        visually_hidden_class: "is-visually-hidden",
         required_text: "(required)",
         optional_text: nil
       ]
@@ -178,9 +170,7 @@ defmodule Doggo.Components.Field do
       "#{base_class}-select",
       "#{base_class}-switch",
       "#{base_class}-switch-label",
-      "#{base_class}-switch-state",
-      "#{base_class}-switch-state-off",
-      "#{base_class}-switch-state-on"
+      "#{base_class}-switch-state"
     ]
   end
 
@@ -199,8 +189,8 @@ defmodule Doggo.Components.Field do
       attr :hide_label, :boolean,
         default: false,
         doc: """
-        Adds an "is-visually-hidden" class to the `<label>`. This option does not
-        apply to checkbox and radio inputs.
+        Adds a "data-visually-hidden" attribute to the `<label>`. This option
+        does not apply to checkbox and radio inputs.
         """
 
       attr :value, :any
@@ -299,9 +289,6 @@ defmodule Doggo.Components.Field do
 
   @impl true
   def init_block(_opts, extra) do
-    addon_left_class = Keyword.fetch!(extra, :addon_left_class)
-    addon_right_class = Keyword.fetch!(extra, :addon_right_class)
-    visually_hidden_class = Keyword.fetch!(extra, :visually_hidden_class)
     required_text = Keyword.fetch!(extra, :required_text)
     optional_text = Keyword.fetch!(extra, :optional_text)
     gettext_module = Keyword.get(extra, :gettext_module)
@@ -311,9 +298,6 @@ defmodule Doggo.Components.Field do
         assign(
           var!(assigns),
           gettext_module: unquote(gettext_module),
-          addon_left_class: unquote(addon_left_class),
-          addon_right_class: unquote(addon_right_class),
-          visually_hidden_class: unquote(visually_hidden_class),
           required_text: unquote(required_text),
           optional_text: unquote(optional_text)
         )
@@ -341,7 +325,6 @@ defmodule Doggo.Components.Field do
 
     assigns
     |> assign(field: nil, id: id)
-    |> assign(:class, assigns.class ++ [field_error_class(errors)])
     |> assign(
       :describedby,
       Doggo.input_aria_describedby(id, assigns.description)
@@ -365,14 +348,13 @@ defmodule Doggo.Components.Field do
       end)
 
     ~H"""
-    <div class={@class}>
+    <div class={@class} data-invalid={@errors != []} {@data_attrs}>
       <.label
         required={@validations[:required] || false}
         required_text={@required_text}
         optional_text={@optional_text}
         class={"#{@base_class}-checkbox"}
         base_class={@base_class}
-        visually_hidden_class={@visually_hidden_class}
         gettext_module={@gettext_module}
       >
         <input type="hidden" name={@name} value="false" />
@@ -404,7 +386,7 @@ defmodule Doggo.Components.Field do
 
   def render(%{type: "checkbox-group"} = assigns) do
     ~H"""
-    <div class={@class}>
+    <div class={@class} data-invalid={@errors != []} {@data_attrs}>
       <fieldset class={"#{@base_class}-checkbox-group"}>
         <legend>
           {@label}
@@ -459,7 +441,7 @@ defmodule Doggo.Components.Field do
 
   def render(%{type: "radio-group"} = assigns) do
     ~H"""
-    <div class={@class}>
+    <div class={@class} data-invalid={@errors != []} {@data_attrs}>
       <fieldset class={"#{@base_class}-radio-group"}>
         <legend>
           {@label}
@@ -505,7 +487,7 @@ defmodule Doggo.Components.Field do
       )
 
     ~H"""
-    <div class={@class}>
+    <div class={@class} data-invalid={@errors != []} {@data_attrs}>
       <.label
         for={@id}
         required={@validations[:required] || false}
@@ -513,12 +495,11 @@ defmodule Doggo.Components.Field do
         optional_text={@optional_text}
         base_class={@base_class}
         visually_hidden={@hide_label}
-        visually_hidden_class={@visually_hidden_class}
         gettext_module={@gettext_module}
       >
         {@label}
       </.label>
-      <div class={["#{@base_class}-select", @multiple && "is-multiple"]}>
+      <div class={"#{@base_class}-select"} data-multiple={@multiple}>
         <select
           name={@name}
           id={@id}
@@ -556,14 +537,13 @@ defmodule Doggo.Components.Field do
       end)
 
     ~H"""
-    <div class={@class}>
+    <div class={@class} data-invalid={@errors != []} {@data_attrs}>
       <.label
         required={@validations[:required] || false}
         required_text={@required_text}
         optional_text={@optional_text}
         class={"#{@base_class}-switch"}
         base_class={@base_class}
-        visually_hidden_class={@visually_hidden_class}
         gettext_module={@gettext_module}
       >
         <span class={"#{@base_class}-switch-label"}>{@label}</span>
@@ -583,11 +563,7 @@ defmodule Doggo.Components.Field do
         />
         <span class={"#{@base_class}-switch-state"}>
           <span
-            class={
-              if @checked,
-                do: "#{@base_class}-switch-state-on",
-                else: "#{@base_class}-switch-state-off"
-            }
+            data-state={if @checked, do: "on", else: "off"}
             aria-hidden="true"
           >
             <%= if @checked do %>
@@ -612,7 +588,7 @@ defmodule Doggo.Components.Field do
 
   def render(%{type: "textarea"} = assigns) do
     ~H"""
-    <div class={@class}>
+    <div class={@class} data-invalid={@errors != []} {@data_attrs}>
       <.label
         for={@id}
         required={@validations[:required] || false}
@@ -620,7 +596,6 @@ defmodule Doggo.Components.Field do
         optional_text={@optional_text}
         base_class={@base_class}
         visually_hidden={@hide_label}
-        visually_hidden_class={@visually_hidden_class}
         gettext_module={@gettext_module}
       >
         {@label}
@@ -646,9 +621,12 @@ defmodule Doggo.Components.Field do
     """
   end
 
-  def render(assigns) do
+  def render(%{addon_left: addon_left, addon_right: addon_right} = assigns) do
+    addon = String.trim("#{addon_left && "left"} #{addon_right && "right"}")
+    assigns = assign(assigns, :addon, addon)
+
     ~H"""
-    <div class={@class}>
+    <div class={@class} data-invalid={@errors != []} {@data_attrs}>
       <.label
         for={@id}
         required={@validations[:required] || false}
@@ -656,16 +634,11 @@ defmodule Doggo.Components.Field do
         optional_text={@optional_text}
         base_class={@base_class}
         visually_hidden={@hide_label}
-        visually_hidden_class={@visually_hidden_class}
         gettext_module={@gettext_module}
       >
         {@label}
       </.label>
-      <div class={[
-        "#{@base_class}-input-wrapper",
-        @addon_left != [] && @addon_left_class,
-        @addon_right != [] && @addon_right_class
-      ]}>
+      <div class={"#{@base_class}-input-wrapper"} data-addon={@addon}>
         <input
           name={@name}
           id={@id}
@@ -749,29 +722,14 @@ defmodule Doggo.Components.Field do
   attr :visually_hidden, :boolean,
     default: false,
     doc: """
-    Adds an "is-visually-hidden" class to the `<label>`.
+    Adds a "data-visually-hidden" attribute to the `<label>`.
     """
-
-  attr :visually_hidden_class, :string, required: true
 
   slot :inner_block, required: true
 
-  defp label(
-         %{
-           class: class,
-           visually_hidden: visually_hidden,
-           visually_hidden_class: visually_hidden_class
-         } = assigns
-       ) do
-    class =
-      if visually_hidden,
-        do: [class, visually_hidden_class],
-        else: class
-
-    assigns = assign(assigns, :class, class)
-
+  defp label(assigns) do
     ~H"""
-    <label for={@for} class={@class}>
+    <label for={@for} class={@class} data-visually-hidden={@visually_hidden}>
       {render_slot(@inner_block)}
       <.required_optional_mark
         required={@required}
@@ -958,7 +916,4 @@ defmodule Doggo.Components.Field do
     )
     |> checkbox()
   end
-
-  defp field_error_class([]), do: nil
-  defp field_error_class(_), do: "has-errors"
 end

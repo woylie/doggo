@@ -75,7 +75,7 @@ defmodule Doggo.Components.VerticalNavNested do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class={@class} {@rest}>
+    <div class={@class} {@data_attrs} {@rest}>
       <div :if={@title != []} id={"#{@id}-title"} class={"#{@base_class}-title"}>
         {render_slot(@title)}
       </div>
