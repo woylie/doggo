@@ -1764,7 +1764,7 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert span = find_one(html, "span > span")
-      assert attribute(span, "class") == "is-visually-hidden"
+      assert attribute(span, "data-visually-hidden") == "data-visually-hidden"
       assert text(span) == "some-text"
 
       assert find_one(html, "svg.info")
@@ -1779,9 +1779,10 @@ defmodule Doggo.ComponentsTest do
         """)
 
       span = find_one(html, "span:root")
-      assert attribute(span, "class") == "icon has-text-before"
+      assert attribute(span, "class") == "icon"
+      assert attribute(span, "data-text-position") == "before"
       assert span = find_one(html, "span > span")
-      assert attribute(span, "class") == ""
+      refute attribute(span, "data-visually-hidden")
       assert text(span) == "some-text"
     end
 
@@ -1794,9 +1795,10 @@ defmodule Doggo.ComponentsTest do
         """)
 
       span = find_one(html, "span:root")
-      assert attribute(span, "class") == "icon has-text-after"
+      assert attribute(span, "class") == "icon"
+      assert attribute(span, "data-text-position") == "after"
       assert span = find_one(html, "span > span")
-      assert attribute(span, "class") == ""
+      refute attribute(span, "data-visually-hidden") == ""
       assert text(span) == "some-text"
     end
 
