@@ -76,8 +76,6 @@ defmodule Doggo.ComponentsTest do
     build_vertical_nav_nested()
     build_vertical_nav_section()
 
-    build_stack(name: :stack_with_recursive_class, recursive_class: "recursive")
-
     defmodule Icons do
       use Phoenix.Component
 
@@ -2913,6 +2911,7 @@ defmodule Doggo.ComponentsTest do
       div = find_one(html, "div")
 
       assert attribute(div, "class") == "stack"
+      refute attribute(html, "div", "data-recursive")
       assert text(div) == "Hello"
     end
 
@@ -2924,20 +2923,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.stack recursive>Hello</TestComponents.stack>
         """)
 
-      assert attribute(html, "div", "class") == "stack is-recursive"
-    end
-
-    test "recursive with custom recursive class" do
-      assigns = %{}
-
-      html =
-        parse_heex(~H"""
-        <TestComponents.stack_with_recursive_class recursive>
-          Hello
-        </TestComponents.stack_with_recursive_class>
-        """)
-
-      assert attribute(html, "div", "class") == "stack recursive"
+      assert attribute(html, "div", "class") == "stack"
+      assert attribute(html, "div", "data-recursive") == "data-recursive"
     end
 
     test "with global attribute" do

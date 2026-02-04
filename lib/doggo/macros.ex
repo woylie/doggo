@@ -10,6 +10,7 @@ defmodule Doggo.Macros do
     opts =
       Keyword.validate!(config, [
         :base_class,
+        :data_attrs,
         :extra,
         :maturity,
         :maturity_note,

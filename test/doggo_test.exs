@@ -33,7 +33,7 @@ defmodule DoggoTest do
       ]
     )
 
-    build_stack(recursive_class: "very-recursive")
+    build_stack()
 
     build_tag(
       modifiers: [
@@ -53,11 +53,11 @@ defmodule DoggoTest do
                "callout-icon",
                "callout-message",
                "callout-title",
+               "data-recursive",
                "data-size",
                "data-variant",
                "stack",
-               "tag",
-               "very-recursive"
+               "tag"
              ]
     end
   end
