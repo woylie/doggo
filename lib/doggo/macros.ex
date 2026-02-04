@@ -20,6 +20,7 @@ defmodule Doggo.Macros do
       ])
 
     modifiers = Keyword.fetch!(opts, :modifiers)
+    data_attrs = Keyword.get(opts, :data_attrs, [])
     extra = Keyword.get(opts, :extra, [])
     base_class = Keyword.get(opts, :base_class, default_base_class(name))
 
@@ -27,6 +28,7 @@ defmodule Doggo.Macros do
       [
         name: opts[:name] || name,
         base_class: base_class,
+        data_attrs: data_attrs,
         modifiers: modifiers
       ] ++ extra
 
@@ -42,7 +44,9 @@ defmodule Doggo.Macros do
       defmacro unquote(builder_name)(opts \\ []) do
         module = unquote(module)
         opts = Keyword.validate!(opts, unquote(defaults))
-        {opts, extra} = Keyword.split(opts, [:name, :base_class, :modifiers])
+
+        {opts, extra} =
+          Keyword.split(opts, [:name, :base_class, :data_attrs, :modifiers])
 
         component_info =
           opts

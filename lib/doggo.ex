@@ -258,11 +258,11 @@ defmodule Doggo do
   def safelist(module) when is_atom(module) do
     components = module.__dog_components__()
     base_classes = Enum.map(components, &get_base_class/1)
+    data_attrs = Enum.flat_map(components, &data_attrs/1)
     modifier_data_attrs = Enum.flat_map(components, &modifier_data_attrs/1)
     nested_classes = Enum.flat_map(components, &get_nested_classes/1)
-    extra_classes = Enum.flat_map(components, &get_extra_classes/1)
 
-    (base_classes ++ modifier_data_attrs ++ nested_classes ++ extra_classes)
+    (base_classes ++ data_attrs ++ modifier_data_attrs ++ nested_classes)
     |> Enum.reject(&is_nil/1)
     |> Enum.uniq()
     |> Enum.sort()
@@ -270,6 +270,10 @@ defmodule Doggo do
 
   defp get_base_class({_, info}) do
     Keyword.get(info, :base_class)
+  end
+
+  defp data_attrs({_, info}) do
+    Keyword.get(info, :data_attrs, [])
   end
 
   defp modifier_data_attrs({_, info}) do
@@ -282,14 +286,6 @@ defmodule Doggo do
     base_class = Keyword.get(info, :base_class)
     component_module = info |> Keyword.fetch!(:component) |> component_module()
     component_module.nested_classes(base_class)
-  end
-
-  defp get_extra_classes({_, info}) do
-    info
-    |> Keyword.fetch!(:extra)
-    |> Enum.map(fn {key, value} ->
-      if key |> to_string() |> String.ends_with?("_class"), do: value
-    end)
   end
 
   defp component_module(name) when is_atom(name) do
