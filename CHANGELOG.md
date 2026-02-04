@@ -5,13 +5,15 @@
 ## Unreleased
 
 **This release contains significant breaking changes. Check your component
-styles careful when upgrading.**
+styles carefully when upgrading.**
 
 ### Changed
 
 - Rename `mix dog.classes` to `mix dog.safelist`.
 - Rename `Doggo.classes/1` to `Doggo.safelist/1`.
-- Include data attributes in `mix dog.safelist` and `Doggo.classes/1` output.
+- Include data attributes in `mix dog.safelist` and `Doggo.safelist/1` output.
+- Use `data-` attributes instead of classes for modifiers (see upgrade guide
+  below).
 - `button_link` component
   - Remove `disabled_class` option.
   - Use `data-disabled` attribute instead of the `disabled_class`
@@ -60,24 +62,55 @@ styles careful when upgrading.**
 - Remove `class_name_fun` option.
 - Remove `Doggo.modifier_class_name/2`.
 
-- Breaking: Use `data-` attributes instead of classes for modifiers.
-- Breaking: Use `data-` attributes instead of classes to reflect state.
-  - button component
-  - icon component
-    - `.has-text-after` -> `[data-text-position="after"]`
-    - `.has-text-before` -> `[data-text-position="before"]`
-    - `.has-text-hidden` -> `[data-text-position="hidden"]`
-  - stack component
-    - `.is-recursive` -> `[data-recursive]`
+### Upgrade Guide
 
-.is-visually-hidden -> [data-visually-hidden]
+In previous versions, modifier attribute values would be reflected with CSS
+classes in the HTML output.
 
-.my-component.is-primary {} -> .my-component[data-variant="primary"]
-is-disabled -> [data-disabled]
+For example, if you had a tag component with a `size` modifier like this:
 
-### Removed
+```elixir
+build_tag(
+  modifiers: [
+    size: [values: ["small", "medium", "large"], default: "medium"]
+  ]
+)
+```
 
-- `class_name_fun` option
+And you used it like:
+
+```html
+<.tag size="small">Hello</.tag>
+```
+
+This would result in the addition of an `is-small` class.
+
+```html
+<span class="tag is-small">Hello</span>
+```
+
+The implementation was changed to use separate data attributes for each modifier
+instead. Now, the generated HTML will look like this:
+
+```html
+<span class="tag" data-size="small">Hello</span>
+```
+
+In your CSS styles, you will need to change the selectors accordingly.
+
+Before:
+
+```css
+.tag.is-small {
+}
+```
+
+After:
+
+```css
+.tag[data-size="small"] {
+}
+```
 
 ## [0.12.0] - 2026-01-15
 
