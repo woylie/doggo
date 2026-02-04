@@ -239,19 +239,6 @@ defmodule Doggo do
   ## Modifier classes
 
   @doc """
-  Takes a modifier attribute name and value and returns a CSS class name.
-
-  This function is used as a default for the `class_name_fun` option.
-
-  ## Example
-
-      iex> modifier_class_name(:size, "large")
-      "is-large"
-  """
-  @spec modifier_class_name(atom, String.t()) :: String.t()
-  def modifier_class_name(_, value) when is_binary(value), do: "is-#{value}"
-
-  @doc """
   Returns all component classes used in the given components module.
 
   This includes the base classes, nested classes (based on the base class)
