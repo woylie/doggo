@@ -46,7 +46,6 @@ defmodule Doggo.Components.ButtonLink do
       type: :buttons,
       since: "0.6.0",
       maturity: :stable,
-      extra: [],
       modifiers: [
         variant: [
           values: [
