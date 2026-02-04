@@ -20,6 +20,17 @@ defmodule Doggo.ComponentsTest do
     build_box()
     build_breadcrumb()
     build_button()
+
+    build_button(
+      name: :button_with_bool_attr,
+      modifiers: [full_width: [type: :boolean]]
+    )
+
+    build_button(
+      name: :button_with_int_attr,
+      modifiers: [space: [type: :integer, values: [1, 2, 4]]]
+    )
+
     build_button_link()
     build_callout()
     build_card()
@@ -525,6 +536,80 @@ defmodule Doggo.ComponentsTest do
 
       assert attribute(html, "button:root", "class") == "button"
       assert attribute(html, "button:root", "data-fill") == "outline"
+    end
+  end
+
+  describe "boolean attributes" do
+    test "without value" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button_with_bool_attr>
+          Confirm
+        </TestComponents.button_with_bool_attr>
+        """)
+
+      button = find_one(html, "button:root")
+      refute attribute(button, "data-full-width")
+    end
+
+    test "with false" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button_with_bool_attr full_width={false}>
+          Confirm
+        </TestComponents.button_with_bool_attr>
+        """)
+
+      button = find_one(html, "button:root")
+      refute attribute(button, "data-full-width")
+    end
+
+    test "with true (presence-only)" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button_with_bool_attr full_width>
+          Confirm
+        </TestComponents.button_with_bool_attr>
+        """)
+
+      button = find_one(html, "button:root")
+      assert attribute(button, "data-full-width") == "data-full-width"
+    end
+
+    test "with true (explicit)" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button_with_bool_attr full_width={true}>
+          Confirm
+        </TestComponents.button_with_bool_attr>
+        """)
+
+      button = find_one(html, "button:root")
+      assert attribute(button, "data-full-width") == "data-full-width"
+    end
+  end
+
+  describe "integer attributes" do
+    test "with value" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button_with_int_attr space={2}>
+          Confirm
+        </TestComponents.button_with_int_attr>
+        """)
+
+      button = find_one(html, "button:root")
+      assert attribute(button, "data-space") == "2"
     end
   end
 

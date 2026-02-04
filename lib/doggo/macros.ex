@@ -66,7 +66,8 @@ defmodule Doggo.Macros do
           @doc unquote(docstring)
 
           for {name, modifier_opts} <- unquote(modifiers) do
-            attr name, :string, modifier_opts
+            {type, modifier_opts} = Keyword.pop(modifier_opts, :type, :string)
+            attr name, type, modifier_opts
           end
 
           attr :class, :any,
