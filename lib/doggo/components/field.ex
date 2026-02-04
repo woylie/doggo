@@ -189,8 +189,8 @@ defmodule Doggo.Components.Field do
       attr :hide_label, :boolean,
         default: false,
         doc: """
-        Adds an "is-visually-hidden" class to the `<label>`. This option does not
-        apply to checkbox and radio inputs.
+        Adds a "data-visually-hidden" attribute to the `<label>`. This option
+        does not apply to checkbox and radio inputs.
         """
 
       attr :value, :any
@@ -722,7 +722,7 @@ defmodule Doggo.Components.Field do
   attr :visually_hidden, :boolean,
     default: false,
     doc: """
-    Adds an "is-visually-hidden" class to the `<label>`.
+    Adds a "data-visually-hidden" attribute to the `<label>`.
     """
 
   slot :inner_block, required: true
