@@ -42,19 +42,22 @@ defmodule MyAppWeb.CoreComponents do
 end
 ```
 
-Each modifier results in an additional attribute that is translated into a CSS
-class. You can use the button defined above like this:
+Each modifier results in an additional attribute that is translated into a
+data attribute. You can use the button defined above like this:
 
 ```html
 <.button size="small">Edit</.button>
 ```
 
-Most of the components have a base class that matches the component name.
-By default, `Doggo.modifier_class_name/2` is used to build the CSS class name
-for modifier attributes. The button above would be rendered with the class
-`"button is-small"`.
+The resulting HTML code will look similar to:
 
-You can override both the base class and the modifier class function:
+```html
+<button data-size="small">Edit</button>
+```
+
+Most of the components have a base class that matches the component name.
+
+You can override the base class in the component options:
 
 ```elixir
 defmodule MyAppWeb.CoreComponents do
@@ -65,15 +68,10 @@ defmodule MyAppWeb.CoreComponents do
     base_class: "alt-button",
     modifiers: [size: [values: ["normal", "small"], default: "normal"]]
   )
-
-  def modifier_class(name, value) do
-    "#{name}-#{value}"
-  end
 end
 ```
 
-With these changes, the class would now be `"alt-button size-small`. To remove
-the base class, just set it to `nil`.
+To remove the base class, just set it to `nil`.
 
 It is also possible to change the name of the generated component, which can be
 useful if you want to compile multiple variants of the same component, or if
@@ -123,14 +121,12 @@ mix dog.gen.stories -m MyAppWeb.CoreComponents -o storybook -c button
 
 ### PurgeCSS
 
-If you use PurgeCSS, you can get a list of CSS classes and data attributes of
-all configured components:
+You can generate a safelist with the CSS classes and data attributes of all
+configured components with:
 
 ```bash
 mix dog.safelist -m MyAppWeb.CoreComponents -o assets/doggo_safelist.txt
 ```
-
-Add the generated file to your PurgeCSS configuration.
 
 ## Design decisions
 
@@ -138,8 +134,8 @@ Add the generated file to your PurgeCSS configuration.
 - Adhere to accessibility guidelines with appropriate ARIA attributes and roles.
 - Utilize semantic HTML and ARIA attributes for style bindings to states, rather
   than relying on CSS classes.
-- Where state or variations can not be expressed semantically, use modifier
-  classes named `.is-*` or `.has-*`.
+- Where state or variations cannot be expressed semantically, use data
+  attributes.
 - The library is designed without default styles and does not prefer any
   particular CSS framework.
 
