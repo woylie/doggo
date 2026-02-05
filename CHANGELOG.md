@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## [0.13.0] - 2026-02-05
+
 **This release contains significant breaking changes. Check your component
 styles carefully when upgrading.**
 
