@@ -46,8 +46,8 @@ importers:
         specifier: 17.1.1
         version: 17.1.1
       stylelint-config-recess-order:
-        specifier: 7.6.0
-        version: 7.6.0(stylelint-order@7.0.1(stylelint@17.1.1))(stylelint@17.1.1)
+        specifier: 7.6.1
+        version: 7.6.1(stylelint-order@7.0.1(stylelint@17.1.1))(stylelint@17.1.1)
       stylelint-config-standard-scss:
         specifier: 17.0.0
         version: 17.0.0(postcss@8.5.6)(stylelint@17.1.1)
@@ -1459,8 +1459,8 @@ packages:
     engines: {node: '>=22.0.0'}
     hasBin: true
 
-  stylelint-config-recess-order@7.6.0:
-    resolution: {integrity: sha512-c3LXX4a8UEtrMD/KigK4I7LFexbM2p/eSTqnix5dmmvydEqX3dzrRt981h8giSEhA51vxdCEefQc3umH60i2bA==}
+  stylelint-config-recess-order@7.6.1:
+    resolution: {integrity: sha512-ac0H/Iy2chh1YBADrua87G+nJCmG/SdG7gjnoLvtfpN0D+RuNfuADawfbCKvm0LMp5hvuRFNkJsu6xNoLM5ToA==}
     peerDependencies:
       stylelint: ^16.18.0 || ^17.0.0
       stylelint-order: ^7.0.0
@@ -2890,7 +2890,7 @@ snapshots:
     transitivePeerDependencies:
       - tslib
 
-  stylelint-config-recess-order@7.6.0(stylelint-order@7.0.1(stylelint@17.1.1))(stylelint@17.1.1):
+  stylelint-config-recess-order@7.6.1(stylelint-order@7.0.1(stylelint@17.1.1))(stylelint@17.1.1):
     dependencies:
       stylelint: 17.1.1
       stylelint-order: 7.0.1(stylelint@17.1.1)
