@@ -64,6 +64,7 @@ defmodule Doggo.Macros do
           @dog_components unquote(component_info)
 
           @doc unquote(docstring)
+          @doc type: unquote(component_info[:type])
 
           for {name, modifier_opts} <- unquote(modifiers) do
             {type, modifier_opts} = Keyword.pop(modifier_opts, :type, :string)
