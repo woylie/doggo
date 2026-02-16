@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## [0.13.1] - 2026-02-16
+
 ### Changed
 
 - Add `@doc type: {type}` tags to compiled components for ExDoc grouping.
