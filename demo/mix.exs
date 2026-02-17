@@ -49,7 +49,7 @@ defmodule Demo.MixProject do
       {:phoenix, "1.8.3"},
       {:phoenix_html, "4.3.0"},
       {:phoenix_live_reload, "1.6.2", only: :dev},
-      {:phoenix_live_view, "== 1.1.23"},
+      {:phoenix_live_view, "== 1.1.24"},
       {:lazy_html, "== 0.1.10", only: :test},
       {:floki, "0.38.0", only: :test},
       {:esbuild, "0.10.0", runtime: Mix.env() == :dev},
