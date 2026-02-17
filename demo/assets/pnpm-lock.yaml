@@ -40,8 +40,8 @@ importers:
         specifier: 3.8.1
         version: 3.8.1
       style-dictionary:
-        specifier: 5.3.0
-        version: 5.3.0(tslib@2.8.1)
+        specifier: 5.3.1
+        version: 5.3.1(tslib@2.8.1)
       stylelint:
         specifier: 17.3.0
         version: 17.3.0
@@ -71,8 +71,8 @@ packages:
   '@bundled-es-modules/deepmerge@4.3.1':
     resolution: {integrity: sha512-Rk453EklPUPC3NRWc3VUNI/SSUjdBaFoaQvFRmNBNtMHVtOFD5AntiWg5kEE1hqcPqedYFDzxE3ZcMYPcA195w==}
 
-  '@bundled-es-modules/glob@13.0.1':
-    resolution: {integrity: sha512-4YwdXZ7ME9OetSAczXC9khFET03n50xQuIDd6og95UgeByhZRi8drP5Q8DHG2XIT6oo6RvrshSG+DnVolO1d1Q==}
+  '@bundled-es-modules/glob@13.0.3':
+    resolution: {integrity: sha512-eFev/9WFIhDf7XWwDQut7SOjFacVD3kYrkP6OXQBhmU/S/YmPEM/E3p3Mc1xCjSwIhmoMkM+9wnvqqd5ctsB9g==}
 
   '@bundled-es-modules/memfs@4.17.0':
     resolution: {integrity: sha512-ykdrkEmQr9BV804yd37ikXfNnvxrwYfY9Z2/EtMHFEFadEjsQXJ1zL9bVZrKNLDtm91UdUOEHso6Aweg93K6xQ==}
@@ -1422,8 +1422,8 @@ packages:
     resolution: {integrity: sha512-gmBGslpoQJtgnMAvOVqGZpEz9dyoKTCzy2nfz/n8aIFhN/jCE/rCmcxabB6jOOHV+0WNnylOxaxBQPSvcWklhA==}
     engines: {node: '>=12'}
 
-  style-dictionary@5.3.0:
-    resolution: {integrity: sha512-nl2HzXL2tqFIFRL+CAVKPu/erQ9N6m7yNYcYF1K3BywTYa38ZuKLYa1Wy2O++Pojo8XOaFD6t8wq5Y0au81vIg==}
+  style-dictionary@5.3.1:
+    resolution: {integrity: sha512-JERfy+PNhIaG+EUSHyeznruSaaQpfHZO6kcxRYGPh3HZ3zNKiOJxp3tL4liQCzLTUBwf1geofMjQlVADR26vXA==}
     engines: {node: '>=22.0.0'}
     hasBin: true
 
@@ -1595,7 +1595,7 @@ snapshots:
     dependencies:
       deepmerge: 4.3.1
 
-  '@bundled-es-modules/glob@13.0.1':
+  '@bundled-es-modules/glob@13.0.3':
     dependencies:
       buffer: 6.0.3
       events: 3.3.0
@@ -2792,10 +2792,10 @@ snapshots:
     dependencies:
       ansi-regex: 6.2.2
 
-  style-dictionary@5.3.0(tslib@2.8.1):
+  style-dictionary@5.3.1(tslib@2.8.1):
     dependencies:
       '@bundled-es-modules/deepmerge': 4.3.1
-      '@bundled-es-modules/glob': 13.0.1
+      '@bundled-es-modules/glob': 13.0.3
       '@bundled-es-modules/memfs': 4.17.0(tslib@2.8.1)
       '@zip.js/zip.js': 2.8.20
       chalk: 5.6.2
