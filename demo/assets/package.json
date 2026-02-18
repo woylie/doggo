@@ -29,7 +29,7 @@
     "stylelint": "17.3.0",
     "stylelint-config-recess-order": "7.6.1",
     "stylelint-config-standard-scss": "17.0.0",
-    "stylelint-declaration-strict-value": "1.10.11"
+    "stylelint-declaration-strict-value": "1.11.0"
   },
   "dependencies": {
     "phoenix": "link:../deps/phoenix",
