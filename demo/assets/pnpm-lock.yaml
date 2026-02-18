@@ -52,8 +52,8 @@ importers:
         specifier: 17.0.0
         version: 17.0.0(postcss@8.5.6)(stylelint@17.3.0)
       stylelint-declaration-strict-value:
-        specifier: 1.10.11
-        version: 1.10.11(stylelint@17.3.0)
+        specifier: 1.11.0
+        version: 1.11.0(stylelint@17.3.0)
 
 packages:
 
@@ -1465,11 +1465,11 @@ packages:
     peerDependencies:
       stylelint: ^17.0.0
 
-  stylelint-declaration-strict-value@1.10.11:
-    resolution: {integrity: sha512-oVQvhZlFZAiDz9r2BPFZLtTGm1A2JVhdKObKAJoTjFfR4F/NpApC4bMBTxf4sZS76Na3njYKVOaAaKSZ4+FU+g==}
-    engines: {node: '>=18.12.0'}
+  stylelint-declaration-strict-value@1.11.0:
+    resolution: {integrity: sha512-rGU27HLSQScIQ6ZbCcoVLXf07fy6ijczbxFYv0RnGwIZrVXIr8Sz9TRV5QbjU8E7nOlD4BQEAfRgeQsFaQXX3g==}
+    engines: {node: '>=20.19.0'}
     peerDependencies:
-      stylelint: '>=7 <=16'
+      stylelint: '>=16 <=17'
 
   stylelint-order@7.0.1:
     resolution: {integrity: sha512-GWPei1zBVDDjxM+/BmcSCiOcHNd8rSqW6FUZtqQGlTRpD0Z5nSzspzWD8rtKif5KPdzUG68DApKEV/y/I9VbTw==}
@@ -2841,7 +2841,7 @@ snapshots:
       stylelint: 17.3.0
       stylelint-config-recommended: 18.0.0(stylelint@17.3.0)
 
-  stylelint-declaration-strict-value@1.10.11(stylelint@17.3.0):
+  stylelint-declaration-strict-value@1.11.0(stylelint@17.3.0):
     dependencies:
       stylelint: 17.3.0
 
