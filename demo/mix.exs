@@ -46,7 +46,7 @@ defmodule Demo.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "1.8.3"},
+      {:phoenix, "== 1.8.4"},
       {:phoenix_html, "4.3.0"},
       {:phoenix_live_reload, "1.6.2", only: :dev},
       {:phoenix_live_view, "== 1.1.24"},
