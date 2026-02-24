@@ -52,8 +52,8 @@ importers:
         specifier: 17.0.0
         version: 17.0.0(postcss@8.5.6)(stylelint@17.3.0)
       stylelint-declaration-strict-value:
-        specifier: 1.11.0
-        version: 1.11.0(stylelint@17.3.0)
+        specifier: 1.11.1
+        version: 1.11.1(stylelint@17.3.0)
 
 packages:
 
@@ -1458,8 +1458,8 @@ packages:
     peerDependencies:
       stylelint: ^17.0.0
 
-  stylelint-declaration-strict-value@1.11.0:
-    resolution: {integrity: sha512-rGU27HLSQScIQ6ZbCcoVLXf07fy6ijczbxFYv0RnGwIZrVXIr8Sz9TRV5QbjU8E7nOlD4BQEAfRgeQsFaQXX3g==}
+  stylelint-declaration-strict-value@1.11.1:
+    resolution: {integrity: sha512-DYihiMuKGk9AeCYp+c3PMy6Z+Qu6yb6wRLeXQJZVMdXV+QOqs7P+Xj6jt8RVTgFJfII+cEQaFI5uWu08WwlkOA==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       stylelint: '>=16 <=17'
@@ -2826,7 +2826,7 @@ snapshots:
       stylelint: 17.3.0
       stylelint-config-recommended: 18.0.0(stylelint@17.3.0)
 
-  stylelint-declaration-strict-value@1.11.0(stylelint@17.3.0):
+  stylelint-declaration-strict-value@1.11.1(stylelint@17.3.0):
     dependencies:
       stylelint: 17.3.0
 
