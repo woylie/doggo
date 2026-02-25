@@ -43,17 +43,17 @@ importers:
         specifier: 5.3.2
         version: 5.3.2(tslib@2.8.1)
       stylelint:
-        specifier: 17.3.0
-        version: 17.3.0
+        specifier: 17.4.0
+        version: 17.4.0
       stylelint-config-recess-order:
         specifier: 7.6.1
-        version: 7.6.1(stylelint-order@7.0.1(stylelint@17.3.0))(stylelint@17.3.0)
+        version: 7.6.1(stylelint-order@7.0.1(stylelint@17.4.0))(stylelint@17.4.0)
       stylelint-config-standard-scss:
         specifier: 17.0.0
-        version: 17.0.0(postcss@8.5.6)(stylelint@17.3.0)
+        version: 17.0.0(postcss@8.5.6)(stylelint@17.4.0)
       stylelint-declaration-strict-value:
         specifier: 1.11.1
-        version: 1.11.1(stylelint@17.3.0)
+        version: 1.11.1(stylelint@17.4.0)
 
 packages:
 
@@ -550,10 +550,6 @@ packages:
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
-
-  balanced-match@3.0.1:
-    resolution: {integrity: sha512-vjtV3hiLqYDNRoiAv0zC4QaGAMPomEoq83PRmYIofPswwZurCeWR5LByXm7SyoL0Zh5+2z0+HC7jG8gSZJUh0w==}
-    engines: {node: '>= 16'}
 
   balanced-match@4.0.4:
     resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
@@ -1476,8 +1472,8 @@ packages:
     peerDependencies:
       stylelint: ^16.8.2 || ^17.0.0
 
-  stylelint@17.3.0:
-    resolution: {integrity: sha512-1POV91lcEMhj6SLVaOeA0KlS9yattS+qq+cyWqP/nYzWco7K5jznpGH1ExngvPlTM9QF1Kjd2bmuzJu9TH2OcA==}
+  stylelint@17.4.0:
+    resolution: {integrity: sha512-3kQ2/cHv3Zt8OBg+h2B8XCx9evEABQIrv4hh3uXahGz/ZEHrTR80zxBiK2NfXNaSoyBzxO1pjsz1Vhdzwn5XSw==}
     engines: {node: '>=20.19.0'}
     hasBin: true
 
@@ -1977,8 +1973,6 @@ snapshots:
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.1.0
-
-  balanced-match@3.0.1: {}
 
   balanced-match@4.0.4: {}
 
@@ -2795,48 +2789,48 @@ snapshots:
     transitivePeerDependencies:
       - tslib
 
-  stylelint-config-recess-order@7.6.1(stylelint-order@7.0.1(stylelint@17.3.0))(stylelint@17.3.0):
+  stylelint-config-recess-order@7.6.1(stylelint-order@7.0.1(stylelint@17.4.0))(stylelint@17.4.0):
     dependencies:
-      stylelint: 17.3.0
-      stylelint-order: 7.0.1(stylelint@17.3.0)
+      stylelint: 17.4.0
+      stylelint-order: 7.0.1(stylelint@17.4.0)
 
-  stylelint-config-recommended-scss@17.0.0(postcss@8.5.6)(stylelint@17.3.0):
+  stylelint-config-recommended-scss@17.0.0(postcss@8.5.6)(stylelint@17.4.0):
     dependencies:
       postcss-scss: 4.0.9(postcss@8.5.6)
-      stylelint: 17.3.0
-      stylelint-config-recommended: 18.0.0(stylelint@17.3.0)
-      stylelint-scss: 7.0.0(stylelint@17.3.0)
+      stylelint: 17.4.0
+      stylelint-config-recommended: 18.0.0(stylelint@17.4.0)
+      stylelint-scss: 7.0.0(stylelint@17.4.0)
     optionalDependencies:
       postcss: 8.5.6
 
-  stylelint-config-recommended@18.0.0(stylelint@17.3.0):
+  stylelint-config-recommended@18.0.0(stylelint@17.4.0):
     dependencies:
-      stylelint: 17.3.0
+      stylelint: 17.4.0
 
-  stylelint-config-standard-scss@17.0.0(postcss@8.5.6)(stylelint@17.3.0):
+  stylelint-config-standard-scss@17.0.0(postcss@8.5.6)(stylelint@17.4.0):
     dependencies:
-      stylelint: 17.3.0
-      stylelint-config-recommended-scss: 17.0.0(postcss@8.5.6)(stylelint@17.3.0)
-      stylelint-config-standard: 40.0.0(stylelint@17.3.0)
+      stylelint: 17.4.0
+      stylelint-config-recommended-scss: 17.0.0(postcss@8.5.6)(stylelint@17.4.0)
+      stylelint-config-standard: 40.0.0(stylelint@17.4.0)
     optionalDependencies:
       postcss: 8.5.6
 
-  stylelint-config-standard@40.0.0(stylelint@17.3.0):
+  stylelint-config-standard@40.0.0(stylelint@17.4.0):
     dependencies:
-      stylelint: 17.3.0
-      stylelint-config-recommended: 18.0.0(stylelint@17.3.0)
+      stylelint: 17.4.0
+      stylelint-config-recommended: 18.0.0(stylelint@17.4.0)
 
-  stylelint-declaration-strict-value@1.11.1(stylelint@17.3.0):
+  stylelint-declaration-strict-value@1.11.1(stylelint@17.4.0):
     dependencies:
-      stylelint: 17.3.0
+      stylelint: 17.4.0
 
-  stylelint-order@7.0.1(stylelint@17.3.0):
+  stylelint-order@7.0.1(stylelint@17.4.0):
     dependencies:
       postcss: 8.5.6
       postcss-sorting: 9.1.0(postcss@8.5.6)
-      stylelint: 17.3.0
+      stylelint: 17.4.0
 
-  stylelint-scss@7.0.0(stylelint@17.3.0):
+  stylelint-scss@7.0.0(stylelint@17.4.0):
     dependencies:
       css-tree: 3.1.0
       is-plain-object: 5.0.0
@@ -2846,9 +2840,9 @@ snapshots:
       postcss-resolve-nested-selector: 0.1.6
       postcss-selector-parser: 7.1.1
       postcss-value-parser: 4.2.0
-      stylelint: 17.3.0
+      stylelint: 17.4.0
 
-  stylelint@17.3.0:
+  stylelint@17.4.0:
     dependencies:
       '@csstools/css-calc': 3.1.1(@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0))(@csstools/css-tokenizer@4.0.0)
       '@csstools/css-parser-algorithms': 4.0.0(@csstools/css-tokenizer@4.0.0)
@@ -2857,7 +2851,6 @@ snapshots:
       '@csstools/media-query-list-parser': 5.0.0(@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0))(@csstools/css-tokenizer@4.0.0)
       '@csstools/selector-resolve-nested': 4.0.0(postcss-selector-parser@7.1.1)
       '@csstools/selector-specificity': 6.0.0(postcss-selector-parser@7.1.1)
-      balanced-match: 3.0.1
       colord: 2.9.3
       cosmiconfig: 9.0.0
       css-functions-list: 3.3.3
@@ -2874,7 +2867,6 @@ snapshots:
       import-meta-resolve: 4.2.0
       imurmurhash: 0.1.4
       is-plain-object: 5.0.0
-      known-css-properties: 0.37.0
       mathml-tag-names: 4.0.0
       meow: 14.1.0
       micromatch: 4.0.8
