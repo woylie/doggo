@@ -18,7 +18,7 @@
     "lint:stylelint:fix": "stylelint css --fix"
   },
   "devDependencies": {
-    "autoprefixer": "10.4.24",
+    "autoprefixer": "10.4.27",
     "css-loader": "7.1.4",
     "esbuild": "0.27.3",
     "esbuild-sass-plugin": "3.6.0",
