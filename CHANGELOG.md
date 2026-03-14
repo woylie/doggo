@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+## [0.13.3] - 2026-03-14
+
+### Changed
+
+- Allow `popovertarget` attribute on button component.
+
 ## [0.13.2] - 2026-03-04
 
 ### Changed
