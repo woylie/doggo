@@ -153,11 +153,14 @@ defmodule Doggo.Components.Image do
     ~H"""
     <figure
       class={@class}
-      data-numerator={@numerator}
-      data-denominator={@denominator}
+      {@data_attrs}
       {@rest}
     >
-      <div class={"#{@base_class}-frame"}>
+      <div
+        class={"#{@base_class}-frame"}
+        data-numerator={@numerator}
+        data-denominator={@denominator}
+      >
         <img
           src={@src}
           width={@width}

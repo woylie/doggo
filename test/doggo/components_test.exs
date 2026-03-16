@@ -2012,8 +2012,8 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, ":root", "class") == "image"
-      assert attribute(html, ":root", "data-numerator") == "3"
-      assert attribute(html, ":root", "data-denominator") == "2"
+      assert attribute(html, ":root .image-frame", "data-numerator") == "3"
+      assert attribute(html, ":root .image-frame", "data-denominator") == "2"
     end
 
     test "with caption" do
