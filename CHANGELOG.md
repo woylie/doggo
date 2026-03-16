@@ -25,6 +25,7 @@ Before:
   </div>
   <figcaption></figcaption>
 </figure>
+```
 
 After:
 
