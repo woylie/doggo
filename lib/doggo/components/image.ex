@@ -155,6 +155,7 @@ defmodule Doggo.Components.Image do
       class={@class}
       data-numerator={@numerator}
       data-denominator={@denominator}
+      {@data_attrs}
       {@rest}
     >
       <div class={"#{@base_class}-frame"}>
