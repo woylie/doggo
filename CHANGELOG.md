@@ -4,6 +4,39 @@
 
 ## Unreleased
 
+## [0.14.0] - 2026-03-16
+
+### Changed
+
+- Move `data-numerator` and `data-denominator` attributes in `image` component to inner `image-frame` element.
+
+### Fixed
+
+- Add modifier data attributes to image component.
+
+### HTML diff
+
+Before:
+
+```html
+<figure class="image" data-numerator="16" data-denominator="9">
+  <div class="image-frame">
+    <img src="" alt="" loading="">
+  </div>
+  <figcaption></figcaption>
+</figure>
+
+After:
+
+```html
+<figure class="image">
+  <div class="image-frame" data-numerator="16" data-denominator="9">
+    <img src="" alt="" loading="">
+  </div>
+  <figcaption></figcaption>
+</figure>
+```
+
 ## [0.13.3] - 2026-03-14
 
 ### Changed
