@@ -56,7 +56,7 @@ defmodule Doggo.MixProject do
       {:dialyxir, "1.4.7", runtime: false, only: [:dev, :test]},
       {:ex_doc, "0.40.1", only: :dev, runtime: false},
       {:excoveralls, "0.18.5", runtime: false, only: [:test]},
-      {:floki, "0.38.0", only: :test},
+      {:floki, "== 0.38.1", only: :test},
       {:gettext, "~> 1.0", optional: true},
       {:jason, "1.4.4", only: [:dev, :test]},
       {:lazy_html, "0.1.10", only: :test},
