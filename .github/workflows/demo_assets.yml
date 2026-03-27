@@ -22,14 +22,14 @@ jobs:
         working-directory: ./demo/assets
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
-      - uses: erlef/setup-beam@v1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: erlef/setup-beam@ee09b1e59bb240681c382eb1f0abc6a04af72764 # v1
         id: beam
         with:
           otp-version: ${{ env.OTP_VERSION }}
           elixir-version: ${{ env.ELIXIR_VERSION }}
       - name: Restore dependencies cache
-        uses: actions/cache@v5
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
         with:
           path: demo/deps
           key: ${{ runner.os }}-otp-${{ steps.beam.outputs.otp-version }}-elixir-${{ steps.beam.outputs.elixir-version }}-mix-${{ hashFiles('demo/mix.lock') }}
@@ -38,11 +38,11 @@ jobs:
         run: mix deps.get
         working-directory: ./demo
       - name: Install pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
         with:
           version: ${{ env.PNPM_VERSION }}
       - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
