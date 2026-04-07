@@ -83,7 +83,7 @@ defmodule Doggo.Storybook.Icon do
             %Variation{
               id: :"name_#{name}",
               attributes: %{
-                name: first_name
+                name: name
               }
             }
           end

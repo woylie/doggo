@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+## [0.14.2] - 2026-04-07
+
+### Fixed
+
+- Icon story: Render all configured icons instead of only the first one.
+
 ## [0.14.1] - 2026-04-07
 
 ### Fixed
