@@ -4,6 +4,11 @@
 
 ## Unreleased
 
+### Fixed
+
+- Toggle hidden attribute in toggle button story properly.
+- Set class name as string in the container function of some stories.
+
 ## [0.14.0] - 2026-03-16
 
 ### Changed

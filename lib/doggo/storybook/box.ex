@@ -4,7 +4,7 @@ defmodule Doggo.Storybook.Box do
 
   def dependent_components, do: [:button_link]
 
-  def container, do: {:div, class: :container}
+  def container, do: {:div, class: "container"}
   def layout, do: :one_column
 
   def variations(opts) do
