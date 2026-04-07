@@ -2,7 +2,7 @@ defmodule Doggo.Storybook.DisclosureButton do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def container, do: {:div, class: :container}
+  def container, do: {:div, class: "container"}
 
   def variations(opts) do
     [
