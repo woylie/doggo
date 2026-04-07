@@ -53,8 +53,8 @@ defmodule Doggo.Storybook.ToggleButton do
     {:eval,
      """
      %JS{}
-     |> JS.toggle(to: "#indicator-on-#{id}")
-     |> JS.toggle(to: "#indicator-off-#{id}")
+     |> JS.toggle_attribute({"hidden", "true"}, to: "#indicator-on-#{id}")
+     |> JS.toggle_attribute({"hidden", "true"}, to: "#indicator-off-#{id}")
      """}
   end
 end
