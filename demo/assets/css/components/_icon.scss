@@ -12,49 +12,11 @@
     height: 1cap;
   }
 
-  /* For LTR languages */
   &[data-text-position="before"] {
-    > svg {
-      order: 1;
-    }
-
-    > span {
-      order: 0;
-    }
+    flex-direction: row-reverse;
   }
 
   &[data-text-position="after"] {
-    > svg {
-      order: 0;
-    }
-
-    > span {
-      order: 1;
-    }
-  }
-}
-
-/* For RTL languages */
-html[dir="rtl"] {
-  .icon {
-    &[data-text-position="before"] {
-      > svg {
-        order: 0;
-      }
-
-      > span {
-        order: 1;
-      }
-    }
-
-    &[data-text-position="after"] {
-      > svg {
-        order: 1;
-      }
-
-      > span {
-        order: 0;
-      }
-    }
+    flex-direction: row;
   }
 }
