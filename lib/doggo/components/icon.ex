@@ -196,16 +196,21 @@ defmodule Doggo.Components.Icon do
   @impl true
   def render(assigns) do
     ~H"""
-    <span class={@class} data-text-position={@text_position} {@data_attrs} {@rest}>
-      <Doggo.Components.Icon.dynamic_icon
+    <span
+      class={@class}
+      data-text-position={@text_position}
+      {@data_attrs}
+      {@rest}
+      phx-no-format
+    ><Doggo.Components.Icon.dynamic_icon
         name={@name}
         module={@icon_module}
         fun={@icon_fun}
-      />
-      <span :if={@text} data-visually-hidden={@text_position == "hidden"}>
-        {@text}
-      </span>
-    </span>
+      /><span
+        :if={@text}
+        data-visually-hidden={@text_position == "hidden"}
+        phx-no-format
+      >{@text}</span></span>
     """
   end
 
