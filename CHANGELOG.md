@@ -4,6 +4,17 @@
 
 ## Unreleased
 
+## [0.14.3] - 2026-04-08
+
+### Changed
+
+- Simplify example styles for icon component.
+
+### Fixed
+
+- Remove extraneous whitespace from icon component.
+- Handle modifiers without values and boolean modifiers in stories.
+
 ## [0.14.2] - 2026-04-07
 
 ### Fixed
