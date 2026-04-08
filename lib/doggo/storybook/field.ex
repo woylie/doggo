@@ -387,7 +387,7 @@ defmodule Doggo.Storybook.Field do
       attributes: %{
         type: "text",
         label: "Text",
-        placeholder: value || "nil"
+        placeholder: to_string(value || "nil")
       }
     }
   end

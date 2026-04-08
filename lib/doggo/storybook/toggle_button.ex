@@ -35,7 +35,7 @@ defmodule Doggo.Storybook.ToggleButton do
         :on_click => toggle_indicator(name),
         :pressed => false
       },
-      slots: ["#{value || "nil"}"]
+      slots: [to_string(value || "nil")]
     }
   end
 

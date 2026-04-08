@@ -24,7 +24,7 @@ defmodule Doggo.Storybook.DisclosureButton do
   def modifier_variation_base(_id, name, value, _opts) do
     %{
       attributes: %{controls: "data-table-#{name}"},
-      slots: [value || "nil"]
+      slots: [to_string(value || "nil")]
     }
   end
 

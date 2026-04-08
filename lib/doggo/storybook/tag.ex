@@ -13,7 +13,7 @@ defmodule Doggo.Storybook.Tag do
 
   def modifier_variation_base(_id, _name, value, _opts) do
     %{
-      slots: [value || "nil"]
+      slots: [to_string(value || "nil")]
     }
   end
 end

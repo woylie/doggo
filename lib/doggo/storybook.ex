@@ -147,33 +147,44 @@ defmodule Doggo.Storybook do
 
   @doc false
   def modifier_groups(modifiers, storybook_module, opts) do
-    Enum.map(modifiers, &modifier_group(&1, storybook_module, opts))
+    modifiers
+    |> Enum.map(&modifier_group(&1, storybook_module, opts))
+    |> Enum.reject(&is_nil/1)
   end
 
   @doc false
   def modifier_group({name, modifier_opts}, storybook_module, opts) do
-    {:module, _} = Code.ensure_loaded(storybook_module)
+    if Keyword.has_key?(modifier_opts, :values) or
+         modifier_opts[:type] == :boolean do
+      {:module, _} = Code.ensure_loaded(storybook_module)
 
-    template =
-      if function_exported?(
-           storybook_module,
-           :modifier_variation_group_template,
-           2
-         ) do
-        storybook_module.modifier_variation_group_template(name, opts)
-      end
+      template =
+        if function_exported?(
+             storybook_module,
+             :modifier_variation_group_template,
+             2
+           ) do
+          storybook_module.modifier_variation_group_template(name, opts)
+        end
 
-    %VariationGroup{
-      id: name,
-      variations:
-        modifier_variations(name, modifier_opts, storybook_module, opts),
-      template: template
-    }
+      %VariationGroup{
+        id: name,
+        variations:
+          modifier_variations(name, modifier_opts, storybook_module, opts),
+        template: template
+      }
+    end
   end
 
   @doc false
   def modifier_variations(name, modifier_opts, storybook_module, opts) do
-    values = Keyword.fetch!(modifier_opts, :values)
+    values =
+      if modifier_opts[:type] == :boolean do
+        [true, false]
+      else
+        Keyword.get(modifier_opts, :values, [])
+      end
+
     Enum.map(values, &modifier_variation_base(name, &1, storybook_module, opts))
   end
 
