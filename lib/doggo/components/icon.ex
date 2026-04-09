@@ -184,12 +184,38 @@ defmodule Doggo.Components.Icon do
       """
     end
 
-    quote do
-      var!(assigns) =
-        assigns
-        |> var!()
-        |> assign(:icon_module, unquote(icon_module))
-        |> assign(:icon_fun, unquote(icon_fun))
+    if is_nil(icon_fun) do
+      mapping =
+        Map.new(
+          for {name, 1} <- icon_module.__info__(:functions) do
+            {name |> Atom.to_string() |> String.replace("_", "-"), name}
+          end
+        )
+
+      quote do
+        name = String.replace(var!(assigns).name, "_", "-")
+
+        icon_fun =
+          Map.get(unquote(Macro.escape(mapping)), name) ||
+            raise """
+            Unknown icon: #{name}
+            """
+
+        var!(assigns) =
+          assigns
+          |> var!()
+          |> assign(:icon_module, unquote(icon_module))
+          |> assign(:icon_fun, icon_fun)
+          |> assign(:name, nil)
+      end
+    else
+      quote do
+        var!(assigns) =
+          assigns
+          |> var!()
+          |> assign(:icon_module, unquote(icon_module))
+          |> assign(:icon_fun, unquote(icon_fun))
+      end
     end
   end
 
@@ -219,14 +245,6 @@ defmodule Doggo.Components.Icon do
   attr :name, :string, required: true
   attr :module, :atom
   attr :fun, :atom
-
-  def dynamic_icon(%{module: module, fun: nil} = assigns)
-      when is_atom(module) do
-    {module, assigns} = Map.pop!(assigns, :module)
-    {name, assigns} = Map.pop!(assigns, :name)
-    name = String.replace(name, "-", "_")
-    apply(module, String.to_existing_atom(name), [assigns])
-  end
 
   def dynamic_icon(%{module: module, fun: fun} = assigns)
       when is_atom(module) and is_atom(fun) do

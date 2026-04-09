@@ -2,6 +2,22 @@ defmodule Doggo.StorybookTest do
   use ExUnit.Case
   use Phoenix.Component
 
+  defmodule Icons do
+    use Phoenix.Component
+
+    def render(assigns) do
+      ~H"""
+      <svg class={@name}></svg>
+      """
+    end
+
+    def info(assigns) do
+      ~H"""
+      <svg class="info"></svg>
+      """
+    end
+  end
+
   defmodule TestComponents do
     @moduledoc """
     Generates components for tests.
@@ -57,13 +73,13 @@ defmodule Doggo.StorybookTest do
     build_frame()
 
     build_icon(
-      icon_module: __MODULE__.Icons,
+      icon_module: Doggo.StorybookTest.Icons,
       names: ["info"],
       modifiers: [variant: [values: [nil, "yes"], default: nil]]
     )
 
     build_icon(
-      icon_module: __MODULE__.Icons,
+      icon_module: Doggo.StorybookTest.Icons,
       icon_fun: :render,
       names: ["warning"],
       name: :icon_with_fun,
@@ -131,22 +147,6 @@ defmodule Doggo.StorybookTest do
     build_vertical_nav(
       modifiers: [variant: [values: [nil, "yes"], default: nil]]
     )
-
-    defmodule Icons do
-      use Phoenix.Component
-
-      def render(assigns) do
-        ~H"""
-        <svg class={@name}></svg>
-        """
-      end
-
-      def info(assigns) do
-        ~H"""
-        <svg class="info"></svg>
-        """
-      end
-    end
   end
 
   for {name, info} <- TestComponents.__dog_components__() do
