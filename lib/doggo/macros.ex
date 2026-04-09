@@ -41,6 +41,13 @@ defmodule Doggo.Macros do
       @doc since: unquote(since)
 
       defmacro unquote(builder_name)(opts \\ []) do
+        opts =
+          if Keyword.has_key?(opts, :icon_module) do
+            Keyword.update!(opts, :icon_module, &Macro.expand(&1, __CALLER__))
+          else
+            opts
+          end
+
         module = unquote(module)
         opts = Keyword.validate!(opts, unquote(defaults))
 

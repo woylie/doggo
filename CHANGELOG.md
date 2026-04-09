@@ -4,6 +4,13 @@
 
 ## Unreleased
 
+## [0.14.4] - 2026-04-09
+
+### Fixed
+
+- Fix an issue where the icon function name atoms don't exist yet when the icon
+  component is rendered.
+
 ## [0.14.3] - 2026-04-08
 
 ### Changed

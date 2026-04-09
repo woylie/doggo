@@ -7,6 +7,22 @@ defmodule Doggo.ComponentsTest do
   alias Phoenix.LiveView.JS
   alias Phoenix.LiveView.LiveStream
 
+  defmodule Icons do
+    use Phoenix.Component
+
+    def render(assigns) do
+      ~H"""
+      <svg class={@name}></svg>
+      """
+    end
+
+    def info(assigns) do
+      ~H"""
+      <svg class="info"></svg>
+      """
+    end
+  end
+
   defmodule TestComponents do
     @moduledoc """
     Generates components for tests.
@@ -45,10 +61,10 @@ defmodule Doggo.ComponentsTest do
     build_field(gettext_module: Doggo.Gettext)
     build_field_group()
     build_frame()
-    build_icon(icon_module: __MODULE__.Icons)
+    build_icon(icon_module: Doggo.ComponentsTest.Icons)
 
     build_icon(
-      icon_module: __MODULE__.Icons,
+      icon_module: Doggo.ComponentsTest.Icons,
       icon_fun: :render,
       name: :icon_with_fun
     )
@@ -86,22 +102,6 @@ defmodule Doggo.ComponentsTest do
     build_vertical_nav()
     build_vertical_nav_nested()
     build_vertical_nav_section()
-
-    defmodule Icons do
-      use Phoenix.Component
-
-      def render(assigns) do
-        ~H"""
-        <svg class={@name}></svg>
-        """
-      end
-
-      def info(assigns) do
-        ~H"""
-        <svg class="info"></svg>
-        """
-      end
-    end
   end
 
   describe "__dog_components__/0" do
