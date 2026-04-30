@@ -55,7 +55,7 @@ defmodule Demo.MixProject do
       {:esbuild, "0.10.0", runtime: Mix.env() == :dev},
       {:gettext, "1.0.2"},
       {:jason, "1.4.4"},
-      {:bandit, "== 1.10.3"},
+      {:bandit, "== 1.10.4"},
       {:phoenix_storybook, "1.0.0"},
       {:heroicons, "0.5.7"},
       {:doggo, path: ".."},
