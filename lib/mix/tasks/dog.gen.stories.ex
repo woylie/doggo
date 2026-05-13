@@ -139,7 +139,7 @@ defmodule Mix.Tasks.Dog.Gen.Stories do
           write_file(file_path, template)
           write_stories(rest, module, base_path, opts)
 
-        exists? && opts[:skip_all] ->
+        opts[:skip_all] ->
           write_stories(rest, module, base_path, opts)
 
         true ->
