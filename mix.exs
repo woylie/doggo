@@ -2,7 +2,7 @@ defmodule Doggo.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/woylie/doggo"
-  @version "0.14.4"
+  @version "0.14.5"
 
   def project do
     [
@@ -52,14 +52,14 @@ defmodule Doggo.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:credo, "== 1.7.17", runtime: false, only: [:dev, :test]},
+      {:credo, "== 1.7.18", runtime: false, only: [:dev, :test]},
       {:dialyxir, "1.4.7", runtime: false, only: [:dev, :test]},
-      {:ex_doc, "0.40.1", only: :dev, runtime: false},
+      {:ex_doc, "0.40.2", only: :dev, runtime: false},
       {:excoveralls, "0.18.5", runtime: false, only: [:test]},
       {:floki, "== 0.38.1", only: :test},
       {:gettext, "~> 1.0", optional: true},
-      {:jason, "1.4.4", only: [:dev, :test]},
-      {:lazy_html, "0.1.10", only: :test},
+      {:jason, "1.4.5", only: [:dev, :test]},
+      {:lazy_html, "0.1.11", only: :test},
       {:makeup_diff, "0.1.1", only: :dev},
       {:phoenix_live_view, "~> 1.1.0"},
       {:phoenix_storybook, "~> 1.0"},

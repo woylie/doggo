@@ -18,15 +18,15 @@
     "lint:stylelint:fix": "stylelint css --fix"
   },
   "devDependencies": {
-    "autoprefixer": "10.4.27",
+    "autoprefixer": "10.5.0",
     "css-loader": "7.1.4",
-    "esbuild": "0.27.4",
+    "esbuild": "0.28.0",
     "esbuild-sass-plugin": "3.7.0",
-    "postcss": "8.5.8",
+    "postcss": "8.5.14",
     "postcss-scss": "4.0.9",
-    "prettier": "3.8.1",
-    "style-dictionary": "5.3.3",
-    "stylelint": "17.5.0",
+    "prettier": "3.8.3",
+    "style-dictionary": "5.4.0",
+    "stylelint": "17.11.0",
     "stylelint-config-recess-order": "7.7.0",
     "stylelint-config-standard-scss": "17.0.0",
     "stylelint-declaration-strict-value": "1.11.1"
@@ -36,5 +36,5 @@
     "phoenix_html": "link:../deps/phoenix_html",
     "phoenix_live_view": "link:../deps/phoenix_live_view"
   },
-  "packageManager": "pnpm@10.32.1+sha512.a706938f0e89ac1456b6563eab4edf1d1faf3368d1191fc5c59790e96dc918e4456ab2e67d613de1043d2e8c81f87303e6b40d4ffeca9df15ef1ad567348f2be"
+  "packageManager": "pnpm@11.1.2"
 }
