@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## [0.14.5] - 2026-05-15
+
 ### Fixed
 
 - Type warning in Elixir 1.20.0-rc.5.
