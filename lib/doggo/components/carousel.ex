@@ -50,6 +50,11 @@ defmodule Doggo.Components.Carousel do
   end
 
   @impl true
+  def css_path do
+    "components/_carousel.scss"
+  end
+
+  @impl true
   def config do
     [
       type: :media,
@@ -184,6 +189,7 @@ defmodule Doggo.Components.Carousel do
       aria-label={@label}
       aria-labelledby={@labelledby}
       aria-roledescription={@carousel_roledescription}
+      data-active-index="0"
       {@data_attrs}
       {@rest}
     >
