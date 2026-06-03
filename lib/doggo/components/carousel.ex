@@ -184,6 +184,7 @@ defmodule Doggo.Components.Carousel do
       aria-label={@label}
       aria-labelledby={@labelledby}
       aria-roledescription={@carousel_roledescription}
+      data-active-index="0"
       {@data_attrs}
       {@rest}
     >

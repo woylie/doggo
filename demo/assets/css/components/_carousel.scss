@@ -1,0 +1,88 @@
+@use "../functions" as f;
+
+.carousel {
+  --item-width: 600px;
+
+  width: 100%;
+
+  @for $i from 0 through 10 {
+    &[data-active-index="#{$i}"] {
+      --active-index: #{$i};
+
+      .carousel-item:nth-child(#{$i + 1}) {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .carousel-pagination button[role="tab"]:nth-child(#{$i + 1}) {
+        background-color: f.color(background, primary, normal);
+      }
+    }
+  }
+
+  .carousel-inner {
+    display: flex;
+    flex-direction: column;
+    gap: f.spacer(4);
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .carousel-items {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    min-width: max-content;
+    padding-left: calc(50% - calc(var(--item-width) / 2));
+    transform: translateX(
+      calc(var(--active-index, 0) * calc(-1 * var(--item-width)))
+    );
+    transition: transform 0.4s cubic-bezier(0.25, 0.25, 0.5, 1);
+  }
+
+  .carousel-item {
+    width: var(--item-width);
+    opacity: 0.4;
+    transform: scale(0.9);
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
+  }
+
+  .carousel-controls {
+    display: flex;
+    gap: f.spacer(2);
+    align-items: center;
+    justify-content: center;
+
+    .carousel-previous {
+      order: 1;
+      cursor: pointer;
+    }
+
+    .carousel-pagination {
+      order: 2;
+
+      div[role="tablist"] {
+        display: flex;
+        gap: f.spacer(1);
+        justify-content: center;
+      }
+
+      button[role="tab"] {
+        width: f.spacer(4);
+        height: f.spacer(4);
+        padding: 0;
+        cursor: pointer;
+        border: none;
+        border-radius: f.radius(pill);
+      }
+    }
+
+    .carousel-next {
+      order: 3;
+      cursor: pointer;
+    }
+  }
+}
