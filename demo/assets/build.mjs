@@ -30,8 +30,8 @@ let opts = {
   outdir: "../priv/static/assets",
   plugins: plugins,
   alias: {
-    "phoenix-colocated/doggo": "../_build/dev/phoenix-colocated/doggo"
-  }
+    "phoenix-colocated/doggo": "../_build/dev/phoenix-colocated/doggo",
+  },
 };
 
 if (production) {
