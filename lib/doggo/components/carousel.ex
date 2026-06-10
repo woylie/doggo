@@ -192,6 +192,7 @@ defmodule Doggo.Components.Carousel do
       data-active-index="0"
       {@data_attrs}
       {@rest}
+      phx-hook=".Carousel"
     >
       <div class={"#{@base_class}-inner"}>
         <div class={"#{@base_class}-controls"}>
@@ -245,6 +246,60 @@ defmodule Doggo.Components.Carousel do
         </div>
       </div>
     </section>
+    <script :type={Phoenix.LiveView.ColocatedHook} name=".Carousel">
+      export default {
+        mounted() {
+          const carousel = this.el;
+          const baseClass = carousel.className.split(' ')[0];
+
+          const prevBtn = carousel.querySelector(`.${baseClass}-previous`);
+          const nextBtn = carousel.querySelector(`.${baseClass}-next`);
+          const tabs = carousel.querySelectorAll('[role="tab"]');
+          const totalItems =
+            carousel.querySelectorAll(`.${baseClass}-item`).length;
+
+          const getCurrentIdx = () =>
+            Number(carousel.getAttribute("data-active-index")) || 0;
+
+          const goTo = (newIdx) => {
+            const wrapAroundIdx = (newIdx + totalItems) % totalItems;
+
+            carousel.setAttribute("data-active-index", wrapAroundIdx);
+
+            tabs.forEach((tab, idx) => {
+              const isSelected = idx === wrapAroundIdx;
+              tab.setAttribute("aria-selected", isSelected ? "true" : "false");
+              tab.setAttribute("tabindex", isSelected ? "0" : "-1");
+            });
+
+            return wrapAroundIdx;
+          };
+
+          if (prevBtn) {
+            prevBtn.addEventListener("click", () => goTo(getCurrentIdx() - 1));
+          }
+          if (nextBtn) {
+            nextBtn.addEventListener("click", () => goTo(getCurrentIdx() + 1));
+          }
+
+          tabs.forEach((tab, idx) => {
+            tab.addEventListener("click", () => goTo(idx));
+
+            tab.addEventListener("keydown", (e) => {
+              if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+
+              e.preventDefault();
+              const offset = e.key === "ArrowRight" ? 1 : -1;
+              const nextIdx = goTo(getCurrentIdx() + offset);
+
+              if (tabs[nextIdx]) tabs[nextIdx].focus();
+            });
+          });
+
+          goTo(getCurrentIdx());
+        }
+      }
+    </script>
     """
   end
 end
