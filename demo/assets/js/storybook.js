@@ -32,3 +32,11 @@
 //     }
 //   };
 // })();
+
+import { hooks } from "phoenix-colocated/doggo";
+
+(function () {
+  window.storybook = {
+    Hooks: hooks
+  };
+})();

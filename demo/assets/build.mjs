@@ -23,12 +23,15 @@ const plugins = [
 
 // Define esbuild options
 let opts = {
-  entryPoints: ["js/app.js"],
+  entryPoints: ["js/app.js", "js/storybook.js"],
   bundle: true,
   logLevel: "info",
   target: "es2017",
   outdir: "../priv/static/assets",
   plugins: plugins,
+  alias: {
+    "phoenix-colocated/doggo": "../_build/dev/phoenix-colocated/doggo"
+  }
 };
 
 if (production) {
