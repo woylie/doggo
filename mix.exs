@@ -23,7 +23,8 @@ defmodule Doggo.MixProject do
       homepage_url: @source_url,
       description: description(),
       package: package(),
-      docs: docs()
+      docs: docs(),
+      compilers: [:phoenix_live_view] ++ Mix.compilers()
     ]
   end
 
