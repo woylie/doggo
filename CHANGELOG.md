@@ -4,6 +4,14 @@
 
 ## Unreleased
 
+## [0.14.6] - 2026-06-11
+
+### Changed
+
+- Loosen `phoenix_live_view` version requirement to ~> 1.1.
+- Add example CSS styles for carousel component.
+- Add colocated JS hook for carousel pagination.
+
 ## [0.14.5] - 2026-05-15
 
 ### Fixed
@@ -58,7 +66,7 @@ Before:
 ```html
 <figure class="image" data-numerator="16" data-denominator="9">
   <div class="image-frame">
-    <img src="" alt="" loading="">
+    <img src="" alt="" loading="" />
   </div>
   <figcaption></figcaption>
 </figure>
@@ -69,7 +77,7 @@ After:
 ```html
 <figure class="image">
   <div class="image-frame" data-numerator="16" data-denominator="9">
-    <img src="" alt="" loading="">
+    <img src="" alt="" loading="" />
   </div>
   <figcaption></figcaption>
 </figure>

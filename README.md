@@ -16,7 +16,7 @@ The package can be installed by adding `doggo` to your list of dependencies in
 ```elixir
 def deps do
   [
-    {:doggo, "~> 0.14.5"}
+    {:doggo, "~> 0.14.6"}
   ]
 end
 ```
@@ -117,6 +117,39 @@ This button could be used with:
 
 Refer to the `Doggo.Components` module documentation for more information about
 the options and the individual components.
+
+### Phoenix LiveView Hooks
+
+Some components have colocated JS hooks. To import all hooks, update your
+`app.js`:
+
+```js
+import { hooks as doggoHooks } from "phoenix-colocated/doggo";
+
+const Hooks = { ...doggoHooks };
+
+// Hooks.MyCustomHook = { ... }
+
+const liveSocket = new LiveSocket("/live", Socket, {
+  // ...
+  hooks: Hooks,
+});
+```
+
+To import the hooks into your storybook, update `storybook.js`:
+
+```js
+import { hooks } from "phoenix-colocated/doggo";
+
+(function () {
+  window.storybook = {
+    Hooks: hooks,
+  };
+})();
+```
+
+Refer to the documentation of `Phoenix.LiveView.ColocatedHook` for more
+information.
 
 ### Storybook
 
