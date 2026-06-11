@@ -192,7 +192,7 @@ defmodule Doggo.Components.Carousel do
       data-active-index="0"
       {@data_attrs}
       {@rest}
-      phx-hook=".Carousel"
+      phx-hook="."
     >
       <div class={"#{@base_class}-inner"}>
         <div class={"#{@base_class}-controls"}>
@@ -246,7 +246,7 @@ defmodule Doggo.Components.Carousel do
         </div>
       </div>
     </section>
-    <script :type={Phoenix.LiveView.ColocatedHook} name=".Carousel">
+    <script :type={Phoenix.LiveView.ColocatedHook} name=".">
       export default {
         mounted() {
           const carousel = this.el;
