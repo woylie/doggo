@@ -7,6 +7,7 @@ import { sassPlugin } from "esbuild-sass-plugin";
 const args = process.argv.slice(2);
 const watch = args.includes("--watch");
 const production = args.includes("--production");
+const mixEnv = production ? "prod" : "dev";
 
 const postCssPlugins = [autoprefixer];
 
@@ -30,7 +31,7 @@ let opts = {
   outdir: "../priv/static/assets",
   plugins: plugins,
   alias: {
-    "phoenix-colocated/doggo": "../_build/dev/phoenix-colocated/doggo",
+    "phoenix-colocated/doggo": `../_build/${mixEnv}/phoenix-colocated/doggo`,
   },
 };
 
