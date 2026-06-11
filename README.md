@@ -118,6 +118,39 @@ This button could be used with:
 Refer to the `Doggo.Components` module documentation for more information about
 the options and the individual components.
 
+### Phoenix LiveView Hooks
+
+Some components have colocated JS hooks. To import all hooks, update your
+`app.js`:
+
+```js
+import { hooks as doggoHooks } from "phoenix-colocated/doggo";
+
+const Hooks = { ...doggoHooks };
+
+// Hooks.MyCustomHook = { ... }
+
+const liveSocket = new LiveSocket("/live", Socket, {
+  // ...
+  hooks: Hooks,
+});
+```
+
+To import the hooks into your storybook, update `storybook.js`:
+
+```js
+import { hooks } from "phoenix-colocated/doggo";
+
+(function () {
+  window.storybook = {
+    Hooks: hooks,
+  };
+})();
+```
+
+Refer to the documentation of `Phoenix.LiveView.ColocatedHook` for more
+information.
+
 ### Storybook
 
 Doggo can generate

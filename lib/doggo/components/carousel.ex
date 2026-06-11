@@ -46,6 +46,22 @@ defmodule Doggo.Components.Carousel do
       </:item>
     </.carousel>
     ```
+
+    This component defines colocated Phoenix LiveView hook with the name
+    `Doggo.Components.Carousel.` (note the trailing `.`).
+
+    ```js
+    import { hooks as doggoHooks } from "phoenix-colocated/doggo";
+
+    const Hooks = {
+      'Doggo.Components.Carousel.': doggoHooks['Doggo.Components.Carousel.']
+    };
+
+    const liveSocket = new LiveSocket("/live", Socket, {
+      // ...
+      hooks: Hooks,
+    });
+    ```
     """
   end
 
@@ -66,7 +82,6 @@ defmodule Doggo.Components.Carousel do
 
       **Missing features**
 
-      - Handle previous/next buttons
       - Handle pagination tabs
       - Auto rotation
       - Disable auto rotation when controls are used
