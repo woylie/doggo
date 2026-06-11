@@ -11,10 +11,10 @@
 #   - https://pkgs.org/ - resource for finding needed packages
 #   - Ex: hexpm/elixir:1.17.1-erlang-27.0-debian-bullseye-20240701-slim
 #
-ARG ELIXIR_VERSION=1.18.3
-ARG OTP_VERSION=27.3.1
-ARG NODE_VERSION=22
-ARG DEBIAN_VERSION=bookworm-20250317-slim
+ARG ELIXIR_VERSION=1.20.1
+ARG OTP_VERSION=28.5.0.2
+ARG DEBIAN_VERSION=trixie-20260518-slim
+ARG NODE_VERSION=24
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
@@ -26,12 +26,13 @@ ARG NODE_VERSION
 
 # install build dependencies
 RUN apt-get update -y \
-    && apt-get install -y build-essential curl git \
+    && apt-get install -y build-essential curl git gnupg \
     && mkdir -p /etc/apt/keyrings \
     && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
-    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_VERSION}.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
-    && apt-get update -y && apt-get install -y nodejs \
-    && corepack enable pnpm \
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_VERSION.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
+    && apt-get update -y \
+    && apt-get install -y nodejs \
+    && corepack enable \
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # prepare build dir
@@ -66,11 +67,8 @@ COPY demo/lib demo/lib
 COPY demo/assets demo/assets
 COPY demo/storybook demo/storybook
 
-# compile assets
-RUN cd demo && mix assets.setup && mix assets.deploy
-
-# Compile the release
-RUN cd demo && mix compile
+# Compile
+RUN cd demo && mix compile && mix assets.setup && mix assets.deploy
 
 # Changes to config/runtime.exs don't require recompiling the code
 COPY demo/config/runtime.exs demo/config/
@@ -83,7 +81,7 @@ RUN cd demo && mix release
 FROM ${RUNNER_IMAGE}
 
 RUN apt-get update -y && \
-  apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
+  apt-get install -y libstdc++6 openssl libncurses6 locales ca-certificates \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # Set the locale
