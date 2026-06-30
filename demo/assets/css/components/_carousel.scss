@@ -33,16 +33,16 @@
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    min-width: max-content;
     padding-left: calc(50% - calc(var(--item-width) / 2));
-    transform: translateX(
-      calc(var(--active-index, 0) * calc(-1 * var(--item-width)))
-    );
-    transition: transform 0.4s cubic-bezier(0.25, 0.25, 0.5, 1);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
   }
 
   .carousel-item {
+    flex-shrink: 0;
     width: var(--item-width);
+    scroll-snap-align: center;
     opacity: 0.4;
     transform: scale(0.9);
     transition:
