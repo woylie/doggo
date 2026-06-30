@@ -294,6 +294,12 @@ defmodule Doggo.Components.Carousel do
               tab.setAttribute("aria-selected", isSelected ? "true" : "false");
               tab.setAttribute("tabindex", isSelected ? "0" : "-1");
             });
+
+            items.forEach((item, idx) => {
+              item.setAttribute("aria-current",
+                idx === activeIdx ? "true" : "false"
+              );
+            });
           };
 
           const scrollToIdx = (idx) => {
