@@ -12,7 +12,7 @@ defmodule Doggo.Storybook.Carousel do
     [
       %Variation{
         id: :default,
-        attributes: %{label: "Our Dogs", pagination: true},
+        attributes: %{label: "Our Dogs", pagination: true, auto_rotation: true},
         slots: slots(opts)
       }
     ]
