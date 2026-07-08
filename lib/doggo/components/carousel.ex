@@ -361,11 +361,9 @@ defmodule Doggo.Components.Carousel do
             }
           }
 
-          carousel.addEventListener('mouseenter', stopAutoRotation);
-          carousel.addEventListener('mouseleave', startAutoRotation);
+          carousel.addEventListener('mouseover', stopAutoRotation);
 
           carousel.addEventListener('focusin', stopAutoRotation);
-          carousel.addEventListener('focusout', startAutoRotation);
 
           // Initialize
           syncActiveState();
