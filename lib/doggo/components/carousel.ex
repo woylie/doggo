@@ -270,48 +270,76 @@ defmodule Doggo.Components.Carousel do
           const prevBtn = carousel.querySelector(`.${baseClass}-previous`);
           const nextBtn = carousel.querySelector(`.${baseClass}-next`);
           const tabs = carousel.querySelectorAll('[role="tab"]');
-          const totalItems =
-            carousel.querySelectorAll(`.${baseClass}-item`).length;
+          const itemsContainer = carousel.querySelector(`.${baseClass}-items`);
+          const items = carousel.querySelectorAll(`.${baseClass}-item`);
+          const totalItems = items.length;
+
+          const getWrappedIndex = (currentIdx, offset) => {
+            return (currentIdx + offset + totalItems) % totalItems;
+          };
 
           const getCurrentIdx = () =>
             Number(carousel.getAttribute("data-active-index")) || 0;
 
-          const goTo = (newIdx) => {
-            const wrapAroundIdx = (newIdx + totalItems) % totalItems;
+          const syncActiveState = () => {
+            const scrollLeft = itemsContainer.scrollLeft;
+            const itemWidth = items[0].offsetWidth;
 
-            carousel.setAttribute("data-active-index", wrapAroundIdx);
+            const activeIdx = Math.round(scrollLeft / itemWidth);
+
+            carousel.setAttribute("data-active-index", activeIdx);
 
             tabs.forEach((tab, idx) => {
-              const isSelected = idx === wrapAroundIdx;
+              const isSelected = idx === activeIdx;
               tab.setAttribute("aria-selected", isSelected ? "true" : "false");
               tab.setAttribute("tabindex", isSelected ? "0" : "-1");
             });
 
-            return wrapAroundIdx;
+            items.forEach((item, idx) => {
+              item.setAttribute("aria-current",
+                idx === activeIdx ? "true" : "false"
+              );
+            });
           };
 
+          const scrollToIdx = (idx) => {
+            itemsContainer.scrollTo({
+              left: items[0].offsetWidth * idx,
+              behavior: "smooth"
+            });
+          };
+
+          itemsContainer.addEventListener("scroll", syncActiveState);
+
           if (prevBtn) {
-            prevBtn.addEventListener("click", () => goTo(getCurrentIdx() - 1));
+            prevBtn.addEventListener("click", () => {
+              scrollToIdx(getWrappedIndex(getCurrentIdx(), -1));
+            });
           }
+
           if (nextBtn) {
-            nextBtn.addEventListener("click", () => goTo(getCurrentIdx() + 1));
+            nextBtn.addEventListener("click", () => {
+              scrollToIdx(getWrappedIndex(getCurrentIdx(), 1));
+            });
           }
 
           tabs.forEach((tab, idx) => {
-            tab.addEventListener("click", () => goTo(idx));
+            tab.addEventListener("click", () => scrollToIdx(idx));
 
             tab.addEventListener("keydown", (e) => {
               if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
 
               e.preventDefault();
               const offset = e.key === "ArrowRight" ? 1 : -1;
-              const nextIdx = goTo(getCurrentIdx() + offset);
+              const nextIdx = getWrappedIndex(getCurrentIdx(), offset);
+
+              scrollToIdx(nextIdx);
 
               if (tabs[nextIdx]) tabs[nextIdx].focus();
             });
           });
 
-          goTo(getCurrentIdx());
+          syncActiveState();
         }
       }
     </script>

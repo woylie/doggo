@@ -5,21 +5,6 @@
 
   width: 100%;
 
-  @for $i from 0 through 10 {
-    &[data-active-index="#{$i}"] {
-      --active-index: #{$i};
-
-      .carousel-item:nth-child(#{$i + 1}) {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      .carousel-pagination button[role="tab"]:nth-child(#{$i + 1}) {
-        background-color: f.color(background, primary, normal);
-      }
-    }
-  }
-
   .carousel-inner {
     display: flex;
     flex-direction: column;
@@ -33,21 +18,26 @@
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    min-width: max-content;
     padding-left: calc(50% - calc(var(--item-width) / 2));
-    transform: translateX(
-      calc(var(--active-index, 0) * calc(-1 * var(--item-width)))
-    );
-    transition: transform 0.4s cubic-bezier(0.25, 0.25, 0.5, 1);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
   }
 
   .carousel-item {
+    flex-shrink: 0;
     width: var(--item-width);
+    scroll-snap-align: center;
     opacity: 0.4;
     transform: scale(0.9);
     transition:
       opacity 0.4s ease,
       transform 0.4s ease;
+
+    &[aria-current="true"] {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 
   .carousel-controls {
@@ -77,6 +67,10 @@
         cursor: pointer;
         border: none;
         border-radius: f.radius(pill);
+
+        &[aria-selected="true"] {
+          background-color: f.color(background, primary, normal);
+        }
       }
     }
 
