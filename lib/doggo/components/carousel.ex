@@ -205,6 +205,7 @@ defmodule Doggo.Components.Carousel do
       aria-labelledby={@labelledby}
       aria-roledescription={@carousel_roledescription}
       data-active-index="0"
+      data-auto-rotation={@auto_rotation}
       {@data_attrs}
       {@rest}
       phx-hook=".Hook"
@@ -261,7 +262,7 @@ defmodule Doggo.Components.Carousel do
         </div>
       </div>
     </section>
-    <script :type={Phoenix.LiveView.ColocatedHook} name=".">
+    <script :type={Phoenix.LiveView.ColocatedHook} name=".Hook">
       export default {
         mounted() {
           const carousel = this.el;
@@ -273,6 +274,11 @@ defmodule Doggo.Components.Carousel do
           const itemsContainer = carousel.querySelector(`.${baseClass}-items`);
           const items = carousel.querySelectorAll(`.${baseClass}-item`);
           const totalItems = items.length;
+
+          const isAutoRotationEnabled =
+            carousel.getAttribute("data-auto-rotation") != null;
+          const rotationIntervalMs = 5000;
+          let autoRotationTimer = null;
 
           const getWrappedIndex = (currentIdx, offset) => {
             return (currentIdx + offset + totalItems) % totalItems;
@@ -339,7 +345,29 @@ defmodule Doggo.Components.Carousel do
             });
           });
 
+          // Auto rotation
+          const startAutoRotation = () => {
+            if (!isAutoRotationEnabled || autoRotationTimer != null) return;
+            autoRotationTimer = setInterval(() => {
+              const nextIdx = getWrappedIndex(getCurrentIdx(), 1);
+              scrollToIdx(nextIdx);
+            }, rotationIntervalMs);
+          }
+
+          const stopAutoRotation = () => {
+            if (autoRotationTimer != null) {
+              clearInterval(autoRotationTimer);
+              autoRotationTimer = null;
+            }
+          }
+
+          carousel.addEventListener('mouseover', stopAutoRotation);
+
+          carousel.addEventListener('focusin', stopAutoRotation);
+
+          // Initialize
           syncActiveState();
+          startAutoRotation();
         }
       }
     </script>
