@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Change hook name for carousel component to `Doggo.Components.Carousel.Hook`.
+
 ## [0.14.6] - 2026-06-11
 
 ### Changed

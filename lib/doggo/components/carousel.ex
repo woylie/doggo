@@ -48,13 +48,13 @@ defmodule Doggo.Components.Carousel do
     ```
 
     This component defines colocated Phoenix LiveView hook with the name
-    `Doggo.Components.Carousel.` (note the trailing `.`).
+    `Doggo.Components.Carousel.Hook`.
 
     ```js
     import { hooks as doggoHooks } from "phoenix-colocated/doggo";
 
     const Hooks = {
-      'Doggo.Components.Carousel.': doggoHooks['Doggo.Components.Carousel.']
+      'Doggo.Components.Carousel.Hook': doggoHooks['Doggo.Components.Carousel.Hook']
     };
 
     const liveSocket = new LiveSocket("/live", Socket, {
@@ -207,7 +207,7 @@ defmodule Doggo.Components.Carousel do
       data-active-index="0"
       {@data_attrs}
       {@rest}
-      phx-hook="."
+      phx-hook=".Hook"
     >
       <div class={"#{@base_class}-inner"}>
         <div class={"#{@base_class}-controls"}>
