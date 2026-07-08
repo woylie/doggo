@@ -262,7 +262,7 @@ defmodule Doggo.Components.Carousel do
         </div>
       </div>
     </section>
-    <script :type={Phoenix.LiveView.ColocatedHook} name=".">
+    <script :type={Phoenix.LiveView.ColocatedHook} name=".Hook">
       export default {
         mounted() {
           const carousel = this.el;
