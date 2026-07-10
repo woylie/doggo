@@ -244,20 +244,22 @@ defmodule Doggo.Components.Carousel do
             </div>
           </div>
         </div>
-        <div
-          id={"#{@id}-items"}
-          class={"#{@base_class}-items"}
-          aria-live={if @auto_rotation, do: "off", else: "polite"}
-        >
+        <div class={"#{@base_class}-items-container"}>
           <div
-            :for={{item, index} <- Enum.with_index(@item, 1)}
-            id={"#{@id}-item-#{index}"}
-            class={"#{@base_class}-item"}
-            role="group"
-            aria-roledescription={@slide_roledescription}
-            aria-label={item.label}
+            id={"#{@id}-items"}
+            class={"#{@base_class}-items"}
+            aria-live={if @auto_rotation, do: "off", else: "polite"}
           >
-            {render_slot(item)}
+            <div
+              :for={{item, index} <- Enum.with_index(@item, 1)}
+              id={"#{@id}-item-#{index}"}
+              class={"#{@base_class}-item"}
+              role="group"
+              aria-roledescription={@slide_roledescription}
+              aria-label={item.label}
+            >
+              {render_slot(item)}
+            </div>
           </div>
         </div>
       </div>
@@ -271,7 +273,8 @@ defmodule Doggo.Components.Carousel do
           const prevBtn = carousel.querySelector(`.${baseClass}-previous`);
           const nextBtn = carousel.querySelector(`.${baseClass}-next`);
           const tabs = carousel.querySelectorAll('[role="tab"]');
-          const itemsContainer = carousel.querySelector(`.${baseClass}-items`);
+          const itemsContainer =
+            carousel.querySelector(`.${baseClass}-items-container`);
           const items = carousel.querySelectorAll(`.${baseClass}-item`);
           const totalItems = items.length;
 

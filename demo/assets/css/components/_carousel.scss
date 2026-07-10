@@ -13,15 +13,21 @@
     overflow-x: hidden;
   }
 
-  .carousel-items {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+  .carousel-items-container {
     width: 100%;
-    padding-left: calc(50% - calc(var(--item-width) / 2));
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
+  }
+
+  .carousel-items {
+    display: flex;
+    width: fit-content;
+
+    // Provide enough padding on the left and right so that items at the edges can
+    // be scrolled to the center.
+    padding-right: calc(50% - var(--item-width) / 2);
+    padding-left: calc(50% - var(--item-width) / 2);
   }
 
   .carousel-item {
