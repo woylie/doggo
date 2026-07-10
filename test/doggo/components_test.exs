@@ -867,7 +867,12 @@ defmodule Doggo.ComponentsTest do
       assert attribute(section, "aria-roledescription") == "carousel"
       assert attribute(section, "aria-label") == "Dog Carousel"
 
-      items = find_one(html, ":root > .carousel-inner > .carousel-items")
+      items =
+        find_one(
+          html,
+          ":root > .carousel-inner > .carousel-items-container  > .carousel-items"
+        )
+
       assert attribute(items, "aria-live") == "polite"
 
       div = find_one(items, "> .carousel-item:first-child")
@@ -1019,7 +1024,12 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.carousel>
         """)
 
-      div = find_one(html, ":root > .carousel-inner > .carousel-items")
+      div =
+        find_one(
+          html,
+          ":root > .carousel-inner > .carousel-items-container > .carousel-items"
+        )
+
       assert attribute(div, "aria-live") == "off"
     end
 
