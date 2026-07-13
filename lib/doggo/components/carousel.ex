@@ -99,6 +99,7 @@ defmodule Doggo.Components.Carousel do
       "#{base_class}-inner",
       "#{base_class}-item",
       "#{base_class}-items",
+      "#{base_class}-items-container",
       "#{base_class}-next",
       "#{base_class}-pagination",
       "#{base_class}-previous"
