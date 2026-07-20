@@ -7,4 +7,4 @@ enablePrePostScripts: false
 minimumReleaseAge: 10080
 minimumReleaseAgeExclude:
   - phoenix@1.8.9
-  - phoenix_live_view@1.2.26
+  - phoenix_live_view@1.2.7 || 1.2.26
