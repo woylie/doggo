@@ -22,9 +22,9 @@
     "css-loader": "7.1.4",
     "esbuild": "0.28.1",
     "esbuild-sass-plugin": "3.7.0",
-    "postcss": "8.5.16",
+    "postcss": "8.5.18",
     "postcss-scss": "4.0.9",
-    "prettier": "3.9.4",
+    "prettier": "3.9.5",
     "style-dictionary": "5.5.0",
     "stylelint": "17.14.0",
     "stylelint-config-recess-order": "7.7.0",
@@ -34,7 +34,7 @@
   "dependencies": {
     "phoenix": "1.8.9",
     "phoenix_html": "link:../deps/phoenix_html",
-    "phoenix_live_view": "link:../deps/phoenix_live_view"
+    "phoenix_live_view": "1.2.7"
   },
-  "packageManager": "pnpm@11.10.0+sha512.0b7f8b98060031904c017e3a41eb187a16d40eeb829b95c4f8cb03681761fc4ab53dd219115b9b447f4dce1a05a214764461e7d3703392a9f32f9511ce8c86c8"
+  "packageManager": "pnpm@11.15.1+sha512.81350b07e53c9538a02f1f2303b4290fa2d7be04e56e2a970c4cc4b417dc761de196edabd49d55c7dc9580db81007c44143e4e3d7e462b3000d23c255122d065"
 }
