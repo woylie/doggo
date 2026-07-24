@@ -4,9 +4,14 @@
 
 ## Unreleased
 
+## [0.14.7] - 2026-07-24
+
 ### Changed
 
 - Change hook name for carousel component to `Doggo.Components.Carousel.Hook`.
+- Support scrolling and swiping in carousel component on mobile devices.
+- Add auto rotation to carousel component.
+- Add carousel items container for more flexible styling.
 
 ## [0.14.6] - 2026-06-11
 
