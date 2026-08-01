@@ -59,7 +59,7 @@ defmodule Doggo.MixProject do
       {:excoveralls, "0.18.5", runtime: false, only: [:test]},
       {:floki, "== 0.38.4", only: :test},
       {:gettext, "~> 1.0", optional: true},
-      {:lazy_html, "0.1.11", only: :test},
+      {:lazy_html, "== 0.1.12", only: :test},
       {:makeup_diff, "0.1.1", only: :dev},
       {:makeup_js, "~> 0.1.0", only: :dev},
       {:phoenix_live_view, "~> 1.1"},
