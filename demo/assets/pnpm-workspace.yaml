@@ -1,7 +1,8 @@
 allowBuilds:
   "@parcel/watcher": false
   esbuild: true
-blockExoticSubdeps: true
+# disabled for phoenix_live_view 1.2.28
+blockExoticSubdeps: false
 enableGlobalVirtualStore: true
 enablePrePostScripts: false
 minimumReleaseAge: 10080
