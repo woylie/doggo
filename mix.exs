@@ -61,10 +61,10 @@ defmodule Doggo.MixProject do
       {:gettext, "~> 1.0", optional: true},
       {:lazy_html, "== 0.1.12", only: :test},
       {:makeup_diff, "0.1.1", only: :dev},
-      {:makeup_js, "~> 0.1.0", only: :dev},
+      {:makeup_js, "== 0.1.0", only: :dev},
       {:phoenix_live_view, "~> 1.1"},
       {:phoenix_storybook, "~> 1.1"},
-      {:tz, "~> 0.28", only: :test}
+      {:tz, "== 0.28.2", only: :test}
     ]
   end
 
