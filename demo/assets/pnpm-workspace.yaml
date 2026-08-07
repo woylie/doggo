@@ -8,3 +8,8 @@ minimumReleaseAge: 10080
 minimumReleaseAgeExclude:
   - phoenix@1.8.9
   - phoenix_live_view@1.2.7 || 1.2.26
+  - immutable@5.1.8
+  - brace-expansion@5.0.8 || 5.0.9
+  - postcss@8.5.23
+  - fast-uri@3.1.5
+  - js-yaml@4.3.1

@@ -18,15 +18,15 @@
     "lint:stylelint:fix": "stylelint css --fix"
   },
   "devDependencies": {
-    "autoprefixer": "10.5.2",
+    "autoprefixer": "10.5.4",
     "css-loader": "7.1.4",
     "esbuild": "0.28.1",
     "esbuild-sass-plugin": "3.7.0",
-    "postcss": "8.5.19",
+    "postcss": "8.5.25",
     "postcss-scss": "4.0.9",
-    "prettier": "3.9.5",
+    "prettier": "3.9.6",
     "style-dictionary": "5.5.0",
-    "stylelint": "17.14.0",
+    "stylelint": "17.14.1",
     "stylelint-config-recess-order": "7.7.0",
     "stylelint-config-standard-scss": "17.0.0",
     "stylelint-declaration-strict-value": "1.11.1"
