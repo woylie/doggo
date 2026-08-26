@@ -1,5 +1,5 @@
 defmodule Doggo.Components.AlertDialogTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   use Phoenix.Component
 
   import Doggo.TestHelpers

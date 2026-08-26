@@ -1,5 +1,7 @@
 defmodule Doggo.Storybook.MenuItemRadioGroup do
   @moduledoc false
+
+  alias Phoenix.LiveView.JS
   alias PhoenixStorybook.Stories.Variation
 
   def dependent_components, do: [:menu]
@@ -29,7 +31,7 @@ defmodule Doggo.Storybook.MenuItemRadioGroup do
         id: :default,
         attributes: %{
           label: "Theme",
-          on_click: Phoenix.LiveView.JS.dispatch("myapp:toggle-word-wrap")
+          on_click: JS.dispatch("myapp:toggle-word-wrap")
         },
         slots: slots()
       }
@@ -40,7 +42,7 @@ defmodule Doggo.Storybook.MenuItemRadioGroup do
     %{
       attributes: %{
         label: "Theme",
-        on_click: Phoenix.LiveView.JS.dispatch("myapp:toggle-word-wrap")
+        on_click: JS.dispatch("myapp:toggle-word-wrap")
       },
       slots: slots()
     }

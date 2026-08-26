@@ -110,7 +110,7 @@ defmodule Doggo.Macros do
   end
 
   defp default_base_class(name) when is_atom(name) do
-    name |> to_string |> String.replace("_", "-")
+    name |> to_string() |> String.replace("_", "-")
   end
 
   defp assemble_builder_doc(module, builder_name, defaults, opts) do

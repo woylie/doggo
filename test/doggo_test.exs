@@ -1,5 +1,5 @@
 defmodule DoggoTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   use Phoenix.Component
 
   defmodule TestComponents do
