@@ -3,6 +3,7 @@ defmodule Mix.Tasks.Dog.GenStoriesTest do
 
   import ExUnit.CaptureIO
 
+  alias Mix.Tasks
   alias Mix.Tasks.Dog.Gen.Stories
 
   defmodule TestComponents do
@@ -65,7 +66,7 @@ defmodule Mix.Tasks.Dog.GenStoriesTest do
 
     assert File.exists?(button_path)
 
-    {formatter, _} = Mix.Tasks.Format.formatter_for_file(button_path)
+    {formatter, _} = Tasks.Format.formatter_for_file(button_path)
 
     assert File.read!(button_path) ==
              formatter.(Doggo.Storybook.story_template(TestComponents, :button))

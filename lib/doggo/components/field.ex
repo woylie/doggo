@@ -5,6 +5,8 @@ defmodule Doggo.Components.Field do
 
   use Phoenix.Component
 
+  alias Phoenix.HTML.Form
+
   @impl true
   def doc do
     """
@@ -332,7 +334,7 @@ defmodule Doggo.Components.Field do
     |> assign(:errormessage, Doggo.input_aria_errormessage(id, errors))
     |> assign_new(:errors, fn -> errors end)
     |> assign_new(:validations, fn ->
-      Phoenix.HTML.Form.input_validations(field.form, field.field)
+      Form.input_validations(field.form, field.field)
     end)
     |> assign_new(:name, fn ->
       if assigns.multiple, do: field.name <> "[]", else: field.name
@@ -344,7 +346,7 @@ defmodule Doggo.Components.Field do
   def render(%{type: "checkbox"} = assigns) do
     assigns =
       assign_new(assigns, :checked, fn ->
-        Phoenix.HTML.Form.normalize_value("checkbox", assigns[:value])
+        Form.normalize_value("checkbox", assigns[:value])
       end)
 
     ~H"""
@@ -533,7 +535,7 @@ defmodule Doggo.Components.Field do
   def render(%{type: "switch"} = assigns) do
     assigns =
       assign_new(assigns, :checked, fn ->
-        Phoenix.HTML.Form.normalize_value("checkbox", assigns[:value])
+        Form.normalize_value("checkbox", assigns[:value])
       end)
 
     ~H"""

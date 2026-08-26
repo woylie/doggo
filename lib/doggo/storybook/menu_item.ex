@@ -1,5 +1,7 @@
 defmodule Doggo.Storybook.MenuItem do
   @moduledoc false
+
+  alias Phoenix.LiveView.JS
   alias PhoenixStorybook.Stories.Variation
 
   def dependent_components, do: [:menu]
@@ -28,7 +30,7 @@ defmodule Doggo.Storybook.MenuItem do
       %Variation{
         id: :default,
         attributes: %{
-          on_click: Phoenix.LiveView.JS.dispatch("myapp:copy")
+          on_click: JS.dispatch("myapp:copy")
         },
         slots: ["Copy"]
       }
@@ -38,7 +40,7 @@ defmodule Doggo.Storybook.MenuItem do
   def modifier_variation_base(_id, _name, _value, _opts) do
     %{
       attributes: %{
-        on_click: Phoenix.LiveView.JS.dispatch("myapp:copy")
+        on_click: JS.dispatch("myapp:copy")
       },
       slots: ["Copy"]
     }

@@ -25,6 +25,8 @@ defmodule Mix.Tasks.Dog.Gen.Stories do
 
   use Mix.Task
 
+  alias Mix.Tasks
+
   @switches [
     aliases: [a: :all, c: :component, f: :force, m: :module, o: :output],
     strict: [
@@ -203,7 +205,7 @@ defmodule Mix.Tasks.Dog.Gen.Stories do
   end
 
   defp write_file(file_path, template) do
-    {formatter, _} = Mix.Tasks.Format.formatter_for_file(file_path)
+    {formatter, _} = Tasks.Format.formatter_for_file(file_path)
     File.write!(file_path, formatter.(template))
     IO.puts("Story written to #{file_path}.")
   end
