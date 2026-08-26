@@ -46,16 +46,16 @@ defmodule Demo.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "== 1.8.9"},
+      {:phoenix, "== 1.8.13"},
       {:phoenix_html, "4.3.0"},
       {:phoenix_live_reload, "== 1.7.0", only: :dev},
-      {:phoenix_live_view, "== 1.2.8"},
+      {:phoenix_live_view, "== 1.2.10"},
       {:lazy_html, "== 0.1.12", only: :test},
       {:floki, "== 0.38.4", only: :test},
       {:esbuild, "0.10.0", runtime: Mix.env() == :dev},
       {:gettext, "1.0.2"},
       {:jason, "1.4.5"},
-      {:bandit, "== 1.12.4"},
+      {:bandit, "== 1.12.5"},
       {:phoenix_storybook, "1.3.0"},
       {:heroicons, "0.5.7"},
       {:doggo, path: ".."},
