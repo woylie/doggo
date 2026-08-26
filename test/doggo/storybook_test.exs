@@ -1,5 +1,5 @@
 defmodule Doggo.StorybookTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   use Phoenix.Component
 
   defmodule Icons do
