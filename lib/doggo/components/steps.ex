@@ -15,6 +15,10 @@ defmodule Doggo.Components.Steps do
   @impl true
   def usage do
     """
+    Completed steps get accessibility text marked with the
+    `data-visually-hidden` attribute, which needs a CSS rule. See
+    [Visually hidden text](readme.html#visually-hidden-text).
+
     With patch navigation:
 
     ```heex

@@ -191,8 +191,11 @@ defmodule Doggo.Components.Field do
       attr :hide_label, :boolean,
         default: false,
         doc: """
-        Adds a "data-visually-hidden" attribute to the `<label>`. This option
+        Adds a `data-visually-hidden` attribute to the `<label>`. This option
         does not apply to checkbox and radio inputs.
+
+        This requires a CSS rule for the `data-visually-hidden` attribute. See
+        [Visually hidden text](readme.html#visually-hidden-text).
         """
 
       attr :value, :any

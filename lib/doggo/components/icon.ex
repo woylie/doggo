@@ -161,6 +161,9 @@ defmodule Doggo.Components.Icon do
         doc: """
         Position of the text relative to the icon. If set to `"hidden"`, the
         `text` is visually hidden, but still accessible to screen readers.
+
+        This requires a CSS rule for the `data-visually-hidden` attribute. See
+        [Visually hidden text](readme.html#visually-hidden-text).
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."
