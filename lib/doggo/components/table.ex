@@ -21,6 +21,20 @@ defmodule Doggo.Components.Table do
       <:col :let={p} label="age"><%= p.age %></:col>
     </.table>
     ```
+
+    ## Row actions
+
+    `row_click` sets `phx-click` on each cell, which reaches pointer users only.
+    Where you use it, repeat the action as a link or button inside the row, so
+    that it can also be reached by keyboard.
+
+    ```heex
+    <.table id="pets" rows={@pets} row_click={&JS.navigate(~p"/pets/\#{&1}")}>
+      <:col :let={p} label="name">
+        <.link navigate={~p"/pets/\#{p}"}><%= p.name %></.link>
+      </:col>
+    </.table>
+    ```
     """
   end
 
@@ -66,10 +80,20 @@ defmodule Doggo.Components.Table do
         function that receives a row item as an argument. This does not add the
         `phx-click` attribute to the `action` slot.
 
+        This is a pointer convenience only. A `td` is not focusable, has no
+        interactive role and takes no key events, so the action is unavailable
+        to keyboard and screen reader users. Every action reachable through
+        `row_click` must therefore also be reachable from a link or button
+        inside the row, in a `:col` or `:action` slot.
+
         Example:
 
         ```elixir
-        row_click={&JS.navigate(~p"/users/\#{&1}")}
+        <.table id="users" rows={@users} row_click={&JS.navigate(~p"/users/\#{&1}")}>
+          <:col :let={user} label="Name">
+            <.link navigate={~p"/users/\#{user}"}>{user.name}</.link>
+          </:col>
+        </.table>
         ```
         """
 
