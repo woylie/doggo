@@ -21,6 +21,12 @@ def deps do
 end
 ```
 
+### Compatibility
+
+This package is tested against the Elixir and OTP versions that are still
+supported upstream. Older versions down to the requirement in `mix.exs` may
+still work, but they are not covered by CI and not officially supported.
+
 ## Usage
 
 Use `Doggo.Components` in your core components module or in a separate module.
