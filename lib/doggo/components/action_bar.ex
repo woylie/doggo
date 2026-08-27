@@ -63,7 +63,20 @@ defmodule Doggo.Components.ActionBar do
     quote do
       attr :rest, :global, doc: "Any additional HTML attributes."
 
-      slot :item, required: true do
+      slot :item,
+        required: true,
+        doc: """
+        An action. The content can be an icon, an icon with text, or text.
+
+        `label` is the button's accessible name, rendered as `aria-label` and as
+        the tooltip, so an icon-only item is named without the caller doing
+        anything further.
+
+        Where the content includes visible text, `label` must contain that text,
+        since `aria-label` overrides the content. Voice control users activate a
+        button by speaking the name they can see, so a button reading "Delete"
+        with `label="Remove record"` cannot be activated by voice.
+        """ do
         attr :label, :string, required: true
         attr :on_click, JS, required: true
       end
@@ -79,7 +92,13 @@ defmodule Doggo.Components.ActionBar do
   def render(assigns) do
     ~H"""
     <div role="toolbar" class={@class} {@data_attrs} {@rest}>
-      <button :for={item <- @item} phx-click={item.on_click} title={item.label}>
+      <button
+        :for={item <- @item}
+        type="button"
+        phx-click={item.on_click}
+        aria-label={item.label}
+        title={item.label}
+      >
         {render_slot(item)}
       </button>
     </div>

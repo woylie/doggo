@@ -1111,6 +1111,7 @@ defmodule Doggo.ComponentsTest do
 
       button = find_one(div, "button")
       assert attribute(button, "id") == "color-selector-button"
+      assert attribute(button, "type") == "button"
       assert attribute(button, "tabindex") == "-1"
       assert attribute(button, "aria-label") == "Colors"
       assert attribute(button, "aria-expanded") == "false"
@@ -1761,8 +1762,12 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert html == [
-               {"span", [{"class", "fallback"}, {"aria-label", "not set"}],
-                ["-"]}
+               {"span",
+                [
+                  {"class", "fallback"},
+                  {"role", "img"},
+                  {"aria-label", "not set"}
+                ], ["-"]}
              ]
     end
 
@@ -1775,8 +1780,12 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert html == [
-               {"span", [{"class", "fallback"}, {"aria-label", "not set"}],
-                ["-"]}
+               {"span",
+                [
+                  {"class", "fallback"},
+                  {"role", "img"},
+                  {"aria-label", "not set"}
+                ], ["-"]}
              ]
     end
 
@@ -1789,8 +1798,12 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert html == [
-               {"span", [{"class", "fallback"}, {"aria-label", "not set"}],
-                ["n/a"]}
+               {"span",
+                [
+                  {"class", "fallback"},
+                  {"role", "img"},
+                  {"aria-label", "not set"}
+                ], ["n/a"]}
              ]
     end
 
@@ -1804,7 +1817,11 @@ defmodule Doggo.ComponentsTest do
 
       assert html == [
                {"span",
-                [{"class", "fallback"}, {"aria-label", "not available"}], ["-"]}
+                [
+                  {"class", "fallback"},
+                  {"role", "img"},
+                  {"aria-label", "not available"}
+                ], ["-"]}
              ]
     end
   end
@@ -2474,7 +2491,12 @@ defmodule Doggo.ComponentsTest do
       assert attribute(dialog, "open") == nil
       assert attribute(dialog, "phx-mounted") == nil
 
+      container = find_one(html, ":root > div#pet-modal-container")
+      assert attribute(container, "tabindex") == "-1"
+
       a = find_one(html, ":root > div > section > header > button.modal-close")
+      assert attribute(a, "type") == "button"
+      assert attribute(a, "href") == nil
       assert attribute(a, "aria-label") == "Close"
       assert text(a, "span") == "close"
 
@@ -4390,6 +4412,7 @@ defmodule Doggo.ComponentsTest do
       div = find_one(html, "div:root")
       assert attribute(div, "class") == "vertical-nav-section"
       assert attribute(div, "id") == "my-drawer"
+      assert attribute(div, "role") == nil
       assert attribute(div, "aria-labelledby") == nil
       assert Floki.find(html, ".vertical-nav-section-title") == []
       assert text(html, ":root > div.vertical-nav-section-item") == "item"
@@ -4407,6 +4430,7 @@ defmodule Doggo.ComponentsTest do
         """)
 
       div = find_one(html, "div:root")
+      assert attribute(div, "role") == "group"
       assert attribute(div, "aria-labelledby") == "my-drawer-title"
 
       div = find_one(html, "div > .vertical-nav-section-title")

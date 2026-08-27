@@ -176,4 +176,20 @@ defmodule Doggo.StorybookTest do
       assert [_ | _] = story_module.variations()
     end
   end
+
+  test "resolves the components module through the caller's alias" do
+    defmodule StoryWithAlias do
+      use PhoenixStorybook.Story, :component
+
+      alias Doggo.StorybookTest.TestComponents, as: CC
+
+      # the alias has to precede the `use` that resolves it, which is the point
+      # of this test
+      # credo:disable-for-next-line Credo.Check.Readability.StrictModuleLayout
+      use Doggo.Storybook, module: CC, name: :button
+    end
+
+    assert StoryWithAlias.function()
+    assert [_ | _] = StoryWithAlias.variations()
+  end
 end

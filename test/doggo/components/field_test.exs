@@ -515,6 +515,52 @@ defmodule Doggo.Components.FieldTest do
 
       assert text(html, ".field-input-wrapper > .field-input-addon-right") ==
                "right"
+
+      assert attribute(html, ".field-input-wrapper", "data-addon") ==
+               "left right"
+    end
+
+    test "with left add-on only" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field field={@form[:addons]} type="text">
+            <:addon_left>left</:addon_left>
+          </TestComponents.field>
+        </.form>
+        """)
+
+      assert attribute(html, ".field-input-wrapper", "data-addon") == "left"
+    end
+
+    test "with right add-on only" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field field={@form[:addons]} type="text">
+            <:addon_right>right</:addon_right>
+          </TestComponents.field>
+        </.form>
+        """)
+
+      assert attribute(html, ".field-input-wrapper", "data-addon") == "right"
+    end
+
+    test "without add-ons" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field field={@form[:addons]} type="text" />
+        </.form>
+        """)
+
+      assert attribute(html, ".field-input-wrapper", "data-addon") == nil
     end
 
     test "with datalist" do

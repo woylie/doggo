@@ -69,6 +69,11 @@ defmodule Doggo.Components.AlertDialogTest do
           ":root > div > section > header > button.alert-dialog-close"
         )
 
+      container = find_one(html, ":root > div[id$='-container']")
+      assert attribute(container, "tabindex") == "-1"
+
+      assert attribute(a, "type") == "button"
+      assert attribute(a, "href") == nil
       assert attribute(a, "aria-label") == "Close"
       assert text(a, "span") == "close"
     end

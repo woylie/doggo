@@ -72,6 +72,7 @@ defmodule Doggo.Components.VerticalNavSection do
     <div
       id={@id}
       class={@class}
+      role={@title != [] && "group"}
       aria-labelledby={@title != [] && "#{@id}-title"}
       {@data_attrs}
       {@rest}

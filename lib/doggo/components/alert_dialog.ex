@@ -72,6 +72,18 @@ defmodule Doggo.Components.AlertDialog do
     to control visibility. This approach is chosen to eliminate the need for
     library consumers to add additional JavaScript code. To ensure proper
     modal semantics, the `aria-modal` attribute is added to the dialog element.
+
+    ## Caveats
+
+    Because the dialog is opened with the `open` attribute rather than
+    `showModal()`, it is not a modal dialog in the browser's sense, whatever
+    `aria-modal` reports. It is not placed in the top layer, `::backdrop` does
+    not apply, and content behind it stays interactive and scrollable. You need
+    to supply your own backdrop and lock scrolling on the body yourself.
+
+    Setting `dismissable={false}` removes the close button and the Escape and
+    click-away handlers, which leaves no way to dismiss the dialog from the
+    component. Provide your own control in the `:footer` slot when you do that.
     """
   end
 
@@ -159,6 +171,7 @@ defmodule Doggo.Components.AlertDialog do
       <.focus_wrap
         id={"#{@id}-container"}
         class={"#{@base_class}-container"}
+        tabindex="-1"
         phx-window-keydown={
           @dismissable && Phoenix.LiveView.JS.exec("data-cancel", to: "##{@id}")
         }
@@ -171,7 +184,7 @@ defmodule Doggo.Components.AlertDialog do
           <header>
             <button
               :if={@dismissable}
-              href="#"
+              type="button"
               class={"#{@base_class}-close"}
               aria-label={@close_label}
               phx-click={Phoenix.LiveView.JS.exec("data-cancel", to: "##{@id}")}

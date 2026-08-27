@@ -3,15 +3,22 @@ name: Deploy
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
     name: Deploy demo app
     runs-on: ubuntu-latest
-    concurrency: deploy-group
+    timeout-minutes: 30
+    concurrency:
+      group: deploy-group
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          persist-credentials: false
       - uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1 # master
       - name: Set version
         run: echo "DOGGO_VERSION=$(git describe --tags --always)" >> $GITHUB_ENV

@@ -118,6 +118,7 @@ defmodule Doggo.Components.Fallback do
     {@value}<span
       :if={is_nil(@value)}
       class={@class}
+      role="img"
       aria-label={@accessibility_text}
       {@data_attrs}
       {@rest}

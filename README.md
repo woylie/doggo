@@ -16,10 +16,16 @@ The package can be installed by adding `doggo` to your list of dependencies in
 ```elixir
 def deps do
   [
-    {:doggo, "~> 0.14.8"}
+    {:doggo, "~> 0.14.9"}
   ]
 end
 ```
+
+### Compatibility
+
+This package is tested against the Elixir and OTP versions that are still
+supported upstream. Older versions down to the requirement in `mix.exs` may
+still work, but they are not covered by CI and not officially supported.
 
 ## Usage
 
@@ -188,6 +194,28 @@ configured components with:
 ```bash
 mix dog.safelist -m MyAppWeb.CoreComponents -o assets/doggo_safelist.txt
 ```
+
+### Visually hidden text
+
+Several components render text that is meant to be available to screen readers
+but not shown on screen, and they mark it with the `data-visually-hidden`
+attribute. The library ships no CSS, so you have to define the rule yourself.
+
+```css
+[data-visually-hidden] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+```
+
+Do not use `display: none` or `visibility: hidden` here. Both remove the element
+from the accessibility tree, so the text is hidden from screen readers as well,
+which is the opposite of what the attribute is for. The page looks correct while
+the icon has lost its description and the field has lost its label.
 
 ## Design decisions
 

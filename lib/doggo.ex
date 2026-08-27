@@ -191,7 +191,7 @@ defmodule Doggo do
     |> JS.push_focus()
     |> JS.set_attribute({"open", "true"}, to: "##{id}")
     |> JS.set_attribute({"aria-modal", "true"}, to: "##{id}")
-    |> JS.focus_first(to: "##{id}-content")
+    |> JS.focus_first(to: "##{id}-container")
   end
 
   @doc """

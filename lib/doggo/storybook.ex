@@ -23,7 +23,7 @@ defmodule Doggo.Storybook do
 
   defmacro __using__(opts \\ []) do
     opts = Keyword.validate!(opts, [:module, :name])
-    module = opts |> Keyword.fetch!(:module) |> Macro.expand(__ENV__)
+    module = opts |> Keyword.fetch!(:module) |> Macro.expand(__CALLER__)
     name = Keyword.fetch!(opts, :name)
 
     components = module.__dog_components__()

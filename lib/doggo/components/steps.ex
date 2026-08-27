@@ -13,19 +13,12 @@ defmodule Doggo.Components.Steps do
   end
 
   @impl true
-  def builder_doc do
-    """
-    - `:current_class` - This class is added to the current step.
-    - `:completed_class` - This class is added to previous steps.
-    - `:upcoming_class` - This class is added to upcoming steps.
-    - `:visually_hidden_class` - This class is used to visually hide the
-      accessibility text added to completed steps.
-    """
-  end
-
-  @impl true
   def usage do
     """
+    Completed steps get accessibility text marked with the
+    `data-visually-hidden` attribute, which needs a CSS rule. See
+    [Visually hidden text](readme.html#visually-hidden-text).
+
     With patch navigation:
 
     ```heex

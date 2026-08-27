@@ -182,6 +182,7 @@ defmodule Doggo.Components.Combobox do
         />
         <button
           id={"#{@id}-button"}
+          type="button"
           tabindex="-1"
           aria-label={@list_label}
           aria-expanded="false"
