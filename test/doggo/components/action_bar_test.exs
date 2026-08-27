@@ -35,6 +35,7 @@ defmodule Doggo.Components.ActionBarTest do
 
       button = find_one(html, ":root > button")
       assert attribute(button, "type") == "button"
+      assert attribute(button, "aria-label") == "Edit"
       assert attribute(button, "title") == "Edit"
 
       assert attribute(button, "phx-click") ==
