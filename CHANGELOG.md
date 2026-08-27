@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## [0.14.8] - 2026-08-27
+
 ### Security
 
 - Fix HTML injection in the `date` input of the `field` component, which marked
