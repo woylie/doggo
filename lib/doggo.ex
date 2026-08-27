@@ -66,12 +66,14 @@ defmodule Doggo do
   @doc false
   def normalize_value("date", %struct{} = value)
       when struct in [Date, NaiveDateTime, DateTime] do
-    <<date::10-binary, _::binary>> = struct.to_string(value)
-    {:safe, date}
+    value |> to_date() |> Date.to_iso8601()
   end
 
   def normalize_value("date", <<date::10-binary, _::binary>>) do
-    {:safe, date}
+    case Date.from_iso8601(date) do
+      {:ok, _} -> date
+      {:error, _} -> ""
+    end
   end
 
   def normalize_value("date", _), do: ""
