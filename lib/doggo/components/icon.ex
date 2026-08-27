@@ -52,7 +52,7 @@ defmodule Doggo.Components.Icon do
     reference a function component in the configured module.
 
     ```heex
-    <.icon name="bug_ant" />
+    <.icon name="bug_ant" text="report bug" />
     ```
 
     In this example, the icon component will use `Heroicons.bug_ant/1` to render
@@ -72,7 +72,7 @@ defmodule Doggo.Components.Icon do
     on to the referenced function component.
 
     ```heex
-    <.icon name="circle-question" />
+    <.icon name="circle-question" text="help" />
     ```
 
     In this example, the generated markup will be similar to:
@@ -149,6 +149,10 @@ defmodule Doggo.Components.Icon do
         default: nil,
         doc: """
         Text that describes the icon.
+
+        This is the icon's accessible name. Omitting it renders an icon that
+        assistive technology cannot name, so omit it only where the icon is
+        decorative and sits next to visible text that already names the action.
         """
 
       attr :text_position, :string,
