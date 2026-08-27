@@ -184,7 +184,7 @@ defmodule Doggo.Components.AlertDialog do
           <header>
             <button
               :if={@dismissable}
-              href="#"
+              type="button"
               class={"#{@base_class}-close"}
               aria-label={@close_label}
               phx-click={Phoenix.LiveView.JS.exec("data-cancel", to: "##{@id}")}

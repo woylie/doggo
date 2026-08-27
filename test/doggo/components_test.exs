@@ -1111,6 +1111,7 @@ defmodule Doggo.ComponentsTest do
 
       button = find_one(div, "button")
       assert attribute(button, "id") == "color-selector-button"
+      assert attribute(button, "type") == "button"
       assert attribute(button, "tabindex") == "-1"
       assert attribute(button, "aria-label") == "Colors"
       assert attribute(button, "aria-expanded") == "false"
@@ -2494,6 +2495,8 @@ defmodule Doggo.ComponentsTest do
       assert attribute(container, "tabindex") == "-1"
 
       a = find_one(html, ":root > div > section > header > button.modal-close")
+      assert attribute(a, "type") == "button"
+      assert attribute(a, "href") == nil
       assert attribute(a, "aria-label") == "Close"
       assert text(a, "span") == "close"
 

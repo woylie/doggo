@@ -120,7 +120,7 @@ defmodule Doggo.Components.Alert do
         </div>
         <div class={"#{@base_class}-message"}>{render_slot(@inner_block)}</div>
       </div>
-      <button :if={@on_close} phx-click={@on_close}>
+      <button :if={@on_close} type="button" phx-click={@on_close}>
         {@close_label}
       </button>
     </div>

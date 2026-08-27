@@ -96,6 +96,7 @@ defmodule Doggo.Components.AlertTest do
       assert attribute(html, "phx-click") == "close-alert"
 
       button = find_one(html, ":root > button")
+      assert attribute(button, "type") == "button"
       assert attribute(button, "phx-click") == "close-alert"
       assert text(button) == "close"
     end
