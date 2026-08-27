@@ -624,7 +624,14 @@ defmodule Doggo.Components.Field do
   end
 
   def render(%{addon_left: addon_left, addon_right: addon_right} = assigns) do
-    addon = String.trim("#{addon_left && "left"} #{addon_right && "right"}")
+    addon =
+      case {addon_left, addon_right} do
+        {[], []} -> nil
+        {_, []} -> "left"
+        {[], _} -> "right"
+        {_, _} -> "left right"
+      end
+
     assigns = assign(assigns, :addon, addon)
 
     ~H"""
