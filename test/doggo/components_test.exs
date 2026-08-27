@@ -2490,6 +2490,9 @@ defmodule Doggo.ComponentsTest do
       assert attribute(dialog, "open") == nil
       assert attribute(dialog, "phx-mounted") == nil
 
+      container = find_one(html, ":root > div#pet-modal-container")
+      assert attribute(container, "tabindex") == "-1"
+
       a = find_one(html, ":root > div > section > header > button.modal-close")
       assert attribute(a, "aria-label") == "Close"
       assert text(a, "span") == "close"

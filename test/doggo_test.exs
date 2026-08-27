@@ -42,6 +42,17 @@ defmodule DoggoTest do
     )
   end
 
+  describe "show_modal/2" do
+    test "focuses the dialog container, not only its content" do
+      assert %Phoenix.LiveView.JS{ops: ops} = Doggo.show_modal("pet-modal")
+
+      assert Enum.any?(ops, fn
+               ["focus_first", %{to: "#pet-modal-container"}] -> true
+               _ -> false
+             end)
+    end
+  end
+
   describe "classes/1" do
     test "returns a list of base and nested classes and data attributes" do
       assert Doggo.safelist(TestComponents) == [
