@@ -4,6 +4,14 @@
 
 ## Unreleased
 
+### Security
+
+- Fix HTML injection in the `date` input of the `field` component, which marked
+  the field value as already escaped. A value taken from user params could break
+  out of the `value` attribute. Present since 0.1.0.
+- Remove `date` field values that are not a valid ISO 8601 date instead of
+  truncating them to ten characters.
+
 ## [0.14.7] - 2026-07-24
 
 ### Changed

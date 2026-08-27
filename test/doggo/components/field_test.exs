@@ -636,6 +636,100 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input", "value") == ""
     end
 
+    test "converts date to date string for date input" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:when]}
+            type="date"
+            value={~D[1900-01-01]}
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "input", "value") == "1900-01-01"
+    end
+
+    test "converts naive datetime to date string for date input" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:when]}
+            type="date"
+            value={~N[1900-01-01 12:00:00]}
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "input", "value") == "1900-01-01"
+    end
+
+    test "keeps valid date string for date input" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:when]}
+            type="date"
+            value="1900-01-01"
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "input", "value") == "1900-01-01"
+    end
+
+    test "removes date values that are not a valid calendar date" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:when]}
+            type="date"
+            value="1900-02-30"
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "input", "value") == ""
+    end
+
+    test "removes date values that would break out of the value attribute" do
+      assigns = %{form: to_form(%{}), value: ~s("><script>)}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field field={@form[:when]} type="date" value={@value} />
+        </.form>
+        """)
+
+      assert attribute(html, "input", "value") == ""
+    end
+
+    test "removes date values that would inject an attribute" do
+      assigns = %{form: to_form(%{}), value: ~s(" onload=x)}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field field={@form[:when]} type="date" value={@value} />
+        </.form>
+        """)
+
+      assert attribute(html, "input", "value") == ""
+    end
+
     test "hides errors if field is unused" do
       assigns = %{form: to_form(%{})}
 
