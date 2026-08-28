@@ -420,6 +420,7 @@ defmodule Doggo.ComponentsTest do
 
       button = find_one(html, "button:root")
       assert attribute(button, "type") == "button"
+      assert attribute(button, "disabled") == nil
 
       assert attribute(button, "class") == "button"
       assert attribute(button, "data-variant") == "primary"
