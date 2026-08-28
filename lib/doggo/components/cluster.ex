@@ -12,6 +12,10 @@ defmodule Doggo.Components.Cluster do
     applying a consistent gap between them.
 
     Common use cases are groups of buttons, groups of tags, or similar items.
+
+    The grouping is visual, so no role is set. If the children form a set that
+    should also be grouped for assistive technology, pass `role="group"` and a
+    label.
     """
   end
 
@@ -22,6 +26,15 @@ defmodule Doggo.Components.Cluster do
     <.cluster>
       <div>some item</div>
       <div>some other item</div>
+    </.cluster>
+    ```
+
+    With a role and a label:
+
+    ```heex
+    <.cluster role="group" aria-label="Actions">
+      <.button>Edit</.button>
+      <.button>Delete</.button>
     </.cluster>
     ```
     """
@@ -63,7 +76,7 @@ defmodule Doggo.Components.Cluster do
   @impl true
   def render(assigns) do
     ~H"""
-    <div role="group" class={@class} {@data_attrs} {@rest}>
+    <div class={@class} {@data_attrs} {@rest}>
       {render_slot(@inner_block)}
     </div>
     """

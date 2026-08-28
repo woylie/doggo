@@ -79,8 +79,15 @@ defmodule Doggo.Components.ButtonLink do
       attr :disabled, :boolean,
         default: false,
         doc: """
-        Since `<a>` tags cannot have a `disabled` attribute, this attribute
-        toggles a class.
+        Marks the link as unavailable.
+
+        Since `<a>` tags cannot have a `disabled` attribute, the link is rendered
+        without a destination, with `role="link"` and `aria-disabled="true"`. It
+        stays in the tab order, so that the state can be discovered, but neither
+        a click nor Enter activates it. Any `href`, `navigate` or `patch` you
+        pass is ignored.
+
+        Style it with the `[aria-disabled]` selector.
         """
 
       attr :rest, :global,
@@ -111,9 +118,34 @@ defmodule Doggo.Components.ButtonLink do
   end
 
   @impl true
+  def render(%{disabled: true} = assigns) do
+    # `Phoenix.Component.link/1` falls back to `href="#"` when no destination is
+    # given. Use <a> directly, so that the link cannot be activated.
+    # `role="link"` restores the semantics of <a> without `href`.
+    assigns =
+      update(
+        assigns,
+        :rest,
+        &Map.drop(&1, ~w(href navigate patch replace method csrf_token)a)
+      )
+
+    ~H"""
+    <a
+      class={@class}
+      role="link"
+      aria-disabled="true"
+      tabindex="0"
+      {@data_attrs}
+      {@rest}
+    >
+      {render_slot(@inner_block)}
+    </a>
+    """
+  end
+
   def render(assigns) do
     ~H"""
-    <.link class={@class} data-disabled={@disabled} {@data_attrs} {@rest}>
+    <.link class={@class} {@data_attrs} {@rest}>
       {render_slot(@inner_block)}
     </.link>
     """

@@ -10,6 +10,30 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Changed
+
+- Prevent activation of a disabled `button_link`. The link is now rendered
+  without a destination and with `role="link"` and `aria-disabled="true"`, and
+  any `href`, `navigate` or `patch` is ignored. It previously kept its
+  destination and its place in the tab order, and only set `data-disabled`, so a
+  screen reader announced it as an ordinary link and Enter still followed it.
+- Remove the `data-disabled` attribute from the `button_link` component. The
+  state is expressed with `aria-disabled` instead.
+- Require the `:prop` slot of the `property_list` component.
+
+### Fixed
+
+- Remove the `role="group"` attribute from the `cluster` component.
+
+### How to upgrade
+
+- Replace `[data-disabled]` with `[aria-disabled]` in any styles you wrote for
+  disabled `button_link` components.
+- A disabled `button_link` no longer renders an `href`. Revisit any style or
+  test that selects `a.button[href]`.
+- Add a `:prop` slot to any `property_list` that has none, or remove the
+  component from that call site.
+
 ## [0.14.9] - 2026-08-27
 
 ### Changed

@@ -254,21 +254,52 @@ still undergo significant changes, including potential breaking changes.
 
 ### Maturity Levels
 
-Each component in the library is marked with one of four maturity levels.
+Each component is marked with one of four maturity levels.
 
-- **Experimental**: These components are in the early development phase. They
-  are incomplete, have unstable APIs, and are subject to significant changes.
-  Not recommended for production use.
-- **Developing**: Components at this stage have complete semantics, but
-  interactivity features may still be missing. The API may still change based on
-  feedback and testing. Suitable for internal testing and early feedback.
-- **Refining**: Feature-complete components with a stable API, full
-  configurability, and all required keyboard interactivity for accessibility
-  implemented. The focus is on identifying and fixing remaining issues. Suitable
-  for broader testing and cautious production use.
-- **Stable**: Fully developed, tested, and ready for production use. These
-  components have a stable API, are fully interactive, include a complete
-  storybook module, and have exemplary CSS styles defined.
+- **Experimental**: In early development. Incomplete, with an unstable API, and
+  subject to significant change. Not recommended for production use.
+- **Developing**: Complete semantics, but interactivity may still be missing.
+  The API may still change based on feedback and testing. Suitable for internal
+  testing and early feedback.
+- **Refining**: Feature-complete, with a stable API, full configurability, and
+  all keyboard interactivity required for accessibility. The focus is on finding
+  and fixing remaining issues. Suitable for broader testing and cautious
+  production use.
+- **Stable**: Fully developed, tested, and ready for production use. A stable
+  API, fully interactive, a complete storybook module, and exemplary CSS styles
+  defined.
+
+### What counts as a breaking change
+
+The markup a component renders is part of its API. You write your styles against
+that markup, so a change to it can break your application just as surely
+as a renamed attribute, and it is versioned accordingly.
+
+Stability is declared per component, not per release. Which release a
+breaking change can appear in depends on the maturity level of the component it
+affects:
+
+- **Experimental** and **Developing** components may change in a **patch**
+  release, including in ways that break you.
+- **Refining** and **Stable** components get a **minor** release for a breaking
+  change while the library is pre 1.0, with the change named in the changelog.
+
+These changes are **not** breaking, and can appear in a patch release for a
+component at any level:
+
+- Adding an attribute.
+- Adding a class.
+- Removing an attribute that normally no CSS styles are attached to.
+
+These changes **are** breaking:
+
+- Removing or renaming an `aria-*` or `data-*` attribute, since you may have
+  attached styles to it.
+- Removing or renaming a class.
+- Adding or removing nesting, since it changes which descendant and child
+  selectors match.
+- Changing an element type.
+- Reordering elements.
 
 ## Feedback
 
