@@ -1063,6 +1063,7 @@ defmodule Doggo.ComponentsTest do
       div = find_one(html, "div")
 
       assert attribute(div, "class") == "cluster"
+      assert attribute(div, "role") == nil
       assert text(div) == "Hello"
     end
 
