@@ -632,6 +632,10 @@ defmodule Doggo.ComponentsTest do
       assert attribute(a, "data-size") == "normal"
       assert attribute(a, "data-fill") == "solid"
       assert attribute(a, "href") == "/confirm"
+      assert attribute(a, "role") == nil
+      assert attribute(a, "aria-disabled") == nil
+      assert attribute(a, "tabindex") == nil
+      assert attribute(a, "data-disabled") == nil
       assert text(a) == "Confirm"
     end
 
@@ -643,8 +647,69 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.button_link disabled>Confirm</TestComponents.button_link>
         """)
 
-      assert attribute(html, "a:root", "class") == "button"
-      assert attribute(html, "a:root", "data-disabled") == "data-disabled"
+      a = find_one(html, "a:root")
+      assert attribute(a, "class") == "button"
+      assert attribute(a, "role") == "link"
+      assert attribute(a, "aria-disabled") == "true"
+      assert attribute(a, "tabindex") == "0"
+      assert attribute(a, "data-disabled") == nil
+      assert attribute(a, "href") == nil
+      assert text(a) == "Confirm"
+    end
+
+    test "disabled ignores an href" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button_link disabled href="/confirm">
+          Confirm
+        </TestComponents.button_link>
+        """)
+
+      assert attribute(html, "a:root", "href") == nil
+    end
+
+    test "disabled ignores navigate and patch" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button_link disabled navigate="/confirm">
+          Confirm
+        </TestComponents.button_link>
+        """)
+
+      a = find_one(html, "a:root")
+      assert attribute(a, "href") == nil
+      assert attribute(a, "navigate") == nil
+      assert attribute(a, "data-phx-link") == nil
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button_link disabled patch="/confirm">
+          Confirm
+        </TestComponents.button_link>
+        """)
+
+      a = find_one(html, "a:root")
+      assert attribute(a, "href") == nil
+      assert attribute(a, "patch") == nil
+    end
+
+    test "disabled keeps other global attributes" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.button_link disabled data-test="keep" target="_blank">
+          Confirm
+        </TestComponents.button_link>
+        """)
+
+      a = find_one(html, "a:root")
+      assert attribute(a, "data-test") == "keep"
+      assert attribute(a, "target") == "_blank"
     end
 
     test "with variant" do

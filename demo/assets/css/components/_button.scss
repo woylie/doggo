@@ -14,7 +14,7 @@
   border-radius: f.radius(s);
 
   &:disabled,
-  &[data-disabled] {
+  &[aria-disabled="true"] {
     color: f.color(text, disabled, subdued);
     cursor: not-allowed;
     background: f.color(background, disabled, normal);
@@ -26,7 +26,7 @@
     }
   }
 
-  &:not(:disabled, [data-disabled]) {
+  &:not(:disabled, [aria-disabled="true"]) {
     &:hover,
     &:focus {
       text-decoration: none;
