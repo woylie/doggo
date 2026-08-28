@@ -19,6 +19,7 @@ defmodule DemoWeb.Router do
   scope "/", DemoWeb do
     pipe_through :browser
     get "/", PageController, :home
+    live "/patch-test", PatchTestLive
     live_storybook("/storybook", backend_module: DemoWeb.Storybook)
   end
 end
