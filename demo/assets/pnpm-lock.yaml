@@ -46,8 +46,8 @@ importers:
         specifier: 17.14.1
         version: 17.14.1(supports-color@10.2.2)
       stylelint-config-recess-order:
-        specifier: 7.7.0
-        version: 7.7.0(stylelint-order@8.1.1(stylelint@17.14.1(supports-color@10.2.2)))(stylelint@17.14.1(supports-color@10.2.2))
+        specifier: 7.8.0
+        version: 7.8.0(stylelint-order@8.1.1(stylelint@17.14.1(supports-color@10.2.2)))(stylelint@17.14.1(supports-color@10.2.2))
       stylelint-config-standard-scss:
         specifier: 17.0.0
         version: 17.0.0(postcss@8.5.26)(stylelint@17.14.1(supports-color@10.2.2))
@@ -1447,8 +1447,8 @@ packages:
     engines: {node: '>=22.0.0'}
     hasBin: true
 
-  stylelint-config-recess-order@7.7.0:
-    resolution: {integrity: sha512-TWRkg+BrwHOki4pi9y1emWgx6pFwZXOYZhNsbEObke/mzYUJVJvDEzJJQXhH7ajslQJGcrExy8ZvJqDiUbhFpA==}
+  stylelint-config-recess-order@7.8.0:
+    resolution: {integrity: sha512-ObYusdkXavm8ulgb5xvmU1l8wgCdveNYG12hOTUEdjS8bNhSRggl4or0mE0JaOnQz+Ve2xZemVpwqERCgJbntg==}
     peerDependencies:
       stylelint: ^16.18.0 || ^17.0.0
       stylelint-order: ^7.0.0 || ^8.0.0
@@ -2846,7 +2846,7 @@ snapshots:
     transitivePeerDependencies:
       - tslib
 
-  stylelint-config-recess-order@7.7.0(stylelint-order@8.1.1(stylelint@17.14.1(supports-color@10.2.2)))(stylelint@17.14.1(supports-color@10.2.2)):
+  stylelint-config-recess-order@7.8.0(stylelint-order@8.1.1(stylelint@17.14.1(supports-color@10.2.2)))(stylelint@17.14.1(supports-color@10.2.2)):
     dependencies:
       stylelint: 17.14.1(supports-color@10.2.2)
       stylelint-order: 8.1.1(stylelint@17.14.1(supports-color@10.2.2))
