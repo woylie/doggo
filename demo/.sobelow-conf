@@ -1,0 +1,14 @@
+[
+  verbose: false,
+  private: false,
+  skip: true,
+  router: "",
+  exit: "low",
+  format: "txt",
+  out: "",
+  threshold: "low",
+  # Prefer using inline comments to ignore warnings instead of adding global
+  # ignores here. If you must, add a comment to each entry.
+  ignore: [],
+  ignore_files: []
+]
