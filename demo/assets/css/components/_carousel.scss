@@ -58,23 +58,30 @@
     }
 
     .carousel-pagination {
+      display: flex;
+      gap: f.spacer(1);
       order: 2;
-
-      div[role="tablist"] {
-        display: flex;
-        gap: f.spacer(1);
-        justify-content: center;
-      }
+      justify-content: center;
 
       button[role="tab"] {
-        width: f.spacer(4);
-        height: f.spacer(4);
+        // WCAG 2.5.8 minimum target size is 24px
+        display: grid;
+        place-items: center;
+        width: f.spacer(6);
+        height: f.spacer(6);
         padding: 0;
         cursor: pointer;
+        background: none;
         border: none;
-        border-radius: f.radius(pill);
 
-        &[aria-selected="true"] {
+        > span {
+          width: f.spacer(3);
+          height: f.spacer(3);
+          border: f.border-width(s) solid f.color(background, primary, normal);
+          border-radius: f.radius(pill);
+        }
+
+        &[aria-selected="true"] > span {
           background-color: f.color(background, primary, normal);
         }
       }

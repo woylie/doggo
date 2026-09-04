@@ -998,21 +998,74 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.carousel>
         """)
 
-      div = find_one(html, ".carousel-controls > .carousel-pagination > div")
+      div = find_one(html, ".carousel-controls > .carousel-pagination")
       assert attribute(div, "role") == "tablist"
       assert attribute(div, "aria-label") == "スライド"
 
       assert button = find_one(div, "button:first-child")
       assert attribute(button, "type") == "button"
       assert attribute(button, "role") == "tab"
-      assert attribute(button, "aria-label") == "スライド1"
+      assert attribute(button, "id") == "dog-carousel-tab-1"
+      assert attribute(button, "aria-selected") == "true"
+      assert attribute(button, "tabindex") == nil
+      assert attribute(button, "aria-label") == "1 of 2"
       assert attribute(button, "aria-controls") == "dog-carousel-item-1"
 
       assert button = find_one(div, "button:last-child")
       assert attribute(button, "type") == "button"
       assert attribute(button, "role") == "tab"
-      assert attribute(button, "aria-label") == "スライド2"
+      assert attribute(button, "id") == "dog-carousel-tab-2"
+      assert attribute(button, "aria-selected") == "false"
+      assert attribute(button, "tabindex") == "-1"
+      assert attribute(button, "aria-label") == "2 of 2"
       assert attribute(button, "aria-controls") == "dog-carousel-item-2"
+
+      div = find_one(html, ".carousel-items > .carousel-item:first-child")
+      assert attribute(div, "role") == "tabpanel"
+      assert attribute(div, "aria-labelledby") == "dog-carousel-tab-1"
+      assert attribute(div, "aria-roledescription") == "slide"
+      assert attribute(div, "aria-label") == nil
+    end
+
+    test "with pagination and slides without labels" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel
+          id="dog-carousel"
+          label="Dog Carousel"
+          pagination_slide_label={&"スライド#{&1}"}
+          pagination
+        >
+          <:item>A</:item>
+          <:item>B</:item>
+        </TestComponents.carousel>
+        """)
+
+      div = find_one(html, ".carousel-pagination")
+
+      assert button = find_one(div, "button:first-child")
+      assert attribute(button, "aria-label") == "スライド1"
+
+      assert button = find_one(div, "button:last-child")
+      assert attribute(button, "aria-label") == "スライド2"
+    end
+
+    test "without pagination the slides stay groups" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
+          <:item label="1 of 1">A</:item>
+        </TestComponents.carousel>
+        """)
+
+      div = find_one(html, ".carousel-items > .carousel-item")
+      assert attribute(div, "role") == "group"
+      assert attribute(div, "aria-label") == "1 of 1"
+      assert attribute(div, "aria-labelledby") == nil
     end
 
     test "with labelledby" do

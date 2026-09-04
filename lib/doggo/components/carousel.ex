@@ -159,7 +159,8 @@ defmodule Doggo.Components.Carousel do
         default: &Doggo.slide_label/1,
         doc: """
         1-arity function that takes the slide number as an argument and returns the
-        aria label for the slide as used in the pagination buttons.
+        aria label for the pagination tab of a slide that has no `label` of its
+        own.
         """
 
       attr :auto_rotation, :boolean, default: false
@@ -183,7 +184,10 @@ defmodule Doggo.Components.Carousel do
       slot :item, required: true do
         attr :label, :string,
           doc: """
-          Aria label for the slide, e.g. "1 of 5".
+          Aria label for the slide, e.g. "1 of 5". If `pagination` is `true`,
+          the label is given to the tab that selects the slide, and the slide is
+          labelled by that tab. Slides without a label fall back to
+          `pagination_slide_label`.
           """
       end
     end
@@ -231,18 +235,24 @@ defmodule Doggo.Components.Carousel do
           >
             {render_slot(next)}
           </button>
-          <div :if={@pagination} class={"#{@base_class}-pagination"}>
-            <div role="tablist" aria-label={@pagination_label}>
-              <button
-                :for={{_, index} <- Enum.with_index(@item, 1)}
-                type="button"
-                role="tab"
-                aria-label={@pagination_slide_label.(index)}
-                aria-controls={"#{@id}-item-#{index}"}
-              >
-                <span><span></span></span>
-              </button>
-            </div>
+          <div
+            :if={@pagination}
+            class={"#{@base_class}-pagination"}
+            role="tablist"
+            aria-label={@pagination_label}
+          >
+            <button
+              :for={{item, index} <- Enum.with_index(@item, 1)}
+              type="button"
+              role="tab"
+              id={"#{@id}-tab-#{index}"}
+              aria-selected={to_string(index == 1)}
+              aria-controls={"#{@id}-item-#{index}"}
+              aria-label={item[:label] || @pagination_slide_label.(index)}
+              tabindex={index != 1 && "-1"}
+            >
+              <span></span>
+            </button>
           </div>
         </div>
         <div class={"#{@base_class}-items-container"}>
@@ -255,9 +265,10 @@ defmodule Doggo.Components.Carousel do
               :for={{item, index} <- Enum.with_index(@item, 1)}
               id={"#{@id}-item-#{index}"}
               class={"#{@base_class}-item"}
-              role="group"
+              role={if @pagination, do: "tabpanel", else: "group"}
               aria-roledescription={@slide_roledescription}
-              aria-label={item.label}
+              aria-label={if not @pagination, do: item[:label]}
+              aria-labelledby={@pagination && "#{@id}-tab-#{index}"}
             >
               {render_slot(item)}
             </div>
@@ -273,7 +284,9 @@ defmodule Doggo.Components.Carousel do
 
           const prevBtn = carousel.querySelector(`.${baseClass}-previous`);
           const nextBtn = carousel.querySelector(`.${baseClass}-next`);
-          const tabs = carousel.querySelectorAll('[role="tab"]');
+          const tabs = carousel.querySelectorAll(
+            `.${baseClass}-pagination [role="tab"]`
+          );
           const itemsContainer =
             carousel.querySelector(`.${baseClass}-items-container`);
           const items = carousel.querySelectorAll(`.${baseClass}-item`);
@@ -370,16 +383,26 @@ defmodule Doggo.Components.Carousel do
           tabs.forEach((tab, idx) => {
             tab.addEventListener("click", () => scrollToIdx(idx));
 
+            // Selection follows the focus, so moving between the tabs moves
+            // the carousel with them.
             tab.addEventListener("keydown", (e) => {
-              if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+              let nextIdx;
+
+              if (e.key === "ArrowRight") {
+                nextIdx = getWrappedIndex(getCurrentIdx(), 1);
+              } else if (e.key === "ArrowLeft") {
+                nextIdx = getWrappedIndex(getCurrentIdx(), -1);
+              } else if (e.key === "Home") {
+                nextIdx = 0;
+              } else if (e.key === "End") {
+                nextIdx = tabs.length - 1;
+              } else {
+                return;
+              }
 
               e.preventDefault();
-              const offset = e.key === "ArrowRight" ? 1 : -1;
-              const nextIdx = getWrappedIndex(getCurrentIdx(), offset);
-
               scrollToIdx(nextIdx);
-
-              if (tabs[nextIdx]) tabs[nextIdx].focus();
+              tabs[nextIdx].focus();
             });
           });
 
