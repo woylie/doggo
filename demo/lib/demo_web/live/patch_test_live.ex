@@ -113,9 +113,11 @@ defmodule DemoWeb.PatchTestLive do
       </p>
 
       <p>
-        Tick <strong id="tick">{@tick}</strong> · auto {@auto} · tick inside
-        components {@inside} · wrapped {@wrap} · re-sends {@resend} · slides
-        {length(@slides)}
+        Tick <strong id="tick">{@tick}</strong>
+        · auto {@auto} · tick inside
+        components {@inside} · wrapped {@wrap} · re-sends {@resend} · slides {length(
+          @slides
+        )}
       </p>
 
       <CoreComponents.cluster>
