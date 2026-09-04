@@ -37,6 +37,12 @@ defmodule Doggo.Storybook.Carousel do
         slots: slots(opts)
       },
       %Variation{
+        id: :with_a_single_item,
+        note: "If there is only a single slide, no controls are rendered.",
+        attributes: %{label: "Our Dogs", pagination: true},
+        slots: single_item_slots(opts)
+      },
+      %Variation{
         id: :without_pagination_or_auto_rotation,
         attributes: %{label: "Our Dogs"},
         slots: slots_without_auto_rotation(opts)
@@ -62,6 +68,10 @@ defmodule Doggo.Storybook.Carousel do
       #{icon(:play, opts[:dependent_components])}
     </:pause>
     """
+  end
+
+  defp single_item_slots(opts) do
+    [pause_slot(opts) | Enum.take(slots_without_auto_rotation(opts), 3)]
   end
 
   defp slots_without_auto_rotation(opts) do

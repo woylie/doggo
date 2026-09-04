@@ -962,7 +962,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
           <:previous label="Previous Slide">Previous</:previous>
           <:next label="Next Slide">Next</:next>
-          <:item label="1 of 1"></:item>
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
         </TestComponents.carousel>
         """)
 
@@ -1141,7 +1142,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
           <:previous label="Previous Slide">Previous</:previous>
           <:next label="Next Slide">Next</:next>
-          <:item label="1 of 1"></:item>
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
         </TestComponents.carousel>
         """)
 
@@ -1172,22 +1174,30 @@ defmodule Doggo.ComponentsTest do
       assert attribute(html, "button.carousel-next", "disabled") == nil
     end
 
-    test "without looping and with a single item" do
+    test "with a single item" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
-        <TestComponents.carousel id="dog-carousel" label="Dog Carousel" loop={false}>
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel" pagination>
+          <:pause label="Pause" resume_label="Resume">Pause</:pause>
           <:previous label="Previous Slide">Previous</:previous>
           <:next label="Next Slide">Next</:next>
-          <:item label="1 of 1"></:item>
+          <:item label="1 of 1">A</:item>
         </TestComponents.carousel>
         """)
 
-      assert attribute(html, "button.carousel-previous", "disabled") ==
-               "disabled"
+      assert [] = Floki.find(html, ".carousel-controls")
+      assert [] = Floki.find(html, ".carousel-pagination")
+      assert attribute(html, "section:root", "data-rotation-interval-ms") == nil
 
-      assert attribute(html, "button.carousel-next", "disabled") == "disabled"
+      div = find_one(html, ".carousel-items")
+      assert attribute(div, "aria-live") == "polite"
+
+      div = find_one(html, ".carousel-item")
+      assert attribute(div, "role") == "group"
+      assert attribute(div, "aria-label") == "1 of 1"
+      assert attribute(div, "aria-labelledby") == nil
     end
 
     test "with pause control" do
@@ -1197,7 +1207,8 @@ defmodule Doggo.ComponentsTest do
         parse_heex(~H"""
         <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
           <:pause label="Pause" resume_label="Resume">Pause</:pause>
-          <:item label="1 of 1"></:item>
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
         </TestComponents.carousel>
         """)
 
@@ -1229,7 +1240,8 @@ defmodule Doggo.ComponentsTest do
           rotation_interval_ms={8000}
         >
           <:pause label="Pause" resume_label="Resume">Pause</:pause>
-          <:item label="1 of 1"></:item>
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
         </TestComponents.carousel>
         """)
 
@@ -1244,7 +1256,8 @@ defmodule Doggo.ComponentsTest do
         parse_heex(~H"""
         <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
           <:pause label="Pause" resume_label="Resume">Pause</:pause>
-          <:item label="1 of 1"></:item>
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
         </TestComponents.carousel>
         """)
 
@@ -1262,7 +1275,8 @@ defmodule Doggo.ComponentsTest do
           label="Dog Carousel"
           rotation_interval_ms={8000}
         >
-          <:item label="1 of 1"></:item>
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
         </TestComponents.carousel>
         """)
 
@@ -1276,7 +1290,8 @@ defmodule Doggo.ComponentsTest do
         parse_heex(~H"""
         <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
           <:pause>Pause</:pause>
-          <:item label="1 of 1"></:item>
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
         </TestComponents.carousel>
         """)
 

@@ -9,6 +9,9 @@ defmodule Doggo.Components.Carousel do
   def doc do
     """
     Renders a carousel for presenting a sequence of items, such as images or text.
+
+    If a carousel only has a single items, no controls and no pagination are
+    rendered.
     """
   end
 
@@ -253,6 +256,15 @@ defmodule Doggo.Components.Carousel do
   def render(assigns) do
     Doggo.ensure_label!(assigns, ".carousel", "Our Dogs")
 
+    multiple_items = length(assigns.item) > 1
+
+    assigns =
+      assign(assigns,
+        multiple_items: multiple_items,
+        show_tabs: assigns.pagination and multiple_items,
+        rotating: assigns.pause != [] and multiple_items
+      )
+
     ~H"""
     <section
       id={@id}
@@ -262,13 +274,13 @@ defmodule Doggo.Components.Carousel do
       aria-roledescription={@carousel_roledescription}
       data-active-index="0"
       data-loop={@loop}
-      data-rotation-interval-ms={@pause != [] && @rotation_interval_ms}
+      data-rotation-interval-ms={@rotating && @rotation_interval_ms}
       {@data_attrs}
       {@rest}
       phx-hook=".Hook"
     >
       <div class={"#{@base_class}-inner"}>
-        <div class={"#{@base_class}-controls"}>
+        <div :if={@multiple_items} class={"#{@base_class}-controls"}>
           <button
             :for={pause <- @pause}
             type="button"
@@ -291,7 +303,7 @@ defmodule Doggo.Components.Carousel do
             {render_slot(previous)}
           </button>
           <div
-            :if={@pagination}
+            :if={@show_tabs}
             class={"#{@base_class}-pagination"}
             role="tablist"
             aria-label={@pagination_label}
@@ -315,7 +327,6 @@ defmodule Doggo.Components.Carousel do
             class={"#{@base_class}-next"}
             aria-controls={"#{@id}-items"}
             aria-label={next.label}
-            disabled={!@loop && length(@item) <= 1}
           >
             {render_slot(next)}
           </button>
@@ -324,16 +335,16 @@ defmodule Doggo.Components.Carousel do
           <div
             id={"#{@id}-items"}
             class={"#{@base_class}-items"}
-            aria-live={if @pause == [], do: "polite", else: "off"}
+            aria-live={if @rotating, do: "off", else: "polite"}
           >
             <div
               :for={{item, index} <- Enum.with_index(@item, 1)}
               id={"#{@id}-item-#{index}"}
               class={"#{@base_class}-item"}
-              role={if @pagination, do: "tabpanel", else: "group"}
+              role={if @show_tabs, do: "tabpanel", else: "group"}
               aria-roledescription={@slide_roledescription}
-              aria-label={if not @pagination, do: item[:label]}
-              aria-labelledby={@pagination && "#{@id}-tab-#{index}"}
+              aria-label={if not @show_tabs, do: item[:label]}
+              aria-labelledby={@show_tabs && "#{@id}-tab-#{index}"}
             >
               {render_slot(item)}
             </div>
@@ -348,11 +359,16 @@ defmodule Doggo.Components.Carousel do
           const baseClass = carousel.className.split(' ')[0];
 
           const itemsContainer =
+          const getItemsContainer = () =>
             carousel.querySelector(`.${baseClass}-items-container`);
-          const liveRegion = carousel.querySelector(`.${baseClass}-items`);
+
+          const getLiveRegion = () =>
+            carousel.querySelector(`.${baseClass}-items`);
 
           const getItems = () =>
-            Array.from(itemsContainer.querySelectorAll(`.${baseClass}-item`));
+            Array.from(
+              getItemsContainer().querySelectorAll(`.${baseClass}-item`)
+            );
 
           const getTabs = () =>
             Array.from(
@@ -395,7 +411,7 @@ defmodule Doggo.Components.Carousel do
           };
 
           const getActiveIdx = () => {
-            const viewport = itemsContainer.getBoundingClientRect();
+            const viewport = getItemsContainer().getBoundingClientRect();
             const viewportCenter = viewport.left + viewport.width / 2;
 
             let activeIdx = 0;
@@ -447,6 +463,7 @@ defmodule Doggo.Components.Carousel do
 
             setActiveIdx(idx);
 
+            const itemsContainer = getItemsContainer();
             const container = itemsContainer.getBoundingClientRect();
             const target = item.getBoundingClientRect();
             const offset =
@@ -508,6 +525,8 @@ defmodule Doggo.Components.Carousel do
 
             // A slide arriving on a timer is noise, but one the reader asked
             // for is worth announcing, so the live region follows the rotation.
+            const liveRegion = getLiveRegion();
+
             if (isAutoRotationEnabled() && liveRegion) {
               liveRegion.setAttribute("aria-live", isPaused ? "polite" : "off");
             }
@@ -548,6 +567,13 @@ defmodule Doggo.Components.Carousel do
           };
 
           itemsContainer.addEventListener("scroll", syncActiveState);
+          carousel.addEventListener(
+            "scroll",
+            (e) => {
+              if (e.target === getItemsContainer()) syncActiveState();
+            },
+            true
+          );
 
           // Event listener is added on the carousel instead of the buttons
           // because a patch can replace the buttons, which would remove the
@@ -627,6 +653,14 @@ defmodule Doggo.Components.Carousel do
           this.syncAfterUpdate = () => {
             syncActiveState();
             syncPauseControl();
+
+            // A patch can add or remove the pause button, and with it the
+            // rotation. Starting is a no-op while it runs or is paused.
+            if (isAutoRotationEnabled()) {
+              startAutoRotation();
+            } else {
+              stopAutoRotation();
+            }
           };
         },
 
