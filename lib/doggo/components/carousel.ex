@@ -164,6 +164,18 @@ defmodule Doggo.Components.Carousel do
         own.
         """
 
+      attr :loop, :boolean,
+        default: true,
+        doc: """
+        If `true`, the previous and next controls move from the last item to the
+        first and back.
+
+        Set to `false` to stop at the ends instead. In that case, the previous
+        and next are disabled on the first and last slide respectively, and the
+        auto rotation stops on the last item; the pause control then starts the
+        show again from the first item.
+        """
+
       attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :inner_block,
@@ -242,6 +254,7 @@ defmodule Doggo.Components.Carousel do
       aria-labelledby={@labelledby}
       aria-roledescription={@carousel_roledescription}
       data-active-index="0"
+      data-loop={@loop}
       {@data_attrs}
       {@rest}
       phx-hook=".Hook"
@@ -254,6 +267,7 @@ defmodule Doggo.Components.Carousel do
             class={"#{@base_class}-previous"}
             aria-controls={"#{@id}-items"}
             aria-label={previous.label}
+            disabled={!@loop}
           >
             {render_slot(previous)}
           </button>
@@ -263,6 +277,7 @@ defmodule Doggo.Components.Carousel do
             class={"#{@base_class}-next"}
             aria-controls={"#{@id}-items"}
             aria-label={next.label}
+            disabled={!@loop && length(@item) <= 1}
           >
             {render_slot(next)}
           </button>
@@ -340,12 +355,28 @@ defmodule Doggo.Components.Carousel do
           const rotationIntervalMs = 5000;
           let autoRotationTimer = null;
 
-          const getWrappedIndex = (currentIdx, offset) => {
-            return (currentIdx + offset + totalItems) % totalItems;
+          const isLoopEnabled = carousel.getAttribute("data-loop") != null;
+
+          const getTargetIdx = (currentIdx, offset) => {
+            if (isLoopEnabled) {
+              return (currentIdx + offset + totalItems) % totalItems;
+            }
+
+            return Math.min(Math.max(currentIdx + offset, 0), totalItems - 1);
           };
 
           const getCurrentIdx = () =>
             Number(carousel.getAttribute("data-active-index")) || 0;
+
+          const setDisabled = (el, disabled) => {
+            if (!el) return;
+
+            if (disabled) {
+              el.setAttribute("disabled", "");
+            } else {
+              el.removeAttribute("disabled");
+            }
+          };
 
           const getActiveIdx = () => {
             const viewport = itemsContainer.getBoundingClientRect();
@@ -370,6 +401,11 @@ defmodule Doggo.Components.Carousel do
 
           const setActiveIdx = (activeIdx) => {
             carousel.setAttribute("data-active-index", activeIdx);
+
+            if (!isLoopEnabled) {
+              setDisabled(prevBtn, activeIdx === 0);
+              setDisabled(nextBtn, activeIdx === totalItems - 1);
+            }
 
             tabs.forEach((tab, idx) => {
               const isSelected = idx === activeIdx;
@@ -414,14 +450,14 @@ defmodule Doggo.Components.Carousel do
           if (prevBtn) {
             prevBtn.addEventListener("click", () => {
               pauseForInteraction();
-              scrollToIdx(getWrappedIndex(getCurrentIdx(), -1));
+              scrollToIdx(getTargetIdx(getCurrentIdx(), -1));
             });
           }
 
           if (nextBtn) {
             nextBtn.addEventListener("click", () => {
               pauseForInteraction();
-              scrollToIdx(getWrappedIndex(getCurrentIdx(), 1));
+              scrollToIdx(getTargetIdx(getCurrentIdx(), 1));
             });
           }
 
@@ -437,9 +473,9 @@ defmodule Doggo.Components.Carousel do
               let nextIdx;
 
               if (e.key === "ArrowRight") {
-                nextIdx = getWrappedIndex(getCurrentIdx(), 1);
+                nextIdx = getTargetIdx(getCurrentIdx(), 1);
               } else if (e.key === "ArrowLeft") {
-                nextIdx = getWrappedIndex(getCurrentIdx(), -1);
+                nextIdx = getTargetIdx(getCurrentIdx(), -1);
               } else if (e.key === "Home") {
                 nextIdx = 0;
               } else if (e.key === "End") {
@@ -458,12 +494,29 @@ defmodule Doggo.Components.Carousel do
           // Auto rotation
           let isPaused = false;
 
+          // Stop auto rotation if the last items does not wrap.
+          const hasShowEnded = () =>
+            !isLoopEnabled && getCurrentIdx() === totalItems - 1;
+
+          const endShow = () => {
+            isPaused = true;
+            stopAutoRotation();
+            syncPauseControl();
+          };
+
           const startAutoRotation = () => {
             if (!isAutoRotationEnabled || isPaused) return;
             if (autoRotationTimer != null) return;
 
+            if (hasShowEnded()) {
+              endShow();
+              return;
+            }
+
             autoRotationTimer = setInterval(() => {
-              scrollToIdx(getWrappedIndex(getCurrentIdx(), 1));
+              scrollToIdx(getTargetIdx(getCurrentIdx(), 1));
+
+              if (hasShowEnded()) endShow();
             }, rotationIntervalMs);
           }
 
@@ -507,7 +560,19 @@ defmodule Doggo.Components.Carousel do
           if (pauseBtn) {
             pauseBtn.addEventListener("click", () => {
               isPaused = !isPaused;
-              isPaused ? stopAutoRotation() : startAutoRotation();
+
+              if (isPaused) {
+                stopAutoRotation();
+              } else {
+                // If looped=false and we're on the last slide, toggling the
+                // resume button starts the slide show on the first slide again.
+                if (!isLoopEnabled && getCurrentIdx() === totalItems - 1) {
+                  scrollToIdx(0);
+                }
+
+                startAutoRotation();
+              }
+
               syncPauseControl();
             });
           }

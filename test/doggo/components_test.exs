@@ -1133,6 +1133,63 @@ defmodule Doggo.ComponentsTest do
              ) == "スライド"
     end
 
+    test "with looping enabled by default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
+          <:previous label="Previous Slide">Previous</:previous>
+          <:next label="Next Slide">Next</:next>
+          <:item label="1 of 1"></:item>
+        </TestComponents.carousel>
+        """)
+
+      assert attribute(html, "section:root", "data-loop") == "data-loop"
+      assert attribute(html, "button.carousel-previous", "disabled") == nil
+      assert attribute(html, "button.carousel-next", "disabled") == nil
+    end
+
+    test "without looping" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel" loop={false}>
+          <:previous label="Previous Slide">Previous</:previous>
+          <:next label="Next Slide">Next</:next>
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
+        </TestComponents.carousel>
+        """)
+
+      assert attribute(html, "section:root", "data-loop") == nil
+
+      # the first item shows, so there is nothing before it
+      assert attribute(html, "button.carousel-previous", "disabled") ==
+               "disabled"
+
+      assert attribute(html, "button.carousel-next", "disabled") == nil
+    end
+
+    test "without looping and with a single item" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel" loop={false}>
+          <:previous label="Previous Slide">Previous</:previous>
+          <:next label="Next Slide">Next</:next>
+          <:item label="1 of 1"></:item>
+        </TestComponents.carousel>
+        """)
+
+      assert attribute(html, "button.carousel-previous", "disabled") ==
+               "disabled"
+
+      assert attribute(html, "button.carousel-next", "disabled") == "disabled"
+    end
+
     test "with pause control" do
       assigns = %{}
 
