@@ -166,7 +166,7 @@ defmodule Doggo do
   """
   @doc type: :js
   @doc since: "0.1.0"
-
+  @spec hide_modal(JS.t(), String.t()) :: JS.t()
   def hide_modal(js \\ %JS{}, id) do
     js
     |> JS.remove_attribute("open", to: "##{id}")
@@ -185,7 +185,7 @@ defmodule Doggo do
   """
   @doc type: :js
   @doc since: "0.1.0"
-
+  @spec show_modal(JS.t(), String.t()) :: JS.t()
   def show_modal(js \\ %JS{}, id) when is_binary(id) do
     js
     |> JS.push_focus()
@@ -204,7 +204,7 @@ defmodule Doggo do
   """
   @doc type: :js
   @doc since: "0.5.0"
-
+  @spec show_tab(JS.t(), String.t(), integer()) :: JS.t()
   def show_tab(js \\ %JS{}, id, index)
       when is_binary(id) and is_integer(index) do
     other_tabs = "##{id} [role='tab']:not(##{id}-tab-#{index})"
@@ -249,13 +249,10 @@ defmodule Doggo do
 
   ## Usage
 
-      iex> safelist(MyAppWeb.CoreComponents)
-      [
-        "button",
-        "data-size",
-        "data-variant"
-      ]
+      safelist(MyAppWeb.CoreComponents)
+      #=> ["button", "data-size", "data-variant"]
   """
+  @doc since: "0.13.0"
   @spec safelist(module) :: [String.t()]
   def safelist(module) when is_atom(module) do
     components = module.__dog_components__()
