@@ -5,6 +5,8 @@ defmodule Doggo.Components.MenuItem do
 
   use Phoenix.Component
 
+  alias Phoenix.LiveView.JS
+
   @impl true
   def doc do
     """
@@ -53,7 +55,7 @@ defmodule Doggo.Components.MenuItem do
   @impl true
   def attrs_and_slots do
     quote do
-      attr :on_click, Phoenix.LiveView.JS, required: true
+      attr :on_click, JS, required: true
       attr :rest, :global
 
       slot :inner_block, required: true

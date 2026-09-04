@@ -1,6 +1,7 @@
 defmodule Doggo.Storybook.ToggleButton do
   @moduledoc false
 
+  alias Phoenix.LiveView.JS
   alias PhoenixStorybook.Stories.Variation
 
   def variations(_opts) do
@@ -17,7 +18,7 @@ defmodule Doggo.Storybook.ToggleButton do
       %Variation{
         id: :disabled,
         attributes: %{
-          on_click: %Phoenix.LiveView.JS{},
+          on_click: %JS{},
           disabled: true
         },
         slots: ["click me"]

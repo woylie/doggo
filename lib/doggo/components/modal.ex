@@ -5,6 +5,8 @@ defmodule Doggo.Components.Modal do
 
   use Phoenix.Component
 
+  alias Phoenix.LiveView.JS
+
   @impl true
   def doc do
     """
@@ -153,8 +155,8 @@ defmodule Doggo.Components.Modal do
         default: false,
         doc: "Initializes the modal as open."
 
-      attr :on_cancel, Phoenix.LiveView.JS,
-        default: %Phoenix.LiveView.JS{},
+      attr :on_cancel, JS,
+        default: %JS{},
         doc: """
         An additional `Phoenix.LiveView.JS` command to execute when the dialog
         is canceled. This command is executed in addition to closing the dialog. If
@@ -200,7 +202,7 @@ defmodule Doggo.Components.Modal do
       open={@open}
       phx-mounted={@open && Doggo.show_modal(@id)}
       phx-remove={Doggo.hide_modal(@id)}
-      data-cancel={Phoenix.LiveView.JS.exec(@on_cancel, "phx-remove")}
+      data-cancel={JS.exec(@on_cancel, "phx-remove")}
       {@data_attrs}
       {@rest}
     >
@@ -208,13 +210,9 @@ defmodule Doggo.Components.Modal do
         id={"#{@id}-container"}
         class={"#{@base_class}-container"}
         tabindex="-1"
-        phx-window-keydown={
-          @dismissable && Phoenix.LiveView.JS.exec("data-cancel", to: "##{@id}")
-        }
+        phx-window-keydown={@dismissable && JS.exec("data-cancel", to: "##{@id}")}
         phx-key={@dismissable && "escape"}
-        phx-click-away={
-          @dismissable && Phoenix.LiveView.JS.exec("data-cancel", to: "##{@id}")
-        }
+        phx-click-away={@dismissable && JS.exec("data-cancel", to: "##{@id}")}
       >
         <section>
           <header>
@@ -223,7 +221,7 @@ defmodule Doggo.Components.Modal do
               type="button"
               class={"#{@base_class}-close"}
               aria-label={@close_label}
-              phx-click={Phoenix.LiveView.JS.exec("data-cancel", to: "##{@id}")}
+              phx-click={JS.exec("data-cancel", to: "##{@id}")}
             >
               {render_slot(@close)}
               <span :if={@close == []}>close</span>
