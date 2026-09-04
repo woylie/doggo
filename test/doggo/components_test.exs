@@ -887,7 +887,7 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.card>
         """)
 
-      assert text(html, "article > main") == "Doggo"
+      assert text(html, "article > div.card-main") == "Doggo"
     end
 
     test "with footer" do
