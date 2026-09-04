@@ -14,13 +14,14 @@ defmodule Mix.Tasks.Dog.Gen.Stories do
 
       mix dog.gen.stories -m MyAppWeb.CoreComponents -o storybook -c button
 
-  ## Options
+  ## Command line options
 
-  - -m, --module: The module where the Doggo components are compiled.
-  - -o, --output: The Storybook folder.
-  - -c, --component: The name of the component.
-  - -a, --all: Write stories for all configured components.
-  - -f, --force: Force folder creation and overwrite existing stories.
+    * `-m`, `--module` - the module the Doggo components are compiled into.
+    * `-o`, `--output` - the Storybook folder.
+    * `-c`, `--component` - the name of a single component to write.
+    * `-a`, `--all` - writes stories for all configured components.
+    * `-f`, `--force` - creates the folder if needed and overwrites existing
+      stories.
   """
 
   use Mix.Task

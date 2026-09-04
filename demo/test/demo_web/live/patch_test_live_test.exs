@@ -35,6 +35,23 @@ defmodule DemoWeb.PatchTestLiveTest do
     assert render(live) == before
   end
 
+  test "the components can be wrapped in a comprehension", %{conn: conn} do
+    {:ok, live, html} = live(conn, ~p"/patch-test")
+    assert html =~ "wrapped false"
+    assert has_element?(live, "#resend[disabled]")
+
+    html = live |> element("#toggle-wrap") |> render_click()
+    assert html =~ "wrapped true"
+    refute has_element?(live, "#resend[disabled]")
+  end
+
+  test "re-sending changes the comprehension only", %{conn: conn} do
+    {:ok, live, _html} = live(conn, ~p"/patch-test")
+
+    live |> element("#toggle-wrap") |> render_click()
+    assert live |> element("#resend") |> render_click() =~ "re-sends 1"
+  end
+
   test "the tick can be moved out of the component subtrees", %{conn: conn} do
     {:ok, live, html} = live(conn, ~p"/patch-test")
     assert html =~ "Tick inside the modal"

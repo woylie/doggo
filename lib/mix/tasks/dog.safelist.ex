@@ -17,6 +17,15 @@ defmodule Mix.Tasks.Dog.Safelist do
   Check whether a file is up-to-date:
 
       mix dog.safelist -m MyAppWeb.CoreComponents -o assets/doggo_safelist.txt --check
+
+  ## Command line options
+
+    * `-m`, `--module` - the module the Doggo components are compiled into.
+      Required.
+    * `-o`, `--output` - writes the classes to this file instead of printing
+      them.
+    * `--check` - exits with an error if the file given by `--output` is out of
+      date. Requires `--output`.
   """
 
   use Mix.Task

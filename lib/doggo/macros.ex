@@ -63,7 +63,6 @@ defmodule Doggo.Macros do
 
         name = Keyword.fetch!(opts, :name)
         modifiers = Keyword.fetch!(opts, :modifiers)
-        modifier_names = Keyword.keys(modifiers)
         attrs_and_slots = module.attrs_and_slots()
         docstring = Doggo.Macros.assemble_component_doc(module)
 
@@ -263,12 +262,4 @@ defmodule Doggo.Macros do
         })
     end
   end
-
-  def unpack_heex(heex, extra) when is_function(heex), do: heex.(extra)
-  def unpack_heex(heex, _), do: heex
-
-  def unpack_component_function(fun, opts, extra) when is_function(fun),
-    do: fun.(opts, extra)
-
-  def unpack_component_function(fun, _, _), do: fun
 end

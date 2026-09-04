@@ -332,7 +332,7 @@ defmodule Doggo.Components.Field do
     |> assign(field: nil, id: id)
     |> assign(
       :describedby,
-      Doggo.input_aria_describedby(id, assigns.description)
+      Doggo.input_aria_describedby(id, assigns.description, errors)
     )
     |> assign(:errormessage, Doggo.input_aria_errormessage(id, errors))
     |> assign_new(:errors, fn -> errors end)
@@ -707,7 +707,7 @@ defmodule Doggo.Components.Field do
     assigns = assign(assigns, :id, Doggo.field_errors_id(for))
 
     ~H"""
-    <ul :if={@errors != []} id={@id} class={"#{@base_class}-errors"}>
+    <ul id={@id} class={"#{@base_class}-errors"} aria-live="polite">
       <li :for={error <- @errors}>{error}</li>
     </ul>
     """

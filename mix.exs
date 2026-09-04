@@ -14,9 +14,18 @@ defmodule Doggo.MixProject do
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
       dialyzer: [
+        flags: [
+          :error_handling,
+          :extra_return,
+          :missing_return,
+          :underspecs,
+          :unknown,
+          :unmatched_returns
+        ],
+        ignore_warnings: ".dialyzer_ignore.exs",
         list_unused_filters: true,
         plt_add_apps: [:ex_unit, :mix],
-        plt_file: {:no_warn, ".plts/doggo.plt"}
+        plt_local_path: ".plts"
       ],
       name: "Doggo",
       source_url: @source_url,

@@ -3,7 +3,7 @@
   plugins: [Phoenix.LiveView.HTMLFormatter],
   import_deps: [:phoenix, :phoenix_live_view],
   inputs: [
-    "{mix,.formatter}.exs",
+    "{mix,.formatter,.dialyzer_ignore}.exs",
     "{config,lib,test}/**/*.{heex,ex,exs}",
     "priv/storybook/**/*.exs"
   ],

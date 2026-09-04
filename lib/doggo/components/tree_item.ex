@@ -79,6 +79,18 @@ defmodule Doggo.Components.TreeItem do
   @impl true
   def attrs_and_slots do
     quote do
+      attr :expanded, :boolean,
+        default: true,
+        doc: """
+        Whether the children of this item are shown. Has no effect on a leaf
+        node. When `false`, the child list is hidden and `aria-expanded` reports
+        the item as collapsed.
+        """
+
+      attr :selected, :boolean,
+        default: false,
+        doc: "Whether this item is selected."
+
       attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :items,
@@ -106,13 +118,13 @@ defmodule Doggo.Components.TreeItem do
     <li
       class={@class}
       role="treeitem"
-      aria-selected="false"
-      aria-expanded={@items != [] && "false"}
+      aria-selected={to_string(@selected)}
+      aria-expanded={@items != [] && to_string(@expanded)}
       {@data_attrs}
       {@rest}
     >
       <span>{render_slot(@inner_block)}</span>
-      <ul :if={@items != []} role="group">
+      <ul :if={@items != []} role="group" hidden={!@expanded}>
         {render_slot(@items)}
       </ul>
     </li>

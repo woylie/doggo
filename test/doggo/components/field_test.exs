@@ -602,6 +602,7 @@ defmodule Doggo.Components.FieldTest do
 
       assert attribute(html, "input", "aria-invalid") == "true"
       assert attribute(html, "input", "aria-errormessage") == "species_errors"
+      assert attribute(html, "input", "aria-describedby") == "species_errors"
       assert attribute(html, "ul", "id") == "species_errors"
       assert attribute(html, "ul", "class") == "field-errors"
       assert text(html, ".field-errors > li") == "wrong"
@@ -623,7 +624,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input", "aria-errormessage") == "species_errors"
 
       assert attribute(html, "input", "aria-describedby") ==
-               "species_description"
+               "species_errors species_description"
 
       assert attribute(html, "ul", "id") == "species_errors"
       assert attribute(html, "ul", "class") == "field-errors"
@@ -776,6 +777,24 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input", "value") == ""
     end
 
+    test "always renders the error list as a live region" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field field={@form[:species]} type="text" />
+        </.form>
+        """)
+
+      # the region must exist before an error arrives, or the error is not
+      # reliably announced
+      errors = find_one(html, ".field-errors")
+      assert attribute(errors, "aria-live") == "polite"
+      assert attribute(errors, "id") == "species_errors"
+      assert Floki.find(errors, "li") == []
+    end
+
     test "hides errors if field is unused" do
       assigns = %{form: to_form(%{})}
 
@@ -786,7 +805,7 @@ defmodule Doggo.Components.FieldTest do
         </.form>
         """)
 
-      assert Floki.find(html, ".field-errors") == []
+      assert Floki.find(html, ".field-errors > li") == []
 
       assigns = %{form: to_form(%{"what" => "what", "_unused_what" => ""})}
 
@@ -797,7 +816,7 @@ defmodule Doggo.Components.FieldTest do
         </.form>
         """)
 
-      assert Floki.find(html, ".field-errors") == []
+      assert Floki.find(html, ".field-errors > li") == []
     end
 
     test "inserts gettext variables in errors without gettext module" do

@@ -887,7 +887,7 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.card>
         """)
 
-      assert text(html, "article > main") == "Doggo"
+      assert text(html, "article > div.card-main") == "Doggo"
     end
 
     test "with footer" do
@@ -4291,6 +4291,46 @@ defmodule Doggo.ComponentsTest do
       assert Floki.find(html, ":root ul") == []
     end
 
+    test "collapsed" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tree_item expanded={false}>
+          Breeds
+          <:items>
+            <TestComponents.tree_item>Golden Retriever</TestComponents.tree_item>
+          </:items>
+        </TestComponents.tree_item>
+        """)
+
+      assert attribute(html, ":root", "aria-expanded") == "false"
+      assert attribute(html, "li:root > ul", "hidden") == "hidden"
+    end
+
+    test "selected" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tree_item selected>Breeds</TestComponents.tree_item>
+        """)
+
+      assert attribute(html, ":root", "aria-selected") == "true"
+    end
+
+    test "collapsed has no effect on a leaf node" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tree_item expanded={false}>Breeds</TestComponents.tree_item>
+        """)
+
+      assert attribute(html, ":root", "aria-expanded") == nil
+      assert Floki.find(html, ":root ul") == []
+    end
+
     test "with children" do
       assigns = %{}
 
@@ -4306,12 +4346,13 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "li:root", "role") == "treeitem"
-      assert attribute(html, ":root", "aria-expanded") == "false"
+      assert attribute(html, ":root", "aria-expanded") == "true"
       assert attribute(html, ":root", "aria-selected") == "false"
       assert text(html, ":root > span") == "Breeds"
 
       assert ul = find_one(html, "li:root > ul")
       assert attribute(ul, "role") == "group"
+      assert attribute(ul, "hidden") == nil
 
       assert li = find_one(ul, "li:first-child")
       assert attribute(li, "role") == "treeitem"
