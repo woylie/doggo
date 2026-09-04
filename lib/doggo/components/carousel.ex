@@ -291,12 +291,28 @@ defmodule Doggo.Components.Carousel do
           const getCurrentIdx = () =>
             Number(carousel.getAttribute("data-active-index")) || 0;
 
-          const syncActiveState = () => {
-            const scrollLeft = itemsContainer.scrollLeft;
-            const itemWidth = items[0].offsetWidth;
+          const getActiveIdx = () => {
+            const viewport = itemsContainer.getBoundingClientRect();
+            const viewportCenter = viewport.left + viewport.width / 2;
 
-            const activeIdx = Math.round(scrollLeft / itemWidth);
+            let activeIdx = 0;
+            let shortestDistance = Infinity;
 
+            items.forEach((item, idx) => {
+              const rect = item.getBoundingClientRect();
+              const center = rect.left + rect.width / 2;
+              const distance = Math.abs(center - viewportCenter);
+
+              if (distance < shortestDistance) {
+                shortestDistance = distance;
+                activeIdx = idx;
+              }
+            });
+
+            return activeIdx;
+          };
+
+          const setActiveIdx = (activeIdx) => {
             carousel.setAttribute("data-active-index", activeIdx);
 
             tabs.forEach((tab, idx) => {
@@ -312,11 +328,29 @@ defmodule Doggo.Components.Carousel do
             });
           };
 
+          const syncActiveState = () => setActiveIdx(getActiveIdx());
+
           const scrollToIdx = (idx) => {
-            itemsContainer.scrollTo({
-              left: items[0].offsetWidth * idx,
-              behavior: "smooth"
-            });
+            const item = items[idx];
+
+            if (!item) return;
+
+            setActiveIdx(idx);
+
+            const container = itemsContainer.getBoundingClientRect();
+            const target = item.getBoundingClientRect();
+            const offset =
+              target.left +
+              target.width / 2 -
+              (container.left + container.width / 2);
+
+            const maxScroll =
+              itemsContainer.scrollWidth - itemsContainer.clientWidth;
+
+            itemsContainer.scrollLeft = Math.min(
+              Math.max(itemsContainer.scrollLeft + offset, 0),
+              maxScroll
+            );
           };
 
           itemsContainer.addEventListener("scroll", syncActiveState);
