@@ -10,8 +10,66 @@ defmodule Doggo.Components.Carousel do
     """
     Renders a carousel for presenting a sequence of items, such as images or text.
 
-    If a carousel only has a single items, no controls and no pagination are
+    If a carousel only has a single item, no controls and no pagination are
     rendered.
+
+    ## Required CSS
+
+    The element with the `-items-container` class has to be a horizontal scroll
+    container, since the controls and the auto rotation move the carousel by
+    scrolling it:
+
+    ```css
+    .carousel-items-container {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+    }
+
+    .carousel-items {
+      display: flex;
+    }
+
+    .carousel-item {
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+    }
+    ```
+
+    The items must not shrink. Scroll snapping is optional, but without it a
+    slide can come to rest half shown. Whether the movement is animated
+    depends on `scroll-behavior`. If you animate it, turn it off with a
+    `@media (prefers-reduced-motion)` media query.
+
+    ## Styling
+
+    The carousel has a `data-active-index` attribute, and `data-paused` while
+    the rotation is stopped. The visible slide has `aria-current`, its
+    pagination tab has `aria-selected`, and with `loop={false}` the previous and
+    next buttons are `disabled` at the ends.
+
+    The pause button changes its label, not its content. Put both icons into the
+    slot and use a CSS selector on `data-paused` to pick one:
+
+    ```heex
+    <:pause label="Pause slide show" resume_label="Resume slide show">
+      <.icon name="pause" class="when-running" />
+      <.icon name="play" class="when-paused" />
+    </:pause>
+    ```
+
+    ```css
+    .carousel:not([data-paused]) .when-paused,
+    .carousel[data-paused] .when-running {
+      display: none;
+    }
+    ```
+
+    ## Localization
+
+    `carousel_roledescription`, `slide_roledescription`, `pagination_label` and
+    the labels of the `:pause` slot default to English. They are announced by
+    screen readers and should be translated. The `pagination_slide_label` and
+    the labels of the `:previous` and `:next` slots should also be translated.
     """
   end
 
@@ -78,18 +136,15 @@ defmodule Doggo.Components.Carousel do
     [
       type: :media,
       since: "0.6.0",
-      maturity: :experimental,
+      maturity: :developing,
       maturity_note: """
-      The necessary JavaScript for making this component fully functional and
-      accessible will be added in a future version.
+      The semantics follow the ARIA Authoring Practices. With `pagination`, the
+      pickers are a tablist and the slides are its tab panels. Without it, the
+      slides are groups.
 
-      **Missing features**
-
-      - Handle pagination tabs
-      - Auto rotation
-      - Disable auto rotation when controls are used
-      - Disable previous/next button on first/last item.
-      - Focus management and keyboard support for pagination
+      Everything the pattern asks for is implemented. The level stays at
+      `:developing` because the API is new and has not been proven in production
+      yet.
       """,
       modifiers: []
     ]
@@ -157,7 +212,13 @@ defmodule Doggo.Components.Carousel do
         """
 
       attr :pagination, :boolean, default: false
-      attr :pagination_label, :string, default: "Slides"
+
+      attr :pagination_label, :string,
+        default: "Slides",
+        doc: """
+        Labels the tablist of slide pickers. This value should be translated to
+        the language in which the rest of the page is displayed.
+        """
 
       attr :pagination_slide_label, :any,
         default: &Doggo.slide_label/1,
@@ -516,15 +577,13 @@ defmodule Doggo.Components.Carousel do
             }
           }
 
-          // The control keeps its position and swaps its name, which is what
-          // the APG recommends for a rotation control.
+          // The pause button changes its label, not its position.
           const syncPauseControl = () => {
             const pauseBtn = getControl("pause");
 
             carousel.toggleAttribute("data-paused", isPaused);
 
-            // A slide arriving on a timer is noise, but one the reader asked
-            // for is worth announcing, so the live region follows the rotation.
+            // Announce slide changes only while auto rotation is stopped.
             const liveRegion = getLiveRegion();
 
             if (isAutoRotationEnabled() && liveRegion) {
@@ -540,8 +599,7 @@ defmodule Doggo.Components.Carousel do
             if (label) pauseBtn.setAttribute("aria-label", label);
           }
 
-          // The APG asks that using a control stops the rotation, so the
-          // carousel does not move on under the reader while they are using it.
+          // Using any control stops auto rotation.
           const pauseForInteraction = () => {
             if (isPaused) return;
 
