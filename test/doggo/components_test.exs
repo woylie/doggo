@@ -1218,6 +1218,57 @@ defmodule Doggo.ComponentsTest do
       assert attribute(div, "aria-live") == "off"
     end
 
+    test "with rotation_interval_ms" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel
+          id="dog-carousel"
+          label="Dog Carousel"
+          rotation_interval_ms={8000}
+        >
+          <:pause label="Pause" resume_label="Resume">Pause</:pause>
+          <:item label="1 of 1"></:item>
+        </TestComponents.carousel>
+        """)
+
+      assert attribute(html, "section:root", "data-rotation-interval-ms") ==
+               "8000"
+    end
+
+    test "without rotation_interval_ms" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
+          <:pause label="Pause" resume_label="Resume">Pause</:pause>
+          <:item label="1 of 1"></:item>
+        </TestComponents.carousel>
+        """)
+
+      assert attribute(html, "section:root", "data-rotation-interval-ms") ==
+               "5000"
+    end
+
+    test "with rotation_interval_ms but no pause control" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel
+          id="dog-carousel"
+          label="Dog Carousel"
+          rotation_interval_ms={8000}
+        >
+          <:item label="1 of 1"></:item>
+        </TestComponents.carousel>
+        """)
+
+      assert attribute(html, "section:root", "data-rotation-interval-ms") == nil
+    end
+
     test "with pause control without labels" do
       assigns = %{}
 

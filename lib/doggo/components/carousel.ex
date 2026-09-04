@@ -164,6 +164,13 @@ defmodule Doggo.Components.Carousel do
         own.
         """
 
+      attr :rotation_interval_ms, :integer,
+        default: 5000,
+        doc: """
+        How long each slide is shown. This only has an effect together with a
+        `:pause` slot, because that's what enables auto rotation.
+        """
+
       attr :loop, :boolean,
         default: true,
         doc: """
@@ -255,6 +262,7 @@ defmodule Doggo.Components.Carousel do
       aria-roledescription={@carousel_roledescription}
       data-active-index="0"
       data-loop={@loop}
+      data-rotation-interval-ms={@pause != [] && @rotation_interval_ms}
       {@data_attrs}
       {@rest}
       phx-hook=".Hook"
@@ -356,7 +364,9 @@ defmodule Doggo.Components.Carousel do
 
           // Auto rotation is enabled if there is a pause button.
           const isAutoRotationEnabled = () => getControl("pause") != null;
-          const rotationIntervalMs = 5000;
+          // Ignore a non-positive interval.
+          const interval = Number(carousel.dataset.rotationIntervalMs);
+          const rotationIntervalMs = interval > 0 ? interval : 5000;
           let autoRotationTimer = null;
 
           const isLoopEnabled = carousel.getAttribute("data-loop") != null;
