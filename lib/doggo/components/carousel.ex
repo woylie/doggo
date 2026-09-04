@@ -419,7 +419,6 @@ defmodule Doggo.Components.Carousel do
           const carousel = this.el;
           const baseClass = carousel.className.split(' ')[0];
 
-          const itemsContainer =
           const getItemsContainer = () =>
             carousel.querySelector(`.${baseClass}-items-container`);
 
@@ -624,7 +623,6 @@ defmodule Doggo.Components.Carousel do
             syncPauseControl();
           };
 
-          itemsContainer.addEventListener("scroll", syncActiveState);
           carousel.addEventListener(
             "scroll",
             (e) => {
