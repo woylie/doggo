@@ -339,30 +339,36 @@ defmodule Doggo.Components.Carousel do
           const carousel = this.el;
           const baseClass = carousel.className.split(' ')[0];
 
-          const prevBtn = carousel.querySelector(`.${baseClass}-previous`);
-          const nextBtn = carousel.querySelector(`.${baseClass}-next`);
-          const pauseBtn = carousel.querySelector(`.${baseClass}-pause`);
-          const liveRegion = carousel.querySelector(`.${baseClass}-items`);
-          const tabs = carousel.querySelectorAll(
-            `.${baseClass}-pagination [role="tab"]`
-          );
           const itemsContainer =
             carousel.querySelector(`.${baseClass}-items-container`);
-          const items = carousel.querySelectorAll(`.${baseClass}-item`);
-          const totalItems = items.length;
+          const liveRegion = carousel.querySelector(`.${baseClass}-items`);
 
-          const isAutoRotationEnabled = pauseBtn != null;
+          const getItems = () =>
+            Array.from(itemsContainer.querySelectorAll(`.${baseClass}-item`));
+
+          const getTabs = () =>
+            Array.from(
+              carousel.querySelectorAll(`.${baseClass}-pagination [role="tab"]`)
+            );
+
+          const getControl = (name) =>
+            carousel.querySelector(`.${baseClass}-${name}`);
+
+          // Auto rotation is enabled if there is a pause button.
+          const isAutoRotationEnabled = () => getControl("pause") != null;
           const rotationIntervalMs = 5000;
           let autoRotationTimer = null;
 
           const isLoopEnabled = carousel.getAttribute("data-loop") != null;
 
           const getTargetIdx = (currentIdx, offset) => {
+            const total = getItems().length;
+
             if (isLoopEnabled) {
-              return (currentIdx + offset + totalItems) % totalItems;
+              return (currentIdx + offset + total) % total;
             }
 
-            return Math.min(Math.max(currentIdx + offset, 0), totalItems - 1);
+            return Math.min(Math.max(currentIdx + offset, 0), total - 1);
           };
 
           const getCurrentIdx = () =>
@@ -385,7 +391,7 @@ defmodule Doggo.Components.Carousel do
             let activeIdx = 0;
             let shortestDistance = Infinity;
 
-            items.forEach((item, idx) => {
+            getItems().forEach((item, idx) => {
               const rect = item.getBoundingClientRect();
               const center = rect.left + rect.width / 2;
               const distance = Math.abs(center - viewportCenter);
@@ -400,14 +406,16 @@ defmodule Doggo.Components.Carousel do
           };
 
           const setActiveIdx = (activeIdx) => {
+            const items = getItems();
+
             carousel.setAttribute("data-active-index", activeIdx);
 
             if (!isLoopEnabled) {
-              setDisabled(prevBtn, activeIdx === 0);
-              setDisabled(nextBtn, activeIdx === totalItems - 1);
+              setDisabled(getControl("previous"), activeIdx === 0);
+              setDisabled(getControl("next"), activeIdx === items.length - 1);
             }
 
-            tabs.forEach((tab, idx) => {
+            getTabs().forEach((tab, idx) => {
               const isSelected = idx === activeIdx;
               tab.setAttribute("aria-selected", isSelected ? "true" : "false");
               tab.setAttribute("tabindex", isSelected ? "0" : "-1");
@@ -423,7 +431,7 @@ defmodule Doggo.Components.Carousel do
           const syncActiveState = () => setActiveIdx(getActiveIdx());
 
           const scrollToIdx = (idx) => {
-            const item = items[idx];
+            const item = getItems()[idx];
 
             if (!item) return;
 
@@ -445,58 +453,12 @@ defmodule Doggo.Components.Carousel do
             );
           };
 
-          itemsContainer.addEventListener("scroll", syncActiveState);
-
-          if (prevBtn) {
-            prevBtn.addEventListener("click", () => {
-              pauseForInteraction();
-              scrollToIdx(getTargetIdx(getCurrentIdx(), -1));
-            });
-          }
-
-          if (nextBtn) {
-            nextBtn.addEventListener("click", () => {
-              pauseForInteraction();
-              scrollToIdx(getTargetIdx(getCurrentIdx(), 1));
-            });
-          }
-
-          tabs.forEach((tab, idx) => {
-            tab.addEventListener("click", () => {
-              pauseForInteraction();
-              scrollToIdx(idx);
-            });
-
-            // Selection follows the focus, so moving between the tabs moves
-            // the carousel with them.
-            tab.addEventListener("keydown", (e) => {
-              let nextIdx;
-
-              if (e.key === "ArrowRight") {
-                nextIdx = getTargetIdx(getCurrentIdx(), 1);
-              } else if (e.key === "ArrowLeft") {
-                nextIdx = getTargetIdx(getCurrentIdx(), -1);
-              } else if (e.key === "Home") {
-                nextIdx = 0;
-              } else if (e.key === "End") {
-                nextIdx = tabs.length - 1;
-              } else {
-                return;
-              }
-
-              e.preventDefault();
-              pauseForInteraction();
-              scrollToIdx(nextIdx);
-              tabs[nextIdx].focus();
-            });
-          });
-
           // Auto rotation
           let isPaused = false;
 
           // Stop auto rotation if the last items does not wrap.
           const hasShowEnded = () =>
-            !isLoopEnabled && getCurrentIdx() === totalItems - 1;
+            !isLoopEnabled && getCurrentIdx() === getItems().length - 1;
 
           const endShow = () => {
             isPaused = true;
@@ -505,7 +467,7 @@ defmodule Doggo.Components.Carousel do
           };
 
           const startAutoRotation = () => {
-            if (!isAutoRotationEnabled || isPaused) return;
+            if (!isAutoRotationEnabled() || isPaused) return;
             if (autoRotationTimer != null) return;
 
             if (hasShowEnded()) {
@@ -530,11 +492,13 @@ defmodule Doggo.Components.Carousel do
           // The control keeps its position and swaps its name, which is what
           // the APG recommends for a rotation control.
           const syncPauseControl = () => {
+            const pauseBtn = getControl("pause");
+
             carousel.toggleAttribute("data-paused", isPaused);
 
             // A slide arriving on a timer is noise, but one the reader asked
             // for is worth announcing, so the live region follows the rotation.
-            if (isAutoRotationEnabled && liveRegion) {
+            if (isAutoRotationEnabled() && liveRegion) {
               liveRegion.setAttribute("aria-live", isPaused ? "polite" : "off");
             }
 
@@ -557,25 +521,81 @@ defmodule Doggo.Components.Carousel do
             syncPauseControl();
           };
 
-          if (pauseBtn) {
-            pauseBtn.addEventListener("click", () => {
-              isPaused = !isPaused;
+          const togglePause = () => {
+            isPaused = !isPaused;
 
-              if (isPaused) {
-                stopAutoRotation();
-              } else {
-                // If looped=false and we're on the last slide, toggling the
-                // resume button starts the slide show on the first slide again.
-                if (!isLoopEnabled && getCurrentIdx() === totalItems - 1) {
-                  scrollToIdx(0);
-                }
+            if (isPaused) {
+              stopAutoRotation();
+            } else {
+              // If looped=false and we're on the last slide, toggling the
+              // resume button starts the slide show on the first slide again.
+              if (hasShowEnded()) scrollToIdx(0);
 
-                startAutoRotation();
-              }
+              startAutoRotation();
+            }
 
-              syncPauseControl();
-            });
-          }
+            syncPauseControl();
+          };
+
+          itemsContainer.addEventListener("scroll", syncActiveState);
+
+          // Event listener is added on the carousel instead of the buttons
+          // because a patch can replace the buttons, which would remove the
+          // listeners.
+          carousel.addEventListener("click", (e) => {
+            const control = e.target.closest(
+              `.${baseClass}-previous, .${baseClass}-next,` +
+                ` .${baseClass}-pause, .${baseClass}-pagination [role="tab"]`
+            );
+
+            if (!control) return;
+
+            if (control.matches(`.${baseClass}-pause`)) {
+              togglePause();
+              return;
+            }
+
+            pauseForInteraction();
+
+            if (control.matches(`.${baseClass}-previous`)) {
+              scrollToIdx(getTargetIdx(getCurrentIdx(), -1));
+            } else if (control.matches(`.${baseClass}-next`)) {
+              scrollToIdx(getTargetIdx(getCurrentIdx(), 1));
+            } else {
+              const idx = getTabs().indexOf(control);
+
+              if (idx >= 0) scrollToIdx(idx);
+            }
+          });
+
+          carousel.addEventListener("keydown", (e) => {
+            const tab = e.target.closest(
+              `.${baseClass}-pagination [role="tab"]`
+            );
+
+            if (!tab) return;
+
+            const tabs = getTabs();
+            let nextIdx;
+
+            if (e.key === "ArrowRight") {
+              nextIdx = getTargetIdx(getCurrentIdx(), 1);
+            } else if (e.key === "ArrowLeft") {
+              nextIdx = getTargetIdx(getCurrentIdx(), -1);
+            } else if (e.key === "Home") {
+              nextIdx = 0;
+            } else if (e.key === "End") {
+              nextIdx = tabs.length - 1;
+            } else {
+              return;
+            }
+
+            e.preventDefault();
+            pauseForInteraction();
+            scrollToIdx(nextIdx);
+
+            if (tabs[nextIdx]) tabs[nextIdx].focus();
+          });
 
           // Pause when hovering or focusing, resume when leaving, unless
           // rotation is paused with the pause button.
@@ -593,6 +613,17 @@ defmodule Doggo.Components.Carousel do
           syncActiveState();
           syncPauseControl();
           startAutoRotation();
+
+          this.syncAfterUpdate = () => {
+            syncActiveState();
+            syncPauseControl();
+          };
+        },
+
+        // A patch can add or remove slides. Recompute which slide is active,
+        // and set the pause button label and the disabled buttons again.
+        updated() {
+          this.syncAfterUpdate();
         }
       }
     </script>
