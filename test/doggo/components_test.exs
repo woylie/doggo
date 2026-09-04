@@ -1133,15 +1133,24 @@ defmodule Doggo.ComponentsTest do
              ) == "スライド"
     end
 
-    test "with auto_rotation" do
+    test "with pause control" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
-        <TestComponents.carousel id="dog-carousel" label="Dog Carousel" auto_rotation>
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
+          <:pause label="Pause" resume_label="Resume">Pause</:pause>
           <:item label="1 of 1"></:item>
         </TestComponents.carousel>
         """)
+
+      button = find_one(html, ".carousel-controls > button.carousel-pause")
+      assert attribute(button, "type") == "button"
+      assert attribute(button, "aria-controls") == "dog-carousel-items"
+      assert attribute(button, "aria-label") == "Pause"
+      assert attribute(button, "data-pause-label") == "Pause"
+      assert attribute(button, "data-resume-label") == "Resume"
+      assert text(button) == "Pause"
 
       div =
         find_one(
@@ -1150,6 +1159,44 @@ defmodule Doggo.ComponentsTest do
         )
 
       assert attribute(div, "aria-live") == "off"
+    end
+
+    test "with pause control without labels" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
+          <:pause>Pause</:pause>
+          <:item label="1 of 1"></:item>
+        </TestComponents.carousel>
+        """)
+
+      button = find_one(html, "button.carousel-pause")
+      assert attribute(button, "aria-label") == "Pause slide show"
+      assert attribute(button, "data-pause-label") == "Pause slide show"
+      assert attribute(button, "data-resume-label") == "Resume slide show"
+    end
+
+    test "without pause control" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
+          <:item label="1 of 1"></:item>
+        </TestComponents.carousel>
+        """)
+
+      assert [] = Floki.find(html, ".carousel-pause")
+
+      div =
+        find_one(
+          html,
+          ":root > .carousel-inner > .carousel-items-container > .carousel-items"
+        )
+
+      assert attribute(div, "aria-live") == "polite"
     end
 
     test "with global attribute" do

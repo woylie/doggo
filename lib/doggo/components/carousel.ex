@@ -102,6 +102,7 @@ defmodule Doggo.Components.Carousel do
       "#{base_class}-items-container",
       "#{base_class}-next",
       "#{base_class}-pagination",
+      "#{base_class}-pause",
       "#{base_class}-previous"
     ]
   end
@@ -163,8 +164,6 @@ defmodule Doggo.Components.Carousel do
         own.
         """
 
-      attr :auto_rotation, :boolean, default: false
-
       attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :inner_block,
@@ -179,6 +178,39 @@ defmodule Doggo.Components.Carousel do
 
       slot :next do
         attr :label, :string
+      end
+
+      slot :pause,
+        doc: """
+        A control that stops and restarts the automatic rotation.
+
+        **Setting this slot is what enables the rotation.** WCAG 2.2.2 requires
+        that content moving for more than five seconds can be paused, and a
+        control with nothing to stop is a button that does nothing. Deriving
+        one from the other makes both mistakes impossible.
+        """ do
+        attr :label, :string,
+          doc: """
+          Accessible name while the carousel is rotating. Defaults to
+          `"Pause slide show"`. This value should be translated to the language
+          in which the rest of the page is displayed.
+          """
+
+        attr :resume_label, :string,
+          doc: """
+          Accessible name once the carousel is paused. Defaults to
+          `"Resume slide show"`. This value should be translated to the language
+          in which the rest of the page is displayed.
+
+          The control keeps its position and swaps its name, as the ARIA
+          Authoring Practices recommend for a rotation control. It has no
+          `aria-pressed` state.
+
+          To show different slot content depending on the state, use the
+          `.carousel[data-paused] .carousel-pause` and
+          `.carousel:not([data-paused]) .carousel-pause` CSS selectors
+          (assuming the default base class). See example CSS.
+          """
       end
 
       slot :item, required: true do
@@ -210,7 +242,6 @@ defmodule Doggo.Components.Carousel do
       aria-labelledby={@labelledby}
       aria-roledescription={@carousel_roledescription}
       data-active-index="0"
-      data-auto-rotation={@auto_rotation}
       {@data_attrs}
       {@rest}
       phx-hook=".Hook"
@@ -234,6 +265,17 @@ defmodule Doggo.Components.Carousel do
             aria-label={next.label}
           >
             {render_slot(next)}
+          </button>
+          <button
+            :for={pause <- @pause}
+            type="button"
+            class={"#{@base_class}-pause"}
+            aria-controls={"#{@id}-items"}
+            aria-label={pause[:label] || "Pause slide show"}
+            data-pause-label={pause[:label] || "Pause slide show"}
+            data-resume-label={pause[:resume_label] || "Resume slide show"}
+          >
+            {render_slot(pause)}
           </button>
           <div
             :if={@pagination}
@@ -259,7 +301,7 @@ defmodule Doggo.Components.Carousel do
           <div
             id={"#{@id}-items"}
             class={"#{@base_class}-items"}
-            aria-live={if @auto_rotation, do: "off", else: "polite"}
+            aria-live={if @pause == [], do: "polite", else: "off"}
           >
             <div
               :for={{item, index} <- Enum.with_index(@item, 1)}
@@ -284,6 +326,8 @@ defmodule Doggo.Components.Carousel do
 
           const prevBtn = carousel.querySelector(`.${baseClass}-previous`);
           const nextBtn = carousel.querySelector(`.${baseClass}-next`);
+          const pauseBtn = carousel.querySelector(`.${baseClass}-pause`);
+          const liveRegion = carousel.querySelector(`.${baseClass}-items`);
           const tabs = carousel.querySelectorAll(
             `.${baseClass}-pagination [role="tab"]`
           );
@@ -292,8 +336,7 @@ defmodule Doggo.Components.Carousel do
           const items = carousel.querySelectorAll(`.${baseClass}-item`);
           const totalItems = items.length;
 
-          const isAutoRotationEnabled =
-            carousel.getAttribute("data-auto-rotation") != null;
+          const isAutoRotationEnabled = pauseBtn != null;
           const rotationIntervalMs = 5000;
           let autoRotationTimer = null;
 
@@ -370,18 +413,23 @@ defmodule Doggo.Components.Carousel do
 
           if (prevBtn) {
             prevBtn.addEventListener("click", () => {
+              pauseForInteraction();
               scrollToIdx(getWrappedIndex(getCurrentIdx(), -1));
             });
           }
 
           if (nextBtn) {
             nextBtn.addEventListener("click", () => {
+              pauseForInteraction();
               scrollToIdx(getWrappedIndex(getCurrentIdx(), 1));
             });
           }
 
           tabs.forEach((tab, idx) => {
-            tab.addEventListener("click", () => scrollToIdx(idx));
+            tab.addEventListener("click", () => {
+              pauseForInteraction();
+              scrollToIdx(idx);
+            });
 
             // Selection follows the focus, so moving between the tabs moves
             // the carousel with them.
@@ -401,17 +449,21 @@ defmodule Doggo.Components.Carousel do
               }
 
               e.preventDefault();
+              pauseForInteraction();
               scrollToIdx(nextIdx);
               tabs[nextIdx].focus();
             });
           });
 
           // Auto rotation
+          let isPaused = false;
+
           const startAutoRotation = () => {
-            if (!isAutoRotationEnabled || autoRotationTimer != null) return;
+            if (!isAutoRotationEnabled || isPaused) return;
+            if (autoRotationTimer != null) return;
+
             autoRotationTimer = setInterval(() => {
-              const nextIdx = getWrappedIndex(getCurrentIdx(), 1);
-              scrollToIdx(nextIdx);
+              scrollToIdx(getWrappedIndex(getCurrentIdx(), 1));
             }, rotationIntervalMs);
           }
 
@@ -422,11 +474,59 @@ defmodule Doggo.Components.Carousel do
             }
           }
 
+          // The control keeps its position and swaps its name, which is what
+          // the APG recommends for a rotation control.
+          const syncPauseControl = () => {
+            carousel.toggleAttribute("data-paused", isPaused);
+
+            // A slide arriving on a timer is noise, but one the reader asked
+            // for is worth announcing, so the live region follows the rotation.
+            if (isAutoRotationEnabled && liveRegion) {
+              liveRegion.setAttribute("aria-live", isPaused ? "polite" : "off");
+            }
+
+            if (!pauseBtn) return;
+
+            const label = isPaused
+              ? pauseBtn.dataset.resumeLabel
+              : pauseBtn.dataset.pauseLabel;
+
+            if (label) pauseBtn.setAttribute("aria-label", label);
+          }
+
+          // The APG asks that using a control stops the rotation, so the
+          // carousel does not move on under the reader while they are using it.
+          const pauseForInteraction = () => {
+            if (isPaused) return;
+
+            isPaused = true;
+            stopAutoRotation();
+            syncPauseControl();
+          };
+
+          if (pauseBtn) {
+            pauseBtn.addEventListener("click", () => {
+              isPaused = !isPaused;
+              isPaused ? stopAutoRotation() : startAutoRotation();
+              syncPauseControl();
+            });
+          }
+
+          // Pause when hovering or focusing, resume when leaving, unless
+          // rotation is paused with the pause button.
           carousel.addEventListener('pointerenter', stopAutoRotation);
+          carousel.addEventListener('pointerleave', startAutoRotation);
           carousel.addEventListener('focusin', stopAutoRotation);
+
+          carousel.addEventListener('focusout', (e) => {
+            // focusout also fires while focus moves between controls inside
+            // the carousel, and that must not resume the rotation.
+            if (!carousel.contains(e.relatedTarget)) startAutoRotation();
+          });
 
           // Initialize
           syncActiveState();
+          syncPauseControl();
           startAutoRotation();
         }
       }

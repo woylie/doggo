@@ -12,8 +12,13 @@ defmodule Doggo.Storybook.Carousel do
     [
       %Variation{
         id: :default,
-        attributes: %{label: "Our Dogs", pagination: true, auto_rotation: true},
+        attributes: %{label: "Our Dogs", pagination: true},
         slots: slots(opts)
+      },
+      %Variation{
+        id: :without_auto_rotation,
+        attributes: %{label: "Our Dogs", pagination: true},
+        slots: slots_without_auto_rotation(opts)
       }
     ]
   end
@@ -26,6 +31,19 @@ defmodule Doggo.Storybook.Carousel do
   end
 
   defp slots(opts) do
+    [pause_slot(opts) | slots_without_auto_rotation(opts)]
+  end
+
+  defp pause_slot(opts) do
+    """
+    <:pause label="Pause slide show" resume_label="Resume slide show">
+      #{icon(:pause, opts[:dependent_components])}
+      #{icon(:play, opts[:dependent_components])}
+    </:pause>
+    """
+  end
+
+  defp slots_without_auto_rotation(opts) do
     dependent_components = opts[:dependent_components]
 
     image_function =

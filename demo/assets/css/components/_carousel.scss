@@ -60,8 +60,8 @@
     .carousel-pagination {
       display: flex;
       gap: f.spacer(1);
-      order: 2;
       justify-content: center;
+      order: 2;
 
       button[role="tab"] {
         // WCAG 2.5.8 minimum target size is 24px
@@ -91,5 +91,16 @@
       order: 3;
       cursor: pointer;
     }
+
+    .carousel-pause {
+      order: 4;
+      cursor: pointer;
+    }
+  }
+
+  // Swap pause/resume button content depending on the current state
+  &:not([data-paused]) .carousel-pause > :last-child,
+  &[data-paused] .carousel-pause > :first-child {
+    display: none;
   }
 }
