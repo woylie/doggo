@@ -962,7 +962,8 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
           <:previous label="Previous Slide">Previous</:previous>
           <:next label="Next Slide">Next</:next>
-          <:item label="1 of 1"></:item>
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
         </TestComponents.carousel>
         """)
 
@@ -998,21 +999,74 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.carousel>
         """)
 
-      div = find_one(html, ".carousel-controls > .carousel-pagination > div")
+      div = find_one(html, ".carousel-controls > .carousel-pagination")
       assert attribute(div, "role") == "tablist"
       assert attribute(div, "aria-label") == "スライド"
 
       assert button = find_one(div, "button:first-child")
       assert attribute(button, "type") == "button"
       assert attribute(button, "role") == "tab"
-      assert attribute(button, "aria-label") == "スライド1"
+      assert attribute(button, "id") == "dog-carousel-tab-1"
+      assert attribute(button, "aria-selected") == "true"
+      assert attribute(button, "tabindex") == nil
+      assert attribute(button, "aria-label") == "1 of 2"
       assert attribute(button, "aria-controls") == "dog-carousel-item-1"
 
       assert button = find_one(div, "button:last-child")
       assert attribute(button, "type") == "button"
       assert attribute(button, "role") == "tab"
-      assert attribute(button, "aria-label") == "スライド2"
+      assert attribute(button, "id") == "dog-carousel-tab-2"
+      assert attribute(button, "aria-selected") == "false"
+      assert attribute(button, "tabindex") == "-1"
+      assert attribute(button, "aria-label") == "2 of 2"
       assert attribute(button, "aria-controls") == "dog-carousel-item-2"
+
+      div = find_one(html, ".carousel-items > .carousel-item:first-child")
+      assert attribute(div, "role") == "tabpanel"
+      assert attribute(div, "aria-labelledby") == "dog-carousel-tab-1"
+      assert attribute(div, "aria-roledescription") == "slide"
+      assert attribute(div, "aria-label") == nil
+    end
+
+    test "with pagination and slides without labels" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel
+          id="dog-carousel"
+          label="Dog Carousel"
+          pagination_slide_label={&"スライド#{&1}"}
+          pagination
+        >
+          <:item>A</:item>
+          <:item>B</:item>
+        </TestComponents.carousel>
+        """)
+
+      div = find_one(html, ".carousel-pagination")
+
+      assert button = find_one(div, "button:first-child")
+      assert attribute(button, "aria-label") == "スライド1"
+
+      assert button = find_one(div, "button:last-child")
+      assert attribute(button, "aria-label") == "スライド2"
+    end
+
+    test "without pagination the slides stay groups" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
+          <:item label="1 of 1">A</:item>
+        </TestComponents.carousel>
+        """)
+
+      div = find_one(html, ".carousel-items > .carousel-item")
+      assert attribute(div, "role") == "group"
+      assert attribute(div, "aria-label") == "1 of 1"
+      assert attribute(div, "aria-labelledby") == nil
     end
 
     test "with labelledby" do
@@ -1080,15 +1134,91 @@ defmodule Doggo.ComponentsTest do
              ) == "スライド"
     end
 
-    test "with auto_rotation" do
+    test "with looping enabled by default" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
-        <TestComponents.carousel id="dog-carousel" label="Dog Carousel" auto_rotation>
-          <:item label="1 of 1"></:item>
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
+          <:previous label="Previous Slide">Previous</:previous>
+          <:next label="Next Slide">Next</:next>
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
         </TestComponents.carousel>
         """)
+
+      assert attribute(html, "section:root", "data-loop") == "data-loop"
+      assert attribute(html, "button.carousel-previous", "disabled") == nil
+      assert attribute(html, "button.carousel-next", "disabled") == nil
+    end
+
+    test "without looping" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel" loop={false}>
+          <:previous label="Previous Slide">Previous</:previous>
+          <:next label="Next Slide">Next</:next>
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
+        </TestComponents.carousel>
+        """)
+
+      assert attribute(html, "section:root", "data-loop") == nil
+
+      # the first item shows, so there is nothing before it
+      assert attribute(html, "button.carousel-previous", "disabled") ==
+               "disabled"
+
+      assert attribute(html, "button.carousel-next", "disabled") == nil
+    end
+
+    test "with a single item" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel" pagination>
+          <:pause label="Pause" resume_label="Resume">Pause</:pause>
+          <:previous label="Previous Slide">Previous</:previous>
+          <:next label="Next Slide">Next</:next>
+          <:item label="1 of 1">A</:item>
+        </TestComponents.carousel>
+        """)
+
+      assert [] = Floki.find(html, ".carousel-controls")
+      assert [] = Floki.find(html, ".carousel-pagination")
+      assert attribute(html, "section:root", "data-rotation-interval-ms") == nil
+
+      div = find_one(html, ".carousel-items")
+      assert attribute(div, "aria-live") == "polite"
+
+      div = find_one(html, ".carousel-item")
+      assert attribute(div, "role") == "group"
+      assert attribute(div, "aria-label") == "1 of 1"
+      assert attribute(div, "aria-labelledby") == nil
+    end
+
+    test "with pause control" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
+          <:pause label="Pause" resume_label="Resume">Pause</:pause>
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
+        </TestComponents.carousel>
+        """)
+
+      button = find_one(html, ".carousel-controls > button.carousel-pause")
+      assert attribute(button, "type") == "button"
+      assert attribute(button, "aria-controls") == "dog-carousel-items"
+      assert attribute(button, "aria-label") == "Pause"
+      assert attribute(button, "data-pause-label") == "Pause"
+      assert attribute(button, "data-resume-label") == "Resume"
+      assert text(button) == "Pause"
 
       div =
         find_one(
@@ -1097,6 +1227,99 @@ defmodule Doggo.ComponentsTest do
         )
 
       assert attribute(div, "aria-live") == "off"
+    end
+
+    test "with rotation_interval_ms" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel
+          id="dog-carousel"
+          label="Dog Carousel"
+          rotation_interval_ms={8000}
+        >
+          <:pause label="Pause" resume_label="Resume">Pause</:pause>
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
+        </TestComponents.carousel>
+        """)
+
+      assert attribute(html, "section:root", "data-rotation-interval-ms") ==
+               "8000"
+    end
+
+    test "without rotation_interval_ms" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
+          <:pause label="Pause" resume_label="Resume">Pause</:pause>
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
+        </TestComponents.carousel>
+        """)
+
+      assert attribute(html, "section:root", "data-rotation-interval-ms") ==
+               "5000"
+    end
+
+    test "with rotation_interval_ms but no pause control" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel
+          id="dog-carousel"
+          label="Dog Carousel"
+          rotation_interval_ms={8000}
+        >
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
+        </TestComponents.carousel>
+        """)
+
+      assert attribute(html, "section:root", "data-rotation-interval-ms") == nil
+    end
+
+    test "with pause control without labels" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
+          <:pause>Pause</:pause>
+          <:item label="1 of 2"></:item>
+          <:item label="2 of 2"></:item>
+        </TestComponents.carousel>
+        """)
+
+      button = find_one(html, "button.carousel-pause")
+      assert attribute(button, "aria-label") == "Pause slide show"
+      assert attribute(button, "data-pause-label") == "Pause slide show"
+      assert attribute(button, "data-resume-label") == "Resume slide show"
+    end
+
+    test "without pause control" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
+          <:item label="1 of 1"></:item>
+        </TestComponents.carousel>
+        """)
+
+      assert [] = Floki.find(html, ".carousel-pause")
+
+      div =
+        find_one(
+          html,
+          ":root > .carousel-inner > .carousel-items-container > .carousel-items"
+        )
+
+      assert attribute(div, "aria-live") == "polite"
     end
 
     test "with global attribute" do

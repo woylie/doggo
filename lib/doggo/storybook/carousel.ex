@@ -12,8 +12,40 @@ defmodule Doggo.Storybook.Carousel do
     [
       %Variation{
         id: :default,
-        attributes: %{label: "Our Dogs", pagination: true, auto_rotation: true},
+        description: "Auto rotation, looping, and pagination",
+        attributes: %{label: "Our Dogs", pagination: true},
         slots: slots(opts)
+      },
+      %Variation{
+        id: :without_looping,
+        note: """
+        If looping is disabled, auto rotation stops when the last slide is
+        reached. When the pause/resume button is clicked, the slide show starts
+        again on the first slide.
+        """,
+        attributes: %{label: "Our Dogs", pagination: true, loop: false},
+        slots: slots(opts)
+      },
+      %Variation{
+        id: :without_auto_rotation,
+        attributes: %{label: "Our Dogs", pagination: true},
+        slots: slots_without_auto_rotation(opts)
+      },
+      %Variation{
+        id: :without_pagination,
+        attributes: %{label: "Our Dogs"},
+        slots: slots(opts)
+      },
+      %Variation{
+        id: :with_a_single_item,
+        note: "If there is only a single slide, no controls are rendered.",
+        attributes: %{label: "Our Dogs", pagination: true},
+        slots: single_item_slots(opts)
+      },
+      %Variation{
+        id: :without_pagination_or_auto_rotation,
+        attributes: %{label: "Our Dogs"},
+        slots: slots_without_auto_rotation(opts)
       }
     ]
   end
@@ -26,6 +58,23 @@ defmodule Doggo.Storybook.Carousel do
   end
 
   defp slots(opts) do
+    [pause_slot(opts) | slots_without_auto_rotation(opts)]
+  end
+
+  defp pause_slot(opts) do
+    """
+    <:pause label="Pause slide show" resume_label="Resume slide show">
+      #{icon(:pause, opts[:dependent_components])}
+      #{icon(:play, opts[:dependent_components])}
+    </:pause>
+    """
+  end
+
+  defp single_item_slots(opts) do
+    [pause_slot(opts) | Enum.take(slots_without_auto_rotation(opts), 3)]
+  end
+
+  defp slots_without_auto_rotation(opts) do
     dependent_components = opts[:dependent_components]
 
     image_function =

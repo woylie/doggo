@@ -18,7 +18,14 @@ defmodule DemoWeb.PatchTestLive do
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
-     assign(socket, tick: 0, auto: false, inside: true, wrap: false, resend: 0)}
+     assign(socket,
+       tick: 0,
+       auto: false,
+       inside: true,
+       wrap: false,
+       resend: 0,
+       slides: [1, 2, 3]
+     )}
   end
 
   @impl true
@@ -42,6 +49,14 @@ defmodule DemoWeb.PatchTestLive do
 
   def handle_event("resend", _params, socket) do
     {:noreply, update(socket, :resend, &(&1 + 1))}
+  end
+
+  def handle_event("add_slide", _params, socket) do
+    {:noreply, update(socket, :slides, &(&1 ++ [length(&1) + 1]))}
+  end
+
+  def handle_event("remove_slide", _params, socket) do
+    {:noreply, update(socket, :slides, &Enum.drop(&1, -1))}
   end
 
   def handle_event("noop", _params, socket) do
@@ -92,8 +107,17 @@ defmodule DemoWeb.PatchTestLive do
       </p>
 
       <p>
-        Tick <strong id="tick">{@tick}</strong> · auto {@auto} · tick inside
-        components {@inside} · wrapped {@wrap} · re-sends {@resend}
+        <strong>Add and remove slides:</strong>
+        Changes the number of items a component renders, so that controls
+        generated per item are added and removed by a patch.
+      </p>
+
+      <p>
+        Tick <strong id="tick">{@tick}</strong>
+        · auto {@auto} · tick inside
+        components {@inside} · wrapped {@wrap} · re-sends {@resend} · slides {length(
+          @slides
+        )}
       </p>
 
       <CoreComponents.cluster>
@@ -111,12 +135,22 @@ defmodule DemoWeb.PatchTestLive do
         <CoreComponents.button id="resend" phx-click="resend" disabled={not @wrap}>
           Re-send
         </CoreComponents.button>
+        <CoreComponents.button id="add-slide" phx-click="add_slide">
+          Add slide
+        </CoreComponents.button>
+        <CoreComponents.button
+          id="remove-slide"
+          phx-click="remove_slide"
+          disabled={length(@slides) <= 1}
+        >
+          Remove slide
+        </CoreComponents.button>
       </CoreComponents.cluster>
 
       <div :for={_ <- wrap_list(@wrap, @resend)}>
-        <.components tick={@tick} inside={@inside} />
+        <.components tick={@tick} inside={@inside} slides={@slides} />
       </div>
-      <.components :if={not @wrap} tick={@tick} inside={@inside} />
+      <.components :if={not @wrap} tick={@tick} inside={@inside} slides={@slides} />
     </CoreComponents.stack>
     """
   end
@@ -129,6 +163,7 @@ defmodule DemoWeb.PatchTestLive do
 
   attr :tick, :integer, required: true
   attr :inside, :boolean, required: true
+  attr :slides, :list, required: true
 
   defp components(assigns) do
     ~H"""
@@ -175,6 +210,25 @@ defmodule DemoWeb.PatchTestLive do
         </CoreComponents.button>
       </:footer>
     </CoreComponents.alert_dialog>
+
+    <h2>carousel</h2>
+    <p>
+      Add or remove a slide, then use the control that appeared and check that
+      the active slide is still marked. The controls are generated per item, so
+      a patch replaces them.
+    </p>
+    <CoreComponents.carousel id="test-carousel" label="Patch test" pagination>
+      <:pause label="Pause slide show" resume_label="Resume slide show">
+        <span>Pause</span>
+        <span>Resume</span>
+      </:pause>
+      <:previous label="Previous Slide">Previous</:previous>
+      <:next label="Next Slide">Next</:next>
+      <:item :for={slide <- @slides} label={"Slide #{slide}"}>
+        <p>Slide {slide}</p>
+        <p :if={@inside}>Tick inside slide {slide}: {@tick}</p>
+      </:item>
+    </CoreComponents.carousel>
 
     <h2>tabs</h2>
     <p>Select the second tab, then bump.</p>

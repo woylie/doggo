@@ -16,8 +16,13 @@
   .carousel-items-container {
     width: 100%;
     overflow-x: auto;
+    scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
+
+    @media (prefers-reduced-motion: reduce) {
+      scroll-behavior: auto;
+    }
   }
 
   .carousel-items {
@@ -53,36 +58,50 @@
     justify-content: center;
 
     .carousel-previous {
-      order: 1;
       cursor: pointer;
     }
 
     .carousel-pagination {
-      order: 2;
-
-      div[role="tablist"] {
-        display: flex;
-        gap: f.spacer(1);
-        justify-content: center;
-      }
+      display: flex;
+      gap: f.spacer(1);
+      justify-content: center;
 
       button[role="tab"] {
-        width: f.spacer(4);
-        height: f.spacer(4);
+        // WCAG 2.5.8 minimum target size is 24px
+        display: grid;
+        place-items: center;
+        width: f.spacer(6);
+        height: f.spacer(6);
         padding: 0;
         cursor: pointer;
+        background: none;
         border: none;
-        border-radius: f.radius(pill);
 
-        &[aria-selected="true"] {
+        > span {
+          width: f.spacer(3);
+          height: f.spacer(3);
+          border: f.border-width(s) solid f.color(background, primary, normal);
+          border-radius: f.radius(pill);
+        }
+
+        &[aria-selected="true"] > span {
           background-color: f.color(background, primary, normal);
         }
       }
     }
 
     .carousel-next {
-      order: 3;
       cursor: pointer;
     }
+
+    .carousel-pause {
+      cursor: pointer;
+    }
+  }
+
+  // Swap pause/resume button content depending on the current state
+  &:not([data-paused]) .carousel-pause > :last-child,
+  &[data-paused] .carousel-pause > :first-child {
+    display: none;
   }
 }

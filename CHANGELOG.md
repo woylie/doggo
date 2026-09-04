@@ -10,6 +10,24 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- Typespecs for `Doggo.hide_modal/2`, `Doggo.show_modal/2` and
+  `Doggo.show_tab/3`.
+- Document the command line options of the `mix dog.safelist` task.
+- Add `expanded` and `selected` attributes to the `tree_item` component.
+
+#### Carousel component
+
+- Add a `loop` attribute, default `true`. With `loop={false}`, the previous and
+  next buttons are disabled at the ends, and the rotation stops on the last
+  slide. The pause button then restarts it from the first slide.
+- Add a `rotation_interval_ms` attribute, default `5000`.
+- Add `Home` and `End` key handlers to the pagination, which move to the first
+  and last slide.
+- Set a `data-paused` attribute while the rotation is stopped, so that the pause
+  button can show different content in each state.
+
 ### Changed
 
 - Prevent activation of a disabled `button_link`. The link is now rendered
@@ -21,9 +39,51 @@ and this project adheres to
   state is expressed with `aria-disabled` instead.
 - Require the `:prop` slot of the `property_list` component.
 
+#### Carousel component
+
+- Replace the `auto_rotation` attribute with a `:pause` slot, which renders the
+  button that stops and restarts the rotation. The rotation is enabled by the
+  presence of the slot, so a rotating carousel always has a button to stop it,
+  as WCAG 2.2.2 requires.
+- Complete the tablist of the pagination: `role="tablist"` is set on the
+  `carousel-pagination` element instead of a nested `div`, each button has an
+  `id`, `aria-selected` and `tabindex`, and the slides are the tab panels the
+  buttons select. The button contains a single `span` instead of two nested
+  ones.
+- Label the pagination buttons with the `label` of the slide they select.
+  `pagination_slide_label` is only used for slides without a label.
+- Set `aria-live` to `off` while the carousel rotates and to `polite` while it
+  is stopped.
+- Move the carousel by setting `scrollLeft` on the scroll container, so that the
+  `scroll-behavior` property decides whether the movement is animated.
+- Render no controls and no pagination if the carousel only has a single item.
+  The item is a group instead of a tab panel then.
+- Mark the component as `developing`.
+
 ### Fixed
 
+- Render the `:main` slot of the `card` component as a `div` with the
+  `card-main` class instead of a `main` element. A document may hold only one
+  `main`, so a page of cards was invalid and exposed one `main` landmark per
+  card.
 - Remove the `role="group"` attribute from the `cluster` component.
+- Describe an errored `field` by its error text through `aria-describedby` as
+  well as `aria-errormessage`, whose assistive technology support is patchy.
+- Always render the error list of the `field` component, as an
+  `aria-live="polite"` region, so an error that appears after load is announced.
+- A `tree_item` branch no longer reports itself as collapsed while showing its
+  children, and a collapsed branch hides its child list.
+
+#### Carousel component
+
+- Scroll to the right slide if the slides have different widths, or if
+  `scroll-snap-align` is not `start`. The scroll position was calculated from
+  the width of the first slide.
+- Render the pause button first and the pagination between the previous and next
+  buttons, so that the tab order matches the visual order.
+- Keep the carousel working after a LiveView patch that adds or removes slides.
+  Buttons rendered by the patch did nothing, and the active slide could point at
+  a slide that had been removed.
 
 ### How to upgrade
 
@@ -33,6 +93,21 @@ and this project adheres to
   test that selects `a.button[href]`.
 - Add a `:prop` slot to any `property_list` that has none, or remove the
   component from that call site.
+- Replace `main` with `.card-main` in any styles you wrote for the `:main` slot
+  of the `card` component.
+- An empty `.field-errors` element is now part of the layout. See the _Field
+  error announcements_ section of the README for the CSS that removes it from
+  the flow without removing it from the accessibility tree.
+- Replace the `auto_rotation` attribute of the `carousel` component with a
+  `:pause` slot.
+- In `carousel` pagination styles, `[role="tablist"]` is now the
+  `carousel-pagination` element itself rather than a child of it, and the dot is
+  `button > span` rather than `button > span > span`.
+- Set `label` on every `:item` of a `carousel` with `pagination`, since the
+  pickers take their names from it. `pagination_slide_label` now applies only to
+  slides without a label.
+- A `carousel` with a single item renders no `carousel-controls` element
+  anymore. Update your styles to account for its absence if necessary.
 
 ## [0.14.9] - 2026-08-27
 
@@ -209,48 +284,60 @@ styles carefully when upgrading.**
 - Include data attributes in `mix dog.safelist` and `Doggo.safelist/1` output.
 - Use `data-` attributes instead of classes for modifiers (see upgrade guide
   below).
-- `button_link` component
-  - Remove `disabled_class` option.
-  - Use `data-disabled` attribute instead of the `disabled_class`
-    (selector: `[data-disabled]`).
-- `field` component
-  - Remove `addon_left_class`, `addon_right_class`, and `visually_hidden_class`
-    options.
-  - Use `data-addon` attribute instead of `addon_left_class` and
-    `addon_right_class` (selectors: `[data-addon~="left"]`,
-    `[data-addon~="right"])`.
-  - Use `data-visually-hidden` attribute instead of `visually_hidden_class`
-    (selector: `[data-visually-hidden]`).
-  - Use `data-invalid` attribute instead of `has-errors` class
-    (selector: `[data-invalid]`).
-  - Use `data-state` attribute instead of `{base_class}-switch-state-{on|off}`
-    classes (selectors: `[data-state="on"]`, `[data-state="off"]`).
-- `frame` and `image` component
-  - Make `ratio` required for `frame` component.
-  - Change format of `ratio` attribute (before: `16-by-9`, after: `16:9`).
-  - Use `data-numerator` and `data-denominator` attributes instead of adding
-    a class for the ratio (before: `class="is-16-by-9"`, after:
-    `data-numerator="16" data-denominator="9"`).
-- `icon` and `icon_sprite` component
-  - Remove `text_position_after_class`, `text_position_before_class`,
-    `text_position_hidden_class`, and `visually_hidden_class` options.
-  - Use `data-text-position` class instead of `text_position_*` classes
-    (selectors: `[data-text-position="before"]`,
-    `[data-text-position="after"]`, `[data-text-position="hidden"]`).
-  - Use `data-visually-hidden` attribute instead of `visually_hidden_class`
-    (selector: `[data-visually-hidden]`).
-- `stack` component
-  - Remove `recursive_class` option.
-  - Use `data-recursive` attribute instead of `recursive_class`
-    (selector: `[data-recursive]`).
-- `steps` component
-  - Remove `current_class`, `completed_class`, `upcoming_class`, and
-    `visually_hidden_class` options.
-  - Use `data-visually-hidden` attribute instead of `visually_hidden_class`
-    (selector: `[data-visually-hidden]`).
-  - Use `data-state` attribute instead of `current_class`, `completed_class`,
-    and `upcoming_class` (selectors: `[data-state="current"]`,
-    `[data-state="completed"]`, `[data-state="upcoming"]`).
+
+#### Button link component
+
+- Remove `disabled_class` option.
+- Use `data-disabled` attribute instead of the `disabled_class`
+  (selector: `[data-disabled]`).
+
+#### Field component
+
+- Remove `addon_left_class`, `addon_right_class`, and `visually_hidden_class`
+  options.
+- Use `data-addon` attribute instead of `addon_left_class` and
+  `addon_right_class` (selectors: `[data-addon~="left"]`,
+  `[data-addon~="right"])`.
+- Use `data-visually-hidden` attribute instead of `visually_hidden_class`
+  (selector: `[data-visually-hidden]`).
+- Use `data-invalid` attribute instead of `has-errors` class
+  (selector: `[data-invalid]`).
+- Use `data-state` attribute instead of `{base_class}-switch-state-{on|off}`
+  classes (selectors: `[data-state="on"]`, `[data-state="off"]`).
+
+#### Frame and image component
+
+- Make `ratio` required for `frame` component.
+- Change format of `ratio` attribute (before: `16-by-9`, after: `16:9`).
+- Use `data-numerator` and `data-denominator` attributes instead of adding
+  a class for the ratio (before: `class="is-16-by-9"`, after:
+  `data-numerator="16" data-denominator="9"`).
+
+#### Icon and icon sprite component
+
+- Remove `text_position_after_class`, `text_position_before_class`,
+  `text_position_hidden_class`, and `visually_hidden_class` options.
+- Use `data-text-position` class instead of `text_position_*` classes
+  (selectors: `[data-text-position="before"]`,
+  `[data-text-position="after"]`, `[data-text-position="hidden"]`).
+- Use `data-visually-hidden` attribute instead of `visually_hidden_class`
+  (selector: `[data-visually-hidden]`).
+
+#### Stack component
+
+- Remove `recursive_class` option.
+- Use `data-recursive` attribute instead of `recursive_class`
+  (selector: `[data-recursive]`).
+
+#### Steps component
+
+- Remove `current_class`, `completed_class`, `upcoming_class`, and
+  `visually_hidden_class` options.
+- Use `data-visually-hidden` attribute instead of `visually_hidden_class`
+  (selector: `[data-visually-hidden]`).
+- Use `data-state` attribute instead of `current_class`, `completed_class`,
+  and `upcoming_class` (selectors: `[data-state="current"]`,
+  `[data-state="completed"]`, `[data-state="upcoming"]`).
 
 ### Removed
 
