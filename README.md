@@ -217,6 +217,35 @@ from the accessibility tree, so the text is hidden from screen readers as well,
 which is the opposite of what the attribute is for. The page looks correct while
 the icon has lost its description and the field has lost its label.
 
+### Field error announcements
+
+The `field` component always renders its error list, even when the field has no
+errors, because a live region that is added to the page at the same time as its
+content is not reliably announced. The element has to be there first, so it
+cannot be conditional.
+
+Depending on your styles, an empty `.field-errors` element can cause a visual
+gap. To take it out of the flow without taking it out of the accessibility tree:
+
+```css
+.field:not([data-invalid]) .field-errors {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+```
+
+Do not use `display: none` or `visibility: hidden` here. Both remove the element
+from the accessibility tree, so an error that appears later is not announced,
+which is the whole reason the list is rendered up front.
+
+The `data-invalid` attribute is set on the field wrapper whenever the field has
+errors. The `:empty` selector does not work here, because the rendered list
+contains whitespace.
+
 ## Design decisions
 
 - Favor semantic HTML elements over CSS classes for structure and clarity.

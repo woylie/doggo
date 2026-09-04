@@ -79,9 +79,15 @@ defmodule Doggo do
   def normalize_value("date", _), do: ""
   def normalize_value(type, value), do: Form.normalize_value(type, value)
 
+  # The error id is added to both `aria-describedby` and `aria-errormessage`,
+  # because `aria-errormessage` support is patchy. The order matches the DOM.
   @doc false
-  def input_aria_describedby(_, []), do: nil
-  def input_aria_describedby(id, _), do: field_description_id(id)
+  def input_aria_describedby(_id, [], []), do: nil
+  def input_aria_describedby(id, [], _errors), do: field_errors_id(id)
+  def input_aria_describedby(id, _description, []), do: field_description_id(id)
+
+  def input_aria_describedby(id, _description, _errors),
+    do: "#{field_errors_id(id)} #{field_description_id(id)}"
 
   @doc false
   def input_aria_errormessage(_, []), do: nil

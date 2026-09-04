@@ -152,7 +152,7 @@ defmodule Doggo.Components.RadioGroup do
       ) do
     assigns =
       assign(assigns,
-        describedby: Doggo.input_aria_describedby(id, description),
+        describedby: Doggo.input_aria_describedby(id, description, errors),
         errormessage: Doggo.input_aria_errormessage(id, errors),
         invalid: errors != [] && "true"
       )
