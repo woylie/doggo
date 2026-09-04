@@ -262,26 +262,6 @@ defmodule Doggo.Components.Carousel do
       <div class={"#{@base_class}-inner"}>
         <div class={"#{@base_class}-controls"}>
           <button
-            :for={previous <- @previous}
-            type="button"
-            class={"#{@base_class}-previous"}
-            aria-controls={"#{@id}-items"}
-            aria-label={previous.label}
-            disabled={!@loop}
-          >
-            {render_slot(previous)}
-          </button>
-          <button
-            :for={next <- @next}
-            type="button"
-            class={"#{@base_class}-next"}
-            aria-controls={"#{@id}-items"}
-            aria-label={next.label}
-            disabled={!@loop && length(@item) <= 1}
-          >
-            {render_slot(next)}
-          </button>
-          <button
             :for={pause <- @pause}
             type="button"
             class={"#{@base_class}-pause"}
@@ -291,6 +271,16 @@ defmodule Doggo.Components.Carousel do
             data-resume-label={pause[:resume_label] || "Resume slide show"}
           >
             {render_slot(pause)}
+          </button>
+          <button
+            :for={previous <- @previous}
+            type="button"
+            class={"#{@base_class}-previous"}
+            aria-controls={"#{@id}-items"}
+            aria-label={previous.label}
+            disabled={!@loop}
+          >
+            {render_slot(previous)}
           </button>
           <div
             :if={@pagination}
@@ -311,6 +301,16 @@ defmodule Doggo.Components.Carousel do
               <span></span>
             </button>
           </div>
+          <button
+            :for={next <- @next}
+            type="button"
+            class={"#{@base_class}-next"}
+            aria-controls={"#{@id}-items"}
+            aria-label={next.label}
+            disabled={!@loop && length(@item) <= 1}
+          >
+            {render_slot(next)}
+          </button>
         </div>
         <div class={"#{@base_class}-items-container"}>
           <div

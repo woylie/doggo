@@ -53,7 +53,6 @@
     justify-content: center;
 
     .carousel-previous {
-      order: 1;
       cursor: pointer;
     }
 
@@ -61,7 +60,6 @@
       display: flex;
       gap: f.spacer(1);
       justify-content: center;
-      order: 2;
 
       button[role="tab"] {
         // WCAG 2.5.8 minimum target size is 24px
@@ -88,12 +86,10 @@
     }
 
     .carousel-next {
-      order: 3;
       cursor: pointer;
     }
 
     .carousel-pause {
-      order: 4;
       cursor: pointer;
     }
   }
