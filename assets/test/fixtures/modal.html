@@ -1,0 +1,23 @@
+<dialog id="modal" class="modal" aria-labelledby="modal-title" closedby="any" phx-hook="Doggo.Dialog" phx-mounted="[[&quot;ignore_attrs&quot;,{&quot;attrs&quot;:[&quot;open&quot;]}]]" phx-remove="[[&quot;dispatch&quot;,{&quot;to&quot;:&quot;#modal&quot;,&quot;event&quot;:&quot;doggo:close&quot;}]]" data-cancel="[[&quot;exec&quot;,{&quot;attr&quot;:&quot;phx-remove&quot;}]]">
+  <div id="modal-container" class="modal-container">
+    <section>
+      <header>
+        <button type="button" class="modal-close" aria-label="Close" command="close" commandfor="modal">
+          
+          <span>Close</span>
+        </button>
+        <h2 id="modal-title">Edit dog</h2>
+      </header>
+      <div id="modal-content" class="modal-content">
+        
+  <p>Dog form</p>
+  
+      </div>
+      <footer>
+        
+    <button phx-click="[[&quot;dispatch&quot;,{&quot;to&quot;:&quot;#modal&quot;,&quot;event&quot;:&quot;doggo:close&quot;}]]">Cancel</button>
+  
+      </footer>
+    </section>
+  </div>
+</dialog>

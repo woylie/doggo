@@ -164,6 +164,9 @@ defmodule Doggo do
   @doc """
   Hides the modal with the given ID.
 
+  The component needs its JavaScript hook registered, since this function uses
+  the hook to call `close()` on the dialog.
+
   ## Example
 
   ```heex
@@ -173,15 +176,15 @@ defmodule Doggo do
   @doc type: :js
   @doc since: "0.1.0"
   @spec hide_modal(JS.t(), String.t()) :: JS.t()
-  def hide_modal(js \\ %JS{}, id) do
-    js
-    |> JS.remove_attribute("open", to: "##{id}")
-    |> JS.set_attribute({"aria-modal", "false"}, to: "##{id}")
-    |> JS.pop_focus()
+  def hide_modal(js \\ %JS{}, id) when is_binary(id) do
+    JS.dispatch(js, "doggo:close", to: "##{id}")
   end
 
   @doc """
   Shows the modal with the given ID.
+
+  The component needs its JavaScript hook registered, since this function uses
+  the hook to call `showModal()` on the dialog.
 
   ## Example
 
@@ -193,11 +196,7 @@ defmodule Doggo do
   @doc since: "0.1.0"
   @spec show_modal(JS.t(), String.t()) :: JS.t()
   def show_modal(js \\ %JS{}, id) when is_binary(id) do
-    js
-    |> JS.push_focus()
-    |> JS.set_attribute({"open", "true"}, to: "##{id}")
-    |> JS.set_attribute({"aria-modal", "true"}, to: "##{id}")
-    |> JS.focus_first(to: "##{id}-container")
+    JS.dispatch(js, "doggo:open", to: "##{id}")
   end
 
   @doc """
@@ -217,6 +216,13 @@ defmodule Doggo do
   def show_tab(js \\ %JS{}, id, index)
       when is_binary(id) and is_integer(index) do
     JS.dispatch(js, "doggo:show-tab", to: "##{id}", detail: %{index: index})
+  end
+
+  @doc false
+  def dialog_mounted(id, open) when is_binary(id) and is_boolean(open) do
+    js = JS.ignore_attributes(["open"])
+
+    if open, do: show_modal(js, id), else: js
   end
 
   @doc false

@@ -1,5 +1,6 @@
 export { default as Accordion } from "./hooks/accordion.js";
 export { default as Carousel } from "./hooks/carousel.js";
+export { default as Dialog } from "./hooks/dialog.js";
 export { default as Menu } from "./hooks/menu.js";
 export { default as MenuButton } from "./hooks/menu_button.js";
 export { default as SplitPane } from "./hooks/split_pane.js";

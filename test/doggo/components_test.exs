@@ -2781,16 +2781,19 @@ defmodule Doggo.ComponentsTest do
       dialog = find_one(html, "dialog:root")
       assert attribute(dialog, "id") == "pet-modal"
       assert attribute(dialog, "class") == "modal"
-      assert attribute(dialog, "aria-modal") == "false"
+      assert attribute(dialog, "phx-hook") == "Doggo.Dialog"
+      assert attribute(dialog, "closedby") == "any"
       assert attribute(dialog, "open") == nil
-      assert attribute(dialog, "phx-mounted") == nil
+      assert attribute(dialog, "aria-modal") == nil
 
-      container = find_one(html, ":root > div#pet-modal-container")
-      assert attribute(container, "tabindex") == "-1"
+      # The browser owns the `open` attribute, so LiveView ignores it.
+      assert attribute(dialog, "phx-mounted") =~ "ignore_attrs"
+      refute attribute(dialog, "phx-mounted") =~ "doggo:open"
 
       a = find_one(html, ":root > div > section > header > button.modal-close")
       assert attribute(a, "type") == "button"
-      assert attribute(a, "href") == nil
+      assert attribute(a, "command") == "close"
+      assert attribute(a, "commandfor") == "pet-modal"
       assert attribute(a, "aria-label") == "Close"
       assert text(a, "span") == "Close"
 
@@ -2818,6 +2821,7 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert Floki.find(html, ".modal-close") == []
+      assert attribute(html, "dialog:root", "closedby") == "none"
     end
 
     test "opened" do
@@ -2832,8 +2836,8 @@ defmodule Doggo.ComponentsTest do
         """)
 
       dialog = find_one(html, "dialog:root")
-      assert attribute(dialog, "aria-modal") == "true"
-      assert attribute(dialog, "open") == "open"
+      assert attribute(dialog, "open") == nil
+      assert attribute(dialog, "phx-mounted") =~ "doggo:open"
     end
 
     test "with close slot" do

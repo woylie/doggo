@@ -48,57 +48,64 @@ defmodule Doggo.Components.AlertDialog do
 
     ```heex
     <.button
-      phx-click={.show_modal("end-session-modal")}
+      phx-click={Doggo.show_modal("end-session-modal")}
       aria-haspopup="dialog"
     >
       show
     </.button>
     ```
 
-    ## CSS
+    ### With HTML attributes
 
-    To hide the modal when the `open` attribute is not set, use the following CSS
-    styles:
+    `command` and `commandfor` are the Invoker Commands API. Unlike the other
+    two ways, this API needs no JavaScript at all.
 
-    ```css
-    dialog.alert-dialog:not([open]),
-    dialog.alert-dialog[open="false"] {
-      display: none;
-    }
+    ```heex
+    <.button command="show-modal" commandfor="end-session-modal">show</.button>
     ```
+
+    Both attributes are recent, so the hook handles them if the browser doesn't
+    support them.
+
+    ### Closing
+
+    The alert dialog can be closed by:
+
+    - using `hide_modal/1`,
+    - using `JS.exec("data-cancel", to: "#end-session-modal")`, which is what
+      the example above uses for its own control, or
+    - using the close button or `Esc` (only if `dismissable` is set).
 
     ## Semantics
 
-    While the `showModal()` JavaScript function is typically recommended for
-    managing modal dialog semantics, this component utilizes the `open` attribute
-    to control visibility. This approach is chosen to eliminate the need for
-    library consumers to add additional JavaScript code. To ensure proper
-    modal semantics, the `aria-modal` attribute is added to the dialog element.
+    The dialog is opened with `showModal()`, so the browser puts it in the top
+    layer, draws `::backdrop`, makes the rest of the document inert and keeps
+    the focus inside. `aria-modal` is not rendered, because `showModal()`
+    already marks the component as a modal.
+
+    ## CSS
+
+    A dialog is hidden until it is opened, so no rule is needed for that. Style
+    the backdrop with `dialog.alert-dialog::backdrop`.
 
     ## Caveats
 
-    Because the dialog is opened with the `open` attribute rather than
-    `showModal()`, it is not a modal dialog in the browser's sense, whatever
-    `aria-modal` reports. It is not placed in the top layer, `::backdrop` does
-    not apply, and content behind it stays interactive and scrollable. You need
-    to supply your own backdrop and lock scrolling on the body yourself.
-
-    Setting `dismissable={false}` removes the close button and the Escape and
-    click-away handlers, which leaves no way to dismiss the dialog from the
-    component. Provide your own control in the `:footer` slot when you do that.
+    An alert dialog is not dismissable by default, so it renders
+    `closedby="none"` and no close button, which leaves no way to dismiss it
+    from the component. Provide your own control in the `:footer` slot.
     """
   end
 
   @impl true
   def keyboard do
     """
-    - `Esc` - close the dialog, if `dismissable` is set.
-
-    Opening the dialog moves the focus to the first focusable element inside it,
-    and closing it returns the focus to the element that opened it. The focus
-    stays within the dialog while it is open. A dialog with nothing focusable in
-    it leaves the focus outside.
+    - `Esc` - close the dialog (only if `dismissable` is set).
     """
+  end
+
+  @impl true
+  def css_path do
+    "components/_dialog.scss"
   end
 
   @impl true
@@ -107,11 +114,6 @@ defmodule Doggo.Components.AlertDialog do
       type: :feedback,
       since: "0.6.0",
       maturity: :developing,
-      maturity_note: """
-      **The markup will change.** The dialog is opened by setting the `open`
-      attribute today. It is planned to use `showModal()` instead, which changes
-      the elements and attributes this component emits.
-      """,
       modifiers: []
     ]
   end
@@ -145,8 +147,9 @@ defmodule Doggo.Components.AlertDialog do
       attr :dismissable, :boolean,
         default: false,
         doc: """
-        When set to `true`, the dialog can be dismissed by clicking a close button
-        or by pressing the escape key.
+        When set to `true`, the dialog renders a close button and
+        `closedby="any"`, so that it can also be dismissed with the escape key
+        or by clicking outside it.
         """
 
       attr :close_label, :string,
@@ -180,24 +183,17 @@ defmodule Doggo.Components.AlertDialog do
       id={@id}
       role="alertdialog"
       class={@class}
-      aria-modal={(@open && "true") || "false"}
       aria-labelledby={"#{@id}-title"}
       aria-describedby={"#{@id}-content"}
-      open={@open}
-      phx-mounted={@open && Doggo.show_modal(@id)}
+      closedby={(@dismissable && "any") || "none"}
+      phx-hook="Doggo.Dialog"
+      phx-mounted={Doggo.dialog_mounted(@id, @open)}
       phx-remove={Doggo.hide_modal(@id)}
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
       {@data_attrs}
       {@rest}
     >
-      <.focus_wrap
-        id={"#{@id}-container"}
-        class={"#{@base_class}-container"}
-        tabindex="-1"
-        phx-window-keydown={@dismissable && JS.exec("data-cancel", to: "##{@id}")}
-        phx-key={@dismissable && "escape"}
-        phx-click-away={@dismissable && JS.exec("data-cancel", to: "##{@id}")}
-      >
+      <div id={"#{@id}-container"} class={"#{@base_class}-container"}>
         <section>
           <header>
             <button
@@ -205,7 +201,8 @@ defmodule Doggo.Components.AlertDialog do
               type="button"
               class={"#{@base_class}-close"}
               aria-label={@close_label}
-              phx-click={JS.exec("data-cancel", to: "##{@id}")}
+              command="close"
+              commandfor={@id}
             >
               {render_slot(@close)}
               <span :if={@close == []}>{@close_label}</span>
@@ -219,7 +216,7 @@ defmodule Doggo.Components.AlertDialog do
             {render_slot(@footer)}
           </footer>
         </section>
-      </.focus_wrap>
+      </div>
     </dialog>
     """
   end

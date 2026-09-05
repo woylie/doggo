@@ -23,6 +23,7 @@ import { LiveSocket } from "phoenix_live_view";
 import {
   Accordion,
   Carousel,
+  Dialog,
   Menu,
   MenuButton,
   SplitPane,
@@ -43,6 +44,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
   hooks: {
     "Doggo.Accordion": Accordion,
     "Doggo.Carousel": Carousel,
+    "Doggo.Dialog": Dialog,
     "Doggo.Menu": Menu,
     "Doggo.MenuButton": MenuButton,
     "Doggo.SplitPane": SplitPane,

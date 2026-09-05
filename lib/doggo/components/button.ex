@@ -90,7 +90,9 @@ defmodule Doggo.Components.Button do
         default: "button"
 
       attr :disabled, :boolean, default: false
-      attr :rest, :global, include: ~w(autofocus form name popovertarget value)
+
+      attr :rest, :global,
+        include: ~w(autofocus command commandfor form name popovertarget value)
 
       slot :inner_block, required: true
     end
