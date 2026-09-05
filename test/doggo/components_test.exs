@@ -4332,7 +4332,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.toolbar label="Actions for dog">
+        <TestComponents.toolbar id="toolbar" label="Actions for dog">
           buttons
         </TestComponents.toolbar>
         """)
@@ -4340,7 +4340,25 @@ defmodule Doggo.ComponentsTest do
       assert attribute(html, "div:root", "role") == "toolbar"
       assert attribute(html, ":root", "aria-label") == "Actions for dog"
       assert attribute(html, ":root", "aria-labelledby") == nil
+      assert attribute(html, ":root", "aria-orientation") == nil
       assert text(html, ":root") == "buttons"
+    end
+
+    test "vertical" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.toolbar
+          id="toolbar"
+          label="Actions for dog"
+          orientation="vertical"
+        >
+          buttons
+        </TestComponents.toolbar>
+        """)
+
+      assert attribute(html, ":root", "aria-orientation") == "vertical"
     end
 
     test "with labelledby" do
@@ -4348,7 +4366,8 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.toolbar labelledby="toolbar-heading"></TestComponents.toolbar>
+        <TestComponents.toolbar id="toolbar" labelledby="toolbar-heading">
+        </TestComponents.toolbar>
         """)
 
       assert attribute(html, ":root", "aria-label") == nil
@@ -4360,7 +4379,11 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.toolbar label="Actions for dog" controls="dog-panel">
+        <TestComponents.toolbar
+          id="toolbar"
+          label="Actions for dog"
+          controls="dog-panel"
+        >
         </TestComponents.toolbar>
         """)
 
@@ -4372,7 +4395,11 @@ defmodule Doggo.ComponentsTest do
         assigns = %{}
 
         parse_heex(~H"""
-        <TestComponents.toolbar label="Dog actions" labelledby="dog-toolbar-label">
+        <TestComponents.toolbar
+          id="toolbar"
+          label="Dog actions"
+          labelledby="dog-toolbar-label"
+        >
         </TestComponents.toolbar>
         """)
       end
@@ -4383,7 +4410,7 @@ defmodule Doggo.ComponentsTest do
         assigns = %{}
 
         parse_heex(~H"""
-        <TestComponents.toolbar></TestComponents.toolbar>
+        <TestComponents.toolbar id="toolbar"></TestComponents.toolbar>
         """)
       end
     end
@@ -4393,7 +4420,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.toolbar label="Actions for dog" data-test="hello">
+        <TestComponents.toolbar id="toolbar" label="Actions for dog" data-test="hello">
         </TestComponents.toolbar>
         """)
 

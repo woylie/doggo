@@ -13,6 +13,7 @@ defmodule Doggo.FixturesTest do
   import Phoenix.LiveViewTest, only: [rendered_to_string: 1]
 
   alias Doggo.HookComponents
+  alias Phoenix.LiveView.JS
 
   @moduletag :fixtures
 
@@ -48,6 +49,41 @@ defmodule Doggo.FixturesTest do
       </HookComponents.carousel>
       """,
       "carousel.html"
+    )
+  end
+
+  test "toolbar fixture matches the rendered component" do
+    assigns = %{}
+
+    assert_fixture(
+      ~H"""
+      <HookComponents.toolbar id="toolbar" label="Actions for the dog">
+        <div role="group">
+          <button phx-click="feed-dog">Feed</button>
+          <button phx-click="walk-dog" disabled>Walk</button>
+        </div>
+        <div role="group">
+          <input type="text" name="note" aria-label="Note" />
+          <button phx-click="teach-trick">Teach</button>
+        </div>
+      </HookComponents.toolbar>
+      """,
+      "toolbar.html"
+    )
+  end
+
+  test "action_bar fixture matches the rendered component" do
+    assigns = %{}
+
+    assert_fixture(
+      ~H"""
+      <HookComponents.action_bar id="action-bar">
+        <:item label="Edit" on_click={JS.push("edit")}>edit</:item>
+        <:item label="Move" on_click={JS.push("move")}>move</:item>
+        <:item label="Archive" on_click={JS.push("archive")}>archive</:item>
+      </HookComponents.action_bar>
+      """,
+      "action_bar.html"
     )
   end
 

@@ -38,6 +38,22 @@ defmodule Doggo.Components.Toolbar do
       </div>
     </.toolbar>
     ```
+
+    This component needs the `Doggo.Toolbar` JavaScript hook. See
+    [Phoenix LiveView Hooks](readme.html#phoenix-liveview-hooks) for
+    registering it.
+    """
+  end
+
+  @impl true
+  def keyboard do
+    """
+    - `Left` and `Right` - move between the controls, wrapping at the ends. A
+      toolbar with `orientation="vertical"` uses `Up` and `Down` instead.
+    - `Home` and `End` - first and last control.
+
+    The toolbar is a single tab stop. `Tab` moves to the control the user last
+    used, and the arrow keys move between them.
     """
   end
 
@@ -47,16 +63,7 @@ defmodule Doggo.Components.Toolbar do
       type: :miscellaneous,
       since: "0.6.0",
       maturity: :experimental,
-      modifiers: [],
-      maturity_note: """
-      The necessary JavaScript for making this component fully functional and
-      accessible will be added in a future version.
-
-      **Missing features**
-
-      - Roving tabindex
-      - Move focus with arrow keys
-      """
+      modifiers: []
     ]
   end
 
@@ -68,6 +75,18 @@ defmodule Doggo.Components.Toolbar do
   @impl true
   def attrs_and_slots do
     quote do
+      attr :id, :string,
+        required: true,
+        doc: "A unique DOM ID. The JavaScript hook needs it."
+
+      attr :orientation, :string,
+        default: "horizontal",
+        values: ["horizontal", "vertical"],
+        doc: """
+        Sets `aria-orientation` and determines whether to use the left and right
+        arrow keys or the up and down arrow keys to move between controls.
+        """
+
       attr :label, :string,
         default: nil,
         doc: """
@@ -126,11 +145,14 @@ defmodule Doggo.Components.Toolbar do
 
     ~H"""
     <div
+      id={@id}
       class={@class}
       role="toolbar"
       aria-label={@label}
       aria-labelledby={@labelledby}
       aria-controls={@controls}
+      aria-orientation={@orientation == "vertical" && "vertical"}
+      phx-hook="Doggo.Toolbar"
       {@data_attrs}
       {@rest}
     >

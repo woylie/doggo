@@ -20,7 +20,8 @@
   "exports": {
     ".": "./js/index.js",
     "./carousel": "./js/hooks/carousel.js",
-    "./tabs": "./js/hooks/tabs.js"
+    "./tabs": "./js/hooks/tabs.js",
+    "./toolbar": "./js/hooks/toolbar.js"
   },
   "files": [
     "js"

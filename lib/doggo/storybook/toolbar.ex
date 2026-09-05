@@ -10,15 +10,15 @@ defmodule Doggo.Storybook.Toolbar do
     [
       %Variation{
         id: :default,
-        attributes: %{label: "Actions"},
+        attributes: %{id: "dog-toolbar-default", label: "Actions"},
         slots: slots(opts)
       }
     ]
   end
 
-  def modifier_variation_base(_id, _name, _value, opts) do
+  def modifier_variation_base(id, _name, _value, opts) do
     %{
-      attributes: %{label: "Actions"},
+      attributes: %{id: id, label: "Actions"},
       slots: slots(opts)
     }
   end
