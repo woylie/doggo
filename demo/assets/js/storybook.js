@@ -33,10 +33,10 @@
 //   };
 // })();
 
-import { hooks } from "phoenix-colocated/doggo";
+import { Carousel, Tabs } from "@woylie/doggo";
 
 (function () {
   window.storybook = {
-    Hooks: hooks,
+    Hooks: { "Doggo.Carousel": Carousel, "Doggo.Tabs": Tabs },
   };
 })();

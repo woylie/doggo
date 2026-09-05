@@ -32,6 +32,7 @@
     "stylelint-declaration-strict-value": "1.11.1"
   },
   "dependencies": {
+    "@woylie/doggo": "link:../../assets",
     "phoenix": "1.8.13",
     "phoenix_html": "link:../deps/phoenix_html",
     "phoenix_live_view": "1.2.10"

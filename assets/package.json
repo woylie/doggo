@@ -1,0 +1,17 @@
+{
+  "name": "@woylie/doggo",
+  "version": "0.14.9",
+  "description": "JavaScript hooks for the Doggo component library",
+  "repository": "https://github.com/woylie/doggo",
+  "author": "Mathias Polligkeit",
+  "license": "MIT",
+  "type": "module",
+  "main": "js/index.js",
+  "exports": {
+    ".": "./js/index.js",
+    "./carousel": "./js/hooks/carousel.js",
+    "./tabs": "./js/hooks/tabs.js"
+  },
+  "files": ["js"],
+  "sideEffects": false
+}

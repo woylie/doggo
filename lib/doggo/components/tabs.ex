@@ -41,21 +41,9 @@ defmodule Doggo.Components.Tabs do
     </.tabs>
     ```
 
-    This component defines a colocated Phoenix LiveView hook with the name
-    `Doggo.Components.Tabs.Hook`.
-
-    ```js
-    import { hooks as doggoHooks } from "phoenix-colocated/doggo";
-
-    const Hooks = {
-      'Doggo.Components.Tabs.Hook': doggoHooks['Doggo.Components.Tabs.Hook']
-    };
-
-    const liveSocket = new LiveSocket("/live", Socket, {
-      // ...
-      hooks: Hooks,
-    });
-    ```
+    This component needs the `Doggo.Tabs` JavaScript hook. See
+    [Phoenix LiveView Hooks](readme.html#phoenix-liveview-hooks) for
+    registering it.
     """
   end
 
@@ -137,7 +125,7 @@ defmodule Doggo.Components.Tabs do
     Doggo.ensure_label!(assigns, ".tabs", "Dog Facts")
 
     ~H"""
-    <div id={@id} class={@class} {@data_attrs} {@rest} phx-hook=".Hook">
+    <div id={@id} class={@class} {@data_attrs} {@rest} phx-hook="Doggo.Tabs">
       <div role="tablist" aria-label={@label} aria-labelledby={@labelledby}>
         <button
           :for={{panel, index} <- Enum.with_index(@panel, 1)}
@@ -162,83 +150,6 @@ defmodule Doggo.Components.Tabs do
         {render_slot(panel)}
       </div>
     </div>
-    <script :type={Phoenix.LiveView.ColocatedHook} name=".Hook">
-      export default {
-        mounted() {
-          const tabs = this.el;
-
-          const getTabs = () =>
-            Array.from(
-              tabs.querySelectorAll(':scope > [role="tablist"] > [role="tab"]')
-            );
-
-          const getPanels = () =>
-            Array.from(tabs.querySelectorAll(':scope > [role="tabpanel"]'));
-
-          let selectedIdx = 0;
-
-          const select = (idx) => {
-            selectedIdx = idx;
-
-            getTabs().forEach((tab, i) => {
-              const selected = i === idx;
-              tab.setAttribute("aria-selected", selected ? "true" : "false");
-              tab.setAttribute("tabindex", selected ? "0" : "-1");
-            });
-
-            getPanels().forEach((panel, i) => {
-              if (i === idx) {
-                panel.removeAttribute("hidden");
-              } else {
-                panel.setAttribute("hidden", "");
-              }
-            });
-          };
-
-          tabs.addEventListener("click", (e) => {
-            const idx = getTabs().indexOf(e.target.closest('[role="tab"]'));
-
-            if (idx >= 0) selectedIdx = idx;
-          });
-
-          tabs.addEventListener("keydown", (e) => {
-            const currentIdx = getTabs().indexOf(e.target.closest('[role="tab"]'));
-
-            if (currentIdx < 0) return;
-
-            const total = getTabs().length;
-            let nextIdx;
-
-            if (e.key === "ArrowRight") {
-              nextIdx = (currentIdx + 1) % total;
-            } else if (e.key === "ArrowLeft") {
-              nextIdx = (currentIdx - 1 + total) % total;
-            } else if (e.key === "Home") {
-              nextIdx = 0;
-            } else if (e.key === "End") {
-              nextIdx = total - 1;
-            } else {
-              return;
-            }
-
-            e.preventDefault();
-            select(nextIdx);
-            getTabs()[nextIdx].focus();
-          });
-
-          this.restoreSelection = () => {
-            const total = getTabs().length;
-
-            if (total > 0) select(Math.min(selectedIdx, total - 1));
-          };
-        },
-
-        // Restore selected tab on patch.
-        updated() {
-          this.restoreSelection();
-        }
-      }
-    </script>
     """
   end
 end
