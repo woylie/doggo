@@ -137,6 +137,33 @@ defmodule Doggo.Components.AlertTest do
       assert text(button) == "X"
     end
 
+    test "with action slot" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.alert id="some-alert" on_close="close-alert">
+          message
+          <:action><button>Sign in</button></:action>
+        </TestComponents.alert>
+        """)
+
+      actions = find_one(html, ":root > .alert-body > .alert-actions")
+      assert text(actions, "button") == "Sign in"
+      assert Floki.find(html, ".alert-actions .alert-close") == []
+    end
+
+    test "without action slot" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.alert id="some-alert">message</TestComponents.alert>
+        """)
+
+      assert Floki.find(html, ".alert-actions") == []
+    end
+
     test "with global attribute" do
       assigns = %{}
 
