@@ -3801,7 +3801,7 @@ defmodule Doggo.ComponentsTest do
       assert attribute(button, "id") == "my-tabs-tab-1"
       assert attribute(button, "aria-selected") == "true"
       assert attribute(button, "aria-controls") == "my-tabs-panel-1"
-      assert attribute(button, "tabindex") == nil
+      assert attribute(button, "tabindex") == "0"
       assert text(button) == "Panel 1"
 
       button = find_one(div, "button:last-child")
@@ -3824,6 +3824,26 @@ defmodule Doggo.ComponentsTest do
       assert attribute(div, "aria-labelledby") == "my-tabs-tab-2"
       assert attribute(div, "hidden") == "hidden"
       assert text(div) == "some other text"
+    end
+
+    test "puts only the selected tab in the tab order" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tabs id="my-tabs" label="My Tabs">
+          <:panel label="Panel 1">some text</:panel>
+          <:panel label="Panel 2">some other text</:panel>
+          <:panel label="Panel 3">some more text</:panel>
+        </TestComponents.tabs>
+        """)
+
+      tabindexes =
+        html
+        |> Floki.find("button[role='tab']")
+        |> Enum.map(&attribute(&1, "tabindex"))
+
+      assert tabindexes == ["0", "-1", "-1"]
     end
 
     test "with labelledby" do
