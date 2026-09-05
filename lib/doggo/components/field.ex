@@ -226,11 +226,17 @@ defmodule Doggo.Components.Field do
 
       attr :on_text, :string,
         default: "On",
-        doc: "The state text for a switch when on."
+        doc: """
+        The state text for a switch when on. This value should be translated to
+        the language in which the rest of the page is displayed.
+        """
 
       attr :off_text, :string,
         default: "Off",
-        doc: "The state text for a switch when off."
+        doc: """
+        The state text for a switch when off. This value should be translated to
+        the language in which the rest of the page is displayed.
+        """
 
       attr :prompt, :string,
         default: nil,

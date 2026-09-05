@@ -81,10 +81,10 @@ defmodule Doggo.Components.Alert do
         """
 
       attr :close_label, :any,
-        default: "close",
+        default: "Close",
         doc: """
-        This value will be used as aria label. Consider overriding it in case your
-        app is served in different languages.
+        This value will be used as aria label. This value should be translated to
+        the language in which the rest of the page is displayed.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."

@@ -134,7 +134,10 @@ defmodule Doggo.Components.AlertDialog do
 
       attr :close_label, :string,
         default: "Close",
-        doc: "Aria label for the close button."
+        doc: """
+        Aria label for the close button. This value should be translated to the
+        language in which the rest of the page is displayed.
+        """
 
       slot :title, required: true
       slot :inner_block, required: true, doc: "The modal body."
@@ -188,7 +191,7 @@ defmodule Doggo.Components.AlertDialog do
               phx-click={JS.exec("data-cancel", to: "##{@id}")}
             >
               {render_slot(@close)}
-              <span :if={@close == []}>close</span>
+              <span :if={@close == []}>{@close_label}</span>
             </button>
             <h2 id={"#{@id}-title"}>{render_slot(@title)}</h2>
           </header>

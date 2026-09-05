@@ -75,7 +75,7 @@ defmodule Doggo.Components.AlertDialogTest do
       assert attribute(a, "type") == "button"
       assert attribute(a, "href") == nil
       assert attribute(a, "aria-label") == "Close"
-      assert text(a, "span") == "close"
+      assert text(a, "span") == "Close"
     end
 
     test "opened" do

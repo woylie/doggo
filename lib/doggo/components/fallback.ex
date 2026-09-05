@@ -15,10 +15,9 @@ defmodule Doggo.Components.Fallback do
 
     This component optionally applies a formatter function to non-empty values.
 
-    The primary purpose of this component is to enhance accessibility. In
-    situations where a value in a table column or property list is set to be
-    invisible or not displayed, it's crucial to provide an alternative text for
-    screen readers.
+    The primary purpose of this component is to enhance accessibility. If a
+    table cell or property list property has no value, an alternative text must
+    be provided for screen readers.
     """
   end
 
@@ -89,9 +88,11 @@ defmodule Doggo.Components.Fallback do
         """
 
       attr :accessibility_text, :string,
-        default: "not set",
+        default: "Not set",
         doc: """
         The text for the `aria-label` attribute in case the `value` is empty.
+        This value should be translated to the language in which the rest of the
+        page is displayed.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."

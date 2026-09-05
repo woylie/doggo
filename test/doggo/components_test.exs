@@ -2056,7 +2056,7 @@ defmodule Doggo.ComponentsTest do
                 [
                   {"class", "fallback"},
                   {"role", "img"},
-                  {"aria-label", "not set"}
+                  {"aria-label", "Not set"}
                 ], ["-"]}
              ]
     end
@@ -2074,7 +2074,7 @@ defmodule Doggo.ComponentsTest do
                 [
                   {"class", "fallback"},
                   {"role", "img"},
-                  {"aria-label", "not set"}
+                  {"aria-label", "Not set"}
                 ], ["-"]}
              ]
     end
@@ -2092,7 +2092,7 @@ defmodule Doggo.ComponentsTest do
                 [
                   {"class", "fallback"},
                   {"role", "img"},
-                  {"aria-label", "not set"}
+                  {"aria-label", "Not set"}
                 ], ["n/a"]}
              ]
     end
@@ -2788,7 +2788,7 @@ defmodule Doggo.ComponentsTest do
       assert attribute(a, "type") == "button"
       assert attribute(a, "href") == nil
       assert attribute(a, "aria-label") == "Close"
-      assert text(a, "span") == "close"
+      assert text(a, "span") == "Close"
 
       h2 = find_one(html, ":root > div > section > header > h2")
       assert text(h2) == "Edit dog"

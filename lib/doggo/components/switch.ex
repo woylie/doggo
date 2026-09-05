@@ -57,8 +57,21 @@ defmodule Doggo.Components.Switch do
   def attrs_and_slots do
     quote do
       attr :label, :string, required: true
-      attr :on_text, :string, default: "On"
-      attr :off_text, :string, default: "Off"
+
+      attr :on_text, :string,
+        default: "On",
+        doc: """
+        The state text when the switch is on. This value should be translated to
+        the language in which the rest of the page is displayed.
+        """
+
+      attr :off_text, :string,
+        default: "Off",
+        doc: """
+        The state text when the switch is off. This value should be translated to
+        the language in which the rest of the page is displayed.
+        """
+
       attr :checked, :boolean, default: false
       attr :rest, :global
     end
