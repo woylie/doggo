@@ -18,6 +18,7 @@ defmodule Doggo.HookComponents do
   build_menu_item()
   build_menu_item_checkbox()
   build_menu_item_radio_group()
+  build_split_pane()
   build_tabs()
   build_toolbar()
   build_tree()

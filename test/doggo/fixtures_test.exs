@@ -218,6 +218,27 @@ defmodule Doggo.FixturesTest do
     )
   end
 
+  test "split_pane fixture matches the rendered component" do
+    assigns = %{}
+
+    assert_fixture(
+      ~H"""
+      <HookComponents.split_pane
+        id="split-pane"
+        label="Sidebar"
+        orientation="vertical"
+        default_size={40}
+        min_size={20}
+        max_size={80}
+      >
+        <:primary>Navigation</:primary>
+        <:secondary>Content</:secondary>
+      </HookComponents.split_pane>
+      """,
+      "split_pane.html"
+    )
+  end
+
   defp assert_fixture(rendered, name) do
     html = rendered_to_string(rendered)
     path = Path.join(@fixture_dir, name)
