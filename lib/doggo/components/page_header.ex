@@ -100,6 +100,9 @@ defmodule Doggo.Components.PageHeader do
         attr :href, :string
         attr :navigate, :string
         attr :patch, :string
+
+        attr :on_click, :any,
+          doc: "Event name or `Phoenix.LiveView.JS` command."
       end
 
       slot :action,
