@@ -72,7 +72,12 @@ defmodule Doggo.Components.Steps do
   @impl true
   def attrs_and_slots do
     quote do
-      attr :label, :string, default: "Form steps"
+      attr :label, :string,
+        default: "Form steps",
+        doc: """
+        Aria label for the navigation. This value should be translated to the
+        language in which the rest of the page is displayed.
+        """
 
       attr :current_step, :integer,
         required: true,
@@ -84,7 +89,8 @@ defmodule Doggo.Components.Steps do
         default: "Completed: ",
         doc: """
         Visually hidden text that is rendered for screen readers for completed
-        steps.
+        steps. This value should be translated to the language in which the rest
+        of the page is displayed.
         """
 
       attr :linear, :boolean,
