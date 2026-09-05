@@ -255,6 +255,25 @@ defmodule DemoWeb.PatchTestLive do
       </:section>
     </CoreComponents.accordion>
 
+    <h2>split_pane</h2>
+    <p>Move the separator, then bump.</p>
+    <CoreComponents.split_pane
+      id="test-split-pane"
+      label="Sidebar"
+      orientation="vertical"
+      default_size={30}
+      min_size={10}
+      max_size={90}
+    >
+      <:primary>
+        <p>Primary.</p>
+        <p :if={@inside}>Tick inside the primary pane: {@tick}</p>
+      </:primary>
+      <:secondary>
+        <p>Secondary.</p>
+      </:secondary>
+    </CoreComponents.split_pane>
+
     <h2>disclosure_button</h2>
     <div>
       <CoreComponents.disclosure_button controls="test-disclosure">

@@ -15,25 +15,27 @@ defmodule Doggo.Components.SplitPane do
   @impl true
   def usage do
     """
-    Horizontal separator with label:
+    Vertical separator with label:
 
     ```heex
     <.split_pane
       id="sidebar-splitter"
       label="Sidebar"
-      orientation="horizontal"
+      orientation="vertical"
+      default_size={30}
     >
       <:primary>One</:primary>
       <:secondary>Two</:secondary>
     </.split_pane>
     ```
 
-    Horizontal separator with visible label:
+    Vertical separator with visible label:
 
     ```heex
     <.split_pane id="sidebar-splitter"
       labelledby="sidebar-label"
-      orientation="horizontal"
+      orientation="vertical"
+      default_size={30}
     >
       <:primary>
         <h2 id="sidebar-label">Sidebar</h2>
@@ -49,14 +51,16 @@ defmodule Doggo.Components.SplitPane do
     <.split_pane
       id="sidebar-splitter"
       label="Sidebar"
-      orientation="horizontal"
+      orientation="vertical"
+      default_size={30}
     >
       <:primary>One</:primary>
       <:secondary>
         <.split_pane
           id="filter-splitter"
           label="Filters"
-          orientation="vertical"
+          orientation="horizontal"
+          default_size={50}
         >
           <:primary>Two</:primary>
           <:secondary>Three</:secondary>
@@ -64,7 +68,33 @@ defmodule Doggo.Components.SplitPane do
       </:secondary>
     </.split_pane>
     ```
+
+    The size of the primary pane is written to the `--split-pane-position`
+    custom property on the outer element as a percentage. Your stylesheet must
+    apply that property to the layout.
+
+    A split pane with a horizontal separator needs a height of its own, or both
+    panes stay at the size of their content.
     """
+  end
+
+  @impl true
+  def keyboard do
+    """
+    - `Left` and `Right` - move a vertical separator by one percent.
+    - `Up` and `Down` - move a horizontal separator by one percent.
+    - `Shift` + arrow key - move by ten percent.
+    - `Home` and `End` - the smallest and the largest size.
+    - `Enter` - collapse the primary pane, or restore the size it had before.
+
+    The size is the hook's own state and it survives a LiveView patch, so
+    `default_size` applies on the first render only.
+    """
+  end
+
+  @impl true
+  def css_path do
+    "components/_split-pane.scss"
   end
 
   @impl true
@@ -74,13 +104,12 @@ defmodule Doggo.Components.SplitPane do
       since: "0.6.0",
       maturity: :experimental,
       maturity_note: """
-      The necessary JavaScript for making this component fully functional and
-      accessible will be added in a future version.
-
       **Missing features**
 
-      - Resize panes with the mouse
-      - Resize panes with the keyboard
+      - Reporting the size to the server, so that it can be persisted
+      - Snapping to preset positions
+      - Choosing which pane keeps its size when the split pane itself is
+        resized
       """,
       modifiers: []
     ]
@@ -114,11 +143,27 @@ defmodule Doggo.Components.SplitPane do
 
       attr :orientation, :string,
         values: ["horizontal", "vertical"],
-        required: true
+        required: true,
+        doc: """
+        The orientation of the separator, not of the panes: a `vertical`
+        separator stands between two panes side by side, a `horizontal` one
+        between two panes above each other.
+        """
 
-      attr :default_size, :integer, required: true
-      attr :min_size, :integer, default: 0
-      attr :max_size, :integer, default: 100
+      attr :default_size, :integer,
+        required: true,
+        doc: """
+        The size of the primary pane in percent on the first render.
+        """
+
+      attr :min_size, :integer,
+        default: 0,
+        doc: "The smallest size of the primary pane in percent."
+
+      attr :max_size, :integer,
+        default: 100,
+        doc: "The largest size of the primary pane in percent."
+
       attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :primary, required: true
@@ -140,12 +185,14 @@ defmodule Doggo.Components.SplitPane do
       id={@id}
       class={@class}
       data-orientation={@orientation}
+      phx-hook="Doggo.SplitPane"
       {@data_attrs}
       {@rest}
     >
       <div id={"#{@id}-primary"}>{render_slot(@primary)}</div>
       <div
         role="separator"
+        tabindex="0"
         aria-label={@label}
         aria-labelledby={@labelledby}
         aria-controls={"#{@id}-primary"}

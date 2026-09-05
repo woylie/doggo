@@ -23,46 +23,50 @@
   gap: f.spacer(2);
 }
 
-.menu-item,
-[role="menuitemcheckbox"],
-[role="menuitemradio"] {
-  display: block;
-  width: 100%;
-  padding: f.spacer(1) f.spacer(2);
-  font-size: f.size(s);
-  text-align: left;
-  cursor: pointer;
-  background: none;
-  border: f.border-width(s) solid transparent;
-  border-radius: f.radius(s);
+.menu,
+.menu-bar,
+.menu-group {
+  .menu-item,
+  [role="menuitemcheckbox"],
+  [role="menuitemradio"] {
+    display: block;
+    width: 100%;
+    padding: f.spacer(1) f.spacer(2);
+    font-size: f.size(s);
+    text-align: left;
+    cursor: pointer;
+    background: none;
+    border: f.border-width(s) solid transparent;
+    border-radius: f.radius(s);
 
-  &:hover {
-    background-color: f.color(background, disabled, normal);
+    &:hover {
+      background-color: f.color(background, disabled, normal);
+    }
+
+    // `:focus-visible` rather than `:focus`: a menu item is a button, and a ring
+    // on every click is noise. The browser shows it when the user is navigating
+    // by keyboard.
+    &:focus-visible {
+      outline: none;
+      border-color: f.color(border, primary, normal);
+    }
   }
 
-  // `:focus-visible` rather than `:focus`: a menu item is a button, and a ring
-  // on every click is noise. The browser shows it when the user is navigating
-  // by keyboard.
-  &:focus-visible {
-    outline: none;
-    border-color: f.color(border, primary, normal);
+  // The unchecked state reserves the same space as the checked one, so that
+  // toggling an item does not move the label.
+  [role="menuitemcheckbox"][aria-checked="true"]::before,
+  [role="menuitemradio"][aria-checked="true"]::before {
+    content: "✓ ";
   }
-}
 
-// The unchecked state reserves the same space as the checked one, so that
-// toggling an item does not move the label.
-[role="menuitemcheckbox"][aria-checked="true"]::before,
-[role="menuitemradio"][aria-checked="true"]::before {
-  content: "✓ ";
-}
+  [role="menuitemcheckbox"][aria-checked="false"]::before,
+  [role="menuitemradio"][aria-checked="false"]::before {
+    content: "  ";
+  }
 
-[role="menuitemcheckbox"][aria-checked="false"]::before,
-[role="menuitemradio"][aria-checked="false"]::before {
-  content: "  ";
-}
-
-[role="separator"] {
-  height: f.border-width(s);
-  margin: f.spacer(1) 0;
-  background-color: f.color(border, neutral, "1");
+  [role="separator"] {
+    height: f.border-width(s);
+    margin: f.spacer(1) 0;
+    background-color: f.color(border, neutral, "1");
+  }
 }
