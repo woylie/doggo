@@ -43,13 +43,18 @@ defmodule DoggoTest do
   end
 
   describe "show_modal/2" do
-    test "focuses the dialog container, not only its content" do
+    test "dispatches to the hook, which calls showModal()" do
       assert %Phoenix.LiveView.JS{ops: ops} = Doggo.show_modal("pet-modal")
 
-      assert Enum.any?(ops, fn
-               ["focus_first", %{to: "#pet-modal-container"}] -> true
-               _ -> false
-             end)
+      assert [["dispatch", %{event: "doggo:open", to: "#pet-modal"}]] = ops
+    end
+  end
+
+  describe "hide_modal/2" do
+    test "dispatches to the hook, which calls close()" do
+      assert %Phoenix.LiveView.JS{ops: ops} = Doggo.hide_modal("pet-modal")
+
+      assert [["dispatch", %{event: "doggo:close", to: "#pet-modal"}]] = ops
     end
   end
 

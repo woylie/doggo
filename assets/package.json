@@ -27,6 +27,7 @@
     "./menu": "./js/hooks/menu.js",
     "./menu_button": "./js/hooks/menu_button.js",
     "./tree": "./js/hooks/tree.js",
+    "./dialog": "./js/hooks/dialog.js",
     "./split_pane": "./js/hooks/split_pane.js"
   },
   "files": [

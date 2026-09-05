@@ -143,6 +143,7 @@ Then register the hooks for the components you build in your `app.js`:
 import {
   Accordion,
   Carousel,
+  Dialog,
   Menu,
   MenuButton,
   SplitPane,
@@ -155,6 +156,7 @@ import {
 const hooks = {
   "Doggo.Accordion": Accordion,
   "Doggo.Carousel": Carousel,
+  "Doggo.Dialog": Dialog,
   "Doggo.Menu": Menu,
   "Doggo.MenuButton": MenuButton,
   "Doggo.SplitPane": SplitPane,
@@ -179,6 +181,7 @@ To use the hooks in your storybook, register the same map in `storybook.js`:
 import {
   Accordion,
   Carousel,
+  Dialog,
   Menu,
   MenuButton,
   SplitPane,
@@ -193,6 +196,7 @@ import {
     Hooks: {
       "Doggo.Accordion": Accordion,
       "Doggo.Carousel": Carousel,
+      "Doggo.Dialog": Dialog,
       "Doggo.Menu": Menu,
       "Doggo.MenuButton": MenuButton,
       "Doggo.SplitPane": SplitPane,

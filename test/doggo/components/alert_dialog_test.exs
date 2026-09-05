@@ -34,9 +34,17 @@ defmodule Doggo.Components.AlertDialogTest do
       assert attribute(dialog, "role") == "alertdialog"
       assert attribute(dialog, "id") == "pet-alert"
       assert attribute(dialog, "class") == "alert-dialog"
-      assert attribute(dialog, "aria-modal") == "false"
+      assert attribute(dialog, "phx-hook") == "Doggo.Dialog"
+      assert attribute(dialog, "aria-describedby") == "pet-alert-content"
       assert attribute(dialog, "open") == nil
-      assert attribute(dialog, "phx-mounted") == nil
+      assert attribute(dialog, "aria-modal") == nil
+
+      # An alert dialog is not dismissable by default.
+      assert attribute(dialog, "closedby") == "none"
+
+      # The browser owns the `open` attribute, so LiveView ignores it.
+      assert attribute(dialog, "phx-mounted") =~ "ignore_attrs"
+      refute attribute(dialog, "phx-mounted") =~ "doggo:open"
 
       assert Floki.find(html, ".alert-dialog-close") == []
 
@@ -69,11 +77,11 @@ defmodule Doggo.Components.AlertDialogTest do
           ":root > div > section > header > button.alert-dialog-close"
         )
 
-      container = find_one(html, ":root > div[id$='-container']")
-      assert attribute(container, "tabindex") == "-1"
+      assert attribute(html, "dialog:root", "closedby") == "any"
 
       assert attribute(a, "type") == "button"
-      assert attribute(a, "href") == nil
+      assert attribute(a, "command") == "close"
+      assert attribute(a, "commandfor") == "pet-alert"
       assert attribute(a, "aria-label") == "Close"
       assert text(a, "span") == "Close"
     end
@@ -90,8 +98,8 @@ defmodule Doggo.Components.AlertDialogTest do
         """)
 
       dialog = find_one(html, "dialog:root")
-      assert attribute(dialog, "aria-modal") == "true"
-      assert attribute(dialog, "open") == "open"
+      assert attribute(dialog, "open") == nil
+      assert attribute(dialog, "phx-mounted") =~ "doggo:open"
     end
 
     test "with close slot" do

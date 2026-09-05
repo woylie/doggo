@@ -218,6 +218,23 @@ defmodule Doggo.FixturesTest do
     )
   end
 
+  test "modal fixture matches the rendered component" do
+    assigns = %{}
+
+    assert_fixture(
+      ~H"""
+      <HookComponents.modal id="modal">
+        <:title>Edit dog</:title>
+        <p>Dog form</p>
+        <:footer>
+          <button phx-click={Doggo.hide_modal("modal")}>Cancel</button>
+        </:footer>
+      </HookComponents.modal>
+      """,
+      "modal.html"
+    )
+  end
+
   test "split_pane fixture matches the rendered component" do
     assigns = %{}
 

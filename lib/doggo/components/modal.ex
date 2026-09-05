@@ -21,8 +21,9 @@ defmodule Doggo.Components.Modal do
   @impl true
   def usage do
     """
-    There are two primary ways to manage the display of the modal: via URL state
-    or by setting and removing the `open` attribute.
+    The dialog is opened with `showModal()` in one of three ways: from the URL,
+    with the `show_modal/1` and `hide_modal/1` functions, or with a button that
+    uses the Invoker Commands API.
 
     ### With URL
 
@@ -60,9 +61,9 @@ defmodule Doggo.Components.Modal do
     <.link patch={~p"/pets/\#{@id}"}>show</.link>
     ```
 
-    ### Without URL
+    ### With JS commands
 
-    To toggle the modal visibility dynamically with the `open` attribute:
+    To toggle the modal visibility dynamically:
 
     1. Omit the `open` attribute in the template.
     2. Use the `show_modal/1` and `hide_modal/1` functions to change the
@@ -82,7 +83,7 @@ defmodule Doggo.Components.Modal do
     </.modal>
     ```
 
-    To open modal, use the `show_modal/1` function.
+    To open the modal, use the `show_modal/1` function.
 
     ```heex
     <.button
@@ -93,36 +94,43 @@ defmodule Doggo.Components.Modal do
     </.button>
     ```
 
-    ## CSS
+    ### With HTML attributes
 
-    To hide the modal when the `open` attribute is not set, use the following CSS
-    styles:
+    `command` and `commandfor` are the Invoker Commands API. Unlike the other
+    two ways, this API needs no JavaScript at all.
 
-    ```css
-    dialog.modal:not([open]),
-    dialog.modal[open="false"] {
-      display: none;
-    }
+    ```heex
+    <.button command="show-modal" commandfor="pet-modal">show</.button>
     ```
+
+    Both attributes are recent, so the hook handles them if the browser doesn't
+    support them.
+
+    ### Closing
+
+    Four things close the dialog, and all of them run `on_cancel`:
+
+    - the close button the component renders, which uses `command="close"`
+    - `Esc` and a click outside, unless `dismissable` is set to `false`
+    - `hide_modal/1`
+    - `JS.exec("data-cancel", to: "#pet-modal")`
 
     ## Semantics
 
-    While the `showModal()` JavaScript function is typically recommended for
-    managing modal dialog semantics, this component utilizes the `open` attribute
-    to control visibility. This approach is chosen to eliminate the need for
-    library consumers to add additional JavaScript code. To ensure proper
-    modal semantics, the `aria-modal` attribute is added to the dialog element.
+    The dialog is opened with `showModal()`, so the browser puts it in the top
+    layer, draws `::backdrop`, makes the rest of the document inert and keeps
+    the focus inside. `aria-modal` is not rendered, because `showModal()`
+    already marks the component as a modal.
+
+    ## CSS
+
+    A dialog is hidden until it is opened, so no rule is needed for that. Style
+    the backdrop with `dialog.modal::backdrop`.
 
     ## Caveats
 
-    Because the dialog is opened with the `open` attribute rather than
-    `showModal()`, it is not a modal dialog in the browser's sense, whatever
-    `aria-modal` reports. It is not placed in the top layer, `::backdrop` does
-    not apply, and content behind it stays interactive and scrollable. You need
-    to supply your own backdrop and lock scrolling on the body yourself.
-
-    Setting `dismissable={false}` removes the close button and the Escape and
-    click-away handlers, which leaves no way to dismiss the dialog from the
+    Setting `dismissable={false}` removes the close button and renders
+    `closedby="none"`, which leaves no way to dismiss the dialog from the
     component. Provide your own control in the `:footer` slot when you do that.
     """
   end
@@ -140,16 +148,16 @@ defmodule Doggo.Components.Modal do
   end
 
   @impl true
+  def css_path do
+    "components/_dialog.scss"
+  end
+
+  @impl true
   def config do
     [
       type: :miscellaneous,
       since: "0.6.0",
       maturity: :developing,
-      maturity_note: """
-      **The markup will change.** The dialog is opened by setting the `open`
-      attribute today. It is planned to use `showModal()` instead, which changes
-      the elements and attributes this component emits.
-      """,
       modifiers: []
     ]
   end
@@ -183,8 +191,9 @@ defmodule Doggo.Components.Modal do
       attr :dismissable, :boolean,
         default: true,
         doc: """
-        When set to `true`, the dialog can be dismissed by clicking a close button
-        or by pressing the escape key.
+        When set to `true`, the dialog renders a close button and
+        `closedby="any"`, so that it can also be dismissed with the escape key
+        or by clicking outside it.
         """
 
       attr :close_label, :string,
@@ -217,23 +226,16 @@ defmodule Doggo.Components.Modal do
     <dialog
       id={@id}
       class={@class}
-      aria-modal={(@open && "true") || "false"}
       aria-labelledby={"#{@id}-title"}
-      open={@open}
-      phx-mounted={@open && Doggo.show_modal(@id)}
+      closedby={(@dismissable && "any") || "none"}
+      phx-hook="Doggo.Dialog"
+      phx-mounted={Doggo.dialog_mounted(@id, @open)}
       phx-remove={Doggo.hide_modal(@id)}
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
       {@data_attrs}
       {@rest}
     >
-      <.focus_wrap
-        id={"#{@id}-container"}
-        class={"#{@base_class}-container"}
-        tabindex="-1"
-        phx-window-keydown={@dismissable && JS.exec("data-cancel", to: "##{@id}")}
-        phx-key={@dismissable && "escape"}
-        phx-click-away={@dismissable && JS.exec("data-cancel", to: "##{@id}")}
-      >
+      <div id={"#{@id}-container"} class={"#{@base_class}-container"}>
         <section>
           <header>
             <button
@@ -241,7 +243,8 @@ defmodule Doggo.Components.Modal do
               type="button"
               class={"#{@base_class}-close"}
               aria-label={@close_label}
-              phx-click={JS.exec("data-cancel", to: "##{@id}")}
+              command="close"
+              commandfor={@id}
             >
               {render_slot(@close)}
               <span :if={@close == []}>{@close_label}</span>
@@ -255,7 +258,7 @@ defmodule Doggo.Components.Modal do
             {render_slot(@footer)}
           </footer>
         </section>
-      </.focus_wrap>
+      </div>
     </dialog>
     """
   end
