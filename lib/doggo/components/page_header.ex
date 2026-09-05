@@ -71,8 +71,7 @@ defmodule Doggo.Components.PageHeader do
   def nested_classes(base_class) do
     [
       "#{base_class}-actions",
-      "#{base_class}-navigation",
-      "#{base_class}-title"
+      "#{base_class}-navigation"
     ]
   end
 
@@ -131,10 +130,10 @@ defmodule Doggo.Components.PageHeader do
           {render_slot(navigation)}
         </.link>
       </div>
-      <div class={"#{@base_class}-title"}>
+      <hgroup>
         <h1>{@title}</h1>
         <p :if={@subtitle}>{@subtitle}</p>
-      </div>
+      </hgroup>
       <div :if={@action != []} class={"#{@base_class}-actions"}>
         <%= for action <- @action do %>
           {render_slot(action)}
