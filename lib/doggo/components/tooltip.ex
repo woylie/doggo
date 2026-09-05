@@ -67,11 +67,23 @@ defmodule Doggo.Components.Tooltip do
   end
 
   @impl true
+  def keyboard do
+    """
+    - `Tab` - focus the described element, which shows the tooltip.
+    """
+  end
+
+  @impl true
   def config do
     [
       type: :miscellaneous,
       since: "0.6.0",
       maturity: :developing,
+      maturity_note: """
+      **Missing features**
+
+      - Dismiss the tooltip with Esc, as WCAG 1.4.13 requires
+      """,
       base_class: "tooltip-container",
       modifiers: []
     ]

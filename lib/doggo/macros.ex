@@ -159,6 +159,7 @@ defmodule Doggo.Macros do
 
       #{usage}
       """,
+      keyboard_doc(module),
       css_example_doc(module)
     ]
     |> Enum.reject(&is_nil/1)
@@ -169,13 +170,27 @@ defmodule Doggo.Macros do
     usage = module.usage()
     doc = module.doc()
 
-    """
-    #{doc}
+    [
+      doc,
+      """
+      ## Usage
 
-    ## Usage
+      #{usage}
+      """,
+      keyboard_doc(module)
+    ]
+    |> Enum.reject(&is_nil/1)
+    |> Enum.join("\n\n")
+  end
 
-    #{usage}
-    """
+  defp keyboard_doc(module) do
+    if function_exported?(module, :keyboard, 0) do
+      """
+      ## Keyboard
+
+      #{module.keyboard()}
+      """
+    end
   end
 
   defp css_example_doc(module) do

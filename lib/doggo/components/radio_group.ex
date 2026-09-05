@@ -44,6 +44,18 @@ defmodule Doggo.Components.RadioGroup do
   end
 
   @impl true
+  def keyboard do
+    """
+    - `Left`, `Right`, `Up` and `Down` - move between the radios and check the
+      one the focus lands on.
+    - `Space` - check the focused radio.
+
+    The group is a single tab stop. The radios are native elements sharing a
+    name, so the browser handles this.
+    """
+  end
+
+  @impl true
   def config do
     [
       type: :miscellaneous,

@@ -61,7 +61,7 @@ defmodule Doggo.Components.TreeItem do
       The necessary JavaScript for making this component fully functional and
       accessible will be added in a future version.
 
-      **Missing featumres**
+      **Missing features**
 
       - Expand and collapse nodes
       - Select nodes

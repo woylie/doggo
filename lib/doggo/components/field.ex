@@ -141,6 +141,17 @@ defmodule Doggo.Components.Field do
   end
 
   @impl true
+  def keyboard do
+    """
+    - `Space` - toggle a checkbox or a switch.
+    - `Left`, `Right`, `Up` and `Down` - move between the radios of a group and
+      check the one the focus lands on.
+
+    The controls are native elements, so the browser handles these.
+    """
+  end
+
+  @impl true
   def config do
     [
       type: :form,

@@ -127,6 +127,18 @@ defmodule Doggo.Components.Carousel do
   end
 
   @impl true
+  def keyboard do
+    """
+    - `Left` and `Right` - previous or next slide, with the focus on a
+      pagination tab. With `loop` they wrap, without it they stop at the ends.
+    - `Home` and `End` - first or last slide, with the focus on a pagination
+      tab.
+
+    The pagination is a single tab stop. The arrow keys need the colocated hook.
+    """
+  end
+
+  @impl true
   def css_path do
     "components/_carousel.scss"
   end
