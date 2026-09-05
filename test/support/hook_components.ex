@@ -13,4 +13,5 @@ defmodule Doggo.HookComponents do
   build_carousel()
   build_tabs()
   build_toolbar()
+  build_tooltip()
 end

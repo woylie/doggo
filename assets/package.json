@@ -21,7 +21,8 @@
     ".": "./js/index.js",
     "./carousel": "./js/hooks/carousel.js",
     "./tabs": "./js/hooks/tabs.js",
-    "./toolbar": "./js/hooks/toolbar.js"
+    "./toolbar": "./js/hooks/toolbar.js",
+    "./tooltip": "./js/hooks/tooltip.js"
   },
   "files": [
     "js"

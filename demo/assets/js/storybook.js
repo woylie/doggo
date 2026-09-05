@@ -33,7 +33,7 @@
 //   };
 // })();
 
-import { Carousel, Tabs, Toolbar } from "@woylie/doggo";
+import { Carousel, Tabs, Toolbar, Tooltip } from "@woylie/doggo";
 
 (function () {
   window.storybook = {
@@ -41,6 +41,7 @@ import { Carousel, Tabs, Toolbar } from "@woylie/doggo";
       "Doggo.Carousel": Carousel,
       "Doggo.Tabs": Tabs,
       "Doggo.Toolbar": Toolbar,
+      "Doggo.Tooltip": Tooltip,
     },
   };
 })();

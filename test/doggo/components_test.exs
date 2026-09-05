@@ -4444,10 +4444,12 @@ defmodule Doggo.ComponentsTest do
 
       span = find_one(html, "span:root")
       assert attribute(span, "data-aria-tooltip") == "data-aria-tooltip"
-      assert attribute(span, "aria-describedby") == expected_id
+      assert attribute(span, "id") == id
+      assert attribute(span, "aria-describedby") == nil
 
       inner_span = find_one(html, "span > span")
       assert attribute(inner_span, "tabindex") == "0"
+      assert attribute(inner_span, "aria-describedby") == expected_id
       assert text(inner_span) == "some text"
 
       tooltip = find_one(html, "span > div[role='tooltip']")
@@ -4471,10 +4473,11 @@ defmodule Doggo.ComponentsTest do
 
       span = find_one(html, "span:root")
       assert attribute(span, "data-aria-tooltip") == "data-aria-tooltip"
-      assert attribute(span, "aria-describedby") == expected_id
+      assert attribute(span, "aria-describedby") == nil
 
       inner_span = find_one(html, "span:root > span")
       assert attribute(inner_span, "tabindex") == nil
+      assert attribute(inner_span, "aria-describedby") == nil
       assert text(inner_span) == "some link"
 
       tooltip = find_one(html, "span:root > div[role='tooltip']")
