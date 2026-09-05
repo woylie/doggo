@@ -89,7 +89,7 @@ defmodule Doggo.Components.Fallback do
         """
 
       attr :accessibility_text, :string,
-        default: "not set",
+        default: "Not set",
         doc: """
         The text for the `aria-label` attribute in case the `value` is empty.
         """

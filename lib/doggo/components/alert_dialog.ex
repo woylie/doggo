@@ -188,7 +188,7 @@ defmodule Doggo.Components.AlertDialog do
               phx-click={JS.exec("data-cancel", to: "##{@id}")}
             >
               {render_slot(@close)}
-              <span :if={@close == []}>close</span>
+              <span :if={@close == []}>{@close_label}</span>
             </button>
             <h2 id={"#{@id}-title"}>{render_slot(@title)}</h2>
           </header>
