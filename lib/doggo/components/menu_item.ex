@@ -38,6 +38,11 @@ defmodule Doggo.Components.MenuItem do
   end
 
   @impl true
+  def css_path do
+    "components/_menu.scss"
+  end
+
+  @impl true
   def config do
     [
       type: :menu,

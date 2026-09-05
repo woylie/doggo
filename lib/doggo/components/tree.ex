@@ -44,7 +44,36 @@ defmodule Doggo.Components.Tree do
     ```css
     [role="tree"] {}
     ```
+
+    This component needs the `Doggo.Tree` JavaScript hook. See
+    [Phoenix LiveView Hooks](readme.html#phoenix-liveview-hooks) for
+    registering it.
     """
+  end
+
+  @impl true
+  def keyboard do
+    """
+    - `Down` and `Up` - move between the visible items. A collapsed branch takes
+      its children out of the sequence.
+    - `Right` - expand the focused branch, or move to its first child if it is
+      already expanded.
+    - `Left` - collapse the focused branch, or move to its parent if it is
+      already collapsed or is a leaf.
+    - `Home` and `End` - first and last visible item.
+    - Printable characters - move to the next visible item whose label starts
+      with what you type.
+
+    The tree is a single tab stop. Expanding and collapsing is the hook's own
+    state, and it survives a LiveView patch. Selecting an item is not: the
+    component renders `aria-selected` from the `selected` attribute of
+    `tree_item`, so wire your own click or key handler and re-render.
+    """
+  end
+
+  @impl true
+  def css_path do
+    "components/_tree.scss"
   end
 
   @impl true
@@ -54,14 +83,10 @@ defmodule Doggo.Components.Tree do
       since: "0.6.0",
       maturity: :experimental,
       maturity_note: """
-      The necessary JavaScript for making this component fully functional and
-      accessible will be added in a future version.
-
       **Missing features**
 
-      - Expand and collapse nodes
-      - Select nodes
-      - Navigate tree with arrow keys
+      - Selecting a node. The component renders `aria-selected` from the
+        `selected` attribute and never changes it, so the caller has to.
       """,
       modifiers: []
     ]
@@ -75,6 +100,10 @@ defmodule Doggo.Components.Tree do
   @impl true
   def attrs_and_slots do
     quote do
+      attr :id, :string,
+        required: true,
+        doc: "A unique DOM ID. Needed for the JavaScript hook."
+
       attr :label, :string,
         default: nil,
         doc: """
@@ -125,8 +154,10 @@ defmodule Doggo.Components.Tree do
 
     ~H"""
     <ul
+      id={@id}
       class={@class}
       role="tree"
+      phx-hook="Doggo.Tree"
       aria-label={@label}
       aria-labelledby={@labelledby}
       {@data_attrs}

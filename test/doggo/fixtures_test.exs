@@ -191,6 +191,33 @@ defmodule Doggo.FixturesTest do
     )
   end
 
+  test "tree fixture matches the rendered component" do
+    assigns = %{}
+
+    assert_fixture(
+      ~H"""
+      <HookComponents.tree id="tree" label="Dog Breeds">
+        <HookComponents.tree_item>
+          Sporting
+          <:items>
+            <HookComponents.tree_item>Golden Retriever</HookComponents.tree_item>
+            <HookComponents.tree_item>Irish Setter</HookComponents.tree_item>
+          </:items>
+        </HookComponents.tree_item>
+        <HookComponents.tree_item expanded={false}>
+          Working
+          <:items>
+            <HookComponents.tree_item>Boxer</HookComponents.tree_item>
+            <HookComponents.tree_item>Great Dane</HookComponents.tree_item>
+          </:items>
+        </HookComponents.tree_item>
+        <HookComponents.tree_item>Poodle</HookComponents.tree_item>
+      </HookComponents.tree>
+      """,
+      "tree.html"
+    )
+  end
+
   defp assert_fixture(rendered, name) do
     html = rendered_to_string(rendered)
     path = Path.join(@fixture_dir, name)

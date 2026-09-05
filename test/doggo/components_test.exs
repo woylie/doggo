@@ -4511,7 +4511,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.tree label="Dogs">
+        <TestComponents.tree id="tree" label="Dogs">
           items
         </TestComponents.tree>
         """)
@@ -4526,7 +4526,8 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.tree labelledby="dog-tree-label"></TestComponents.tree>
+        <TestComponents.tree id="tree" labelledby="dog-tree-label">
+        </TestComponents.tree>
         """)
 
       assert attribute(html, ":root", "aria-labelledby") == "dog-tree-label"
@@ -4537,7 +4538,7 @@ defmodule Doggo.ComponentsTest do
         assigns = %{}
 
         parse_heex(~H"""
-        <TestComponents.tree label="Dogs" labelledby="dog-tree-label">
+        <TestComponents.tree id="tree" label="Dogs" labelledby="dog-tree-label">
         </TestComponents.tree>
         """)
       end
@@ -4548,7 +4549,7 @@ defmodule Doggo.ComponentsTest do
         assigns = %{}
 
         parse_heex(~H"""
-        <TestComponents.tree></TestComponents.tree>
+        <TestComponents.tree id="tree"></TestComponents.tree>
         """)
       end
     end
@@ -4558,7 +4559,8 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.tree labelledby="rg-label" data-test="hi"></TestComponents.tree>
+        <TestComponents.tree id="tree" labelledby="rg-label" data-test="hi">
+        </TestComponents.tree>
         """)
 
       assert attribute(html, ":root", "data-test") == "hi"

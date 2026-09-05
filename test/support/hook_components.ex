@@ -20,5 +20,7 @@ defmodule Doggo.HookComponents do
   build_menu_item_radio_group()
   build_tabs()
   build_toolbar()
+  build_tree()
+  build_tree_item()
   build_tooltip()
 end

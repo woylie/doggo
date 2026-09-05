@@ -148,6 +148,7 @@ import {
   Tabs,
   Toolbar,
   Tooltip,
+  Tree,
 } from "@woylie/doggo";
 
 const hooks = {
@@ -158,6 +159,7 @@ const hooks = {
   "Doggo.Tabs": Tabs,
   "Doggo.Toolbar": Toolbar,
   "Doggo.Tooltip": Tooltip,
+  "Doggo.Tree": Tree,
 };
 
 const liveSocket = new LiveSocket("/live", Socket, {
@@ -165,6 +167,9 @@ const liveSocket = new LiveSocket("/live", Socket, {
   hooks,
 });
 ```
+
+It is recommended to only import the hooks you need to keep your bundle size
+small.
 
 To use the hooks in your storybook, register the same map in `storybook.js`:
 
@@ -177,18 +182,20 @@ import {
   Tabs,
   Toolbar,
   Tooltip,
+  Tree,
 } from "@woylie/doggo";
 
 (function () {
   window.storybook = {
     Hooks: {
       "Doggo.Accordion": Accordion,
-  "Doggo.Carousel": Carousel,
+      "Doggo.Carousel": Carousel,
       "Doggo.Menu": Menu,
-  "Doggo.MenuButton": MenuButton,
-  "Doggo.Tabs": Tabs,
+      "Doggo.MenuButton": MenuButton,
+      "Doggo.Tabs": Tabs,
       "Doggo.Toolbar": Toolbar,
       "Doggo.Tooltip": Tooltip,
+      "Doggo.Tree": Tree,
     },
   };
 })();

@@ -52,28 +52,29 @@ defmodule Doggo.Components.TreeItem do
   end
 
   @impl true
+  def css_path do
+    "components/_tree.scss"
+  end
+
+  @impl true
   def config do
     [
       type: :data,
       since: "0.6.0",
       maturity: :experimental,
       maturity_note: """
-      The necessary JavaScript for making this component fully functional and
-      accessible will be added in a future version.
-
       **Missing features**
 
-      - Expand and collapse nodes
-      - Select nodes
-      - Navigate tree with arrow keys
+      - Selecting a node. The component renders `aria-selected` from the
+        `selected` attribute and never changes it, so the caller has to.
       """,
       modifiers: []
     ]
   end
 
   @impl true
-  def nested_classes(_) do
-    []
+  def nested_classes(base_class) do
+    ["#{base_class}-toggle"]
   end
 
   @impl true
@@ -123,6 +124,13 @@ defmodule Doggo.Components.TreeItem do
       {@data_attrs}
       {@rest}
     >
+      <button
+        :if={@items != []}
+        type="button"
+        class={"#{@base_class}-toggle"}
+        tabindex="-1"
+        aria-hidden="true"
+      ></button>
       <span>{render_slot(@inner_block)}</span>
       <ul :if={@items != []} role="group" hidden={!@expanded}>
         {render_slot(@items)}
