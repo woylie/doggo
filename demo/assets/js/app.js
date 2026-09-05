@@ -20,8 +20,8 @@ import "phoenix_html";
 // Establish Phoenix Socket and LiveView configuration.
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
-import { hooks as colocatedHooks } from "phoenix-colocated/doggo";
-import topbar from "../vendor/topbar";
+import { Carousel, Tabs } from "@woylie/doggo";
+import topbar from "topbar";
 
 import "../css/app.scss";
 
@@ -30,7 +30,7 @@ let csrfToken = document
   .getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken },
-  hooks: colocatedHooks,
+  hooks: { "Doggo.Carousel": Carousel, "Doggo.Tabs": Tabs },
 });
 
 // Show progress bar on live navigation and form submits

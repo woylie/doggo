@@ -126,36 +126,47 @@ the options and the individual components.
 
 ### Phoenix LiveView Hooks
 
-Some components have colocated JS hooks. To import all hooks, update your
-`app.js`:
+Some components need a JavaScript hook. The hooks are ES modules shipped in the
+`assets` directory of the package. Add it to your `package.json`:
+
+```json
+{
+  "dependencies": {
+    "@woylie/doggo": "file:../deps/doggo/assets"
+  }
+}
+```
+
+Then register the hooks for the components you build in your `app.js`:
 
 ```js
-import { hooks as doggoHooks } from "phoenix-colocated/doggo";
+import { Carousel, Tabs } from "@woylie/doggo";
 
-const Hooks = { ...doggoHooks };
-
-// Hooks.MyCustomHook = { ... }
+const hooks = {
+  "Doggo.Carousel": Carousel,
+  "Doggo.Tabs": Tabs,
+};
 
 const liveSocket = new LiveSocket("/live", Socket, {
   // ...
-  hooks: Hooks,
+  hooks,
 });
 ```
 
-To import the hooks into your storybook, update `storybook.js`:
+To use the hooks in your storybook, register the same map in `storybook.js`:
 
 ```js
-import { hooks } from "phoenix-colocated/doggo";
+import { Carousel, Tabs } from "@woylie/doggo";
 
 (function () {
   window.storybook = {
-    Hooks: hooks,
+    Hooks: {
+      "Doggo.Carousel": Carousel,
+      "Doggo.Tabs": Tabs,
+    },
   };
 })();
 ```
-
-Refer to the documentation of `Phoenix.LiveView.ColocatedHook` for more
-information.
 
 ### Storybook
 
