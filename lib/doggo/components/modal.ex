@@ -145,6 +145,11 @@ defmodule Doggo.Components.Modal do
       type: :miscellaneous,
       since: "0.6.0",
       maturity: :developing,
+      maturity_note: """
+      **The markup will change.** The dialog is opened by setting the `open`
+      attribute today. It is planned to use `showModal()` instead, which changes
+      the elements and attributes this component emits.
+      """,
       modifiers: []
     ]
   end

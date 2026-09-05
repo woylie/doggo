@@ -60,6 +60,11 @@ defmodule Doggo.Components.Accordion do
       - Move focus to the first or last header with Home and End
 
       Both are optional in the ARIA Authoring Practices.
+
+      **The markup may change.** Replacing the `div`, `button` and
+      `aria-expanded` with the platform's own `<details>` and `<summary>` is
+      under consideration. It would need no JavaScript, and it would change the
+      elements this component emits and the attributes your stylesheet targets.
       """,
       modifiers: []
     ]
