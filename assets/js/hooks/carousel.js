@@ -1,22 +1,19 @@
 export default {
   mounted() {
     const carousel = this.el;
-    const baseClass = carousel.className.split(' ')[0];
+    const baseClass = carousel.className.split(" ")[0];
 
     const getItemsContainer = () =>
       carousel.querySelector(`.${baseClass}-items-container`);
 
-    const getLiveRegion = () =>
-      carousel.querySelector(`.${baseClass}-items`);
+    const getLiveRegion = () => carousel.querySelector(`.${baseClass}-items`);
 
     const getItems = () =>
-      Array.from(
-        getItemsContainer().querySelectorAll(`.${baseClass}-item`)
-      );
+      Array.from(getItemsContainer().querySelectorAll(`.${baseClass}-item`));
 
     const getTabs = () =>
       Array.from(
-        carousel.querySelectorAll(`.${baseClass}-pagination [role="tab"]`)
+        carousel.querySelectorAll(`.${baseClass}-pagination [role="tab"]`),
       );
 
     const getControl = (name) =>
@@ -92,9 +89,7 @@ export default {
       });
 
       items.forEach((item, idx) => {
-        item.setAttribute("aria-current",
-          idx === activeIdx ? "true" : "false"
-        );
+        item.setAttribute("aria-current", idx === activeIdx ? "true" : "false");
       });
     };
 
@@ -111,16 +106,13 @@ export default {
       const container = itemsContainer.getBoundingClientRect();
       const target = item.getBoundingClientRect();
       const offset =
-        target.left +
-        target.width / 2 -
-        (container.left + container.width / 2);
+        target.left + target.width / 2 - (container.left + container.width / 2);
 
-      const maxScroll =
-        itemsContainer.scrollWidth - itemsContainer.clientWidth;
+      const maxScroll = itemsContainer.scrollWidth - itemsContainer.clientWidth;
 
       itemsContainer.scrollLeft = Math.min(
         Math.max(itemsContainer.scrollLeft + offset, 0),
-        maxScroll
+        maxScroll,
       );
     };
 
@@ -151,14 +143,14 @@ export default {
 
         if (hasShowEnded()) endShow();
       }, rotationIntervalMs);
-    }
+    };
 
     const stopAutoRotation = () => {
       if (autoRotationTimer != null) {
         clearInterval(autoRotationTimer);
         autoRotationTimer = null;
       }
-    }
+    };
 
     // The pause button changes its label, not its position.
     const syncPauseControl = () => {
@@ -180,7 +172,7 @@ export default {
         : pauseBtn.dataset.pauseLabel;
 
       if (label) pauseBtn.setAttribute("aria-label", label);
-    }
+    };
 
     // Using any control stops auto rotation.
     const pauseForInteraction = () => {
@@ -212,7 +204,7 @@ export default {
       (e) => {
         if (e.target === getItemsContainer()) syncActiveState();
       },
-      true
+      true,
     );
 
     // Event listener is added on the carousel instead of the buttons
@@ -221,7 +213,7 @@ export default {
     carousel.addEventListener("click", (e) => {
       const control = e.target.closest(
         `.${baseClass}-previous, .${baseClass}-next,` +
-          ` .${baseClass}-pause, .${baseClass}-pagination [role="tab"]`
+          ` .${baseClass}-pause, .${baseClass}-pagination [role="tab"]`,
       );
 
       if (!control) return;
@@ -245,9 +237,7 @@ export default {
     });
 
     carousel.addEventListener("keydown", (e) => {
-      const tab = e.target.closest(
-        `.${baseClass}-pagination [role="tab"]`
-      );
+      const tab = e.target.closest(`.${baseClass}-pagination [role="tab"]`);
 
       if (!tab) return;
 
@@ -275,11 +265,11 @@ export default {
 
     // Pause when hovering or focusing, resume when leaving, unless
     // rotation is paused with the pause button.
-    carousel.addEventListener('pointerenter', stopAutoRotation);
-    carousel.addEventListener('pointerleave', startAutoRotation);
-    carousel.addEventListener('focusin', stopAutoRotation);
+    carousel.addEventListener("pointerenter", stopAutoRotation);
+    carousel.addEventListener("pointerleave", startAutoRotation);
+    carousel.addEventListener("focusin", stopAutoRotation);
 
-    carousel.addEventListener('focusout', (e) => {
+    carousel.addEventListener("focusout", (e) => {
       // focusout also fires while focus moves between controls inside
       // the carousel, and that must not resume the rotation.
       if (!carousel.contains(e.relatedTarget)) startAutoRotation();
@@ -308,5 +298,5 @@ export default {
   // and set the pause button label and the disabled buttons again.
   updated() {
     this.syncAfterUpdate();
-  }
-}
+  },
+};

@@ -4,7 +4,7 @@ export default {
 
     const getTabs = () =>
       Array.from(
-        tabs.querySelectorAll(':scope > [role="tablist"] > [role="tab"]')
+        tabs.querySelectorAll(':scope > [role="tablist"] > [role="tab"]'),
       );
 
     const getPanels = () =>
@@ -71,5 +71,5 @@ export default {
   // Restore selected tab on patch.
   updated() {
     this.restoreSelection();
-  }
-}
+  },
+};

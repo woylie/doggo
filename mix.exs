@@ -91,7 +91,8 @@ defmodule Doggo.MixProject do
         "Changelog" => @source_url <> "/blob/main/CHANGELOG.md",
         "Sponsor" => "https://github.com/sponsors/woylie"
       },
-      files: ~w(assets lib .formatter.exs mix.exs CHANGELOG.md README* LICENSE*)
+      files:
+        ~w(assets/js assets/package.json lib .formatter.exs mix.exs CHANGELOG.md README* LICENSE*)
     ]
   end
 

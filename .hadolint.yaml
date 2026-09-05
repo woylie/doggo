@@ -1,0 +1,3 @@
+ignored:
+  # base image tag pins distribution, we don't pin apt packages
+  - DL3008
