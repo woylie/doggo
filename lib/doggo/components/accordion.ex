@@ -37,6 +37,10 @@ defmodule Doggo.Components.Accordion do
       </:section>
     </.accordion>
     ```
+
+    This component needs the `Doggo.Accordion` JavaScript hook for the arrow
+    keys. See [Phoenix LiveView Hooks](readme.html#phoenix-liveview-hooks) for
+    registering it.
     """
   end
 
@@ -44,6 +48,13 @@ defmodule Doggo.Components.Accordion do
   def keyboard do
     """
     - `Enter` or `Space` - toggle the section of the focused header.
+    - `Up` and `Down` - move to the previous or the next header, wrapping at the
+      ends.
+    - `Home` and `End` - first and last header.
+
+    Every header is in the tab order, which is what the ARIA Authoring Practices
+    describe for an accordion. The arrow keys, `Home` and `End` need the
+    colocated hook; they are optional in the practices.
     """
   end
 
@@ -54,13 +65,6 @@ defmodule Doggo.Components.Accordion do
       since: "0.6.0",
       maturity: :developing,
       maturity_note: """
-      **Missing features**
-
-      - Move focus between the headers with the arrow keys
-      - Move focus to the first or last header with Home and End
-
-      Both are optional in the ARIA Authoring Practices.
-
       **The markup may change.** Replacing the `div`, `button` and
       `aria-expanded` with the platform's own `<details>` and `<summary>` is
       under consideration. It would need no JavaScript, and it would change the
@@ -114,7 +118,7 @@ defmodule Doggo.Components.Accordion do
   @impl true
   def render(assigns) do
     ~H"""
-    <div id={@id} class={@class} {@data_attrs} {@rest}>
+    <div id={@id} class={@class} phx-hook="Doggo.Accordion" {@data_attrs} {@rest}>
       <.section
         :for={{section, index} <- Enum.with_index(@section, 1)}
         section={section}

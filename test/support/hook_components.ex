@@ -9,6 +9,7 @@ defmodule Doggo.HookComponents do
   use Doggo.Components
   use Phoenix.Component
 
+  build_accordion()
   build_action_bar()
   build_carousel()
   build_tabs()

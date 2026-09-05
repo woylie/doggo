@@ -101,6 +101,21 @@ defmodule Doggo.FixturesTest do
     )
   end
 
+  test "accordion fixture matches the rendered component" do
+    assigns = %{}
+
+    assert_fixture(
+      ~H"""
+      <HookComponents.accordion id="accordion">
+        <:section title="Golden Retriever">Friendly.</:section>
+        <:section title="Siberian Husky">Energetic.</:section>
+        <:section title="Dachshund">Playful.</:section>
+      </HookComponents.accordion>
+      """,
+      "accordion.html"
+    )
+  end
+
   defp assert_fixture(rendered, name) do
     html = rendered_to_string(rendered)
     path = Path.join(@fixture_dir, name)

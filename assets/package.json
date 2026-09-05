@@ -19,6 +19,7 @@
   "main": "js/index.js",
   "exports": {
     ".": "./js/index.js",
+    "./accordion": "./js/hooks/accordion.js",
     "./carousel": "./js/hooks/carousel.js",
     "./tabs": "./js/hooks/tabs.js",
     "./toolbar": "./js/hooks/toolbar.js",
