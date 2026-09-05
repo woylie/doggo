@@ -143,7 +143,9 @@ jobs:
         run: |
           mix local.rebar --force
           mix local.hex --force
-          mix deps.get
+          mix deps.get --check-locked
+      - name: Check for unused dependencies
+        run: mix deps.unlock --check-unused
       - name: Compile
         run: mix compile --warnings-as-errors
       - name: Run Formatter
@@ -195,7 +197,9 @@ jobs:
         run: |
           mix local.rebar --force
           mix local.hex --force
-          mix deps.get
+          mix deps.get --check-locked
+      - name: Check for unused dependencies
+        run: mix deps.unlock --check-unused
       - name: Compile
         run: mix compile --warnings-as-errors
       - name: Run Formatter
