@@ -50,7 +50,7 @@ defmodule Doggo.Components.Tabs do
   @impl true
   def keyboard do
     """
-    - `Left`, `Right`, `Up` and `Down - previous or next tab, wrapping at the
+    - `Left`, `Right`, `Up` and `Down` - previous or next tab, wrapping at the
       ends. A tab list with `orientation="horizontal"` uses `Left` and `Right`,
       one with `orientation="vertical"` uses `Up` and `Down`.
     - `Home` and `End` - first and last tab.

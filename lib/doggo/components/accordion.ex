@@ -54,7 +54,8 @@ defmodule Doggo.Components.Accordion do
 
     Every header is in the tab order, which is what the ARIA Authoring Practices
     describe for an accordion. The arrow keys, `Home` and `End` need the
-    colocated hook; they are optional in the practices.
+    colocated hook; the ARIA Authoring Practices list them as optional for an
+    accordion.
     """
   end
 
