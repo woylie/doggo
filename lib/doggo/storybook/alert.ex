@@ -29,6 +29,15 @@ defmodule Doggo.Storybook.Alert do
           on_close: {:eval, ~s|JS.hide(to: "#alert-single-close-button")|}
         },
         slots: slots()
+      },
+      %Variation{
+        id: :close_button_with_icon,
+        attributes: %{
+          close_label: "Dismiss",
+          on_close:
+            {:eval, ~s|JS.hide(to: "#alert-single-close-button-with-icon")|}
+        },
+        slots: slots_with_close(opts)
       }
     ]
   end
@@ -41,6 +50,15 @@ defmodule Doggo.Storybook.Alert do
 
   defp slots do
     ["This is an alert."]
+  end
+
+  defp slots_with_close(opts) do
+    dependent_components = opts[:dependent_components]
+
+    [
+      "This is an alert.",
+      "<:close>#{icon(:close, dependent_components)}</:close>"
+    ]
   end
 
   defp slots_with_icon(opts) do
