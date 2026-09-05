@@ -1,3 +1,5 @@
+import { clamp, setRovingTabindex, targetIndex } from "../navigation.js";
+
 // Controls the toolbar manages
 const CONTROLS = 'a[href], button, input, select, textarea, [role="button"]';
 
@@ -49,9 +51,7 @@ export default {
     const setActive = (idx) => {
       activeIdx = idx;
 
-      getControls().forEach((control, i) => {
-        control.setAttribute("tabindex", i === idx ? "0" : "-1");
-      });
+      setRovingTabindex(getControls(), idx);
     };
 
     toolbar.addEventListener("focusin", (e) => {
@@ -70,24 +70,11 @@ export default {
 
       if (currentIdx < 0) return;
 
-      const total = controls.length;
-      const [previous, next] = isVertical()
-        ? ["ArrowUp", "ArrowDown"]
-        : ["ArrowLeft", "ArrowRight"];
+      const nextIdx = targetIndex(e.key, currentIdx, controls.length, {
+        orientation: isVertical() ? "vertical" : "horizontal",
+      });
 
-      let nextIdx;
-
-      if (e.key === next) {
-        nextIdx = (currentIdx + 1) % total;
-      } else if (e.key === previous) {
-        nextIdx = (currentIdx - 1 + total) % total;
-      } else if (e.key === "Home") {
-        nextIdx = 0;
-      } else if (e.key === "End") {
-        nextIdx = total - 1;
-      } else {
-        return;
-      }
+      if (nextIdx === null) return;
 
       e.preventDefault();
       controls[nextIdx].focus();
@@ -96,7 +83,7 @@ export default {
     this.restoreTabStop = () => {
       const total = getControls().length;
 
-      if (total > 0) setActive(Math.min(activeIdx, total - 1));
+      if (total > 0) setActive(clamp(activeIdx, total));
     };
 
     this.restoreTabStop();

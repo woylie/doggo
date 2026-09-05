@@ -7,8 +7,6 @@ import { mount, press, render } from "./hook.js";
 const nameOf = (control) =>
   control.getAttribute("aria-label") || control.textContent.trim();
 
-const tabOrder = (el) =>
-  Array.from(el.querySelectorAll("button, input")).map((control) =>
 const tabIndexes = (el) =>
   Object.fromEntries(
     Array.from(el.querySelectorAll("button, input")).map((control) => [

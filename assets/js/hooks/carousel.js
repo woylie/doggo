@@ -1,3 +1,5 @@
+import { selectTab, stepIndex, targetIndex } from "../navigation.js";
+
 export default {
   mounted() {
     const carousel = this.el;
@@ -28,15 +30,8 @@ export default {
 
     const isLoopEnabled = carousel.getAttribute("data-loop") != null;
 
-    const getTargetIdx = (currentIdx, offset) => {
-      const total = getItems().length;
-
-      if (isLoopEnabled) {
-        return (currentIdx + offset + total) % total;
-      }
-
-      return Math.min(Math.max(currentIdx + offset, 0), total - 1);
-    };
+    const getTargetIdx = (currentIdx, offset) =>
+      stepIndex(currentIdx, offset, getItems().length, { wrap: isLoopEnabled });
 
     const getCurrentIdx = () =>
       Number(carousel.getAttribute("data-active-index")) || 0;
@@ -82,11 +77,7 @@ export default {
         setDisabled(getControl("next"), activeIdx === items.length - 1);
       }
 
-      getTabs().forEach((tab, idx) => {
-        const isSelected = idx === activeIdx;
-        tab.setAttribute("aria-selected", isSelected ? "true" : "false");
-        tab.setAttribute("tabindex", isSelected ? "0" : "-1");
-      });
+      selectTab(getTabs(), activeIdx);
 
       items.forEach((item, idx) => {
         item.setAttribute("aria-current", idx === activeIdx ? "true" : "false");
@@ -242,19 +233,11 @@ export default {
       if (!tab) return;
 
       const tabs = getTabs();
-      let nextIdx;
+      const nextIdx = targetIndex(e.key, getCurrentIdx(), getItems().length, {
+        wrap: isLoopEnabled,
+      });
 
-      if (e.key === "ArrowRight") {
-        nextIdx = getTargetIdx(getCurrentIdx(), 1);
-      } else if (e.key === "ArrowLeft") {
-        nextIdx = getTargetIdx(getCurrentIdx(), -1);
-      } else if (e.key === "Home") {
-        nextIdx = 0;
-      } else if (e.key === "End") {
-        nextIdx = tabs.length - 1;
-      } else {
-        return;
-      }
+      if (nextIdx === null) return;
 
       e.preventDefault();
       pauseForInteraction();

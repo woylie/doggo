@@ -1,3 +1,5 @@
+import { clamp, selectTab, targetIndex } from "../navigation.js";
+
 export default {
   mounted() {
     const tabs = this.el;
@@ -15,11 +17,7 @@ export default {
     const select = (idx) => {
       selectedIdx = idx;
 
-      getTabs().forEach((tab, i) => {
-        const selected = i === idx;
-        tab.setAttribute("aria-selected", selected ? "true" : "false");
-        tab.setAttribute("tabindex", selected ? "0" : "-1");
-      });
+      selectTab(getTabs(), idx);
 
       getPanels().forEach((panel, i) => {
         if (i === idx) {
@@ -41,20 +39,9 @@ export default {
 
       if (currentIdx < 0) return;
 
-      const total = getTabs().length;
-      let nextIdx;
+      const nextIdx = targetIndex(e.key, currentIdx, getTabs().length);
 
-      if (e.key === "ArrowRight") {
-        nextIdx = (currentIdx + 1) % total;
-      } else if (e.key === "ArrowLeft") {
-        nextIdx = (currentIdx - 1 + total) % total;
-      } else if (e.key === "Home") {
-        nextIdx = 0;
-      } else if (e.key === "End") {
-        nextIdx = total - 1;
-      } else {
-        return;
-      }
+      if (nextIdx === null) return;
 
       e.preventDefault();
       select(nextIdx);
@@ -64,7 +51,7 @@ export default {
     this.restoreSelection = () => {
       const total = getTabs().length;
 
-      if (total > 0) select(Math.min(selectedIdx, total - 1));
+      if (total > 0) select(clamp(selectedIdx, total));
     };
   },
 
