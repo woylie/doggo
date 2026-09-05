@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import SplitPane from "../js/hooks/split_pane.js";
+import { initSplitPane } from "../js/hooks/split_pane.js";
 import fixture from "./fixtures/split_pane.html?raw";
-import { mount, press, render } from "./hook.js";
+import { press, render } from "./dom.js";
 
 // happy-dom does not lay the page out, so the box the hook measures against is
 // the test's own.
@@ -33,7 +33,7 @@ describe("split pane hook", () => {
 
   beforeEach(() => {
     el = render(fixture);
-    hook = mount(SplitPane, el);
+    hook = initSplitPane(el);
     separator = el.querySelector('[role="separator"]');
   });
 
@@ -93,7 +93,7 @@ describe("split pane hook", () => {
     const collapsed = render(
       fixture.replace('aria-valuenow="40"', 'aria-valuenow="20"'),
     );
-    mount(SplitPane, collapsed);
+    initSplitPane(collapsed);
 
     press(collapsed.querySelector('[role="separator"]'), "Enter");
 
@@ -181,7 +181,7 @@ describe("split pane hook", () => {
     // A patch renders the size the server knows about.
     el.style.removeProperty("--split-pane-position");
     separator.setAttribute("aria-valuenow", "40");
-    hook.updated();
+    hook.update();
 
     expect(positionOf(el)).toEqual({ property: "80%", ariaValueNow: "80" });
   });

@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import Menu from "../js/hooks/menu.js";
+import { initMenu } from "../js/hooks/menu.js";
 import barFixture from "./fixtures/menu_bar.html?raw";
 import fixture from "./fixtures/menu.html?raw";
-import { mount, press, render } from "./hook.js";
+import { press, render } from "./dom.js";
 
 const ITEMS =
   '[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]';
@@ -27,7 +27,7 @@ describe("menu hook", () => {
 
   beforeEach(() => {
     el = render(fixture);
-    mount(Menu, el);
+    initMenu(el);
   });
 
   it("is a single tab stop over every item, including nested groups", () => {
@@ -174,7 +174,7 @@ describe("menu hook, closing", () => {
       '<button id="opener" aria-controls="menu" aria-expanded="true">Actions</button>';
     document.body.insertAdjacentHTML("beforeend", fixture);
     el = document.getElementById("menu");
-    mount(Menu, el);
+    initMenu(el);
   });
 
   it("closes on Escape and returns the focus to the button", () => {
@@ -211,7 +211,7 @@ describe("menu bar hook", () => {
 
   beforeEach(() => {
     el = render(barFixture);
-    mount(Menu, el);
+    initMenu(el);
   });
 
   it("moves with the horizontal keys, since a menu bar runs across", () => {

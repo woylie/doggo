@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import Tabs from "../js/hooks/tabs.js";
+import { initTabs } from "../js/hooks/tabs.js";
 import fixture from "./fixtures/tabs.html?raw";
-import { mount, press, render } from "./hook.js";
+import { press, render } from "./dom.js";
 
 const selected = (el) =>
   Array.from(el.querySelectorAll('[role="tab"]')).findIndex(
@@ -24,7 +24,7 @@ describe("tabs hook", () => {
 
   beforeEach(() => {
     el = render(fixture);
-    hook = mount(Tabs, el);
+    hook = initTabs(el);
     el.querySelector('[role="tab"]').focus();
   });
 
@@ -125,7 +125,7 @@ describe("tabs hook", () => {
     el.querySelector("#tabs-panel-2").setAttribute("hidden", "");
     el.querySelector("#tabs-panel-1").removeAttribute("hidden");
 
-    hook.updated();
+    hook.update();
 
     expect(selected(el)).toBe(1);
     expect(visiblePanels(el)).toEqual(["tabs-panel-2"]);
@@ -136,7 +136,7 @@ describe("tabs hook", () => {
 
     el.querySelector("#tabs-tab-3").remove();
     el.querySelector("#tabs-panel-3").remove();
-    hook.updated();
+    hook.update();
 
     expect(selected(el)).toBe(1);
   });

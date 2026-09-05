@@ -33,64 +33,68 @@ function isDisabled(el) {
   return el.disabled || el.getAttribute("aria-disabled") === "true";
 }
 
+export function initToolbar(toolbar) {
+  // Read on demand: a patch can add and remove controls.
+  const getControls = () =>
+    Array.from(toolbar.querySelectorAll(CONTROLS)).filter(
+      (control) => !isDisabled(control),
+    );
+
+  const isVertical = () =>
+    toolbar.getAttribute("aria-orientation") === "vertical";
+
+  let activeIdx = 0;
+
+  const setActive = (idx) => {
+    activeIdx = idx;
+
+    setRovingTabindex(getControls(), idx);
+  };
+
+  toolbar.addEventListener("focusin", (e) => {
+    const idx = getControls().indexOf(e.target.closest(CONTROLS));
+
+    if (idx >= 0 && idx !== activeIdx) setActive(idx);
+  });
+
+  toolbar.addEventListener("keydown", (e) => {
+    const control = e.target.closest(CONTROLS);
+
+    if (!control || keepsArrows(control)) return;
+
+    const controls = getControls();
+    const currentIdx = controls.indexOf(control);
+
+    if (currentIdx < 0) return;
+
+    const nextIdx = targetIndex(e.key, currentIdx, controls.length, {
+      orientation: isVertical() ? "vertical" : "horizontal",
+    });
+
+    if (nextIdx === null) return;
+
+    e.preventDefault();
+    controls[nextIdx].focus();
+  });
+
+  const restoreTabStop = () => {
+    const total = getControls().length;
+
+    if (total > 0) setActive(clamp(activeIdx, total));
+  };
+
+  restoreTabStop();
+
+  return { update: restoreTabStop };
+}
+
 export default {
   mounted() {
-    const toolbar = this.el;
-
-    // Read on demand: a patch can add and remove controls.
-    const getControls = () =>
-      Array.from(toolbar.querySelectorAll(CONTROLS)).filter(
-        (control) => !isDisabled(control),
-      );
-
-    const isVertical = () =>
-      toolbar.getAttribute("aria-orientation") === "vertical";
-
-    let activeIdx = 0;
-
-    const setActive = (idx) => {
-      activeIdx = idx;
-
-      setRovingTabindex(getControls(), idx);
-    };
-
-    toolbar.addEventListener("focusin", (e) => {
-      const idx = getControls().indexOf(e.target.closest(CONTROLS));
-
-      if (idx >= 0 && idx !== activeIdx) setActive(idx);
-    });
-
-    toolbar.addEventListener("keydown", (e) => {
-      const control = e.target.closest(CONTROLS);
-
-      if (!control || keepsArrows(control)) return;
-
-      const controls = getControls();
-      const currentIdx = controls.indexOf(control);
-
-      if (currentIdx < 0) return;
-
-      const nextIdx = targetIndex(e.key, currentIdx, controls.length, {
-        orientation: isVertical() ? "vertical" : "horizontal",
-      });
-
-      if (nextIdx === null) return;
-
-      e.preventDefault();
-      controls[nextIdx].focus();
-    });
-
-    this.restoreTabStop = () => {
-      const total = getControls().length;
-
-      if (total > 0) setActive(clamp(activeIdx, total));
-    };
-
-    this.restoreTabStop();
+    this.instance = initToolbar(this.el);
   },
 
   // A patch renders every control in the tab order again.
   updated() {
-    this.restoreTabStop();
+    this.instance.update();
   },
 };
