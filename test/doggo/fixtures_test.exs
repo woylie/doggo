@@ -14,6 +14,8 @@ defmodule Doggo.FixturesTest do
 
   alias Doggo.HookComponents
 
+  @moduletag :fixtures
+
   @fixture_dir Path.expand("../../assets/test/fixtures", __DIR__)
 
   test "tabs fixture matches the rendered component" do
