@@ -33,11 +33,12 @@
 //   };
 // })();
 
-import { Carousel, Tabs, Toolbar, Tooltip } from "@woylie/doggo";
+import { Accordion, Carousel, Tabs, Toolbar, Tooltip } from "@woylie/doggo";
 
 (function () {
   window.storybook = {
     Hooks: {
+      "Doggo.Accordion": Accordion,
       "Doggo.Carousel": Carousel,
       "Doggo.Tabs": Tabs,
       "Doggo.Toolbar": Toolbar,
