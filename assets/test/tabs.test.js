@@ -20,10 +20,11 @@ const visiblePanels = (el) =>
 
 describe("tabs hook", () => {
   let el;
+  let hook;
 
   beforeEach(() => {
     el = render(fixture);
-    mount(Tabs, el);
+    hook = mount(Tabs, el);
     el.querySelector('[role="tab"]').focus();
   });
 
@@ -78,7 +79,6 @@ describe("tabs hook", () => {
   });
 
   it("restores the selection after a patch", () => {
-    const instance = mount(Tabs, el);
     press(el.querySelector("#tabs-tab-1"), "ArrowRight");
 
     // A patch re-renders the server's initial state.
@@ -87,19 +87,18 @@ describe("tabs hook", () => {
     el.querySelector("#tabs-panel-2").setAttribute("hidden", "");
     el.querySelector("#tabs-panel-1").removeAttribute("hidden");
 
-    instance.updated();
+    hook.updated();
 
     expect(selected(el)).toBe(1);
     expect(visiblePanels(el)).toEqual(["tabs-panel-2"]);
   });
 
   it("clamps the restored selection when tabs are removed", () => {
-    const instance = mount(Tabs, el);
     press(el.querySelector("#tabs-tab-1"), "End");
 
     el.querySelector("#tabs-tab-3").remove();
     el.querySelector("#tabs-panel-3").remove();
-    instance.updated();
+    hook.updated();
 
     expect(selected(el)).toBe(1);
   });

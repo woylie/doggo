@@ -87,6 +87,20 @@ defmodule Doggo.FixturesTest do
     )
   end
 
+  test "tooltip fixture matches the rendered component" do
+    assigns = %{}
+
+    assert_fixture(
+      ~H"""
+      <HookComponents.tooltip id="tooltip">
+        Labrador Retriever
+        <:tooltip>A friendly breed.</:tooltip>
+      </HookComponents.tooltip>
+      """,
+      "tooltip.html"
+    )
+  end
+
   defp assert_fixture(rendered, name) do
     html = rendered_to_string(rendered)
     path = Path.join(@fixture_dir, name)

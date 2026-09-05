@@ -45,13 +45,17 @@ defmodule Doggo.Components.Tooltip do
     </p>
     ```
 
-    If the inner block contains a link, add the `:contains_link` attribute:
+    If the inner block contains a link or another focusable element, add the
+    `contains_link` attribute and put `aria-describedby` on that element. Its
+    value is the `id` of the component with `-tooltip` appended:
 
     ```heex
     <p>
       Did you know that the
       <.tooltip id="labrador-info" contains_link>
-        <.link navigate={~p"/labradors"}>Labrador Retriever</.link>
+        <.link navigate={~p"/labradors"} aria-describedby="labrador-info-tooltip">
+          Labrador Retriever
+        </.link>
         <:tooltip>
           <p><strong>Labrador Retriever</strong></p>
           <p>
@@ -63,6 +67,15 @@ defmodule Doggo.Components.Tooltip do
       is one of the most popular dog breeds in the world?
     </p>
     ```
+
+    This component needs the `Doggo.Tooltip` JavaScript hook for `Esc` to
+    dismiss the tooltip. See
+    [Phoenix LiveView Hooks](readme.html#phoenix-liveview-hooks) for
+    registering it.
+
+    Your stylesheet decides when the tooltip is visible. Show it on `:hover` and
+    `:focus-within`, and hide it when the root element has the `data-dismissed`
+    attribute, which the hook sets. See the example CSS.
     """
   end
 
@@ -70,7 +83,13 @@ defmodule Doggo.Components.Tooltip do
   def keyboard do
     """
     - `Tab` - focus the described element, which shows the tooltip.
+    - `Esc` - hide the tooltip while it is shown, without moving the focus.
     """
+  end
+
+  @impl true
+  def css_path do
+    "components/_tooltip.scss"
   end
 
   @impl true
@@ -80,9 +99,11 @@ defmodule Doggo.Components.Tooltip do
       since: "0.6.0",
       maturity: :developing,
       maturity_note: """
-      **Missing features**
-
-      - Dismiss the tooltip with Esc, as WCAG 1.4.13 requires
+      **The markup may change.** A rewrite on top of the Popover API is being
+      considered, which would put the tooltip in the top layer, so that an
+      ancestor with `overflow: hidden` can no longer clip it. That would change
+      the elements this component emits and the attributes your stylesheet
+      targets.
       """,
       base_class: "tooltip-container",
       modifiers: []
@@ -102,12 +123,18 @@ defmodule Doggo.Components.Tooltip do
       attr :contains_link, :boolean,
         default: false,
         doc: """
-        If `false`, the component sets `tabindex="0"` on the element wrapping the
-        inner block, so that the tooltip can be made visible by focusing the
-        element.
+        If `false`, the component sets `tabindex="0"` and `aria-describedby` on
+        the element wrapping the inner block, so that the tooltip is announced
+        and can be made visible by focusing that element.
 
-        If the inner block already contains an element that is focusable, such as
-        a link or a button, set this attribute to `true`.
+        Set this to `true` if the inner block already contains a focusable
+        element, such as a link or a button. The component then sets neither
+        `tabindex` nor `aria-describedby`, because both belong on the element
+        that receives the focus, and you render that element.
+
+        Set `aria-describedby` on it yourself. Its value is the `id` you passed
+        with `-tooltip` appended: a tooltip with `id="labrador-info"` needs
+        `aria-describedby="labrador-info-tooltip"`. See the usage example.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."
@@ -126,13 +153,17 @@ defmodule Doggo.Components.Tooltip do
   def render(assigns) do
     ~H"""
     <span
+      id={@id}
       class={@class}
-      aria-describedby={"#{@id}-tooltip"}
       data-aria-tooltip
+      phx-hook="Doggo.Tooltip"
       {@data_attrs}
       {@rest}
     >
-      <span tabindex={!@contains_link && "0"}>
+      <span
+        tabindex={!@contains_link && "0"}
+        aria-describedby={!@contains_link && "#{@id}-tooltip"}
+      >
         {render_slot(@inner_block)}
       </span>
       <div role="tooltip" id={"#{@id}-tooltip"}>

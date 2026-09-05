@@ -19,6 +19,7 @@ const focused = () => nameOf(document.activeElement);
 
 describe("toolbar hook", () => {
   let el;
+  let hook;
 
   const control = (name) =>
     Array.from(el.querySelectorAll("button, input")).find(
@@ -29,7 +30,7 @@ describe("toolbar hook", () => {
 
   beforeEach(() => {
     el = render(toolbarFixture);
-    mount(Toolbar, el);
+    hook = mount(Toolbar, el);
   });
 
   it("puts only the first enabled control in the tab order", () => {
@@ -105,14 +106,13 @@ describe("toolbar hook", () => {
   });
 
   it("restores the tab stop after a patch", () => {
-    const instance = mount(Toolbar, el);
     focus("Teach");
 
     // A patch renders every control in the tab order again.
     el.querySelectorAll("button, input").forEach((candidate) =>
       candidate.removeAttribute("tabindex"),
     );
-    instance.updated();
+    hook.updated();
 
     expect(tabIndexes(el).Teach).toBe("0");
   });
