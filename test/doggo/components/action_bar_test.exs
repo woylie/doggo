@@ -23,7 +23,7 @@ defmodule Doggo.Components.ActionBarTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.action_bar>
+        <TestComponents.action_bar id="action-bar">
           <:item label="Edit" on_click={JS.push("edit")}>
             edit-icon
           </:item>
@@ -49,7 +49,7 @@ defmodule Doggo.Components.ActionBarTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.action_bar data-what="ever">
+        <TestComponents.action_bar id="action-bar" data-what="ever">
           <:item label="Edit" on_click={JS.push("edit")}>
             edit-icon
           </:item>
