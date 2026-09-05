@@ -31,7 +31,14 @@ export default {
     tabs.addEventListener("click", (e) => {
       const idx = getTabs().indexOf(e.target.closest('[role="tab"]'));
 
-      if (idx >= 0) selectedIdx = idx;
+      if (idx >= 0) select(idx);
+    });
+
+    // Dispatched by `Doggo.show_tab/3`. One-based index.
+    tabs.addEventListener("doggo:show-tab", (e) => {
+      const idx = e.detail.index - 1;
+
+      if (idx >= 0 && idx < getTabs().length) select(idx);
     });
 
     tabs.addEventListener("keydown", (e) => {
@@ -39,7 +46,14 @@ export default {
 
       if (currentIdx < 0) return;
 
-      const nextIdx = targetIndex(e.key, currentIdx, getTabs().length);
+      const vertical =
+        tabs
+          .querySelector('[role="tablist"]')
+          .getAttribute("aria-orientation") === "vertical";
+
+      const nextIdx = targetIndex(e.key, currentIdx, getTabs().length, {
+        orientation: vertical ? "vertical" : "horizontal",
+      });
 
       if (nextIdx === null) return;
 

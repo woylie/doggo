@@ -3826,6 +3826,21 @@ defmodule Doggo.ComponentsTest do
       assert text(div) == "some other text"
     end
 
+    test "vertical" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tabs id="my-tabs" label="My Tabs" orientation="vertical">
+          <:panel label="Panel 1">some text</:panel>
+          <:panel label="Panel 2">some other text</:panel>
+        </TestComponents.tabs>
+        """)
+
+      assert attribute(html, "[role='tablist']", "aria-orientation") ==
+               "vertical"
+    end
+
     test "puts only the selected tab in the tab order" do
       assigns = %{}
 
