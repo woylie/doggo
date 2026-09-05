@@ -24,16 +24,18 @@ FROM ${BUILDER_IMAGE} AS builder
 ARG DOGGO_VERSION
 ARG NODE_VERSION
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # install build dependencies
 RUN apt-get update -y \
-    && apt-get install -y build-essential curl git gnupg \
+    && apt-get install -y --no-install-recommends build-essential curl git gnupg \
     && mkdir -p /etc/apt/keyrings \
     && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
     && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_VERSION.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
     && apt-get update -y \
-    && apt-get install -y nodejs \
+    && apt-get install -y --no-install-recommends nodejs \
     && corepack enable \
-    && apt-get clean && rm -f /var/lib/apt/lists/*_*
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # prepare build dir
 WORKDIR /app
@@ -47,10 +49,11 @@ ENV MIX_ENV="prod"
 ENV VERSION=${DOGGO_VERSION}
 
 # install mix dependencies
-COPY demo/mix.exs demo/mix.lock ./demo/
-RUN cd demo && mix deps.get --only $MIX_ENV
-RUN cd demo && mkdir config
+WORKDIR /app/demo
+COPY demo/mix.exs demo/mix.lock ./
+RUN mix deps.get --only $MIX_ENV
 
+WORKDIR /app
 COPY mix.exs mix.lock ./
 COPY lib lib
 
@@ -59,30 +62,31 @@ COPY assets assets
 # copy compile-time config files before we compile dependencies
 # to ensure any relevant config change will trigger the dependencies
 # to be re-compiled.
-COPY demo/config/config.exs demo/config/${MIX_ENV}.exs ./demo/config/
-RUN cd demo && mix deps.compile
+WORKDIR /app/demo
+COPY demo/config/config.exs demo/config/${MIX_ENV}.exs ./config/
+RUN mix deps.compile
 
-COPY demo/priv demo/priv
-COPY demo/lib demo/lib
-COPY demo/assets demo/assets
-COPY demo/storybook demo/storybook
+COPY demo/priv priv
+COPY demo/lib lib
+COPY demo/assets assets
+COPY demo/storybook storybook
 
 # Compile
-RUN cd demo && mix compile && mix assets.setup && mix assets.deploy
+RUN mix compile && mix assets.setup && mix assets.deploy
 
 # Changes to config/runtime.exs don't require recompiling the code
-COPY demo/config/runtime.exs demo/config/
+COPY demo/config/runtime.exs config/
 
-COPY demo/rel demo/rel
-RUN cd demo && mix release
+COPY demo/rel rel
+RUN mix release
 
 # start a new build stage so that the final image will only contain
 # the compiled release and other runtime necessities
 FROM ${RUNNER_IMAGE}
 
 RUN apt-get update -y && \
-  apt-get install -y libstdc++6 openssl libncurses6 locales ca-certificates \
-  && apt-get clean && rm -f /var/lib/apt/lists/*_*
+  apt-get install -y --no-install-recommends libstdc++6 openssl libncurses6 locales ca-certificates \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set the locale
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
