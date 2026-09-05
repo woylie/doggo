@@ -43,6 +43,17 @@ defmodule Doggo.Components.Alert do
     </.alert>
     ```
 
+    With an action:
+
+    ```heex
+    <.alert id="some-alert" title="Session expired">
+      Your session has expired. Sign in again to continue.
+      <:action>
+        <.button phx-click="sign-in">Sign in</.button>
+      </:action>
+    </.alert>
+    ```
+
     The `close_label` is the button's accessible name, so it is needed whether
     or not the `:close` slot is filled.
     """
@@ -75,6 +86,7 @@ defmodule Doggo.Components.Alert do
       "#{base_class}-body",
       "#{base_class}-title",
       "#{base_class}-message",
+      "#{base_class}-actions",
       "#{base_class}-close"
     ]
   end
@@ -110,6 +122,12 @@ defmodule Doggo.Components.Alert do
         The content for the close button. Defaults to the value of
         `close_label`.
         """
+
+      slot :action,
+        doc: """
+        A slot for action buttons related to the alert, rendered after the
+        message.
+        """
     end
   end
 
@@ -137,6 +155,11 @@ defmodule Doggo.Components.Alert do
           {@title}
         </div>
         <div class={"#{@base_class}-message"}>{render_slot(@inner_block)}</div>
+        <div :if={@action != []} class={"#{@base_class}-actions"}>
+          <%= for action <- @action do %>
+            {render_slot(action)}
+          <% end %>
+        </div>
       </div>
       <button
         :if={@on_close}
