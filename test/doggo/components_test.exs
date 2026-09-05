@@ -2981,8 +2981,9 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "header:root", "class") == "page-header"
-      assert text(html, ":root > .page-header-title > h1") == "Pets"
-      assert Floki.find(html, ".page-header-title > h2") == []
+      assert text(html, ":root > hgroup > h1") == "Pets"
+      assert Floki.find(html, "hgroup > h2") == []
+      assert attribute(html, ":root > hgroup", "class") == nil
       assert Floki.find(html, ".page-header-actions") == []
     end
 
@@ -2994,7 +2995,7 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.page_header title="Pets" subtitle="All of them" />
         """)
 
-      assert text(html, ":root > .page-header-title > p") == "All of them"
+      assert text(html, ":root > hgroup > p") == "All of them"
     end
 
     test "with navigation" do
