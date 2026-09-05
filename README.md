@@ -140,11 +140,21 @@ Some components need a JavaScript hook. The hooks are ES modules shipped in the
 Then register the hooks for the components you build in your `app.js`:
 
 ```js
-import { Accordion, Carousel, Tabs, Toolbar, Tooltip } from "@woylie/doggo";
+import {
+  Accordion,
+  Carousel,
+  Menu,
+  MenuButton,
+  Tabs,
+  Toolbar,
+  Tooltip,
+} from "@woylie/doggo";
 
 const hooks = {
   "Doggo.Accordion": Accordion,
   "Doggo.Carousel": Carousel,
+  "Doggo.Menu": Menu,
+  "Doggo.MenuButton": MenuButton,
   "Doggo.Tabs": Tabs,
   "Doggo.Toolbar": Toolbar,
   "Doggo.Tooltip": Tooltip,
@@ -159,14 +169,24 @@ const liveSocket = new LiveSocket("/live", Socket, {
 To use the hooks in your storybook, register the same map in `storybook.js`:
 
 ```js
-import { Accordion, Carousel, Tabs, Toolbar, Tooltip } from "@woylie/doggo";
+import {
+  Accordion,
+  Carousel,
+  Menu,
+  MenuButton,
+  Tabs,
+  Toolbar,
+  Tooltip,
+} from "@woylie/doggo";
 
 (function () {
   window.storybook = {
     Hooks: {
       "Doggo.Accordion": Accordion,
   "Doggo.Carousel": Carousel,
-      "Doggo.Tabs": Tabs,
+      "Doggo.Menu": Menu,
+  "Doggo.MenuButton": MenuButton,
+  "Doggo.Tabs": Tabs,
       "Doggo.Toolbar": Toolbar,
       "Doggo.Tooltip": Tooltip,
     },

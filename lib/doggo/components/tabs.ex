@@ -50,12 +50,13 @@ defmodule Doggo.Components.Tabs do
   @impl true
   def keyboard do
     """
-    - `Left` and `Right` - previous or next tab, wrapping at the ends.
+    - `Left`, `Right`, `Up` and `Down` - previous or next tab, wrapping at the
+      ends. A tab list with `orientation="horizontal"` uses `Left` and `Right`,
+      one with `orientation="vertical"` uses `Up` and `Down`.
     - `Home` and `End` - first and last tab.
     - `Enter` or `Space` - select the focused tab.
 
-    The tab list is a single tab stop. The arrow keys, `home` and `end` need
-    the colocated hook.
+    The tab list is a single tab stop.
     """
   end
 
@@ -89,6 +90,14 @@ defmodule Doggo.Components.Tabs do
 
         Do not repeat the word `tab list` or similar in the label, since it is
         already announced by screen readers.
+        """
+
+      attr :orientation, :string,
+        default: "horizontal",
+        values: ["horizontal", "vertical"],
+        doc: """
+        Sets `aria-orientation` and determines whether to use the left and right
+        arrow keys or the up and down arrow keys to move between controls.
         """
 
       attr :labelledby, :string,
@@ -126,7 +135,12 @@ defmodule Doggo.Components.Tabs do
 
     ~H"""
     <div id={@id} class={@class} {@data_attrs} {@rest} phx-hook="Doggo.Tabs">
-      <div role="tablist" aria-label={@label} aria-labelledby={@labelledby}>
+      <div
+        role="tablist"
+        aria-label={@label}
+        aria-labelledby={@labelledby}
+        aria-orientation={@orientation == "vertical" && "vertical"}
+      >
         <button
           :for={{panel, index} <- Enum.with_index(@panel, 1)}
           type="button"
@@ -135,7 +149,6 @@ defmodule Doggo.Components.Tabs do
           aria-selected={to_string(index == 1)}
           aria-controls={"#{@id}-panel-#{index}"}
           tabindex={if index == 1, do: "0", else: "-1"}
-          phx-click={Doggo.show_tab(@id, index)}
         >
           {panel.label}
         </button>

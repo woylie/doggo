@@ -77,7 +77,7 @@ defmodule Doggo.Components.Toolbar do
     quote do
       attr :id, :string,
         required: true,
-        doc: "A unique DOM ID. The JavaScript hook needs it."
+        doc: "A unique DOM ID. Needed for the JavaScript hook."
 
       attr :orientation, :string,
         default: "horizontal",

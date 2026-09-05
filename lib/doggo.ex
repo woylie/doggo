@@ -204,6 +204,9 @@ defmodule Doggo do
   Shows the tab with the given index of the `tabs/1` component with the given
   ID.
 
+  The index is one-based. The component needs its JavaScript hook registered,
+  since this function uses the hook to select the tab.
+
   ## Example
 
       Doggo.show_tab("my-tabs", 2)
@@ -213,16 +216,7 @@ defmodule Doggo do
   @spec show_tab(JS.t(), String.t(), integer()) :: JS.t()
   def show_tab(js \\ %JS{}, id, index)
       when is_binary(id) and is_integer(index) do
-    other_tabs = "##{id} [role='tab']:not(##{id}-tab-#{index})"
-    other_panels = "##{id} [role='tabpanel']:not(##{id}-panel-#{index})"
-
-    js
-    |> JS.set_attribute({"aria-selected", "true"}, to: "##{id}-tab-#{index}")
-    |> JS.set_attribute({"tabindex", "0"}, to: "##{id}-tab-#{index}")
-    |> JS.remove_attribute("hidden", to: "##{id}-panel-#{index}")
-    |> JS.set_attribute({"aria-selected", "false"}, to: other_tabs)
-    |> JS.set_attribute({"tabindex", "-1"}, to: other_tabs)
-    |> JS.set_attribute({"hidden", ""}, to: other_panels)
+    JS.dispatch(js, "doggo:show-tab", to: "##{id}", detail: %{index: index})
   end
 
   @doc false

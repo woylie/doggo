@@ -12,7 +12,7 @@ defmodule Doggo.Storybook.MenuItem do
 
     if menu_fun do
       """
-      <.#{menu_fun} label="Actions">
+      <.#{menu_fun} id="menu-:variation_id" label="Actions">
         <:item>
           <.psb-variation/>
         </:item>

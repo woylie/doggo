@@ -51,6 +51,19 @@ describe("tabs hook", () => {
     expect(document.activeElement.id).toBe("tabs-tab-3");
   });
 
+  it("uses the vertical keys when the tab list is vertical", () => {
+    el.querySelector('[role="tablist"]').setAttribute(
+      "aria-orientation",
+      "vertical",
+    );
+
+    press(document.activeElement, "ArrowRight");
+    expect(selected(el)).toBe(0);
+
+    press(document.activeElement, "ArrowDown");
+    expect(selected(el)).toBe(1);
+  });
+
   it("selects the first and the last tab with Home and End", () => {
     press(document.activeElement, "End");
     expect(selected(el)).toBe(2);
@@ -74,6 +87,31 @@ describe("tabs hook", () => {
 
   it("ignores keydowns outside the tab list", () => {
     press(el.querySelector('[role="tabpanel"]'), "ArrowRight");
+
+    expect(selected(el)).toBe(0);
+  });
+
+  it("selects a tab that is clicked", () => {
+    el.querySelector("#tabs-tab-3").click();
+
+    expect(selected(el)).toBe(2);
+    expect(visiblePanels(el)).toEqual(["tabs-panel-3"]);
+  });
+
+  it("selects a tab when asked from outside, as `Doggo.show_tab/3` does", () => {
+    // The index in the event is one-based, matching the Elixir function.
+    el.dispatchEvent(
+      new window.CustomEvent("doggo:show-tab", { detail: { index: 2 } }),
+    );
+
+    expect(selected(el)).toBe(1);
+    expect(visiblePanels(el)).toEqual(["tabs-panel-2"]);
+  });
+
+  it("ignores an index outside the tab list", () => {
+    el.dispatchEvent(
+      new window.CustomEvent("doggo:show-tab", { detail: { index: 9 } }),
+    );
 
     expect(selected(el)).toBe(0);
   });

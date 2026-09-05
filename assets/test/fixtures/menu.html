@@ -1,0 +1,79 @@
+<ul id="menu" class="menu" role="menu" phx-hook="Doggo.Menu" aria-label="Actions">
+  <li role="none">
+    
+      
+    <button class="menu-item" type="button" role="menuitem" phx-click="[[&quot;push&quot;,{&quot;event&quot;:&quot;copy&quot;}]]">
+  
+      Copy
+    
+</button>
+  
+    
+  </li><li role="none">
+    
+      
+    <button class="menu-item" type="button" role="menuitem" phx-click="[[&quot;push&quot;,{&quot;event&quot;:&quot;copy-link&quot;}]]">
+  
+      Copy link
+    
+</button>
+  
+    
+  </li><li role="none">
+    
+      
+    <button class="menu-item" type="button" role="menuitem" phx-click="[[&quot;push&quot;,{&quot;event&quot;:&quot;paste&quot;}]]">
+  
+      Paste
+    
+</button>
+  
+    
+  </li><li role="none">
+    
+      
+    <ul id="submenu" class="menu" role="menu" phx-hook="Doggo.Menu" aria-label="Share">
+  <li role="none">
+    
+      
+        <button class="menu-item" type="button" role="menuitem" phx-click="[[&quot;push&quot;,{&quot;event&quot;:&quot;mail&quot;}]]">
+  
+          Mail
+        
+</button>
+      
+    
+  </li>
+</ul>
+  
+    
+  </li><li role="separator">
+    
+  </li><li role="none">
+    
+      
+    <button class="menu-item-checkbox" type="button" role="menuitemcheckbox" aria-checked="false" phx-click="[[&quot;push&quot;,{&quot;event&quot;:&quot;wrap&quot;}]]">
+  
+      Wrap lines
+    
+</button>
+  
+    
+  </li><li role="none">
+    
+      
+    <ul class="menu-item-radio-group" role="group" aria-label="Theme">
+  <li role="none">
+    <button type="button" role="menuitemradio" phx-click="[[&quot;push&quot;,{&quot;event&quot;:&quot;light&quot;}]]" aria-checked="true">
+      Light
+    </button>
+  </li><li role="none">
+    <button type="button" role="menuitemradio" phx-click="[[&quot;push&quot;,{&quot;event&quot;:&quot;dark&quot;}]]" aria-checked="false">
+      Dark
+    </button>
+  </li>
+</ul>
+  
+    
+  </li>
+</ul>

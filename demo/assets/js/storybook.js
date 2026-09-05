@@ -33,13 +33,23 @@
 //   };
 // })();
 
-import { Accordion, Carousel, Tabs, Toolbar, Tooltip } from "@woylie/doggo";
+import {
+  Accordion,
+  Carousel,
+  Menu,
+  MenuButton,
+  Tabs,
+  Toolbar,
+  Tooltip,
+} from "@woylie/doggo";
 
 (function () {
   window.storybook = {
     Hooks: {
       "Doggo.Accordion": Accordion,
       "Doggo.Carousel": Carousel,
+      "Doggo.Menu": Menu,
+      "Doggo.MenuButton": MenuButton,
       "Doggo.Tabs": Tabs,
       "Doggo.Toolbar": Toolbar,
       "Doggo.Tooltip": Tooltip,

@@ -116,6 +116,81 @@ defmodule Doggo.FixturesTest do
     )
   end
 
+  test "menu fixture matches the rendered component" do
+    assigns = %{}
+
+    assert_fixture(
+      ~H"""
+      <HookComponents.menu id="menu" label="Actions">
+        <:item>
+          <HookComponents.menu_item on_click={JS.push("copy")}>
+            Copy
+          </HookComponents.menu_item>
+        </:item>
+        <:item>
+          <HookComponents.menu_item on_click={JS.push("copy-link")}>
+            Copy link
+          </HookComponents.menu_item>
+        </:item>
+        <:item>
+          <HookComponents.menu_item on_click={JS.push("paste")}>
+            Paste
+          </HookComponents.menu_item>
+        </:item>
+        <:item>
+          <HookComponents.menu id="submenu" label="Share">
+            <:item>
+              <HookComponents.menu_item on_click={JS.push("mail")}>
+                Mail
+              </HookComponents.menu_item>
+            </:item>
+          </HookComponents.menu>
+        </:item>
+        <:item role="separator" />
+        <:item>
+          <HookComponents.menu_item_checkbox on_click={JS.push("wrap")}>
+            Wrap lines
+          </HookComponents.menu_item_checkbox>
+        </:item>
+        <:item>
+          <HookComponents.menu_item_radio_group label="Theme">
+            <:item on_click={JS.push("light")} checked>Light</:item>
+            <:item on_click={JS.push("dark")}>Dark</:item>
+          </HookComponents.menu_item_radio_group>
+        </:item>
+      </HookComponents.menu>
+      """,
+      "menu.html"
+    )
+  end
+
+  test "menu_bar fixture matches the rendered component" do
+    assigns = %{}
+
+    assert_fixture(
+      ~H"""
+      <HookComponents.menu_bar id="menu-bar" label="Main">
+        <:item>
+          <HookComponents.menu_item on_click={JS.push("file")}>
+            File
+          </HookComponents.menu_item>
+        </:item>
+        <:item>
+          <HookComponents.menu_item on_click={JS.push("edit")}>
+            Edit
+          </HookComponents.menu_item>
+        </:item>
+        <:item>
+          <HookComponents.menu_item on_click={JS.push("view")}>
+            View
+          </HookComponents.menu_item>
+        </:item>
+      </HookComponents.menu_bar>
+      """,
+      "menu_bar.html"
+    )
+  end
+
   defp assert_fixture(rendered, name) do
     html = rendered_to_string(rendered)
     path = Path.join(@fixture_dir, name)

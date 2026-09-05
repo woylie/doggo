@@ -46,9 +46,9 @@ defmodule Doggo.Components.MenuItemRadioGroup do
 
       **Missing features**
 
-      - Focus management
-      - State management
-      - Keyboard support
+      - State management: the component renders `aria-checked` from each item's
+        `checked` attribute and never changes it, so the caller's `on_click`
+        has to update the state and re-render.
       """,
       modifiers: []
     ]
@@ -87,13 +87,14 @@ defmodule Doggo.Components.MenuItemRadioGroup do
     ~H"""
     <ul class={@class} role="group" aria-label={@label} {@data_attrs} {@rest}>
       <li :for={item <- @item} role="none">
-        <div
+        <button
+          type="button"
           role="menuitemradio"
           phx-click={item.on_click}
           aria-checked={to_string(item[:checked] || false)}
         >
           {render_slot(item)}
-        </div>
+        </button>
       </li>
     </ul>
     """

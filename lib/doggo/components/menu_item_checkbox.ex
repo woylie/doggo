@@ -43,8 +43,9 @@ defmodule Doggo.Components.MenuItemCheckbox do
 
       **Missing features**
 
-      - State management
-      - Keyboard support
+      - State management: the component renders `aria-checked` from the
+        `checked` attribute and never changes it, so the caller's `on_click`
+        has to update the state and re-render.
       """,
       modifiers: []
     ]
@@ -76,8 +77,9 @@ defmodule Doggo.Components.MenuItemCheckbox do
     assigns = assign(assigns, :checked, to_string(checked))
 
     ~H"""
-    <div
+    <button
       class={@class}
+      type="button"
       role="menuitemcheckbox"
       aria-checked={@checked}
       phx-click={@on_click}
@@ -85,7 +87,7 @@ defmodule Doggo.Components.MenuItemCheckbox do
       {@rest}
     >
       {render_slot(@inner_block)}
-    </div>
+    </button>
     """
   end
 end

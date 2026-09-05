@@ -2,25 +2,32 @@ defmodule Doggo.Storybook.MenuButton do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def dependent_components, do: [:menu]
+  def dependent_components, do: [:menu, :menu_item]
 
   def template(opts) do
     dependent_components = opts[:dependent_components]
     menu_fun = dependent_components[:menu]
+    item_fun = dependent_components[:menu_item]
 
     menu =
-      if menu_fun do
+      if menu_fun && item_fun do
         """
         <.#{menu_fun} id="actions-menu" labelledby="actions-button" hidden>
-          <:item>Copy</:item>
-          <:item>Paste</:item>
+          <:item>
+            <.#{item_fun} on_click={JS.push("copy")}>Copy</.#{item_fun}>
+          </:item>
+          <:item>
+            <.#{item_fun} on_click={JS.push("paste")}>Paste</.#{item_fun}>
+          </:item>
           <:item role="separator"></:item>
-          <:item>Sort lines</:item>
+          <:item>
+            <.#{item_fun} on_click={JS.push("sort")}>Sort lines</.#{item_fun}>
+          </:item>
         </.#{menu_fun}>
         """
       else
         """
-        <p>Please compile the <code>menu</code> component to see a complete preview.</p>
+        <p>Please compile the <code>menu</code> and <code>menu_item</code> components to see a complete preview.</p>
         """
       end
 

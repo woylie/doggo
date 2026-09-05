@@ -12,11 +12,11 @@ defmodule Doggo.Storybook.MenuItemRadioGroup do
 
     if menu_fun do
       """
-      <.menu label="Actions">
+      <.#{menu_fun} id="menu-:variation_id" label="Actions">
         <:item>
           <.psb-variation/>
         </:item>
-      </.menu>
+      </.#{menu_fun}>
       """
     else
       """

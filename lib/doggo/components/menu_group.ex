@@ -53,15 +53,6 @@ defmodule Doggo.Components.MenuGroup do
       type: :menu,
       since: "0.6.0",
       maturity: :experimental,
-      maturity_note: """
-      The necessary JavaScript for making this component fully functional and
-      accessible will be added in a future version.
-
-      **Missing features**
-
-      - Focus management
-      - Keyboard support
-      """,
       modifiers: []
     ]
   end
