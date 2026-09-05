@@ -28,6 +28,7 @@ import {
   Tabs,
   Toolbar,
   Tooltip,
+  Tree,
 } from "@woylie/doggo";
 import topbar from "topbar";
 
@@ -46,6 +47,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
     "Doggo.Tabs": Tabs,
     "Doggo.Toolbar": Toolbar,
     "Doggo.Tooltip": Tooltip,
+    "Doggo.Tree": Tree,
   },
 });
 

@@ -41,8 +41,26 @@ defmodule Doggo.Storybook.Tree do
         <.#{tree_item_component}>
           Breeds
           <:items>
-            <.#{tree_item_component}>Golden Retriever</.#{tree_item_component}>
-            <.#{tree_item_component}>Labrador Retriever</.#{tree_item_component}>
+            <.#{tree_item_component}>
+              Sporting
+              <:items>
+                <.#{tree_item_component}>
+                  Retrievers
+                  <:items>
+                    <.#{tree_item_component}>Golden Retriever</.#{tree_item_component}>
+                    <.#{tree_item_component}>Labrador Retriever</.#{tree_item_component}>
+                  </:items>
+                </.#{tree_item_component}>
+                <.#{tree_item_component}>Irish Setter</.#{tree_item_component}>
+              </:items>
+            </.#{tree_item_component}>
+            <.#{tree_item_component} expanded={false}>
+              Working
+              <:items>
+                <.#{tree_item_component}>Boxer</.#{tree_item_component}>
+                <.#{tree_item_component}>Great Dane</.#{tree_item_component}>
+              </:items>
+            </.#{tree_item_component}>
           </:items>
         </.#{tree_item_component}>
         <.#{tree_item_component}>

@@ -25,7 +25,8 @@
     "./toolbar": "./js/hooks/toolbar.js",
     "./tooltip": "./js/hooks/tooltip.js",
     "./menu": "./js/hooks/menu.js",
-    "./menu_button": "./js/hooks/menu_button.js"
+    "./menu_button": "./js/hooks/menu_button.js",
+    "./tree": "./js/hooks/tree.js"
   },
   "files": [
     "js"

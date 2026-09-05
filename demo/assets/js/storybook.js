@@ -41,6 +41,7 @@ import {
   Tabs,
   Toolbar,
   Tooltip,
+  Tree,
 } from "@woylie/doggo";
 
 (function () {
@@ -53,6 +54,7 @@ import {
       "Doggo.Tabs": Tabs,
       "Doggo.Toolbar": Toolbar,
       "Doggo.Tooltip": Tooltip,
+      "Doggo.Tree": Tree,
     },
   };
 })();
