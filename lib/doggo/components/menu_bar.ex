@@ -54,6 +54,23 @@ defmodule Doggo.Components.MenuBar do
       </:item>
     </.menu_bar>
     ```
+
+    This component needs the `Doggo.Menu` JavaScript hook. See
+    [Phoenix LiveView Hooks](readme.html#phoenix-liveview-hooks) for
+    registering it.
+    """
+  end
+
+  @impl true
+  def keyboard do
+    """
+    - `Left` and `Right` - move between the items, wrapping at the ends.
+    - `Home` and `End` - first and last item.
+    - Printable characters - move to the next item whose label starts with what
+      you type.
+    - `Enter` or `Space` - activate the focused item.
+
+    The menu bar is a single tab stop.
     """
   end
 
@@ -63,15 +80,6 @@ defmodule Doggo.Components.MenuBar do
       type: :menu,
       since: "0.6.0",
       maturity: :experimental,
-      maturity_note: """
-      The necessary JavaScript for making this component fully functional and
-      accessible will be added in a future version.
-
-      **Missing features**
-
-      - Focus management
-      - Keyboard support
-      """,
       modifiers: []
     ]
   end
@@ -84,6 +92,10 @@ defmodule Doggo.Components.MenuBar do
   @impl true
   def attrs_and_slots do
     quote do
+      attr :id, :string,
+        required: true,
+        doc: "A unique DOM ID. Needed for the JavaScript hook."
+
       attr :label, :string,
         default: nil,
         doc: """
@@ -135,8 +147,10 @@ defmodule Doggo.Components.MenuBar do
 
     ~H"""
     <ul
+      id={@id}
       class={@class}
       role="menubar"
+      phx-hook="Doggo.Menu"
       aria-label={@label}
       aria-labelledby={@labelledby}
       {@data_attrs}

@@ -52,3 +52,18 @@ export function selectTab(tabs, activeIdx) {
 
   setRovingTabindex(tabs, activeIdx);
 }
+
+// Returns the index of the next label starting with `search`, after `fromIdx`,
+// wrapping around, or `null` if none matches. Used for type-ahead in menus.
+export function searchIndex(labels, search, fromIdx) {
+  const needle = search.toLowerCase();
+  const total = labels.length;
+
+  for (let offset = 1; offset <= total; offset++) {
+    const idx = (fromIdx + offset) % total;
+
+    if (labels[idx].trim().toLowerCase().startsWith(needle)) return idx;
+  }
+
+  return null;
+}

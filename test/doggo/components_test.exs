@@ -2405,7 +2405,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.menu label="Dog actions">
+        <TestComponents.menu id="menu" label="Dog actions">
           <:item>A</:item>
         </TestComponents.menu>
         """)
@@ -2424,7 +2424,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.menu label="Dog actions">
+        <TestComponents.menu id="menu" label="Dog actions">
           <:item role="separator">A</:item>
         </TestComponents.menu>
         """)
@@ -2439,7 +2439,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.menu labelledby="dog-menu-label">
+        <TestComponents.menu id="menu" labelledby="dog-menu-label">
           <:item>A</:item>
         </TestComponents.menu>
         """)
@@ -2452,7 +2452,7 @@ defmodule Doggo.ComponentsTest do
         assigns = %{}
 
         parse_heex(~H"""
-        <TestComponents.menu label="Dog actions" labelledby="dog-menu-label">
+        <TestComponents.menu id="menu" label="Dog actions" labelledby="dog-menu-label">
           <:item>A</:item>
         </TestComponents.menu>
         """)
@@ -2464,7 +2464,7 @@ defmodule Doggo.ComponentsTest do
         assigns = %{}
 
         parse_heex(~H"""
-        <TestComponents.menu>
+        <TestComponents.menu id="menu">
           <:item>A</:item>
         </TestComponents.menu>
         """)
@@ -2476,7 +2476,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.menu label="Dog actions" data-test="hello">
+        <TestComponents.menu id="menu" label="Dog actions" data-test="hello">
           <:item>A</:item>
         </TestComponents.menu>
         """)
@@ -2491,7 +2491,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.menu_bar label="Dog actions">
+        <TestComponents.menu_bar id="menu-bar" label="Dog actions">
           <:item>A</:item>
         </TestComponents.menu_bar>
         """)
@@ -2510,7 +2510,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.menu_bar label="Dog actions">
+        <TestComponents.menu_bar id="menu-bar" label="Dog actions">
           <:item role="separator">A</:item>
         </TestComponents.menu_bar>
         """)
@@ -2525,7 +2525,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.menu_bar labelledby="dog-menu-label">
+        <TestComponents.menu_bar id="menu-bar" labelledby="dog-menu-label">
           <:item>A</:item>
         </TestComponents.menu_bar>
         """)
@@ -2538,7 +2538,11 @@ defmodule Doggo.ComponentsTest do
         assigns = %{}
 
         parse_heex(~H"""
-        <TestComponents.menu_bar label="Dog actions" labelledby="dog-menu-label">
+        <TestComponents.menu_bar
+          id="menu-bar"
+          label="Dog actions"
+          labelledby="dog-menu-label"
+        >
           <:item>A</:item>
         </TestComponents.menu_bar>
         """)
@@ -2550,7 +2554,7 @@ defmodule Doggo.ComponentsTest do
         assigns = %{}
 
         parse_heex(~H"""
-        <TestComponents.menu_bar>
+        <TestComponents.menu_bar id="menu-bar">
           <:item>A</:item>
         </TestComponents.menu_bar>
         """)
@@ -2562,7 +2566,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.menu_bar label="Dog actions" data-test="hello">
+        <TestComponents.menu_bar id="menu-bar" label="Dog actions" data-test="hello">
           <:item>A</:item>
         </TestComponents.menu_bar>
         """)
@@ -2686,11 +2690,11 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.menu_item_checkbox>
         """)
 
-      div = find_one(html, "div:root")
-      assert attribute(div, "phx-click")
-      assert attribute(div, "role") == "menuitemcheckbox"
-      assert attribute(div, "aria-checked") == "false"
-      assert text(div) == "Action"
+      button = find_one(html, "button:root")
+      assert attribute(button, "phx-click")
+      assert attribute(button, "role") == "menuitemcheckbox"
+      assert attribute(button, "aria-checked") == "false"
+      assert text(button) == "Action"
     end
 
     test "checked" do
@@ -2703,8 +2707,8 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.menu_item_checkbox>
         """)
 
-      div = find_one(html, "div:root")
-      assert attribute(div, "aria-checked") == "true"
+      button = find_one(html, "button:root")
+      assert attribute(button, "aria-checked") == "true"
     end
   end
 
@@ -2726,11 +2730,11 @@ defmodule Doggo.ComponentsTest do
       assert li = find_one(html, "ul > li")
       assert attribute(li, "role") == "none"
 
-      assert div = find_one(li, "div")
-      assert attribute(div, "role") == "menuitemradio"
-      assert attribute(div, "phx-click")
-      assert attribute(div, "aria-checked") == "false"
-      assert text(div) == "Dark"
+      assert button = find_one(li, "button")
+      assert attribute(button, "role") == "menuitemradio"
+      assert attribute(button, "phx-click")
+      assert attribute(button, "aria-checked") == "false"
+      assert text(button) == "Dark"
     end
 
     test "checked" do
@@ -2743,8 +2747,8 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.menu_item_radio_group>
         """)
 
-      div = find_one(html, "ul:root > li > div")
-      assert attribute(div, "aria-checked") == "true"
+      button = find_one(html, "ul:root > li > button")
+      assert attribute(button, "aria-checked") == "true"
     end
 
     test "with global attribute" do

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   clamp,
+  searchIndex,
   selectTab,
   setRovingTabindex,
   targetIndex,
@@ -75,5 +76,33 @@ describe("selectTab", () => {
       "false",
     ]);
     expect(tabs.map((t) => t.getAttribute("tabindex"))).toEqual(["0", "-1"]);
+  });
+});
+
+describe("searchIndex", () => {
+  const labels = ["Copy", "Cut", "Paste", "Print"];
+
+  it("finds the next label starting with the search", () => {
+    expect(searchIndex(labels, "p", 0)).toBe(2);
+  });
+
+  it("moves on to the next match when the search repeats", () => {
+    expect(searchIndex(labels, "p", 2)).toBe(3);
+  });
+
+  it("wraps around", () => {
+    expect(searchIndex(labels, "c", 2)).toBe(0);
+  });
+
+  it("matches more than one character", () => {
+    expect(searchIndex(labels, "cu", 0)).toBe(1);
+  });
+
+  it("ignores case and surrounding space", () => {
+    expect(searchIndex(["  Copy  "], "COP", 0)).toBe(0);
+  });
+
+  it("returns null when nothing matches", () => {
+    expect(searchIndex(labels, "z", 0)).toBe(null);
   });
 });

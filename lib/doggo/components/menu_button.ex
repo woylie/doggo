@@ -71,6 +71,10 @@ defmodule Doggo.Components.MenuButton do
       <:item><!-- ... --></:item>
     </.menu>
     ```
+
+    This component needs the `Doggo.MenuButton` JavaScript hook. See
+    [Phoenix LiveView Hooks](readme.html#phoenix-liveview-hooks) for
+    registering it.
     """
   end
 
@@ -78,6 +82,8 @@ defmodule Doggo.Components.MenuButton do
   def keyboard do
     """
     - `Enter` or `Space` - show or hide the menu.
+    - `Down` - open the menu and move to its first item.
+    - `Up` - open the menu and move to its last item.
     """
   end
 
@@ -87,15 +93,6 @@ defmodule Doggo.Components.MenuButton do
       type: :menu,
       since: "0.6.0",
       maturity: :experimental,
-      maturity_note: """
-      The necessary JavaScript for making this component fully functional and
-      accessible will be added in a future version.
-
-      **Missing features**
-
-      - Open the menu with the arrow keys
-      - Close the menu with Esc and return the focus to the button
-      """,
       modifiers: []
     ]
   end
@@ -149,6 +146,7 @@ defmodule Doggo.Components.MenuButton do
       role={@menuitem && "menuitem"}
       aria-haspopup="true"
       aria-expanded="false"
+      phx-hook="Doggo.MenuButton"
       aria-controls={@controls}
       phx-click={Doggo.toggle_disclosure(@controls)}
       {@data_attrs}

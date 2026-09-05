@@ -22,7 +22,7 @@ defmodule Doggo.Storybook.MenuGroup do
 
     if menu_fun = dependent_components[:menu] do
       """
-      <.#{menu_fun} id="actions-menu" label="Main">
+      <.#{menu_fun} id="menu-:variation_id" label="Main">
         <:item>
           <.psb-variation/>
         </:item>

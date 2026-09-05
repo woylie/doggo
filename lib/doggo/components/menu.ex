@@ -26,10 +26,16 @@ defmodule Doggo.Components.Menu do
 
     ```heex
     <.menu label="Actions">
-      <:item>Copy</:item>
-      <:item>Paste</:item>
+      <:item>
+        <.menu_item on_click={JS.push("copy")}>Copy</.menu_item>
+      </:item>
+      <:item>
+        <.menu_item on_click={JS.push("paste")}>Paste</.menu_item>
+      </:item>
       <:item role="separator"></:item>
-      <:item>Sort lines</:item>
+      <:item>
+        <.menu_item on_click={JS.push("sort")}>Sort lines</.menu_item>
+      </:item>
     </.menu>
     ```
 
@@ -41,6 +47,27 @@ defmodule Doggo.Components.Menu do
       Actions
     </.menu_button>
     <.menu labelledby="actions-button" hidden></.menu>
+
+    This component needs the `Doggo.Menu` JavaScript hook. See
+    [Phoenix LiveView Hooks](readme.html#phoenix-liveview-hooks) for
+    registering it.
+    """
+  end
+
+  @impl true
+  def keyboard do
+    """
+    - `Down` and `Up` - move between the items, wrapping at the ends.
+    - `Home` and `End` - first and last item.
+    - Printable characters - move to the next item whose label starts with what
+      you type. Typing the same character again walks through the items that
+      start with it.
+    - `Esc` - close the menu and return the focus to the button that opened it,
+      if a button controls this menu.
+    - `Enter` or `Space` - activate the focused item.
+
+    The menu is a single tab stop. Items inside a `menu_group` or a
+    `menu_item_radio_group` are part of it; a nested menu has its own.
     """
   end
 
@@ -50,15 +77,6 @@ defmodule Doggo.Components.Menu do
       type: :menu,
       since: "0.6.0",
       maturity: :experimental,
-      maturity_note: """
-      The necessary JavaScript for making this component fully functional and
-      accessible will be added in a future version.
-
-      **Missing features**
-
-      - Focus management
-      - Keyboard support
-      """,
       modifiers: []
     ]
   end
@@ -71,6 +89,10 @@ defmodule Doggo.Components.Menu do
   @impl true
   def attrs_and_slots do
     quote do
+      attr :id, :string,
+        required: true,
+        doc: "A unique DOM ID. Needed for the JavaScript hook."
+
       attr :label, :string,
         default: nil,
         doc: """
@@ -126,8 +148,10 @@ defmodule Doggo.Components.Menu do
 
     ~H"""
     <ul
+      id={@id}
       class={@class}
       role="menu"
+      phx-hook="Doggo.Menu"
       aria-label={@label}
       aria-labelledby={@labelledby}
       {@data_attrs}

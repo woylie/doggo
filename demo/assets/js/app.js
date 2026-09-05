@@ -20,7 +20,15 @@ import "phoenix_html";
 // Establish Phoenix Socket and LiveView configuration.
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
-import { Accordion, Carousel, Tabs, Toolbar, Tooltip } from "@woylie/doggo";
+import {
+  Accordion,
+  Carousel,
+  Menu,
+  MenuButton,
+  Tabs,
+  Toolbar,
+  Tooltip,
+} from "@woylie/doggo";
 import topbar from "topbar";
 
 import "../css/app.scss";
@@ -33,6 +41,8 @@ let liveSocket = new LiveSocket("/live", Socket, {
   hooks: {
     "Doggo.Accordion": Accordion,
     "Doggo.Carousel": Carousel,
+    "Doggo.Menu": Menu,
+    "Doggo.MenuButton": MenuButton,
     "Doggo.Tabs": Tabs,
     "Doggo.Toolbar": Toolbar,
     "Doggo.Tooltip": Tooltip,
