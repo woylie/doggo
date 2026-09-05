@@ -55,6 +55,13 @@ defmodule Doggo.Components.DisclosureButton do
   end
 
   @impl true
+  def keyboard do
+    """
+    - `Enter` or `Space` - show or hide the controlled element.
+    """
+  end
+
+  @impl true
   def css_path do
     "components/_button.scss"
   end

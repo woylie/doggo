@@ -60,6 +60,18 @@ defmodule Doggo.Components.Tabs do
   end
 
   @impl true
+  def keyboard do
+    """
+    - `Left` and `Right` - previous or next tab, wrapping at the ends.
+    - `Home` and `End` - first and last tab.
+    - `Enter` or `Space` - select the focused tab.
+
+    The tab list is a single tab stop. The arrow keys, `home` and `end` need
+    the colocated hook.
+    """
+  end
+
+  @impl true
   def config do
     [
       type: :data,

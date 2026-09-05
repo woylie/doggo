@@ -41,11 +41,26 @@ defmodule Doggo.Components.Accordion do
   end
 
   @impl true
+  def keyboard do
+    """
+    - `Enter` or `Space` - toggle the section of the focused header.
+    """
+  end
+
+  @impl true
   def config do
     [
       type: :data,
       since: "0.6.0",
       maturity: :developing,
+      maturity_note: """
+      **Missing features**
+
+      - Move focus between the headers with the arrow keys
+      - Move focus to the first or last header with Home and End
+
+      Both are optional in the ARIA Authoring Practices.
+      """,
       modifiers: []
     ]
   end

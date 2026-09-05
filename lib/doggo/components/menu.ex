@@ -57,7 +57,7 @@ defmodule Doggo.Components.Menu do
       **Missing features**
 
       - Focus management
-      - keyboard support
+      - Keyboard support
       """,
       modifiers: []
     ]

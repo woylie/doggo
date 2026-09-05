@@ -70,7 +70,7 @@ defmodule Doggo.Components.MenuBar do
       **Missing features**
 
       - Focus management
-      - keyboard support
+      - Keyboard support
       """,
       modifiers: []
     ]

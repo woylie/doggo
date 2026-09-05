@@ -23,6 +23,16 @@ defmodule Doggo.Component do
   @callback usage() :: String.t()
 
   @doc """
+  Returns the 'Keyboard' section of the documentation.
+
+  States the keys the component handles. Only implemented by components that
+  handle any. Missing interaction belongs in the `maturity_note` instead.
+
+  Used for both the component builder macro and the compiled component.
+  """
+  @callback keyboard() :: String.t()
+
+  @doc """
   Returns the path to the example CSS styles.
   """
   @callback css_path() :: String.t()
@@ -54,5 +64,5 @@ defmodule Doggo.Component do
   """
   @callback render(assigns :: map()) :: Phoenix.LiveView.Rendered.t()
 
-  @optional_callbacks builder_doc: 0, css_path: 0
+  @optional_callbacks builder_doc: 0, css_path: 0, keyboard: 0
 end

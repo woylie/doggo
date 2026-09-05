@@ -128,6 +128,18 @@ defmodule Doggo.Components.Modal do
   end
 
   @impl true
+  def keyboard do
+    """
+    - `Esc` - close the dialog, unless `dismissable` is set to `false`.
+
+    Opening the dialog moves the focus to the first focusable element inside it,
+    and closing it returns the focus to the element that opened it. The focus
+    stays within the dialog while it is open. A dialog with nothing focusable in
+    it leaves the focus outside.
+    """
+  end
+
+  @impl true
   def config do
     [
       type: :miscellaneous,

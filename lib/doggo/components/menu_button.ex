@@ -75,11 +75,27 @@ defmodule Doggo.Components.MenuButton do
   end
 
   @impl true
+  def keyboard do
+    """
+    - `Enter` or `Space` - show or hide the menu.
+    """
+  end
+
+  @impl true
   def config do
     [
       type: :menu,
       since: "0.6.0",
       maturity: :experimental,
+      maturity_note: """
+      The necessary JavaScript for making this component fully functional and
+      accessible will be added in a future version.
+
+      **Missing features**
+
+      - Open the menu with the arrow keys
+      - Close the menu with Esc and return the focus to the button
+      """,
       modifiers: []
     ]
   end

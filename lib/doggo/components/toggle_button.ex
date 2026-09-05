@@ -55,6 +55,13 @@ defmodule Doggo.Components.ToggleButton do
   end
 
   @impl true
+  def keyboard do
+    """
+    - `Enter` or `Space` - toggle `aria-pressed` and run `on_click`.
+    """
+  end
+
+  @impl true
   def config do
     [
       type: :buttons,
