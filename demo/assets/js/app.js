@@ -21,7 +21,7 @@ import "phoenix_html";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import { Carousel, Tabs } from "@woylie/doggo";
-import topbar from "../vendor/topbar";
+import topbar from "topbar";
 
 import "../css/app.scss";
 
