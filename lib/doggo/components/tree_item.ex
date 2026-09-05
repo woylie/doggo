@@ -52,6 +52,10 @@ defmodule Doggo.Components.TreeItem do
   end
 
   @impl true
+  def css_path do
+    "components/_tree.scss"
+  end
+
   @impl true
   def config do
     [

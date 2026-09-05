@@ -1,0 +1,57 @@
+@use "../functions" as f;
+
+// Enough styling to review the component: every rule below shows a state the
+// JavaScript hook sets, so that a broken hook is visible rather than silent.
+// A designed stylesheet comes with the restyling of the demo.
+.tree,
+.tree [role="group"] {
+  padding-left: f.spacer(4);
+  margin: 0;
+  list-style: none;
+}
+
+.tree {
+  padding-left: 0;
+}
+
+.tree [role="treeitem"] {
+  padding: f.spacer(1) 0;
+
+  // The tree is one tab stop, and the hook moves it. Showing which item holds
+  // it is the only way to see that from outside the DOM.
+  &[tabindex="0"] > span {
+    font-weight: f.weight(bold);
+  }
+
+  // `:focus-visible` rather than `:focus`, because an element with a tab index
+  // takes focus when it is clicked, and a ring on every click is noise. The
+  // browser decides: it shows the ring when the user is navigating by keyboard.
+  &:focus-visible {
+    outline: f.border-width(m) solid f.color(border, primary, normal);
+    outline-offset: f.border-width(s);
+  }
+
+  // Selection is the server's state, not the hook's, so this shows whether the
+  // caller wired it up.
+  &[aria-selected="true"] > span::after {
+    content: " ✓";
+  }
+
+  // Only the caret toggles the branch, so it is styled as a control and the
+  // label is not. A leaf renders no caret at all, which is what tells the two
+  // apart at a glance.
+  > .tree-item-toggle {
+    padding: 0 f.spacer(1);
+    cursor: pointer;
+    background: none;
+    border: none;
+
+    &::before {
+      content: "▸";
+    }
+  }
+
+  &[aria-expanded="true"] > .tree-item-toggle::before {
+    content: "▾";
+  }
+}

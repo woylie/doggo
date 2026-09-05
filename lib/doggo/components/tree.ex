@@ -70,6 +70,10 @@ defmodule Doggo.Components.Tree do
     `tree_item`, so wire your own click or key handler and re-render.
     """
   end
+
+  @impl true
+  def css_path do
+    "components/_tree.scss"
   end
 
   @impl true

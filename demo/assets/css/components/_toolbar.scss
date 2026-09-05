@@ -1,0 +1,24 @@
+@use "../functions" as f;
+
+// Enough styling to review the component: the row, the grouping the caller
+// wrote, and the direction the arrow keys follow. A designed stylesheet comes
+// with the restyling of the demo.
+.toolbar,
+.action-bar {
+  display: flex;
+  gap: f.spacer(2);
+  align-items: center;
+  padding: f.spacer(1);
+  border: f.border-width(s) solid f.color(border, neutral, "1");
+  border-radius: f.radius(s);
+
+  [role="group"] {
+    display: flex;
+    gap: f.spacer(1);
+  }
+
+  &[aria-orientation="vertical"] {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
