@@ -93,12 +93,13 @@ defmodule Doggo.Components.AlertTest do
         </TestComponents.alert>
         """)
 
-      assert attribute(html, "phx-click") == "close-alert"
+      assert attribute(html, ":root", "phx-click") == nil
 
-      button = find_one(html, ":root > button")
+      button = find_one(html, ":root > button.alert-close")
       assert attribute(button, "type") == "button"
       assert attribute(button, "phx-click") == "close-alert"
-      assert text(button) == "Close"
+      assert attribute(button, "aria-label") == "Close"
+      assert text(button, "span") == "Close"
     end
 
     test "with close label" do
@@ -111,7 +112,29 @@ defmodule Doggo.Components.AlertTest do
         </TestComponents.alert>
         """)
 
-      assert text(html, ":root > button") == "klose"
+      button = find_one(html, ":root > button")
+      assert attribute(button, "aria-label") == "klose"
+      assert text(button, "span") == "klose"
+    end
+
+    test "with close slot" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.alert
+          id="some-alert"
+          on_close="close-alert"
+          close_label="Dismiss"
+        >
+          message
+          <:close>X</:close>
+        </TestComponents.alert>
+        """)
+
+      button = find_one(html, ":root > button")
+      assert attribute(button, "aria-label") == "Dismiss"
+      assert text(button) == "X"
     end
 
     test "with global attribute" do
