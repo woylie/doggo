@@ -1,0 +1,35 @@
+<section id="carousel" class="carousel" aria-label="Dog Fashion Show" aria-roledescription="carousel" data-active-index="0" data-loop data-rotation-interval-ms="5000" phx-hook="Doggo.Carousel">
+  <div class="carousel-inner">
+    <div class="carousel-controls">
+      <button type="button" class="carousel-pause" aria-controls="carousel-items" aria-label="Pause" data-pause-label="Pause" data-resume-label="Resume">
+        Pause
+      </button>
+      <button type="button" class="carousel-previous" aria-controls="carousel-items" aria-label="Previous slide">
+        Previous
+      </button>
+      <div class="carousel-pagination" role="tablist" aria-label="Slides">
+        <button type="button" role="tab" id="carousel-tab-1" aria-selected="true" aria-controls="carousel-item-1" aria-label="1 of 3">
+          <span></span>
+        </button><button type="button" role="tab" id="carousel-tab-2" aria-selected="false" aria-controls="carousel-item-2" aria-label="2 of 3" tabindex="-1">
+          <span></span>
+        </button><button type="button" role="tab" id="carousel-tab-3" aria-selected="false" aria-controls="carousel-item-3" aria-label="3 of 3" tabindex="-1">
+          <span></span>
+        </button>
+      </div>
+      <button type="button" class="carousel-next" aria-controls="carousel-items" aria-label="Next slide">
+        Next
+      </button>
+    </div>
+    <div class="carousel-items-container">
+      <div id="carousel-items" class="carousel-items" aria-live="off">
+        <div id="carousel-item-1" class="carousel-item" role="tabpanel" aria-roledescription="slide" aria-labelledby="carousel-tab-1">
+          Slide 1
+        </div><div id="carousel-item-2" class="carousel-item" role="tabpanel" aria-roledescription="slide" aria-labelledby="carousel-tab-2">
+          Slide 2
+        </div><div id="carousel-item-3" class="carousel-item" role="tabpanel" aria-roledescription="slide" aria-labelledby="carousel-tab-3">
+          Slide 3
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

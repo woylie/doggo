@@ -1,0 +1,18 @@
+<div id="tabs" class="tabs" phx-hook="Doggo.Tabs">
+  <div role="tablist" aria-label="Dog Breeds">
+    <button type="button" role="tab" id="tabs-tab-1" aria-selected="true" aria-controls="tabs-panel-1" tabindex="0" phx-click="[[&quot;set_attr&quot;,{&quot;to&quot;:&quot;#tabs-tab-1&quot;,&quot;attr&quot;:[&quot;aria-selected&quot;,&quot;true&quot;]}],[&quot;set_attr&quot;,{&quot;to&quot;:&quot;#tabs-tab-1&quot;,&quot;attr&quot;:[&quot;tabindex&quot;,&quot;0&quot;]}],[&quot;remove_attr&quot;,{&quot;to&quot;:&quot;#tabs-panel-1&quot;,&quot;attr&quot;:&quot;hidden&quot;}],[&quot;set_attr&quot;,{&quot;to&quot;:&quot;#tabs [role=&#39;tab&#39;]:not(#tabs-tab-1)&quot;,&quot;attr&quot;:[&quot;aria-selected&quot;,&quot;false&quot;]}],[&quot;set_attr&quot;,{&quot;to&quot;:&quot;#tabs [role=&#39;tab&#39;]:not(#tabs-tab-1)&quot;,&quot;attr&quot;:[&quot;tabindex&quot;,&quot;-1&quot;]}],[&quot;set_attr&quot;,{&quot;to&quot;:&quot;#tabs [role=&#39;tabpanel&#39;]:not(#tabs-panel-1)&quot;,&quot;attr&quot;:[&quot;hidden&quot;,&quot;&quot;]}]]">
+      Golden Retriever
+    </button><button type="button" role="tab" id="tabs-tab-2" aria-selected="false" aria-controls="tabs-panel-2" tabindex="-1" phx-click="[[&quot;set_attr&quot;,{&quot;to&quot;:&quot;#tabs-tab-2&quot;,&quot;attr&quot;:[&quot;aria-selected&quot;,&quot;true&quot;]}],[&quot;set_attr&quot;,{&quot;to&quot;:&quot;#tabs-tab-2&quot;,&quot;attr&quot;:[&quot;tabindex&quot;,&quot;0&quot;]}],[&quot;remove_attr&quot;,{&quot;to&quot;:&quot;#tabs-panel-2&quot;,&quot;attr&quot;:&quot;hidden&quot;}],[&quot;set_attr&quot;,{&quot;to&quot;:&quot;#tabs [role=&#39;tab&#39;]:not(#tabs-tab-2)&quot;,&quot;attr&quot;:[&quot;aria-selected&quot;,&quot;false&quot;]}],[&quot;set_attr&quot;,{&quot;to&quot;:&quot;#tabs [role=&#39;tab&#39;]:not(#tabs-tab-2)&quot;,&quot;attr&quot;:[&quot;tabindex&quot;,&quot;-1&quot;]}],[&quot;set_attr&quot;,{&quot;to&quot;:&quot;#tabs [role=&#39;tabpanel&#39;]:not(#tabs-panel-2)&quot;,&quot;attr&quot;:[&quot;hidden&quot;,&quot;&quot;]}]]">
+      Siberian Husky
+    </button><button type="button" role="tab" id="tabs-tab-3" aria-selected="false" aria-controls="tabs-panel-3" tabindex="-1" phx-click="[[&quot;set_attr&quot;,{&quot;to&quot;:&quot;#tabs-tab-3&quot;,&quot;attr&quot;:[&quot;aria-selected&quot;,&quot;true&quot;]}],[&quot;set_attr&quot;,{&quot;to&quot;:&quot;#tabs-tab-3&quot;,&quot;attr&quot;:[&quot;tabindex&quot;,&quot;0&quot;]}],[&quot;remove_attr&quot;,{&quot;to&quot;:&quot;#tabs-panel-3&quot;,&quot;attr&quot;:&quot;hidden&quot;}],[&quot;set_attr&quot;,{&quot;to&quot;:&quot;#tabs [role=&#39;tab&#39;]:not(#tabs-tab-3)&quot;,&quot;attr&quot;:[&quot;aria-selected&quot;,&quot;false&quot;]}],[&quot;set_attr&quot;,{&quot;to&quot;:&quot;#tabs [role=&#39;tab&#39;]:not(#tabs-tab-3)&quot;,&quot;attr&quot;:[&quot;tabindex&quot;,&quot;-1&quot;]}],[&quot;set_attr&quot;,{&quot;to&quot;:&quot;#tabs [role=&#39;tabpanel&#39;]:not(#tabs-panel-3)&quot;,&quot;attr&quot;:[&quot;hidden&quot;,&quot;&quot;]}]]">
+      Dachshund
+    </button>
+  </div>
+  <div id="tabs-panel-1" role="tabpanel" aria-labelledby="tabs-tab-1">
+    Friendly.
+  </div><div id="tabs-panel-2" role="tabpanel" aria-labelledby="tabs-tab-2" hidden>
+    Energetic.
+  </div><div id="tabs-panel-3" role="tabpanel" aria-labelledby="tabs-tab-3" hidden>
+    Playful.
+  </div>
+</div>
