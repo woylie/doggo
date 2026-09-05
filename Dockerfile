@@ -46,15 +46,15 @@ RUN mix local.hex --force && \
 ENV MIX_ENV="prod"
 ENV VERSION=${DOGGO_VERSION}
 
-RUN mkdir demo
-
 # install mix dependencies
-COPY demo/mix.exs demo/mix.lock ./demo
+COPY demo/mix.exs demo/mix.lock ./demo/
 RUN cd demo && mix deps.get --only $MIX_ENV
 RUN cd demo && mkdir config
 
 COPY mix.exs mix.lock ./
 COPY lib lib
+
+COPY assets assets
 
 # copy compile-time config files before we compile dependencies
 # to ensure any relevant config change will trigger the dependencies

@@ -41,7 +41,8 @@
 erl_crash.dump
 
 # Static artifacts - These should be fetched and built inside the Docker image
-/assets
+/assets/*.jpg
+/assets/node_modules/
 /demo/assets/build/
 /demo/assets/node_modules/
 /demo/priv/static/assets/**

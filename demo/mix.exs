@@ -74,17 +74,16 @@ defmodule Demo.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "assets.setup", "assets.build"],
-      "assets.setup": ["cmd pnpm --dir assets install --force"],
-      "assets.build": ["cmd pnpm --dir assets build:dev"],
-      "assets.deploy": ["cmd pnpm --dir assets build:prod", "phx.digest"]
+      "assets.setup": ["cmd --cd assets pnpm install --force"],
+      "assets.build": ["cmd --cd assets pnpm build:dev"],
+      "assets.deploy": ["cmd --cd assets pnpm build:prod", "phx.digest"]
     ]
   end
 
   defp version do
-    if version = System.get_env("VERSION") do
-      version
-    else
-      version_from_git()
+    case System.get_env("VERSION") do
+      version when version in [nil, ""] -> version_from_git()
+      version -> version
     end
   end
 
