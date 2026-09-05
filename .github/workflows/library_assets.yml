@@ -47,3 +47,5 @@ jobs:
         run: pnpm lint:prettier
       - name: ESLint
         run: pnpm lint:eslint
+      - name: Test
+        run: pnpm test
