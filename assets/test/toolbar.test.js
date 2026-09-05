@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import Toolbar from "../js/hooks/toolbar.js";
+import { initToolbar } from "../js/hooks/toolbar.js";
 import actionBarFixture from "./fixtures/action_bar.html?raw";
 import toolbarFixture from "./fixtures/toolbar.html?raw";
-import { mount, press, render } from "./hook.js";
+import { press, render } from "./dom.js";
 
 const nameOf = (control) =>
   control.getAttribute("aria-label") || control.textContent.trim();
@@ -30,7 +30,7 @@ describe("toolbar hook", () => {
 
   beforeEach(() => {
     el = render(toolbarFixture);
-    hook = mount(Toolbar, el);
+    hook = initToolbar(el);
   });
 
   it("puts only the first enabled control in the tab order", () => {
@@ -112,7 +112,7 @@ describe("toolbar hook", () => {
     el.querySelectorAll("button, input").forEach((candidate) =>
       candidate.removeAttribute("tabindex"),
     );
-    hook.updated();
+    hook.update();
 
     expect(tabIndexes(el).Teach).toBe("0");
   });
@@ -123,7 +123,7 @@ describe("action bar hook", () => {
 
   beforeEach(() => {
     el = render(actionBarFixture);
-    mount(Toolbar, el);
+    initToolbar(el);
   });
 
   it("is a single tab stop over its buttons", () => {

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import Dialog from "../js/hooks/dialog.js";
+import { initDialog } from "../js/hooks/dialog.js";
 import fixture from "./fixtures/modal.html?raw";
-import { mount, render } from "./hook.js";
+import { render } from "./dom.js";
 
 const dispatch = (el, name) =>
   el.dispatchEvent(new window.CustomEvent(name, { bubbles: true }));
@@ -27,9 +27,8 @@ describe("dialog hook", () => {
 
   beforeEach(() => {
     el = render(fixture);
-    hook = mount(Dialog, el);
     execJS = vi.fn();
-    hook.liveSocket = { execJS };
+    hook = initDialog(el, { execJS });
   });
 
   it("opens as a modal when Doggo.show_modal dispatches", () => {
@@ -112,7 +111,7 @@ describe("dialog hook", () => {
       opener.setAttribute("commandfor", el.id);
       document.body.appendChild(opener);
 
-      hook.destroyed();
+      hook.destroy();
       opener.click();
 
       expect(el.open).toBe(false);
@@ -145,7 +144,7 @@ describe("dialog hook", () => {
   it("leaves the buttons to the browser when it has command", () => {
     withSupport(window.HTMLButtonElement.prototype, "command", () => {
       const fresh = render(fixture);
-      mount(Dialog, fresh);
+      initDialog(fresh);
       dispatch(fresh, "doggo:open");
       fresh.querySelector("button[command='close']").click();
 
@@ -197,7 +196,7 @@ describe("dialog hook", () => {
   it("leaves dismissal to the browser when it has closedBy", () => {
     withSupport(window.HTMLDialogElement.prototype, "closedBy", () => {
       const fresh = render(fixture);
-      mount(Dialog, fresh);
+      initDialog(fresh);
       dispatch(fresh, "doggo:open");
       fresh.click();
 

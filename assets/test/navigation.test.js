@@ -6,7 +6,7 @@ import {
   setRovingTabindex,
   targetIndex,
 } from "../js/navigation.js";
-import { render } from "./hook.js";
+import { render } from "./dom.js";
 
 describe("targetIndex", () => {
   it("steps forward and back", () => {

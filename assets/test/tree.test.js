@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import Tree from "../js/hooks/tree.js";
+import { initTree } from "../js/hooks/tree.js";
 import fixture from "./fixtures/tree.html?raw";
-import { mount, press, render } from "./hook.js";
+import { press, render } from "./dom.js";
 
 // An item's own label: not the items nested inside it, and not the caret.
 const labelOf = (item) =>
@@ -25,7 +25,7 @@ describe("tree hook", () => {
 
   beforeEach(() => {
     el = render(fixture);
-    hook = mount(Tree, el);
+    hook = initTree(el);
   });
 
   it("skips the items of a collapsed branch", () => {
@@ -189,7 +189,7 @@ describe("tree hook", () => {
     const working = item("Working");
     working.setAttribute("aria-expanded", "false");
     working.querySelector('[role="group"]').setAttribute("hidden", "");
-    hook.updated();
+    hook.update();
 
     expect(visible(el)).toContain("Boxer");
   });

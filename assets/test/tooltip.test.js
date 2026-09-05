@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import Tooltip from "../js/hooks/tooltip.js";
+import { initTooltip } from "../js/hooks/tooltip.js";
 import fixture from "./fixtures/tooltip.html?raw";
-import { mount, render } from "./hook.js";
+import { render } from "./dom.js";
 
 // The hook calls `el.matches(":hover")` and `el.matches(":focus-within")` to
 // find out whether the tooltip is currently shown, since that is what the CSS
@@ -29,7 +29,7 @@ describe("tooltip hook", () => {
 
   beforeEach(() => {
     el = render(fixture);
-    hook = mount(Tooltip, el);
+    hook = initTooltip(el);
   });
 
   it("dismisses a tooltip shown by focus", () => {
@@ -135,7 +135,7 @@ describe("tooltip hook", () => {
   });
 
   it("stops listening when the element is destroyed", () => {
-    hook.destroyed();
+    hook.destroy();
     pretend(el, { focus: true });
     pressEscape();
 

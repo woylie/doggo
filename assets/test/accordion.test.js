@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import Accordion from "../js/hooks/accordion.js";
+import { initAccordion } from "../js/hooks/accordion.js";
 import fixture from "./fixtures/accordion.html?raw";
-import { mount, press, render } from "./hook.js";
+import { press, render } from "./dom.js";
 
 const focused = () => document.activeElement.textContent.trim();
 
@@ -20,7 +20,7 @@ describe("accordion hook", () => {
 
   beforeEach(() => {
     el = render(fixture);
-    mount(Accordion, el);
+    initAccordion(el);
   });
 
   it("moves to the next header with Down", () => {

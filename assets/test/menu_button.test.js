@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import MenuButton from "../js/hooks/menu_button.js";
+import { initMenuButton } from "../js/hooks/menu_button.js";
 import menuFixture from "./fixtures/menu.html?raw";
-import { mount, press, render } from "./hook.js";
+import { press, render } from "./dom.js";
 
 describe("menu button hook", () => {
   let button;
@@ -16,7 +16,7 @@ describe("menu button hook", () => {
     button = document.getElementById("opener");
     menu = document.getElementById("menu");
     menu.setAttribute("hidden", "");
-    mount(MenuButton, button);
+    initMenuButton(button);
   });
 
   it("opens on Down and focuses the first item", () => {
