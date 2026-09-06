@@ -58,7 +58,7 @@ defmodule Doggo.Components.MenuItem do
   end
 
   @impl true
-  def attrs_and_slots do
+  def attrs_and_slots(_opts) do
     quote do
       attr :on_click, JS, required: true
       attr :rest, :global

@@ -60,7 +60,7 @@ defmodule Doggo.Components.Stack do
   end
 
   @impl true
-  def attrs_and_slots do
+  def attrs_and_slots(_opts) do
     quote do
       attr :recursive, :boolean,
         default: false,

@@ -71,7 +71,7 @@ defmodule Doggo.Components.ActionBar do
   end
 
   @impl true
-  def attrs_and_slots do
+  def attrs_and_slots(_opts) do
     quote do
       attr :id, :string,
         required: true,

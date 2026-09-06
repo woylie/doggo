@@ -63,7 +63,7 @@ defmodule Doggo.Components.VerticalNav do
   end
 
   @impl true
-  def attrs_and_slots do
+  def attrs_and_slots(_opts) do
     quote do
       attr :id, :string, default: nil
       attr :label, :string, required: true

@@ -33,12 +33,86 @@ defmodule Doggo.Components.Field do
     - `:optional_text` - Defines a text that is rendered next to the label
       in optional fields. Defaults to `nil`. This value is translated
       if `gettext_module` is set.
+    - `:extra_types` - A map from a type name to a function component that
+      renders the control for it. This allows you to extend the built-in field
+      component types. See *Custom types* below.
     """
   end
 
   @impl true
   def usage do
     """
+    ### Custom types
+
+    You can register additional input types at build time with the `extra_types`
+    option.
+
+    ```elixir
+    build_field(
+      extra_types: %{"ranked" => &MyAppWeb.Inputs.ranked/1}
+    )
+    ```
+
+    The extra types can be rendered like any other types.
+
+    ```heex
+    <.field field={@form[:rank]} type="ranked" label="Rank" />
+    ```
+
+    The field component renders the label, the errors and the description as it
+    does for any other type, and calls your function component for the control.
+    Your component receives these assigns:
+
+    | Assign | |
+    |---|---|
+    | `name` | the input name, with `[]` appended when `multiple` is set |
+    | `id` | the `id` attribute, from `id` or the form field |
+    | `value` | the field value |
+    | `type` | the type you registered |
+    | `invalid` | whether the field has errors, for `aria-invalid` |
+    | `describedby` | for `aria-describedby`, `nil` without a description |
+    | `errormessage` | for `aria-errormessage`, `nil` without errors |
+    | `validations` | the validation attributes derived from the changeset |
+    | `rest` | the global attributes the caller passed |
+
+    The component you referenced renders the control:
+
+    ```elixir
+    attr :name, :string, required: true
+    attr :id, :string, required: true
+    attr :value, :any, required: true
+    attr :type, :string, required: true
+    attr :invalid, :boolean, required: true
+    attr :describedby, :string, required: true
+    attr :errormessage, :string, required: true
+    attr :validations, :list, required: true
+    attr :rest, :global
+
+    def ranked(assigns) do
+      ~H\"\"\"
+      <div class="ranked" data-type={@type}>
+        <select
+          name={@name}
+          id={@id}
+          aria-describedby={@describedby}
+          aria-errormessage={@errormessage}
+          aria-invalid={@invalid && "true"}
+          {@validations}
+          {@rest}
+        >
+          <option
+            :for={n <- 1..5}
+            value={n}
+            selected={to_string(n) == to_string(@value)}
+          >
+            {n}
+          </option>
+        </select>
+      </div>
+      \"\"\"
+    end
+    ```
+
     ### Types
 
     In addition to all HTML input types, the following type values are also
@@ -162,7 +236,8 @@ defmodule Doggo.Components.Field do
       extra: [
         gettext_module: nil,
         required_text: "(required)",
-        optional_text: nil
+        optional_text: nil,
+        extra_types: nil
       ]
     ]
   end
@@ -188,7 +263,18 @@ defmodule Doggo.Components.Field do
   end
 
   @impl true
-  def attrs_and_slots do
+  def attrs_and_slots(opts) do
+    built_in_types =
+      ~w(checkbox checkbox-group color date datetime-local email file hidden
+       month number password range radio radio-group search select switch tel
+       text textarea time url week)
+
+    extra_types =
+      case Keyword.get(opts, :extra_types) do
+        {:%{}, _, pairs} -> Enum.map(pairs, fn {type, _fun} -> type end)
+        _ -> []
+      end
+
     quote do
       attr :id, :any, default: nil
       attr :name, :any
@@ -213,9 +299,7 @@ defmodule Doggo.Components.Field do
 
       attr :type, :string,
         default: "text",
-        values: ~w(checkbox checkbox-group color date datetime-local email file
-         hidden month number password range radio radio-group search select
-         switch tel text textarea time url week)
+        values: unquote(built_in_types ++ extra_types)
 
       attr :field, Phoenix.HTML.FormField,
         doc: "A form field struct, for example: @form[:name]"
@@ -315,13 +399,16 @@ defmodule Doggo.Components.Field do
     optional_text = Keyword.fetch!(extra, :optional_text)
     gettext_module = Keyword.get(extra, :gettext_module)
 
+    extra_types = Keyword.get(extra, :extra_types) || Macro.escape(%{})
+
     quote do
       var!(assigns) =
         assign(
           var!(assigns),
           gettext_module: unquote(gettext_module),
           required_text: unquote(required_text),
-          optional_text: unquote(optional_text)
+          optional_text: unquote(optional_text),
+          extra_types: unquote(extra_types)
         )
     end
   end
@@ -643,6 +730,36 @@ defmodule Doggo.Components.Field do
     """
   end
 
+  def render(%{type: type, extra_types: extra_types} = assigns)
+      when is_map_key(extra_types, type) do
+    assigns = assign(assigns, :input, Map.fetch!(extra_types, type))
+
+    ~H"""
+    <div class={@class} data-invalid={@errors != []} {@data_attrs}>
+      <.label
+        for={@id}
+        required={@validations[:required] || false}
+        required_text={@required_text}
+        optional_text={@optional_text}
+        base_class={@base_class}
+        visually_hidden={@hide_label}
+        gettext_module={@gettext_module}
+      >
+        {@label}
+      </.label>
+      {@input.(input_assigns(assigns))}
+      <.field_errors for={@id} errors={@errors} base_class={@base_class} />
+      <.field_description
+        :if={@description != []}
+        for={@id}
+        base_class={@base_class}
+      >
+        {render_slot(@description)}
+      </.field_description>
+    </div>
+    """
+  end
+
   def render(%{addon_left: addon_left, addon_right: addon_right} = assigns) do
     addon =
       case {addon_left, addon_right} do
@@ -944,5 +1061,20 @@ defmodule Doggo.Components.Field do
       option: nil
     )
     |> checkbox()
+  end
+
+  defp input_assigns(assigns) do
+    assigns
+    |> Map.take([
+      :describedby,
+      :errormessage,
+      :id,
+      :name,
+      :rest,
+      :type,
+      :validations,
+      :value
+    ])
+    |> Map.put(:invalid, assigns.errors != [])
   end
 end

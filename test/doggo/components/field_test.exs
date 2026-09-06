@@ -4,6 +4,8 @@ defmodule Doggo.Components.FieldTest do
 
   import Doggo.TestHelpers
 
+  alias Doggo.Components.FieldTest
+
   defmodule TestComponents do
     @moduledoc """
     Generates components for tests.
@@ -21,6 +23,149 @@ defmodule Doggo.Components.FieldTest do
     )
 
     build_field(name: :field_without_gettext, optional_text: "(optional)")
+
+    build_field(
+      name: :field_with_extra_types,
+      gettext_module: Doggo.Gettext,
+      extra_types: %{"ranked" => &FieldTest.ranked_input/1}
+    )
+  end
+
+  @doc false
+  def ranked_input(assigns) do
+    ~H"""
+    <div
+      class="ranked"
+      data-type={@type}
+      data-keys={Enum.join(Enum.sort(Map.keys(assigns)), ",")}
+    >
+      <select
+        name={@name}
+        id={@id}
+        aria-describedby={@describedby}
+        aria-errormessage={@errormessage}
+        aria-invalid={@invalid && "true"}
+        {@validations}
+        {@rest}
+      >
+        <option
+          :for={n <- 1..5}
+          value={n}
+          selected={to_string(n) == to_string(@value)}
+        >
+          {n}
+        </option>
+      </select>
+    </div>
+    """
+  end
+
+  describe "field/1 with extra types" do
+    test "renders a registered type through the caller's component" do
+      assigns = %{form: to_form(%{"rank" => "3"})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_with_extra_types
+            field={@form[:rank]}
+            type="ranked"
+            label="Rank"
+          />
+        </.form>
+        """)
+
+      # Doggo's wrapper, the caller's control.
+      assert attribute(html, ".field", "class") == "field"
+      assert text(html, "label") == "Rank"
+
+      select = find_one(html, ".ranked > select")
+      assert attribute(select, "name") == "rank"
+      assert attribute(select, "id") == "rank"
+      assert attribute(html, ".ranked", "data-type") == "ranked"
+
+      assert attribute(html, ".ranked > select > option[selected]", "value") ==
+               "3"
+    end
+
+    test "wires the aria attributes through to the caller's control" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_with_extra_types
+            field={@form[:rank]}
+            type="ranked"
+            label="Rank"
+            errors={["is invalid"]}
+          >
+            <:description>Pick a rank.</:description>
+          </TestComponents.field_with_extra_types>
+        </.form>
+        """)
+
+      select = find_one(html, ".ranked > select")
+      assert attribute(select, "aria-invalid") == "true"
+      assert attribute(select, "aria-errormessage") == "rank_errors"
+      assert attribute(select, "aria-describedby") =~ "rank_description"
+
+      # The field renders the errors, not the caller's component.
+      assert text(html, ".field-errors > li") == "is invalid"
+      assert Floki.find(html, ".ranked .field-errors") == []
+    end
+
+    test "hands the registered type an explicit set of assigns" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_with_extra_types
+            field={@form[:rank]}
+            type="ranked"
+            label="Rank"
+          />
+        </.form>
+        """)
+
+      assert attribute(html, ".ranked", "data-keys") ==
+               "describedby,errormessage,id,invalid,name,rest,type,validations,value"
+    end
+
+    test "keeps the built-in types working alongside" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_with_extra_types
+            field={@form[:email]}
+            type="email"
+            label="Email"
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "input", "type") == "email"
+    end
+
+    test "falls through for a type nobody registered" do
+      assigns = %{form: to_form(%{}), type: "unregistered"}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_with_extra_types
+            field={@form[:x]}
+            type={@type}
+            label="X"
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "input", "type") == "unregistered"
+    end
   end
 
   describe "field/1" do

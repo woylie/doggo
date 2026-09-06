@@ -83,7 +83,7 @@ defmodule Doggo.Components.Button do
   end
 
   @impl true
-  def attrs_and_slots do
+  def attrs_and_slots(_opts) do
     quote do
       attr :type, :string,
         values: ["button", "reset", "submit"],

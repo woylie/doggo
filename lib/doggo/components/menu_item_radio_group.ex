@@ -65,7 +65,7 @@ defmodule Doggo.Components.MenuItemRadioGroup do
   end
 
   @impl true
-  def attrs_and_slots do
+  def attrs_and_slots(_opts) do
     quote do
       attr :label, :string,
         required: true,

@@ -62,7 +62,7 @@ defmodule Doggo.Components.MenuItemCheckbox do
   end
 
   @impl true
-  def attrs_and_slots do
+  def attrs_and_slots(_opts) do
     quote do
       attr :checked, :boolean, default: false
       attr :on_click, JS, required: true

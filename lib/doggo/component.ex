@@ -49,8 +49,10 @@ defmodule Doggo.Component do
 
   @doc """
   Returns a quoted block with the attributes and slots.
+
+  Takes the `extra` options as an argument.
   """
-  @callback attrs_and_slots() :: Macro.t()
+  @callback attrs_and_slots(opts :: keyword) :: Macro.t()
 
   @doc """
   Returns a quoted block with code that evaluates compile-time options for the
