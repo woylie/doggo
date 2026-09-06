@@ -2,10 +2,26 @@
   "name": "@woylie/doggo",
   "version": "0.14.9",
   "description": "JavaScript hooks for the Doggo component library",
-  "repository": "https://github.com/woylie/doggo",
+  "keywords": [
+    "phoenix",
+    "liveview",
+    "hooks",
+    "components",
+    "accessibility"
+  ],
+  "homepage": "https://hexdocs.pm/doggo",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woylie/doggo.git",
+    "directory": "assets"
+  },
+  "bugs": "https://github.com/woylie/doggo/issues",
   "author": "Mathias Polligkeit",
   "license": "MIT",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "lint": "pnpm run lint:prettier && pnpm run lint:eslint",
     "lint:eslint": "eslint .",
