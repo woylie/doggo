@@ -38,6 +38,18 @@ defmodule Doggo.Components.Callout do
       </p>
     </.callout>
     ```
+
+    Callout with an action:
+
+    ```heex
+    <.callout id="callout-fun-dog-fact" title="Fun Dog Fact">
+      <p>
+        Did you know? Dogs have a sense of time and can get upset when their
+        routine is changed.
+      </p>
+      <:action><.link>Learn More</.link></:action>
+    </.callout>
+    ```
     """
   end
 
@@ -64,6 +76,7 @@ defmodule Doggo.Components.Callout do
   @impl true
   def nested_classes(base_class) do
     [
+      "#{base_class}-actions",
       "#{base_class}-body",
       "#{base_class}-icon",
       "#{base_class}-message",
@@ -80,6 +93,7 @@ defmodule Doggo.Components.Callout do
 
       slot :inner_block, required: true, doc: "The main content of the alert."
       slot :icon, doc: "Optional slot to render an icon."
+      slot :action, doc: "Optional slot for action links or buttons."
     end
   end
 
@@ -107,6 +121,11 @@ defmodule Doggo.Components.Callout do
         </div>
         <div class={"#{@base_class}-message"}>
           {render_slot(@inner_block)}
+        </div>
+        <div :if={@action != []} class={"#{@base_class}-actions"}>
+          <%= for action <- @action do %>
+            {render_slot(action)}
+          <% end %>
         </div>
       </div>
     </aside>

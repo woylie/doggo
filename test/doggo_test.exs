@@ -127,6 +127,7 @@ defmodule DoggoTest do
       assert Doggo.safelist(TestComponents) == [
                "button",
                "callout",
+               "callout-actions",
                "callout-body",
                "callout-icon",
                "callout-message",

@@ -808,6 +808,7 @@ defmodule Doggo.ComponentsTest do
 
       assert Floki.find(aside, ".callout-icon") == []
       assert Floki.find(aside, ".callout-title") == []
+      assert Floki.find(html, ".callout-actions") == []
     end
 
     test "with title" do
@@ -840,6 +841,21 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert text(html, "aside:root > .callout-icon") == "lightbulb"
+    end
+
+    test "with action slot" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.callout id="callout">
+          message
+          <:action><button>Do something</button></:action>
+        </TestComponents.callout>
+        """)
+
+      actions = find_one(html, ":root > .callout-body > .callout-actions")
+      assert text(actions, "button") == "Do something"
     end
 
     test "with global attribute" do

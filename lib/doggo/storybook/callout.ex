@@ -42,6 +42,19 @@ defmodule Doggo.Storybook.Callout do
           """,
           "<:icon>#{icon(:info, dependent_components)}</:icon>"
         ]
+      },
+      %Variation{
+        id: :with_action,
+        attributes: %{title: "Fun Dog Fact"},
+        slots: [
+          """
+          <p>
+            Did you know? Dogs have a sense of time and can get upset when their
+            routine is changed.
+          </p>
+          """,
+          "<:action><button>Learn More</button></:action>"
+        ]
       }
     ]
   end
