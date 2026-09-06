@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { initSplitPane } from "../js/hooks/split_pane.js";
-import fixture from "./fixtures/split_pane.html?raw";
+import fixture from "../../test/fixtures/split_pane.html?raw";
 import { press, render } from "./dom.js";
 
 // happy-dom does not lay the page out, so the box the hook measures against is

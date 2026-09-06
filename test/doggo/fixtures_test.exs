@@ -17,7 +17,7 @@ defmodule Doggo.FixturesTest do
 
   @moduletag :fixtures
 
-  @fixture_dir Path.expand("../../assets/test/fixtures", __DIR__)
+  @fixture_dir Path.expand("../fixtures", __DIR__)
 
   test "tabs fixture matches the rendered component" do
     assigns = %{}
@@ -273,13 +273,49 @@ defmodule Doggo.FixturesTest do
         UPDATE_FIXTURES=1 mix test
     """
 
-    assert File.read!(path) == html, """
-    The fixture #{name} is out of date, so the JavaScript hook tests are running
-    against markup this component no longer emits.
+    expected = File.read!(path)
 
-    Update it and check whether the hook still works:
+    if expected != html do
+      flunk("""
+      The fixture #{name} is out of date.
 
-        UPDATE_FIXTURES=1 mix test
-    """
+      To update the fixtures, run:
+
+          UPDATE_FIXTURES=1 mix test
+
+      #{verdict(expected, html)}
+
+      #{diff(expected, html)}
+      """)
+    end
+  end
+
+  defp verdict(expected, actual) do
+    if collapse(expected) == collapse(actual) do
+      "The difference is whitespace only."
+    else
+      "The markup differs, not just the whitespace."
+    end
+  end
+
+  defp collapse(html), do: String.replace(html, ~r/\s+/, " ")
+
+  defp diff(expected, actual) do
+    expected
+    |> String.split("\n")
+    |> List.myers_difference(String.split(actual, "\n"))
+    |> Enum.flat_map(fn
+      {:eq, _} -> []
+      {:del, lines} -> Enum.map(lines, &"  - #{visible(&1)}")
+      {:ins, lines} -> Enum.map(lines, &"  + #{visible(&1)}")
+    end)
+    |> Enum.take(40)
+    |> Enum.join("\n")
+  end
+
+  defp visible(line) do
+    line
+    |> String.replace("\t", "\\t")
+    |> String.replace(~r/ +$/, &String.duplicate("·", String.length(&1)))
   end
 end

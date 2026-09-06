@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { initMenu } from "../js/hooks/menu.js";
-import barFixture from "./fixtures/menu_bar.html?raw";
-import fixture from "./fixtures/menu.html?raw";
+import barFixture from "../../test/fixtures/menu_bar.html?raw";
+import fixture from "../../test/fixtures/menu.html?raw";
 import { press, render } from "./dom.js";
 
 const ITEMS =

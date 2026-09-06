@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { initAccordion } from "../js/hooks/accordion.js";
-import fixture from "./fixtures/accordion.html?raw";
+import fixture from "../../test/fixtures/accordion.html?raw";
 import { press, render } from "./dom.js";
 
 const focused = () => document.activeElement.textContent.trim();
