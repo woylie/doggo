@@ -234,3 +234,21 @@ describe("menu bar hook", () => {
     expect(focused()).toBe("View");
   });
 });
+
+describe("menu hook, an id that is not selector-safe", () => {
+  it("still finds the button, since the id is the caller's", () => {
+    document.body.innerHTML =
+      '<button id="opener" aria-controls=\'a"b\' aria-expanded="true">Open</button>' +
+      '<ul id=\'a"b\' role="menu">' +
+      '<li role="none"><button role="menuitem">One</button></li></ul>';
+
+    const el = document.getElementById('a"b');
+    initMenu(el);
+    el.querySelector('[role="menuitem"]').focus();
+    press(document.activeElement, "Escape");
+
+    expect(
+      document.getElementById("opener").getAttribute("aria-expanded"),
+    ).toBe("false");
+  });
+});

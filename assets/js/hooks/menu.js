@@ -61,9 +61,13 @@ export function initMenu(menu) {
   };
 
   // Closing belongs to the button that opened the menu, which the menu finds
-  // through the `aria-controls` pointing at it.
+  // through the `aria-controls` pointing at it. Compared rather than put in a
+  // selector, because the id is the caller's and may hold characters that
+  // would change what the selector matches.
   const close = () => {
-    const button = document.querySelector(`[aria-controls="${menu.id}"]`);
+    const button = Array.from(
+      document.querySelectorAll("[aria-controls]"),
+    ).find((el) => el.getAttribute("aria-controls") === menu.id);
 
     if (!button) return;
 
