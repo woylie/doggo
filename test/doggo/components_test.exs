@@ -2804,14 +2804,14 @@ defmodule Doggo.ComponentsTest do
       assert attribute(dialog, "phx-mounted") =~ "ignore_attrs"
       refute attribute(dialog, "phx-mounted") =~ "doggo:open"
 
-      a = find_one(html, ":root > div > section > header > button.modal-close")
+      a = find_one(html, ":root > section > header > button.modal-close")
       assert attribute(a, "type") == "button"
       assert attribute(a, "command") == "close"
       assert attribute(a, "commandfor") == "pet-modal"
       assert attribute(a, "aria-label") == "Close"
       assert text(a, "span") == "Close"
 
-      h2 = find_one(html, ":root > div > section > header > h2")
+      h2 = find_one(html, ":root > section > header > h2")
       assert text(h2) == "Edit dog"
 
       assert text(html, "section > .modal-content") == "dog-form"

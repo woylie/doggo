@@ -48,7 +48,7 @@ defmodule Doggo.Components.AlertDialogTest do
 
       assert Floki.find(html, ".alert-dialog-close") == []
 
-      h2 = find_one(html, ":root > div > section > header > h2")
+      h2 = find_one(html, ":root > section > header > h2")
       assert text(h2) == "Edit dog"
 
       assert text(html, "section > .alert-dialog-content") == "dog-form"
@@ -74,7 +74,7 @@ defmodule Doggo.Components.AlertDialogTest do
       a =
         find_one(
           html,
-          ":root > div > section > header > button.alert-dialog-close"
+          ":root > section > header > button.alert-dialog-close"
         )
 
       assert attribute(html, "dialog:root", "closedby") == "any"
