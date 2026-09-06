@@ -458,6 +458,23 @@ defmodule Doggo.Components.Field do
     |> render()
   end
 
+  def render(assigns) when not is_map_key(assigns, :field) do
+    errors = Map.get(assigns, :errors) || []
+    id = assigns[:id] || assigns[:name]
+
+    assigns
+    |> Map.merge(%{
+      field: nil,
+      id: id,
+      errors: errors,
+      validations: Map.get(assigns, :validations) || [],
+      describedby:
+        Doggo.input_aria_describedby(id, assigns.description, errors),
+      errormessage: Doggo.input_aria_errormessage(id, errors)
+    })
+    |> render()
+  end
+
   def render(%{type: "checkbox"} = assigns) do
     assigns =
       assign_new(assigns, :checked, fn ->

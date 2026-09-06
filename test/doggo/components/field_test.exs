@@ -267,6 +267,40 @@ defmodule Doggo.Components.FieldTest do
     end
   end
 
+  describe "field/1 without a form field" do
+    test "renders from name and value alone" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.field name="pet" value="Bandit" label="Pet" />
+        """)
+
+      assert attribute(html, "input", "name") == "pet"
+      assert attribute(html, "input", "value") == "Bandit"
+      assert text(html, "label") =~ "Pet"
+    end
+
+    test "renders a registered type from name and value alone" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.field_with_extra_types
+          name="rank"
+          value="3"
+          type="ranked"
+          label="Rank"
+        />
+        """)
+
+      assert attribute(html, ".ranked > select", "name") == "rank"
+
+      assert attribute(html, ".ranked > select > option[selected]", "value") ==
+               "3"
+    end
+  end
+
   describe "field/1" do
     test "with text input" do
       assigns = %{form: to_form(%{})}
