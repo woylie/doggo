@@ -8,14 +8,26 @@ defmodule Doggo.TestHelpers do
   @doc """
   Renders the given HEEx template and parses it with Floki.
 
+  Runs the accessibility rules in `Doggo.Accessibility` against the rendered
+  output. Pass rule names in `except` for a component that has a reason to
+  break one.
+
   ## Example
 
       parse_heex(~H"<p>Hello!</p>")
   """
-  def parse_heex(heex) do
+  def parse_heex(heex, except \\ []) do
     heex
     |> rendered_to_string()
     |> Floki.parse_fragment!()
+    |> Doggo.Accessibility.check(except)
+  end
+
+  @doc """
+  Like `parse_heex/1`, but without the accessible-name rule.
+  """
+  def parse_heex_without_name_check(heex) do
+    parse_heex(heex, [:nameless_interactive_elements])
   end
 
   @doc """
