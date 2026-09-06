@@ -211,6 +211,62 @@ defmodule Doggo.Components.FieldTest do
     end
   end
 
+  describe "field/1 with hidden_input false" do
+    test "leaves out the input that submits false for a checkbox" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:subscribe]}
+            type="checkbox"
+            label="Subscribe"
+            hidden_input={false}
+          />
+        </.form>
+        """)
+
+      assert Floki.find(html, "input[type='hidden']") == []
+      assert attribute(html, "input[type='checkbox']", "name") == "subscribe"
+    end
+
+    test "leaves it out for a switch too" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:subscribe]}
+            type="switch"
+            label="Subscribe"
+            hidden_input={false}
+          />
+        </.form>
+        """)
+
+      assert Floki.find(html, "input[type='hidden']") == []
+    end
+
+    test "renders it by default" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:subscribe]}
+            type="checkbox"
+            label="Subscribe"
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "input[type='hidden']", "value") == "false"
+    end
+  end
+
   describe "field/1" do
     test "with text input" do
       assigns = %{form: to_form(%{})}

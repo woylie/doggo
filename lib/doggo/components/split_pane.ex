@@ -184,8 +184,8 @@ defmodule Doggo.Components.SplitPane do
   def example_label, do: "Sidebar"
 
   @impl true
-  def render(%{value: value, min: min, max: max} = assigns) do
-    assigns = assign(assigns, :default_size, value |> max(min) |> min(max))
+  def render(%{default_size: size, min_size: min, max_size: max} = assigns) do
+    assigns = assign(assigns, :default_size, size |> max(min) |> min(max))
 
     ~H"""
     <div

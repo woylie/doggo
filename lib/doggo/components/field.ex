@@ -319,6 +319,14 @@ defmodule Doggo.Components.Field do
 
       attr :checked, :boolean, doc: "The checked attribute for checkboxes."
 
+      attr :hidden_input, :boolean,
+        default: true,
+        doc: """
+        If `true`, a hidden input with a `false` value is rendered before each
+        checkbox, so that the form payload always has a parameter for that
+        field.
+        """
+
       attr :on_text, :string,
         default: "On",
         doc: """
@@ -466,7 +474,7 @@ defmodule Doggo.Components.Field do
         base_class={@base_class}
         gettext_module={@gettext_module}
       >
-        <input type="hidden" name={@name} value="false" />
+        <input :if={@hidden_input} type="hidden" name={@name} value="false" />
         <input
           type="checkbox"
           name={@name}
@@ -656,7 +664,7 @@ defmodule Doggo.Components.Field do
         gettext_module={@gettext_module}
       >
         <span class={"#{@base_class}-switch-label"}>{@label}</span>
-        <input type="hidden" name={@name} value="false" />
+        <input :if={@hidden_input} type="hidden" name={@name} value="false" />
         <input
           type="checkbox"
           role="switch"
