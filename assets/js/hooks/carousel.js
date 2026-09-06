@@ -245,14 +245,36 @@ export function initCarousel(carousel) {
 
   // Pause when hovering or focusing, resume when leaving, unless
   // rotation is paused with the pause button.
-  carousel.addEventListener("pointerenter", stopAutoRotation);
-  carousel.addEventListener("pointerleave", startAutoRotation);
-  carousel.addEventListener("focusin", stopAutoRotation);
+
+  let isHovered = false;
+  let isFocused = false;
+
+  const resume = () => {
+    if (!isHovered && !isFocused) startAutoRotation();
+  };
+
+  carousel.addEventListener("pointerenter", () => {
+    isHovered = true;
+    stopAutoRotation();
+  });
+
+  carousel.addEventListener("pointerleave", () => {
+    isHovered = false;
+    resume();
+  });
+
+  carousel.addEventListener("focusin", () => {
+    isFocused = true;
+    stopAutoRotation();
+  });
 
   carousel.addEventListener("focusout", (e) => {
     // focusout also fires while focus moves between controls inside
     // the carousel, and that must not resume the rotation.
-    if (!carousel.contains(e.relatedTarget)) startAutoRotation();
+    if (carousel.contains(e.relatedTarget)) return;
+
+    isFocused = false;
+    resume();
   });
 
   // Initialize
@@ -267,7 +289,7 @@ export function initCarousel(carousel) {
     // A patch can add or remove the pause button, and with it the
     // rotation. Starting is a no-op while it runs or is paused.
     if (isAutoRotationEnabled()) {
-      startAutoRotation();
+      resume();
     } else {
       stopAutoRotation();
     }
