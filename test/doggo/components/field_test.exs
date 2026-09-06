@@ -471,6 +471,118 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input[value='l']", "checked") == "checked"
     end
 
+    test "checkbox-group with option descriptions" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:color]}
+            type="checkbox-group"
+            options={[
+              [key: "Blue", value: "blue", description: "The colour of the sky"],
+              [key: "Green", value: "green", description: "The colour of grass"]
+            ]}
+            label="Color"
+          />
+        </.form>
+        """)
+
+      assert text(html, "#color_blue_description") == "The colour of the sky"
+
+      assert attribute(html, "input[value='blue']", "aria-describedby") ==
+               "color_blue_description"
+
+      assert text(html, "label:first-of-type") == "Blue"
+    end
+
+    test "select rejects an option description" do
+      assigns = %{form: to_form(%{})}
+
+      error =
+        assert_raise ArgumentError, fn ->
+          parse_heex(~H"""
+          <.form for={@form}>
+            <TestComponents.field
+              field={@form[:pet]}
+              type="select"
+              label="Pet"
+              options={[[key: "Dog", value: "dog", description: "Loyal"]]}
+            />
+          </.form>
+          """)
+        end
+
+      assert error.message =~ "Invalid :description on a select option"
+    end
+
+    test "checkbox-group with a disabled option" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:color]}
+            type="checkbox-group"
+            label="Color"
+            options={[
+              [key: "Blue", value: "blue"],
+              [key: "Green", value: "green", disabled: true]
+            ]}
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "input[value='green']", "disabled") == "disabled"
+      assert attribute(html, "input[value='blue']", "disabled") == nil
+    end
+
+    test "radio-group with option descriptions" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:size]}
+            type="radio-group"
+            options={[[key: "Large", value: "l", description: "Fits everyone"]]}
+            label="Size"
+          />
+        </.form>
+        """)
+
+      assert text(html, "#size_l_description") == "Fits everyone"
+
+      assert attribute(html, "input[value='l']", "aria-describedby") ==
+               "size_l_description"
+    end
+
+    test "keeps the field description alongside an option description" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:color]}
+            type="checkbox-group"
+            options={[
+              [key: "Blue", value: "blue", description: "The colour of the sky"]
+            ]}
+            label="Color"
+          >
+            <:description>Pick as many as you like.</:description>
+          </TestComponents.field>
+        </.form>
+        """)
+
+      assert attribute(html, "input[value='blue']", "aria-describedby") ==
+               "color_description color_blue_description"
+    end
+
     test "checkbox-group with optional text" do
       assigns = %{form: to_form(%{})}
 

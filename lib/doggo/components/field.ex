@@ -368,6 +368,19 @@ defmodule Doggo.Components.Field do
         `legend`.
 
             options={[{"Cool", [{"Blue", "blue"}]}, {"Warm", [{"Red", "red"}]}]}
+
+        Options can also be written as a keyword list with these keys:
+
+        - `:key` (required)
+        - `:value` (required)
+        - `:description` (optional)
+
+        Any additional keys are passed as attributes to the control.
+
+        The description is rendered after the control and its label. It is
+        only supported for checkbox and radio groups.
+
+            options={[[key: "Blue", value: "blue", description: "Sky"]]}
         """
 
       attr :multiple, :boolean,
@@ -1056,6 +1069,14 @@ defmodule Doggo.Components.Field do
     value = Phoenix.HTML.html_escape(option_value)
     {selected, extra} = Keyword.pop(options, :selected)
 
+    if extra[:description] do
+      raise ArgumentError, """
+      Invalid :description on a select option
+
+      The `:description` option is not supported for `type="select"`.
+      """
+    end
+
     assigns =
       assign(assigns,
         key: option_key,
@@ -1076,6 +1097,11 @@ defmodule Doggo.Components.Field do
   end
 
   defp checkbox(%{option_value: _} = assigns) do
+    assigns =
+      assigns
+      |> Map.put_new(:option_extra, [])
+      |> Doggo.describe_option()
+
     ~H"""
     <label class={"#{@base_class}-checkbox"}>
       <input
@@ -1087,10 +1113,32 @@ defmodule Doggo.Components.Field do
         aria-describedby={@describedby}
         aria-errormessage={@errormessage}
         aria-invalid={@errors != [] && "true"}
+        {@option_extra}
       />
       {@label}
     </label>
+    <span
+      :if={@option_description}
+      id={@option_description_id}
+      class={"#{@base_class}-option-description"}
+    >
+      {@option_description}
+    </span>
     """
+  end
+
+  defp checkbox(%{option: option} = assigns) when is_list(option) do
+    {label, value, description, extra} = Doggo.option_from_keyword(option)
+
+    assigns
+    |> assign(
+      label: label,
+      option_value: value,
+      option_description: description,
+      option_extra: extra,
+      option: nil
+    )
+    |> checkbox()
   end
 
   defp checkbox(%{option: {group_label, options}} = assigns)

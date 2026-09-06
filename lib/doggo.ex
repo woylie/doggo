@@ -90,6 +90,47 @@ defmodule Doggo do
     do: "#{field_errors_id(id)} #{field_description_id(id)}"
 
   @doc false
+  def option_from_keyword(option) do
+    {key, option} = Keyword.pop(option, :key)
+
+    key ||
+      raise ArgumentError,
+            "expected :key key when building an option from a keyword list: #{inspect(option)}"
+
+    {value, option} = Keyword.pop(option, :value)
+
+    value ||
+      raise ArgumentError,
+            "expected :value key when building an option from a keyword list: #{inspect(option)}"
+
+    {description, extra} = Keyword.pop(option, :description)
+    {key, value, description, extra}
+  end
+
+  @doc false
+  def describe_option(assigns) do
+    description = Map.get(assigns, :option_description)
+
+    id =
+      if description do
+        "#{assigns.id}_#{assigns.option_value}_description"
+      end
+
+    Map.merge(assigns, %{
+      option_description: description,
+      option_description_id: id,
+      describedby: join_ids([assigns.describedby, id])
+    })
+  end
+
+  defp join_ids(ids) do
+    case Enum.reject(ids, &is_nil/1) do
+      [] -> nil
+      ids -> Enum.join(ids, " ")
+    end
+  end
+
+  @doc false
   def input_aria_errormessage(_, []), do: nil
   def input_aria_errormessage(id, _), do: field_errors_id(id)
 
