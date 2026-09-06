@@ -273,7 +273,7 @@ export function initCarousel(carousel) {
     }
   };
 
-  return { update: syncAfterUpdate };
+  return { update: syncAfterUpdate, destroy: stopAutoRotation };
 }
 
 export default {
@@ -285,5 +285,9 @@ export default {
   // and set the pause button label and the disabled buttons again.
   updated() {
     this.instance.update();
+  },
+
+  destroyed() {
+    this.instance.destroy();
   },
 };
