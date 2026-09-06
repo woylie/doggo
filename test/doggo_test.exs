@@ -70,6 +70,40 @@ defmodule DoggoTest do
       assert message =~ ".app_toolbar"
       refute message =~ ".toolbar "
     end
+
+    test "raises on a label that is set but blank" do
+      assigns = %{}
+
+      assert_raise Doggo.InvalidLabelError, fn ->
+        rendered_to_string(~H"""
+        <RenamedComponents.app_toolbar id="t" label="  ">
+          C
+        </RenamedComponents.app_toolbar>
+        """)
+      end
+    end
+
+    test "raises on a labelledby that is set but blank" do
+      assigns = %{}
+
+      assert_raise Doggo.InvalidLabelError, fn ->
+        rendered_to_string(~H"""
+        <RenamedComponents.app_toolbar id="t" labelledby="">
+          C
+        </RenamedComponents.app_toolbar>
+        """)
+      end
+    end
+
+    test "accepts a blank labelledby next to a real label" do
+      assigns = %{}
+
+      assert rendered_to_string(~H"""
+             <RenamedComponents.app_toolbar id="t" label="Text" labelledby="">
+               C
+             </RenamedComponents.app_toolbar>
+             """) =~ ~s(aria-label="Text")
+    end
   end
 
   describe "show_modal/2" do

@@ -299,17 +299,20 @@ defmodule Doggo do
   end
 
   @doc false
-  def ensure_label!(%{label: s, labelledby: nil}, _, _) when is_binary(s) do
-    :ok
+  def ensure_label!(
+        %{label: label, labelledby: labelledby},
+        component,
+        example_label
+      ) do
+    if labelled?(label) != labelled?(labelledby) do
+      :ok
+    else
+      raise Doggo.InvalidLabelError,
+        component: component,
+        example_label: example_label
+    end
   end
 
-  def ensure_label!(%{label: nil, labelledby: s}, _, _) when is_binary(s) do
-    :ok
-  end
-
-  def ensure_label!(_, component, example_label) do
-    raise Doggo.InvalidLabelError,
-      component: component,
-      example_label: example_label
-  end
+  defp labelled?(s) when is_binary(s), do: String.trim(s) != ""
+  defp labelled?(_), do: false
 end
