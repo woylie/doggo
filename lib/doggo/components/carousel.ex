@@ -177,6 +177,10 @@ defmodule Doggo.Components.Carousel do
 
         You should ensure that either the `label` or the `labelledby` attribute is
         set.
+
+        Do not repeat the word `carousel` in the label. Screen readers announce
+        the role along with the name. Using the role in the label would make
+        screen readers repeat it.
         """
 
       attr :labelledby, :string,
@@ -314,9 +318,10 @@ defmodule Doggo.Components.Carousel do
   end
 
   @impl true
-  def render(assigns) do
-    Doggo.ensure_label!(assigns, ".carousel", "Our Dogs")
+  def example_label, do: "Our Dogs"
 
+  @impl true
+  def render(assigns) do
     multiple_items = length(assigns.item) > 1
 
     assigns =

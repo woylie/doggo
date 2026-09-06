@@ -86,6 +86,10 @@ defmodule Doggo.Components.Navbar do
         page is localized, the label should be translated, too. Do not include
         "navigation" in the label, since screen readers will already announce the
         "navigation" role as part of the label.
+
+        Do not repeat the word `navigation` in the label. Screen readers
+        announce the role along with the name. Using the role in the label
+        would make screen readers repeat it.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."

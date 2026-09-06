@@ -170,7 +170,10 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.bottom_navigation current_value={:appointments}>
+        <TestComponents.bottom_navigation
+          current_value={:appointments}
+          label="Main"
+        >
           <:item label="Profile" href="/profile" value={:show}>
             profile-icon
           </:item>
@@ -194,7 +197,10 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.bottom_navigation current_value={:appointments} label="Main">
+        <TestComponents.bottom_navigation
+          current_value={:appointments}
+          label="Main"
+        >
           <:item label="Profile" href="/profile" value={:show}>
             profile-icon
           </:item>
@@ -209,7 +215,11 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.bottom_navigation current_value={:appointments} hide_labels>
+        <TestComponents.bottom_navigation
+          current_value={:appointments}
+          hide_labels
+          label="Main"
+        >
           <:item label="Profile" href="/profile" value={:show}>
             profile-icon
           </:item>
@@ -226,7 +236,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.bottom_navigation current_value={:show}>
+        <TestComponents.bottom_navigation current_value={:show} label="Main">
           <:item label="Profile" href="/profile" value={:show}>
             profile-icon
           </:item>
@@ -241,7 +251,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.bottom_navigation current_value={:show}>
+        <TestComponents.bottom_navigation current_value={:show} label="Main">
           <:item label="Profile" href="/profile" value={[:show, :edit]}>
             profile-icon
           </:item>
@@ -256,7 +266,11 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.bottom_navigation current_value={:show} data-test="hello">
+        <TestComponents.bottom_navigation
+          current_value={:show}
+          label="Main"
+          data-test="hello"
+        >
           <:item label="Profile" href="/profile" value={[:show, :edit]}>
             profile-icon
           </:item>
@@ -355,7 +369,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.breadcrumb>
+        <TestComponents.breadcrumb label="Breadcrumb">
           <:item patch="/categories">Categories</:item>
           <:item patch="/categories/1">Reviews</:item>
           <:item patch="/categories/1/articles/1">The Movie</:item>
@@ -400,7 +414,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.breadcrumb data-test="hello">
+        <TestComponents.breadcrumb label="Breadcrumb" data-test="hello">
           <:item patch="/categories">Categories</:item>
         </TestComponents.breadcrumb>
         """)
@@ -3353,7 +3367,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.steps current_step={0}>
+        <TestComponents.steps current_step={0} label="Order process">
           <:step>Customer Information</:step>
           <:step>Plan</:step>
           <:step>Add-ons</:step>
@@ -3362,7 +3376,7 @@ defmodule Doggo.ComponentsTest do
 
       nav = find_one(html, "nav:root")
       assert attribute(nav, "class") == "steps"
-      assert attribute(nav, "aria-label") == "Form steps"
+      assert attribute(nav, "aria-label") == "Order process"
 
       ol = find_one(nav, "ol")
       assert [li1, li2, li3] = Floki.children(ol)
@@ -3385,7 +3399,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.steps current_step={0}>
+        <TestComponents.steps current_step={0} label="Order process">
           <:step on_click="to-customer-info">Customer Information</:step>
           <:step on_click="to-plan">Plan</:step>
           <:step on_click="to-add-ons">Add-ons</:step>
@@ -3394,7 +3408,7 @@ defmodule Doggo.ComponentsTest do
 
       nav = find_one(html, "nav:root")
       assert attribute(nav, "class") == "steps"
-      assert attribute(nav, "aria-label") == "Form steps"
+      assert attribute(nav, "aria-label") == "Order process"
 
       ol = find_one(nav, "ol")
       assert [li1, li2, li3] = Floki.children(ol)
@@ -3412,7 +3426,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.steps current_step={1}>
+        <TestComponents.steps current_step={1} label="Order process">
           <:step on_click="to-customer-info">Customer Information</:step>
           <:step on_click="to-plan">Plan</:step>
           <:step on_click="to-add-ons">Add-ons</:step>
@@ -3421,7 +3435,7 @@ defmodule Doggo.ComponentsTest do
 
       nav = find_one(html, "nav:root")
       assert attribute(nav, "class") == "steps"
-      assert attribute(nav, "aria-label") == "Form steps"
+      assert attribute(nav, "aria-label") == "Order process"
 
       ol = find_one(nav, "ol")
       assert [li1, li2, li3] = Floki.children(ol)
@@ -3444,7 +3458,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.steps current_step={1} linear>
+        <TestComponents.steps current_step={1} linear label="Order process">
           <:step on_click="to-customer-info">Customer Information</:step>
           <:step on_click="to-plan">Plan</:step>
           <:step on_click="to-add-ons">Add-ons</:step>
@@ -3453,7 +3467,7 @@ defmodule Doggo.ComponentsTest do
 
       nav = find_one(html, "nav:root")
       assert attribute(nav, "class") == "steps"
-      assert attribute(nav, "aria-label") == "Form steps"
+      assert attribute(nav, "aria-label") == "Order process"
 
       ol = find_one(nav, "ol")
       assert [li1, li2, li3] = Floki.children(ol)
@@ -3484,7 +3498,11 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.steps current_step={1} completed_label="Done: ">
+        <TestComponents.steps
+          current_step={1}
+          completed_label="Done: "
+          label="Order process"
+        >
           <:step>Customer Information</:step>
           <:step>Plan</:step>
         </TestComponents.steps>
@@ -3500,7 +3518,7 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.steps current_step={0} data-test="hello">
+        <TestComponents.steps current_step={0} label="Order process" data-test="hello">
           <:step>Plan</:step>
         </TestComponents.steps>
         """)
@@ -3568,14 +3586,17 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.tab_navigation current_value={:appointments}>
+        <TestComponents.tab_navigation
+          current_value={:appointments}
+          label="Sections"
+        >
           <:item href="/profile" value={:show}>Profile</:item>
         </TestComponents.tab_navigation>
         """)
 
       nav = find_one(html, "nav:root")
       assert attribute(nav, "class") == "tab-navigation"
-      assert attribute(nav, "aria-label") == "Tabs"
+      assert attribute(nav, "aria-label") == "Sections"
 
       a = find_one(nav, "ul > li > a")
       assert attribute(a, "aria-current") == nil
@@ -3587,7 +3608,10 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.tab_navigation current_value={:show}>
+        <TestComponents.tab_navigation
+          current_value={:show}
+          label="Sections"
+        >
           <:item href="/profile" value={:show}>Profile</:item>
         </TestComponents.tab_navigation>
         """)
@@ -3601,7 +3625,10 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.tab_navigation current_value={:show}>
+        <TestComponents.tab_navigation
+          current_value={:show}
+          label="Sections"
+        >
           <:item href="/profile" value={[:show, :edit]}>Profile</:item>
         </TestComponents.tab_navigation>
         """)
@@ -3615,7 +3642,10 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.tab_navigation current_value={:appointments} label="Tabby">
+        <TestComponents.tab_navigation
+          current_value={:appointments}
+          label="Tabby"
+        >
           <:item href="/profile" value={:show}>Profile</:item>
         </TestComponents.tab_navigation>
         """)
@@ -3628,7 +3658,11 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.tab_navigation current_value={:show} data-test="hello">
+        <TestComponents.tab_navigation
+          current_value={:show}
+          label="Sections"
+          data-test="hello"
+        >
           <:item value={[:show, :edit]}>Profile</:item>
         </TestComponents.tab_navigation>
         """)

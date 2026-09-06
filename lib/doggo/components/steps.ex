@@ -22,7 +22,7 @@ defmodule Doggo.Components.Steps do
     With patch navigation:
 
     ```heex
-    <.steps current_step={0}>
+    <.steps current_step={0} label="Order process">
       <:step on_click={JS.patch(to: ~p"/form/step/personal-information")}>
         Profile
       </:step>
@@ -38,7 +38,7 @@ defmodule Doggo.Components.Steps do
     With push events:
 
     ```heex
-    <.steps current_step={0}>
+    <.steps current_step={0} label="Order process">
       <:step on_click={JS.push("go-to-step", value: %{step: "profile"})}>
         Profile
       </:step>
@@ -73,10 +73,22 @@ defmodule Doggo.Components.Steps do
   def attrs_and_slots(_opts) do
     quote do
       attr :label, :string,
-        default: "Form steps",
+        default: nil,
         doc: """
         Aria label for the navigation. This value should be translated to the
         language in which the rest of the page is displayed.
+
+        Do not repeat the word `navigation` in the label. Screen readers
+        announce the role along with the name. Using the role in the label
+        would make screen readers repeat it.
+        """
+
+      attr :labelledby, :string,
+        default: nil,
+        doc: """
+        The DOM ID of an element that labels this navigation.
+
+        Set either this attribute or `label`.
         """
 
       attr :current_step, :integer,
@@ -122,9 +134,18 @@ defmodule Doggo.Components.Steps do
   end
 
   @impl true
+  def example_label, do: "Order process"
+
+  @impl true
   def render(assigns) do
     ~H"""
-    <nav aria-label={@label} class={@class} {@data_attrs} {@rest}>
+    <nav
+      aria-label={@label}
+      aria-labelledby={@labelledby}
+      class={@class}
+      {@data_attrs}
+      {@rest}
+    >
       <ol>
         <.step
           :for={{step, index} <- Enum.with_index(@step)}

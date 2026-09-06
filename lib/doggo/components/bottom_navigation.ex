@@ -16,7 +16,7 @@ defmodule Doggo.Components.BottomNavigation do
   def usage do
     """
     ```heex
-    <.bottom_navigation current_value={@view}>
+    <.bottom_navigation current_value={@view} label="Main">
       <:item
         label="Profile"
         navigate={~p"/pets/\#{@pet}"}
@@ -64,11 +64,21 @@ defmodule Doggo.Components.BottomNavigation do
       attr :label, :string,
         default: nil,
         doc: """
-        Label for the `<nav>` element. The label is especially important if you have
-        multiple `<nav>` elements on the same page. If the page is localized, the
-        label should be translated, too. Do not include "navigation" in the label,
-        since screen readers will already announce the "navigation" role as part
-        of the label.
+        Label for the `<nav>` element. The label is especially important if you
+        have multiple `<nav>` elements on the same page. If the page is
+        localized, the label should be translated, too.
+
+        Do not repeat the word `navigation` in the label. Screen readers
+        announce the role along with the name. Using the role in the label
+        would make screen readers repeat it.
+        """
+
+      attr :labelledby, :string,
+        default: nil,
+        doc: """
+        The DOM ID of an element that labels this navigation.
+
+        Set either this attribute or `label`.
         """
 
       attr :current_value, :any,
@@ -119,9 +129,18 @@ defmodule Doggo.Components.BottomNavigation do
   end
 
   @impl true
+  def example_label, do: "Main"
+
+  @impl true
   def render(assigns) do
     ~H"""
-    <nav aria-label={@label} class={@class} {@data_attrs} {@rest}>
+    <nav
+      aria-label={@label}
+      aria-labelledby={@labelledby}
+      class={@class}
+      {@data_attrs}
+      {@rest}
+    >
       <ul>
         <li :for={item <- @item}>
           <.link

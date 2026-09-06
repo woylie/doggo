@@ -66,5 +66,14 @@ defmodule Doggo.Component do
   """
   @callback render(assigns :: map()) :: Phoenix.LiveView.Rendered.t()
 
-  @optional_callbacks builder_doc: 0, css_path: 0, keyboard: 0
+  @doc """
+  Returns an example label for the error raised when no label is given.
+
+  Implemented by components that need `label` or `labelledby`. The check is
+  generated into the component function, so that the error names the component
+  as the caller built it.
+  """
+  @callback example_label() :: String.t()
+
+  @optional_callbacks builder_doc: 0, css_path: 0, example_label: 0, keyboard: 0
 end

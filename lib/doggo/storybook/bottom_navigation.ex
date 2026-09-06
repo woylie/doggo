@@ -10,17 +10,12 @@ defmodule Doggo.Storybook.BottomNavigation do
     [
       %Variation{
         id: :default,
-        attributes: %{
-          current_value: Profile
-        },
+        attributes: %{label: "Main", current_value: Profile},
         slots: slots(opts)
       },
       %Variation{
         id: :hidden_labels,
-        attributes: %{
-          current_value: Profile,
-          hide_labels: true
-        },
+        attributes: %{label: "Main", current_value: Profile, hide_labels: true},
         slots: slots(opts)
       }
     ]
@@ -28,7 +23,7 @@ defmodule Doggo.Storybook.BottomNavigation do
 
   def modifier_variation_base(_id, _name, _value, opts) do
     %{
-      attributes: %{current_value: Profile},
+      attributes: %{label: "Main", current_value: Profile},
       slots: slots(opts)
     }
   end

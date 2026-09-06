@@ -7,6 +7,7 @@ defmodule Doggo.Storybook.Steps do
       %Variation{
         id: :without_links,
         attributes: %{
+          label: "Order process",
           current_step: 1
         },
         slots: steps_without_links()
@@ -14,6 +15,7 @@ defmodule Doggo.Storybook.Steps do
       %Variation{
         id: :non_linear,
         attributes: %{
+          label: "Order process",
           current_step: 1
         },
         slots: steps_with_links()
@@ -21,6 +23,7 @@ defmodule Doggo.Storybook.Steps do
       %Variation{
         id: :linear,
         attributes: %{
+          label: "Order process",
           current_step: 1,
           linear: true
         },
@@ -31,7 +34,7 @@ defmodule Doggo.Storybook.Steps do
 
   def modifier_variation_base(_id, _name, _value, _opts) do
     %{
-      attributes: %{current_step: 1},
+      attributes: %{label: "Order process", current_step: 1},
       slots: steps_with_links()
     }
   end

@@ -100,8 +100,9 @@ defmodule Doggo.Components.Toolbar do
         You should ensure that either the `label` or the `labelledby` attribute is
         set.
 
-        Do not repeat the word `toolbar` in the label, since it is already announced
-        by screen readers.
+        Do not repeat the word `toolbar` in the label. Screen readers announce
+        the role along with the name. Using the role in the label would make
+        screen readers repeat it.
         """
 
       attr :labelledby, :string,
@@ -145,9 +146,10 @@ defmodule Doggo.Components.Toolbar do
   end
 
   @impl true
-  def render(assigns) do
-    Doggo.ensure_label!(assigns, ".toolbar", "Dog profile actions")
+  def example_label, do: "Dog profile actions"
 
+  @impl true
+  def render(assigns) do
     ~H"""
     <div
       id={@id}

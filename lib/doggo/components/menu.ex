@@ -105,6 +105,10 @@ defmodule Doggo.Components.Menu do
 
         You should ensure that either the `label` or the `labelledby` attribute is
         set.
+
+        Do not repeat the word `menu` in the label. Screen readers announce the
+        role along with the name. Using the role in the label would make screen
+        readers repeat it.
         """
 
       attr :labelledby, :string,
@@ -148,9 +152,10 @@ defmodule Doggo.Components.Menu do
   end
 
   @impl true
-  def render(assigns) do
-    Doggo.ensure_label!(assigns, ".menu", "Dog Actions")
+  def example_label, do: "Dog Actions"
 
+  @impl true
+  def render(assigns) do
     ~H"""
     <ul
       id={@id}

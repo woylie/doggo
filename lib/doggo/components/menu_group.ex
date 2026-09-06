@@ -74,6 +74,10 @@ defmodule Doggo.Components.MenuGroup do
         required: true,
         doc: """
         A accessibility label for the group. Set as `aria-label` attribute.
+
+        Do not repeat the word `group` in the label. Screen readers announce
+        the role along with the name. Using the role in the label would make
+        screen readers repeat it.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."

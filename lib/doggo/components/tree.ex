@@ -112,8 +112,9 @@ defmodule Doggo.Components.Tree do
         You should ensure that either the `label` or the `labelledby` attribute is
         set.
 
-        Do not repeat the word `tree` in the label, since it is already announced
-        by screen readers.
+        Do not repeat the word `tree` in the label. Screen readers announce the
+        role along with the name. Using the role in the label would make screen
+        readers repeat it.
         """
 
       attr :labelledby, :string,
@@ -149,9 +150,10 @@ defmodule Doggo.Components.Tree do
   end
 
   @impl true
-  def render(assigns) do
-    Doggo.ensure_label!(assigns, ".tree", "Dog Breeds")
+  def example_label, do: "Dog Breeds"
 
+  @impl true
+  def render(assigns) do
     ~H"""
     <ul
       id={@id}

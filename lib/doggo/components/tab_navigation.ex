@@ -20,7 +20,7 @@ defmodule Doggo.Components.TabNavigation do
   def usage do
     """
     ```heex
-    <.tab_navigation current_value={@live_action}>
+    <.tab_navigation current_value={@live_action} label="Dog Profile Sections">
       <:item
         patch={~p"/pets/\#{@pet}"}
         value={[:show, :edit]}
@@ -83,7 +83,7 @@ defmodule Doggo.Components.TabNavigation do
   def attrs_and_slots(_opts) do
     quote do
       attr :label, :string,
-        default: "Tabs",
+        default: nil,
         doc: """
         Aria label for the `<nav>` element. The label is especially important if you
         have multiple `<nav>` elements on the same page, since it allows users
@@ -94,6 +94,18 @@ defmodule Doggo.Components.TabNavigation do
         already announce the "navigation" role. Additionally, the label should
         begin with a capital letter to ensure the correct inflection when read
         by screen readers.
+
+        Do not repeat the word `navigation` in the label. Screen readers
+        announce the role along with the name. Using the role in the label
+        would make screen readers repeat it.
+        """
+
+      attr :labelledby, :string,
+        default: nil,
+        doc: """
+        The DOM ID of an element that labels this navigation.
+
+        Set either this attribute or `label`.
         """
 
       attr :current_value, :any,
@@ -128,9 +140,18 @@ defmodule Doggo.Components.TabNavigation do
   end
 
   @impl true
+  def example_label, do: "Dog Profile Sections"
+
+  @impl true
   def render(assigns) do
     ~H"""
-    <nav aria-label={@label} class={@class} {@data_attrs} {@rest}>
+    <nav
+      aria-label={@label}
+      aria-labelledby={@labelledby}
+      class={@class}
+      {@data_attrs}
+      {@rest}
+    >
       <ul>
         <li :for={item <- @item}>
           <.link

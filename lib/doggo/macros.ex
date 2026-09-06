@@ -94,6 +94,7 @@ defmodule Doggo.Macros do
           unquote(attrs_and_slots)
 
           def unquote(name)(var!(assigns)) do
+            unquote(label_check(module, name))
             unquote(prepare_class_and_data_attrs(opts))
             unquote(module.init_block(opts, extra))
             unquote(module).render(var!(assigns))
@@ -229,6 +230,19 @@ defmodule Doggo.Macros do
     note
     |> String.split("\n")
     |> Enum.map_join("\n", &String.trim("> #{&1}"))
+  end
+
+  @doc false
+  def label_check(module, name) do
+    if function_exported?(module, :example_label, 0) do
+      quote do
+        Doggo.ensure_label!(
+          var!(assigns),
+          unquote(".#{name}"),
+          unquote(module.example_label())
+        )
+      end
+    end
   end
 
   def prepare_class_and_data_attrs(opts) do
