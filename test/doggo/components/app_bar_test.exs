@@ -46,6 +46,7 @@ defmodule Doggo.Components.AppBarTest do
         """)
 
       a = find_one(html, "header div.app-bar-navigation a")
+      assert attribute(a, "aria-label") == "Back"
       assert attribute(a, "title") == "Back"
       assert attribute(a, "phx-click") == "back"
       assert text(a) == "back-icon"
@@ -62,6 +63,7 @@ defmodule Doggo.Components.AppBarTest do
         """)
 
       a = find_one(html, "header div.app-bar-actions a")
+      assert attribute(a, "aria-label") == "Menu"
       assert attribute(a, "title") == "Menu"
       assert attribute(a, "phx-click") == "open-menu"
       assert text(a) == "menu-icon"

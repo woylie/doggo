@@ -64,7 +64,15 @@ defmodule Doggo.Components.AppBar do
         Slot for a single button left of the title, typically used for a menu button
         that toggles a drawer, or for a back link.
         """ do
-        attr :label, :string, required: true
+        attr :label, :string,
+          required: true,
+          doc: """
+          The link's accessible name. Rendered as `aria-label` and as `title`,
+          so an icon-only item is named and has a hover tooltip.
+
+          If the content includes visible text, `label` must contain that
+          text, since `aria-label` overrides the content.
+          """
 
         attr :on_click, :any,
           required: true,
@@ -72,7 +80,15 @@ defmodule Doggo.Components.AppBar do
       end
 
       slot :action, doc: "Slot for action buttons right of the title." do
-        attr :label, :string, required: true
+        attr :label, :string,
+          required: true,
+          doc: """
+          The link's accessible name. Rendered as `aria-label` and as `title`,
+          so an icon-only item is named and has a hover tooltip.
+
+          If the content includes visible text, `label` must contain that
+          text, since `aria-label` overrides the content.
+          """
 
         attr :on_click, :any,
           required: true,
@@ -94,6 +110,7 @@ defmodule Doggo.Components.AppBar do
         <.link
           :for={navigation <- @navigation}
           phx-click={navigation.on_click}
+          aria-label={navigation.label}
           title={navigation.label}
         >
           {render_slot(navigation)}
@@ -104,6 +121,7 @@ defmodule Doggo.Components.AppBar do
         <.link
           :for={action <- @action}
           phx-click={action.on_click}
+          aria-label={action.label}
           title={action.label}
         >
           {render_slot(action)}
