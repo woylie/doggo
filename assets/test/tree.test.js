@@ -194,3 +194,36 @@ describe("tree hook", () => {
     expect(visible(el)).toContain("Boxer");
   });
 });
+
+describe("tree hook, a label that is not a span", () => {
+  it("searches it anyway, since the caret and the group are what it is not", () => {
+    const el = render(
+      '<ul id="tree" role="tree">' +
+        '<li role="treeitem" tabindex="0"><span>Akita</span></li>' +
+        '<li role="treeitem" tabindex="-1" aria-expanded="false">' +
+        '<button aria-hidden="true"></button><b>Boxer</b>' +
+        '<ul role="group" hidden><li role="treeitem"><span>Cur</span></li></ul>' +
+        "</li>" +
+        "</ul>",
+    );
+    initTree(el);
+    el.querySelector('[role="treeitem"]').focus();
+    press(document.activeElement, "b");
+
+    expect(document.activeElement.textContent).toContain("Boxer");
+  });
+
+  it("does not fail on an item with no label at all", () => {
+    const el = render(
+      '<ul id="tree" role="tree">' +
+        '<li role="treeitem" tabindex="0"></li>' +
+        '<li role="treeitem" tabindex="-1"><span>Sibling</span></li>' +
+        "</ul>",
+    );
+    initTree(el);
+    el.querySelector('[role="treeitem"]').focus();
+
+    expect(() => press(document.activeElement, "s")).not.toThrow();
+    expect(document.activeElement.textContent).toBe("Sibling");
+  });
+});

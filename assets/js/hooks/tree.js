@@ -5,6 +5,8 @@ const SEARCH_MS = 500;
 const isBranch = (item) => item.hasAttribute("aria-expanded");
 const isExpanded = (item) => item.getAttribute("aria-expanded") === "true";
 const groupOf = (item) => item.querySelector(':scope > [role="group"]');
+const labelOf = (item) =>
+  item.querySelector(':scope > :not(button):not([role="group"])');
 const parentOf = (item) =>
   item.parentElement.closest('[role="treeitem"]') || null;
 
@@ -104,10 +106,8 @@ export function initTree(tree) {
 
     const repeated = [...search].every((char) => char === search[0]);
     const items = getItems();
-    // The item's own label, not the nested items and not the caret.
-    const labels = items.map(
-      (item) => item.querySelector(":scope > span").textContent,
-    );
+    // The item's own label, but not nested items.
+    const labels = items.map((item) => labelOf(item)?.textContent ?? "");
     const idx = searchIndex(
       labels,
       repeated ? search[0] : search,
