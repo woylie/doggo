@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { initTree } from "../js/hooks/tree.js";
-import fixture from "./fixtures/tree.html?raw";
+import fixture from "../../test/fixtures/tree.html?raw";
 import { press, render } from "./dom.js";
 
 // An item's own label: not the items nested inside it, and not the caret.

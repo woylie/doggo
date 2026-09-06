@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { initDialog } from "../js/hooks/dialog.js";
-import fixture from "./fixtures/modal.html?raw";
+import fixture from "../../test/fixtures/modal.html?raw";
 import { render } from "./dom.js";
 
 const dispatch = (el, name) =>

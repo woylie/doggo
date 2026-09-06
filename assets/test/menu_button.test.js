@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { initMenuButton } from "../js/hooks/menu_button.js";
-import menuFixture from "./fixtures/menu.html?raw";
+import menuFixture from "../../test/fixtures/menu.html?raw";
 import { press, render } from "./dom.js";
 
 describe("menu button hook", () => {

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { initToolbar } from "../js/hooks/toolbar.js";
-import actionBarFixture from "./fixtures/action_bar.html?raw";
-import toolbarFixture from "./fixtures/toolbar.html?raw";
+import actionBarFixture from "../../test/fixtures/action_bar.html?raw";
+import toolbarFixture from "../../test/fixtures/toolbar.html?raw";
 import { press, render } from "./dom.js";
 
 const nameOf = (control) =>

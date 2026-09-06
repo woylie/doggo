@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { initTabs } from "../js/hooks/tabs.js";
-import fixture from "./fixtures/tabs.html?raw";
+import fixture from "../../test/fixtures/tabs.html?raw";
 import { press, render } from "./dom.js";
 
 const selected = (el) =>

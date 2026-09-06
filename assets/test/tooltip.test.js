@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { initTooltip } from "../js/hooks/tooltip.js";
-import fixture from "./fixtures/tooltip.html?raw";
+import fixture from "../../test/fixtures/tooltip.html?raw";
 import { render } from "./dom.js";
 
 // The hook calls `el.matches(":hover")` and `el.matches(":focus-within")` to

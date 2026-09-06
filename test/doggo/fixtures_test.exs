@@ -17,7 +17,7 @@ defmodule Doggo.FixturesTest do
 
   @moduletag :fixtures
 
-  @fixture_dir Path.expand("../../assets/test/fixtures", __DIR__)
+  @fixture_dir Path.expand("../fixtures", __DIR__)
 
   test "tabs fixture matches the rendered component" do
     assigns = %{}
