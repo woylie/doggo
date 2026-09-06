@@ -12,32 +12,97 @@ and this project adheres to
 
 ### Added
 
-- Typespecs for `Doggo.hide_modal/2`, `Doggo.show_modal/2` and
-  `Doggo.show_tab/3`.
-- Document the command line options of the `mix dog.safelist` task.
-- Add `expanded` and `selected` attributes to the `tree_item` component.
+- Publish the JavaScript hooks as ES modules, on npm as `@woylie/doggo` and in
+  the Hex package under `assets/js`. See the README for both install routes.
+- Add hooks and keyboard support for the `accordion`, `menu`, `menu_bar`,
+  `menu_button`, `modal`, `alert_dialog`, `split_pane`, `tabs`, `toolbar`,
+  `action_bar`, `tooltip`, `tree` and `tree_item` components.
+- Add a `labelledby` attribute to all components that take a `label`.
+
+#### Alert component
+
+- Add a `:close` slot for the content of the close button.
+- Add an `:action` slot.
 
 #### Carousel component
 
-- Add a `loop` attribute, default `true`. With `loop={false}`, the previous and
-  next buttons are disabled at the ends, and the rotation stops on the last
-  slide. The pause button then restarts it from the first slide.
+- Add a `loop` attribute, default `true`. With `loop={false}`, the first and
+  last slide don't wrap around.
 - Add a `rotation_interval_ms` attribute, default `5000`.
 - Add `Home` and `End` key handlers to the pagination, which move to the first
   and last slide.
-- Set a `data-paused` attribute while the rotation is stopped, so that the pause
-  button can show different content in each state.
+
+#### Field component
+
+- Add an `:extra_types` builder option for rendering a type with your own
+  component.
+- Add a `hidden_input` attribute to omit the hidden input that submits `false`
+  for an unchecked checkbox.
+- Support nested options in the `checkbox-group` and `radio-group` types.
+- Support options written as keyword lists, and support option descriptions.
+
+#### Split pane component
+
+- Make the separator resizable with the pointer and the keyboard.
+
+#### Tabs component
+
+- Add an `orientation` attribute.
+
+#### Tree item component
+
+- Add `expanded` and `selected` attributes.
 
 ### Changed
 
+- Require a `label` or a `labelledby` on the `bottom_navigation`, `breadcrumb`,
+  `steps`, `tab_navigation` and `vertical_nav` components, and remove the
+  default labels of `breadcrumb`, `steps` and `tab_navigation`.
+- Reject a blank `label` or `labelledby`.
+- Require the `id` attribute of the `vertical_nav`, `menu`, `menu_bar`,
+  `toolbar`, `action_bar` and `tree` components.
+
+#### Alert component
+
+- Change the type of the `close_label` attribute to `:string`.
+- Remove the click handler from the root element.
+
+#### Alert dialog and modal components
+
+- Use `showModal()` to open dialogs to provide proper modal semantics. This adds
+  support for the CSS `::backdrop` pseudo element and ensures scroll locking
+  without relying on CSS or JS.
+- Close dialogs with the `closedby` attribute.
+- Support the Invoker Commands API.
+- Remove the `modal-container` and `alert-dialog-container` element.
+
+#### App bar component
+
+- Require the `label` attribute of the `:navigation` and `:action` slots.
+- Set `aria-label` on the `:navigation` and `:action` links.
+
+#### Bottom navigation component
+
+- Require the `label` attribute of the `:item` slot.
+
+#### Button and toggle button components
+
+- Default the `disabled` attribute to `false` instead of `nil`.
+
+#### Button link component
+
 - Prevent activation of a disabled `button_link`. The link is now rendered
-  without a destination and with `role="link"` and `aria-disabled="true"`, and
-  any `href`, `navigate` or `patch` is ignored. It previously kept its
-  destination and its place in the tab order, and only set `data-disabled`, so a
-  screen reader announced it as an ordinary link and Enter still followed it.
-- Remove the `data-disabled` attribute from the `button_link` component. The
-  state is expressed with `aria-disabled` instead.
-- Require the `:prop` slot of the `property_list` component.
+  without a destination and with `role="link"` and `aria-disabled="true"`.
+- Remove the `data-disabled` attribute. The state is expressed with
+  `aria-disabled` instead.
+
+#### Callout component
+
+- Rename the default `variant` modifier to `level`.
+
+#### Card component
+
+- Rename the `:main` slot to `:body`.
 
 #### Carousel component
 
@@ -60,19 +125,35 @@ and this project adheres to
   The item is a group instead of a tab panel then.
 - Mark the component as `developing`.
 
+#### Page header component
+
+- Render the title and the subtitle in an `hgroup` instead of a `div` with the
+  `page-header-title` class.
+
+#### Property list component
+
+- Require the `:prop` slot.
+
+#### Tabs component
+
+- Require the `label` attribute of the `:panel` slot.
+
+#### Toolbar component
+
+- Add an `orientation` attribute.
+
+#### Vertical nav, vertical nav nested and navbar items components
+
+- Change `class` attribute of the item slots to `:any`, so that a list of
+  classes can be passed.
+
 ### Fixed
 
-- Render the `:main` slot of the `card` component as a `div` with the
-  `card-main` class instead of a `main` element. A document may hold only one
-  `main`, so a page of cards was invalid and exposed one `main` landmark per
-  card.
-- Remove the `role="group"` attribute from the `cluster` component.
-- Describe an errored `field` by its error text through `aria-describedby` as
-  well as `aria-errormessage`, whose assistive technology support is patchy.
-- Always render the error list of the `field` component, as an
-  `aria-live="polite"` region, so an error that appears after load is announced.
-- A `tree_item` branch no longer reports itself as collapsed while showing its
-  children, and a collapsed branch hides its child list.
+#### Card component
+
+- Render the main content as a `div` instead of a `main` element. A document may
+  hold only one `main`, so a page of cards was invalid and exposed one `main`
+  landmark per card.
 
 #### Carousel component
 
@@ -84,6 +165,33 @@ and this project adheres to
 - Keep the carousel working after a LiveView patch that adds or removes slides.
   Buttons rendered by the patch did nothing, and the active slide could point at
   a slide that had been removed.
+- Stop the rotation timer when the element is removed. It kept running against a
+  detached element and held it from being collected.
+
+#### Cluster component
+
+- Remove the `role="group"` attribute from the `cluster` component.
+
+#### Field component
+
+- Describe an errored field by its error text through `aria-describedby` in
+  addition to `aria-errormessage`.
+- Always render the error list as an `aria-live="polite"` region, so that an
+  error that appears after load is announced.
+- Render a field built without `field` assign from just a `name` and `value`.
+- Render options given as keyword lists.
+
+#### Page header component
+
+- Add the missing `on_click` attribute to the `:navigation` slot.
+
+#### Split pane component
+
+- Clamp the `aria-valuenow` of the separator between `min_size` and `max_size`.
+
+#### Tree item component
+
+- Fix the expanded and collapsed state.
 
 ### How to upgrade
 
@@ -93,8 +201,20 @@ and this project adheres to
   test that selects `a.button[href]`.
 - Add a `:prop` slot to any `property_list` that has none, or remove the
   component from that call site.
-- Replace `main` with `.card-main` in any styles you wrote for the `:main` slot
-  of the `card` component.
+- Rename the `:main` slot of the `card` component to `:body`, and replace `main`
+  with `.card-body` in any styles you wrote for it.
+- Ensure to pass a `label` or `labelledby` attribute to every component that
+  expects them.
+- Set an `id` on every `vertical_nav`, `menu`, `menu_bar`, `toolbar`,
+  `action_bar` and `tree`.
+- Rename `variant` to `level` on the `callout` component if you use the
+  defaults, and change `[data-variant]` to `[data-level]` in your CSS.
+- Register the hooks of the components you build. See the README.
+- Remove the backdrop and scroll locking for the `modal` and `alert_dialog`
+  components and style `::backdrop` instead.
+- Move any styles on `.modal-container` and `.alert-dialog-container` to the
+  `dialog` element itself. The element is gone, and the dialog is the box now
+  that it opens in the top layer.
 - An empty `.field-errors` element is now part of the layout. See the _Field
   error announcements_ section of the README for the CSS that removes it from
   the flow without removing it from the accessibility tree.

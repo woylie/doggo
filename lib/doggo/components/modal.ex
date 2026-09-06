@@ -166,7 +166,6 @@ defmodule Doggo.Components.Modal do
   def nested_classes(base_class) do
     [
       "#{base_class}-close",
-      "#{base_class}-container",
       "#{base_class}-content"
     ]
   end
@@ -235,30 +234,28 @@ defmodule Doggo.Components.Modal do
       {@data_attrs}
       {@rest}
     >
-      <div id={"#{@id}-container"} class={"#{@base_class}-container"}>
-        <section>
-          <header>
-            <button
-              :if={@dismissable}
-              type="button"
-              class={"#{@base_class}-close"}
-              aria-label={@close_label}
-              command="close"
-              commandfor={@id}
-            >
-              {render_slot(@close)}
-              <span :if={@close == []}>{@close_label}</span>
-            </button>
-            <h2 id={"#{@id}-title"}>{render_slot(@title)}</h2>
-          </header>
-          <div id={"#{@id}-content"} class={"#{@base_class}-content"}>
-            {render_slot(@inner_block)}
-          </div>
-          <footer :if={@footer != []}>
-            {render_slot(@footer)}
-          </footer>
-        </section>
-      </div>
+      <section>
+        <header>
+          <button
+            :if={@dismissable}
+            type="button"
+            class={"#{@base_class}-close"}
+            aria-label={@close_label}
+            command="close"
+            commandfor={@id}
+          >
+            {render_slot(@close)}
+            <span :if={@close == []}>{@close_label}</span>
+          </button>
+          <h2 id={"#{@id}-title"}>{render_slot(@title)}</h2>
+        </header>
+        <div id={"#{@id}-content"} class={"#{@base_class}-content"}>
+          {render_slot(@inner_block)}
+        </div>
+        <footer :if={@footer != []}>
+          {render_slot(@footer)}
+        </footer>
+      </section>
     </dialog>
     """
   end
