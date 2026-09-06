@@ -61,15 +61,21 @@ export function initMenu(menu) {
   };
 
   // Closing belongs to the button that opened the menu, which the menu finds
-  // through the `aria-controls` pointing at it.
+  // through the `aria-controls` pointing at it. Compared rather than put in a
+  // selector, because the id is the caller's and may hold characters that
+  // would change what the selector matches.
   const close = () => {
-    const button = document.querySelector(`[aria-controls="${menu.id}"]`);
+    const button = Array.from(
+      document.querySelectorAll("[aria-controls]"),
+    ).find((el) => el.getAttribute("aria-controls") === menu.id);
 
-    if (!button) return;
+    if (!button) return false;
 
     menu.setAttribute("hidden", "");
     button.setAttribute("aria-expanded", "false");
     button.focus();
+
+    return true;
   };
 
   menu.addEventListener("keydown", (e) => {
@@ -79,11 +85,14 @@ export function initMenu(menu) {
     if (currentIdx < 0) return;
 
     if (e.key === "Escape") {
-      e.preventDefault();
-      // One press closes one thing: a menu inside a dialog must not close
-      // the dialog as well.
-      e.stopPropagation();
-      close();
+      // One press closes one thing: a menu inside a dialog must not close the
+      // dialog as well. When nothing closed, the key event doesn't belong to
+      // the component.
+      if (close()) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
       return;
     }
 

@@ -34,8 +34,9 @@ defmodule Doggo.Components.Field do
       in optional fields. Defaults to `nil`. This value is translated
       if `gettext_module` is set.
     - `:extra_types` - A map from a type name to a function component that
-      renders the control for it. This allows you to extend the built-in field
-      component types. See *Custom types* below.
+      renders the control. If the field type consists of multiple inputs, it
+      should be marked as a group: `{component, group: true}`. See
+      *Custom types* below.
     """
   end
 
@@ -59,6 +60,28 @@ defmodule Doggo.Components.Field do
     <.field field={@form[:rank]} type="ranked" label="Rank" />
     ```
 
+    You can also use this mechanism to override the built-in types.
+
+    ### Types that render a group
+
+    Sometimes a control needs to render multiple inputs, for example a date
+    field with separate selects for each segment. Set `group: true` on such
+    types, so that the controls are wrapped inside a fieldset with a legend.
+
+    ```elixir
+    build_field(
+      extra_types: %{
+        "permissions" => {&MyAppWeb.Inputs.permissions/1, group: true}
+      }
+    )
+    ```
+
+    The `fieldset` has the class `\#{base_class}-\#{type}`. Errors and
+    description are rendered outside of the fieldset.
+
+    The `options` assign can be used to pass additional options to your custom
+    type. The only requirement is that it is a list.
+
     The field component renders the label, the errors and the description as it
     does for any other type, and calls your function component for the control.
     Your component receives these assigns:
@@ -69,6 +92,9 @@ defmodule Doggo.Components.Field do
     | `id` | the `id` attribute, from `id` or the form field |
     | `value` | the field value |
     | `type` | the type you registered |
+    | `options` | the options the caller passed, or `nil` |
+    | `prompt` | the prompt the caller passed, or `nil` |
+    | `multiple` | whether the field takes more than one value |
     | `invalid` | whether the field has errors, for `aria-invalid` |
     | `describedby` | for `aria-describedby`, `nil` without a description |
     | `errormessage` | for `aria-errormessage`, `nil` without errors |
@@ -82,6 +108,9 @@ defmodule Doggo.Components.Field do
     attr :id, :string, required: true
     attr :value, :any, required: true
     attr :type, :string, required: true
+    attr :options, :list, required: true
+    attr :prompt, :string, required: true
+    attr :multiple, :boolean, required: true
     attr :invalid, :boolean, required: true
     attr :describedby, :string, required: true
     attr :errormessage, :string, required: true
@@ -269,11 +298,7 @@ defmodule Doggo.Components.Field do
        month number password range radio radio-group search select switch tel
        text textarea time url week)
 
-    extra_types =
-      case Keyword.get(opts, :extra_types) do
-        {:%{}, _, pairs} -> Enum.map(pairs, fn {type, _fun} -> type end)
-        _ -> []
-      end
+    extra_types = extra_type_names(Keyword.get(opts, :extra_types))
 
     quote do
       attr :id, :any, default: nil
@@ -299,7 +324,7 @@ defmodule Doggo.Components.Field do
 
       attr :type, :string,
         default: "text",
-        values: unquote(built_in_types ++ extra_types)
+        values: unquote(Enum.uniq(built_in_types ++ extra_types))
 
       attr :field, Phoenix.HTML.FormField,
         doc: "A form field struct, for example: @form[:name]"
@@ -318,6 +343,14 @@ defmodule Doggo.Components.Field do
         doc: "The value that is sent when the checkbox is checked."
 
       attr :checked, :boolean, doc: "The checked attribute for checkboxes."
+
+      attr :hidden_input, :boolean,
+        default: true,
+        doc: """
+        If `true`, a hidden input with a `false` value is rendered before each
+        checkbox, so that the form payload always has a parameter for that
+        field.
+        """
 
       attr :on_text, :string,
         default: "On",
@@ -353,8 +386,26 @@ defmodule Doggo.Components.Field do
         a [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist)
         is rendered for the input.
 
-        See `Phoenix.HTML.Form.options_for_select/2` for the format. Note that only
-        the select supports nested options.
+        See `Phoenix.HTML.Form.options_for_select/2` for the format.
+
+        Nested options group the choices. A select renders an `optgroup`, and a
+        checkbox or radio group a nested `fieldset` with the group's name as its
+        `legend`.
+
+            options={[{"Cool", [{"Blue", "blue"}]}, {"Warm", [{"Red", "red"}]}]}
+
+        Options can also be written as a keyword list with these keys:
+
+        - `:key` (required)
+        - `:value` (required)
+        - `:description` (optional)
+
+        Any additional keys are passed as attributes to the control.
+
+        The description is rendered after the control and its label. It is
+        only supported for checkbox and radio groups.
+
+            options={[[key: "Blue", value: "blue", description: "Sky"]]}
         """
 
       attr :multiple, :boolean,
@@ -391,6 +442,34 @@ defmodule Doggo.Components.Field do
         single-line inputs.
         """
     end
+  end
+
+  defp extra_type_names(nil), do: []
+
+  defp extra_type_names({:%{}, _, pairs}) do
+    Enum.map(pairs, fn
+      {type, _fun} when is_binary(type) ->
+        type
+
+      {type, _fun} ->
+        raise ArgumentError, """
+        Invalid type name in :extra_types
+
+        A type name has to be a string, got:
+
+            #{Macro.to_string(type)}
+        """
+    end)
+  end
+
+  defp extra_type_names(other) do
+    raise ArgumentError, """
+    Invalid :extra_types option
+
+    The option has to be a map, got:
+
+        #{Macro.to_string(other)}
+    """
   end
 
   @impl true
@@ -450,6 +529,38 @@ defmodule Doggo.Components.Field do
     |> render()
   end
 
+  def render(assigns) when not is_map_key(assigns, :field) do
+    errors = Map.get(assigns, :errors) || []
+    id = assigns[:id] || assigns[:name]
+
+    assigns
+    |> Map.merge(%{
+      field: nil,
+      id: id,
+      errors: errors,
+      validations: Map.get(assigns, :validations) || [],
+      describedby:
+        Doggo.input_aria_describedby(id, assigns.description, errors),
+      errormessage: Doggo.input_aria_errormessage(id, errors)
+    })
+    |> render()
+  end
+
+  def render(%{type: type, extra_types: extra_types} = assigns)
+      when is_map_key(extra_types, type) do
+    case Map.fetch!(extra_types, type) do
+      {input, opts} ->
+        if Keyword.get(opts, :group, false) do
+          assigns |> assign(:input, input) |> extra_group()
+        else
+          assigns |> assign(:input, input) |> extra_control()
+        end
+
+      input ->
+        assigns |> assign(:input, input) |> extra_control()
+    end
+  end
+
   def render(%{type: "checkbox"} = assigns) do
     assigns =
       assign_new(assigns, :checked, fn ->
@@ -466,7 +577,7 @@ defmodule Doggo.Components.Field do
         base_class={@base_class}
         gettext_module={@gettext_module}
       >
-        <input type="hidden" name={@name} value="false" />
+        <input :if={@hidden_input} type="hidden" name={@name} value="false" />
         <input
           type="checkbox"
           name={@name}
@@ -572,6 +683,7 @@ defmodule Doggo.Components.Field do
             errors={@errors}
             description={@description}
             required={@validations[:required] || false}
+            base_class={@base_class}
           />
         </div>
       </fieldset>
@@ -656,7 +768,7 @@ defmodule Doggo.Components.Field do
         gettext_module={@gettext_module}
       >
         <span class={"#{@base_class}-switch-label"}>{@label}</span>
-        <input type="hidden" name={@name} value="false" />
+        <input :if={@hidden_input} type="hidden" name={@name} value="false" />
         <input
           type="checkbox"
           role="switch"
@@ -718,36 +830,6 @@ defmodule Doggo.Components.Field do
         {@validations}
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
-      <.field_errors for={@id} errors={@errors} base_class={@base_class} />
-      <.field_description
-        :if={@description != []}
-        for={@id}
-        base_class={@base_class}
-      >
-        {render_slot(@description)}
-      </.field_description>
-    </div>
-    """
-  end
-
-  def render(%{type: type, extra_types: extra_types} = assigns)
-      when is_map_key(extra_types, type) do
-    assigns = assign(assigns, :input, Map.fetch!(extra_types, type))
-
-    ~H"""
-    <div class={@class} data-invalid={@errors != []} {@data_attrs}>
-      <.label
-        for={@id}
-        required={@validations[:required] || false}
-        required_text={@required_text}
-        optional_text={@optional_text}
-        base_class={@base_class}
-        visually_hidden={@hide_label}
-        gettext_module={@gettext_module}
-      >
-        {@label}
-      </.label>
-      {@input.(input_assigns(assigns))}
       <.field_errors for={@id} errors={@errors} base_class={@base_class} />
       <.field_description
         :if={@description != []}
@@ -1009,7 +1091,7 @@ defmodule Doggo.Components.Field do
     """
   end
 
-  defp option(%{option: options}) when is_list(options) do
+  defp option(%{option: options} = assigns) when is_list(options) do
     {option_key, options} = Keyword.pop(options, :key)
 
     option_key ||
@@ -1021,6 +1103,29 @@ defmodule Doggo.Components.Field do
     option_value ||
       raise ArgumentError,
             "expected :value key when building <option> from keyword list: #{inspect(options)}"
+
+    value = Phoenix.HTML.html_escape(option_value)
+    {selected, extra} = Keyword.pop(options, :selected)
+
+    if extra[:description] do
+      raise ArgumentError, """
+      Invalid :description on a select option
+
+      The `:description` option is not supported for `type="select"`.
+      """
+    end
+
+    assigns =
+      assign(assigns,
+        key: option_key,
+        value: value,
+        selected: selected || value in assigns.selected_values,
+        extra: extra
+      )
+
+    ~H"""
+    <option value={@value} selected={@selected} {@extra}>{@key}</option>
+    """
   end
 
   defp option(%{option: _key_and_value} = assigns) do
@@ -1030,6 +1135,11 @@ defmodule Doggo.Components.Field do
   end
 
   defp checkbox(%{option_value: _} = assigns) do
+    assigns =
+      assigns
+      |> Map.put_new(:option_extra, [])
+      |> Doggo.describe_option()
+
     ~H"""
     <label class={"#{@base_class}-checkbox"}>
       <input
@@ -1041,9 +1151,54 @@ defmodule Doggo.Components.Field do
         aria-describedby={@describedby}
         aria-errormessage={@errormessage}
         aria-invalid={@errors != [] && "true"}
+        {@option_extra}
       />
       {@label}
     </label>
+    <span
+      :if={@option_description}
+      id={@option_description_id}
+      class={"#{@base_class}-option-description"}
+    >
+      {@option_description}
+    </span>
+    """
+  end
+
+  defp checkbox(%{option: option} = assigns) when is_list(option) do
+    {label, value, description, extra} = Doggo.option_from_keyword(option)
+
+    assigns
+    |> assign(
+      label: label,
+      option_value: value,
+      option_description: description,
+      option_extra: extra,
+      option: nil
+    )
+    |> checkbox()
+  end
+
+  defp checkbox(%{option: {group_label, options}} = assigns)
+       when is_list(options) or is_map(options) do
+    assigns = assign(assigns, group_label: group_label, options: options)
+
+    ~H"""
+    <fieldset class={"#{@base_class}-option-group"}>
+      <legend>{@group_label}</legend>
+      <.checkbox
+        :for={option <- @options}
+        option={option}
+        name={@name}
+        id={@id}
+        value={@value}
+        errors={@errors}
+        description={@description}
+        describedby={@describedby}
+        errormessage={@errormessage}
+        base_class={@base_class}
+      />
+    </fieldset>
     """
   end
 
@@ -1063,13 +1218,72 @@ defmodule Doggo.Components.Field do
     |> checkbox()
   end
 
+  defp extra_control(assigns) do
+    ~H"""
+    <div class={@class} data-invalid={@errors != []} {@data_attrs}>
+      <.label
+        for={@id}
+        required={@validations[:required] || false}
+        required_text={@required_text}
+        optional_text={@optional_text}
+        base_class={@base_class}
+        visually_hidden={@hide_label}
+        gettext_module={@gettext_module}
+      >
+        {@label}
+      </.label>
+      {@input.(input_assigns(assigns))}
+      <.field_errors for={@id} errors={@errors} base_class={@base_class} />
+      <.field_description
+        :if={@description != []}
+        for={@id}
+        base_class={@base_class}
+      >
+        {render_slot(@description)}
+      </.field_description>
+    </div>
+    """
+  end
+
+  defp extra_group(assigns) do
+    ~H"""
+    <div class={@class} data-invalid={@errors != []} {@data_attrs}>
+      <fieldset class={"#{@base_class}-#{@type}"}>
+        <legend>
+          {@label}
+          <.required_optional_mark
+            required={@validations[:required] || false}
+            required_text={@required_text}
+            optional_text={@optional_text}
+            base_class={@base_class}
+            gettext_module={@gettext_module}
+          />
+        </legend>
+        {@input.(input_assigns(assigns))}
+      </fieldset>
+      <.field_errors for={@id} errors={@errors} base_class={@base_class} />
+      <.field_description
+        :if={@description != []}
+        for={@id}
+        base_class={@base_class}
+      >
+        {render_slot(@description)}
+      </.field_description>
+    </div>
+    """
+  end
+
   defp input_assigns(assigns) do
     assigns
     |> Map.take([
+      :__changed__,
       :describedby,
       :errormessage,
       :id,
+      :multiple,
       :name,
+      :options,
+      :prompt,
       :rest,
       :type,
       :validations,

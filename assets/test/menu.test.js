@@ -234,3 +234,43 @@ describe("menu bar hook", () => {
     expect(focused()).toBe("View");
   });
 });
+
+describe("menu hook, Escape with nothing to close", () => {
+  it("lets the key through, so a dialog around a menu bar still closes", () => {
+    const el = render(barFixture);
+    initMenu(el);
+    el.querySelector('[role="menuitem"]').focus();
+
+    const event = new window.KeyboardEvent("keydown", {
+      key: "Escape",
+      bubbles: true,
+      cancelable: true,
+    });
+    const reachedTheDocument = vi.fn();
+    document.addEventListener("keydown", reachedTheDocument);
+
+    document.activeElement.dispatchEvent(event);
+    document.removeEventListener("keydown", reachedTheDocument);
+
+    expect(event.defaultPrevented).toBe(false);
+    expect(reachedTheDocument).toHaveBeenCalled();
+  });
+});
+
+describe("menu hook, an id that is not selector-safe", () => {
+  it("still finds the button, since the id is the caller's", () => {
+    document.body.innerHTML =
+      '<button id="opener" aria-controls=\'a"b\' aria-expanded="true">Open</button>' +
+      '<ul id=\'a"b\' role="menu">' +
+      '<li role="none"><button role="menuitem">One</button></li></ul>';
+
+    const el = document.getElementById('a"b');
+    initMenu(el);
+    el.querySelector('[role="menuitem"]').focus();
+    press(document.activeElement, "Escape");
+
+    expect(
+      document.getElementById("opener").getAttribute("aria-expanded"),
+    ).toBe("false");
+  });
+});

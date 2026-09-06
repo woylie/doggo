@@ -3231,9 +3231,9 @@ defmodule Doggo.ComponentsTest do
           id="sidebar-splitter"
           label="Sidebar"
           orientation="horizontal"
-          default_size={200}
-          min_size={100}
-          max_size={400}
+          default_size={30}
+          min_size={10}
+          max_size={90}
         >
           <:primary>One</:primary>
           <:secondary>Two</:secondary>
@@ -3256,9 +3256,31 @@ defmodule Doggo.ComponentsTest do
       assert attribute(div, "aria-label") == "Sidebar"
       assert attribute(div, "aria-labelledby") == nil
       assert attribute(div, "aria-controls") == "sidebar-splitter-primary"
-      assert attribute(div, "aria-valuenow") == "200"
-      assert attribute(div, "aria-valuemin") == "100"
-      assert attribute(div, "aria-valuemax") == "400"
+      assert attribute(div, "aria-valuenow") == "30"
+      assert attribute(div, "aria-valuemin") == "10"
+      assert attribute(div, "aria-valuemax") == "90"
+    end
+
+    test "brings a default size outside the range into it" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.split_pane
+          id="sidebar-splitter"
+          label="Sidebar"
+          orientation="horizontal"
+          default_size={200}
+          min_size={10}
+          max_size={90}
+        >
+          <:primary>One</:primary>
+          <:secondary>Two</:secondary>
+        </TestComponents.split_pane>
+        """)
+
+      div = find_one(html, ":root > div[role='separator']")
+      assert attribute(div, "aria-valuenow") == "90"
     end
 
     test "with labelledby" do
@@ -3270,7 +3292,7 @@ defmodule Doggo.ComponentsTest do
           id="sidebar-splitter"
           labelledby="sidebar-heading"
           orientation="horizontal"
-          default_size={200}
+          default_size={30}
         >
           <:primary>
             <h2 id="sidebar-heading">Sidebar</h2>
@@ -3294,7 +3316,7 @@ defmodule Doggo.ComponentsTest do
           label="Sidebar"
           labelledby="sidebar-heading"
           orientation="horizontal"
-          default_size={200}
+          default_size={30}
         >
           <:primary>One</:primary>
           <:secondary>Two</:secondary>
@@ -3311,7 +3333,7 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.split_pane
           id="sidebar-splitter"
           orientation="horizontal"
-          default_size={200}
+          default_size={30}
         >
           <:primary>One</:primary>
           <:secondary>Two</:secondary>

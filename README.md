@@ -137,7 +137,7 @@ The modules are included in the Hex package. You can point at them in the
 ```json
 {
   "dependencies": {
-    "@woylie/doggo": "file:../deps/doggo/assets"
+    "@woylie/doggo": "link:../deps/doggo/assets"
   }
 }
 ```

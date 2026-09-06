@@ -29,6 +29,20 @@ defmodule Doggo.Components.FieldTest do
       gettext_module: Doggo.Gettext,
       extra_types: %{"ranked" => &FieldTest.ranked_input/1}
     )
+
+    build_field(
+      name: :field_with_group_type,
+      gettext_module: Doggo.Gettext,
+      extra_types: %{
+        "permissions" => {&FieldTest.permissions_input/1, group: true}
+      }
+    )
+
+    build_field(
+      name: :field_with_replaced_select,
+      gettext_module: Doggo.Gettext,
+      extra_types: %{"select" => &FieldTest.ranked_input/1}
+    )
   end
 
   @doc false
@@ -60,7 +74,244 @@ defmodule Doggo.Components.FieldTest do
     """
   end
 
+  @doc false
+  def permissions_input(assigns) do
+    ~H"""
+    <input type="hidden" name={@name <> "[]"} value="" />
+    <label :for={{label, value, description} <- @options}>
+      <input
+        type="checkbox"
+        name={@name <> "[]"}
+        id={@id <> "_" <> value}
+        value={value}
+        checked={Doggo.checked?(value, @value)}
+        aria-describedby={@describedby}
+        aria-errormessage={@errormessage}
+        aria-invalid={@invalid && "true"}
+      />
+      <span>{label}</span>
+      <span class="hint">{description}</span>
+    </label>
+    """
+  end
+
+  describe "field/1 with options given as keyword lists" do
+    test "renders the extra keys as attributes, so one option can be disabled" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:pet]}
+            type="select"
+            label="Pet"
+            options={[
+              [key: "Dog", value: "dog"],
+              [key: "Cat", value: "cat", disabled: true]
+            ]}
+          />
+        </.form>
+        """)
+
+      assert text(html, "option[value='dog']") == "Dog"
+      assert attribute(html, "option[value='cat']", "disabled") == "disabled"
+      assert attribute(html, "option[value='dog']", "disabled") == nil
+    end
+
+    test "takes a selected key from the option" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:pet]}
+            type="select"
+            label="Pet"
+            options={[[key: "Cat", value: "cat", selected: true]]}
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "option[value='cat']", "selected") == "selected"
+    end
+  end
+
+  describe "field/1 with hidden_input false" do
+    test "leaves out the input that submits false for a checkbox" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:subscribe]}
+            type="checkbox"
+            label="Subscribe"
+            hidden_input={false}
+          />
+        </.form>
+        """)
+
+      assert Floki.find(html, "input[type='hidden']") == []
+      assert attribute(html, "input[type='checkbox']", "name") == "subscribe"
+    end
+
+    test "leaves it out for a switch too" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:subscribe]}
+            type="switch"
+            label="Subscribe"
+            hidden_input={false}
+          />
+        </.form>
+        """)
+
+      assert Floki.find(html, "input[type='hidden']") == []
+    end
+
+    test "renders it by default" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:subscribe]}
+            type="checkbox"
+            label="Subscribe"
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "input[type='hidden']", "value") == "false"
+    end
+  end
+
+  describe "field/1 without a form field" do
+    test "renders from name and value alone" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.field name="pet" value="Bandit" label="Pet" />
+        """)
+
+      assert attribute(html, "input", "name") == "pet"
+      assert attribute(html, "input", "value") == "Bandit"
+      assert text(html, "label") =~ "Pet"
+    end
+
+    test "renders a registered type from name and value alone" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.field_with_extra_types
+          name="rank"
+          value="3"
+          type="ranked"
+          label="Rank"
+        />
+        """)
+
+      assert attribute(html, ".ranked > select", "name") == "rank"
+
+      assert attribute(html, ".ranked > select > option[selected]", "value") ==
+               "3"
+    end
+  end
+
+  describe "build_field/1 with an invalid :extra_types option" do
+    test "says the map has to be written out" do
+      error =
+        assert_raise ArgumentError, fn ->
+          defmodule FromAVariable do
+            use Doggo.Components
+            use Phoenix.Component
+
+            types = %{"ranked" => &FieldTest.ranked_input/1}
+            build_field(name: :bad_field, extra_types: types)
+          end
+        end
+
+      assert error.message =~ "Invalid :extra_types option"
+      assert error.message =~ "The option has to be a map"
+    end
+
+    test "says a type name has to be a string" do
+      error =
+        assert_raise ArgumentError, fn ->
+          defmodule FromAnAtomKey do
+            use Doggo.Components
+            use Phoenix.Component
+
+            build_field(
+              name: :bad_field,
+              extra_types: %{ranked: &FieldTest.ranked_input/1}
+            )
+          end
+        end
+
+      assert error.message =~ "Invalid type name in :extra_types"
+    end
+  end
+
   describe "field/1 with extra types" do
+    test "replaces a built-in type when one is registered under its name" do
+      assigns = %{form: to_form(%{"pet" => "2"})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_with_replaced_select
+            field={@form[:pet]}
+            type="select"
+            label="Pet"
+            options={[{"Dog", "1"}, {"Cat", "2"}]}
+          />
+        </.form>
+        """)
+
+      assert attribute(html, ".ranked", "data-type") == "select"
+    end
+
+    test "names a group with a legend instead of a label" do
+      assigns = %{form: to_form(%{"perms" => ["read"]})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_with_group_type
+            field={@form[:perms]}
+            type="permissions"
+            label="Permissions"
+            options={[
+              {"Read", "read", "See everything"},
+              {"Write", "write", "Change everything"}
+            ]}
+          />
+        </.form>
+        """)
+
+      assert Floki.find(html, "label[for]") == []
+      assert text(html, "fieldset > legend") =~ "Permissions"
+      assert attribute(html, "fieldset", "class") == "field-permissions"
+
+      assert text(html, "fieldset label:first-of-type .hint") ==
+               "See everything"
+
+      assert attribute(html, "input[value='read']", "checked") == "checked"
+
+      assert find_one(html, ".field > .field-errors")
+    end
+
     test "renders a registered type through the caller's component" do
       assigns = %{form: to_form(%{"rank" => "3"})}
 
@@ -75,7 +326,6 @@ defmodule Doggo.Components.FieldTest do
         </.form>
         """)
 
-      # Doggo's wrapper, the caller's control.
       assert attribute(html, ".field", "class") == "field"
       assert text(html, "label") == "Rank"
 
@@ -110,7 +360,6 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(select, "aria-errormessage") == "rank_errors"
       assert attribute(select, "aria-describedby") =~ "rank_description"
 
-      # The field renders the errors, not the caller's component.
       assert text(html, ".field-errors > li") == "is invalid"
       assert Floki.find(html, ".ranked .field-errors") == []
     end
@@ -130,7 +379,8 @@ defmodule Doggo.Components.FieldTest do
         """)
 
       assert attribute(html, ".ranked", "data-keys") ==
-               "describedby,errormessage,id,invalid,name,rest,type,validations,value"
+               "__changed__,describedby,errormessage,id,invalid,multiple," <>
+                 "name,options,prompt,rest,type,validations,value"
     end
 
     test "keeps the built-in types working alongside" do
@@ -284,6 +534,170 @@ defmodule Doggo.Components.FieldTest do
 
       span = find_one(html, "label > span.field-optional-mark")
       assert text(span) == "(optional)"
+    end
+
+    test "checkbox-group with nested options" do
+      assigns = %{form: to_form(%{"color" => ["green"]})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:color]}
+            type="checkbox-group"
+            options={[
+              {"Cool", [{"Blue", "blue"}, {"Green", "green"}]},
+              {"Warm", [{"Red", "red"}]}
+            ]}
+            label="Color"
+          />
+        </.form>
+        """)
+
+      groups = Floki.find(html, "fieldset.field-option-group")
+      assert length(groups) == 2
+
+      assert groups |> hd() |> Floki.find("legend") |> Floki.text() ==
+               "Cool"
+
+      assert attribute(html, "input[value='green']", "checked") == "checked"
+      assert attribute(html, "input[value='red']", "id") == "color_red"
+    end
+
+    test "radio-group with nested options" do
+      assigns = %{form: to_form(%{"size" => "l"})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:size]}
+            type="radio-group"
+            options={[{"Big", [{"Large", "l"}]}, {"Small", [{"Tiny", "t"}]}]}
+            label="Size"
+          />
+        </.form>
+        """)
+
+      groups = Floki.find(html, "fieldset.field-option-group")
+      assert length(groups) == 2
+
+      assert groups |> hd() |> Floki.find("legend") |> Floki.text() ==
+               "Big"
+
+      assert attribute(html, "input[value='l']", "checked") == "checked"
+    end
+
+    test "checkbox-group with option descriptions" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:color]}
+            type="checkbox-group"
+            options={[
+              [key: "Blue", value: "blue", description: "The colour of the sky"],
+              [key: "Green", value: "green", description: "The colour of grass"]
+            ]}
+            label="Color"
+          />
+        </.form>
+        """)
+
+      assert text(html, "#color_blue_description") == "The colour of the sky"
+
+      assert attribute(html, "input[value='blue']", "aria-describedby") ==
+               "color_blue_description"
+
+      assert text(html, "label:first-of-type") == "Blue"
+    end
+
+    test "select rejects an option description" do
+      assigns = %{form: to_form(%{})}
+
+      error =
+        assert_raise ArgumentError, fn ->
+          parse_heex(~H"""
+          <.form for={@form}>
+            <TestComponents.field
+              field={@form[:pet]}
+              type="select"
+              label="Pet"
+              options={[[key: "Dog", value: "dog", description: "Loyal"]]}
+            />
+          </.form>
+          """)
+        end
+
+      assert error.message =~ "Invalid :description on a select option"
+    end
+
+    test "checkbox-group with a disabled option" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:color]}
+            type="checkbox-group"
+            label="Color"
+            options={[
+              [key: "Blue", value: "blue"],
+              [key: "Green", value: "green", disabled: true]
+            ]}
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "input[value='green']", "disabled") == "disabled"
+      assert attribute(html, "input[value='blue']", "disabled") == nil
+    end
+
+    test "radio-group with option descriptions" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:size]}
+            type="radio-group"
+            options={[[key: "Large", value: "l", description: "Fits everyone"]]}
+            label="Size"
+          />
+        </.form>
+        """)
+
+      assert text(html, "#size_l_description") == "Fits everyone"
+
+      assert attribute(html, "input[value='l']", "aria-describedby") ==
+               "size_l_description"
+    end
+
+    test "keeps the field description alongside an option description" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:color]}
+            type="checkbox-group"
+            options={[
+              [key: "Blue", value: "blue", description: "The colour of the sky"]
+            ]}
+            label="Color"
+          >
+            <:description>Pick as many as you like.</:description>
+          </TestComponents.field>
+        </.form>
+        """)
+
+      assert attribute(html, "input[value='blue']", "aria-describedby") ==
+               "color_description color_blue_description"
     end
 
     test "checkbox-group with optional text" do

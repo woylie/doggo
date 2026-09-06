@@ -157,6 +157,7 @@ defmodule Doggo.Components.RadioGroup do
         errors={[]}
         description={[]}
         required={@required}
+        base_class={@base_class}
       />
     </div>
     """
@@ -168,11 +169,14 @@ defmodule Doggo.Components.RadioGroup do
           assigns
       ) do
     assigns =
-      assign(assigns,
+      assigns
+      |> assign(
         describedby: Doggo.input_aria_describedby(id, description, errors),
         errormessage: Doggo.input_aria_errormessage(id, errors),
         invalid: errors != [] && "true"
       )
+      |> Map.put_new(:option_extra, [])
+      |> Doggo.describe_option()
 
     ~H"""
     <label>
@@ -186,9 +190,53 @@ defmodule Doggo.Components.RadioGroup do
         aria-errormessage={@errormessage}
         aria-invalid={@invalid}
         required={@required}
+        {@option_extra}
       />
       {@label}
     </label>
+    <span
+      :if={@option_description}
+      id={@option_description_id}
+      class={"#{@base_class}-option-description"}
+    >
+      {@option_description}
+    </span>
+    """
+  end
+
+  def radio(%{option: option} = assigns) when is_list(option) do
+    {label, value, description, extra} = Doggo.option_from_keyword(option)
+
+    assigns
+    |> assign(
+      label: label,
+      option_value: value,
+      option_description: description,
+      option_extra: extra,
+      option: nil
+    )
+    |> radio()
+  end
+
+  def radio(%{option: {group_label, options}} = assigns)
+      when is_list(options) or is_map(options) do
+    assigns = assign(assigns, group_label: group_label, options: options)
+
+    ~H"""
+    <fieldset class={"#{@base_class}-option-group"}>
+      <legend>{@group_label}</legend>
+      <.radio
+        :for={option <- @options}
+        option={option}
+        name={@name}
+        id={@id}
+        value={@value}
+        errors={@errors}
+        description={@description}
+        required={@required}
+        base_class={@base_class}
+      />
+    </fieldset>
     """
   end
 
