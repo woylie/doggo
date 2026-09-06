@@ -17,9 +17,6 @@ export function initSplitPane(pane) {
 
   let position = numberOf("aria-valuenow");
 
-  // Where Enter goes back to. Any size above the minimum counts, so that a
-  // pane collapsed with Home or with the pointer can be brought back too.
-
   // Where Enter goes back to: the last position that was not the minimum.
   let expandedSize = null;
 
@@ -95,7 +92,8 @@ export default {
     this.instance = initSplitPane(this.el);
   },
 
-  // A patch renders the position the server knows about.
+  // A patch rewrites the separator's `aria-valuenow` and can drop the custom
+  // property with it, so the position the user dragged to is applied again.
   updated() {
     this.instance.update();
   },
