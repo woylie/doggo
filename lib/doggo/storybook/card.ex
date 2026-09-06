@@ -30,10 +30,10 @@ defmodule Doggo.Storybook.Card do
       </:image>
       """,
       """
-      <:main>
+      <:body>
         The next dog fashion show is coming up quickly. Here's what you need
         to look out for.
-      </:main>
+      </:body>
       """,
       """
       <:header><h2>Dog Fashion Show</h2></:header>

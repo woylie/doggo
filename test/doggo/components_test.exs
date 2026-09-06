@@ -799,7 +799,7 @@ defmodule Doggo.ComponentsTest do
 
       aside = find_one(html, "aside:root")
       assert attribute(aside, "class") == "callout"
-      assert attribute(aside, "data-variant") == "info"
+      assert attribute(aside, "data-level") == "info"
       assert attribute(aside, "id") == "my-callout"
       assert attribute(aside, "aria-labelledby") == nil
 
@@ -897,11 +897,11 @@ defmodule Doggo.ComponentsTest do
       html =
         parse_heex(~H"""
         <TestComponents.card>
-          <:main>Doggo</:main>
+          <:body>Doggo</:body>
         </TestComponents.card>
         """)
 
-      assert text(html, "article > div.card-main") == "Doggo"
+      assert text(html, "article > div.card-body") == "Doggo"
     end
 
     test "with footer" do

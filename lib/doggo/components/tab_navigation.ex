@@ -124,6 +124,7 @@ defmodule Doggo.Components.TabNavigation do
         attr :patch, :string, doc: "Passed to `Phoenix.Component.link/1`."
 
         attr :value, :any,
+          required: true,
           doc: """
           The value of the item is compared to the `current_value` attribute to
           determine whether to add the `aria-current` attribute. This can be a

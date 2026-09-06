@@ -107,7 +107,7 @@ defmodule Doggo.Components.ToggleButton do
         clicked.
         """
 
-      attr :disabled, :boolean, default: nil
+      attr :disabled, :boolean, default: false
       attr :rest, :global
 
       slot :inner_block, required: true
