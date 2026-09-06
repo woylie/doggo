@@ -2,6 +2,8 @@ defmodule DoggoTest do
   use ExUnit.Case, async: true
   use Phoenix.Component
 
+  import Phoenix.LiveViewTest, only: [rendered_to_string: 1]
+
   defmodule TestComponents do
     @moduledoc """
     Generates components for tests.
@@ -40,6 +42,34 @@ defmodule DoggoTest do
         size: [values: ["small", "normal", "large"], default: "normal"]
       ]
     )
+  end
+
+  defmodule RenamedComponents do
+    @moduledoc """
+    A component built under a name of the caller's choosing.
+    """
+
+    use Doggo.Components
+    use Phoenix.Component
+
+    build_toolbar(name: :app_toolbar)
+  end
+
+  describe "ensure_label!/2" do
+    test "names the component as the caller built it" do
+      assigns = %{}
+
+      error =
+        assert_raise Doggo.InvalidLabelError, fn ->
+          rendered_to_string(~H"""
+          <RenamedComponents.app_toolbar id="t">Content</RenamedComponents.app_toolbar>
+          """)
+        end
+
+      message = Exception.message(error)
+      assert message =~ ".app_toolbar"
+      refute message =~ ".toolbar "
+    end
   end
 
   describe "show_modal/2" do

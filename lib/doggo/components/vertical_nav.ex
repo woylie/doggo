@@ -65,8 +65,27 @@ defmodule Doggo.Components.VerticalNav do
   @impl true
   def attrs_and_slots(_opts) do
     quote do
-      attr :id, :string, default: nil
-      attr :label, :string, required: true
+      attr :id, :string, required: true
+
+      attr :label, :string,
+        default: nil,
+        doc: """
+        The aria label for the `<nav>` element. Not needed when the `:title`
+        slot is filled: the title labels the navigation then.
+
+        Do not repeat the word `navigation` in the label. Screen readers
+        announce the role along with the name. Using the role in the label
+        would make screen readers repeat it.
+        """
+
+      attr :labelledby, :string,
+        default: nil,
+        doc: """
+        The DOM ID of an element that labels this navigation, for a heading the
+        component does not render itself. Not needed when the `:title` slot is
+        filled.
+        """
+
       attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :title, doc: "An optional slot for the title of the menu."
@@ -84,10 +103,26 @@ defmodule Doggo.Components.VerticalNav do
   end
 
   @impl true
-  def render(assigns) do
+  def example_label, do: "Main"
+
+  @impl true
+  def render(%{title: []} = assigns) do
+    render_nav(assigns)
+  end
+
+  def render(assigns), do: render_nav(assigns)
+
+  defp render_nav(assigns) do
     ~H"""
-    <nav class={@class} id={@id} aria-label={@label} {@data_attrs} {@rest}>
-      <div :if={@title != []} class={"#{@base_class}-title"}>
+    <nav
+      class={@class}
+      id={@id}
+      aria-label={@title == [] && @label}
+      aria-labelledby={(@title != [] && "#{@id}-title") || @labelledby}
+      {@data_attrs}
+      {@rest}
+    >
+      <div :if={@title != []} id={"#{@id}-title"} class={"#{@base_class}-title"}>
         {render_slot(@title)}
       </div>
       <ul>

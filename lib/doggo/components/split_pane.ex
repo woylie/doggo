@@ -130,6 +130,10 @@ defmodule Doggo.Components.SplitPane do
         label. If it has a visible label, set the `labelledby` attribute instead.
 
         Note that the label should describe the primary pane, not the resize handle.
+
+        Do not repeat the word `separator` in the label. Screen readers
+        announce the role along with the name. Using the role in the label
+        would make screen readers repeat it.
         """
 
       attr :labelledby, :string,
@@ -177,9 +181,10 @@ defmodule Doggo.Components.SplitPane do
   end
 
   @impl true
-  def render(assigns) do
-    Doggo.ensure_label!(assigns, ".split_pane", "Sidebar")
+  def example_label, do: "Sidebar"
 
+  @impl true
+  def render(assigns) do
     ~H"""
     <div
       id={@id}

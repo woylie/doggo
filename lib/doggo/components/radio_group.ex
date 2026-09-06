@@ -86,6 +86,10 @@ defmodule Doggo.Components.RadioGroup do
 
         You should ensure that either the `label` or the `labelledby` attribute is
         set.
+
+        Do not repeat the word `radio group` in the label. Screen readers
+        announce the role along with the name. Using the role in the label
+        would make screen readers repeat it.
         """
 
       attr :labelledby, :string,
@@ -130,9 +134,10 @@ defmodule Doggo.Components.RadioGroup do
   end
 
   @impl true
-  def render(assigns) do
-    Doggo.ensure_label!(assigns, ".radio_group", "Favorite Dog")
+  def example_label, do: "Favorite Dog"
 
+  @impl true
+  def render(assigns) do
     ~H"""
     <div
       id={@id}

@@ -88,8 +88,9 @@ defmodule Doggo.Components.Tabs do
         You should ensure that either the `label` or the `labelledby` attribute is
         set.
 
-        Do not repeat the word `tab list` or similar in the label, since it is
-        already announced by screen readers.
+        Do not repeat the word `tab list` in the label. Screen readers announce
+        the role along with the name. Using the role in the label would make
+        screen readers repeat it.
         """
 
       attr :orientation, :string,
@@ -130,9 +131,10 @@ defmodule Doggo.Components.Tabs do
   end
 
   @impl true
-  def render(assigns) do
-    Doggo.ensure_label!(assigns, ".tabs", "Dog Facts")
+  def example_label, do: "Dog Facts"
 
+  @impl true
+  def render(assigns) do
     ~H"""
     <div id={@id} class={@class} {@data_attrs} {@rest} phx-hook="Doggo.Tabs">
       <div

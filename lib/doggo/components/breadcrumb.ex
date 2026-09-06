@@ -16,7 +16,7 @@ defmodule Doggo.Components.Breadcrumb do
   def usage do
     """
     ```heex
-    <.breadcrumb>
+    <.breadcrumb label="Breadcrumb">
       <:item patch="/categories">Categories</:item>
       <:item patch="/categories/1">Reviews</:item>
       <:item patch="/categories/1/articles/1">The Movie</:item>
@@ -44,12 +44,22 @@ defmodule Doggo.Components.Breadcrumb do
   def attrs_and_slots(_opts) do
     quote do
       attr :label, :string,
-        default: "Breadcrumb",
+        default: nil,
         doc: """
-        The aria label for the `<nav>` element.
+        The aria label for the `<nav>` element. It should start with a capital
+        letter and be localized.
 
-        The label should start with a capital letter, be localized, and should
-        not repeat the word 'navigation'.
+        Do not repeat the word `navigation` in the label. Screen readers
+        announce the role along with the name. Using the role in the label
+        would make screen readers repeat it.
+        """
+
+      attr :labelledby, :string,
+        default: nil,
+        doc: """
+        The DOM ID of an element that labels this navigation.
+
+        Set either this attribute or `label`.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."
@@ -68,6 +78,9 @@ defmodule Doggo.Components.Breadcrumb do
   end
 
   @impl true
+  def example_label, do: "Breadcrumb"
+
+  @impl true
   def render(%{item: item} = assigns) do
     [last_item | rest] = Enum.reverse(item)
 
@@ -79,7 +92,13 @@ defmodule Doggo.Components.Breadcrumb do
       )
 
     ~H"""
-    <nav aria-label={@label} class={@class} {@data_attrs} {@rest}>
+    <nav
+      aria-label={@label}
+      aria-labelledby={@labelledby}
+      class={@class}
+      {@data_attrs}
+      {@rest}
+    >
       <ol>
         <li :for={current_item <- @item}>
           <.breadcrumb_link item={current_item} />

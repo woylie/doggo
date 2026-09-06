@@ -7,6 +7,7 @@ defmodule Doggo.Storybook.TabNavigation do
       %Variation{
         id: :default,
         attributes: %{
+          label: "Dog Profile Sections",
           current_value: :owners
         },
         slots: slots()
@@ -16,7 +17,7 @@ defmodule Doggo.Storybook.TabNavigation do
 
   def modifier_variation_base(_id, _name, _value, _opts) do
     %{
-      attributes: %{current_value: :owners},
+      attributes: %{label: "Dog Profile Sections", current_value: :owners},
       slots: slots()
     }
   end

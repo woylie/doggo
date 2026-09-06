@@ -6,6 +6,7 @@ defmodule Doggo.Storybook.Breadcrumb do
     [
       %Variation{
         id: :default,
+        attributes: %{label: "Breadcrumb"},
         slots: slots()
       }
     ]
@@ -13,6 +14,7 @@ defmodule Doggo.Storybook.Breadcrumb do
 
   def modifier_variation_base(_id, _name, _value, _opts) do
     %{
+      attributes: %{label: "Breadcrumb"},
       slots: slots()
     }
   end
