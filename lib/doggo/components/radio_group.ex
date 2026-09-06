@@ -157,6 +157,7 @@ defmodule Doggo.Components.RadioGroup do
         errors={[]}
         description={[]}
         required={@required}
+        base_class={@base_class}
       />
     </div>
     """
@@ -189,6 +190,28 @@ defmodule Doggo.Components.RadioGroup do
       />
       {@label}
     </label>
+    """
+  end
+
+  def radio(%{option: {group_label, options}} = assigns)
+      when is_list(options) or is_map(options) do
+    assigns = assign(assigns, group_label: group_label, options: options)
+
+    ~H"""
+    <fieldset class={"#{@base_class}-option-group"}>
+      <legend>{@group_label}</legend>
+      <.radio
+        :for={option <- @options}
+        option={option}
+        name={@name}
+        id={@id}
+        value={@value}
+        errors={@errors}
+        description={@description}
+        required={@required}
+        base_class={@base_class}
+      />
+    </fieldset>
     """
   end
 

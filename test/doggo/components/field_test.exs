@@ -419,6 +419,58 @@ defmodule Doggo.Components.FieldTest do
       assert text(span) == "(optional)"
     end
 
+    test "checkbox-group with nested options" do
+      assigns = %{form: to_form(%{"color" => ["green"]})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:color]}
+            type="checkbox-group"
+            options={[
+              {"Cool", [{"Blue", "blue"}, {"Green", "green"}]},
+              {"Warm", [{"Red", "red"}]}
+            ]}
+            label="Color"
+          />
+        </.form>
+        """)
+
+      groups = Floki.find(html, "fieldset.field-option-group")
+      assert length(groups) == 2
+
+      assert groups |> hd() |> Floki.find("legend") |> Floki.text() ==
+               "Cool"
+
+      assert attribute(html, "input[value='green']", "checked") == "checked"
+      assert attribute(html, "input[value='red']", "id") == "color_red"
+    end
+
+    test "radio-group with nested options" do
+      assigns = %{form: to_form(%{"size" => "l"})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:size]}
+            type="radio-group"
+            options={[{"Big", [{"Large", "l"}]}, {"Small", [{"Tiny", "t"}]}]}
+            label="Size"
+          />
+        </.form>
+        """)
+
+      groups = Floki.find(html, "fieldset.field-option-group")
+      assert length(groups) == 2
+
+      assert groups |> hd() |> Floki.find("legend") |> Floki.text() ==
+               "Big"
+
+      assert attribute(html, "input[value='l']", "checked") == "checked"
+    end
+
     test "checkbox-group with optional text" do
       assigns = %{form: to_form(%{})}
 

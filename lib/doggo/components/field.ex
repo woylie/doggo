@@ -361,8 +361,13 @@ defmodule Doggo.Components.Field do
         a [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist)
         is rendered for the input.
 
-        See `Phoenix.HTML.Form.options_for_select/2` for the format. Note that only
-        the select supports nested options.
+        See `Phoenix.HTML.Form.options_for_select/2` for the format.
+
+        Nested options group the choices. A select renders an `optgroup`, and a
+        checkbox or radio group a nested `fieldset` with the group's name as its
+        `legend`.
+
+            options={[{"Cool", [{"Blue", "blue"}]}, {"Warm", [{"Red", "red"}]}]}
         """
 
       attr :multiple, :boolean,
@@ -597,6 +602,7 @@ defmodule Doggo.Components.Field do
             errors={@errors}
             description={@description}
             required={@validations[:required] || false}
+            base_class={@base_class}
           />
         </div>
       </fieldset>
@@ -1084,6 +1090,29 @@ defmodule Doggo.Components.Field do
       />
       {@label}
     </label>
+    """
+  end
+
+  defp checkbox(%{option: {group_label, options}} = assigns)
+       when is_list(options) or is_map(options) do
+    assigns = assign(assigns, group_label: group_label, options: options)
+
+    ~H"""
+    <fieldset class={"#{@base_class}-option-group"}>
+      <legend>{@group_label}</legend>
+      <.checkbox
+        :for={option <- @options}
+        option={option}
+        name={@name}
+        id={@id}
+        value={@value}
+        errors={@errors}
+        description={@description}
+        describedby={@describedby}
+        errormessage={@errormessage}
+        base_class={@base_class}
+      />
+    </fieldset>
     """
   end
 
