@@ -69,11 +69,13 @@ export function initMenu(menu) {
       document.querySelectorAll("[aria-controls]"),
     ).find((el) => el.getAttribute("aria-controls") === menu.id);
 
-    if (!button) return;
+    if (!button) return false;
 
     menu.setAttribute("hidden", "");
     button.setAttribute("aria-expanded", "false");
     button.focus();
+
+    return true;
   };
 
   menu.addEventListener("keydown", (e) => {
@@ -83,11 +85,14 @@ export function initMenu(menu) {
     if (currentIdx < 0) return;
 
     if (e.key === "Escape") {
-      e.preventDefault();
-      // One press closes one thing: a menu inside a dialog must not close
-      // the dialog as well.
-      e.stopPropagation();
-      close();
+      // One press closes one thing: a menu inside a dialog must not close the
+      // dialog as well. When nothing closed, the key event doesn't belong to
+      // the component.
+      if (close()) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
       return;
     }
 

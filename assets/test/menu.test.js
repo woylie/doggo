@@ -235,6 +235,28 @@ describe("menu bar hook", () => {
   });
 });
 
+describe("menu hook, Escape with nothing to close", () => {
+  it("lets the key through, so a dialog around a menu bar still closes", () => {
+    const el = render(barFixture);
+    initMenu(el);
+    el.querySelector('[role="menuitem"]').focus();
+
+    const event = new window.KeyboardEvent("keydown", {
+      key: "Escape",
+      bubbles: true,
+      cancelable: true,
+    });
+    const reachedTheDocument = vi.fn();
+    document.addEventListener("keydown", reachedTheDocument);
+
+    document.activeElement.dispatchEvent(event);
+    document.removeEventListener("keydown", reachedTheDocument);
+
+    expect(event.defaultPrevented).toBe(false);
+    expect(reachedTheDocument).toHaveBeenCalled();
+  });
+});
+
 describe("menu hook, an id that is not selector-safe", () => {
   it("still finds the button, since the id is the caller's", () => {
     document.body.innerHTML =
