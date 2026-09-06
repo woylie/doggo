@@ -74,7 +74,7 @@ defmodule Doggo.Components.ButtonLink do
   end
 
   @impl true
-  def attrs_and_slots do
+  def attrs_and_slots(_opts) do
     quote do
       attr :disabled, :boolean,
         default: false,

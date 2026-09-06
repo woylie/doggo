@@ -63,7 +63,7 @@ defmodule Doggo.Macros do
 
         name = Keyword.fetch!(opts, :name)
         modifiers = Keyword.fetch!(opts, :modifiers)
-        attrs_and_slots = module.attrs_and_slots()
+        attrs_and_slots = module.attrs_and_slots(extra)
         docstring = Doggo.Macros.assemble_component_doc(module)
 
         quote do

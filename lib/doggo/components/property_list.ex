@@ -52,7 +52,7 @@ defmodule Doggo.Components.PropertyList do
   end
 
   @impl true
-  def attrs_and_slots do
+  def attrs_and_slots(_opts) do
     quote do
       slot :prop, required: true, doc: "A property to be rendered." do
         attr :label, :string, required: true
