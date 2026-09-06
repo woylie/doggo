@@ -1009,7 +1009,7 @@ defmodule Doggo.Components.Field do
     """
   end
 
-  defp option(%{option: options}) when is_list(options) do
+  defp option(%{option: options} = assigns) when is_list(options) do
     {option_key, options} = Keyword.pop(options, :key)
 
     option_key ||
@@ -1021,6 +1021,21 @@ defmodule Doggo.Components.Field do
     option_value ||
       raise ArgumentError,
             "expected :value key when building <option> from keyword list: #{inspect(options)}"
+
+    value = Phoenix.HTML.html_escape(option_value)
+    {selected, extra} = Keyword.pop(options, :selected)
+
+    assigns =
+      assign(assigns,
+        key: option_key,
+        value: value,
+        selected: selected || value in assigns.selected_values,
+        extra: extra
+      )
+
+    ~H"""
+    <option value={@value} selected={@selected} {@extra}>{@key}</option>
+    """
   end
 
   defp option(%{option: _key_and_value} = assigns) do

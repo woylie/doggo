@@ -168,6 +168,49 @@ defmodule Doggo.Components.FieldTest do
     end
   end
 
+  describe "field/1 with options given as keyword lists" do
+    test "renders the extra keys as attributes, so one option can be disabled" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:pet]}
+            type="select"
+            label="Pet"
+            options={[
+              [key: "Dog", value: "dog"],
+              [key: "Cat", value: "cat", disabled: true]
+            ]}
+          />
+        </.form>
+        """)
+
+      assert text(html, "option[value='dog']") == "Dog"
+      assert attribute(html, "option[value='cat']", "disabled") == "disabled"
+      assert attribute(html, "option[value='dog']", "disabled") == nil
+    end
+
+    test "takes a selected key from the option" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:pet]}
+            type="select"
+            label="Pet"
+            options={[[key: "Cat", value: "cat", selected: true]]}
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "option[value='cat']", "selected") == "selected"
+    end
+  end
+
   describe "field/1" do
     test "with text input" do
       assigns = %{form: to_form(%{})}
