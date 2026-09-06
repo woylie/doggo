@@ -16,7 +16,7 @@ version for both packages. A version mismatch can lead to issues.
 
 These modules also ship inside the Hex package. If your JavaScript is built
 alongside your Elixir application, you can skip npm and point `package.json` at
-`file:../deps/doggo/assets` instead.
+`link:../deps/doggo/assets` instead.
 
 Register the hooks for the components you build:
 
