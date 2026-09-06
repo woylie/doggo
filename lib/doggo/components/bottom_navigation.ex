@@ -103,9 +103,10 @@ defmodule Doggo.Components.BottomNavigation do
         icon.
         """ do
         attr :label, :string,
+          required: true,
           doc: """
-          Required label for the navigation items. The item labels can be visually
-          hidden with the `hide_labels` attribute on the component.
+          Label for the navigation item. The item labels can be visually hidden
+          with the `hide_labels` attribute on the component.
           """
 
         attr :href, :string, doc: "Passed to `Phoenix.Component.link/1`."
@@ -113,6 +114,7 @@ defmodule Doggo.Components.BottomNavigation do
         attr :patch, :string, doc: "Passed to `Phoenix.Component.link/1`."
 
         attr :value, :any,
+          required: true,
           doc: """
           The value of the item is compared to the `current_value` attribute to
           determine whether to add the `aria-current` attribute. This can be a

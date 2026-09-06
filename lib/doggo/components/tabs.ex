@@ -120,7 +120,7 @@ defmodule Doggo.Components.Tabs do
       attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :panel, required: true do
-        attr :label, :string
+        attr :label, :string, required: true
       end
     end
   end

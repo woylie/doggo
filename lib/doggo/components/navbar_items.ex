@@ -52,7 +52,8 @@ defmodule Doggo.Components.NavbarItems do
       slot :item,
         required: true,
         doc: "A navigation item, usually a link or a button." do
-        attr :class, :string, doc: "A class for the `<li>`."
+        attr :class, :any,
+          doc: "Additional CSS classes. Can be a string or a list of strings."
       end
     end
   end

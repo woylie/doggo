@@ -48,7 +48,7 @@ defmodule Doggo.Components.Callout do
       since: "0.6.0",
       maturity: :developing,
       modifiers: [
-        variant: [
+        level: [
           values: [
             "info",
             "success",

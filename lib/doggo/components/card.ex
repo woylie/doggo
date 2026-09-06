@@ -22,10 +22,10 @@ defmodule Doggo.Components.Card do
         <img src="image.png" alt="Picture of a dog dressed in a poncho." />
       </:image>
       <:header><h2>Dog Fashion Show</h2></:header>
-      <:main>
+      <:body>
         The next dog fashion show is coming up quickly. Here's what you need
         to look out for.
-      </:main>
+      </:body>
       <:footer>
         <span>2023-11-15 12:24</span>
         <span>Events</span>
@@ -47,7 +47,7 @@ defmodule Doggo.Components.Card do
 
   @impl true
   def nested_classes(base_class) do
-    ["#{base_class}-main"]
+    ["#{base_class}-body"]
   end
 
   @impl true
@@ -67,7 +67,7 @@ defmodule Doggo.Components.Card do
         `h3` tag, or another header level, depending on the hierarchy on the page.
         """
 
-      slot :main, doc: "The main content of the card."
+      slot :body, doc: "The main content of the card."
 
       slot :footer,
         doc: """
@@ -88,8 +88,8 @@ defmodule Doggo.Components.Card do
     <article class={@class} {@data_attrs} {@rest}>
       <figure :if={@image != []}>{render_slot(@image)}</figure>
       <header :if={@header != []}>{render_slot(@header)}</header>
-      <div :if={@main != []} class={"#{@base_class}-main"}>
-        {render_slot(@main)}
+      <div :if={@body != []} class={"#{@base_class}-body"}>
+        {render_slot(@body)}
       </div>
       <footer :if={@footer != []}>{render_slot(@footer)}</footer>
     </article>

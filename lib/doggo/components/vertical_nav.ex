@@ -91,7 +91,9 @@ defmodule Doggo.Components.VerticalNav do
       slot :title, doc: "An optional slot for the title of the menu."
 
       slot :item, required: true, doc: "Items" do
-        attr :class, :string
+        attr :class, :any,
+          doc: "Additional CSS classes. Can be a string or a list of strings."
+
         attr :current_page, :boolean
       end
     end

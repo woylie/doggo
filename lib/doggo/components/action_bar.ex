@@ -84,11 +84,11 @@ defmodule Doggo.Components.ActionBar do
         doc: """
         An action. The content can be an icon, an icon with text, or text.
 
-        `label` is the button's accessible name, rendered as `aria-label` and as
-        the tooltip, so an icon-only item is named without the caller doing
-        anything further.
+        `label` is the button's accessible name. It is rendered as `aria-label`
+        and as `title`, so that an icon-only item is named and has a hover
+        tooltip.
 
-        Where the content includes visible text, `label` must contain that text,
+        If the content includes visible text, `label` must contain that text,
         since `aria-label` overrides the content. Voice control users activate a
         button by speaking the name they can see, so a button reading "Delete"
         with `label="Remove record"` cannot be activated by voice.

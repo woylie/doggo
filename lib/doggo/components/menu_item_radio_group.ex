@@ -81,7 +81,7 @@ defmodule Doggo.Components.MenuItemRadioGroup do
 
       slot :item, required: true do
         attr :checked, :boolean
-        attr :on_click, JS
+        attr :on_click, JS, required: true
       end
     end
   end
