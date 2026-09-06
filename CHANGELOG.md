@@ -24,6 +24,10 @@ and this project adheres to
 - Add a `:close` slot for the content of the close button.
 - Add an `:action` slot.
 
+#### Callout component
+
+- Add an `:action` slot.
+
 #### Carousel component
 
 - Add a `loop` attribute, default `true`. With `loop={false}`, the first and
