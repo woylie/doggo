@@ -126,8 +126,13 @@ the options and the individual components.
 
 ### Phoenix LiveView Hooks
 
-Some components need a JavaScript hook. The hooks are ES modules shipped in the
-`assets` directory of the package. Add it to your `package.json`:
+Some components need a JavaScript hook. The hooks are ES modules, and there are
+two ways to install them.
+
+#### From your `deps` folder
+
+The modules are included in the Hex package. You can point at them in the
+`deps` folder:
 
 ```json
 {
@@ -136,6 +141,19 @@ Some components need a JavaScript hook. The hooks are ES modules shipped in the
   }
 }
 ```
+
+#### From npm
+
+The modules are also published as
+[@woylie/doggo](https://www.npmjs.com/package/@woylie/doggo). Install them with
+your package manager:
+
+```bash
+npm install @woylie/doggo
+```
+
+The Hex package and the npm package share the version number. Pin the same
+version for both packages. A version mismatch can lead to issues.
 
 Then register the hooks for the components you build in your `app.js`:
 
@@ -171,6 +189,9 @@ const liveSocket = new LiveSocket("/live", Socket, {
   hooks,
 });
 ```
+
+The keys are the names the components render in `phx-hook`, so they have to
+match exactly.
 
 It is recommended to only import the hooks you need to keep your bundle size
 small.
@@ -381,6 +402,7 @@ These changes **are** breaking:
   selectors match.
 - Changing an element type.
 - Reordering elements.
+- Renaming a JavaScript hook.
 
 ## Feedback
 
