@@ -7,7 +7,7 @@ const SHIFT_STEP = 10;
 export function initSplitPane(pane) {
   const separator = pane.querySelector(':scope > [role="separator"]');
 
-  if (!separator) return;
+  if (!separator) return { update: () => {} };
 
   const numberOf = (name) => Number(separator.getAttribute(name));
   const min = () => numberOf("aria-valuemin");

@@ -186,3 +186,12 @@ describe("split pane hook", () => {
     expect(positionOf(el)).toEqual({ property: "80%", ariaValueNow: "80" });
   });
 });
+
+describe("split pane hook without a separator", () => {
+  it("does nothing rather than failing on the next patch", () => {
+    const el = render('<div id="pane"><div>Only one pane.</div></div>');
+    const hook = initSplitPane(el);
+
+    expect(() => hook.update()).not.toThrow();
+  });
+});
