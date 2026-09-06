@@ -1373,7 +1373,7 @@ defmodule Doggo.ComponentsTest do
       assigns = %{}
 
       html =
-        parse_heex(~H"""
+        parse_heex_without_name_check(~H"""
         <TestComponents.combobox
           id="color-selector"
           name="color"
@@ -1437,7 +1437,7 @@ defmodule Doggo.ComponentsTest do
       assigns = %{}
 
       html =
-        parse_heex(~H"""
+        parse_heex_without_name_check(~H"""
         <TestComponents.combobox
           id="color-selector"
           name="dog[color]"
@@ -1457,7 +1457,7 @@ defmodule Doggo.ComponentsTest do
       assigns = %{}
 
       html =
-        parse_heex(~H"""
+        parse_heex_without_name_check(~H"""
         <TestComponents.combobox
           id="color-selector"
           name="color"
@@ -1492,7 +1492,7 @@ defmodule Doggo.ComponentsTest do
       assigns = %{}
 
       html =
-        parse_heex(~H"""
+        parse_heex_without_name_check(~H"""
         <TestComponents.combobox
           id="color-selector"
           name="color"
@@ -1536,7 +1536,7 @@ defmodule Doggo.ComponentsTest do
       assigns = %{}
 
       html =
-        parse_heex(~H"""
+        parse_heex_without_name_check(~H"""
         <TestComponents.combobox
           id="color-selector"
           name="color"
