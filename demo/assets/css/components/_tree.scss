@@ -5,13 +5,13 @@
 // A designed stylesheet comes with the restyling of the demo.
 .tree,
 .tree [role="group"] {
-  padding-left: f.spacer(4);
+  padding-inline-start: f.spacer(4);
   margin: 0;
   list-style: none;
 }
 
 .tree {
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
 .tree [role="treeitem"] {

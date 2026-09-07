@@ -6,8 +6,8 @@
 
   [role="tooltip"] {
     position: absolute;
+    inset-inline-start: 0;
     bottom: calc(100% + #{f.spacer(1)});
-    left: 0;
     z-index: 1;
     display: none;
     width: max-content;
@@ -24,9 +24,8 @@
     // Required by WCAG 2.2 1.4.13.
     &::after {
       position: absolute;
+      inset-inline: 0;
       top: 100%;
-      right: 0;
-      left: 0;
       height: f.spacer(1);
       content: "";
     }

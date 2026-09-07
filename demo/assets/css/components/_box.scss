@@ -31,9 +31,9 @@
     > .box-banner {
       flex: 0 0 calc(100% + #{f.spacer(12)});
       order: -1;
+      margin-inline-start: f.spacer(-6);
       margin-top: f.spacer(-6);
       margin-bottom: f.lines(half);
-      margin-left: f.spacer(-6);
 
       > img {
         border-top-left-radius: f.radius(m);

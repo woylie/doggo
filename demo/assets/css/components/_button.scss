@@ -154,7 +154,7 @@
   &[aria-controls][aria-expanded] {
     &::before {
       display: inline-block;
-      margin-right: f.spacer(2);
+      margin-inline-end: f.spacer(2);
       font-size: f.size(xs);
     }
 

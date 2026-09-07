@@ -8,8 +8,8 @@
     display: flex;
     gap: f.spacer(1);
     align-items: center;
-    padding-left: f.spacer(2);
-    margin-left: 0;
+    padding-inline-start: f.spacer(2);
+    margin-inline-start: 0;
     list-style-type: none;
     border-bottom: f.border-width(s) solid f.color(border, neutral, "1");
 

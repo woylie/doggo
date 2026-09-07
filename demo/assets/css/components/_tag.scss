@@ -66,8 +66,7 @@
   }
 
   &[data-shape="pill"] {
-    padding-right: f.spacer(3);
-    padding-left: f.spacer(3);
+    padding-inline: f.spacer(3);
     border-radius: f.radius(pill);
   }
 }
