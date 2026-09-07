@@ -37,10 +37,7 @@
     "csstools/value-no-unknown-custom-properties": [
       true,
       {
-        "importFrom": [
-          "build/tokens/css/tokens.light.css",
-          "build/tokens/css/tokens.dark.css"
-        ]
+        "importFrom": ["css/tokens.css"]
       }
     ]
   }
