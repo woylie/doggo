@@ -8,8 +8,7 @@
   max-width: var(--max-width);
 
   &.is-centered {
-    margin-right: auto;
-    margin-left: auto;
+    margin-inline: auto;
   }
 
   &.has-centered-children {
