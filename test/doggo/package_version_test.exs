@@ -1,7 +1,7 @@
 defmodule Doggo.PackageVersionTest do
   use ExUnit.Case, async: true
 
-  @package_json "assets/package.json"
+  @package_json "package.json"
 
   test "the npm package has the same version as the Hex package" do
     hex = Mix.Project.config()[:version]

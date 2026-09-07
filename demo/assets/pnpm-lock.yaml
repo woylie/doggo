@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@woylie/doggo':
-        specifier: link:../../assets
-        version: link:../../assets
+        specifier: link:../..
+        version: link:../..
       phoenix:
         specifier: 1.8.13
         version: 1.8.13

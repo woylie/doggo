@@ -12,8 +12,7 @@
   "homepage": "https://hexdocs.pm/doggo",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/woylie/doggo.git",
-    "directory": "assets"
+    "url": "git+https://github.com/woylie/doggo.git"
   },
   "bugs": "https://github.com/woylie/doggo/issues",
   "author": "Mathias Polligkeit",
@@ -24,30 +23,30 @@
   },
   "scripts": {
     "lint": "pnpm run lint:prettier && pnpm run lint:eslint",
-    "lint:eslint": "eslint .",
-    "lint:eslint:fix": "eslint . --fix",
+    "lint:eslint": "eslint assets",
+    "lint:eslint:fix": "eslint assets --fix",
     "lint:fix": "pnpm run lint:prettier:fix && pnpm run lint:eslint:fix",
-    "lint:prettier": "prettier . --check",
-    "lint:prettier:fix": "prettier . --write",
+    "lint:prettier": "prettier assets --check",
+    "lint:prettier:fix": "prettier assets --write",
     "test": "vitest run",
     "test:watch": "vitest"
   },
-  "main": "js/index.js",
+  "main": "assets/js/index.js",
   "exports": {
-    ".": "./js/index.js",
-    "./accordion": "./js/hooks/accordion.js",
-    "./carousel": "./js/hooks/carousel.js",
-    "./tabs": "./js/hooks/tabs.js",
-    "./toolbar": "./js/hooks/toolbar.js",
-    "./tooltip": "./js/hooks/tooltip.js",
-    "./menu": "./js/hooks/menu.js",
-    "./menu_button": "./js/hooks/menu_button.js",
-    "./tree": "./js/hooks/tree.js",
-    "./dialog": "./js/hooks/dialog.js",
-    "./split_pane": "./js/hooks/split_pane.js"
+    ".": "./assets/js/index.js",
+    "./accordion": "./assets/js/hooks/accordion.js",
+    "./carousel": "./assets/js/hooks/carousel.js",
+    "./tabs": "./assets/js/hooks/tabs.js",
+    "./toolbar": "./assets/js/hooks/toolbar.js",
+    "./tooltip": "./assets/js/hooks/tooltip.js",
+    "./menu": "./assets/js/hooks/menu.js",
+    "./menu_button": "./assets/js/hooks/menu_button.js",
+    "./tree": "./assets/js/hooks/tree.js",
+    "./dialog": "./assets/js/hooks/dialog.js",
+    "./split_pane": "./assets/js/hooks/split_pane.js"
   },
   "files": [
-    "js"
+    "assets/js"
   ],
   "sideEffects": false,
   "devDependencies": {
