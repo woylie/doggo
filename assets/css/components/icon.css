@@ -1,0 +1,20 @@
+.icon {
+  display: inline-flex;
+  gap: var(--spacer-1);
+  align-items: baseline;
+
+  svg {
+    width: 0.75em;
+    width: 1cap;
+    height: 0.75em;
+    height: 1cap;
+  }
+
+  &[data-text-position="before"] {
+    flex-direction: row-reverse;
+  }
+
+  &[data-text-position="after"] {
+    flex-direction: row;
+  }
+}

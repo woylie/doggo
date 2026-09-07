@@ -1,0 +1,29 @@
+.property-list {
+  > div {
+    > dt {
+      margin: 0;
+      font-weight: var(--weight-medium);
+    }
+
+    > dd {
+      margin: 0;
+    }
+  }
+
+  & > div + div {
+    margin-block-start: var(--size-line-single);
+  }
+
+  @media (width >= 768px) {
+    > div {
+      display: flex;
+      flex-direction: row;
+      gap: var(--spacer-2);
+      align-items: baseline;
+
+      > dt {
+        flex: 0 0 8rem;
+      }
+    }
+  }
+}

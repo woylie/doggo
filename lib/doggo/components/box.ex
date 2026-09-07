@@ -47,7 +47,7 @@ defmodule Doggo.Components.Box do
 
   @impl true
   def css_path do
-    "components/_box.scss"
+    "components/box.css"
   end
 
   @impl true

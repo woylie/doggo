@@ -1,0 +1,36 @@
+.skeleton {
+  cursor: progress;
+  background: var(--color-background-surface-1);
+  border-radius: var(--radius-m);
+
+  &[data-type="text-line"] {
+    width: 100%;
+    height: var(--size-line-single);
+  }
+
+  &[data-type="text-block"] {
+    width: 100%;
+    height: calc(4 * var(--size-line-single));
+  }
+
+  &[data-type="image"] {
+    width: 100%;
+    height: 200px;
+  }
+
+  &[data-type="circle"] {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-circle);
+  }
+
+  &[data-type="rectangle"] {
+    width: 200px;
+    height: 100px;
+  }
+
+  &[data-type="square"] {
+    width: 100px;
+    height: 100px;
+  }
+}

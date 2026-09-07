@@ -1,0 +1,19 @@
+.toolbar,
+.action-bar {
+  display: flex;
+  gap: var(--spacer-2);
+  align-items: center;
+  padding: var(--spacer-1);
+  border: var(--border-width-s) solid var(--color-border-neutral-1);
+  border-radius: var(--radius-s);
+
+  [role="group"] {
+    display: flex;
+    gap: var(--spacer-1);
+  }
+
+  &[aria-orientation="vertical"] {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

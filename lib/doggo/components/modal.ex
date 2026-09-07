@@ -149,7 +149,7 @@ defmodule Doggo.Components.Modal do
 
   @impl true
   def css_path do
-    "components/_dialog.scss"
+    "components/dialog.css"
   end
 
   @impl true

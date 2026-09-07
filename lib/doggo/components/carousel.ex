@@ -128,7 +128,7 @@ defmodule Doggo.Components.Carousel do
 
   @impl true
   def css_path do
-    "components/_carousel.scss"
+    "components/carousel.css"
   end
 
   @impl true

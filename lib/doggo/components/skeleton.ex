@@ -75,7 +75,7 @@ defmodule Doggo.Components.Skeleton do
 
   @impl true
   def css_path do
-    "components/_skeleton.scss"
+    "components/skeleton.css"
   end
 
   @impl true

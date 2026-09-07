@@ -63,7 +63,7 @@ defmodule Doggo.Components.DisclosureButton do
 
   @impl true
   def css_path do
-    "components/_button.scss"
+    "components/button.css"
   end
 
   @impl true

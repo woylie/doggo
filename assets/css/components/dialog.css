@@ -1,0 +1,33 @@
+.modal,
+.alert-dialog {
+  padding: 0;
+  color: inherit;
+  background-color: var(--color-background-surface-1);
+  border: var(--border-width-s) solid var(--color-border-neutral-1);
+  border-radius: var(--radius-m);
+
+  &::backdrop {
+    background-color: rgb(0 0 0 / 40%);
+  }
+
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-3);
+    padding: var(--spacer-4);
+  }
+
+  header {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: var(--spacer-2);
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  footer {
+    display: flex;
+    gap: var(--spacer-2);
+    justify-content: flex-end;
+  }
+}

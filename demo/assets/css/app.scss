@@ -1,10 +1,21 @@
-/**
- * This is the entry module that uses all the other styles. This is the module
- * you want to point to when importing your styles with Webpack.
- */
-
 @use "base";
-@use "components";
+@use "assets/css/common.css";
+@use "assets/css/components/box.css";
+@use "assets/css/components/button.css";
+@use "assets/css/components/carousel.css";
+@use "assets/css/components/cluster.css";
+@use "assets/css/components/dialog.css";
+@use "assets/css/components/field.css";
+@use "assets/css/components/icon.css";
+@use "assets/css/components/menu.css";
+@use "assets/css/components/property-list.css";
+@use "assets/css/components/skeleton.css";
+@use "assets/css/components/split-pane.css";
+@use "assets/css/components/stack.css";
+@use "assets/css/components/tab-navigation.css";
+@use "assets/css/components/tag.css";
+@use "assets/css/components/toolbar.css";
+@use "assets/css/components/tooltip.css";
+@use "assets/css/components/tree.css";
 @use "layouts";
-@use "themes";
-@use "utilities";
+@use "assets/css/tokens.css";

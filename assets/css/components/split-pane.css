@@ -1,0 +1,39 @@
+.split-pane {
+  --position: var(--split-pane-position, 50%);
+  --separator-width: var(--spacer-1);
+
+  display: grid;
+  inline-size: 100%;
+
+  /* The position is a percentage, so the horizontal case needs a height, or
+   * both panes stay at the size of their content. */
+  block-size: 10rem;
+
+  &[data-orientation="vertical"] {
+    grid-template-columns: var(--position) var(--separator-width) 1fr;
+  }
+
+  &[data-orientation="horizontal"] {
+    grid-template-rows: var(--position) var(--separator-width) 1fr;
+  }
+
+  > * {
+    overflow: auto;
+  }
+
+  > [role="separator"] {
+    background-color: var(--color-border-neutral-1);
+
+    &:focus-visible {
+      outline: var(--border-width-m) solid var(--color-border-primary-normal);
+    }
+  }
+
+  &[data-orientation="vertical"] > [role="separator"] {
+    cursor: col-resize;
+  }
+
+  &[data-orientation="horizontal"] > [role="separator"] {
+    cursor: row-resize;
+  }
+}

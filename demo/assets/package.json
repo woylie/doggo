@@ -7,17 +7,19 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build:dev": "pnpm run build:tokens && node build.js --development",
-    "build:dev:watch": "pnpm run build:tokens && node build.js --watch",
-    "build:prod": "pnpm run build:tokens && node build.js --production",
-    "build:tokens": "node style-dictionary.js",
+    "build:dev": "node build.js --development",
+    "build:dev:watch": "node build.js --watch",
+    "build:prod": "node build.js --production",
     "lint": "pnpm run lint:prettier && pnpm run lint:stylelint",
     "lint:fix": "pnpm run lint:prettier:fix && pnpm run lint:stylelint:fix",
     "lint:prettier": "prettier . --check",
     "lint:prettier:fix": "prettier . --write",
-    "lint:stylelint": "stylelint css",
-    "lint:stylelint:fix": "stylelint css --fix"
+    "lint:stylelint": "stylelint css ../../assets/css",
+    "lint:stylelint:fix": "stylelint css ../../assets/css --fix"
   },
+  "browserslist": [
+    "baseline widely available"
+  ],
   "devDependencies": {
     "autoprefixer": "10.5.4",
     "css-loader": "7.1.4",
@@ -26,11 +28,11 @@
     "postcss": "8.5.26",
     "postcss-scss": "4.0.9",
     "prettier": "3.9.6",
-    "style-dictionary": "5.5.2",
     "stylelint": "17.14.1",
     "stylelint-config-recess-order": "7.8.0",
     "stylelint-config-standard-scss": "17.0.0",
-    "stylelint-declaration-strict-value": "1.11.1"
+    "stylelint-declaration-strict-value": "1.11.1",
+    "stylelint-value-no-unknown-custom-properties": "^6.1.1"
   },
   "dependencies": {
     "@woylie/doggo": "link:../..",

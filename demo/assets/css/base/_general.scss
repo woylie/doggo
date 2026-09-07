@@ -1,5 +1,3 @@
-@use "../functions" as f;
-
 * {
   box-sizing: border-box;
 }
@@ -9,11 +7,11 @@ body,
 .psb-sandbox {
   padding: 0;
   margin: 0;
-  font-family: f.font-family(main);
-  font-size: f.base-size();
-  line-height: f.lines(single);
-  color: f.color(text, default, normal);
-  background: f.color(background, foundation);
+  font-family: var(--font-family-main);
+  font-size: 100%;
+  line-height: var(--size-line-single);
+  color: var(--color-text-default-normal);
+  background: var(--color-background-foundation);
 }
 
 @media screen and (prefers-reduced-motion: reduce) {

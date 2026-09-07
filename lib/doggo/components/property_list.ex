@@ -33,7 +33,7 @@ defmodule Doggo.Components.PropertyList do
 
   @impl true
   def css_path do
-    "components/_property-list.scss"
+    "components/property-list.css"
   end
 
   @impl true

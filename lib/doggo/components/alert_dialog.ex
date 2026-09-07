@@ -105,7 +105,7 @@ defmodule Doggo.Components.AlertDialog do
 
   @impl true
   def css_path do
-    "components/_dialog.scss"
+    "components/dialog.css"
   end
 
   @impl true

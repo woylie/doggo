@@ -1,0 +1,105 @@
+.carousel {
+  --item-width: 600px;
+
+  width: 100%;
+
+  .carousel-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-4);
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .carousel-items-container {
+    width: 100%;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+
+    @media (prefers-reduced-motion: reduce) {
+      scroll-behavior: auto;
+    }
+  }
+
+  .carousel-items {
+    display: flex;
+    width: fit-content;
+
+    /* Provide enough padding on both sides so that items at the edges can be
+     * scrolled to the center. */
+    padding-inline: calc(50% - var(--item-width) / 2);
+  }
+
+  .carousel-item {
+    flex-shrink: 0;
+    width: var(--item-width);
+    scroll-snap-align: center;
+    opacity: 0.4;
+    transform: scale(0.9);
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
+
+    &[aria-current="true"] {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .carousel-controls {
+    display: flex;
+    gap: var(--spacer-2);
+    align-items: center;
+    justify-content: center;
+
+    .carousel-previous {
+      cursor: pointer;
+    }
+
+    .carousel-pagination {
+      display: flex;
+      gap: var(--spacer-1);
+      justify-content: center;
+
+      button[role="tab"] {
+        /* WCAG 2.5.8 minimum target size is 24px */
+        display: grid;
+        place-items: center;
+        width: var(--spacer-6);
+        height: var(--spacer-6);
+        padding: 0;
+        cursor: pointer;
+        background: none;
+        border: none;
+
+        > span {
+          width: var(--spacer-3);
+          height: var(--spacer-3);
+          border: var(--border-width-s) solid
+            var(--color-background-primary-normal);
+          border-radius: var(--radius-pill);
+        }
+
+        &[aria-selected="true"] > span {
+          background-color: var(--color-background-primary-normal);
+        }
+      }
+    }
+
+    .carousel-next {
+      cursor: pointer;
+    }
+
+    .carousel-pause {
+      cursor: pointer;
+    }
+  }
+
+  /* Swap pause/resume button content depending on the current state */
+  &:not([data-paused]) .carousel-pause > :last-child,
+  &[data-paused] .carousel-pause > :first-child {
+    display: none;
+  }
+}

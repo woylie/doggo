@@ -94,7 +94,7 @@ defmodule Doggo.Components.SplitPane do
 
   @impl true
   def css_path do
-    "components/_split-pane.scss"
+    "components/split-pane.css"
   end
 
   @impl true

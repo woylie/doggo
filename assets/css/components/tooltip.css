@@ -1,0 +1,50 @@
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+
+  [role="tooltip"] {
+    position: absolute;
+    inset-inline-start: 0;
+    bottom: calc(100% + var(--spacer-1));
+    z-index: 1;
+    display: none;
+    width: max-content;
+    max-width: var(--size-measure);
+    padding: var(--spacer-2);
+    font-size: var(--size-font-s);
+    color: var(--color-background-foundation);
+    background-color: var(--color-gray-900);
+    border-radius: var(--radius-s);
+    box-shadow: var(--shadow-elevation-medium);
+
+    /* An invisible bridge across the gap to the trigger, so that the pointer
+     * can travel onto the tooltip without leaving the component and hiding it.
+     * Required by WCAG 2.2 1.4.13. */
+    &::after {
+      position: absolute;
+      inset-inline: 0;
+      top: 100%;
+      height: var(--spacer-1);
+      content: "";
+    }
+
+    > * {
+      margin: 0;
+    }
+
+    > * + * {
+      margin-top: var(--spacer-1);
+    }
+  }
+
+  /* Shown on hover and on focus */
+  &:hover [role="tooltip"],
+  &:focus-within [role="tooltip"] {
+    display: block;
+  }
+
+  /* Set by the JavaScript hook when the user presses Escape. */
+  &[data-dismissed] [role="tooltip"] {
+    display: none;
+  }
+}
