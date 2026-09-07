@@ -14,8 +14,8 @@
     "lint:fix": "pnpm run lint:prettier:fix && pnpm run lint:stylelint:fix",
     "lint:prettier": "prettier . --check",
     "lint:prettier:fix": "prettier . --write",
-    "lint:stylelint": "stylelint css",
-    "lint:stylelint:fix": "stylelint css --fix"
+    "lint:stylelint": "stylelint css ../../assets/css",
+    "lint:stylelint:fix": "stylelint css ../../assets/css --fix"
   },
   "browserslist": [
     "baseline widely available"

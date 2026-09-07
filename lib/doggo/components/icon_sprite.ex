@@ -38,7 +38,7 @@ defmodule Doggo.Components.IconSprite do
 
   @impl true
   def css_path do
-    "components/_icon.scss"
+    "components/icon.css"
   end
 
   @impl true

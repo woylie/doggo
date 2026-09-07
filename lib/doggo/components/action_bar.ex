@@ -52,7 +52,7 @@ defmodule Doggo.Components.ActionBar do
 
   @impl true
   def css_path do
-    "components/_toolbar.scss"
+    "components/toolbar.css"
   end
 
   @impl true

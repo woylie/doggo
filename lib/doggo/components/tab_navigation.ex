@@ -61,7 +61,7 @@ defmodule Doggo.Components.TabNavigation do
 
   @impl true
   def css_path do
-    "components/_tab-navigation.scss"
+    "components/tab-navigation.css"
   end
 
   @impl true

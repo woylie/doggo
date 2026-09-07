@@ -116,7 +116,7 @@ defmodule Doggo.Components.Icon do
 
   @impl true
   def css_path do
-    "components/_icon.scss"
+    "components/icon.css"
   end
 
   @impl true

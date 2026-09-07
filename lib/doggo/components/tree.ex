@@ -73,7 +73,7 @@ defmodule Doggo.Components.Tree do
 
   @impl true
   def css_path do
-    "components/_tree.scss"
+    "components/tree.css"
   end
 
   @impl true

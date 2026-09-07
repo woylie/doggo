@@ -38,7 +38,7 @@
     "csstools/value-no-unknown-custom-properties": [
       true,
       {
-        "importFrom": ["css/tokens.css"]
+        "importFrom": ["../../assets/css/tokens.css"]
       }
     ]
   }

@@ -47,7 +47,7 @@ defmodule Doggo.Components.Tag do
 
   @impl true
   def css_path do
-    "components/_tag.scss"
+    "components/tag.css"
   end
 
   @impl true

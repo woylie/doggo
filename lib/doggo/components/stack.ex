@@ -40,7 +40,7 @@ defmodule Doggo.Components.Stack do
 
   @impl true
   def css_path do
-    "layouts/_stack.scss"
+    "components/stack.css"
   end
 
   @impl true

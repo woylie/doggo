@@ -12,6 +12,7 @@ const postCssPlugins = [autoprefixer];
 
 const plugins = [
   sassPlugin({
+    includePaths: ["../.."],
     async transform(source, resolveDir) {
       const { css } = await postcss(postCssPlugins).process(source, {
         from: undefined,

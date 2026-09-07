@@ -89,7 +89,7 @@ defmodule Doggo.Components.Tooltip do
 
   @impl true
   def css_path do
-    "components/_tooltip.scss"
+    "components/tooltip.css"
   end
 
   @impl true

@@ -76,7 +76,7 @@ defmodule Doggo.Components.MenuBar do
 
   @impl true
   def css_path do
-    "components/_menu.scss"
+    "components/menu.css"
   end
 
   @impl true

@@ -42,7 +42,7 @@ defmodule Doggo.Components.Cluster do
 
   @impl true
   def css_path do
-    "layouts/_cluster.scss"
+    "components/cluster.css"
   end
 
   @impl true
