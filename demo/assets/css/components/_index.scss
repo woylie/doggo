@@ -6,8 +6,6 @@
  * The styles of a component should be scoped by a single class. Modifier
  * classes should be named `is-*` or `has-*` (not `are-*` or `have-*`).
  *
- *     @use "../functions" as f;
- *
  *     .some-component {
  *       color: var(--color-text-primary-normal);
  *

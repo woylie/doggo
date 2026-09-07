@@ -2,8 +2,6 @@
  * Applies a vertical margin between the child elements.
  */
 
-@use "../functions" as f;
-
 .stack {
   display: flex;
   flex-direction: column;
@@ -14,7 +12,7 @@
   }
 
   & > * + * {
-    margin-block-start: var(--space, f.lines(single));
+    margin-block-start: var(--space, var(--size-line-single));
   }
 
   &[data-recursive] {
@@ -23,7 +21,7 @@
     }
 
     & * + * {
-      margin-block-start: var(--space, f.lines(single));
+      margin-block-start: var(--space, var(--size-line-single));
     }
   }
 
@@ -31,13 +29,13 @@
   You can add modifiers like this:
 
       &[data-size="small"] > * + * {
-        margin-top: var(--space, f.lines(half));
+        margin-top: var(--space, var(--size-line-half));
       }
 
   Or you can add exceptions like this:
 
       & > .some-component + * {
-        margin-top: var(--space, f.lines(one_and_a_half));
+        margin-top: var(--space, var(--size-line-one-and-a-half));
       }
 
   This would apply a different margin between `.some-component` and the next
@@ -45,7 +43,7 @@
   component and the previous element:
 
       & > * + .some-component {
-        margin-top: var(--space, f.lines(one_and_a_half));
+        margin-top: var(--space, var(--size-line-one-and-a-half));
       }
   */
 }

@@ -6,18 +6,16 @@
  * This layout can be used to group buttons, tags, tabs etc.
  */
 
-@use "../functions" as f;
-
 .cluster {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space, #{f.spacer(2)});
+  gap: var(--space, var(--spacer-2));
 
   /*
   For modifying the spacing, override the --gap property:
 
       &.is-small {
-        --gap: f.spacer(1);
+        --gap: var(--spacer-1);
       }
 
   You may want to add a modifier for scrolling:

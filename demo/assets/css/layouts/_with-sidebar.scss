@@ -15,12 +15,10 @@
  * See also layouts/level.
  */
 
-@use "../functions" as f;
-
 .with-sidebar {
   --sidebar-width: 10rem;
   --content-min-width: 60%;
-  --gap: #{f.spacer(4)};
+  --gap: var(--spacer-4);
 
   display: flex;
   flex-wrap: wrap;
@@ -58,7 +56,7 @@
       .is-main {
         --sidebar-width: 15rem;
         --content-min-width: 65%;
-        --gap: #{f.lines(one_and_a_half)} #{f.spacer(6)};
+        --gap: var(--size-line-one-and-a-half) var(--spacer-6);
       }
   */
 }

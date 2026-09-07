@@ -1,5 +1,3 @@
-@use "../functions" as f;
-
 h1,
 h2,
 h3,
@@ -15,13 +13,13 @@ ul {
 table {
   th,
   td {
-    padding: f.spacer(1);
+    padding: var(--spacer-1);
     text-align: left;
   }
 }
 
 a {
-  color: f.color(text, primary, normal);
+  color: var(--color-text-primary-normal);
   text-decoration: none;
 }
 

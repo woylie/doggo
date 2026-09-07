@@ -14,7 +14,7 @@
  *
  *       display: flex;
  *       max-width: var(--max-width);
- *       gap: f.spacer(4);
+ *       gap: var(--spacer-4);
  *
  *       &.is-narrow {
  *         --max-width: 10rem;

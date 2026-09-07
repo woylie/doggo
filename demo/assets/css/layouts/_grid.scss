@@ -2,12 +2,10 @@
  * Generic responsive grid layout with optional maximum number of columns.
  */
 
-@use "../functions" as f;
-
 .grid {
   --min-width: 10rem;
   --max-columns: 5;
-  --gap: #{f.spacer(4)};
+  --gap: var(--spacer-4);
 
   /* calculated */
   --min-column-percent: calc(100% / var(--max-columns));
