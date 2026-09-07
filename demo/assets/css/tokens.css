@@ -153,6 +153,14 @@
   --size-gutter: 1.5rem;
   --size-measure: 65ch;
   --size-spacer: 0.25rem;
+  --spacer-1: var(--size-spacer);
+  --spacer-2: calc(2 * var(--size-spacer));
+  --spacer-3: calc(3 * var(--size-spacer));
+  --spacer-4: calc(4 * var(--size-spacer));
+  --spacer-5: calc(5 * var(--size-spacer));
+  --spacer-6: calc(6 * var(--size-spacer));
+  --spacer-7: calc(7 * var(--size-spacer));
+  --spacer-8: calc(8 * var(--size-spacer));
   --weight-normal: 400;
   --weight-medium: 500;
   --weight-bold: 700;

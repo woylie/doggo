@@ -1,5 +1,3 @@
-@use "../functions" as f;
-
 .tooltip-container {
   position: relative;
   display: inline-block;
@@ -7,17 +5,17 @@
   [role="tooltip"] {
     position: absolute;
     inset-inline-start: 0;
-    bottom: calc(100% + #{f.spacer(1)});
+    bottom: calc(100% + var(--spacer-1));
     z-index: 1;
     display: none;
     width: max-content;
-    max-width: f.measure();
-    padding: f.spacer(2);
-    font-size: f.size(s);
-    color: f.color(background, foundation);
-    background-color: f.color("gray", "900");
-    border-radius: f.radius(s);
-    box-shadow: f.shadow(medium);
+    max-width: var(--size-measure);
+    padding: var(--spacer-2);
+    font-size: var(--size-font-s);
+    color: var(--color-background-foundation);
+    background-color: var(--color-gray-900);
+    border-radius: var(--radius-s);
+    box-shadow: var(--shadow-elevation-medium);
 
     // An invisible bridge across the gap to the trigger, so that the pointer
     // can travel onto the tooltip without leaving the component and hiding it.
@@ -26,7 +24,7 @@
       position: absolute;
       inset-inline: 0;
       top: 100%;
-      height: f.spacer(1);
+      height: var(--spacer-1);
       content: "";
     }
 
@@ -35,7 +33,7 @@
     }
 
     > * + * {
-      margin-top: f.spacer(1);
+      margin-top: var(--spacer-1);
     }
   }
 

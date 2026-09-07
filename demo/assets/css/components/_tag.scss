@@ -1,72 +1,70 @@
-@use "../functions" as f;
-
 .tag {
   display: inline-flex;
-  gap: f.spacer(1);
+  gap: var(--spacer-1);
   align-items: center;
   justify-content: center;
-  padding: 0 f.spacer(2);
-  font-size: f.size(s);
-  line-height: f.lines(single);
-  color: f.color(text, default, normal);
-  background-color: f.color(background, disabled, normal);
-  border: f.border-width(s) solid f.color(border, neutral, "1");
-  border-radius: f.radius(s);
+  padding: 0 var(--spacer-2);
+  font-size: var(--size-font-s);
+  line-height: var(--size-line-single);
+  color: var(--color-text-default-normal);
+  background-color: var(--color-background-disabled-normal);
+  border: var(--border-width-s) solid var(--color-border-neutral-1);
+  border-radius: var(--radius-s);
 
   &[data-variant="primary"] {
-    color: f.color(text, primary, normal);
-    background: f.color(background, primary, subdued);
-    border-color: f.color(border, primary, subdued);
+    color: var(--color-text-primary-normal);
+    background: var(--color-background-primary-subdued);
+    border-color: var(--color-border-primary-subdued);
   }
 
   &[data-variant="secondary"] {
-    color: f.color(text, secondary, normal);
-    background: f.color(background, secondary, subdued);
-    border-color: f.color(border, secondary, subdued);
+    color: var(--color-text-secondary-normal);
+    background: var(--color-background-secondary-subdued);
+    border-color: var(--color-border-secondary-subdued);
   }
 
   &[data-variant="info"] {
-    color: f.color(text, info, normal);
-    background: f.color(background, info, subdued);
-    border-color: f.color(border, info, subdued);
+    color: var(--color-text-info-normal);
+    background: var(--color-background-info-subdued);
+    border-color: var(--color-border-info-subdued);
   }
 
   &[data-variant="success"] {
-    color: f.color(text, success, normal);
-    background: f.color(background, success, subdued);
-    border-color: f.color(border, success, subdued);
+    color: var(--color-text-success-normal);
+    background: var(--color-background-success-subdued);
+    border-color: var(--color-border-success-subdued);
   }
 
   &[data-variant="warning"] {
-    color: f.color(text, warning, normal);
-    background: f.color(background, warning, subdued);
-    border-color: f.color(border, warning, subdued);
+    color: var(--color-text-warning-normal);
+    background: var(--color-background-warning-subdued);
+    border-color: var(--color-border-warning-subdued);
   }
 
   &[data-variant="danger"] {
-    color: f.color(text, danger, normal);
-    background: f.color(background, danger, subdued);
-    border-color: f.color(border, danger, subdued);
+    color: var(--color-text-danger-normal);
+    background: var(--color-background-danger-subdued);
+    border-color: var(--color-border-danger-subdued);
   }
 
   &[data-size="small"] {
-    padding: f.spacer(1);
-    font-size: f.size(xs);
-    line-height: f.lines(half);
+    padding: var(--spacer-1);
+    font-size: var(--size-font-xs);
+    line-height: var(--size-line-half);
   }
 
   &[data-size="medium"] {
-    font-size: f.size(m);
+    font-size: var(--size-font-m);
   }
 
   &[data-size="large"] {
-    padding: 0 f.spacer(4);
-    font-size: f.size(l);
-    line-height: f.lines(one_and_a_half);
+    padding: 0 var(--spacer-4);
+    font-size: var(--size-font-l);
+    line-height: var(--size-line-one-and-a-half);
   }
 
   &[data-shape="pill"] {
-    padding-inline: f.spacer(3);
-    border-radius: f.radius(pill);
+    padding-inline: var(--spacer-3);
+    border-radius: var(--radius-pill);
   }
 }

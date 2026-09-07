@@ -1,18 +1,16 @@
-@use "../functions" as f;
-
 .skeleton {
   cursor: progress;
-  background: f.color(background, surface, "1");
-  border-radius: f.radius(m);
+  background: var(--color-background-surface-1);
+  border-radius: var(--radius-m);
 
   &[data-type="text-line"] {
     width: 100%;
-    height: f.lines(single);
+    height: var(--size-line-single);
   }
 
   &[data-type="text-block"] {
     width: 100%;
-    height: calc(4 * #{f.lines(single)});
+    height: calc(4 * var(--size-line-single));
   }
 
   &[data-type="image"] {
@@ -23,7 +21,7 @@
   &[data-type="circle"] {
     width: 64px;
     height: 64px;
-    border-radius: f.radius(circle);
+    border-radius: var(--radius-circle);
   }
 
   &[data-type="rectangle"] {

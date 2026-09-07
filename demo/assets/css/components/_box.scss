@@ -1,19 +1,17 @@
-@use "../functions" as f;
-
 .box {
-  padding: f.spacer(6) 0;
-  border: f.border-width(s) solid f.color(border, neutral, "1");
-  border-radius: f.radius(m);
-  box-shadow: f.shadow(medium);
+  padding: var(--spacer-6) 0;
+  border: var(--border-width-s) solid var(--color-border-neutral-1);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-elevation-medium);
 
   > * + * {
-    margin-top: f.spacer(4);
+    margin-top: var(--spacer-4);
   }
 
   > header,
   > .box-body,
   > footer {
-    padding: 0 f.spacer(6);
+    padding: 0 var(--spacer-6);
   }
 
   > header {
@@ -24,26 +22,26 @@
 
     > h2 {
       margin: 0;
-      font-size: f.size(l);
-      font-weight: f.weight(medium);
+      font-size: var(--size-font-l);
+      font-weight: var(--weight-medium);
     }
 
     > .box-banner {
-      flex: 0 0 calc(100% + #{f.spacer(12)});
+      flex: 0 0 calc(100% + 2 * var(--spacer-6));
       order: -1;
-      margin-inline-start: f.spacer(-6);
-      margin-top: f.spacer(-6);
-      margin-bottom: f.lines(half);
+      margin-inline-start: calc(-1 * var(--spacer-6));
+      margin-top: calc(-1 * var(--spacer-6));
+      margin-bottom: var(--size-line-half);
 
       > img {
-        border-top-left-radius: f.radius(m);
-        border-top-right-radius: f.radius(m);
+        border-top-left-radius: var(--radius-m);
+        border-top-right-radius: var(--radius-m);
       }
     }
   }
 
   > footer {
-    font-size: f.size(xs);
-    color: f.color(text, secondary, subdued);
+    font-size: var(--size-font-xs);
+    color: var(--color-text-secondary-subdued);
   }
 }

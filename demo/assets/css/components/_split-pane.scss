@@ -1,8 +1,6 @@
-@use "../functions" as f;
-
 .split-pane {
   --position: var(--split-pane-position, 50%);
-  --separator-width: #{f.spacer(1)};
+  --separator-width: var(--spacer-1);
 
   display: grid;
   inline-size: 100%;
@@ -24,12 +22,12 @@
   }
 
   > [role="separator"] {
-    background-color: f.color(border, neutral, "1");
+    background-color: var(--color-border-neutral-1);
 
     // `:focus-visible` rather than `:focus`, because the separator takes focus
     // when it is grabbed with the pointer, and a ring on every drag is noise.
     &:focus-visible {
-      outline: f.border-width(m) solid f.color(border, primary, normal);
+      outline: var(--border-width-m) solid var(--color-border-primary-normal);
     }
   }
 

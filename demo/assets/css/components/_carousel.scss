@@ -1,5 +1,3 @@
-@use "../functions" as f;
-
 .carousel {
   --item-width: 600px;
 
@@ -8,7 +6,7 @@
   .carousel-inner {
     display: flex;
     flex-direction: column;
-    gap: f.spacer(4);
+    gap: var(--spacer-4);
     width: 100%;
     overflow-x: hidden;
   }
@@ -52,7 +50,7 @@
 
   .carousel-controls {
     display: flex;
-    gap: f.spacer(2);
+    gap: var(--spacer-2);
     align-items: center;
     justify-content: center;
 
@@ -62,29 +60,30 @@
 
     .carousel-pagination {
       display: flex;
-      gap: f.spacer(1);
+      gap: var(--spacer-1);
       justify-content: center;
 
       button[role="tab"] {
         // WCAG 2.5.8 minimum target size is 24px
         display: grid;
         place-items: center;
-        width: f.spacer(6);
-        height: f.spacer(6);
+        width: var(--spacer-6);
+        height: var(--spacer-6);
         padding: 0;
         cursor: pointer;
         background: none;
         border: none;
 
         > span {
-          width: f.spacer(3);
-          height: f.spacer(3);
-          border: f.border-width(s) solid f.color(background, primary, normal);
-          border-radius: f.radius(pill);
+          width: var(--spacer-3);
+          height: var(--spacer-3);
+          border: var(--border-width-s) solid
+            var(--color-background-primary-normal);
+          border-radius: var(--radius-pill);
         }
 
         &[aria-selected="true"] > span {
-          background-color: f.color(background, primary, normal);
+          background-color: var(--color-background-primary-normal);
         }
       }
     }

@@ -9,10 +9,10 @@
  *     @use "../functions" as f;
  *
  *     .some-component {
- *       color: f.color(primary);
+ *       color: var(--color-text-primary-normal);
  *
  *       &.is-narrow {
- *         max-width: 10rem;
+ *         max-inline-size: 10rem;
  *       }
  *     }
  */

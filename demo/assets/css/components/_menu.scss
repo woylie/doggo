@@ -1,5 +1,3 @@
-@use "../functions" as f;
-
 // Enough styling to review the component: the items, which one holds the tab
 // stop, and which are checked. A designed stylesheet comes with the restyling
 // of the demo.
@@ -20,7 +18,7 @@
 .menu-bar {
   display: flex;
   flex-direction: row;
-  gap: f.spacer(2);
+  gap: var(--spacer-2);
 }
 
 .menu,
@@ -31,16 +29,16 @@
   [role="menuitemradio"] {
     display: block;
     width: 100%;
-    padding: f.spacer(1) f.spacer(2);
-    font-size: f.size(s);
+    padding: var(--spacer-1) var(--spacer-2);
+    font-size: var(--size-font-s);
     text-align: start;
     cursor: pointer;
     background: none;
-    border: f.border-width(s) solid transparent;
-    border-radius: f.radius(s);
+    border: var(--border-width-s) solid transparent;
+    border-radius: var(--radius-s);
 
     &:hover {
-      background-color: f.color(background, disabled, normal);
+      background-color: var(--color-background-disabled-normal);
     }
 
     // `:focus-visible` rather than `:focus`: a menu item is a button, and a ring
@@ -48,7 +46,7 @@
     // by keyboard.
     &:focus-visible {
       outline: none;
-      border-color: f.color(border, primary, normal);
+      border-color: var(--color-border-primary-normal);
     }
   }
 
@@ -65,8 +63,8 @@
   }
 
   [role="separator"] {
-    height: f.border-width(s);
-    margin: f.spacer(1) 0;
-    background-color: f.color(border, neutral, "1");
+    height: var(--border-width-s);
+    margin: var(--spacer-1) 0;
+    background-color: var(--color-border-neutral-1);
   }
 }
