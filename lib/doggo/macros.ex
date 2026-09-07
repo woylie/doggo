@@ -2,6 +2,8 @@ defmodule Doggo.Macros do
   @moduledoc false
   use Phoenix.Component
 
+  @version Mix.Project.config()[:version]
+
   defmacro component(name) do
     module = component_module(name)
     builder_name = :"build_#{name}"
@@ -196,7 +198,9 @@ defmodule Doggo.Macros do
 
   defp css_example_doc(module) do
     if function_exported?(module, :css_path, 0) do
-      base_url = "https://github.com/woylie/doggo/blob/main/assets/css/"
+      base_url =
+        "https://github.com/woylie/doggo/blob/#{@version}/assets/css/"
+
       url = base_url <> module.css_path()
 
       """
