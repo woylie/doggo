@@ -92,7 +92,7 @@ defmodule Doggo.MixProject do
         "Sponsor" => "https://github.com/sponsors/woylie"
       },
       files:
-        ~w(assets/js assets/package.json lib .formatter.exs mix.exs CHANGELOG.md README* LICENSE*)
+        ~w(assets/js package.json lib .formatter.exs mix.exs CHANGELOG.md README* LICENSE*)
     ]
   end
 

@@ -1,6 +1,5 @@
 .elixir_ls
 _build
-assets/node_modules
 assets/vendor
 cover
 demo/_build
@@ -9,3 +8,8 @@ demo/deps
 demo/priv/static
 deps
 doc
+node_modules
+package.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
+test/fixtures

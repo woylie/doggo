@@ -27,3 +27,5 @@ doggo-*.tar
 
 /.elixir_ls
 /.plts
+
+/node_modules/

@@ -8,6 +8,11 @@ accessibility.
 For a full list of available components, please refer to the
 [documentation](https://hexdocs.pm/doggo/Doggo.html).
 
+Doggo ships as two packages: a Hex package called `doggo` that defines
+Phoenix LiveView components and an npm package called `@woylie/doggo` that
+defines the JavaScript hooks for those components. The hooks are described
+below under [Phoenix LiveView Hooks](#phoenix-liveview-hooks).
+
 ## Installation
 
 The package can be installed by adding `doggo` to your list of dependencies in
@@ -137,7 +142,7 @@ The modules are included in the Hex package. You can point at them in the
 ```json
 {
   "dependencies": {
-    "@woylie/doggo": "link:../deps/doggo/assets"
+    "@woylie/doggo": "link:../deps/doggo"
   }
 }
 ```
