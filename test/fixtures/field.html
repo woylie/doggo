@@ -1,0 +1,140 @@
+<div class="field">
+  <label for="name" class="">
+  
+    Name
+  
+  
+</label>
+  <div class="field-input-wrapper">
+    <input name="name" id="name" type="text" aria-describedby="name_description">
+    
+    
+  </div>
+  
+  <ul id="name_errors" class="field-errors" aria-live="polite">
+  
+</ul>
+  <div id="name_description" class="field-description">
+  
+    The name on the tag.
+  
+</div>
+</div>
+<div class="field">
+  <label for="bio" class="">
+  
+    Bio
+  
+  
+</label>
+  <textarea name="bio" id="bio">
+</textarea>
+  <ul id="bio_errors" class="field-errors" aria-live="polite">
+  
+</ul>
+  
+</div>
+<div class="field">
+  <label for="breed" class="">
+  
+    Breed
+  
+  
+</label>
+  <div class="field-select">
+    <select name="breed" id="breed">
+      
+      <option value="golden">
+  Golden Retriever
+</option><option value="dachshund" selected>
+  Dachshund
+</option>
+    </select>
+  </div>
+  <ul id="breed_errors" class="field-errors" aria-live="polite">
+  
+</ul>
+  
+</div>
+<div class="field">
+  <label class="field-checkbox">
+  
+    <input type="hidden" name="sterilized" value="false">
+    <input type="checkbox" name="sterilized" id="sterilized" value="true" checked>
+    Sterilized
+  
+  
+</label>
+  <ul id="sterilized_errors" class="field-errors" aria-live="polite">
+  
+</ul>
+  
+</div>
+<div class="field">
+  <label class="field-switch">
+  
+    <span class="field-switch-label">Vaccinated</span>
+    <input type="hidden" name="vaccinated" value="false">
+    <input type="checkbox" role="switch" name="vaccinated" id="vaccinated" value="true">
+    <span class="field-switch-state">
+      <span data-state="off" aria-hidden="true">
+        
+          Off
+        
+      </span>
+    </span>
+  
+  
+</label>
+  <ul id="vaccinated_errors" class="field-errors" aria-live="polite">
+  
+</ul>
+  
+</div>
+<div class="field">
+  <fieldset class="field-checkbox-group">
+    <legend>
+      Tricks
+      
+    </legend>
+    <div>
+      <input type="hidden" name="tricks[]" value="">
+      <label class="field-checkbox">
+  <input type="checkbox" name="tricks[]" id="tricks_sit" value="sit">
+  Sit
+</label>
+<label class="field-checkbox">
+  <input type="checkbox" name="tricks[]" id="tricks_roll-over" value="roll-over">
+  Roll over
+</label>
+
+    </div>
+  </fieldset>
+  <ul id="tricks_errors" class="field-errors" aria-live="polite">
+  
+</ul>
+  
+</div>
+<div class="field">
+  <fieldset class="field-radio-group">
+    <legend>
+      Size
+      
+    </legend>
+    <div>
+      <label>
+  <input type="radio" name="size" id="size_small" value="small">
+  Small
+</label>
+<label>
+  <input type="radio" name="size" id="size_large" value="large">
+  Large
+</label>
+
+    </div>
+  </fieldset>
+  <ul id="size_errors" class="field-errors" aria-live="polite">
+  
+</ul>
+  
+</div>
