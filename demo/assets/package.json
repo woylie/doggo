@@ -18,6 +18,9 @@
     "lint:stylelint": "stylelint css",
     "lint:stylelint:fix": "stylelint css --fix"
   },
+  "browserslist": [
+    "baseline widely available"
+  ],
   "devDependencies": {
     "autoprefixer": "10.5.4",
     "css-loader": "7.1.4",
