@@ -4,7 +4,10 @@
     "stylelint-config-standard-scss",
     "stylelint-config-recess-order"
   ],
-  "plugins": ["stylelint-declaration-strict-value"],
+  "plugins": [
+    "stylelint-declaration-strict-value",
+    "stylelint-value-no-unknown-custom-properties"
+  ],
   "rules": {
     "declaration-property-value-keyword-no-deprecated": null,
     "scale-unlimited/declaration-strict-value": [
@@ -28,6 +31,15 @@
           "transparent",
           "dark",
           "light"
+        ]
+      }
+    ],
+    "csstools/value-no-unknown-custom-properties": [
+      true,
+      {
+        "importFrom": [
+          "build/tokens/css/tokens.light.css",
+          "build/tokens/css/tokens.dark.css"
         ]
       }
     ]
