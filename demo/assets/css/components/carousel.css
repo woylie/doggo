@@ -27,8 +27,8 @@
     display: flex;
     width: fit-content;
 
-    // Provide enough padding on both sides so that items at the edges can be
-    // scrolled to the center.
+    /* Provide enough padding on both sides so that items at the edges can be
+     * scrolled to the center. */
     padding-inline: calc(50% - var(--item-width) / 2);
   }
 
@@ -64,7 +64,7 @@
       justify-content: center;
 
       button[role="tab"] {
-        // WCAG 2.5.8 minimum target size is 24px
+        /* WCAG 2.5.8 minimum target size is 24px */
         display: grid;
         place-items: center;
         width: var(--spacer-6);
@@ -97,7 +97,7 @@
     }
   }
 
-  // Swap pause/resume button content depending on the current state
+  /* Swap pause/resume button content depending on the current state */
   &:not([data-paused]) .carousel-pause > :last-child,
   &[data-paused] .carousel-pause > :first-child {
     display: none;

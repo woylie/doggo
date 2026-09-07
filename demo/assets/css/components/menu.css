@@ -1,6 +1,3 @@
-// Enough styling to review the component: the items, which one holds the tab
-// stop, and which are checked. A designed stylesheet comes with the restyling
-// of the demo.
 .menu,
 .menu-bar,
 .menu-group {
@@ -41,17 +38,12 @@
       background-color: var(--color-background-disabled-normal);
     }
 
-    // `:focus-visible` rather than `:focus`: a menu item is a button, and a ring
-    // on every click is noise. The browser shows it when the user is navigating
-    // by keyboard.
     &:focus-visible {
       outline: none;
       border-color: var(--color-border-primary-normal);
     }
   }
 
-  // The unchecked state reserves the same space as the checked one, so that
-  // toggling an item does not move the label.
   [role="menuitemcheckbox"][aria-checked="true"]::before,
   [role="menuitemradio"][aria-checked="true"]::before {
     content: "✓ ";

@@ -1,6 +1,3 @@
-// Enough styling to review the component: the row, the grouping the caller
-// wrote, and the direction the arrow keys follow. A designed stylesheet comes
-// with the restyling of the demo.
 .toolbar,
 .action-bar {
   display: flex;

@@ -1,0 +1,42 @@
+.tree,
+.tree [role="group"] {
+  padding-inline-start: var(--spacer-4);
+  margin: 0;
+  list-style: none;
+}
+
+.tree {
+  padding-inline-start: 0;
+}
+
+.tree [role="treeitem"] {
+  padding: var(--spacer-1) 0;
+
+  &[tabindex="0"] > span {
+    font-weight: var(--weight-bold);
+  }
+
+  &:focus-visible {
+    outline: var(--border-width-m) solid var(--color-border-primary-normal);
+    outline-offset: var(--border-width-s);
+  }
+
+  &[aria-selected="true"] > span::after {
+    content: " ✓";
+  }
+
+  > .tree-item-toggle {
+    padding: 0 var(--spacer-1);
+    cursor: pointer;
+    background: none;
+    border: none;
+
+    &::before {
+      content: "▸";
+    }
+  }
+
+  &[aria-expanded="true"] > .tree-item-toggle::before {
+    content: "▾";
+  }
+}
