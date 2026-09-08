@@ -191,8 +191,13 @@ defmodule Doggo.Components.Combobox do
       </div>
       <ul id={"#{@id}-listbox"} role="listbox" aria-label={@list_label} hidden>
         <li
-          :for={{label, option_value, description} <- @options}
+          :for={
+            {{label, option_value, description}, index} <-
+              Enum.with_index(@options, 1)
+          }
+          id={"#{@id}-option-#{index}"}
           role="option"
+          aria-selected={to_string(option_value == @value)}
           data-value={option_value}
         >
           <span class={"#{@base_class}-option-label"}>{label}</span>

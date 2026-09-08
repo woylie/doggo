@@ -1446,6 +1446,8 @@ defmodule Doggo.ComponentsTest do
 
       assert li = find_one(ul, "li:first-child")
       assert attribute(li, "role") == "option"
+      assert attribute(li, "id") == "color-selector-option-1"
+      assert attribute(li, "aria-selected") == "false"
       assert attribute(li, "data-value") == "Blue"
       span = find_one(li, "span:first-child")
       assert attribute(span, "class") == "combobox-option-label"
@@ -1453,6 +1455,8 @@ defmodule Doggo.ComponentsTest do
 
       assert li = find_one(ul, "li:last-child")
       assert attribute(li, "role") == "option"
+      assert attribute(li, "id") == "color-selector-option-2"
+      assert attribute(li, "aria-selected") == "true"
       assert attribute(li, "data-value") == "Green"
       span = find_one(li, "span:last-child")
       assert attribute(span, "class") == "combobox-option-label"
