@@ -1416,9 +1416,9 @@ defmodule Doggo.ComponentsTest do
       div = find_one(html, "div:root")
       assert attribute(div, "class") == "combobox"
 
-      group_div = find_one(div, "div[role='group']")
+      wrapper = find_one(div, "div.combobox-input-wrapper")
 
-      input = find_one(group_div, "input")
+      input = find_one(wrapper, "input")
       assert attribute(input, "id") == "color-selector"
       assert attribute(input, "type") == "text"
       assert attribute(input, "role") == "combobox"
@@ -1432,6 +1432,7 @@ defmodule Doggo.ComponentsTest do
       button = find_one(div, "button")
       assert attribute(button, "id") == "color-selector-button"
       assert attribute(button, "type") == "button"
+      assert attribute(button, "class") == "combobox-toggle"
       assert attribute(button, "tabindex") == "-1"
       assert attribute(button, "aria-label") == "Colors"
       assert attribute(button, "aria-expanded") == "false"

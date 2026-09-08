@@ -94,8 +94,10 @@ defmodule Doggo.Components.Combobox do
   @impl true
   def nested_classes(base_class) do
     [
+      "#{base_class}-input-wrapper",
       "#{base_class}-option-description",
-      "#{base_class}-option-label"
+      "#{base_class}-option-label",
+      "#{base_class}-toggle"
     ]
   end
 
@@ -163,7 +165,7 @@ defmodule Doggo.Components.Combobox do
 
     ~H"""
     <div class={@class} {@data_attrs} {@rest}>
-      <div role="group">
+      <div class={"#{@base_class}-input-wrapper"}>
         <input
           id={@id}
           type="text"
@@ -178,6 +180,7 @@ defmodule Doggo.Components.Combobox do
         <button
           id={"#{@id}-button"}
           type="button"
+          class={"#{@base_class}-toggle"}
           tabindex="-1"
           aria-label={@list_label}
           aria-expanded="false"
