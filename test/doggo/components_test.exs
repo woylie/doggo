@@ -1438,27 +1438,24 @@ defmodule Doggo.ComponentsTest do
       assert attribute(button, "aria-expanded") == "false"
       assert attribute(button, "aria-controls") == "color-selector-listbox"
 
-      ul = find_one(div, "ul")
-      assert attribute(ul, "id") == "color-selector-listbox"
-      assert attribute(ul, "role") == "listbox"
-      assert attribute(ul, "aria-label") == "Colors"
-      assert attribute(ul, "hidden") == "hidden"
+      listbox = find_one(div, "div[role='listbox']")
+      assert attribute(listbox, "id") == "color-selector-listbox"
+      assert attribute(listbox, "aria-label") == "Colors"
+      assert attribute(listbox, "hidden") == "hidden"
 
-      assert li = find_one(ul, "li:first-child")
-      assert attribute(li, "role") == "option"
-      assert attribute(li, "id") == "color-selector-option-1"
-      assert attribute(li, "aria-selected") == "false"
-      assert attribute(li, "data-value") == "Blue"
-      span = find_one(li, "span:first-child")
+      assert option = find_one(listbox, "div[role='option']:first-child")
+      assert attribute(option, "id") == "color-selector-option-1"
+      assert attribute(option, "aria-selected") == "false"
+      assert attribute(option, "data-value") == "Blue"
+      span = find_one(option, "span:first-child")
       assert attribute(span, "class") == "combobox-option-label"
       assert text(span) == "Blue"
 
-      assert li = find_one(ul, "li:last-child")
-      assert attribute(li, "role") == "option"
-      assert attribute(li, "id") == "color-selector-option-2"
-      assert attribute(li, "aria-selected") == "true"
-      assert attribute(li, "data-value") == "Green"
-      span = find_one(li, "span:last-child")
+      assert option = find_one(listbox, "div[role='option']:last-child")
+      assert attribute(option, "id") == "color-selector-option-2"
+      assert attribute(option, "aria-selected") == "true"
+      assert attribute(option, "data-value") == "Green"
+      span = find_one(option, "span:last-child")
       assert attribute(span, "class") == "combobox-option-label"
       assert text(span) == "Green"
 
@@ -1508,17 +1505,17 @@ defmodule Doggo.ComponentsTest do
       input = find_one(html, "input[type='hidden']")
       assert attribute(input, "value") == "green"
 
-      ul = find_one(html, "ul")
+      listbox = find_one(html, "div[role='listbox']")
 
-      li = find_one(ul, "li:first-child")
-      assert attribute(li, "data-value") == "blue"
-      span = find_one(li, "span:first-child")
+      option = find_one(listbox, "div[role='option']:first-child")
+      assert attribute(option, "data-value") == "blue"
+      span = find_one(option, "span:first-child")
       assert attribute(span, "class") == "combobox-option-label"
       assert text(span) == "Blue"
 
-      li = find_one(ul, "li:last-child")
-      assert attribute(li, "data-value") == "green"
-      span = find_one(li, "span:last-child")
+      option = find_one(listbox, "div[role='option']:last-child")
+      assert attribute(option, "data-value") == "green"
+      span = find_one(option, "span:last-child")
       assert attribute(span, "class") == "combobox-option-label"
       assert text(span) == "Green"
     end
@@ -1546,23 +1543,23 @@ defmodule Doggo.ComponentsTest do
       input = find_one(html, "input[type='hidden']")
       assert attribute(input, "value") == "hakodate"
 
-      ul = find_one(html, "ul")
+      listbox = find_one(html, "div[role='listbox']")
 
-      li = find_one(ul, "li:first-child")
-      assert attribute(li, "data-value") == "hakodate"
-      span = find_one(li, "span:first-child")
+      option = find_one(listbox, "div[role='option']:first-child")
+      assert attribute(option, "data-value") == "hakodate"
+      span = find_one(option, "span:first-child")
       assert attribute(span, "class") == "combobox-option-label"
       assert text(span) == "Hakodate"
-      span = find_one(li, "span:last-child")
+      span = find_one(option, "span:last-child")
       assert attribute(span, "class") == "combobox-option-description"
       assert text(span) == "Hokkaido"
 
-      li = find_one(ul, "li:last-child")
-      assert attribute(li, "data-value") == "kanazawa"
-      span = find_one(li, "span:first-child")
+      option = find_one(listbox, "div[role='option']:last-child")
+      assert attribute(option, "data-value") == "kanazawa"
+      span = find_one(option, "span:first-child")
       assert attribute(span, "class") == "combobox-option-label"
       assert text(span) == "Kanazawa"
-      span = find_one(li, "span:last-child")
+      span = find_one(option, "span:last-child")
       assert attribute(span, "class") == "combobox-option-description"
       assert text(span) == "Ishikawa"
     end

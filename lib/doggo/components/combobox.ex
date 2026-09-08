@@ -189,8 +189,8 @@ defmodule Doggo.Components.Combobox do
           ▼
         </button>
       </div>
-      <ul id={"#{@id}-listbox"} role="listbox" aria-label={@list_label} hidden>
-        <li
+      <div id={"#{@id}-listbox"} role="listbox" aria-label={@list_label} hidden>
+        <div
           :for={
             {{label, option_value, description}, index} <-
               Enum.with_index(@options, 1)
@@ -204,8 +204,8 @@ defmodule Doggo.Components.Combobox do
           <span :if={description} class={"#{@base_class}-option-description"}>
             {description}
           </span>
-        </li>
-      </ul>
+        </div>
+      </div>
       <input type="hidden" id={"#{@id}-value"} name={@name} value={@value} />
     </div>
     """
