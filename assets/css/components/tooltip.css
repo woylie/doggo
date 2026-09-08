@@ -2,6 +2,8 @@
   position: relative;
   display: inline-block;
 
+  /* Switch to the Popover API (`popover="hint"`) and anchor positioning once
+     widely baseline available. */
   [role="tooltip"] {
     position: absolute;
     inset-inline-start: 0;
