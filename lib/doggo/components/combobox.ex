@@ -152,18 +152,13 @@ defmodule Doggo.Components.Combobox do
         do: "#{String.slice(name, 0..-2//1)}_search]",
         else: name <> "_search"
 
-    search_value =
-      Enum.find_value(options, fn
-        ^value -> value
-        {label, ^value} -> label
-        {label, ^value, _} -> label
-        _ -> nil
-      end)
+    options = Enum.map(options, &normalize_option/1)
 
     assigns =
       assign(assigns,
+        options: options,
         search_name: search_name,
-        search_value: search_value
+        search_value: option_label(options, value)
       )
 
     ~H"""
@@ -192,49 +187,33 @@ defmodule Doggo.Components.Combobox do
         </button>
       </div>
       <ul id={"#{@id}-listbox"} role="listbox" aria-label={@list_label} hidden>
-        <.combobox_option
-          :for={option <- @options}
-          base_class={@base_class}
-          option={option}
-        />
+        <li
+          :for={{label, option_value, description} <- @options}
+          role="option"
+          data-value={option_value}
+        >
+          <span class={"#{@base_class}-option-label"}>{label}</span>
+          <span :if={description} class={"#{@base_class}-option-description"}>
+            {description}
+          </span>
+        </li>
       </ul>
       <input type="hidden" id={"#{@id}-value"} name={@name} value={@value} />
     </div>
     """
   end
 
-  defp combobox_option(%{option: {label, value}} = assigns) do
-    assigns = assign(assigns, label: label, value: value, option: nil)
-
-    ~H"""
-    <li role="option" data-value={@value}>
-      <span class={"#{@base_class}-option-label"}>{@label}</span>
-    </li>
-    """
+  defp option_label(options, value) do
+    Enum.find_value(options, fn
+      {label, ^value, _} -> label
+      _ -> nil
+    end)
   end
 
-  defp combobox_option(%{option: {label, value, description}} = assigns) do
-    assigns =
-      assign(assigns,
-        label: label,
-        value: value,
-        description: description,
-        option: nil
-      )
+  defp normalize_option({label, value}), do: {label, value, nil}
 
-    ~H"""
-    <li role="option" data-value={@value}>
-      <span class={"#{@base_class}-option-label"}>{@label}</span>
-      <span class={"#{@base_class}-option-description"}>{@description}</span>
-    </li>
-    """
-  end
+  defp normalize_option({label, value, description}),
+    do: {label, value, description}
 
-  defp combobox_option(assigns) do
-    ~H"""
-    <li role="option" data-value={@option}>
-      <span class={"#{@base_class}-option-label"}>{@option}</span>
-    </li>
-    """
-  end
+  defp normalize_option(option), do: {option, option, nil}
 end
