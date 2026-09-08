@@ -138,7 +138,17 @@ defmodule Doggo.Components.Combobox do
           an additional description.
         """
 
-      attr :rest, :global, doc: "Any additional HTML attributes."
+      attr :rest, :global,
+        default: %{autocomplete: "off"},
+        include:
+          ~w(autocomplete disabled form maxlength minlength pattern placeholder
+         readonly required size),
+        doc: """
+        Any additional HTML attributes. These are set on the text input, not on
+        the wrapper element.
+
+        `disabled` and `form` are set on the hidden input as well.
+        """
     end
   end
 
@@ -156,15 +166,19 @@ defmodule Doggo.Components.Combobox do
 
     options = Enum.map(options, &normalize_option/1)
 
+    {shared, rest} = Map.split(assigns.rest, [:disabled, :form])
+
     assigns =
       assign(assigns,
         options: options,
+        rest: rest,
         search_name: search_name,
-        search_value: option_label(options, value)
+        search_value: option_label(options, value),
+        shared_rest: shared
       )
 
     ~H"""
-    <div class={@class} {@data_attrs} {@rest}>
+    <div class={@class} {@data_attrs}>
       <div class={"#{@base_class}-input-wrapper"}>
         <input
           id={@id}
@@ -175,7 +189,8 @@ defmodule Doggo.Components.Combobox do
           aria-autocomplete="list"
           aria-expanded="false"
           aria-controls={"#{@id}-listbox"}
-          autocomplete="off"
+          {@rest}
+          {@shared_rest}
         />
         <button
           id={"#{@id}-button"}
@@ -206,7 +221,13 @@ defmodule Doggo.Components.Combobox do
           </span>
         </div>
       </div>
-      <input type="hidden" id={"#{@id}-value"} name={@name} value={@value} />
+      <input
+        type="hidden"
+        id={"#{@id}-value"}
+        name={@name}
+        value={@value}
+        {@shared_rest}
+      />
     </div>
     """
   end

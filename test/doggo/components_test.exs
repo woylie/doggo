@@ -1578,7 +1578,82 @@ defmodule Doggo.ComponentsTest do
         />
         """)
 
-      assert attribute(html, ":root", "data-what") == "ever"
+      assert attribute(html, "input[type='text']", "data-what") == "ever"
+      assert attribute(html, ":root", "data-what") == nil
+    end
+
+    test "defaults autocomplete to off" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+        />
+        """)
+
+      assert attribute(html, "input[type='text']", "autocomplete") == "off"
+    end
+
+    test "lets autocomplete be overridden without emitting it twice" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+          autocomplete="on"
+        />
+        """)
+
+      input = find_one(html, "input[type='text']")
+      assert attribute(input, "autocomplete") == "on"
+    end
+
+    test "sets disabled and form on both inputs" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+          disabled
+          form="colors"
+        />
+        """)
+
+      for selector <- ["input[type='text']", "input[type='hidden']"] do
+        input = find_one(html, selector)
+        assert attribute(input, "disabled") == "disabled"
+        assert attribute(input, "form") == "colors"
+      end
+    end
+
+    test "keeps other globals off the hidden input" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+          placeholder="Search"
+        />
+        """)
+
+      assert attribute(html, "input[type='text']", "placeholder") == "Search"
+      assert attribute(html, "input[type='hidden']", "placeholder") == nil
     end
   end
 
