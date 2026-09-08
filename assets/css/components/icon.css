@@ -4,10 +4,10 @@
   align-items: baseline;
 
   svg {
-    width: 0.75em;
-    width: 1cap;
-    height: 0.75em;
-    height: 1cap;
+    inline-size: 0.75em;
+    inline-size: 1cap;
+    block-size: 0.75em;
+    block-size: 1cap;
   }
 
   &[data-text-position="before"] {

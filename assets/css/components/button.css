@@ -123,13 +123,13 @@
   }
 
   &[data-shape="circle"] {
-    width: 3.5rem;
-    height: 3.5rem;
+    inline-size: 3.5rem;
+    block-size: 3.5rem;
     border-radius: var(--radius-circle);
   }
 
   &[data-shape="pill"] {
-    min-width: 8ch;
+    min-inline-size: 8ch;
     border-radius: var(--radius-pill);
   }
 
@@ -140,8 +140,8 @@
 
   &[aria-busy]::after {
     position: absolute;
-    width: 1em;
-    height: 1em;
+    inline-size: 1em;
+    block-size: 1em;
     content: "";
     border: 2px solid rgb(255 255 255 / 30%);
     border-top-color: var(--color-background-foundation);

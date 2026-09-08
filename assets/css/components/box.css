@@ -5,7 +5,7 @@
   box-shadow: var(--shadow-elevation-medium);
 
   > * + * {
-    margin-top: var(--spacer-4);
+    margin-block-start: var(--spacer-4);
   }
 
   > header,
@@ -30,12 +30,12 @@
       flex: 0 0 calc(100% + 2 * var(--spacer-6));
       order: -1;
       margin-inline-start: calc(-1 * var(--spacer-6));
-      margin-top: calc(-1 * var(--spacer-6));
-      margin-bottom: var(--size-line-half);
+      margin-block-start: calc(-1 * var(--spacer-6));
+      margin-block-end: var(--size-line-half);
 
       > img {
-        border-top-left-radius: var(--radius-m);
-        border-top-right-radius: var(--radius-m);
+        border-start-start-radius: var(--radius-m);
+        border-start-end-radius: var(--radius-m);
       }
     }
   }
