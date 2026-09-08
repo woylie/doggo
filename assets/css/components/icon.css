@@ -4,9 +4,7 @@
   align-items: baseline;
 
   svg {
-    inline-size: 0.75em;
     inline-size: 1cap;
-    block-size: 0.75em;
     block-size: 1cap;
   }
 
