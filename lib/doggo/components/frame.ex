@@ -52,7 +52,7 @@ defmodule Doggo.Components.Frame do
             "16:9",
             "9:16"
           ],
-          required: true
+          default: "1:1"
         ],
         shape: [values: [nil, "circle"], default: nil]
       ]
