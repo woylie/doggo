@@ -1,5 +1,6 @@
 export { default as Accordion, initAccordion } from "./hooks/accordion.js";
 export { default as Carousel, initCarousel } from "./hooks/carousel.js";
+export { default as Combobox, initCombobox } from "./hooks/combobox.js";
 export { default as Dialog, initDialog } from "./hooks/dialog.js";
 export { default as Menu, initMenu } from "./hooks/menu.js";
 export { default as MenuButton, initMenuButton } from "./hooks/menu_button.js";

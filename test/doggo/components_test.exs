@@ -1415,10 +1415,13 @@ defmodule Doggo.ComponentsTest do
 
       div = find_one(html, "div:root")
       assert attribute(div, "class") == "combobox"
+      assert attribute(div, "id") == "color-selector-combobox"
+      assert attribute(div, "phx-hook") == "Doggo.Combobox"
+      assert attribute(div, "data-filter") == nil
 
-      group_div = find_one(div, "div[role='group']")
+      wrapper = find_one(div, "div.combobox-input-wrapper")
 
-      input = find_one(group_div, "input")
+      input = find_one(wrapper, "input")
       assert attribute(input, "id") == "color-selector"
       assert attribute(input, "type") == "text"
       assert attribute(input, "role") == "combobox"
@@ -1432,28 +1435,30 @@ defmodule Doggo.ComponentsTest do
       button = find_one(div, "button")
       assert attribute(button, "id") == "color-selector-button"
       assert attribute(button, "type") == "button"
+      assert attribute(button, "class") == "combobox-toggle"
       assert attribute(button, "tabindex") == "-1"
       assert attribute(button, "aria-label") == "Colors"
       assert attribute(button, "aria-expanded") == "false"
       assert attribute(button, "aria-controls") == "color-selector-listbox"
 
-      ul = find_one(div, "ul")
-      assert attribute(ul, "id") == "color-selector-listbox"
-      assert attribute(ul, "role") == "listbox"
-      assert attribute(ul, "aria-label") == "Colors"
-      assert attribute(ul, "hidden") == "hidden"
+      listbox = find_one(div, "div[role='listbox']")
+      assert attribute(listbox, "id") == "color-selector-listbox"
+      assert attribute(listbox, "aria-label") == "Colors"
+      assert attribute(listbox, "hidden") == "hidden"
 
-      assert li = find_one(ul, "li:first-child")
-      assert attribute(li, "role") == "option"
-      assert attribute(li, "data-value") == "Blue"
-      span = find_one(li, "span:first-child")
+      assert option = find_one(listbox, "div[role='option']:first-child")
+      assert attribute(option, "id") == "color-selector-option-1"
+      assert attribute(option, "aria-selected") == "false"
+      assert attribute(option, "data-value") == "Blue"
+      span = find_one(option, "span:first-child")
       assert attribute(span, "class") == "combobox-option-label"
       assert text(span) == "Blue"
 
-      assert li = find_one(ul, "li:last-child")
-      assert attribute(li, "role") == "option"
-      assert attribute(li, "data-value") == "Green"
-      span = find_one(li, "span:last-child")
+      assert option = find_one(listbox, "div[role='option']:last-child")
+      assert attribute(option, "id") == "color-selector-option-2"
+      assert attribute(option, "aria-selected") == "true"
+      assert attribute(option, "data-value") == "Green"
+      span = find_one(option, "span:last-child")
       assert attribute(span, "class") == "combobox-option-label"
       assert text(span) == "Green"
 
@@ -1503,17 +1508,17 @@ defmodule Doggo.ComponentsTest do
       input = find_one(html, "input[type='hidden']")
       assert attribute(input, "value") == "green"
 
-      ul = find_one(html, "ul")
+      listbox = find_one(html, "div[role='listbox']")
 
-      li = find_one(ul, "li:first-child")
-      assert attribute(li, "data-value") == "blue"
-      span = find_one(li, "span:first-child")
+      option = find_one(listbox, "div[role='option']:first-child")
+      assert attribute(option, "data-value") == "blue"
+      span = find_one(option, "span:first-child")
       assert attribute(span, "class") == "combobox-option-label"
       assert text(span) == "Blue"
 
-      li = find_one(ul, "li:last-child")
-      assert attribute(li, "data-value") == "green"
-      span = find_one(li, "span:last-child")
+      option = find_one(listbox, "div[role='option']:last-child")
+      assert attribute(option, "data-value") == "green"
+      span = find_one(option, "span:last-child")
       assert attribute(span, "class") == "combobox-option-label"
       assert text(span) == "Green"
     end
@@ -1541,25 +1546,155 @@ defmodule Doggo.ComponentsTest do
       input = find_one(html, "input[type='hidden']")
       assert attribute(input, "value") == "hakodate"
 
-      ul = find_one(html, "ul")
+      listbox = find_one(html, "div[role='listbox']")
 
-      li = find_one(ul, "li:first-child")
-      assert attribute(li, "data-value") == "hakodate"
-      span = find_one(li, "span:first-child")
+      option = find_one(listbox, "div[role='option']:first-child")
+      assert attribute(option, "data-value") == "hakodate"
+      span = find_one(option, "span:first-child")
       assert attribute(span, "class") == "combobox-option-label"
       assert text(span) == "Hakodate"
-      span = find_one(li, "span:last-child")
+      span = find_one(option, "span:last-child")
       assert attribute(span, "class") == "combobox-option-description"
       assert text(span) == "Hokkaido"
 
-      li = find_one(ul, "li:last-child")
-      assert attribute(li, "data-value") == "kanazawa"
-      span = find_one(li, "span:first-child")
+      option = find_one(listbox, "div[role='option']:last-child")
+      assert attribute(option, "data-value") == "kanazawa"
+      span = find_one(option, "span:first-child")
       assert attribute(span, "class") == "combobox-option-label"
       assert text(span) == "Kanazawa"
-      span = find_one(li, "span:last-child")
+      span = find_one(option, "span:last-child")
       assert attribute(span, "class") == "combobox-option-description"
       assert text(span) == "Ishikawa"
+    end
+
+    test "falls back to the value if the options don't contain it" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"Blue", "blue"}]}
+          value="turquoise"
+        />
+        """)
+
+      assert attribute(html, "input[type='text']", "value") == "turquoise"
+      assert attribute(html, "input[type='hidden']", "value") == "turquoise"
+    end
+
+    test "with display_value" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"Blue", "blue"}]}
+          value="turquoise"
+          display_value="Turquoise"
+        />
+        """)
+
+      assert attribute(html, "input[type='text']", "value") == "Turquoise"
+      assert attribute(html, "input[type='hidden']", "value") == "turquoise"
+    end
+
+    test "display_value overrides the label of a matching option" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"Blue", "blue"}]}
+          value="blue"
+          display_value="Something else"
+        />
+        """)
+
+      assert attribute(html, "input[type='text']", "value") == "Something else"
+    end
+
+    test "with on_search" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+          on_search={JS.push("suggest")}
+        />
+        """)
+
+      assert attribute(html, ":root", "data-filter") == "server"
+
+      input = find_one(html, "input[type='text']")
+      assert attribute(input, "phx-change") =~ "suggest"
+      assert attribute(input, "phx-debounce") == "300"
+    end
+
+    test "lets a phx-debounce attribute override the default" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+          on_search={JS.push("suggest")}
+          phx-debounce="blur"
+        />
+        """)
+
+      assert attribute(html, "input[type='text']", "phx-debounce") == "blur"
+    end
+
+    test "adds no debounce without on_search" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+        />
+        """)
+
+      input = find_one(html, "input[type='text']")
+      assert attribute(input, "phx-change") == nil
+      assert attribute(input, "phx-debounce") == nil
+    end
+
+    test "with on_search as an event name" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+          on_search="suggest"
+        />
+        """)
+
+      assert attribute(html, ":root", "data-filter") == "server"
+      assert attribute(html, "input[type='text']", "phx-change") == "suggest"
     end
 
     test "with global attribute" do
@@ -1576,7 +1711,82 @@ defmodule Doggo.ComponentsTest do
         />
         """)
 
-      assert attribute(html, ":root", "data-what") == "ever"
+      assert attribute(html, "input[type='text']", "data-what") == "ever"
+      assert attribute(html, ":root", "data-what") == nil
+    end
+
+    test "defaults autocomplete to off" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+        />
+        """)
+
+      assert attribute(html, "input[type='text']", "autocomplete") == "off"
+    end
+
+    test "lets autocomplete be overridden without emitting it twice" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+          autocomplete="on"
+        />
+        """)
+
+      input = find_one(html, "input[type='text']")
+      assert attribute(input, "autocomplete") == "on"
+    end
+
+    test "sets disabled and form on both inputs" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+          disabled
+          form="colors"
+        />
+        """)
+
+      for selector <- ["input[type='text']", "input[type='hidden']"] do
+        input = find_one(html, selector)
+        assert attribute(input, "disabled") == "disabled"
+        assert attribute(input, "form") == "colors"
+      end
+    end
+
+    test "keeps other globals off the hidden input" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+          placeholder="Search"
+        />
+        """)
+
+      assert attribute(html, "input[type='text']", "placeholder") == "Search"
+      assert attribute(html, "input[type='hidden']", "placeholder") == nil
     end
   end
 

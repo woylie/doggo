@@ -2,14 +2,16 @@
   position: relative;
   display: inline-block;
 
+  /* Switch to the Popover API (`popover="hint"`) and anchor positioning once
+     widely baseline available. */
   [role="tooltip"] {
     position: absolute;
     inset-inline-start: 0;
     bottom: calc(100% + var(--spacer-1));
     z-index: 1;
     display: none;
-    width: max-content;
-    max-width: var(--size-measure);
+    inline-size: max-content;
+    max-inline-size: var(--size-measure);
     padding: var(--spacer-2);
     font-size: var(--size-font-s);
     color: var(--color-background-foundation);
@@ -33,7 +35,7 @@
     }
 
     > * + * {
-      margin-top: var(--spacer-1);
+      margin-block-start: var(--spacer-1);
     }
   }
 

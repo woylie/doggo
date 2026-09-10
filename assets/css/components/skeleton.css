@@ -4,33 +4,33 @@
   border-radius: var(--radius-m);
 
   &[data-type="text-line"] {
-    width: 100%;
-    height: var(--size-line-single);
+    inline-size: 100%;
+    block-size: var(--size-line-single);
   }
 
   &[data-type="text-block"] {
-    width: 100%;
-    height: calc(4 * var(--size-line-single));
+    inline-size: 100%;
+    block-size: calc(4 * var(--size-line-single));
   }
 
   &[data-type="image"] {
-    width: 100%;
-    height: 200px;
+    inline-size: 100%;
+    block-size: 200px;
   }
 
   &[data-type="circle"] {
-    width: 64px;
-    height: 64px;
+    inline-size: 64px;
+    block-size: 64px;
     border-radius: var(--radius-circle);
   }
 
   &[data-type="rectangle"] {
-    width: 200px;
-    height: 100px;
+    inline-size: 200px;
+    block-size: 100px;
   }
 
   &[data-type="square"] {
-    width: 100px;
-    height: 100px;
+    inline-size: 100px;
+    block-size: 100px;
   }
 }

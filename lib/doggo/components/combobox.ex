@@ -5,6 +5,8 @@ defmodule Doggo.Components.Combobox do
 
   use Phoenix.Component
 
+  @search_debounce 300
+
   @impl true
   def doc do
     """
@@ -94,8 +96,10 @@ defmodule Doggo.Components.Combobox do
   @impl true
   def nested_classes(base_class) do
     [
+      "#{base_class}-input-wrapper",
       "#{base_class}-option-description",
-      "#{base_class}-option-label"
+      "#{base_class}-option-label",
+      "#{base_class}-toggle"
     ]
   end
 
@@ -113,6 +117,19 @@ defmodule Doggo.Components.Combobox do
         doc: """
         The current input value. The display value for the text input is derived
         by finding the given value in the list of options.
+        """
+
+      attr :display_value, :string,
+        default: nil,
+        doc: """
+        The input value for the current value.
+
+        Defaults to the label of the option matching `value` and falls back to
+        the `value` if no option matches.
+
+        Set this attribute if the value may not be among the options, for
+        example if the options are loaded dynamically from the server based on
+        the search term, as opposed to passing a fixed set of options.
         """
 
       attr :list_label, :string,
@@ -136,7 +153,35 @@ defmodule Doggo.Components.Combobox do
           an additional description.
         """
 
-      attr :rest, :global, doc: "Any additional HTML attributes."
+      attr :on_search, :any,
+        default: nil,
+        doc: """
+        An event name as a string or a `Phoenix.LiveView.JS` command to emit
+        when the user types. Use this for filtering options on the server side.
+
+        If set, the component adds a `phx-change` attribute to the text input
+        and the hook stops filtering. The search is debounced by
+        #{unquote(@search_debounce)} ms. You can override the default by passing
+        the `phx-debounce` attribute.
+
+        If not set, the hook filters the passed options on the client side, and
+        the search is not debounced by default.
+
+        To use this attribute, the input must be inside a form, or else
+        LiveView raises.
+        """
+
+      attr :rest, :global,
+        default: %{autocomplete: "off"},
+        include:
+          ~w(autocomplete disabled form maxlength minlength pattern placeholder
+         readonly required size),
+        doc: """
+        Any additional HTML attributes. These are set on the text input, not on
+        the wrapper element.
+
+        `disabled` and `form` are set on the hidden input as well.
+        """
     end
   end
 
@@ -152,23 +197,37 @@ defmodule Doggo.Components.Combobox do
         do: "#{String.slice(name, 0..-2//1)}_search]",
         else: name <> "_search"
 
-    search_value =
-      Enum.find_value(options, fn
-        ^value -> value
-        {label, ^value} -> label
-        {label, ^value, _} -> label
-        _ -> nil
-      end)
+    options = Enum.map(options, &normalize_option/1)
+
+    {shared, rest} = Map.split(assigns.rest, [:disabled, :form])
+
+    rest =
+      if assigns.on_search do
+        Map.put_new(rest, :"phx-debounce", @search_debounce)
+      else
+        rest
+      end
+
+    search_value = display_text(assigns.display_value, options, value)
 
     assigns =
       assign(assigns,
+        options: options,
+        rest: rest,
         search_name: search_name,
-        search_value: search_value
+        search_value: search_value,
+        shared_rest: shared
       )
 
     ~H"""
-    <div class={@class} {@data_attrs} {@rest}>
-      <div role="group">
+    <div
+      id={"#{@id}-combobox"}
+      class={@class}
+      phx-hook="Doggo.Combobox"
+      data-filter={@on_search && "server"}
+      {@data_attrs}
+    >
+      <div class={"#{@base_class}-input-wrapper"}>
         <input
           id={@id}
           type="text"
@@ -178,11 +237,14 @@ defmodule Doggo.Components.Combobox do
           aria-autocomplete="list"
           aria-expanded="false"
           aria-controls={"#{@id}-listbox"}
-          autocomplete="off"
+          phx-change={@on_search}
+          {@rest}
+          {@shared_rest}
         />
         <button
           id={"#{@id}-button"}
           type="button"
+          class={"#{@base_class}-toggle"}
           tabindex="-1"
           aria-label={@list_label}
           aria-expanded="false"
@@ -191,50 +253,50 @@ defmodule Doggo.Components.Combobox do
           ▼
         </button>
       </div>
-      <ul id={"#{@id}-listbox"} role="listbox" aria-label={@list_label} hidden>
-        <.combobox_option
-          :for={option <- @options}
-          base_class={@base_class}
-          option={option}
-        />
-      </ul>
-      <input type="hidden" id={"#{@id}-value"} name={@name} value={@value} />
+      <div id={"#{@id}-listbox"} role="listbox" aria-label={@list_label} hidden>
+        <div
+          :for={
+            {{label, option_value, description}, index} <-
+              Enum.with_index(@options, 1)
+          }
+          id={"#{@id}-option-#{index}"}
+          role="option"
+          aria-selected={to_string(option_value == @value)}
+          data-value={option_value}
+        >
+          <span class={"#{@base_class}-option-label"}>{label}</span>
+          <span :if={description} class={"#{@base_class}-option-description"}>
+            {description}
+          </span>
+        </div>
+      </div>
+      <input
+        type="hidden"
+        id={"#{@id}-value"}
+        name={@name}
+        value={@value}
+        {@shared_rest}
+      />
     </div>
     """
   end
 
-  defp combobox_option(%{option: {label, value}} = assigns) do
-    assigns = assign(assigns, label: label, value: value, option: nil)
+  defp display_text(nil, options, value),
+    do: option_label(options, value) || value
 
-    ~H"""
-    <li role="option" data-value={@value}>
-      <span class={"#{@base_class}-option-label"}>{@label}</span>
-    </li>
-    """
+  defp display_text(display_value, _options, _value), do: display_value
+
+  defp option_label(options, value) do
+    Enum.find_value(options, fn
+      {label, ^value, _} -> label
+      _ -> nil
+    end)
   end
 
-  defp combobox_option(%{option: {label, value, description}} = assigns) do
-    assigns =
-      assign(assigns,
-        label: label,
-        value: value,
-        description: description,
-        option: nil
-      )
+  defp normalize_option({label, value}), do: {label, value, nil}
 
-    ~H"""
-    <li role="option" data-value={@value}>
-      <span class={"#{@base_class}-option-label"}>{@label}</span>
-      <span class={"#{@base_class}-option-description"}>{@description}</span>
-    </li>
-    """
-  end
+  defp normalize_option({label, value, description}),
+    do: {label, value, description}
 
-  defp combobox_option(assigns) do
-    ~H"""
-    <li role="option" data-value={@option}>
-      <span class={"#{@base_class}-option-label"}>{@option}</span>
-    </li>
-    """
-  end
+  defp normalize_option(option), do: {option, option, nil}
 end

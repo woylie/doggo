@@ -36,6 +36,7 @@
 import {
   Accordion,
   Carousel,
+  Combobox,
   Dialog,
   Menu,
   MenuButton,
@@ -51,6 +52,7 @@ import {
     Hooks: {
       "Doggo.Accordion": Accordion,
       "Doggo.Carousel": Carousel,
+      "Doggo.Combobox": Combobox,
       "Doggo.Dialog": Dialog,
       "Doggo.Menu": Menu,
       "Doggo.MenuButton": MenuButton,

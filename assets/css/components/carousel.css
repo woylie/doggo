@@ -1,18 +1,18 @@
 .carousel {
   --item-width: 600px;
 
-  width: 100%;
+  inline-size: 100%;
 
   .carousel-inner {
     display: flex;
     flex-direction: column;
     gap: var(--spacer-4);
-    width: 100%;
+    inline-size: 100%;
     overflow-x: hidden;
   }
 
   .carousel-items-container {
-    width: 100%;
+    inline-size: 100%;
     overflow-x: auto;
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
@@ -25,7 +25,7 @@
 
   .carousel-items {
     display: flex;
-    width: fit-content;
+    inline-size: fit-content;
 
     /* Provide enough padding on both sides so that items at the edges can be
      * scrolled to the center. */
@@ -34,7 +34,7 @@
 
   .carousel-item {
     flex-shrink: 0;
-    width: var(--item-width);
+    inline-size: var(--item-width);
     scroll-snap-align: center;
     opacity: 0.4;
     transform: scale(0.9);
@@ -67,16 +67,16 @@
         /* WCAG 2.5.8 minimum target size is 24px */
         display: grid;
         place-items: center;
-        width: var(--spacer-6);
-        height: var(--spacer-6);
+        inline-size: var(--spacer-6);
+        block-size: var(--spacer-6);
         padding: 0;
         cursor: pointer;
         background: none;
         border: none;
 
         > span {
-          width: var(--spacer-3);
-          height: var(--spacer-3);
+          inline-size: var(--spacer-3);
+          block-size: var(--spacer-3);
           border: var(--border-width-s) solid
             var(--color-background-primary-normal);
           border-radius: var(--radius-pill);

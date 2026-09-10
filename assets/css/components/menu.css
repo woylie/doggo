@@ -25,7 +25,7 @@
   [role="menuitemcheckbox"],
   [role="menuitemradio"] {
     display: block;
-    width: 100%;
+    inline-size: 100%;
     padding: var(--spacer-1) var(--spacer-2);
     font-size: var(--size-font-s);
     text-align: start;
@@ -55,7 +55,7 @@
   }
 
   [role="separator"] {
-    height: var(--border-width-s);
+    block-size: var(--border-width-s);
     margin: var(--spacer-1) 0;
     background-color: var(--color-border-neutral-1);
   }

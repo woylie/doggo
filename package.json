@@ -36,6 +36,7 @@
     ".": "./assets/js/index.js",
     "./accordion": "./assets/js/hooks/accordion.js",
     "./carousel": "./assets/js/hooks/carousel.js",
+    "./combobox": "./assets/js/hooks/combobox.js",
     "./tabs": "./assets/js/hooks/tabs.js",
     "./toolbar": "./assets/js/hooks/toolbar.js",
     "./tooltip": "./assets/js/hooks/tooltip.js",
