@@ -26,7 +26,13 @@
   }
 
   > .tree-item-toggle {
-    padding: 0 var(--spacer-1);
+    /* WCAG 2.5.8 minimum target size is 24px */
+    display: inline-grid;
+    place-items: center;
+    inline-size: var(--spacer-6);
+    block-size: var(--spacer-6);
+    padding: 0;
+    vertical-align: middle;
     cursor: pointer;
     background: none;
     border: none;
