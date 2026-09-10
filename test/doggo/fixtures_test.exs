@@ -270,8 +270,12 @@ defmodule Doggo.FixturesTest do
         id="breed-selector"
         name="breed"
         list_label="Breeds"
-        options={["Golden Retriever", "Siberian Husky", "Dachshund"]}
-        value="Dachshund"
+        options={[
+          {"Golden Retriever", "golden"},
+          {"Siberian Husky", "husky"},
+          "Dachshund"
+        ]}
+        value="husky"
       />
       """,
       "combobox.html"

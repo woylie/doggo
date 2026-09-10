@@ -1,18 +1,21 @@
-<div class="combobox">
-  <div role="group">
-    <input id="breed-selector" type="text" role="combobox" name="breed_search" value="Dachshund" aria-autocomplete="list" aria-expanded="false" aria-controls="breed-selector-listbox" autocomplete="off">
-    <button id="breed-selector-button" type="button" tabindex="-1" aria-label="Breeds" aria-expanded="false" aria-controls="breed-selector-listbox">
+<div id="breed-selector-combobox" class="combobox" phx-hook="Doggo.Combobox">
+  <div class="combobox-input-wrapper">
+    <input id="breed-selector" type="text" role="combobox" name="breed_search" value="Siberian Husky" aria-autocomplete="list" aria-expanded="false" aria-controls="breed-selector-listbox" autocomplete="off">
+    <button id="breed-selector-button" type="button" class="combobox-toggle" tabindex="-1" aria-label="Breeds" aria-expanded="false" aria-controls="breed-selector-listbox">
       ▼
     </button>
   </div>
-  <ul id="breed-selector-listbox" role="listbox" aria-label="Breeds" hidden>
-    <li role="option" data-value="Golden Retriever">
-  <span class="combobox-option-label">Golden Retriever</span>
-</li><li role="option" data-value="Siberian Husky">
-  <span class="combobox-option-label">Siberian Husky</span>
-</li><li role="option" data-value="Dachshund">
-  <span class="combobox-option-label">Dachshund</span>
-</li>
-  </ul>
-  <input type="hidden" id="breed-selector-value" name="breed" value="Dachshund">
+  <div id="breed-selector-listbox" role="listbox" aria-label="Breeds" hidden>
+    <div id="breed-selector-option-1" role="option" aria-selected="false" data-value="golden">
+      <span class="combobox-option-label">Golden Retriever</span>
+      
+    </div><div id="breed-selector-option-2" role="option" aria-selected="true" data-value="husky">
+      <span class="combobox-option-label">Siberian Husky</span>
+      
+    </div><div id="breed-selector-option-3" role="option" aria-selected="false" data-value="Dachshund">
+      <span class="combobox-option-label">Dachshund</span>
+      
+    </div>
+  </div>
+  <input type="hidden" id="breed-selector-value" name="breed" value="husky">
 </div>

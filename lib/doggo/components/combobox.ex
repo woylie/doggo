@@ -178,7 +178,12 @@ defmodule Doggo.Components.Combobox do
       )
 
     ~H"""
-    <div class={@class} {@data_attrs}>
+    <div
+      id={"#{@id}-combobox"}
+      class={@class}
+      phx-hook="Doggo.Combobox"
+      {@data_attrs}
+    >
       <div class={"#{@base_class}-input-wrapper"}>
         <input
           id={@id}
