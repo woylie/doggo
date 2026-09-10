@@ -117,6 +117,19 @@ defmodule Doggo.Components.Combobox do
         by finding the given value in the list of options.
         """
 
+      attr :display_value, :string,
+        default: nil,
+        doc: """
+        The input value for the current value.
+
+        Defaults to the label of the option matching `value` and falls back to
+        the `value` if no option matches.
+
+        Set this attribute if the value may not be among the options, for
+        example if the options are loaded dynamically from the server based on
+        the search term, as opposed to passing a fixed set of options.
+        """
+
       attr :list_label, :string,
         required: true,
         doc: """
@@ -168,12 +181,14 @@ defmodule Doggo.Components.Combobox do
 
     {shared, rest} = Map.split(assigns.rest, [:disabled, :form])
 
+    search_value = display_text(assigns.display_value, options, value)
+
     assigns =
       assign(assigns,
         options: options,
         rest: rest,
         search_name: search_name,
-        search_value: option_label(options, value),
+        search_value: search_value,
         shared_rest: shared
       )
 
@@ -236,6 +251,11 @@ defmodule Doggo.Components.Combobox do
     </div>
     """
   end
+
+  defp display_text(nil, options, value),
+    do: option_label(options, value) || value
+
+  defp display_text(display_value, _options, _value), do: display_value
 
   defp option_label(options, value) do
     Enum.find_value(options, fn

@@ -1564,6 +1564,61 @@ defmodule Doggo.ComponentsTest do
       assert text(span) == "Ishikawa"
     end
 
+    test "falls back to the value if the options don't contain it" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"Blue", "blue"}]}
+          value="turquoise"
+        />
+        """)
+
+      assert attribute(html, "input[type='text']", "value") == "turquoise"
+      assert attribute(html, "input[type='hidden']", "value") == "turquoise"
+    end
+
+    test "with display_value" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"Blue", "blue"}]}
+          value="turquoise"
+          display_value="Turquoise"
+        />
+        """)
+
+      assert attribute(html, "input[type='text']", "value") == "Turquoise"
+      assert attribute(html, "input[type='hidden']", "value") == "turquoise"
+    end
+
+    test "display_value overrides the label of a matching option" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"Blue", "blue"}]}
+          value="blue"
+          display_value="Something else"
+        />
+        """)
+
+      assert attribute(html, "input[type='text']", "value") == "Something else"
+    end
+
     test "with global attribute" do
       assigns = %{}
 
