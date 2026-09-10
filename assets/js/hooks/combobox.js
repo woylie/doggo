@@ -8,6 +8,8 @@ export function initCombobox(combobox) {
   const toggle = combobox.querySelector("button");
   const hidden = combobox.querySelector('input[type="hidden"]');
 
+  const serverFiltering = combobox.dataset.filter === "server";
+
   let activeIdx = null;
 
   // Open state of the listbox, owned by the hook.
@@ -108,6 +110,8 @@ export function initCombobox(combobox) {
   };
 
   const filter = () => {
+    if (serverFiltering) return;
+
     const term = input.value.trim();
     const needle = term.toLowerCase();
 

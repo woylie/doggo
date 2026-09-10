@@ -5,6 +5,8 @@ defmodule Doggo.Components.Combobox do
 
   use Phoenix.Component
 
+  @search_debounce 300
+
   @impl true
   def doc do
     """
@@ -151,6 +153,24 @@ defmodule Doggo.Components.Combobox do
           an additional description.
         """
 
+      attr :on_search, :any,
+        default: nil,
+        doc: """
+        An event name as a string or a `Phoenix.LiveView.JS` command to emit
+        when the user types. Use this for filtering options on the server side.
+
+        If set, the component adds a `phx-change` attribute to the text input
+        and the hook stops filtering. The search is debounced by
+        #{unquote(@search_debounce)} ms. You can override the default by passing
+        the `phx-debounce` attribute.
+
+        If not set, the hook filters the passed options on the client side, and
+        the search is not debounced by default.
+
+        To use this attribute, the input must be inside a form, or else
+        LiveView raises.
+        """
+
       attr :rest, :global,
         default: %{autocomplete: "off"},
         include:
@@ -181,6 +201,13 @@ defmodule Doggo.Components.Combobox do
 
     {shared, rest} = Map.split(assigns.rest, [:disabled, :form])
 
+    rest =
+      if assigns.on_search do
+        Map.put_new(rest, :"phx-debounce", @search_debounce)
+      else
+        rest
+      end
+
     search_value = display_text(assigns.display_value, options, value)
 
     assigns =
@@ -197,6 +224,7 @@ defmodule Doggo.Components.Combobox do
       id={"#{@id}-combobox"}
       class={@class}
       phx-hook="Doggo.Combobox"
+      data-filter={@on_search && "server"}
       {@data_attrs}
     >
       <div class={"#{@base_class}-input-wrapper"}>
@@ -209,6 +237,7 @@ defmodule Doggo.Components.Combobox do
           aria-autocomplete="list"
           aria-expanded="false"
           aria-controls={"#{@id}-listbox"}
+          phx-change={@on_search}
           {@rest}
           {@shared_rest}
         />

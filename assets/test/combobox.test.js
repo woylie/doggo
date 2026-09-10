@@ -521,4 +521,46 @@ describe("combobox hook", () => {
       });
     }
   });
+
+  describe("server filtering", () => {
+    beforeEach(() => {
+      el = render(fixture);
+      el.dataset.filter = "server";
+      hook = initCombobox(el);
+      input(el).focus();
+    });
+
+    it("does not filter the options on the client side", () => {
+      type(el, "poodle");
+
+      expect(shown(el)).toEqual([
+        "breed-selector-option-1",
+        "breed-selector-option-2",
+        "breed-selector-option-3",
+      ]);
+      expect(expanded(el)).toBe(true);
+    });
+
+    it("keeps the listbox open for a term that matches nothing", () => {
+      type(el, "poodle");
+
+      expect(expanded(el)).toBe(true);
+    });
+
+    it("restores the display value on Escape", () => {
+      type(el, "poodle");
+      press(input(el), "Escape");
+
+      expect(input(el).value).toBe("Siberian Husky");
+      expect(hiddenInput(el).value).toBe("husky");
+    });
+
+    it("selects on click", () => {
+      type(el, "poodle");
+      el.querySelector("#breed-selector-option-1").click();
+
+      expect(hiddenInput(el).value).toBe("golden");
+      expect(input(el).value).toBe("Golden Retriever");
+    });
+  });
 });

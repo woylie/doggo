@@ -1415,6 +1415,9 @@ defmodule Doggo.ComponentsTest do
 
       div = find_one(html, "div:root")
       assert attribute(div, "class") == "combobox"
+      assert attribute(div, "id") == "color-selector-combobox"
+      assert attribute(div, "phx-hook") == "Doggo.Combobox"
+      assert attribute(div, "data-filter") == nil
 
       wrapper = find_one(div, "div.combobox-input-wrapper")
 
@@ -1617,6 +1620,81 @@ defmodule Doggo.ComponentsTest do
         """)
 
       assert attribute(html, "input[type='text']", "value") == "Something else"
+    end
+
+    test "with on_search" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+          on_search={JS.push("suggest")}
+        />
+        """)
+
+      assert attribute(html, ":root", "data-filter") == "server"
+
+      input = find_one(html, "input[type='text']")
+      assert attribute(input, "phx-change") =~ "suggest"
+      assert attribute(input, "phx-debounce") == "300"
+    end
+
+    test "lets a phx-debounce attribute override the default" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+          on_search={JS.push("suggest")}
+          phx-debounce="blur"
+        />
+        """)
+
+      assert attribute(html, "input[type='text']", "phx-debounce") == "blur"
+    end
+
+    test "adds no debounce without on_search" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+        />
+        """)
+
+      input = find_one(html, "input[type='text']")
+      assert attribute(input, "phx-change") == nil
+      assert attribute(input, "phx-debounce") == nil
+    end
+
+    test "with on_search as an event name" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+          on_search="suggest"
+        />
+        """)
+
+      assert attribute(html, ":root", "data-filter") == "server"
+      assert attribute(html, "input[type='text']", "phx-change") == "suggest"
     end
 
     test "with global attribute" do
