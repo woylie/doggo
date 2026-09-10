@@ -29,9 +29,8 @@
     > .box-banner {
       flex: 0 0 calc(100% + 2 * var(--spacer-6));
       order: -1;
+      margin-block: calc(-1 * var(--spacer-6)) var(--size-line-half);
       margin-inline-start: calc(-1 * var(--spacer-6));
-      margin-block-start: calc(-1 * var(--spacer-6));
-      margin-block-end: var(--size-line-half);
 
       > img {
         border-start-start-radius: var(--radius-m);

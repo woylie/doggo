@@ -34,8 +34,8 @@
      available. */
   [role="listbox"] {
     position: absolute;
-    z-index: 1;
     inset-inline: 0;
+    z-index: 1;
     max-block-size: 20rem;
     margin-block-start: var(--spacer-1);
     overflow-y: auto;
