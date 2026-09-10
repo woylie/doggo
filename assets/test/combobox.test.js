@@ -563,4 +563,46 @@ describe("combobox hook", () => {
       expect(input(el).value).toBe("Golden Retriever");
     });
   });
+
+  describe("disabled options", () => {
+    beforeEach(() => {
+      el = render(fixture);
+      el.querySelector("#breed-selector-option-2").setAttribute(
+        "aria-disabled",
+        "true",
+      );
+      hook = initCombobox(el);
+      input(el).focus();
+    });
+
+    it("stays visible", () => {
+      expect(el.querySelector("#breed-selector-option-2").hidden).toBe(false);
+    });
+
+    it("is unreachable by the arrows in either direction", () => {
+      press(input(el), "ArrowDown");
+
+      const visited = [active(el)];
+
+      for (let i = 0; i < 3; i++) {
+        press(input(el), "ArrowDown");
+        visited.push(active(el));
+      }
+
+      expect(visited).toEqual([
+        "breed-selector-option-1",
+        "breed-selector-option-3",
+        "breed-selector-option-1",
+        "breed-selector-option-3",
+      ]);
+    });
+
+    it("is not selected by a click", () => {
+      press(input(el), "ArrowDown");
+      el.querySelector("#breed-selector-option-2").click();
+
+      expect(hiddenInput(el).value).toBe("husky");
+      expect(expanded(el)).toBe(true);
+    });
+  });
 });

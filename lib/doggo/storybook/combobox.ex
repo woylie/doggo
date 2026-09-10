@@ -74,12 +74,22 @@ defmodule Doggo.Storybook.Combobox do
           list_label: "Dog breeds",
           value: "labrador",
           options: [
-            {"Labrador Retriever", "labrador", "Friendly and outgoing"},
-            {"German Shepherd", "german_shepherd", "Confident and smart"},
-            {"Golden Retriever", "golden_retriever",
-             "Intelligent and friendly"},
-            {"French Bulldog", "french_bulldog", "Adaptable and playful"},
-            {"Bulldog", "bulldog", "Docile and willful"}
+            [
+              key: "Labrador Retriever",
+              value: "labrador",
+              description: "Friendly and outgoing"
+            ],
+            [
+              key: "German Shepherd",
+              value: "german_shepherd",
+              description: "Confident and smart"
+            ],
+            [
+              key: "French Bulldog",
+              value: "french_bulldog",
+              description: "Adaptable and playful",
+              disabled: true
+            ]
           ]
         }
       }
@@ -94,11 +104,16 @@ defmodule Doggo.Storybook.Combobox do
         list_label: "Dog breeds",
         value: "labrador",
         options: [
-          {"Labrador Retriever", "labrador", "Friendly and outgoing"},
-          {"German Shepherd", "german_shepherd", "Confident and smart"},
-          {"Golden Retriever", "golden_retriever", "Intelligent and friendly"},
-          {"French Bulldog", "french_bulldog", "Adaptable and playful"},
-          {"Bulldog", "bulldog", "Docile and willful"}
+          [
+            key: "Labrador Retriever",
+            value: "labrador",
+            description: "Friendly and outgoing"
+          ],
+          [
+            key: "German Shepherd",
+            value: "german_shepherd",
+            description: "Confident and smart"
+          ]
         ]
       }
     }

@@ -1533,8 +1533,8 @@ defmodule Doggo.ComponentsTest do
           name="color"
           list_label="Colors"
           options={[
-            {"Hakodate", "hakodate", "Hokkaido"},
-            {"Kanazawa", "kanazawa", "Ishikawa"}
+            [key: "Hakodate", value: "hakodate", description: "Hokkaido"],
+            [key: "Kanazawa", value: "kanazawa", description: "Ishikawa"]
           ]}
           value="hakodate"
         />
@@ -1565,6 +1565,79 @@ defmodule Doggo.ComponentsTest do
       span = find_one(option, "span:last-child")
       assert attribute(span, "class") == "combobox-option-description"
       assert text(span) == "Ishikawa"
+    end
+
+    test "with options as a map" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[%{"Blue" => "blue"}]}
+          value="blue"
+        />
+        """)
+
+      option = find_one(html, "div[role='option']")
+      assert attribute(option, "data-value") == "blue"
+      assert text(find_one(option, "span")) == "Blue"
+      assert attribute(html, "input[type='text']", "value") == "Blue"
+    end
+
+    test "with a disabled option" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[
+            [key: "Blue", value: "blue"],
+            [key: "Red", value: "red", disabled: true]
+          ]}
+        />
+        """)
+
+      assert attribute(html, "div#color-selector-option-1", "aria-disabled") ==
+               nil
+
+      assert attribute(html, "div#color-selector-option-2", "aria-disabled") ==
+               "true"
+    end
+
+    test "raises for a tuple that is not a label and value" do
+      assigns = %{}
+
+      assert_raise ArgumentError, ~r/unsupported option for \.combobox/, fn ->
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"Blue", "blue", "Cool"}]}
+        />
+        """)
+      end
+    end
+
+    test "raises for an unsupported option key" do
+      assigns = %{}
+
+      assert_raise ArgumentError, ~r/unsupported option keys/, fn ->
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[[key: "Blue", value: "blue", selected: true]]}
+        />
+        """)
+      end
     end
 
     test "falls back to the value if the options don't contain it" do

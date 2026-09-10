@@ -25,6 +25,11 @@ export function initCombobox(combobox) {
 
   const visibleOptions = () => options().filter((option) => !option.hidden);
 
+  const isDisabled = (option) =>
+    option.getAttribute("aria-disabled") === "true";
+
+  const navigableOptions = () => visibleOptions().filter((o) => !isDisabled(o));
+
   const label = (option) =>
     option.querySelector("span")?.textContent.trim() ?? "";
 
@@ -40,7 +45,7 @@ export function initCombobox(combobox) {
   // Practices. If no option is active, the option with the submit value is
   // selected.
   const markSelected = () => {
-    const active = activeIdx === null ? null : visibleOptions()[activeIdx];
+    const active = activeIdx === null ? null : navigableOptions()[activeIdx];
 
     options().forEach((option) => {
       const selected = active
@@ -52,7 +57,7 @@ export function initCombobox(combobox) {
   };
 
   const setActive = (idx) => {
-    const visible = visibleOptions();
+    const visible = navigableOptions();
     activeIdx = idx === null || visible.length === 0 ? null : idx;
 
     if (activeIdx === null) {
@@ -67,7 +72,7 @@ export function initCombobox(combobox) {
 
   // Returns the index of the visible option for the submit value.
   const submitValueIdx = () => {
-    const idx = visibleOptions().findIndex(
+    const idx = navigableOptions().findIndex(
       (option) => option.dataset.value === submitValue,
     );
 
@@ -99,7 +104,7 @@ export function initCombobox(combobox) {
   };
 
   const select = (option) => {
-    if (inert()) return;
+    if (inert() || isDisabled(option)) return;
 
     // Replace search term in the input value with the selected value.
     commit(option.dataset.value, label(option));
@@ -143,7 +148,11 @@ export function initCombobox(combobox) {
         // If offset=-1 (arrow up): Move to the last index.
         // If offset=1 (arrow down): Move to the first index.
         setActive(
-          from === null ? (offset > 0 ? 0 : visibleOptions().length - 1) : from,
+          from === null
+            ? offset > 0
+              ? 0
+              : navigableOptions().length - 1
+            : from,
         );
       }
 
@@ -154,7 +163,7 @@ export function initCombobox(combobox) {
     // if there is no active index, move to the first or last item depending
     // on the given offset.
 
-    const total = visibleOptions().length;
+    const total = navigableOptions().length;
     if (total === 0) return;
 
     const from = activeIdx === null ? (offset > 0 ? -1 : total) : activeIdx;
@@ -177,10 +186,10 @@ export function initCombobox(combobox) {
       case "Enter":
         if (!isOpen || activeIdx === null) return;
         e.preventDefault();
-        select(visibleOptions()[activeIdx]);
+        select(navigableOptions()[activeIdx]);
         break;
       case "Tab":
-        if (isOpen && activeIdx !== null) select(visibleOptions()[activeIdx]);
+        if (isOpen && activeIdx !== null) select(navigableOptions()[activeIdx]);
         break;
       case "Escape": {
         let handled = false;
