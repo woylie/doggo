@@ -48,13 +48,38 @@
     padding: var(--spacer-1) var(--spacer-2);
     cursor: pointer;
 
-    &:hover {
+    &:not([aria-disabled="true"]):hover {
       background-color: var(--color-background-surface-1);
     }
 
     &[aria-selected="true"] {
       background-color: var(--color-background-primary-subdued);
     }
+  }
+
+  .combobox-option-group-label {
+    display: block;
+    padding: var(--spacer-1) var(--spacer-2);
+    font-size: var(--size-font-xs);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-secondary-normal);
+    text-transform: uppercase;
+  }
+
+  [role="group"] [role="option"] {
+    padding-inline-start: var(--spacer-4);
+  }
+
+  hr {
+    block-size: var(--border-width-s);
+    margin-block: var(--spacer-1);
+    background-color: var(--color-border-neutral-1);
+    border: none;
+  }
+
+  [role="option"][aria-disabled="true"] {
+    color: var(--color-text-disabled-normal);
+    cursor: not-allowed;
   }
 
   .combobox-option-label,

@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { initCombobox } from "../js/hooks/combobox.js";
 import fixture from "../../test/fixtures/combobox.html?raw";
+import groupedFixture from "../../test/fixtures/combobox_grouped.html?raw";
 import { press, render } from "./dom.js";
 
 const input = (el) => el.querySelector('[role="combobox"]');
@@ -20,6 +21,14 @@ const selectedIds = (el) =>
     .map((option) => option.id);
 
 const expanded = (el) => input(el).getAttribute("aria-expanded") === "true";
+
+const shownGroups = (el) =>
+  Array.from(el.querySelectorAll('[role="group"]'))
+    .filter((group) => !group.hidden)
+    .map((group) => group.getAttribute("aria-labelledby"));
+
+const shownSeparators = (el) =>
+  Array.from(el.querySelectorAll("hr")).filter((hr) => !hr.hidden).length;
 
 const type = (el, value) => {
   input(el).value = value;
@@ -603,6 +612,97 @@ describe("combobox hook", () => {
 
       expect(hiddenInput(el).value).toBe("husky");
       expect(expanded(el)).toBe(true);
+    });
+  });
+  describe("grouped options", () => {
+    beforeEach(() => {
+      el = render(groupedFixture);
+      hook = initCombobox(el);
+      input(el).focus();
+    });
+
+    it("opens on the current value across the groups", () => {
+      press(input(el), "ArrowDown");
+
+      expect(active(el)).toBe("breed-selector-option-4");
+      expect(selectedIds(el)).toEqual(["breed-selector-option-4"]);
+    });
+
+    it("moves from one group into the next, skipping the disabled option", () => {
+      press(input(el), "ArrowDown");
+
+      const visited = [active(el)];
+
+      for (let i = 0; i < 3; i++) {
+        press(input(el), "ArrowDown");
+        visited.push(active(el));
+      }
+
+      expect(visited).toEqual([
+        "breed-selector-option-4",
+        "breed-selector-option-1",
+        "breed-selector-option-3",
+        "breed-selector-option-4",
+      ]);
+    });
+
+    it("collapses a group whose every option is filtered out", () => {
+      type(el, "retriever");
+
+      expect(shown(el)).toEqual([
+        "breed-selector-option-1",
+        "breed-selector-option-2",
+      ]);
+      expect(shownGroups(el)).toEqual(["breed-selector-group-1"]);
+    });
+
+    it("keeps the group of a match", () => {
+      type(el, "dachs");
+
+      expect(shownGroups(el)).toEqual(["breed-selector-group-2"]);
+    });
+
+    it("brings a collapsed group back when the term is cleared", () => {
+      type(el, "dachs");
+      type(el, "");
+
+      expect(shownGroups(el)).toEqual([
+        "breed-selector-group-1",
+        "breed-selector-group-2",
+      ]);
+    });
+
+    it("hides the separators while filtering", () => {
+      expect(shownSeparators(el)).toBe(1);
+
+      type(el, "dachs");
+      expect(shownSeparators(el)).toBe(0);
+
+      type(el, "");
+      expect(shownSeparators(el)).toBe(1);
+    });
+
+    it("leaves groups and separators to the server when it filters", () => {
+      el = render(groupedFixture);
+      el.dataset.filter = "server";
+      hook = initCombobox(el);
+      input(el).focus();
+
+      type(el, "dachs");
+
+      expect(shownSeparators(el)).toBe(1);
+      expect(shownGroups(el)).toEqual([
+        "breed-selector-group-1",
+        "breed-selector-group-2",
+      ]);
+    });
+
+    it("selects an option inside a group on click", () => {
+      press(input(el), "ArrowDown");
+      el.querySelector("#breed-selector-option-3").click();
+
+      expect(hiddenInput(el).value).toBe("dachshund");
+      expect(input(el).value).toBe("Dachshund");
     });
   });
 });

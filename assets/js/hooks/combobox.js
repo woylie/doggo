@@ -1,6 +1,8 @@
 import { stepIndex } from "../navigation.js";
 
 const OPTIONS = '[role="option"]';
+const GROUPS = '[role="group"]';
+const SEPARATORS = "hr";
 
 export function initCombobox(combobox) {
   const input = combobox.querySelector('[role="combobox"]');
@@ -130,6 +132,20 @@ export function initCombobox(combobox) {
         needle !== "" &&
         !label(option).toLowerCase().includes(needle);
     });
+
+    // Hide groups without visible options.
+    listbox.querySelectorAll(GROUPS).forEach((group) => {
+      group.hidden = !Array.from(group.querySelectorAll(OPTIONS)).some(
+        (option) => !option.hidden,
+      );
+    });
+
+    // Separators structure the full list only.
+    const filtering = searching && needle !== "";
+
+    listbox
+      .querySelectorAll(SEPARATORS)
+      .forEach((separator) => (separator.hidden = filtering));
   };
 
   // Handles the `Up` (offset=-1) and `Down` (offset=1) keys.

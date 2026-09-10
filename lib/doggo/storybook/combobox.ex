@@ -37,6 +37,97 @@ defmodule Doggo.Storybook.Combobox do
         }
       },
       %Variation{
+        id: :with_labels_and_descriptions,
+        attributes: %{
+          id: "dog-breed-selector",
+          name: "breed",
+          list_label: "Dog breeds",
+          value: "labrador",
+          options: [
+            [
+              key: "Labrador Retriever",
+              value: "labrador",
+              description: "Friendly and outgoing"
+            ],
+            [
+              key: "German Shepherd",
+              value: "german_shepherd",
+              description: "Confident and smart"
+            ],
+            [
+              key: "French Bulldog",
+              value: "french_bulldog",
+              description: "Adaptable and playful",
+              disabled: true
+            ]
+          ]
+        }
+      },
+      %Variation{
+        id: :with_groups,
+        attributes: %{
+          id: "dog-breed-selector",
+          name: "breed",
+          list_label: "Dog breeds",
+          value: "golden_retriever",
+          options: [
+            {"Retrievers",
+             [
+               {"Labrador Retriever", "labrador"},
+               {"Golden Retriever", "golden_retriever"}
+             ]},
+            :hr,
+            {"Bulldogs",
+             [{"French Bulldog", "french_bulldog"}, {"Bulldog", "bulldog"}]},
+            {"German Shepherd", "german_shepherd"}
+          ]
+        }
+      },
+      %Variation{
+        id: :with_groups_and_descriptions,
+        attributes: %{
+          id: "dog-breed-selector",
+          name: "breed",
+          list_label: "Dog breeds",
+          value: "golden_retriever",
+          options: [
+            {"Retrievers",
+             [
+               [
+                 key: "Labrador Retriever",
+                 value: "labrador",
+                 description: "Friendly and outgoing"
+               ],
+               [
+                 key: "Golden Retriever",
+                 value: "golden_retriever",
+                 description: "Intelligent and friendly"
+               ]
+             ]},
+            :hr,
+            {"Bulldogs",
+             [
+               [
+                 key: "French Bulldog",
+                 value: "french_bulldog",
+                 description: "Adaptable and playful"
+               ],
+               [
+                 key: "Bulldog",
+                 value: "bulldog",
+                 description: "Docile and willful",
+                 disabled: true
+               ]
+             ]},
+            [
+              key: "German Shepherd",
+              value: "german_shepherd",
+              description: "Confident and smart"
+            ]
+          ]
+        }
+      },
+      %Variation{
         id: :disabled,
         attributes: %{
           id: "dog-breed-selector",
@@ -63,33 +154,6 @@ defmodule Doggo.Storybook.Combobox do
             {"Labrador Retriever", "labrador"},
             {"Golden Retriever", "golden_retriever"},
             {"Bulldog", "bulldog"}
-          ]
-        }
-      },
-      %Variation{
-        id: :with_labels_and_descriptions,
-        attributes: %{
-          id: "dog-breed-selector",
-          name: "breed",
-          list_label: "Dog breeds",
-          value: "labrador",
-          options: [
-            [
-              key: "Labrador Retriever",
-              value: "labrador",
-              description: "Friendly and outgoing"
-            ],
-            [
-              key: "German Shepherd",
-              value: "german_shepherd",
-              description: "Confident and smart"
-            ],
-            [
-              key: "French Bulldog",
-              value: "french_bulldog",
-              description: "Adaptable and playful",
-              disabled: true
-            ]
           ]
         }
       }

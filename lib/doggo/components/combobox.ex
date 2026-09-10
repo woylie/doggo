@@ -96,6 +96,8 @@ defmodule Doggo.Components.Combobox do
     [
       "#{base_class}-input-wrapper",
       "#{base_class}-option-description",
+      "#{base_class}-option-group",
+      "#{base_class}-option-group-label",
       "#{base_class}-option-label",
       "#{base_class}-toggle"
     ]
@@ -151,6 +153,11 @@ defmodule Doggo.Components.Combobox do
         - In a 2-tuple, the first element is the label and the second is the
           input value.
         - A map results in one option per key/value pair.
+        - `:hr` renders a separator between options.
+
+        You can also group options:
+
+            options={[{"Retrievers", [{"Golden Retriever", "golden"}]}]}
 
         An option can also be written as a keyword list with these keys:
 
@@ -209,7 +216,7 @@ defmodule Doggo.Components.Combobox do
         do: "#{String.slice(name, 0..-2//1)}_search]",
         else: name <> "_search"
 
-    options = Enum.flat_map(options, &normalize_option/1)
+    {options, _counters} = normalize_options(options, {1, 1})
 
     {shared, rest} = Map.split(assigns.rest, [:disabled, :form])
 
@@ -266,22 +273,13 @@ defmodule Doggo.Components.Combobox do
         </button>
       </div>
       <div id={"#{@id}-listbox"} role="listbox" aria-label={@list_label} hidden>
-        <div
-          :for={{option, index} <- Enum.with_index(@options, 1)}
-          id={"#{@id}-option-#{index}"}
-          role="option"
-          aria-selected={to_string(option.value == @value)}
-          aria-disabled={option.disabled && "true"}
-          data-value={option.value}
-        >
-          <span class={"#{@base_class}-option-label"}>{option.label}</span>
-          <span
-            :if={option.description}
-            class={"#{@base_class}-option-description"}
-          >
-            {option.description}
-          </span>
-        </div>
+        <.combobox_entry
+          :for={entry <- @options}
+          entry={entry}
+          id={@id}
+          base_class={@base_class}
+          value={@value}
+        />
       </div>
       <input
         type="hidden"
@@ -299,38 +297,106 @@ defmodule Doggo.Components.Combobox do
 
   defp display_text(display_value, _options, _value), do: display_value
 
+  defp combobox_entry(%{entry: :separator} = assigns) do
+    ~H"""
+    <hr />
+    """
+  end
+
+  # The group label is a visible element referenced by `aria-labelledby`, and
+  # the options sit directly inside the group, following the grouped listbox
+  # example of the ARIA Authoring Practices.
+  defp combobox_entry(%{entry: %{group: _}} = assigns) do
+    ~H"""
+    <div
+      role="group"
+      class={"#{@base_class}-option-group"}
+      aria-labelledby={"#{@id}-group-#{@entry.index}"}
+    >
+      <span
+        id={"#{@id}-group-#{@entry.index}"}
+        class={"#{@base_class}-option-group-label"}
+      >
+        {@entry.group}
+      </span>
+      <.combobox_entry
+        :for={entry <- @entry.options}
+        entry={entry}
+        id={@id}
+        base_class={@base_class}
+        value={@value}
+      />
+    </div>
+    """
+  end
+
+  defp combobox_entry(assigns) do
+    ~H"""
+    <div
+      id={"#{@id}-option-#{@entry.index}"}
+      role="option"
+      aria-selected={to_string(@entry.value == @value)}
+      aria-disabled={@entry.disabled && "true"}
+      data-value={@entry.value}
+    >
+      <span class={"#{@base_class}-option-label"}>{@entry.label}</span>
+      <span
+        :if={@entry.description}
+        class={"#{@base_class}-option-description"}
+      >
+        {@entry.description}
+      </span>
+    </div>
+    """
+  end
+
   defp option_label(options, value) do
     Enum.find_value(options, fn
       %{value: ^value, label: label} -> label
+      %{options: options} -> option_label(options, value)
       _ -> nil
     end)
   end
 
-  defp normalize_option(option) when is_map(option) do
-    Enum.flat_map(option, &normalize_option/1)
+  defp normalize_options(options, counters) do
+    Enum.flat_map_reduce(options, counters, &normalize_option/2)
   end
 
-  defp normalize_option(option) when is_list(option) do
+  defp normalize_option(:hr, counters), do: {[:separator], counters}
+
+  defp normalize_option({group_label, options}, {option_no, group_no})
+       when is_list(options) or is_map(options) do
+    {options, counters} = normalize_options(options, {option_no, group_no + 1})
+
+    {[%{group: group_label, index: group_no, options: options}], counters}
+  end
+
+  defp normalize_option(option, counters) when is_map(option) do
+    normalize_options(option, counters)
+  end
+
+  defp normalize_option(option, counters) when is_list(option) do
     {label, value, description, extra} = Doggo.option_from_keyword(option)
     {disabled, extra} = Keyword.pop(extra, :disabled, false)
     ensure_no_extra_keys!(extra, option)
 
-    build_option(label, value, description, disabled)
+    build_option(label, value, description, disabled, counters)
   end
 
-  defp normalize_option({label, value}) do
-    build_option(label, value, nil, false)
+  defp normalize_option({label, value}, counters) do
+    build_option(label, value, nil, false, counters)
   end
 
-  defp normalize_option(option) when is_tuple(option) do
+  defp normalize_option(option, _counters) when is_tuple(option) do
     raise ArgumentError, """
     unsupported option for .combobox
 
     An option must be one of:
 
     - a primitive value
-    - a {label, value}
+    - a {label, value} tuple
     - a keyword list with at least :key and :value
+    - a {group_label, options} tuple for a group of options
 
     Got:
 
@@ -338,19 +404,20 @@ defmodule Doggo.Components.Combobox do
     """
   end
 
-  defp normalize_option(option) do
-    build_option(option, option, nil, false)
+  defp normalize_option(option, counters) do
+    build_option(option, option, nil, false, counters)
   end
 
-  defp build_option(label, value, description, disabled) do
-    [
-      %{
-        label: label,
-        value: value,
-        description: description,
-        disabled: disabled
-      }
-    ]
+  defp build_option(label, value, description, disabled, {option_no, group_no}) do
+    option = %{
+      index: option_no,
+      label: label,
+      value: value,
+      description: description,
+      disabled: disabled
+    }
+
+    {[option], {option_no + 1, group_no}}
   end
 
   defp ensure_no_extra_keys!([], _option), do: :ok
