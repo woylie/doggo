@@ -1533,8 +1533,8 @@ defmodule Doggo.ComponentsTest do
           name="color"
           list_label="Colors"
           options={[
-            {"Hakodate", "hakodate", "Hokkaido"},
-            {"Kanazawa", "kanazawa", "Ishikawa"}
+            [key: "Hakodate", value: "hakodate", description: "Hokkaido"],
+            [key: "Kanazawa", value: "kanazawa", description: "Ishikawa"]
           ]}
           value="hakodate"
         />
@@ -1565,6 +1565,141 @@ defmodule Doggo.ComponentsTest do
       span = find_one(option, "span:last-child")
       assert attribute(span, "class") == "combobox-option-description"
       assert text(span) == "Ishikawa"
+    end
+
+    test "with options as a map" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[%{"Blue" => "blue"}]}
+          value="blue"
+        />
+        """)
+
+      option = find_one(html, "div[role='option']")
+      assert attribute(option, "data-value") == "blue"
+      assert text(find_one(option, "span")) == "Blue"
+      assert attribute(html, "input[type='text']", "value") == "Blue"
+    end
+
+    test "with grouped options" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[
+            {"Cool", [{"Blue", "blue"}]},
+            {"Warm", [{"Red", "red"}, {"Orange", "orange"}]}
+          ]}
+          value="red"
+        />
+        """)
+
+      listbox = find_one(html, "div[role='listbox']")
+
+      group = find_one(listbox, "div[role='group']:first-child")
+      assert attribute(group, "class") == "combobox-option-group"
+      assert attribute(group, "aria-labelledby") == "color-selector-group-1"
+
+      label = find_one(group, "span#color-selector-group-1")
+      assert attribute(label, "class") == "combobox-option-group-label"
+      assert text(label) == "Cool"
+
+      option = find_one(group, "div[role='option']")
+      assert attribute(option, "id") == "color-selector-option-1"
+      assert attribute(option, "data-value") == "blue"
+
+      group = find_one(listbox, "div[role='group']:last-child")
+      assert attribute(group, "aria-labelledby") == "color-selector-group-2"
+      assert text(find_one(group, "span#color-selector-group-2")) == "Warm"
+
+      assert ["color-selector-option-2", "color-selector-option-3"] ==
+               group
+               |> Floki.find("div[role='option']")
+               |> Enum.map(&attribute(&1, "id"))
+
+      assert attribute(html, "div#color-selector-option-2", "aria-selected") ==
+               "true"
+
+      assert attribute(html, "input[type='text']", "value") == "Red"
+    end
+
+    test "with a separator" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"Blue", "blue"}, :hr, {"Red", "red"}]}
+        />
+        """)
+
+      assert [_] = Floki.find(html, "div[role='listbox'] > hr")
+    end
+
+    test "with a disabled option" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[
+            [key: "Blue", value: "blue"],
+            [key: "Red", value: "red", disabled: true]
+          ]}
+        />
+        """)
+
+      assert attribute(html, "div#color-selector-option-1", "aria-disabled") ==
+               nil
+
+      assert attribute(html, "div#color-selector-option-2", "aria-disabled") ==
+               "true"
+    end
+
+    test "raises for a tuple that is not a label and value" do
+      assigns = %{}
+
+      assert_raise ArgumentError, ~r/unsupported option for \.combobox/, fn ->
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"Blue", "blue", "Cool"}]}
+        />
+        """)
+      end
+    end
+
+    test "raises for an unsupported option key" do
+      assigns = %{}
+
+      assert_raise ArgumentError, ~r/unsupported option keys/, fn ->
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[[key: "Blue", value: "blue", selected: true]]}
+        />
+        """)
+      end
     end
 
     test "falls back to the value if the options don't contain it" do

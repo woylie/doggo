@@ -282,6 +282,32 @@ defmodule Doggo.FixturesTest do
     )
   end
 
+  test "combobox with grouped options" do
+    assigns = %{}
+
+    assert_fixture(
+      ~H"""
+      <FixtureComponents.combobox
+        id="breed-selector"
+        name="breed"
+        list_label="Breeds"
+        options={[
+          {"Retrievers",
+           [
+             {"Golden Retriever", "golden"},
+             [key: "Labrador Retriever", value: "labrador", disabled: true]
+           ]},
+          :hr,
+          {"Hounds", [{"Dachshund", "dachshund"}]},
+          {"Siberian Husky", "husky"}
+        ]}
+        value="husky"
+      />
+      """,
+      "combobox_grouped.html"
+    )
+  end
+
   test "date" do
     assigns = %{}
 
