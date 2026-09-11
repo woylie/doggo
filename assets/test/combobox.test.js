@@ -128,6 +128,37 @@ describe("combobox hook", () => {
     expect(active(el)).toBe(null);
   });
 
+  it("closes the listbox on Alt+ArrowUp", () => {
+    press(input(el), "ArrowDown");
+    expect(expanded(el)).toBe(true);
+
+    input(el).dispatchEvent(
+      new window.KeyboardEvent("keydown", {
+        key: "ArrowUp",
+        altKey: true,
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+
+    expect(expanded(el)).toBe(false);
+    expect(active(el)).toBe(null);
+  });
+
+  it("moves from the selection after opening with Alt+ArrowDown", () => {
+    input(el).dispatchEvent(
+      new window.KeyboardEvent("keydown", {
+        key: "ArrowDown",
+        altKey: true,
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+
+    press(input(el), "ArrowDown");
+    expect(active(el)).toBe("breed-selector-option-3");
+  });
+
   it("wraps at the start", () => {
     press(input(el), "ArrowDown");
     press(input(el), "ArrowUp");

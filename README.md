@@ -21,7 +21,7 @@ The package can be installed by adding `doggo` to your list of dependencies in
 ```elixir
 def deps do
   [
-    {:doggo, "~> 0.14.9"}
+    {:doggo, "~> 0.15.0"}
   ]
 end
 ```
@@ -166,6 +166,7 @@ Then register the hooks for the components you build in your `app.js`:
 import {
   Accordion,
   Carousel,
+  Combobox,
   Dialog,
   Menu,
   MenuButton,
@@ -179,6 +180,7 @@ import {
 const hooks = {
   "Doggo.Accordion": Accordion,
   "Doggo.Carousel": Carousel,
+  "Doggo.Combobox": Combobox,
   "Doggo.Dialog": Dialog,
   "Doggo.Menu": Menu,
   "Doggo.MenuButton": MenuButton,
@@ -207,6 +209,7 @@ To use the hooks in your storybook, register the same map in `storybook.js`:
 import {
   Accordion,
   Carousel,
+  Combobox,
   Dialog,
   Menu,
   MenuButton,
@@ -222,6 +225,7 @@ import {
     Hooks: {
       "Doggo.Accordion": Accordion,
       "Doggo.Carousel": Carousel,
+      "Doggo.Combobox": Combobox,
       "Doggo.Dialog": Dialog,
       "Doggo.Menu": Menu,
       "Doggo.MenuButton": MenuButton,

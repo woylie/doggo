@@ -67,7 +67,7 @@ defmodule Doggo.Components.Toolbar do
     [
       type: :miscellaneous,
       since: "0.6.0",
-      maturity: :experimental,
+      maturity: :developing,
       modifiers: []
     ]
   end

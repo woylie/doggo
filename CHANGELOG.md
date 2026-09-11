@@ -10,13 +10,15 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-09-11
+
 ### Added
 
 - Publish the JavaScript hooks as ES modules, on npm as `@woylie/doggo` and in
   the Hex package under `assets/js`. See the README for both install routes.
-- Add hooks and keyboard support for the `accordion`, `menu`, `menu_bar`,
-  `menu_button`, `modal`, `alert_dialog`, `split_pane`, `tabs`, `toolbar`,
-  `action_bar`, `tooltip`, `tree` and `tree_item` components.
+- Add hooks and keyboard support for the `accordion`, `combobox`, `menu`,
+  `menu_bar`, `menu_button`, `modal`, `alert_dialog`, `split_pane`, `tabs`,
+  `toolbar`, `action_bar`, `tooltip`, `tree` and `tree_item` components.
 - Add a `labelledby` attribute to all components that take a `label`.
 
 #### Alert component
@@ -36,6 +38,20 @@ and this project adheres to
 - Add `Home` and `End` key handlers to the pagination, which move to the first
   and last slide.
 
+#### Combobox component
+
+- Support options written as keyword lists and maps, with `description` and
+  `disabled` keys, and support option groups and `:hr` separators.
+- Add a `display_value` attribute to set the text shown for the selected value.
+- Add an `on_search` attribute to filter the options on the server instead of in
+  the browser.
+- Add `free_text` and `free_text_label` attributes, which let the user submit
+  what they typed when it is not among the options.
+- Add a `clearable` attribute, which renders a button that unselects, and a
+  `clear_label` attribute for its accessible name.
+- Add `:clear` and `:toggle` slots for the content of the two buttons.
+- Add an example stylesheet.
+
 #### Field component
 
 - Add an `:extra_types` builder option for rendering a type with your own
@@ -47,7 +63,8 @@ and this project adheres to
 
 #### Split pane component
 
-- Make the separator resizable with the pointer and the keyboard.
+- Make the panes resizable by dragging the separator or by moving it with the
+  keyboard.
 
 #### Tabs component
 
@@ -65,6 +82,12 @@ and this project adheres to
 - Reject a blank `label` or `labelledby`.
 - Require the `id` attribute of the `vertical_nav`, `menu`, `menu_bar`,
   `toolbar`, `action_bar` and `tree` components.
+- Raise the maturity level of sixteen components from experimental to
+  developing, most of them because they gained their hook and keyboard support
+  in this release: `action_bar`, `combobox`, `drawer`, `menu`, `menu_bar`,
+  `menu_button`, `menu_group`, `menu_item`, `menu_item_checkbox`,
+  `menu_item_radio_group`, `radio_group`, `split_pane`, `switch`, `toolbar`,
+  `tree` and `tree_item`.
 
 #### Alert component
 
@@ -129,6 +152,11 @@ and this project adheres to
   The item is a group instead of a tab panel then.
 - Mark the component as `developing`.
 
+#### Combobox component
+
+- Render the listbox as a `div` with `role="listbox"` and each option as a `div`
+  with `role="option"`, instead of a `ul` with `li` elements.
+
 #### Page header component
 
 - Render the title and the subtitle in an `hgroup` instead of a `div` with the
@@ -150,6 +178,13 @@ and this project adheres to
 
 - Change `class` attribute of the item slots to `:any`, so that a list of
   classes can be passed.
+
+### Removed
+
+#### Combobox component
+
+- Remove support for options written as `{label, value, description}` tuples.
+  Write the option as a keyword list with a `description` key instead.
 
 ### Fixed
 
@@ -176,6 +211,14 @@ and this project adheres to
 
 - Remove the `role="group"` attribute from the `cluster` component.
 
+#### Combobox component
+
+- Mark the option holding the value as selected when the option values are not
+  strings.
+- Mark only the first option when several options hold the same value.
+- Render an option with an empty value for `nil` and for an empty label, so that
+  a blank option can be selected.
+
 #### Field component
 
 - Describe an errored field by its error text through `aria-describedby` in
@@ -184,6 +227,14 @@ and this project adheres to
   error that appears after load is announced.
 - Render a field built without `field` assign from just a `name` and `value`.
 - Render options given as keyword lists.
+
+#### Frame component
+
+- Default to a `1:1` ratio instead of raising when no `ratio` is given.
+
+#### Image component
+
+- Fix the storybook module passing an invalid `ratio`.
 
 #### Page header component
 
@@ -214,6 +265,11 @@ and this project adheres to
 - Rename `variant` to `level` on the `callout` component if you use the
   defaults, and change `[data-variant]` to `[data-level]` in your CSS.
 - Register the hooks of the components you build. See the README.
+- Rewrite any styles that select the `combobox` listbox or its options as `ul`
+  and `li`. They are `div` elements with `role="listbox"` and `role="option"`
+  now.
+- Rewrite `combobox` options given as `{label, value, description}` tuples as
+  keyword lists with a `description` key.
 - Remove the backdrop and scroll locking for the `modal` and `alert_dialog`
   components and style `::backdrop` instead.
 - Move any styles on `.modal-container` and `.alert-dialog-container` to the
@@ -934,7 +990,8 @@ After:
 
 Initial release.
 
-[unreleased]: https://github.com/woylie/doggo/compare/0.14.9...HEAD
+[unreleased]: https://github.com/woylie/doggo/compare/0.15.0...HEAD
+[0.15.0]: https://github.com/woylie/doggo/compare/0.14.9...0.15.0
 [0.14.9]: https://github.com/woylie/doggo/compare/0.14.8...0.14.9
 [0.14.8]: https://github.com/woylie/doggo/compare/0.14.7...0.14.8
 [0.14.7]: https://github.com/woylie/doggo/compare/0.14.6...0.14.7

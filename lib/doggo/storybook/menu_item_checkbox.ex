@@ -30,7 +30,7 @@ defmodule Doggo.Storybook.MenuItemCheckbox do
       %Variation{
         id: :default,
         attributes: %{
-          on_click: JS.dispatch("myapp:toggle-word-wrap")
+          on_click: JS.toggle_attribute({"aria-checked", "true", "false"})
         },
         slots: ["Word wrap"]
       }
@@ -40,7 +40,7 @@ defmodule Doggo.Storybook.MenuItemCheckbox do
   def modifier_variation_base(_id, _name, _value, _opts) do
     %{
       attributes: %{
-        on_click: JS.dispatch("myapp:toggle-word-wrap")
+        on_click: JS.toggle_attribute({"aria-checked", "true", "false"})
       },
       slots: ["Word wrap"]
     }

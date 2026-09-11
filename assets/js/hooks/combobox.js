@@ -229,7 +229,13 @@ export function initCombobox(combobox) {
     const total = navigableOptions().length;
     if (total === 0) return;
 
-    const from = activeIdx === null ? (offset > 0 ? -1 : total) : activeIdx;
+    // If the listbox is open and there is no active option, only the selected
+    // option is marked in the list. Move relative to it in that case.
+    const from =
+      activeIdx === null
+        ? (submitValueIdx() ?? (offset > 0 ? -1 : total))
+        : activeIdx;
+
     setActive(stepIndex(from, offset, total));
   };
 
@@ -244,7 +250,8 @@ export function initCombobox(combobox) {
         break;
       case "ArrowUp":
         e.preventDefault();
-        move(-1);
+        if (e.altKey) close();
+        else move(-1);
         break;
       case "Enter":
         if (!isOpen || activeIdx === null) return;

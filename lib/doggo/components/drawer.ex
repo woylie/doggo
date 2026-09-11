@@ -86,7 +86,7 @@ defmodule Doggo.Components.Drawer do
     [
       type: :layout,
       since: "0.6.0",
-      maturity: :experimental,
+      maturity: :developing,
       modifiers: []
     ]
   end
