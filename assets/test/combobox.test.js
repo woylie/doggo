@@ -128,6 +128,20 @@ describe("combobox hook", () => {
     expect(active(el)).toBe(null);
   });
 
+  it("moves from the selection after opening with Alt+ArrowDown", () => {
+    input(el).dispatchEvent(
+      new window.KeyboardEvent("keydown", {
+        key: "ArrowDown",
+        altKey: true,
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+
+    press(input(el), "ArrowDown");
+    expect(active(el)).toBe("breed-selector-option-3");
+  });
+
   it("wraps at the start", () => {
     press(input(el), "ArrowDown");
     press(input(el), "ArrowUp");
