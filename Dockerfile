@@ -57,6 +57,8 @@ WORKDIR /app
 COPY mix.exs mix.lock ./
 COPY lib lib
 
+COPY package.json ./
+
 COPY assets assets
 
 # copy compile-time config files before we compile dependencies
