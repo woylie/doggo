@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { initCombobox } from "../js/hooks/combobox.js";
 import fixture from "../../test/fixtures/combobox.html?raw";
 import groupedFixture from "../../test/fixtures/combobox_grouped.html?raw";
+import freeTextFixture from "../../test/fixtures/combobox_free_text.html?raw";
 import { press, render } from "./dom.js";
 
 const input = (el) => el.querySelector('[role="combobox"]');
@@ -21,6 +22,8 @@ const selectedIds = (el) =>
     .map((option) => option.id);
 
 const expanded = (el) => input(el).getAttribute("aria-expanded") === "true";
+
+const freeText = (el) => el.querySelector("[data-free-text]");
 
 const shownGroups = (el) =>
   Array.from(el.querySelectorAll('[role="group"]'))
@@ -703,6 +706,83 @@ describe("combobox hook", () => {
 
       expect(hiddenInput(el).value).toBe("dachshund");
       expect(input(el).value).toBe("Dachshund");
+    });
+  });
+  describe("free text", () => {
+    beforeEach(() => {
+      el = render(freeTextFixture);
+      hook = initCombobox(el);
+      input(el).focus();
+    });
+
+    it("is hidden until the term is not an option", () => {
+      expect(freeText(el).hidden).toBe(true);
+
+      type(el, "Corgi");
+
+      expect(freeText(el).hidden).toBe(false);
+      expect(freeText(el).querySelector("span + span").textContent).toBe(
+        "Corgi",
+      );
+    });
+
+    it("stays hidden when the term matches an option exactly", () => {
+      type(el, "Dachshund");
+
+      expect(freeText(el).hidden).toBe(true);
+    });
+
+    it("stays hidden for an empty term", () => {
+      type(el, "");
+
+      expect(freeText(el).hidden).toBe(true);
+    });
+
+    it("keeps the listbox open for a term that matches nothing", () => {
+      type(el, "Corgi");
+
+      expect(expanded(el)).toBe(true);
+      expect(shown(el)).toEqual(["breed-selector-option-free-text"]);
+    });
+
+    it("submits the typed term and takes no selection", () => {
+      type(el, "Corgi");
+      press(input(el), "ArrowDown");
+      press(input(el), "Enter");
+
+      expect(hiddenInput(el).value).toBe("Corgi");
+      expect(input(el).value).toBe("Corgi");
+      expect(selectedIds(el)).toEqual([]);
+    });
+
+    it("submits the typed term on click", () => {
+      type(el, "Corgi");
+      freeText(el).click();
+
+      expect(hiddenInput(el).value).toBe("Corgi");
+    });
+
+    it("restores the typed term on a later Escape", () => {
+      type(el, "Corgi");
+      press(input(el), "ArrowDown");
+      press(input(el), "Enter");
+
+      type(el, "husk");
+      press(input(el), "Escape");
+
+      expect(input(el).value).toBe("Corgi");
+      expect(hiddenInput(el).value).toBe("Corgi");
+    });
+
+    it("is offered while the server filters too", () => {
+      el = render(freeTextFixture);
+      el.dataset.filter = "server";
+      hook = initCombobox(el);
+      input(el).focus();
+
+      type(el, "Corgi");
+
+      expect(freeText(el).hidden).toBe(false);
     });
   });
 });

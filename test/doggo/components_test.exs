@@ -1633,6 +1633,63 @@ defmodule Doggo.ComponentsTest do
       assert attribute(html, "input[type='text']", "value") == "Red"
     end
 
+    test "with free_text" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+          free_text
+          free_text_label="Add colour"
+        />
+        """)
+
+      option = find_one(html, "div#color-selector-option-free-text")
+      assert attribute(option, "role") == "option"
+      assert attribute(option, "class") == "combobox-option-free-text"
+      assert attribute(option, "aria-selected") == "false"
+      assert attribute(option, "data-free-text") == "data-free-text"
+      assert attribute(option, "hidden") == "hidden"
+      assert text(option, "span.combobox-option-label") == "Add colour"
+      assert text(option, "span.combobox-option-term") == ""
+    end
+
+    test "without free_text" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+        />
+        """)
+
+      assert [] = Floki.find(html, "[data-free-text]")
+    end
+
+    test "raises for free_text without a label" do
+      assigns = %{}
+
+      assert_raise ArgumentError, ~r/missing free_text_label/, fn ->
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={["Blue"]}
+          free_text
+        />
+        """)
+      end
+    end
+
     test "with a separator" do
       assigns = %{}
 
@@ -2369,6 +2426,18 @@ defmodule Doggo.ComponentsTest do
   end
 
   describe "frame/1" do
+    test "defaults to a square ratio" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.frame>image</TestComponents.frame>
+        """)
+
+      assert attribute(html, "div", "data-numerator") == "1"
+      assert attribute(html, "div", "data-denominator") == "1"
+    end
+
     test "with ratio" do
       assigns = %{}
 

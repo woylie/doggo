@@ -32,6 +32,11 @@ export function initCombobox(combobox) {
 
   const navigableOptions = () => visibleOptions().filter((o) => !isDisabled(o));
 
+  const freeTextOption = () => listbox.querySelector("[data-free-text]");
+
+  const optionValue = (option) =>
+    option.hasAttribute("data-free-text") ? null : option.dataset.value;
+
   const label = (option) =>
     option.querySelector("span")?.textContent.trim() ?? "";
 
@@ -52,7 +57,7 @@ export function initCombobox(combobox) {
     options().forEach((option) => {
       const selected = active
         ? option === active
-        : option.dataset.value === submitValue;
+        : optionValue(option) === submitValue;
 
       option.setAttribute("aria-selected", String(selected));
     });
@@ -75,7 +80,7 @@ export function initCombobox(combobox) {
   // Returns the index of the visible option for the submit value.
   const submitValueIdx = () => {
     const idx = navigableOptions().findIndex(
-      (option) => option.dataset.value === submitValue,
+      (option) => optionValue(option) === submitValue,
     );
 
     return idx === -1 ? null : idx;
@@ -108,8 +113,14 @@ export function initCombobox(combobox) {
   const select = (option) => {
     if (inert() || isDisabled(option)) return;
 
-    // Replace search term in the input value with the selected value.
-    commit(option.dataset.value, label(option));
+    // Replace search term in the input value with the selected value. The free
+    // text option submits the typed term itself.
+    if (option.hasAttribute("data-free-text")) {
+      const term = input.value.trim();
+      commit(term, term);
+    } else {
+      commit(option.dataset.value, label(option));
+    }
 
     // Update the filtered options based on the new input value.
     filter();
@@ -117,35 +128,47 @@ export function initCombobox(combobox) {
   };
 
   const filter = () => {
-    if (serverFiltering) return;
-
     const term = input.value.trim();
     const needle = term.toLowerCase();
+    const free = freeTextOption();
 
     // The display value of the current selection is not a search term and
     // should not filter the options.
     const searching = term !== displayValue.trim();
 
-    options().forEach((option) => {
-      option.hidden =
-        searching &&
-        needle !== "" &&
-        !label(option).toLowerCase().includes(needle);
-    });
+    if (!serverFiltering) {
+      options().forEach((option) => {
+        if (option === free) return;
 
-    // Hide groups without visible options.
-    listbox.querySelectorAll(GROUPS).forEach((group) => {
-      group.hidden = !Array.from(group.querySelectorAll(OPTIONS)).some(
-        (option) => !option.hidden,
+        option.hidden =
+          searching &&
+          needle !== "" &&
+          !label(option).toLowerCase().includes(needle);
+      });
+
+      // Hide groups without visible options.
+      listbox.querySelectorAll(GROUPS).forEach((group) => {
+        group.hidden = !Array.from(group.querySelectorAll(OPTIONS)).some(
+          (option) => !option.hidden,
+        );
+      });
+
+      // Separators structure the full list only.
+      const filtering = searching && needle !== "";
+
+      listbox
+        .querySelectorAll(SEPARATORS)
+        .forEach((separator) => (separator.hidden = filtering));
+    }
+
+    if (free) {
+      const exists = options().some(
+        (option) => option !== free && label(option).toLowerCase() === needle,
       );
-    });
 
-    // Separators structure the full list only.
-    const filtering = searching && needle !== "";
-
-    listbox
-      .querySelectorAll(SEPARATORS)
-      .forEach((separator) => (separator.hidden = filtering));
+      free.hidden = !searching || term === "" || exists;
+      free.querySelector("span + span").textContent = free.hidden ? "" : term;
+    }
   };
 
   // Handles the `Up` (offset=-1) and `Down` (offset=1) keys.

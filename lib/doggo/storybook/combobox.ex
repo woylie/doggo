@@ -128,6 +128,21 @@ defmodule Doggo.Storybook.Combobox do
         }
       },
       %Variation{
+        id: :with_free_text,
+        attributes: %{
+          id: "dog-breed-selector",
+          name: "breed",
+          list_label: "Dog breeds",
+          free_text: true,
+          free_text_label: "Add breed",
+          options: [
+            {"Labrador Retriever", "labrador"},
+            {"Golden Retriever", "golden_retriever"},
+            {"Bulldog", "bulldog"}
+          ]
+        }
+      },
+      %Variation{
         id: :disabled,
         attributes: %{
           id: "dog-breed-selector",
