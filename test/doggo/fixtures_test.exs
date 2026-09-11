@@ -1008,7 +1008,12 @@ defmodule Doggo.FixturesTest do
 
     if System.get_env("UPDATE_FIXTURES") do
       File.mkdir_p!(@fixture_dir)
-      File.write!(path, html)
+
+      current? = File.exists?(path) and equivalent?(File.read!(path), html)
+
+      if not current? do
+        File.write!(path, html)
+      end
     end
 
     assert File.exists?(path), """
@@ -1021,7 +1026,7 @@ defmodule Doggo.FixturesTest do
 
     expected = File.read!(path)
 
-    if expected != html do
+    if not equivalent?(expected, html) do
       flunk("""
       The fixture #{name} is out of date.
 
@@ -1035,6 +1040,20 @@ defmodule Doggo.FixturesTest do
       """)
     end
   end
+
+  defp equivalent?(expected, actual) do
+    sorted_attrs(expected) == sorted_attrs(actual)
+  end
+
+  defp sorted_attrs(html) do
+    html |> Floki.parse_fragment!() |> Enum.map(&sort_node/1)
+  end
+
+  defp sort_node({tag, attrs, children}) do
+    {tag, Enum.sort(attrs), Enum.map(children, &sort_node/1)}
+  end
+
+  defp sort_node(node), do: node
 
   defp verdict(expected, actual) do
     if collapse(expected) == collapse(actual) do
