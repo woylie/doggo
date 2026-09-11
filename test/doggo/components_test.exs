@@ -1788,6 +1788,24 @@ defmodule Doggo.ComponentsTest do
       end
     end
 
+    test "sets a caller-supplied aria-labelledby on the input" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          aria-labelledby="color-heading"
+          options={[{"Blue", "blue"}]}
+        />
+        """)
+
+      assert attribute(html, "input[role='combobox']", "aria-labelledby") ==
+               "color-heading"
+    end
+
     test "renders no clear button by default" do
       assigns = %{}
 

@@ -81,7 +81,7 @@ defmodule Doggo.Components.Tree do
     [
       type: :data,
       since: "0.6.0",
-      maturity: :experimental,
+      maturity: :developing,
       maturity_note: """
       **Missing features**
 

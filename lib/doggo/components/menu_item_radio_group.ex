@@ -44,11 +44,8 @@ defmodule Doggo.Components.MenuItemRadioGroup do
     [
       type: :menu,
       since: "0.6.0",
-      maturity: :experimental,
+      maturity: :developing,
       maturity_note: """
-      The necessary JavaScript for making this component fully functional and
-      accessible will be added in a future version.
-
       **Missing features**
 
       - State management: the component renders `aria-checked` from each item's

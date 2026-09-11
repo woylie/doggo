@@ -18,6 +18,8 @@ defmodule Doggo.Components.Combobox do
   @impl true
   def usage do
     """
+    ## Options
+
     With simple values:
 
     ```heex
@@ -52,7 +54,7 @@ defmodule Doggo.Components.Combobox do
     />
     ```
 
-    With descriptions and disabled option:
+    With descriptions and a disabled option:
 
     ```heex
     <.combobox
@@ -66,7 +68,168 @@ defmodule Doggo.Components.Combobox do
       ]}
     />
     ```
+
+    ## Label
+
+    The component does not render a label by itself, so you must render one
+    yourself. This is important for accessibility: without it the text input has
+    no accessible name, and a screen reader announces it as a combobox without
+    saying what is being chosen.
+
+    The usual way is a `<label>` whose `for` attribute is the `id` you passed:
+
+    ```heex
+    <label for="dog-breed-selector">Breed</label>
+    <.combobox
+      id="dog-breed-selector"
+      name="breed"
+      list_label="Dog breeds"
+      options={@breeds}
+    />
+    ```
+
+    If the name is already on the page, for example in the form of a heading,
+    you can set `aria-labelledby` to the ID of that element instead:
+
+    ```heex
+    <h2 id="breed-heading">Breed</h2>
+    <.combobox
+      id="dog-breed-selector"
+      name="breed"
+      list_label="Dog breeds"
+      aria-labelledby="breed-heading"
+      options={@breeds}
+    />
+    ```
+
+    `aria-labelledby` and `aria-label` are global attributes that are set on
+    the text input, which is the element that needs the label.
+
+    By contrast, `list_label` labels the listbox and the button that opens it.
+    It describes the list of options, not the field.
+
+    ## In a form
+
+    To use the component in a form, you need to pass the `id`, `name`, and
+    `value`, and add the label, description, and errors.
+
+    ```heex
+    <.form for={@form} phx-change="validate" phx-submit="save">
+      <label for="dog-breed-selector">Breed</label>
+      <.combobox
+        id="dog-breed-selector"
+        name={@form[:breed].name}
+        value={@form[:breed].value}
+        list_label="Dog breeds"
+        options={@breeds}
+      />
+    </.form>
+    ```
+
+    The component renders a hidden input with the given `name`. Its value is the
+    selected option value, or, if a free text entry is selected, the entered
+    value.
+
+    The text input the user types uses the given name with a `_search` suffix.
+    The submitted value is either the label of the selected option or
+    the current search term. You can use this value to filter options on the
+    server side, or otherwise ignore it.
+
+    ## With a clear button
+
+    If the `clearable` attribute is set, a clear button is rendered that
+    unselects the current selection and clears the search term.
+
+    ```heex
+    <.combobox
+      id="dog-breed-selector"
+      name="breed"
+      list_label="Dog breeds"
+      clearable
+      clear_label="Clear breed"
+      options={@breeds}
+    />
+    ```
+
+    Both the toggle button and the clear button have default content that can
+    be overridden with the `:toggle` and `:clear` slots.
+
+    ```heex
+    <.combobox id="dog-breed-selector" name="breed" list_label="Dog breeds" clearable options={@breeds}>
+      <:clear><Heroicon.x_mark /></:clear>
+      <:toggle><Heroicon.chevron_down /></:toggle>
+    </.combobox>
+    ```
+
+    ## With free text
+
+    If the `free_text` attribute is set, the user can choose to submit an
+    entered value that is not among the options.
+
+    ```heex
+    <.combobox
+      id="dog-breed-selector"
+      name="breed"
+      list_label="Dog breeds"
+      free_text
+      free_text_label="Add breed"
+      options={@breeds}
+    />
+    ```
+
+    ## With options loaded from the server
+
+    Set `on_search` to filter on the server. If set, the hook stops filtering on
+    the client side, and your handler receives the typed text as the `*_search`
+    parameter described above.
+
+    ```heex
+    <.combobox
+      id="dog-breed-selector"
+      name="breed"
+      list_label="Dog breeds"
+      options={@breeds}
+      on_search="search-breeds"
+    />
+    ```
+
+    ```elixir
+    def handle_event("search-breeds", %{"breed_search" => term}, socket) do
+      {:noreply, assign(socket, breeds: Dogs.search_breeds(term))}
+    end
+    ```
+
+    Instead of an event name, you can also pass a `Phoenix.LiveView.JS` command.
     """
+  end
+
+  @impl true
+  def keyboard do
+    """
+    - `Down` - open the listbox, or move to the next option. Opening moves to
+      the selected option, or to the first one if nothing is selected.
+    - `Up` - open the listbox at the last option, or move to the previous one.
+    - `Alt` + `Down` - open the listbox without moving to an option.
+    - `Alt` + `Up` - close the listbox, leaving the text as it is.
+    - `Enter` - select the active option.
+    - `Escape` - close the listbox and put the display value of the selection
+      back in the input. With the listbox already closed and the display value
+      unchanged, clear the selection.
+
+    The combobox is a single tab stop. Focus stays on the text input and never
+    moves into the listbox. The active option is tracked with
+    `aria-activedescendant`. The toggle and the clear button are out of the tab
+    order; keyboard users can use `Alt` + `Down` and `Alt` + `Up` for the
+    toggle, and `Escape` for clearing.
+
+    `Home`, `End`, `Left`, `Right`, `Backspace` and `Delete` are not intercepted
+    and are reserved for the browser's text editing.
+    """
+  end
+
+  @impl true
+  def css_path do
+    "components/combobox.css"
   end
 
   @impl true
@@ -74,18 +237,13 @@ defmodule Doggo.Components.Combobox do
     [
       type: :miscellaneous,
       since: "0.6.0",
-      maturity: :experimental,
+      maturity: :developing,
       maturity_note: """
-      The necessary JavaScript for making this component fully functional and
-      accessible will be added in a future version.
+      The semantics follow the ARIA Authoring Practices, and everything the
+      combobox pattern asks for is implemented, including the keyboard support.
 
-      **Missing features**
-
-      - Showing/hiding suggestions
-      - Filtering suggestions
-      - Selecting a value
-      - Focus management
-      - Keyboard support
+      The level stays at `:developing` because the API is new and has not been
+      proven in production yet.
       """,
       modifiers: []
     ]
@@ -113,7 +271,10 @@ defmodule Doggo.Components.Combobox do
 
       attr :name, :string,
         required: true,
-        doc: "Sets the name for the text input."
+        doc: """
+        Sets the name of the hidden input that submits the value. The name of
+        the text input is the same name with the `_search` suffix.
+        """
 
       attr :value, :string,
         default: nil,
@@ -180,8 +341,8 @@ defmodule Doggo.Components.Combobox do
         doc: """
         If `true`, a clear button is rendered.
 
-        The button is only rendered when a value is set. Pressing `Escape` on a
-        closed listbox clears the selection whether or not the button is
+        The button is hidden while there is nothing to clear. Pressing `Escape`
+        on a closed listbox clears the selection whether or not the button is
         rendered.
         """
 

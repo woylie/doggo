@@ -102,7 +102,7 @@ defmodule Doggo.Components.SplitPane do
     [
       type: :layout,
       since: "0.6.0",
-      maturity: :experimental,
+      maturity: :developing,
       maturity_note: """
       **Missing features**
 
