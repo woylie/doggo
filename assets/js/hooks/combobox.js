@@ -66,12 +66,11 @@ export function initCombobox(combobox) {
   const markSelected = () => {
     const active = activeIdx === null ? null : navigableOptions()[activeIdx];
 
-    options().forEach((option) => {
-      const selected = active
-        ? option === active
-        : optionValue(option) === submitValue;
+    const selected =
+      active ?? options().find((option) => optionValue(option) === submitValue);
 
-      option.setAttribute("aria-selected", String(selected));
+    options().forEach((option) => {
+      option.setAttribute("aria-selected", String(option === selected));
     });
   };
 

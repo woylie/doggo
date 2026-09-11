@@ -872,4 +872,11 @@ describe("combobox hook", () => {
       expect(input(el).checkValidity()).toBe(true);
     });
   });
+  it("marks only the first option holding the value", () => {
+    el = render(fixture);
+    el.querySelector("#breed-selector-option-3").dataset.value = "husky";
+    hook = initCombobox(el);
+
+    expect(selectedIds(el)).toEqual(["breed-selector-option-2"]);
+  });
 });

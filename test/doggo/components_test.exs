@@ -1749,6 +1749,26 @@ defmodule Doggo.ComponentsTest do
       assert attribute(group, "aria-labelledby") == "color-selector-group-1"
     end
 
+    test "marks only the first option holding the value" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"Blue", "blue"}, {"Also blue", "blue"}]}
+          value="blue"
+        />
+        """)
+
+      assert ["color-selector-option-1"] ==
+               html
+               |> Floki.find("div[aria-selected='true']")
+               |> Enum.map(&attribute(&1, "id"))
+    end
+
     test "with a separator" do
       assigns = %{}
 

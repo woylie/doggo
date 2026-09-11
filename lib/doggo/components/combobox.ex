@@ -234,6 +234,7 @@ defmodule Doggo.Components.Combobox do
     {options, _counters} = normalize_options(options, {1, 1})
 
     value = value && to_string(value)
+    selected = selected_index(options, value)
 
     {shared, rest} = Map.split(assigns.rest, [:disabled, :form])
 
@@ -251,6 +252,7 @@ defmodule Doggo.Components.Combobox do
         options: options,
         rest: rest,
         search_name: search_name(name),
+        selected: selected,
         value: value,
         search_value: search_value,
         shared_rest: shared
@@ -296,7 +298,7 @@ defmodule Doggo.Components.Combobox do
           entry={entry}
           id={@id}
           base_class={@base_class}
-          value={@value}
+          selected={@selected}
         />
         <div
           :if={@free_text}
@@ -367,7 +369,7 @@ defmodule Doggo.Components.Combobox do
         entry={entry}
         id={@id}
         base_class={@base_class}
-        value={@value}
+        selected={@selected}
       />
     </div>
     """
@@ -378,7 +380,7 @@ defmodule Doggo.Components.Combobox do
     <div
       id={"#{@id}-option-#{@entry.index}"}
       role="option"
-      aria-selected={to_string(@entry.value == @value)}
+      aria-selected={to_string(@entry.index == @selected)}
       aria-disabled={@entry.disabled && "true"}
       data-value={@entry.value}
     >
@@ -391,6 +393,16 @@ defmodule Doggo.Components.Combobox do
       </span>
     </div>
     """
+  end
+
+  defp selected_index(_options, nil), do: nil
+
+  defp selected_index(options, value) do
+    Enum.find_value(options, fn
+      %{value: ^value, index: index} -> index
+      %{options: options} -> selected_index(options, value)
+      _ -> nil
+    end)
   end
 
   defp option_label(options, value) do
