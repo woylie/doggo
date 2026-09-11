@@ -10,6 +10,8 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [0.15.1] - 2026-09-11
+
 ### Fixed
 
 - Prevent pagination dots from flickering while carousel is scrolling.
@@ -994,7 +996,8 @@ After:
 
 Initial release.
 
-[unreleased]: https://github.com/woylie/doggo/compare/0.15.0...HEAD
+[unreleased]: https://github.com/woylie/doggo/compare/0.15.1...HEAD
+[0.15.1]: https://github.com/woylie/doggo/compare/0.15.0...0.15.1
 [0.15.0]: https://github.com/woylie/doggo/compare/0.14.9...0.15.0
 [0.14.9]: https://github.com/woylie/doggo/compare/0.14.8...0.14.9
 [0.14.8]: https://github.com/woylie/doggo/compare/0.14.7...0.14.8
