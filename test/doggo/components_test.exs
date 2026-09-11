@@ -1523,6 +1523,46 @@ defmodule Doggo.ComponentsTest do
       assert text(span) == "Green"
     end
 
+    test "matches an option whose value is not a string" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"One", 1}, {"Two", 2}]}
+          value="1"
+        />
+        """)
+
+      assert attribute(html, "input[type='text']", "value") == "One"
+
+      option = find_one(html, "div#color-selector-option-1")
+      assert attribute(option, "aria-selected") == "true"
+      assert attribute(option, "data-value") == "1"
+    end
+
+    test "with a name for a list of values" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="dog[color][]"
+          list_label="Colors"
+          options={["Blue"]}
+        />
+        """)
+
+      assert attribute(html, "input[type='hidden']", "name") == "dog[color][]"
+
+      assert attribute(html, "input[type='text']", "name") ==
+               "dog[color_search]"
+    end
+
     test "with option labels and descriptions" do
       assigns = %{}
 
@@ -1690,6 +1730,64 @@ defmodule Doggo.ComponentsTest do
       end
     end
 
+    test "drops a group with no options" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"Empty", []}, {"Warm", [{"Red", "red"}]}]}
+        />
+        """)
+
+      assert [group] = Floki.find(html, "div[role='group']")
+      assert text(find_one(group, "span.combobox-option-group-label")) == "Warm"
+
+      assert attribute(group, "aria-labelledby") == "color-selector-group-1"
+    end
+
+    test "marks only the first option holding the value" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"Blue", "blue"}, {"Also blue", "blue"}]}
+          value="blue"
+        />
+        """)
+
+      assert ["color-selector-option-1"] ==
+               html
+               |> Floki.find("div[aria-selected='true']")
+               |> Enum.map(&attribute(&1, "id"))
+    end
+
+    test "renders a blank option the way a select does" do
+      for options <- [[nil, {"Blue", "blue"}], [{"", ""}, {"Blue", "blue"}]] do
+        assigns = %{options: options}
+
+        html =
+          parse_heex_without_name_check(~H"""
+          <TestComponents.combobox
+            id="color-selector"
+            name="color"
+            list_label="Colors"
+            options={@options}
+          />
+          """)
+
+        assert attribute(html, "div#color-selector-option-1", "data-value") ==
+                 ""
+      end
+    end
+
     test "with a separator" do
       assigns = %{}
 
@@ -1703,7 +1801,9 @@ defmodule Doggo.ComponentsTest do
         />
         """)
 
-      assert [_] = Floki.find(html, "div[role='listbox'] > hr")
+      assert [hr] = Floki.find(html, "div[role='listbox'] > hr")
+
+      assert attribute(hr, "aria-hidden") == "true"
     end
 
     test "with a disabled option" do

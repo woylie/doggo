@@ -231,12 +231,10 @@ defmodule Doggo.Components.Combobox do
   def render(%{name: name, options: options, value: value} = assigns) do
     ensure_free_text_label!(assigns)
 
-    search_name =
-      if String.ends_with?(name, "]"),
-        do: "#{String.slice(name, 0..-2//1)}_search]",
-        else: name <> "_search"
-
     {options, _counters} = normalize_options(options, {1, 1})
+
+    value = value && to_string(value)
+    selected = selected_index(options, value)
 
     {shared, rest} = Map.split(assigns.rest, [:disabled, :form])
 
@@ -253,7 +251,9 @@ defmodule Doggo.Components.Combobox do
       assign(assigns,
         options: options,
         rest: rest,
-        search_name: search_name,
+        search_name: search_name(name),
+        selected: selected,
+        value: value,
         search_value: search_value,
         shared_rest: shared
       )
@@ -298,7 +298,7 @@ defmodule Doggo.Components.Combobox do
           entry={entry}
           id={@id}
           base_class={@base_class}
-          value={@value}
+          selected={@selected}
         />
         <div
           :if={@free_text}
@@ -324,14 +324,27 @@ defmodule Doggo.Components.Combobox do
     """
   end
 
+  defp search_name(name) do
+    base = String.replace_suffix(name, "[]", "")
+
+    if String.ends_with?(base, "]") do
+      String.replace_suffix(base, "]", "_search]")
+    else
+      base <> "_search"
+    end
+  end
+
   defp display_text(nil, options, value),
     do: option_label(options, value) || value
 
   defp display_text(display_value, _options, _value), do: display_value
 
+  # A listbox allows only `option` and `group` as accessibility children in
+  # ARIA 1.2 and in the 1.3 draft. Axe fails a separator as a chil
+  # (dequelabs/axe-core#3938). Hide it from accessibility tree.
   defp combobox_entry(%{entry: :separator} = assigns) do
     ~H"""
-    <hr />
+    <hr aria-hidden="true" />
     """
   end
 
@@ -356,7 +369,7 @@ defmodule Doggo.Components.Combobox do
         entry={entry}
         id={@id}
         base_class={@base_class}
-        value={@value}
+        selected={@selected}
       />
     </div>
     """
@@ -367,7 +380,7 @@ defmodule Doggo.Components.Combobox do
     <div
       id={"#{@id}-option-#{@entry.index}"}
       role="option"
-      aria-selected={to_string(@entry.value == @value)}
+      aria-selected={to_string(@entry.index == @selected)}
       aria-disabled={@entry.disabled && "true"}
       data-value={@entry.value}
     >
@@ -380,6 +393,16 @@ defmodule Doggo.Components.Combobox do
       </span>
     </div>
     """
+  end
+
+  defp selected_index(_options, nil), do: nil
+
+  defp selected_index(options, value) do
+    Enum.find_value(options, fn
+      %{value: ^value, index: index} -> index
+      %{options: options} -> selected_index(options, value)
+      _ -> nil
+    end)
   end
 
   defp option_label(options, value) do
@@ -400,7 +423,12 @@ defmodule Doggo.Components.Combobox do
        when is_list(options) or is_map(options) do
     {options, counters} = normalize_options(options, {option_no, group_no + 1})
 
-    {[%{group: group_label, index: group_no, options: options}], counters}
+    # Groups without options need to be hidden.
+    if Enum.any?(options, &option?/1) do
+      {[%{group: group_label, index: group_no, options: options}], counters}
+    else
+      {[], {option_no, group_no}}
+    end
   end
 
   defp normalize_option(option, counters) when is_map(option) do
@@ -444,13 +472,17 @@ defmodule Doggo.Components.Combobox do
     option = %{
       index: option_no,
       label: label,
-      value: value,
+      value: to_string(value),
       description: description,
       disabled: disabled
     }
 
     {[option], {option_no + 1, group_no}}
   end
+
+  defp option?(%{value: _}), do: true
+  defp option?(%{options: options}), do: Enum.any?(options, &option?/1)
+  defp option?(_), do: false
 
   defp ensure_free_text_label!(%{free_text: true, free_text_label: label})
        when not is_binary(label) or label == "" do

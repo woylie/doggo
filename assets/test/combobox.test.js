@@ -785,4 +785,98 @@ describe("combobox hook", () => {
       expect(freeText(el).hidden).toBe(false);
     });
   });
+  describe("required tracks the value, not the search term", () => {
+    const build = () => {
+      el = render(fixture);
+      input(el).required = true;
+      hiddenInput(el).value = "";
+      input(el).value = "";
+      hook = initCombobox(el);
+      input(el).focus();
+    };
+
+    it("is invalid with nothing selected", () => {
+      build();
+
+      expect(input(el).checkValidity()).toBe(false);
+    });
+
+    it("leaves an empty input to the browser's own message", () => {
+      build();
+
+      expect(input(el).validity.valueMissing).toBe(true);
+      expect(input(el).validity.customError).toBe(false);
+    });
+
+    it("borrows the browser's message for an unselected list", () => {
+      build();
+      type(el, "Corgi");
+
+      const select = document.createElement("select");
+      select.required = true;
+
+      expect(input(el).validity.customError).toBe(true);
+      expect(input(el).validationMessage).toBe(select.validationMessage);
+    });
+
+    it("stays invalid for a term that selects nothing", () => {
+      build();
+      type(el, "Corgi");
+
+      expect(input(el).checkValidity()).toBe(false);
+    });
+
+    it("becomes valid once an option is selected", () => {
+      build();
+      press(input(el), "ArrowDown");
+      press(input(el), "Enter");
+
+      expect(input(el).checkValidity()).toBe(true);
+      expect(input(el).validationMessage).toBe("");
+    });
+
+    it("leaves the required attribute to the server", () => {
+      build();
+
+      input(el).required = false;
+      hook.update();
+
+      expect(input(el).required).toBe(false);
+      expect(input(el).checkValidity()).toBe(true);
+
+      input(el).required = true;
+      hook.update();
+
+      expect(input(el).required).toBe(true);
+      expect(input(el).checkValidity()).toBe(false);
+    });
+
+    it("follows a value the server sends on update", () => {
+      build();
+      expect(input(el).checkValidity()).toBe(false);
+
+      hiddenInput(el).value = "husky";
+      input(el).value = "Siberian Husky";
+      hook.update();
+
+      expect(input(el).checkValidity()).toBe(true);
+    });
+
+    it("leaves a combobox that is not required alone", () => {
+      el = render(fixture);
+      hiddenInput(el).value = "";
+      input(el).value = "";
+      hook = initCombobox(el);
+
+      expect(input(el).required).toBe(false);
+      expect(input(el).checkValidity()).toBe(true);
+    });
+  });
+  it("marks only the first option holding the value", () => {
+    el = render(fixture);
+    el.querySelector("#breed-selector-option-3").dataset.value = "husky";
+    hook = initCombobox(el);
+
+    expect(selectedIds(el)).toEqual(["breed-selector-option-2"]);
+  });
 });
