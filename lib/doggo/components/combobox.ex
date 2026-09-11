@@ -231,12 +231,9 @@ defmodule Doggo.Components.Combobox do
   def render(%{name: name, options: options, value: value} = assigns) do
     ensure_free_text_label!(assigns)
 
-    search_name =
-      if String.ends_with?(name, "]"),
-        do: "#{String.slice(name, 0..-2//1)}_search]",
-        else: name <> "_search"
-
     {options, _counters} = normalize_options(options, {1, 1})
+
+    value = value && to_string(value)
 
     {shared, rest} = Map.split(assigns.rest, [:disabled, :form])
 
@@ -253,7 +250,8 @@ defmodule Doggo.Components.Combobox do
       assign(assigns,
         options: options,
         rest: rest,
-        search_name: search_name,
+        search_name: search_name(name),
+        value: value,
         search_value: search_value,
         shared_rest: shared
       )
@@ -322,6 +320,16 @@ defmodule Doggo.Components.Combobox do
       />
     </div>
     """
+  end
+
+  defp search_name(name) do
+    base = String.replace_suffix(name, "[]", "")
+
+    if String.ends_with?(base, "]") do
+      String.replace_suffix(base, "]", "_search]")
+    else
+      base <> "_search"
+    end
   end
 
   defp display_text(nil, options, value),
@@ -444,7 +452,7 @@ defmodule Doggo.Components.Combobox do
     option = %{
       index: option_no,
       label: label,
-      value: value,
+      value: value && to_string(value),
       description: description,
       disabled: disabled
     }

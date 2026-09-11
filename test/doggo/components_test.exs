@@ -1523,6 +1523,46 @@ defmodule Doggo.ComponentsTest do
       assert text(span) == "Green"
     end
 
+    test "matches an option whose value is not a string" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"One", 1}, {"Two", 2}]}
+          value="1"
+        />
+        """)
+
+      assert attribute(html, "input[type='text']", "value") == "One"
+
+      option = find_one(html, "div#color-selector-option-1")
+      assert attribute(option, "aria-selected") == "true"
+      assert attribute(option, "data-value") == "1"
+    end
+
+    test "with a name for a list of values" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="dog[color][]"
+          list_label="Colors"
+          options={["Blue"]}
+        />
+        """)
+
+      assert attribute(html, "input[type='hidden']", "name") == "dog[color][]"
+
+      assert attribute(html, "input[type='text']", "name") ==
+               "dog[color_search]"
+    end
+
     test "with option labels and descriptions" do
       assigns = %{}
 
