@@ -337,9 +337,12 @@ defmodule Doggo.Components.Combobox do
 
   defp display_text(display_value, _options, _value), do: display_value
 
+  # A listbox allows only `option` and `group` as accessibility children in
+  # ARIA 1.2 and in the 1.3 draft. Axe fails a separator as a chil
+  # (dequelabs/axe-core#3938). Hide it from accessibility tree.
   defp combobox_entry(%{entry: :separator} = assigns) do
     ~H"""
-    <hr />
+    <hr aria-hidden="true" />
     """
   end
 

@@ -1743,7 +1743,9 @@ defmodule Doggo.ComponentsTest do
         />
         """)
 
-      assert [_] = Floki.find(html, "div[role='listbox'] > hr")
+      assert [hr] = Floki.find(html, "div[role='listbox'] > hr")
+
+      assert attribute(hr, "aria-hidden") == "true"
     end
 
     test "with a disabled option" do
