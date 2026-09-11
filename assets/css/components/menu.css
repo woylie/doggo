@@ -12,6 +12,12 @@
   flex-direction: column;
 }
 
+.menu[hidden],
+.menu-bar[hidden],
+.menu-group[hidden] {
+  display: none;
+}
+
 .menu-bar {
   display: flex;
   flex-direction: row;
