@@ -237,6 +237,21 @@ defmodule Doggo.Components.Combobox do
 
         `disabled` and `form` are set on the hidden input as well.
         """
+
+      slot :clear,
+        doc: """
+        The content for the clear button. Defaults to a multiplication sign.
+
+        The accessible name comes from `clear_label` either way.
+        """
+
+      slot :toggle,
+        doc: """
+        The content for the button that opens the listbox. Defaults to a
+        downwards-pointing triangle.
+
+        The accessible name comes from `list_label` either way.
+        """
     end
   end
 
@@ -308,7 +323,8 @@ defmodule Doggo.Components.Combobox do
           aria-label={@clear_label}
           hidden={@value in [nil, ""]}
         >
-          ×
+          {render_slot(@clear)}
+          <span :if={@clear == []}>×</span>
         </button>
         <button
           id={"#{@id}-button"}
@@ -319,7 +335,8 @@ defmodule Doggo.Components.Combobox do
           aria-expanded="false"
           aria-controls={"#{@id}-listbox"}
         >
-          ▼
+          {render_slot(@toggle)}
+          <span :if={@toggle == []}>▼</span>
         </button>
       </div>
       <div id={"#{@id}-listbox"} role="listbox" aria-label={@list_label} hidden>

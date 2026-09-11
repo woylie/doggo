@@ -31,6 +31,14 @@
     border-inline-start: none;
   }
 
+  .combobox-clear,
+  .combobox-toggle {
+    svg {
+      inline-size: 1cap;
+      block-size: 1cap;
+    }
+  }
+
   .combobox-toggle {
     padding-inline: var(--spacer-2);
     cursor: pointer;

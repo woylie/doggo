@@ -1847,6 +1847,33 @@ defmodule Doggo.ComponentsTest do
                "hidden"
     end
 
+    test "renders the clear and toggle slots" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          clearable
+          options={[{"Blue", "blue"}]}
+          value="blue"
+        >
+          <:clear>clear-icon</:clear>
+          <:toggle>toggle-icon</:toggle>
+        </TestComponents.combobox>
+        """)
+
+      clear = find_one(html, "button#color-selector-clear")
+      toggle = find_one(html, "button#color-selector-button")
+
+      assert text(clear) == "clear-icon"
+      assert text(toggle) == "toggle-icon"
+      assert attribute(clear, "aria-label") == "Clear"
+      assert attribute(toggle, "aria-label") == "Colors"
+    end
+
     test "with a separator" do
       assigns = %{}
 
