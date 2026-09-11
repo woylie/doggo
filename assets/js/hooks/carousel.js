@@ -83,11 +83,17 @@ export function initCarousel(carousel) {
 
   const syncActiveState = () => setActiveIdx(getActiveIdx());
 
+  const SCROLL_SETTLE_MS = 100;
+
+  let pendingIdx = null;
+  let settleTimer = null;
+
   const scrollToIdx = (idx) => {
     const item = getItems()[idx];
 
     if (!item) return;
 
+    pendingIdx = idx;
     setActiveIdx(idx);
 
     const itemsContainer = getItemsContainer();
@@ -190,7 +196,15 @@ export function initCarousel(carousel) {
   carousel.addEventListener(
     "scroll",
     (e) => {
-      if (e.target === getItemsContainer()) syncActiveState();
+      if (e.target !== getItemsContainer()) return;
+
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(() => {
+        pendingIdx = null;
+        syncActiveState();
+      }, SCROLL_SETTLE_MS);
+
+      if (pendingIdx === null) syncActiveState();
     },
     true,
   );
@@ -295,7 +309,12 @@ export function initCarousel(carousel) {
     }
   };
 
-  return { update: syncAfterUpdate, destroy: stopAutoRotation };
+  const destroy = () => {
+    stopAutoRotation();
+    clearTimeout(settleTimer);
+  };
+
+  return { update: syncAfterUpdate, destroy };
 }
 
 export default {

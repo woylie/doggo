@@ -33,6 +33,28 @@ describe("carousel hook", () => {
     expect(activeIdx(el)).toBe("2");
   });
 
+  it("holds the target while a programmatic scroll is still running", () => {
+    el.querySelector("#carousel-tab-3").click();
+    expect(activeIdx(el)).toBe("2");
+
+    el.querySelector(".carousel-items-container").dispatchEvent(
+      new window.Event("scroll", { bubbles: true }),
+    );
+
+    expect(activeIdx(el)).toBe("2");
+  });
+
+  it("syncs from the scroll position once the scroll settles", () => {
+    el.querySelector("#carousel-tab-3").click();
+    el.querySelector(".carousel-items-container").dispatchEvent(
+      new window.Event("scroll", { bubbles: true }),
+    );
+
+    vi.advanceTimersByTime(200);
+
+    expect(activeIdx(el)).toBe("0");
+  });
+
   it("stops rotating once destroyed", () => {
     hook.destroy();
     vi.advanceTimersByTime(20000);
