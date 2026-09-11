@@ -86,23 +86,23 @@ defmodule Doggo.Components.Carousel do
       </:next>
       <:item label="1 of 3">
         <.image
-          src="https://github.com/woylie/doggo/blob/main/assets/dog_poncho.jpg?raw=true"
-          alt="A dog wearing a colorful poncho walks down a fashion show runway."
-          ratio={{16, 9}}
+          src="https://github.com/woylie/doggo/blob/main/assets/images/dog_1.webp?raw=true"
+          alt="A gray-muzzled dog in a camouflage coat and harness."
+          ratio="16:9"
         />
       </:item>
       <:item label="2 of 3">
         <.image
-          src="https://github.com/woylie/doggo/blob/main/assets/dog_poncho.jpg?raw=true"
-          alt="A dog dressed in a sumptuous, baroque-style costume, complete with jewels and intricate embroidery, parades on an ornate runway at a luxurious fashion show, embodying opulence and grandeur."
-          ratio={{16, 9}}
+          src="https://github.com/woylie/doggo/blob/main/assets/images/dog_2.webp?raw=true"
+          alt="A small curly-haired white dog seen from the side."
+          ratio="16:9"
         />
       </:item>
       <:item label="3 of 3">
         <.image
-          src="https://github.com/woylie/doggo/blob/main/assets/dog_poncho.jpg?raw=true"
-          alt="A dog adorned in a lavish, flamboyant outfit, including a large feathered hat and elaborate jewelry, struts confidently down a luxurious fashion show runway, surrounded by bright lights and an enthusiastic audience."
-          ratio={{16, 9}}
+          src="https://github.com/woylie/doggo/blob/main/assets/images/dog_3.webp?raw=true"
+          alt="A large cream-colored dog on a leash, looking up."
+          ratio="16:9"
         />
       </:item>
     </.carousel>

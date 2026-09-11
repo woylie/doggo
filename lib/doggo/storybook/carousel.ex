@@ -98,32 +98,32 @@ defmodule Doggo.Storybook.Carousel do
       """
       <:item label="1 of 4">
         <#{image_function}
-          src="https://github.com/woylie/doggo/blob/main/assets/dog_poncho.jpg?raw=true"
-          alt="A dog wearing a colorful poncho walks down a fashion show runway."
+          src="https://github.com/woylie/doggo/blob/main/assets/images/dog_1.webp?raw=true"
+          alt="A gray-muzzled dog in a camouflage coat and harness."
         />
       </:item>
       """,
       """
       <:item label="2 of 4">
         <#{image_function}
-          src="https://github.com/woylie/doggo/blob/main/assets/dog_lavish.jpg?raw=true"
-          alt="A dog elegantly attired in a lavish baroque costume, adorned with vibrant Pride colors and embellishments, walks down a runway that blends historical opulence with modern LGBTQ+ Pride symbolism, showcasing a unique fusion of luxury and celebratory expression."
+          src="https://github.com/woylie/doggo/blob/main/assets/images/dog_2.webp?raw=true"
+          alt="A small curly-haired white dog seen from the side."
         />
       </:item>
       """,
       """
       <:item label="3 of 4">
         <#{image_function}
-          src="https://github.com/woylie/doggo/blob/main/assets/dog_baroque.jpg?raw=true"
-          alt="A dog dressed in a sumptuous, baroque-style costume, complete with jewels and intricate embroidery, parades on an ornate runway at a luxurious fashion show, embodying opulence and grandeur."
+          src="https://github.com/woylie/doggo/blob/main/assets/images/dog_3.webp?raw=true"
+          alt="A large cream-colored dog on a leash, looking up."
         />
       </:item>
       """,
       """
       <:item label="4 of 4">
         <#{image_function}
-          src="https://github.com/woylie/doggo/blob/main/assets/dog_flamboyant.jpg?raw=true"
-          alt="A dog adorned in a lavish, flamboyant outfit, including a large feathered hat and elaborate jewelry, struts confidently down a luxurious fashion show runway, surrounded by bright lights and an enthusiastic audience."
+          src="https://github.com/woylie/doggo/blob/main/assets/images/dog_4.webp?raw=true"
+          alt="A white terrier walking along a paved street."
         />
       </:item>
       """

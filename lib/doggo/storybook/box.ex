@@ -57,7 +57,7 @@ defmodule Doggo.Storybook.Box do
       """
       <:banner>
         <img
-          src="https://github.com/woylie/doggo/blob/main/assets/dog_poncho.jpg?raw=true"
+          src="https://github.com/woylie/doggo/blob/main/assets/images/dog_1.webp?raw=true"
           alt=""
         />
       </:banner>

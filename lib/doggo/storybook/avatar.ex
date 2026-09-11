@@ -26,10 +26,10 @@ defmodule Doggo.Storybook.Avatar do
   end
 
   defp src do
-    "https://github.com/woylie/doggo/blob/main/assets/dog_avatar.jpg?raw=true"
+    "https://github.com/woylie/doggo/blob/main/assets/images/dog_square_1.webp?raw=true"
   end
 
   defp placeholder_src do
-    "https://github.com/woylie/doggo/blob/main/assets/dog_avatar_placeholder.jpg?raw=true"
+    "https://github.com/woylie/doggo/blob/main/assets/images/dog_square_2.webp?raw=true"
   end
 end

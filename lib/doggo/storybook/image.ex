@@ -29,8 +29,8 @@ defmodule Doggo.Storybook.Image do
   defp attributes do
     %{
       src:
-        "https://github.com/woylie/doggo/blob/main/assets/dog_poncho.jpg?raw=true",
-      alt: "A dog wearing a colorful poncho walks down a fashion show runway.",
+        "https://github.com/woylie/doggo/blob/main/assets/images/dog_1.webp?raw=true",
+      alt: "A gray-muzzled dog in a camouflage coat and harness.",
       ratio: "16:9"
     }
   end
