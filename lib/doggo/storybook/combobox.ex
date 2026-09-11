@@ -1,6 +1,7 @@
 defmodule Doggo.Storybook.Combobox do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
+  alias PhoenixStorybook.Stories.VariationGroup
 
   def variations(_opts) do
     [
@@ -171,6 +172,47 @@ defmodule Doggo.Storybook.Combobox do
             {"Bulldog", "bulldog"}
           ]
         }
+      },
+      %VariationGroup{
+        id: :required,
+        template: """
+        <form class="stack">
+          <.psb-variation-group/>
+          <button type="submit" class="button">Submit</button>
+        </form>
+        """,
+        variations: [
+          %Variation{
+            id: :without_free_text,
+            attributes: %{
+              id: "dog-breed-selector-required",
+              name: "breed",
+              list_label: "Dog breeds",
+              required: true,
+              options: [
+                {"Labrador Retriever", "labrador"},
+                {"Golden Retriever", "golden_retriever"},
+                {"Bulldog", "bulldog"}
+              ]
+            }
+          },
+          %Variation{
+            id: :with_free_text,
+            attributes: %{
+              id: "dog-breed-selector-required-free-text",
+              name: "other_breed",
+              list_label: "Dog breeds",
+              required: true,
+              free_text: true,
+              free_text_label: "Add breed",
+              options: [
+                {"Labrador Retriever", "labrador"},
+                {"Golden Retriever", "golden_retriever"},
+                {"Bulldog", "bulldog"}
+              ]
+            }
+          }
+        ]
       }
     ]
   end

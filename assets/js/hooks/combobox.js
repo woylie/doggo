@@ -4,6 +4,18 @@ const OPTIONS = '[role="option"]';
 const GROUPS = '[role="group"]';
 const SEPARATORS = "hr";
 
+let cachedNoSelectionMessage;
+
+const noSelectionMessage = () => {
+  if (cachedNoSelectionMessage === undefined) {
+    const select = document.createElement("select");
+    select.required = true;
+    cachedNoSelectionMessage = select.validationMessage;
+  }
+
+  return cachedNoSelectionMessage;
+};
+
 export function initCombobox(combobox) {
   const input = combobox.querySelector('[role="combobox"]');
   const listbox = document.getElementById(input.getAttribute("aria-controls"));
@@ -99,6 +111,15 @@ export function initCombobox(combobox) {
     setActive(null);
   };
 
+  const validate = () => {
+    const missing = submitValue === "";
+    const typed = input.value.trim() !== "";
+
+    input.setCustomValidity(
+      input.required && missing && typed ? noSelectionMessage() : "",
+    );
+  };
+
   const commit = (value, text) => {
     displayValue = text;
     submitValue = value;
@@ -108,6 +129,7 @@ export function initCombobox(combobox) {
     // Changing the value of the hidden input on its own does not trigger a
     // `phx-change` event. We need to dispatch one manually.
     hidden.dispatchEvent(new Event("input", { bubbles: true }));
+    validate();
   };
 
   const select = (option) => {
@@ -265,6 +287,7 @@ export function initCombobox(combobox) {
   input.addEventListener("input", () => {
     filter();
     setActive(null);
+    validate();
 
     if (visibleOptions().length === 0) close();
     else open();
@@ -293,6 +316,7 @@ export function initCombobox(combobox) {
 
   filter();
   markSelected();
+  validate();
 
   return {
     // A patch restores the listbox's `hidden` attribute and may have replaced
@@ -303,6 +327,7 @@ export function initCombobox(combobox) {
       // The server owns the hidden input value. Set the internal submit value
       // to the value of the hidden input.
       submitValue = hidden.value;
+      validate();
 
       // The server only owns the display value while the input is not focused.
       // LiveView does not patch focused inputs.
