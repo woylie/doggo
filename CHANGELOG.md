@@ -10,6 +10,10 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Fixed
+
+- Prevent pagination dots from flickering while carousel is scrolling.
+
 ## [0.15.0] - 2026-09-11
 
 ### Added
