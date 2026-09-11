@@ -1,14 +1,8 @@
 {
   "name": "@woylie/doggo",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "description": "JavaScript hooks for the Doggo component library",
-  "keywords": [
-    "phoenix",
-    "liveview",
-    "hooks",
-    "components",
-    "accessibility"
-  ],
+  "keywords": ["phoenix", "liveview", "hooks", "components", "accessibility"],
   "homepage": "https://hexdocs.pm/doggo",
   "repository": {
     "type": "git",
@@ -46,9 +40,7 @@
     "./dialog": "./assets/js/hooks/dialog.js",
     "./split_pane": "./assets/js/hooks/split_pane.js"
   },
-  "files": [
-    "assets/js"
-  ],
+  "files": ["assets/js"],
   "sideEffects": false,
   "devDependencies": {
     "@eslint/js": "^10.0.1",
