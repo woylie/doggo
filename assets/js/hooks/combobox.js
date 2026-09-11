@@ -250,7 +250,8 @@ export function initCombobox(combobox) {
         break;
       case "ArrowUp":
         e.preventDefault();
-        move(-1);
+        if (e.altKey) close();
+        else move(-1);
         break;
       case "Enter":
         if (!isOpen || activeIdx === null) return;
