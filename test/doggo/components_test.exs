@@ -1730,6 +1730,25 @@ defmodule Doggo.ComponentsTest do
       end
     end
 
+    test "drops a group with no options" do
+      assigns = %{}
+
+      html =
+        parse_heex_without_name_check(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          options={[{"Empty", []}, {"Warm", [{"Red", "red"}]}]}
+        />
+        """)
+
+      assert [group] = Floki.find(html, "div[role='group']")
+      assert text(find_one(group, "span.combobox-option-group-label")) == "Warm"
+
+      assert attribute(group, "aria-labelledby") == "color-selector-group-1"
+    end
+
     test "with a separator" do
       assigns = %{}
 

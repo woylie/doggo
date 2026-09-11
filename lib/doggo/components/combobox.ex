@@ -411,7 +411,12 @@ defmodule Doggo.Components.Combobox do
        when is_list(options) or is_map(options) do
     {options, counters} = normalize_options(options, {option_no, group_no + 1})
 
-    {[%{group: group_label, index: group_no, options: options}], counters}
+    # Groups without options need to be hidden.
+    if Enum.any?(options, &option?/1) do
+      {[%{group: group_label, index: group_no, options: options}], counters}
+    else
+      {[], {option_no, group_no}}
+    end
   end
 
   defp normalize_option(option, counters) when is_map(option) do
@@ -462,6 +467,10 @@ defmodule Doggo.Components.Combobox do
 
     {[option], {option_no + 1, group_no}}
   end
+
+  defp option?(%{value: _}), do: true
+  defp option?(%{options: options}), do: Enum.any?(options, &option?/1)
+  defp option?(_), do: false
 
   defp ensure_free_text_label!(%{free_text: true, free_text_label: label})
        when not is_binary(label) or label == "" do
