@@ -1,1 +1,19 @@
-/* Nothing to see here. */
+/**
+ * Workarounds for phoenix_storybook 1.4.1.
+ *
+ * phoenix_storybook bundles a subset of Font Awesome in
+ * `priv/static/css/phoenix_storybook_fonts.css`, used when neither
+ * `font_awesome_kit_id` nor `font_awesome_css_path` is configured. The 1.4.0
+ * layout redesign switched the sidebar and doc carets from `caret-right` to
+ * `chevron-right`, but the subset was not regenerated.
+ *
+ * Remove once the subset ships the chevrons.
+ */
+
+.fa-chevron-right {
+  --fa: "\f054";
+}
+
+.fa-chevron-down {
+  --fa: "\f078";
+}

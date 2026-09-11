@@ -22,23 +22,23 @@
   ],
   "devDependencies": {
     "autoprefixer": "10.5.4",
-    "css-loader": "7.1.4",
+    "css-loader": "7.1.5",
     "esbuild": "0.28.2",
     "esbuild-sass-plugin": "3.7.0",
-    "postcss": "8.5.26",
+    "postcss": "8.5.28",
     "postcss-scss": "4.0.9",
     "prettier": "3.9.6",
     "stylelint": "17.14.1",
     "stylelint-config-recess-order": "7.8.0",
     "stylelint-config-standard-scss": "17.0.0",
-    "stylelint-declaration-strict-value": "1.11.1",
+    "stylelint-declaration-strict-value": "1.12.1",
     "stylelint-value-no-unknown-custom-properties": "^6.1.1"
   },
   "dependencies": {
     "@woylie/doggo": "link:../..",
     "phoenix": "1.8.13",
     "phoenix_html": "link:../deps/phoenix_html",
-    "phoenix_live_view": "1.2.10",
+    "phoenix_live_view": "1.2.11",
     "topbar": "^3.0.1"
   },
   "packageManager": "pnpm@11.24.0+sha512.bd27e345e976dcb0be0b7a1228217b049a817e21b1f355c90dbe7dc46671895a8bc1e6d06c24554505ea93ea0b45f489a27ec1bfbc8de6a9659fca0f16fa0000"
