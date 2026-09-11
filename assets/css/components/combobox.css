@@ -45,6 +45,7 @@
   }
 
   [role="option"] {
+    min-block-size: var(--spacer-6);
     padding: var(--spacer-1) var(--spacer-2);
     cursor: pointer;
 

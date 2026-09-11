@@ -38,6 +38,21 @@ defmodule Doggo.Storybook.Combobox do
         }
       },
       %Variation{
+        id: :with_blank_option,
+        attributes: %{
+          id: "dog-breed-selector",
+          name: "breed",
+          list_label: "Dog breeds",
+          value: "golden_retriever",
+          options: [
+            {"No preference", ""},
+            {"Labrador Retriever", "labrador"},
+            {"Golden Retriever", "golden_retriever"},
+            {"Bulldog", "bulldog"}
+          ]
+        }
+      },
+      %Variation{
         id: :with_labels_and_descriptions,
         attributes: %{
           id: "dog-breed-selector",

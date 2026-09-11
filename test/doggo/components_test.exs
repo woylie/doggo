@@ -1769,6 +1769,25 @@ defmodule Doggo.ComponentsTest do
                |> Enum.map(&attribute(&1, "id"))
     end
 
+    test "renders a blank option the way a select does" do
+      for options <- [[nil, {"Blue", "blue"}], [{"", ""}, {"Blue", "blue"}]] do
+        assigns = %{options: options}
+
+        html =
+          parse_heex_without_name_check(~H"""
+          <TestComponents.combobox
+            id="color-selector"
+            name="color"
+            list_label="Colors"
+            options={@options}
+          />
+          """)
+
+        assert attribute(html, "div#color-selector-option-1", "data-value") ==
+                 ""
+      end
+    end
+
     test "with a separator" do
       assigns = %{}
 

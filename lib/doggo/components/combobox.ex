@@ -472,7 +472,7 @@ defmodule Doggo.Components.Combobox do
     option = %{
       index: option_no,
       label: label,
-      value: value && to_string(value),
+      value: to_string(value),
       description: description,
       disabled: disabled
     }
