@@ -96,9 +96,11 @@ defmodule Doggo.Components.Combobox do
     [
       "#{base_class}-input-wrapper",
       "#{base_class}-option-description",
+      "#{base_class}-option-free-text",
       "#{base_class}-option-group",
       "#{base_class}-option-group-label",
       "#{base_class}-option-label",
+      "#{base_class}-option-term",
       "#{base_class}-toggle"
     ]
   end
@@ -172,6 +174,22 @@ defmodule Doggo.Components.Combobox do
             options={[[key: "Golden Retriever", value: "golden", description: "Friendly"]]}
         """
 
+      attr :free_text, :boolean,
+        default: false,
+        doc: """
+        If `true`, users can submit a free text value that is not among the
+        options.
+
+        Requires `free_text_label`.
+        """
+
+      attr :free_text_label, :string,
+        default: nil,
+        doc: """
+        A label for the option to submit the typed text, for example
+        `"Add breed"`. Required when `free_text` is set.
+        """
+
       attr :on_search, :any,
         default: nil,
         doc: """
@@ -211,6 +229,8 @@ defmodule Doggo.Components.Combobox do
 
   @impl true
   def render(%{name: name, options: options, value: value} = assigns) do
+    ensure_free_text_label!(assigns)
+
     search_name =
       if String.ends_with?(name, "]"),
         do: "#{String.slice(name, 0..-2//1)}_search]",
@@ -280,6 +300,18 @@ defmodule Doggo.Components.Combobox do
           base_class={@base_class}
           value={@value}
         />
+        <div
+          :if={@free_text}
+          id={"#{@id}-option-free-text"}
+          role="option"
+          class={"#{@base_class}-option-free-text"}
+          aria-selected="false"
+          data-free-text
+          hidden
+        >
+          <span class={"#{@base_class}-option-label"}>{@free_text_label}</span>
+          <span class={"#{@base_class}-option-term"}></span>
+        </div>
       </div>
       <input
         type="hidden"
@@ -419,6 +451,20 @@ defmodule Doggo.Components.Combobox do
 
     {[option], {option_no + 1, group_no}}
   end
+
+  defp ensure_free_text_label!(%{free_text: true, free_text_label: label})
+       when not is_binary(label) or label == "" do
+    raise ArgumentError, """
+    missing free_text_label for .combobox
+
+    A combobox with free_text enabled requires the free_text_label attribute to
+    be set.
+
+        <.combobox free_text free_text_label="Add breed" ... />
+    """
+  end
+
+  defp ensure_free_text_label!(_), do: :ok
 
   defp ensure_no_extra_keys!([], _option), do: :ok
 

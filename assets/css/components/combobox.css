@@ -82,6 +82,10 @@
     cursor: not-allowed;
   }
 
+  .combobox-option-term {
+    font-weight: var(--weight-bold);
+  }
+
   .combobox-option-label,
   .combobox-option-description {
     display: block;

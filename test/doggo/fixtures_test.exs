@@ -308,6 +308,29 @@ defmodule Doggo.FixturesTest do
     )
   end
 
+  test "combobox with free text" do
+    assigns = %{}
+
+    assert_fixture(
+      ~H"""
+      <FixtureComponents.combobox
+        id="breed-selector"
+        name="breed"
+        list_label="Breeds"
+        options={[
+          {"Golden Retriever", "golden"},
+          {"Siberian Husky", "husky"},
+          "Dachshund"
+        ]}
+        value="husky"
+        free_text
+        free_text_label="Add breed"
+      />
+      """,
+      "combobox_free_text.html"
+    )
+  end
+
   test "date" do
     assigns = %{}
 
