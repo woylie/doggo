@@ -1,9 +1,16 @@
 defmodule Doggo.Storybook.Combobox do
   @moduledoc false
+
+  import Doggo.Storybook.Shared
+
   alias PhoenixStorybook.Stories.Variation
   alias PhoenixStorybook.Stories.VariationGroup
 
-  def variations(_opts) do
+  def dependent_components, do: [:icon]
+
+  def variations(opts) do
+    dependent_components = opts[:dependent_components]
+
     [
       %Variation{
         id: :only_values,
@@ -51,6 +58,42 @@ defmodule Doggo.Storybook.Combobox do
             {"Bulldog", "bulldog"}
           ]
         }
+      },
+      %Variation{
+        id: :clearable,
+        attributes: %{
+          id: "dog-breed-selector",
+          name: "breed",
+          list_label: "Dog breeds",
+          clearable: true,
+          value: "golden_retriever",
+          options: [
+            {"Labrador Retriever", "labrador"},
+            {"German Shepherd", "german_shepherd"},
+            {"Golden Retriever", "golden_retriever"},
+            {"Bulldog", "bulldog"}
+          ]
+        }
+      },
+      %Variation{
+        id: :with_slots,
+        attributes: %{
+          id: "dog-breed-selector",
+          name: "breed",
+          list_label: "Dog breeds",
+          clearable: true,
+          value: "golden_retriever",
+          options: [
+            {"Labrador Retriever", "labrador"},
+            {"German Shepherd", "german_shepherd"},
+            {"Golden Retriever", "golden_retriever"},
+            {"Bulldog", "bulldog"}
+          ]
+        },
+        slots: [
+          "<:clear>#{icon(:close, dependent_components)}</:clear>",
+          "<:toggle>#{icon(:chevron_down, dependent_components)}</:toggle>"
+        ]
       },
       %Variation{
         id: :with_labels_and_descriptions,

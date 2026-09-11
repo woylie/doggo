@@ -3,6 +3,7 @@ import { initCombobox } from "../js/hooks/combobox.js";
 import fixture from "../../test/fixtures/combobox.html?raw";
 import groupedFixture from "../../test/fixtures/combobox_grouped.html?raw";
 import freeTextFixture from "../../test/fixtures/combobox_free_text.html?raw";
+import clearableFixture from "../../test/fixtures/combobox_clearable.html?raw";
 import { press, render } from "./dom.js";
 
 const input = (el) => el.querySelector('[role="combobox"]');
@@ -24,6 +25,8 @@ const selectedIds = (el) =>
 const expanded = (el) => input(el).getAttribute("aria-expanded") === "true";
 
 const freeText = (el) => el.querySelector("[data-free-text]");
+
+const clearButton = (el) => el.querySelector("[data-clear]");
 
 const shownGroups = (el) =>
   Array.from(el.querySelectorAll('[role="group"]'))
@@ -872,6 +875,72 @@ describe("combobox hook", () => {
       expect(input(el).checkValidity()).toBe(true);
     });
   });
+  describe("clear button", () => {
+    const build = () => {
+      el = render(clearableFixture);
+      hook = initCombobox(el);
+    };
+
+    it("clears the value, the display text and the selection", () => {
+      build();
+      clearButton(el).dispatchEvent(new window.MouseEvent("click"));
+
+      expect(hiddenInput(el).value).toBe("");
+      expect(input(el).value).toBe("");
+      expect(selectedIds(el)).toEqual([]);
+    });
+
+    it("returns focus to the input", () => {
+      build();
+      clearButton(el).dispatchEvent(new window.MouseEvent("click"));
+
+      expect(document.activeElement).toBe(input(el));
+    });
+
+    it("hides itself once there is nothing to clear", () => {
+      build();
+      expect(clearButton(el).hidden).toBe(false);
+
+      clearButton(el).dispatchEvent(new window.MouseEvent("click"));
+      expect(clearButton(el).hidden).toBe(true);
+    });
+
+    it("reappears after a selection", () => {
+      build();
+      clearButton(el).dispatchEvent(new window.MouseEvent("click"));
+
+      const option = el.querySelector("#breed-selector-option-1");
+      option.dispatchEvent(
+        new window.MouseEvent("mousedown", { bubbles: true }),
+      );
+      option.dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
+
+      expect(clearButton(el).hidden).toBe(false);
+      expect(hiddenInput(el).value).toBe("golden");
+    });
+
+    it("shows all options again", () => {
+      build();
+      type(el, "husk");
+      clearButton(el).dispatchEvent(new window.MouseEvent("click"));
+
+      expect(shown(el)).toEqual([
+        "breed-selector-option-1",
+        "breed-selector-option-2",
+        "breed-selector-option-3",
+      ]);
+    });
+
+    it("does nothing on a readonly combobox", () => {
+      el = render(clearableFixture);
+      input(el).readOnly = true;
+      hook = initCombobox(el);
+
+      clearButton(el).dispatchEvent(new window.MouseEvent("click"));
+      expect(hiddenInput(el).value).toBe("husky");
+    });
+  });
+
   it("marks only the first option holding the value", () => {
     el = render(fixture);
     el.querySelector("#breed-selector-option-3").dataset.value = "husky";

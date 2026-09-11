@@ -16,6 +16,26 @@
       border-radius: var(--radius-s);
       border-start-end-radius: 0;
       border-end-end-radius: 0;
+
+      &:has(+ .combobox-clear:not([hidden])) {
+        border-inline-end: none;
+      }
+    }
+  }
+
+  .combobox-clear {
+    padding-inline: var(--spacer-2);
+    cursor: pointer;
+    background: none;
+    border: var(--border-width-s) solid var(--color-border-neutral-2);
+    border-inline-start: none;
+  }
+
+  .combobox-clear,
+  .combobox-toggle {
+    svg {
+      inline-size: 1cap;
+      block-size: 1cap;
     }
   }
 

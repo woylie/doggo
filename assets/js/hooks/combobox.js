@@ -19,7 +19,8 @@ const noSelectionMessage = () => {
 export function initCombobox(combobox) {
   const input = combobox.querySelector('[role="combobox"]');
   const listbox = document.getElementById(input.getAttribute("aria-controls"));
-  const toggle = combobox.querySelector("button");
+  const toggle = combobox.querySelector("button[aria-expanded]");
+  const clear = combobox.querySelector("[data-clear]");
   const hidden = combobox.querySelector('input[type="hidden"]');
 
   const serverFiltering = combobox.dataset.filter === "server";
@@ -124,6 +125,8 @@ export function initCombobox(combobox) {
     submitValue = value;
     hidden.value = value;
     input.value = text;
+
+    if (clear) clear.hidden = value === "";
 
     // Changing the value of the hidden input on its own does not trigger a
     // `phx-change` event. We need to dispatch one manually.
@@ -290,6 +293,15 @@ export function initCombobox(combobox) {
 
     if (visibleOptions().length === 0) close();
     else open();
+  });
+
+  clear?.addEventListener("click", () => {
+    if (inert()) return;
+
+    commit("", "");
+    filter();
+    markSelected();
+    input.focus();
   });
 
   toggle?.addEventListener("click", () => {

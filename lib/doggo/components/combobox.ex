@@ -94,6 +94,7 @@ defmodule Doggo.Components.Combobox do
   @impl true
   def nested_classes(base_class) do
     [
+      "#{base_class}-clear",
       "#{base_class}-input-wrapper",
       "#{base_class}-option-description",
       "#{base_class}-option-free-text",
@@ -174,6 +175,23 @@ defmodule Doggo.Components.Combobox do
             options={[[key: "Golden Retriever", value: "golden", description: "Friendly"]]}
         """
 
+      attr :clearable, :boolean,
+        default: false,
+        doc: """
+        If `true`, a clear button is rendered.
+
+        The button is only rendered when a value is set. Pressing `Escape` on a
+        closed listbox clears the selection whether or not the button is
+        rendered.
+        """
+
+      attr :clear_label, :string,
+        default: "Clear",
+        doc: """
+        Aria label for the clear button. This value should be translated to the
+        language in which the rest of the page is displayed.
+        """
+
       attr :free_text, :boolean,
         default: false,
         doc: """
@@ -218,6 +236,21 @@ defmodule Doggo.Components.Combobox do
         the wrapper element.
 
         `disabled` and `form` are set on the hidden input as well.
+        """
+
+      slot :clear,
+        doc: """
+        The content for the clear button. Defaults to a multiplication sign.
+
+        The accessible name comes from `clear_label` either way.
+        """
+
+      slot :toggle,
+        doc: """
+        The content for the button that opens the listbox. Defaults to a
+        downwards-pointing triangle.
+
+        The accessible name comes from `list_label` either way.
         """
     end
   end
@@ -281,6 +314,19 @@ defmodule Doggo.Components.Combobox do
           {@shared_rest}
         />
         <button
+          :if={@clearable}
+          id={"#{@id}-clear"}
+          type="button"
+          class={"#{@base_class}-clear"}
+          tabindex="-1"
+          data-clear
+          aria-label={@clear_label}
+          hidden={@value in [nil, ""]}
+        >
+          {render_slot(@clear)}
+          <span :if={@clear == []}>×</span>
+        </button>
+        <button
           id={"#{@id}-button"}
           type="button"
           class={"#{@base_class}-toggle"}
@@ -289,7 +335,8 @@ defmodule Doggo.Components.Combobox do
           aria-expanded="false"
           aria-controls={"#{@id}-listbox"}
         >
-          ▼
+          {render_slot(@toggle)}
+          <span :if={@toggle == []}>▼</span>
         </button>
       </div>
       <div id={"#{@id}-listbox"} role="listbox" aria-label={@list_label} hidden>
