@@ -2426,6 +2426,18 @@ defmodule Doggo.ComponentsTest do
   end
 
   describe "frame/1" do
+    test "defaults to a square ratio" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.frame>image</TestComponents.frame>
+        """)
+
+      assert attribute(html, "div", "data-numerator") == "1"
+      assert attribute(html, "div", "data-denominator") == "1"
+    end
+
     test "with ratio" do
       assigns = %{}
 
