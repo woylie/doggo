@@ -282,6 +282,28 @@ defmodule Doggo.FixturesTest do
     )
   end
 
+  test "combobox with a clear button" do
+    assigns = %{}
+
+    assert_fixture(
+      ~H"""
+      <FixtureComponents.combobox
+        id="breed-selector"
+        name="breed"
+        list_label="Breeds"
+        clearable
+        options={[
+          {"Golden Retriever", "golden"},
+          {"Siberian Husky", "husky"},
+          "Dachshund"
+        ]}
+        value="husky"
+      />
+      """,
+      "combobox_clearable.html"
+    )
+  end
+
   test "combobox with grouped options" do
     assigns = %{}
 

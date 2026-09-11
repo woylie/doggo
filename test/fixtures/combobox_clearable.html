@@ -1,0 +1,25 @@
+<div id="breed-selector-combobox" class="combobox" phx-hook="Doggo.Combobox">
+  <div class="combobox-input-wrapper">
+    <input id="breed-selector" type="text" role="combobox" name="breed_search" value="Siberian Husky" aria-autocomplete="list" aria-expanded="false" aria-controls="breed-selector-listbox" autocomplete="off">
+    <button id="breed-selector-clear" type="button" class="combobox-clear" tabindex="-1" data-clear aria-label="Clear">
+      ×
+    </button>
+    <button id="breed-selector-button" type="button" class="combobox-toggle" tabindex="-1" aria-label="Breeds" aria-expanded="false" aria-controls="breed-selector-listbox">
+      ▼
+    </button>
+  </div>
+  <div id="breed-selector-listbox" role="listbox" aria-label="Breeds" hidden>
+    <div id="breed-selector-option-1" role="option" aria-selected="false" data-value="golden">
+  <span class="combobox-option-label">Golden Retriever</span>
+  
+</div><div id="breed-selector-option-2" role="option" aria-selected="true" data-value="husky">
+  <span class="combobox-option-label">Siberian Husky</span>
+  
+</div><div id="breed-selector-option-3" role="option" aria-selected="false" data-value="Dachshund">
+  <span class="combobox-option-label">Dachshund</span>
+  
+</div>
+    
+  </div>
+  <input type="hidden" id="breed-selector-value" name="breed" value="husky">
+</div>

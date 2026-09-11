@@ -94,6 +94,7 @@ defmodule Doggo.Components.Combobox do
   @impl true
   def nested_classes(base_class) do
     [
+      "#{base_class}-clear",
       "#{base_class}-input-wrapper",
       "#{base_class}-option-description",
       "#{base_class}-option-free-text",
@@ -172,6 +173,23 @@ defmodule Doggo.Components.Combobox do
         Example:
 
             options={[[key: "Golden Retriever", value: "golden", description: "Friendly"]]}
+        """
+
+      attr :clearable, :boolean,
+        default: false,
+        doc: """
+        If `true`, a clear button is rendered.
+
+        The button is only rendered when a value is set. Pressing `Escape` on a
+        closed listbox clears the selection whether or not the button is
+        rendered.
+        """
+
+      attr :clear_label, :string,
+        default: "Clear",
+        doc: """
+        Aria label for the clear button. This value should be translated to the
+        language in which the rest of the page is displayed.
         """
 
       attr :free_text, :boolean,
@@ -280,6 +298,18 @@ defmodule Doggo.Components.Combobox do
           {@rest}
           {@shared_rest}
         />
+        <button
+          :if={@clearable}
+          id={"#{@id}-clear"}
+          type="button"
+          class={"#{@base_class}-clear"}
+          tabindex="-1"
+          data-clear
+          aria-label={@clear_label}
+          hidden={@value in [nil, ""]}
+        >
+          ×
+        </button>
         <button
           id={"#{@id}-button"}
           type="button"
