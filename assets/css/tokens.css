@@ -43,6 +43,7 @@
   --color-background-danger-soft: #fed8dc;
   --color-text-danger-soft: #7f0635;
   --color-border-danger-soft: #fd95a7;
+  --color-text-danger: #b10025;
   --color-background-info-solid: #2ee1e0;
   --color-text-info-solid: #141516;
   --color-border-info-solid: #0b9c9a;
@@ -148,6 +149,7 @@
   --color-background-danger-soft: #650527;
   --color-text-danger-soft: #fed1d9;
   --color-border-danger-soft: #92083c;
+  --color-text-danger: #ff7777;
   --color-background-info-solid: #2be5de;
   --color-text-info-solid: #0e1319;
   --color-border-info-solid: #14c0bb;
