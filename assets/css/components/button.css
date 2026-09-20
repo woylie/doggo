@@ -1,13 +1,13 @@
 .button {
-  --button-padding-block: var(--spacer-1);
-  --button-padding-inline: var(--spacer-3);
-  --button-font-size: var(--size-font-sm);
+  --button-padding-block: var(--spacer-2);
+  --button-padding-inline: var(--spacer-4);
+  --button-font-size: var(--size-font-md);
   --button-line-height: var(--size-line-single);
-  --button-accent-color: var(--color-base-black);
   --button-color: inherit;
   --button-background: transparent;
   --button-border-width: var(--border-width-sm);
-  --button-border-color: var(--button-accent-color);
+  --button-border-color: var(--color-text-default);
+  --button-unfilled-color: var(--color-text-default);
   --button-border-radius: var(--radius-sm);
   --button-brightness-hover: 110%;
   --button-brightness-active: 95%;
@@ -17,8 +17,12 @@
   --button-marker-font-size: var(--size-font-xs);
   --button-spinner-size: 1em;
   --button-spinner-border-width: 2px;
-  --button-spinner-track-color: rgb(255 255 255 / 30%);
-  --button-spinner-color: var(--color-background-page);
+  --button-spinner-color: var(--button-color);
+  --button-spinner-track-color: color-mix(
+    in oklab,
+    var(--button-color) 25%,
+    transparent
+  );
   --button-spinner-border-radius: var(--radius-circle);
   --button-spinner-duration: var(--duration-xl);
 
@@ -62,46 +66,50 @@
     }
 
     &[data-variant="primary"] {
-      --button-accent-color: var(--color-border-primary-solid);
       --button-color: var(--color-text-primary-solid);
       --button-background: var(--color-background-primary-solid);
+      --button-border-color: var(--color-border-primary-solid);
+      --button-unfilled-color: var(--color-text-primary-soft);
     }
 
     &[data-variant="secondary"] {
-      --button-accent-color: var(--color-border-secondary-solid);
       --button-color: var(--color-text-secondary-solid);
       --button-background: var(--color-background-secondary-solid);
+      --button-border-color: var(--color-border-secondary-solid);
+      --button-unfilled-color: var(--color-text-secondary-soft);
     }
 
     &[data-variant="info"] {
-      --button-accent-color: var(--color-border-info-solid);
       --button-color: var(--color-text-info-solid);
       --button-background: var(--color-background-info-solid);
+      --button-border-color: var(--color-border-info-solid);
+      --button-unfilled-color: var(--color-text-info-soft);
     }
 
     &[data-variant="success"] {
-      --button-accent-color: var(--color-border-success-solid);
       --button-color: var(--color-text-success-solid);
       --button-background: var(--color-background-success-solid);
+      --button-border-color: var(--color-border-success-solid);
+      --button-unfilled-color: var(--color-text-success-soft);
     }
 
     &[data-variant="warning"] {
-      --button-accent-color: var(--color-border-warning-solid);
       --button-color: var(--color-text-warning-solid);
       --button-background: var(--color-background-warning-solid);
+      --button-border-color: var(--color-border-warning-solid);
+      --button-unfilled-color: var(--color-text-warning-soft);
     }
 
     &[data-variant="danger"] {
-      --button-accent-color: var(--color-border-danger-solid);
       --button-color: var(--color-text-danger-solid);
       --button-background: var(--color-background-danger-solid);
+      --button-border-color: var(--color-border-danger-solid);
+      --button-unfilled-color: var(--color-text-danger-soft);
     }
 
-    /* An unfilled button takes its text colour from the variant's accent
-     * colour, which the solid fill puts on the border. */
     &[data-fill="outline"],
     &[data-fill="text"] {
-      --button-color: var(--button-accent-color);
+      --button-color: var(--button-unfilled-color);
       --button-background: transparent;
     }
 
@@ -112,18 +120,21 @@
 
   &[data-size="small"] {
     --button-padding-block: var(--spacer-1);
-    --button-padding-inline: var(--spacer-1);
-    --button-font-size: var(--size-font-xs);
+    --button-padding-inline: var(--spacer-3);
+    --button-font-size: var(--size-font-sm);
   }
 
   &[data-size="medium"] {
-    --button-font-size: var(--size-font-md);
+    --button-padding-block: var(--spacer-3);
+    --button-padding-inline: var(--spacer-5);
+    --button-font-size: var(--size-font-lg);
   }
 
   &[data-size="large"] {
     --button-padding-block: var(--spacer-2);
-    --button-padding-inline: var(--spacer-4);
-    --button-font-size: var(--size-font-lg);
+    --button-padding-inline: var(--spacer-6);
+    --button-font-size: var(--size-font-xl);
+    --button-line-height: var(--size-line-one-and-a-half);
   }
 
   &[data-shape="circle"] {
@@ -140,8 +151,7 @@
   }
 
   &[aria-busy] {
-    --button-color: transparent !important;
-
+    color: transparent;
     pointer-events: none;
   }
 

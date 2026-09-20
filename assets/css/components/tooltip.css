@@ -4,7 +4,7 @@
   --tooltip-padding: var(--spacer-2);
   --tooltip-font-size: var(--size-font-sm);
   --tooltip-color: var(--color-background-page);
-  --tooltip-background: var(--color-gray-900);
+  --tooltip-background: var(--color-text-default);
   --tooltip-border-radius: var(--radius-sm);
   --tooltip-shadow: var(--shadow-elevation-medium);
   --tooltip-gap: var(--spacer-1);

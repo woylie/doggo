@@ -7,6 +7,7 @@
   --tab-navigation-tab-padding-inline: var(--spacer-4);
   --tab-navigation-tab-color: var(--color-text-muted);
   --tab-navigation-tab-border-radius: var(--radius-md);
+  --tab-navigation-tab-color-current: var(--color-text-secondary-soft);
   --tab-navigation-tab-font-weight-current: var(--weight-medium);
   --tab-navigation-tab-background-current: var(
     --color-background-secondary-soft
@@ -37,6 +38,7 @@
 
         &[aria-current] {
           font-weight: var(--tab-navigation-tab-font-weight-current);
+          color: var(--tab-navigation-tab-color-current);
           background: var(--tab-navigation-tab-background-current);
           border: var(--tab-navigation-border-width) solid
             var(--tab-navigation-border-color);
