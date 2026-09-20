@@ -234,9 +234,10 @@ defmodule Doggo.Storybook.Combobox do
       %VariationGroup{
         id: :required,
         template: """
-        <form class="stack">
+        <form style="display: flex; flex-direction: column; gap: 1.5rem;
+                     align-items: start">
           <.psb-variation-group/>
-          <button type="submit" class="button">Submit</button>
+          <button type="submit">Submit</button>
         </form>
         """,
         variations: [
