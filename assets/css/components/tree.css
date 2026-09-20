@@ -35,7 +35,6 @@
     block-size: var(--tree-item-toggle-size);
     padding: 0;
     font-size: var(--tree-item-caret-font-size);
-    line-height: 1;
     color: var(--tree-item-caret-color);
     cursor: pointer;
     background: none;

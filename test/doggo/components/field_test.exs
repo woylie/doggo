@@ -859,7 +859,9 @@ defmodule Doggo.Components.FieldTest do
         </.form>
         """)
 
-      assert text(html, ".field-switch-state [data-state='off']") == "Off"
+      assert text(html, ".field-switch-state-on") == "On"
+      assert text(html, ".field-switch-state-off") == "Off"
+      refute attribute(html, "input[role='switch']", "checked")
     end
 
     test "with switch on" do
@@ -879,7 +881,9 @@ defmodule Doggo.Components.FieldTest do
         </.form>
         """)
 
-      assert text(html, ".field-switch-state [data-state='on']") == "On"
+      assert text(html, ".field-switch-state-on") == "On"
+      assert text(html, ".field-switch-state-off") == "Off"
+      assert attribute(html, "input[role='switch']", "checked")
     end
 
     test "with select" do

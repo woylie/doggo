@@ -255,6 +255,11 @@ defmodule Doggo.Components.Field do
   end
 
   @impl true
+  def css_path do
+    "components/field.css"
+  end
+
+  @impl true
   def config do
     [
       type: :form,
@@ -281,13 +286,16 @@ defmodule Doggo.Components.Field do
       "#{base_class}-input-addon-left",
       "#{base_class}-input-addon-right",
       "#{base_class}-input-wrapper",
+      "#{base_class}-option-description",
       "#{base_class}-optional-mark",
       "#{base_class}-radio-group",
       "#{base_class}-required-mark",
       "#{base_class}-select",
       "#{base_class}-switch",
       "#{base_class}-switch-label",
-      "#{base_class}-switch-state"
+      "#{base_class}-switch-state",
+      "#{base_class}-switch-state-off",
+      "#{base_class}-switch-state-on"
     ]
   end
 
@@ -618,6 +626,13 @@ defmodule Doggo.Components.Field do
             gettext_module={@gettext_module}
           />
         </legend>
+        <.field_description
+          :if={@description != []}
+          for={@id}
+          base_class={@base_class}
+        >
+          {render_slot(@description)}
+        </.field_description>
         <div>
           <input type="hidden" name={@name <> "[]"} value="" />
           <.checkbox
@@ -635,13 +650,6 @@ defmodule Doggo.Components.Field do
         </div>
       </fieldset>
       <.field_errors for={@id} errors={@errors} base_class={@base_class} />
-      <.field_description
-        :if={@description != []}
-        for={@id}
-        base_class={@base_class}
-      >
-        {render_slot(@description)}
-      </.field_description>
     </div>
     """
   end
@@ -673,6 +681,13 @@ defmodule Doggo.Components.Field do
             gettext_module={@gettext_module}
           />
         </legend>
+        <.field_description
+          :if={@description != []}
+          for={@id}
+          base_class={@base_class}
+        >
+          {render_slot(@description)}
+        </.field_description>
         <div>
           <Doggo.Components.RadioGroup.radio
             :for={option <- @options}
@@ -688,13 +703,6 @@ defmodule Doggo.Components.Field do
         </div>
       </fieldset>
       <.field_errors for={@id} errors={@errors} base_class={@base_class} />
-      <.field_description
-        :if={@description != []}
-        for={@id}
-        base_class={@base_class}
-      >
-        {render_slot(@description)}
-      </.field_description>
     </div>
     """
   end
@@ -783,15 +791,11 @@ defmodule Doggo.Components.Field do
           {@rest}
         />
         <span class={"#{@base_class}-switch-state"}>
-          <span
-            data-state={if @checked, do: "on", else: "off"}
-            aria-hidden="true"
-          >
-            <%= if @checked do %>
-              {@on_text}
-            <% else %>
-              {@off_text}
-            <% end %>
+          <span class={"#{@base_class}-switch-state-on"} aria-hidden="true">
+            {@on_text}
+          </span>
+          <span class={"#{@base_class}-switch-state-off"} aria-hidden="true">
+            {@off_text}
           </span>
         </span>
       </.label>
@@ -1259,16 +1263,16 @@ defmodule Doggo.Components.Field do
             gettext_module={@gettext_module}
           />
         </legend>
+        <.field_description
+          :if={@description != []}
+          for={@id}
+          base_class={@base_class}
+        >
+          {render_slot(@description)}
+        </.field_description>
         {@input.(input_assigns(assigns))}
       </fieldset>
       <.field_errors for={@id} errors={@errors} base_class={@base_class} />
-      <.field_description
-        :if={@description != []}
-        for={@id}
-        base_class={@base_class}
-      >
-        {render_slot(@description)}
-      </.field_description>
     </div>
     """
   end

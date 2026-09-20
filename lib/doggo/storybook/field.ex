@@ -10,7 +10,12 @@ defmodule Doggo.Storybook.Field do
 
   def template do
     """
-    <Phoenix.Component.form for={%{}} as={:story} :let={f}>
+    <Phoenix.Component.form
+      for={%{}}
+      as={:story}
+      :let={f}
+      style="display: grid; gap: 1rem; inline-size: 100%"
+    >
       <.psb-variation-group field={f[:field]} />
     </Phoenix.Component.form>
     """
@@ -138,7 +143,7 @@ defmodule Doggo.Storybook.Field do
             attributes: %{
               label: "Select",
               type: "select",
-              options: ["Option 1", "Option 2", "Option 3"]
+              options: ["Small", "Medium", "Large"]
             }
           },
           %Variation{
@@ -147,7 +152,7 @@ defmodule Doggo.Storybook.Field do
               label: "Multiple select",
               type: "select",
               multiple: true,
-              options: ["Option 1", "Option 2", "Option 3"]
+              options: ["Playful", "Loyal", "Energetic"]
             }
           },
           %Variation{
@@ -155,7 +160,7 @@ defmodule Doggo.Storybook.Field do
             attributes: %{
               label: "Radio group",
               type: "radio-group",
-              options: ["Option 1", "Option 2", "Option 3"]
+              options: ["Puppy", "Adult", "Senior"]
             }
           },
           %Variation{
@@ -177,7 +182,11 @@ defmodule Doggo.Storybook.Field do
             attributes: %{
               label: "Checkbox group",
               type: "checkbox-group",
-              options: ["Option 1", "Option 2", "Option 3"]
+              options: [
+                "Garden required",
+                "Good with cats",
+                "Good with children"
+              ]
             }
           }
         ]
@@ -199,7 +208,7 @@ defmodule Doggo.Storybook.Field do
             attributes: %{
               label: "Select",
               type: "select",
-              options: ["Option 1", "Option 2", "Option 3"],
+              options: ["Small", "Medium", "Large"],
               validations: [required: true]
             }
           },
@@ -208,7 +217,7 @@ defmodule Doggo.Storybook.Field do
             attributes: %{
               label: "Radio group",
               type: "radio-group",
-              options: ["Option 1", "Option 2", "Option 3"],
+              options: ["Puppy", "Adult", "Senior"],
               validations: [required: true]
             }
           },
@@ -233,7 +242,11 @@ defmodule Doggo.Storybook.Field do
             attributes: %{
               label: "Checkbox group",
               type: "checkbox-group",
-              options: ["Option 1", "Option 2", "Option 3"],
+              options: [
+                "Garden required",
+                "Good with cats",
+                "Good with children"
+              ],
               validations: [required: true]
             }
           }
@@ -320,9 +333,100 @@ defmodule Doggo.Storybook.Field do
             },
             slots: [
               """
-              <:addon_left>Tell us about yourself.</:addon_left>
+              <:description>Tell us about yourself.</:description>
               """
             ]
+          },
+          %Variation{
+            id: :radio_group_with_option_descriptions,
+            attributes: %{
+              label: "Radio group with option descriptions",
+              type: "radio-group",
+              options: [
+                [
+                  key: "Daily",
+                  value: "daily",
+                  description: "One digest each morning."
+                ],
+                [
+                  key: "Weekly",
+                  value: "weekly",
+                  description: "Every Monday."
+                ],
+                [
+                  key: "Never",
+                  value: "never",
+                  description: "No email at all."
+                ]
+              ]
+            }
+          },
+          %Variation{
+            id: :checkbox_group_with_option_descriptions,
+            attributes: %{
+              label: "Checkbox group with option descriptions",
+              type: "checkbox-group",
+              options: [
+                [
+                  key: "Email",
+                  value: "email",
+                  description: "Sent to your primary address."
+                ],
+                [
+                  key: "SMS",
+                  value: "sms",
+                  description: "Standard rates apply."
+                ],
+                [
+                  key: "Push",
+                  value: "push",
+                  description: "Requires the mobile app."
+                ]
+              ]
+            }
+          },
+          %Variation{
+            id: :radio_group_with_descriptions_and_errors,
+            attributes: %{
+              label: "Radio group",
+              type: "radio-group",
+              errors: ["select how often you want to hear from us"],
+              options: [
+                [
+                  key: "Daily",
+                  value: "daily",
+                  description: "One digest each morning."
+                ],
+                [key: "Weekly", value: "weekly", description: "Every Monday."],
+                [key: "Never", value: "never", description: "No email at all."]
+              ]
+            }
+          },
+          %Variation{
+            id: :radio_group_with_field_description,
+            attributes: %{
+              label: "Radio group",
+              type: "radio-group",
+              options: ["Puppy", "Adult", "Senior"]
+            },
+            slots: [
+              """
+              <:description>Applies to the whole group.</:description>
+              """
+            ]
+          },
+          %Variation{
+            id: :checkbox_group_with_errors,
+            attributes: %{
+              label: "Checkbox group",
+              type: "checkbox-group",
+              options: [
+                "Garden required",
+                "Good with cats",
+                "Good with children"
+              ],
+              errors: ["select at least one option"]
+            }
           }
         ]
       },

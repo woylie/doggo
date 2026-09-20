@@ -76,8 +76,8 @@
     > h2 {
       margin: 0;
       font-size: var(--dialog-title-font-size);
-      line-height: var(--dialog-title-line-height);
       font-weight: var(--dialog-title-font-weight);
+      line-height: var(--dialog-title-line-height);
     }
 
     > button {

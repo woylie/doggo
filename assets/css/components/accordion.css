@@ -67,8 +67,8 @@
   }
 
   > div > [role="region"] {
-    padding-inline: var(--accordion-panel-padding-inline);
     padding-block: var(--accordion-panel-padding-block-start)
       var(--accordion-panel-padding-block-end);
+    padding-inline: var(--accordion-panel-padding-inline);
   }
 }

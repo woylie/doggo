@@ -41,6 +41,11 @@ defmodule Doggo.Components.FieldGroup do
   end
 
   @impl true
+  def css_path do
+    "components/field-group.css"
+  end
+
+  @impl true
   def config do
     [
       type: :form,
