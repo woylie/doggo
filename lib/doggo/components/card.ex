@@ -36,6 +36,11 @@ defmodule Doggo.Components.Card do
   end
 
   @impl true
+  def css_path do
+    "components/card.css"
+  end
+
+  @impl true
   def config do
     [
       type: :data,

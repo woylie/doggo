@@ -4,6 +4,14 @@ defmodule Doggo.Storybook.Card do
 
   def layout, do: :one_column
 
+  def template do
+    """
+    <div style="inline-size: 20rem">
+      <.psb-variation/>
+    </div>
+    """
+  end
+
   def variations(_opts) do
     [
       %Variation{
