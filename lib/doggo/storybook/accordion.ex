@@ -2,6 +2,16 @@ defmodule Doggo.Storybook.Accordion do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
+  def layout, do: :one_column
+
+  def template do
+    """
+    <div style="inline-size: 100%">
+      <.psb-variation/>
+    </div>
+    """
+  end
+
   def variations(_opts) do
     [
       %Variation{
