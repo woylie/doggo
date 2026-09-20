@@ -89,6 +89,43 @@ defmodule Doggo.Storybook.Table do
         ]
       },
       %Variation{
+        id: :row_click,
+        note: """
+        `row_click` sets `phx-click` on each cell, which only pointer users can
+        reach. Repeat the action inside the row, as the button in the last
+        column does here, so that it is also reachable by keyboard.
+        """,
+        template: """
+        <div style="inline-size: 100%">
+          <.psb-variation/>
+          <p id="table-row-clicked-1" hidden>You picked George.</p>
+          <p id="table-row-clicked-2" hidden>You picked Mary.</p>
+        </div>
+        """,
+        attributes: %{
+          id: "pets",
+          rows: [
+            %{id: 1, name: "George", age: 8},
+            %{id: 2, name: "Mary", age: 5}
+          ],
+          row_click: {:eval, ~s|&JS.toggle(to: "#table-row-clicked-\#{&1.id}")|}
+        },
+        slots: [
+          """
+          <:col :let={p} label="Name"><%= p.name %></:col>
+          <:col :let={p} label="Age"><%= p.age %></:col>
+          <:action :let={p} label="Actions">
+            <button
+              type="button"
+              phx-click={JS.toggle(to: "#table-row-clicked-\#{p.id}")}
+            >
+              Pick
+            </button>
+          </:action>
+          """
+        ]
+      },
+      %Variation{
         id: :scrolling,
         note: """
         The wrapper is in the tab order so that the table can also be scrolled
