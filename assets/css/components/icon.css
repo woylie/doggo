@@ -1,11 +1,14 @@
 .icon {
+  --icon-gap: var(--spacer-1);
+  --icon-size: 1cap;
+
   display: inline-flex;
-  gap: var(--spacer-1);
+  gap: var(--icon-gap);
   align-items: baseline;
 
   svg {
-    inline-size: 1cap;
-    block-size: 1cap;
+    inline-size: var(--icon-size);
+    block-size: var(--icon-size);
   }
 
   &[data-text-position="before"] {

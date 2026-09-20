@@ -1,4 +1,14 @@
 .tooltip-container {
+  --tooltip-offset: var(--spacer-1);
+  --tooltip-max-inline-size: var(--size-measure);
+  --tooltip-padding: var(--spacer-2);
+  --tooltip-font-size: var(--size-font-s);
+  --tooltip-color: var(--color-background-foundation);
+  --tooltip-background: var(--color-gray-900);
+  --tooltip-border-radius: var(--radius-s);
+  --tooltip-shadow: var(--shadow-elevation-medium);
+  --tooltip-gap: var(--spacer-1);
+
   position: relative;
   display: inline-block;
 
@@ -7,17 +17,17 @@
   [role="tooltip"] {
     position: absolute;
     inset-inline-start: 0;
-    bottom: calc(100% + var(--spacer-1));
+    bottom: calc(100% + var(--tooltip-offset));
     z-index: 1;
     display: none;
     inline-size: max-content;
-    max-inline-size: var(--size-measure);
-    padding: var(--spacer-2);
-    font-size: var(--size-font-s);
-    color: var(--color-background-foundation);
-    background-color: var(--color-gray-900);
-    border-radius: var(--radius-s);
-    box-shadow: var(--shadow-elevation-medium);
+    max-inline-size: var(--tooltip-max-inline-size);
+    padding: var(--tooltip-padding);
+    font-size: var(--tooltip-font-size);
+    color: var(--tooltip-color);
+    background-color: var(--tooltip-background);
+    border-radius: var(--tooltip-border-radius);
+    box-shadow: var(--tooltip-shadow);
 
     /* An invisible bridge across the gap to the trigger, so that the pointer
      * can travel onto the tooltip without leaving the component and hiding it.
@@ -26,7 +36,7 @@
       position: absolute;
       inset-inline: 0;
       top: 100%;
-      height: var(--spacer-1);
+      height: var(--tooltip-offset);
       content: "";
     }
 
@@ -35,7 +45,7 @@
     }
 
     > * + * {
-      margin-block-start: var(--spacer-1);
+      margin-block-start: var(--tooltip-gap);
     }
   }
 

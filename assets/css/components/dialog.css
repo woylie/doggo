@@ -1,33 +1,43 @@
 .modal,
 .alert-dialog {
+  --dialog-background: var(--color-background-surface-1);
+  --dialog-border-width: var(--border-width-s);
+  --dialog-border-color: var(--color-border-neutral-1);
+  --dialog-border-radius: var(--radius-m);
+  --dialog-backdrop-background: rgb(0 0 0 / 40%);
+  --dialog-padding: var(--spacer-4);
+  --dialog-gap: var(--spacer-3);
+  --dialog-header-gap: var(--spacer-2);
+  --dialog-footer-gap: var(--spacer-2);
+
   padding: 0;
   color: inherit;
-  background-color: var(--color-background-surface-1);
-  border: var(--border-width-s) solid var(--color-border-neutral-1);
-  border-radius: var(--radius-m);
+  background-color: var(--dialog-background);
+  border: var(--dialog-border-width) solid var(--dialog-border-color);
+  border-radius: var(--dialog-border-radius);
 
   &::backdrop {
-    background-color: rgb(0 0 0 / 40%);
+    background-color: var(--dialog-backdrop-background);
   }
 
   section {
     display: flex;
     flex-direction: column;
-    gap: var(--spacer-3);
-    padding: var(--spacer-4);
+    gap: var(--dialog-gap);
+    padding: var(--dialog-padding);
   }
 
   header {
     display: flex;
     flex-direction: row-reverse;
-    gap: var(--spacer-2);
+    gap: var(--dialog-header-gap);
     align-items: baseline;
     justify-content: space-between;
   }
 
   footer {
     display: flex;
-    gap: var(--spacer-2);
+    gap: var(--dialog-footer-gap);
     justify-content: flex-end;
   }
 }

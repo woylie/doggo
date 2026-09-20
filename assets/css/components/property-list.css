@@ -1,8 +1,13 @@
 .property-list {
+  --property-list-row-gap: var(--size-line-single);
+  --property-list-gap: var(--spacer-2);
+  --property-list-term-font-weight: var(--weight-medium);
+  --property-list-term-inline-size: 8rem;
+
   > div {
     > dt {
       margin: 0;
-      font-weight: var(--weight-medium);
+      font-weight: var(--property-list-term-font-weight);
     }
 
     > dd {
@@ -11,18 +16,18 @@
   }
 
   & > div + div {
-    margin-block-start: var(--size-line-single);
+    margin-block-start: var(--property-list-row-gap);
   }
 
   @media (width >= 768px) {
     > div {
       display: flex;
       flex-direction: row;
-      gap: var(--spacer-2);
+      gap: var(--property-list-gap);
       align-items: baseline;
 
       > dt {
-        flex: 0 0 8rem;
+        flex: 0 0 var(--property-list-term-inline-size);
       }
     }
   }

@@ -1,12 +1,21 @@
+/**
+ * Tokens are divided into:
+ *
+ * 1. Base color tokens
+ * 2. Semantic color tokens that reference the base color tokens
+ * 3. Global non-color tokens
+ * 4. Component tokens that reference the semantic color tokens and non-color
+ *    tokens. Defined in the component styles.
+ *
+ * Component tokens are named --<component>[-<part>]-<property>[-<state>] (e.g.
+ * --button-background, --combobox-option-background-selected,
+ * --tree-item-toggle-size).
+ */
+
 :root {
+  /* Base colors */
   --color-base-black: #000;
   --color-base-white: #fff;
-  --border-width-s: 1px;
-  --border-width-m: 3px;
-  --border-width-l: 6px;
-  --breakpoint-tablet: 769px;
-  --breakpoint-desktop: 1024px;
-  --breakpoint-widescreen: 1216px;
   --color-yellow-0: #fbf9f7;
   --color-yellow-100: #ebcdaa;
   --color-yellow-200: #e1a353;
@@ -73,6 +82,8 @@
   --color-indigo-800: #091c3b;
   --color-indigo-900: #030711;
   --color-indigo-1000: #000;
+
+  /* Semantic colors */
   --color-text-default-normal: var(--color-base-black);
   --color-text-primary-normal: var(--color-blue-500);
   --color-text-primary-subdued: var(--color-base-white);
@@ -119,8 +130,18 @@
   --color-border-danger-normal: var(--color-red-500);
   --color-border-danger-subdued: var(--color-blue-100);
   --color-border-disabled-normal: var(--color-gray-100);
-  --duration-100: 100ms;
-  --duration-200: 200ms;
+
+  /* Everything else */
+  --border-width-s: 1px;
+  --border-width-m: 3px;
+  --border-width-l: 6px;
+  --breakpoint-tablet: 769px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-widescreen: 1216px;
+  --duration-s: 100ms;
+  --duration-m: 200ms;
+  --duration-l: 400ms;
+  --duration-xl: 600ms;
   --font-family-main: system-ui, sans-serif;
   --font-family-mono: ui-monospace, monospace;
   --letter-spacing-normal: normal;

@@ -1,22 +1,48 @@
 .button {
+  --button-padding-block: var(--spacer-1);
+  --button-padding-inline: var(--spacer-3);
+  --button-font-size: var(--size-font-s);
+  --button-line-height: var(--size-line-single);
+  --button-accent-color: var(--color-base-black);
+  --button-color: inherit;
+  --button-background: transparent;
+  --button-border-width: var(--border-width-s);
+  --button-border-color: var(--button-accent-color);
+  --button-border-radius: var(--radius-s);
+  --button-brightness-hover: 110%;
+  --button-brightness-active: 95%;
+  --button-circle-size: 3.5rem;
+  --button-pill-min-inline-size: 8ch;
+  --button-marker-gap: var(--spacer-2);
+  --button-marker-font-size: var(--size-font-xs);
+  --button-spinner-size: 1em;
+  --button-spinner-border-width: 2px;
+  --button-spinner-track-color: rgb(255 255 255 / 30%);
+  --button-spinner-color: var(--color-background-foundation);
+  --button-spinner-border-radius: var(--radius-circle);
+  --button-spinner-duration: var(--duration-xl);
+
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacer-1) var(--spacer-3);
-  font-size: var(--size-font-s);
-  line-height: var(--size-line-single);
+  padding: var(--button-padding-block) var(--button-padding-inline);
+  font-size: var(--button-font-size);
+  line-height: var(--button-line-height);
+  color: var(--button-color);
   text-decoration: none;
   cursor: pointer;
-  border: var(--border-width-s) solid black;
-  border-radius: var(--radius-s);
+  background: var(--button-background);
+  border: var(--button-border-width) solid var(--button-border-color);
+  border-radius: var(--button-border-radius);
 
   &:disabled,
   &[aria-disabled="true"] {
-    color: var(--color-text-disabled-subdued);
+    --button-color: var(--color-text-disabled-subdued);
+    --button-background: var(--color-background-disabled-normal);
+    --button-border-color: var(--color-border-disabled-normal);
+
     cursor: not-allowed;
-    background: var(--color-background-disabled-normal);
-    border-color: var(--color-border-disabled-normal);
 
     &:hover,
     &:focus {
@@ -28,132 +54,114 @@
     &:hover,
     &:focus {
       text-decoration: none;
-      filter: brightness(110%);
+      filter: brightness(var(--button-brightness-hover));
     }
 
     &:active {
-      filter: brightness(95%);
+      filter: brightness(var(--button-brightness-active));
     }
 
     &[data-variant="primary"] {
-      color: var(--color-text-primary-subdued);
-      background: var(--color-background-primary-normal);
-      border-color: var(--color-border-primary-normal);
+      --button-accent-color: var(--color-border-primary-normal);
+      --button-color: var(--color-text-primary-subdued);
+      --button-background: var(--color-background-primary-normal);
     }
 
     &[data-variant="secondary"] {
-      color: var(--color-text-secondary-subdued);
-      background: var(--color-background-secondary-normal);
-      border-color: var(--color-border-secondary-normal);
+      --button-accent-color: var(--color-border-secondary-normal);
+      --button-color: var(--color-text-secondary-subdued);
+      --button-background: var(--color-background-secondary-normal);
     }
 
     &[data-variant="info"] {
-      color: var(--color-text-info-subdued);
-      background: var(--color-background-info-normal);
-      border-color: var(--color-border-info-normal);
+      --button-accent-color: var(--color-border-info-normal);
+      --button-color: var(--color-text-info-subdued);
+      --button-background: var(--color-background-info-normal);
     }
 
     &[data-variant="success"] {
-      color: var(--color-text-success-subdued);
-      background: var(--color-background-success-normal);
-      border-color: var(--color-border-success-normal);
+      --button-accent-color: var(--color-border-success-normal);
+      --button-color: var(--color-text-success-subdued);
+      --button-background: var(--color-background-success-normal);
     }
 
     &[data-variant="warning"] {
-      color: var(--color-text-warning-subdued);
-      background: var(--color-background-warning-normal);
-      border-color: var(--color-border-warning-normal);
+      --button-accent-color: var(--color-border-warning-normal);
+      --button-color: var(--color-text-warning-subdued);
+      --button-background: var(--color-background-warning-normal);
     }
 
     &[data-variant="danger"] {
-      color: var(--color-text-danger-subdued);
-      background: var(--color-background-danger-normal);
-      border-color: var(--color-border-danger-normal);
+      --button-accent-color: var(--color-border-danger-normal);
+      --button-color: var(--color-text-danger-subdued);
+      --button-background: var(--color-background-danger-normal);
     }
 
-    &[data-fill="outline"] {
-      background: transparent;
-    }
-
-    &[data-fill="text"] {
-      background: none;
-      border-color: transparent;
-    }
-
+    /* An unfilled button takes its text colour from the variant's accent
+     * colour, which the solid fill puts on the border. */
     &[data-fill="outline"],
     &[data-fill="text"] {
-      &[data-variant="primary"] {
-        color: var(--color-border-primary-normal);
-      }
+      --button-color: var(--button-accent-color);
+      --button-background: transparent;
+    }
 
-      &[data-variant="secondary"] {
-        color: var(--color-border-secondary-normal);
-      }
-
-      &[data-variant="info"] {
-        color: var(--color-border-info-normal);
-      }
-
-      &[data-variant="success"] {
-        color: var(--color-border-success-normal);
-      }
-
-      &[data-variant="warning"] {
-        color: var(--color-border-warning-normal);
-      }
-
-      &[data-variant="danger"] {
-        color: var(--color-border-danger-normal);
-      }
+    &[data-fill="text"] {
+      --button-border-color: transparent;
     }
   }
 
   &[data-size="small"] {
-    padding: var(--spacer-1);
-    font-size: var(--size-font-xs);
+    --button-padding-block: var(--spacer-1);
+    --button-padding-inline: var(--spacer-1);
+    --button-font-size: var(--size-font-xs);
   }
 
   &[data-size="medium"] {
-    font-size: var(--size-font-m);
+    --button-font-size: var(--size-font-m);
   }
 
   &[data-size="large"] {
-    padding: var(--spacer-2) var(--spacer-4);
-    font-size: var(--size-font-l);
+    --button-padding-block: var(--spacer-2);
+    --button-padding-inline: var(--spacer-4);
+    --button-font-size: var(--size-font-l);
   }
 
   &[data-shape="circle"] {
-    inline-size: 3.5rem;
-    block-size: 3.5rem;
-    border-radius: var(--radius-circle);
+    --button-border-radius: var(--radius-circle);
+
+    inline-size: var(--button-circle-size);
+    block-size: var(--button-circle-size);
   }
 
   &[data-shape="pill"] {
-    min-inline-size: 8ch;
-    border-radius: var(--radius-pill);
+    --button-border-radius: var(--radius-pill);
+
+    min-inline-size: var(--button-pill-min-inline-size);
   }
 
   &[aria-busy] {
-    color: transparent !important;
+    --button-color: transparent !important;
+
     pointer-events: none;
   }
 
   &[aria-busy]::after {
     position: absolute;
-    inline-size: 1em;
-    block-size: 1em;
+    inline-size: var(--button-spinner-size);
+    block-size: var(--button-spinner-size);
     content: "";
-    border: 2px solid rgb(255 255 255 / 30%);
-    border-top-color: var(--color-background-foundation);
-    border-radius: var(--radius-circle);
-    animation: spin 0.6s linear infinite;
+    border: var(--button-spinner-border-width) solid
+      var(--button-spinner-track-color);
+    border-top-color: var(--button-spinner-color);
+    border-radius: var(--button-spinner-border-radius);
+    animation: spin var(--button-spinner-duration) linear infinite;
   }
 
   &[aria-controls][aria-expanded] {
     &::before {
       display: inline-block;
-      margin-inline-end: var(--spacer-2);
-      font-size: var(--size-font-xs);
+      margin-inline-end: var(--button-marker-gap);
+      font-size: var(--button-marker-font-size);
     }
 
     &[aria-expanded="false"]::before {

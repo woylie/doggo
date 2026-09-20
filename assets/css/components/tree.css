@@ -1,24 +1,32 @@
 .tree,
 .tree [role="group"] {
-  padding-inline-start: var(--spacer-4);
+  padding-inline-start: var(--tree-group-padding-inline-start);
   margin: 0;
   list-style: none;
 }
 
 .tree {
+  --tree-group-padding-inline-start: var(--spacer-4);
+  --tree-item-padding-block: var(--spacer-1);
+  --tree-item-font-weight-tabbable: var(--weight-bold);
+  --tree-item-outline-width: var(--border-width-m);
+  --tree-item-outline-color: var(--color-border-primary-normal);
+  --tree-item-outline-offset: var(--border-width-s);
+  --tree-item-toggle-size: var(--spacer-6);
+
   padding-inline-start: 0;
 }
 
 .tree [role="treeitem"] {
-  padding: var(--spacer-1) 0;
+  padding: var(--tree-item-padding-block) 0;
 
   &[tabindex="0"] > span {
-    font-weight: var(--weight-bold);
+    font-weight: var(--tree-item-font-weight-tabbable);
   }
 
   &:focus-visible {
-    outline: var(--border-width-m) solid var(--color-border-primary-normal);
-    outline-offset: var(--border-width-s);
+    outline: var(--tree-item-outline-width) solid var(--tree-item-outline-color);
+    outline-offset: var(--tree-item-outline-offset);
   }
 
   &[aria-selected="true"] > span::after {
@@ -29,8 +37,8 @@
     /* WCAG 2.5.8 minimum target size is 24px */
     display: inline-grid;
     place-items: center;
-    inline-size: var(--spacer-6);
-    block-size: var(--spacer-6);
+    inline-size: var(--tree-item-toggle-size);
+    block-size: var(--tree-item-toggle-size);
     padding: 0;
     vertical-align: middle;
     cursor: pointer;
