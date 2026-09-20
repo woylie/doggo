@@ -147,9 +147,22 @@ defmodule Doggo.Storybook do
 
   @doc false
   def modifier_groups(modifiers, storybook_module, opts) do
+    skipped = skipped_modifier_groups(storybook_module, opts)
+
     modifiers
+    |> Enum.reject(fn {name, _} -> name in skipped end)
     |> Enum.map(&modifier_group(&1, storybook_module, opts))
     |> Enum.reject(&is_nil/1)
+  end
+
+  defp skipped_modifier_groups(storybook_module, opts) do
+    {:module, _} = Code.ensure_loaded(storybook_module)
+
+    if function_exported?(storybook_module, :skipped_modifier_groups, 1) do
+      storybook_module.skipped_modifier_groups(opts)
+    else
+      []
+    end
   end
 
   @doc false
