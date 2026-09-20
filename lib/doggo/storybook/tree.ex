@@ -6,6 +6,14 @@ defmodule Doggo.Storybook.Tree do
 
   def dependent_components, do: [:tree_item]
 
+  def template do
+    """
+    <div style="inline-size: 100%">
+      <.psb-variation/>
+    </div>
+    """
+  end
+
   def variations(opts) do
     [
       %Variation{
