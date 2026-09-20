@@ -1,70 +1,82 @@
 .tag {
+  --tag-gap: var(--spacer-1);
+  --tag-padding-block: 0;
+  --tag-padding-inline: var(--spacer-2);
+  --tag-font-size: var(--size-font-s);
+  --tag-line-height: var(--size-line-single);
+  --tag-color: var(--color-text-default-normal);
+  --tag-background: var(--color-background-disabled-normal);
+  --tag-border-width: var(--border-width-s);
+  --tag-border-color: var(--color-border-neutral-1);
+  --tag-border-radius: var(--radius-s);
+
   display: inline-flex;
-  gap: var(--spacer-1);
+  gap: var(--tag-gap);
   align-items: center;
   justify-content: center;
-  padding: 0 var(--spacer-2);
-  font-size: var(--size-font-s);
-  line-height: var(--size-line-single);
-  color: var(--color-text-default-normal);
-  background-color: var(--color-background-disabled-normal);
-  border: var(--border-width-s) solid var(--color-border-neutral-1);
-  border-radius: var(--radius-s);
+  padding: var(--tag-padding-block) var(--tag-padding-inline);
+  font-size: var(--tag-font-size);
+  line-height: var(--tag-line-height);
+  color: var(--tag-color);
+  background-color: var(--tag-background);
+  border: var(--tag-border-width) solid var(--tag-border-color);
+  border-radius: var(--tag-border-radius);
 
   &[data-variant="primary"] {
-    color: var(--color-text-primary-normal);
-    background: var(--color-background-primary-subdued);
-    border-color: var(--color-border-primary-subdued);
+    --tag-color: var(--color-text-primary-normal);
+    --tag-background: var(--color-background-primary-subdued);
+    --tag-border-color: var(--color-border-primary-subdued);
   }
 
   &[data-variant="secondary"] {
-    color: var(--color-text-secondary-normal);
-    background: var(--color-background-secondary-subdued);
-    border-color: var(--color-border-secondary-subdued);
+    --tag-color: var(--color-text-secondary-normal);
+    --tag-background: var(--color-background-secondary-subdued);
+    --tag-border-color: var(--color-border-secondary-subdued);
   }
 
   &[data-variant="info"] {
-    color: var(--color-text-info-normal);
-    background: var(--color-background-info-subdued);
-    border-color: var(--color-border-info-subdued);
+    --tag-color: var(--color-text-info-normal);
+    --tag-background: var(--color-background-info-subdued);
+    --tag-border-color: var(--color-border-info-subdued);
   }
 
   &[data-variant="success"] {
-    color: var(--color-text-success-normal);
-    background: var(--color-background-success-subdued);
-    border-color: var(--color-border-success-subdued);
+    --tag-color: var(--color-text-success-normal);
+    --tag-background: var(--color-background-success-subdued);
+    --tag-border-color: var(--color-border-success-subdued);
   }
 
   &[data-variant="warning"] {
-    color: var(--color-text-warning-normal);
-    background: var(--color-background-warning-subdued);
-    border-color: var(--color-border-warning-subdued);
+    --tag-color: var(--color-text-warning-normal);
+    --tag-background: var(--color-background-warning-subdued);
+    --tag-border-color: var(--color-border-warning-subdued);
   }
 
   &[data-variant="danger"] {
-    color: var(--color-text-danger-normal);
-    background: var(--color-background-danger-subdued);
-    border-color: var(--color-border-danger-subdued);
+    --tag-color: var(--color-text-danger-normal);
+    --tag-background: var(--color-background-danger-subdued);
+    --tag-border-color: var(--color-border-danger-subdued);
   }
 
   &[data-size="small"] {
-    padding: var(--spacer-1);
-    font-size: var(--size-font-xs);
-    line-height: var(--size-line-half);
+    --tag-padding-block: var(--spacer-1);
+    --tag-padding-inline: var(--spacer-1);
+    --tag-font-size: var(--size-font-xs);
+    --tag-line-height: var(--size-line-half);
   }
 
   &[data-size="medium"] {
-    font-size: var(--size-font-m);
+    --tag-font-size: var(--size-font-m);
   }
 
   &[data-size="large"] {
-    padding: 0 var(--spacer-4);
-    font-size: var(--size-font-l);
-    line-height: var(--size-line-one-and-a-half);
+    --tag-padding-inline: var(--spacer-4);
+    --tag-font-size: var(--size-font-l);
+    --tag-line-height: var(--size-line-one-and-a-half);
   }
 
   &[data-shape="pill"] {
-    padding-inline: var(--spacer-3);
-    border-radius: var(--radius-pill);
+    --tag-padding-inline: var(--spacer-3);
+    --tag-border-radius: var(--radius-pill);
   }
 }

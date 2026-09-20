@@ -3,6 +3,8 @@
  */
 
 .stack {
+  --stack-space: var(--size-line-single);
+
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -12,7 +14,7 @@
   }
 
   & > * + * {
-    margin-block-start: var(--space, var(--size-line-single));
+    margin-block-start: var(--stack-space);
   }
 
   &[data-recursive] {
@@ -21,21 +23,21 @@
     }
 
     & * + * {
-      margin-block-start: var(--space, var(--size-line-single));
+      margin-block-start: var(--stack-space);
     }
   }
 
   /*
   You can add modifiers like this:
 
-      &[data-size="small"] > * + * {
-        margin-block-start: var(--space, var(--size-line-half));
+      &[data-size="small"] {
+        --stack-space: var(--size-line-half);
       }
 
   Or you can add exceptions like this:
 
       & > .some-component + * {
-        margin-block-start: var(--space, var(--size-line-one-and-a-half));
+        --stack-space: var(--size-line-one-and-a-half);
       }
 
   This would apply a different margin between `.some-component` and the next
@@ -43,7 +45,7 @@
   component and the previous element:
 
       & > * + .some-component {
-        margin-block-start: var(--space, var(--size-line-one-and-a-half));
+        --stack-space: var(--size-line-one-and-a-half);
       }
   */
 }

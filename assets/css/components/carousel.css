@@ -1,12 +1,23 @@
 .carousel {
-  --item-width: 600px;
+  --carousel-item-inline-size: 600px;
+  --carousel-gap: var(--spacer-4);
+  --carousel-item-opacity-inactive: 0.4;
+  --carousel-item-scale-inactive: 0.9;
+  --carousel-item-transition-duration: var(--duration-l);
+  --carousel-controls-gap: var(--spacer-2);
+  --carousel-pagination-gap: var(--spacer-1);
+  --carousel-pagination-target-size: var(--spacer-6);
+  --carousel-pagination-dot-size: var(--spacer-3);
+  --carousel-pagination-dot-border-width: var(--border-width-s);
+  --carousel-pagination-dot-color: var(--color-background-primary-normal);
+  --carousel-pagination-dot-border-radius: var(--radius-pill);
 
   inline-size: 100%;
 
   .carousel-inner {
     display: flex;
     flex-direction: column;
-    gap: var(--spacer-4);
+    gap: var(--carousel-gap);
     inline-size: 100%;
     overflow-x: hidden;
   }
@@ -29,18 +40,18 @@
 
     /* Provide enough padding on both sides so that items at the edges can be
      * scrolled to the center. */
-    padding-inline: calc(50% - var(--item-width) / 2);
+    padding-inline: calc(50% - var(--carousel-item-inline-size) / 2);
   }
 
   .carousel-item {
     flex-shrink: 0;
-    inline-size: var(--item-width);
+    inline-size: var(--carousel-item-inline-size);
     scroll-snap-align: center;
-    opacity: 0.4;
-    transform: scale(0.9);
+    opacity: var(--carousel-item-opacity-inactive);
+    transform: scale(var(--carousel-item-scale-inactive));
     transition:
-      opacity 0.4s ease,
-      transform 0.4s ease;
+      opacity var(--carousel-item-transition-duration) ease,
+      transform var(--carousel-item-transition-duration) ease;
 
     &[aria-current="true"] {
       opacity: 1;
@@ -50,7 +61,7 @@
 
   .carousel-controls {
     display: flex;
-    gap: var(--spacer-2);
+    gap: var(--carousel-controls-gap);
     align-items: center;
     justify-content: center;
 
@@ -60,30 +71,30 @@
 
     .carousel-pagination {
       display: flex;
-      gap: var(--spacer-1);
+      gap: var(--carousel-pagination-gap);
       justify-content: center;
 
       button[role="tab"] {
         /* WCAG 2.5.8 minimum target size is 24px */
         display: grid;
         place-items: center;
-        inline-size: var(--spacer-6);
-        block-size: var(--spacer-6);
+        inline-size: var(--carousel-pagination-target-size);
+        block-size: var(--carousel-pagination-target-size);
         padding: 0;
         cursor: pointer;
         background: none;
         border: none;
 
         > span {
-          inline-size: var(--spacer-3);
-          block-size: var(--spacer-3);
-          border: var(--border-width-s) solid
-            var(--color-background-primary-normal);
-          border-radius: var(--radius-pill);
+          inline-size: var(--carousel-pagination-dot-size);
+          block-size: var(--carousel-pagination-dot-size);
+          border: var(--carousel-pagination-dot-border-width) solid
+            var(--carousel-pagination-dot-color);
+          border-radius: var(--carousel-pagination-dot-border-radius);
         }
 
         &[aria-selected="true"] > span {
-          background-color: var(--color-background-primary-normal);
+          background-color: var(--carousel-pagination-dot-color);
         }
       }
     }

@@ -1,17 +1,30 @@
 .box {
-  padding: var(--spacer-6) 0;
-  border: var(--border-width-s) solid var(--color-border-neutral-1);
-  border-radius: var(--radius-m);
-  box-shadow: var(--shadow-elevation-medium);
+  --box-padding-block: var(--spacer-6);
+  --box-padding-inline: var(--spacer-6);
+  --box-gap: var(--spacer-4);
+  --box-border-width: var(--border-width-s);
+  --box-border-color: var(--color-border-neutral-1);
+  --box-border-radius: var(--radius-m);
+  --box-shadow: var(--shadow-elevation-medium);
+  --box-title-font-size: var(--size-font-l);
+  --box-title-font-weight: var(--weight-medium);
+  --box-banner-margin-block-end: var(--size-line-half);
+  --box-footer-font-size: var(--size-font-xs);
+  --box-footer-color: var(--color-text-secondary-subdued);
+
+  padding: var(--box-padding-block) 0;
+  border: var(--box-border-width) solid var(--box-border-color);
+  border-radius: var(--box-border-radius);
+  box-shadow: var(--box-shadow);
 
   > * + * {
-    margin-block-start: var(--spacer-4);
+    margin-block-start: var(--box-gap);
   }
 
   > header,
   > .box-body,
   > footer {
-    padding: 0 var(--spacer-6);
+    padding: 0 var(--box-padding-inline);
   }
 
   > header {
@@ -22,25 +35,26 @@
 
     > h2 {
       margin: 0;
-      font-size: var(--size-font-l);
-      font-weight: var(--weight-medium);
+      font-size: var(--box-title-font-size);
+      font-weight: var(--box-title-font-weight);
     }
 
     > .box-banner {
-      flex: 0 0 calc(100% + 2 * var(--spacer-6));
+      flex: 0 0 calc(100% + 2 * var(--box-padding-inline));
       order: -1;
-      margin-block: calc(-1 * var(--spacer-6)) var(--size-line-half);
-      margin-inline-start: calc(-1 * var(--spacer-6));
+      margin-block: calc(-1 * var(--box-padding-block))
+        var(--box-banner-margin-block-end);
+      margin-inline-start: calc(-1 * var(--box-padding-inline));
 
       > img {
-        border-start-start-radius: var(--radius-m);
-        border-start-end-radius: var(--radius-m);
+        border-start-start-radius: var(--box-border-radius);
+        border-start-end-radius: var(--box-border-radius);
       }
     }
   }
 
   > footer {
-    font-size: var(--size-font-xs);
-    color: var(--color-text-secondary-subdued);
+    font-size: var(--box-footer-font-size);
+    color: var(--box-footer-color);
   }
 }

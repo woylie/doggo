@@ -7,15 +7,17 @@
  */
 
 .cluster {
+  --cluster-gap: var(--spacer-2);
+
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space, var(--spacer-2));
+  gap: var(--cluster-gap);
 
   /*
-  For modifying the spacing, override the --gap property:
+  For modifying the spacing, override the --cluster-gap property:
 
       &.is-small {
-        --gap: var(--spacer-1);
+        --cluster-gap: var(--spacer-1);
       }
 
   You may want to add a modifier for scrolling:
