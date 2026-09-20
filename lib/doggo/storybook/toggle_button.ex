@@ -42,10 +42,12 @@ defmodule Doggo.Storybook.ToggleButton do
 
   defp indicator_template(id) do
     """
-    <div>
-      <.psb-variation-group/>
-      <div id="indicator-on-#{id}" hidden>on</div>
-      <div id="indicator-off-#{id}">off</div>
+    <div style="display: flex; flex-direction: column; gap: 1.5rem">
+      <div><.psb-variation-group/></div>
+      <div>
+        <div id="indicator-on-#{id}" hidden>on</div>
+        <div id="indicator-off-#{id}">off</div>
+      </div>
     </div>
     """
   end

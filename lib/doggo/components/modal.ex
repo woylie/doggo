@@ -236,6 +236,7 @@ defmodule Doggo.Components.Modal do
     >
       <section>
         <header>
+          <h2 id={"#{@id}-title"}>{render_slot(@title)}</h2>
           <button
             :if={@dismissable}
             type="button"
@@ -247,7 +248,6 @@ defmodule Doggo.Components.Modal do
             {render_slot(@close)}
             <span :if={@close == []}>{@close_label}</span>
           </button>
-          <h2 id={"#{@id}-title"}>{render_slot(@title)}</h2>
         </header>
         <div id={"#{@id}-content"} class={"#{@base_class}-content"}>
           {render_slot(@inner_block)}

@@ -6,41 +6,37 @@
 }
 
 .tree {
-  --tree-group-padding-inline-start: var(--spacer-4);
+  --tree-group-padding-inline-start: var(--tree-item-toggle-size);
   --tree-item-padding-block: var(--spacer-1);
-  --tree-item-font-weight-tabbable: var(--weight-bold);
+  --tree-item-gap: var(--spacer-1);
+  --tree-item-toggle-size: var(--spacer-6);
+  --tree-item-caret-font-size: var(--size-font-sm);
+  --tree-item-icon-size: 1em;
+  --tree-item-caret-color: var(--color-text-muted);
   --tree-item-outline-width: var(--border-width-md);
   --tree-item-outline-color: var(--color-border-primary-solid);
   --tree-item-outline-offset: var(--border-width-sm);
-  --tree-item-toggle-size: var(--spacer-6);
 
   padding-inline-start: 0;
 }
 
 .tree [role="treeitem"] {
-  padding: var(--tree-item-padding-block) 0;
-
-  &[tabindex="0"] > span {
-    font-weight: var(--tree-item-font-weight-tabbable);
-  }
-
-  &:focus-visible {
-    outline: var(--tree-item-outline-width) solid var(--tree-item-outline-color);
-    outline-offset: var(--tree-item-outline-offset);
-  }
-
-  &[aria-selected="true"] > span::after {
-    content: " ✓";
-  }
+  display: grid;
+  grid-template-columns: var(--tree-item-toggle-size) 1fr;
+  align-items: center;
+  padding-block: var(--tree-item-padding-block);
 
   > .tree-item-toggle {
     /* WCAG 2.5.8 minimum target size is 24px */
-    display: inline-grid;
+    display: grid;
+    grid-column: 1;
     place-items: center;
     inline-size: var(--tree-item-toggle-size);
     block-size: var(--tree-item-toggle-size);
     padding: 0;
-    vertical-align: middle;
+    font-size: var(--tree-item-caret-font-size);
+    line-height: 1;
+    color: var(--tree-item-caret-color);
     cursor: pointer;
     background: none;
     border: none;
@@ -50,7 +46,38 @@
     }
   }
 
+  > span {
+    display: flex;
+    grid-column: 2;
+    gap: var(--tree-item-gap);
+    align-items: center;
+
+    svg {
+      flex: none;
+      inline-size: var(--tree-item-icon-size);
+      block-size: var(--tree-item-icon-size);
+    }
+  }
+
+  > [role="group"] {
+    grid-column: 1 / -1;
+  }
+
   &[aria-expanded="true"] > .tree-item-toggle::before {
     content: "▾";
+  }
+
+  &[aria-selected="true"] > span::after {
+    content: "✓";
+  }
+
+  &:focus-visible {
+    outline: none;
+
+    > span {
+      outline: var(--tree-item-outline-width) solid
+        var(--tree-item-outline-color);
+      outline-offset: var(--tree-item-outline-offset);
+    }
   }
 }

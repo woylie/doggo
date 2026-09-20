@@ -30,50 +30,31 @@ defmodule Doggo.Storybook.DisclosureButton do
 
   defp variation_template(id, _opts) do
     """
-    <div>
+    <div style="display: flex; flex-direction: column; gap: 1.5rem">
       <div>
         <.psb-variation-group/>
       </div>
-      #{table(id)}
+      #{content(id)}
     </div>
     """
   end
 
   defp variation_group_template(id, _opts) do
     """
-    <div>
-      <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+    <div  style="display: flex; flex-direction: column; gap: 1.5rem">
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
         <.psb-variation-group/>
       </div>
-      #{table(id)}
+      #{content(id)}
     </div>
     """
   end
 
-  defp table(id) do
+  defp content(id) do
     """
-    <table id="#{id}" hidden>
-      <tr>
-        <th>Breed Name</th>
-        <th>Origin</th>
-        <th>Characteristic</th>
-      </tr>
-      <tr>
-        <td>Labrador Retriever</td>
-        <td>Canada</td>
-        <td>Friendly and outgoing</td>
-      </tr>
-      <tr>
-        <td>German Shepherd</td>
-        <td>Germany</td>
-        <td>Intelligent and versatile</td>
-      </tr>
-      <tr>
-        <td>Beagle</td>
-        <td>England</td>
-        <td>Curious and merry</td>
-      </tr>
-    </table>
+    <p id="#{id}" hidden>
+      Labrador Retrievers come from Canada and are friendly and outgoing.
+    </p>
     """
   end
 end

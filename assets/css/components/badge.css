@@ -1,0 +1,82 @@
+.badge {
+  --badge-min-inline-size: var(--spacer-6);
+  --badge-padding-inline: var(--spacer-2);
+  --badge-font-size: var(--size-font-sm);
+  --badge-line-height: var(--size-line-single);
+  --badge-font-weight: var(--weight-medium);
+  --badge-color: var(--color-text-secondary-solid);
+  --badge-background: var(--color-background-secondary-solid);
+  --badge-border-radius: var(--radius-pill);
+  --badge-overlap: calc(-0.5 * var(--badge-min-inline-size));
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--badge-min-inline-size);
+  padding-inline: var(--badge-padding-inline);
+  font-size: var(--badge-font-size);
+  font-weight: var(--badge-font-weight);
+  line-height: var(--badge-line-height);
+  color: var(--badge-color);
+  background: var(--badge-background);
+  border-radius: var(--badge-border-radius);
+
+  &[data-variant="primary"] {
+    --badge-color: var(--color-text-primary-solid);
+    --badge-background: var(--color-background-primary-solid);
+  }
+
+  &[data-variant="secondary"] {
+    --badge-color: var(--color-text-secondary-solid);
+    --badge-background: var(--color-background-secondary-solid);
+  }
+
+  &[data-variant="info"] {
+    --badge-color: var(--color-text-info-solid);
+    --badge-background: var(--color-background-info-solid);
+  }
+
+  &[data-variant="success"] {
+    --badge-color: var(--color-text-success-solid);
+    --badge-background: var(--color-background-success-solid);
+  }
+
+  &[data-variant="warning"] {
+    --badge-color: var(--color-text-warning-solid);
+    --badge-background: var(--color-background-warning-solid);
+  }
+
+  &[data-variant="danger"] {
+    --badge-color: var(--color-text-danger-solid);
+    --badge-background: var(--color-background-danger-solid);
+  }
+
+  &[data-size="small"] {
+    --badge-min-inline-size: var(--spacer-5);
+    --badge-font-size: var(--size-font-xs);
+    --badge-line-height: var(--size-line-three-quarters);
+  }
+
+  &[data-size="medium"] {
+    --badge-min-inline-size: var(--spacer-7);
+    --badge-font-size: var(--size-font-md);
+  }
+
+  &[data-size="large"] {
+    --badge-min-inline-size: var(--spacer-8);
+    --badge-font-size: var(--size-font-lg);
+    --badge-line-height: var(--size-line-one-and-a-half);
+  }
+}
+
+:is(a, button, summary, [role="tab"], [role="menuitem"]):has(> .badge) {
+  position: relative;
+}
+
+:is(a, button, summary, [role="tab"], [role="menuitem"]) > .badge {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  margin-block-start: var(--badge-overlap);
+  margin-inline-end: var(--badge-overlap);
+}

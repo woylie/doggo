@@ -2,6 +2,16 @@ defmodule Doggo.Storybook.Tabs do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
+  def layout, do: :one_column
+
+  def template do
+    """
+    <div style="inline-size: 100%">
+      <.psb-variation/>
+    </div>
+    """
+  end
+
   def variations(_opts) do
     [
       %Variation{
@@ -9,6 +19,36 @@ defmodule Doggo.Storybook.Tabs do
         attributes: %{
           id: "dog-breed-profiles",
           label: "Dog Breed Profiles"
+        },
+        slots: slots()
+      },
+      %Variation{
+        id: :vertical,
+        attributes: %{
+          id: "dog-breed-profiles",
+          label: "Dog Breed Profiles",
+          orientation: "vertical"
+        },
+        slots: slots()
+      },
+      %Variation{
+        id: :labelledby,
+        note: """
+        If there already is a heading for the tabs, use `labelledby` to
+        reference the existing visible label instead of repeating the text in
+        the `label` attribute.
+        """,
+        template: """
+        <div style="inline-size: 100%">
+          <h3 id="dog-breed-profiles-heading" style="margin-block: 0 0.75rem">
+            Dog breed profiles
+          </h3>
+          <.psb-variation/>
+        </div>
+        """,
+        attributes: %{
+          id: "dog-breed-profiles",
+          labelledby: "dog-breed-profiles-heading"
         },
         slots: slots()
       }

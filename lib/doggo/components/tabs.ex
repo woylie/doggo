@@ -61,6 +61,11 @@ defmodule Doggo.Components.Tabs do
   end
 
   @impl true
+  def css_path do
+    "components/tabs.css"
+  end
+
+  @impl true
   def config do
     [
       type: :data,

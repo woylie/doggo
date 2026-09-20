@@ -1,0 +1,54 @@
+.table-container {
+  --table-caption-font-size: var(--size-font-sm);
+  --table-caption-color: var(--color-text-muted);
+  --table-caption-padding-block-end: var(--spacer-2);
+  --table-cell-padding-block: var(--spacer-2);
+  --table-cell-padding-inline: var(--spacer-3);
+  --table-header-font-weight: var(--weight-medium);
+  --table-border-width: var(--border-width-sm);
+  --table-border-color: var(--color-border-subtle);
+  --table-header-border-color: var(--color-border-control);
+  --table-outline-width: var(--border-width-md);
+  --table-outline-color: var(--color-border-primary-solid);
+  --table-outline-offset: var(--border-width-sm);
+
+  overflow-x: auto;
+
+  &:focus-visible {
+    outline: var(--table-outline-width) solid var(--table-outline-color);
+    outline-offset: var(--table-outline-offset);
+  }
+
+  > table {
+    inline-size: 100%;
+    border-collapse: collapse;
+
+    > caption {
+      padding-block-end: var(--table-caption-padding-block-end);
+      font-size: var(--table-caption-font-size);
+      color: var(--table-caption-color);
+      text-align: start;
+    }
+
+    :is(th, td) {
+      padding: var(--table-cell-padding-block) var(--table-cell-padding-inline);
+      text-align: start;
+    }
+
+    > thead > tr > th {
+      font-weight: var(--table-header-font-weight);
+      border-block-end: var(--table-border-width) solid
+        var(--table-header-border-color);
+    }
+
+    > tbody > tr + tr > :is(th, td) {
+      border-block-start: var(--table-border-width) solid
+        var(--table-border-color);
+    }
+
+    > tfoot > tr:first-child > :is(th, td) {
+      border-block-start: var(--table-border-width) solid
+        var(--table-header-border-color);
+    }
+  }
+}

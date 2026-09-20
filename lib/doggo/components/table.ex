@@ -35,7 +35,29 @@ defmodule Doggo.Components.Table do
       </:col>
     </.table>
     ```
+
+    ## Scroll container
+
+    The `div` around the table has `tabindex="0"`, so that a table that is wider
+    than its container can be scrolled using the keyboard. This assumes that you
+    make the container scrollable:
+
+    ```css
+    .table-container {
+      overflow-x: auto;
+    }
+    ```
+
+    If you don't, you'll end up with useless tabstops.
+
+    Set `caption` or `label` to name the container.  Without a name it is not
+    exposed as a region, and tabbing to it will not announce anything.
     """
+  end
+
+  @impl true
+  def css_path do
+    "components/table.css"
   end
 
   @impl true
@@ -66,6 +88,16 @@ defmodule Doggo.Components.Table do
       attr :caption, :string,
         default: nil,
         doc: "Content for the `<caption>` element."
+
+      attr :label, :string,
+        default: nil,
+        doc: """
+        Names the scroll container, which is in the tab order so that the table
+        can be scrolled by keyboard.
+
+        If not set, the caption is used to name the container. If neither is
+        set, the container is not marked as a region.
+        """
 
       attr :row_id, :any,
         default: nil,
@@ -179,9 +211,17 @@ defmodule Doggo.Components.Table do
       end
 
     ~H"""
-    <div class={@class} {@data_attrs} {@rest}>
+    <div
+      class={@class}
+      tabindex="0"
+      role={(@label || @caption) && "region"}
+      aria-label={@label}
+      aria-labelledby={is_nil(@label) && @caption && "#{@id}-caption"}
+      {@data_attrs}
+      {@rest}
+    >
       <table id={@id}>
-        <caption :if={@caption}>{@caption}</caption>
+        <caption :if={@caption} id={"#{@id}-caption"}>{@caption}</caption>
         <colgroup :if={
           Enum.any?(@col, & &1[:col_attrs]) or Enum.any?(@action, & &1[:col_attrs])
         }>
@@ -190,8 +230,8 @@ defmodule Doggo.Components.Table do
         </colgroup>
         <thead>
           <tr>
-            <th :for={col <- @col}>{col[:label]}</th>
-            <th :for={action <- @action}>{action[:label]}</th>
+            <th :for={col <- @col} scope="col">{col[:label]}</th>
+            <th :for={action <- @action} scope="col">{action[:label]}</th>
           </tr>
         </thead>
         <tbody

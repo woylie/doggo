@@ -19,6 +19,37 @@ body.demo-web {
   background: var(--color-background-page);
 }
 
+.psb-sandbox.demo-web {
+  align-self: stretch;
+}
+
+.demo-web button:not([class]) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacer-1) var(--spacer-3);
+  font: inherit;
+  font-size: var(--size-font-sm);
+  line-height: var(--size-line-single);
+  color: var(--color-text-secondary-soft);
+  cursor: pointer;
+  background: transparent;
+  border: var(--border-width-sm) solid var(--color-border-secondary-solid);
+  border-radius: var(--radius-sm);
+
+  &:hover,
+  &:focus {
+    background: var(--color-background-secondary-soft);
+  }
+
+  &:disabled {
+    color: var(--color-text-disabled-solid);
+    cursor: not-allowed;
+    background: var(--color-background-disabled-solid);
+    border-color: var(--color-border-disabled-solid);
+  }
+}
+
 @media screen and (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;

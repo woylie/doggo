@@ -1,7 +1,11 @@
 @use "base";
 @use "assets/css/common.css";
+@use "assets/css/components/accordion.css";
+@use "assets/css/components/alert.css";
+@use "assets/css/components/badge.css";
 @use "assets/css/components/box.css";
 @use "assets/css/components/button.css";
+@use "assets/css/components/card.css";
 @use "assets/css/components/carousel.css";
 @use "assets/css/components/cluster.css";
 @use "assets/css/components/combobox.css";
@@ -13,7 +17,10 @@
 @use "assets/css/components/skeleton.css";
 @use "assets/css/components/split-pane.css";
 @use "assets/css/components/stack.css";
+@use "assets/css/components/switch.css";
 @use "assets/css/components/tab-navigation.css";
+@use "assets/css/components/table.css";
+@use "assets/css/components/tabs.css";
 @use "assets/css/components/tag.css";
 @use "assets/css/components/toolbar.css";
 @use "assets/css/components/tooltip.css";

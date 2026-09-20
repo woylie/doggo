@@ -43,6 +43,11 @@ defmodule Doggo.Components.Switch do
   end
 
   @impl true
+  def css_path do
+    "components/switch.css"
+  end
+
+  @impl true
   def nested_classes(base_class) do
     [
       "#{base_class}-control",
@@ -97,18 +102,18 @@ defmodule Doggo.Components.Switch do
       <span class={"#{@base_class}-control"}><span></span></span>
       <span class={"#{@base_class}-state"}>
         <span
-          class={
-            if @checked,
-              do: "#{@base_class}-state-on",
-              else: "#{@base_class}-state-off"
-          }
+          class={"#{@base_class}-state-on"}
           aria-hidden="true"
+          hidden={!@checked}
         >
-          <%= if @checked do %>
-            {@on_text}
-          <% else %>
-            {@off_text}
-          <% end %>
+          {@on_text}
+        </span>
+        <span
+          class={"#{@base_class}-state-off"}
+          aria-hidden="true"
+          hidden={@checked}
+        >
+          {@off_text}
         </span>
       </span>
     </button>
