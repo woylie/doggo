@@ -1,8 +1,8 @@
 .modal,
 .alert-dialog {
-  --dialog-background: var(--color-background-surface-1);
+  --dialog-background: var(--color-background-surface);
   --dialog-border-width: var(--border-width-sm);
-  --dialog-border-color: var(--color-border-neutral-1);
+  --dialog-border-color: var(--color-border-subtle);
   --dialog-border-radius: var(--radius-md);
   --dialog-backdrop-background: rgb(0 0 0 / 40%);
   --dialog-padding: var(--spacer-4);

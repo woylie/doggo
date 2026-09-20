@@ -9,7 +9,7 @@
   --carousel-pagination-target-size: var(--spacer-6);
   --carousel-pagination-dot-size: var(--spacer-3);
   --carousel-pagination-dot-border-width: var(--border-width-sm);
-  --carousel-pagination-dot-color: var(--color-background-primary-normal);
+  --carousel-pagination-dot-color: var(--color-background-primary-solid);
   --carousel-pagination-dot-border-radius: var(--radius-pill);
 
   inline-size: 100%;

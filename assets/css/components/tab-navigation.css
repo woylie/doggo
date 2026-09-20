@@ -2,14 +2,14 @@
   --tab-navigation-gap: var(--spacer-1);
   --tab-navigation-padding-inline-start: var(--spacer-2);
   --tab-navigation-border-width: var(--border-width-sm);
-  --tab-navigation-border-color: var(--color-border-neutral-1);
+  --tab-navigation-border-color: var(--color-border-subtle);
   --tab-navigation-tab-padding-block: var(--spacer-2);
   --tab-navigation-tab-padding-inline: var(--spacer-4);
-  --tab-navigation-tab-color: var(--color-text-secondary-normal);
+  --tab-navigation-tab-color: var(--color-text-muted);
   --tab-navigation-tab-border-radius: var(--radius-md);
   --tab-navigation-tab-font-weight-current: var(--weight-medium);
   --tab-navigation-tab-background-current: var(
-    --color-background-secondary-normal
+    --color-background-secondary-soft
   );
 
   inline-size: 100%;

@@ -10,8 +10,8 @@ body,
   font-family: var(--font-family-main);
   font-size: 100%;
   line-height: var(--size-line-single);
-  color: var(--color-text-default-normal);
-  background: var(--color-background-foundation);
+  color: var(--color-text-default);
+  background: var(--color-background-page);
 }
 
 @media screen and (prefers-reduced-motion: reduce) {

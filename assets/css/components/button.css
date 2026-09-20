@@ -18,7 +18,7 @@
   --button-spinner-size: 1em;
   --button-spinner-border-width: 2px;
   --button-spinner-track-color: rgb(255 255 255 / 30%);
-  --button-spinner-color: var(--color-background-foundation);
+  --button-spinner-color: var(--color-background-page);
   --button-spinner-border-radius: var(--radius-circle);
   --button-spinner-duration: var(--duration-xl);
 
@@ -38,9 +38,9 @@
 
   &:disabled,
   &[aria-disabled="true"] {
-    --button-color: var(--color-text-disabled-subdued);
-    --button-background: var(--color-background-disabled-normal);
-    --button-border-color: var(--color-border-disabled-normal);
+    --button-color: var(--color-text-disabled-solid);
+    --button-background: var(--color-background-disabled-solid);
+    --button-border-color: var(--color-border-disabled-solid);
 
     cursor: not-allowed;
 
@@ -62,39 +62,39 @@
     }
 
     &[data-variant="primary"] {
-      --button-accent-color: var(--color-border-primary-normal);
-      --button-color: var(--color-text-primary-subdued);
-      --button-background: var(--color-background-primary-normal);
+      --button-accent-color: var(--color-border-primary-solid);
+      --button-color: var(--color-text-primary-solid);
+      --button-background: var(--color-background-primary-solid);
     }
 
     &[data-variant="secondary"] {
-      --button-accent-color: var(--color-border-secondary-normal);
-      --button-color: var(--color-text-secondary-subdued);
-      --button-background: var(--color-background-secondary-normal);
+      --button-accent-color: var(--color-border-secondary-solid);
+      --button-color: var(--color-text-secondary-solid);
+      --button-background: var(--color-background-secondary-solid);
     }
 
     &[data-variant="info"] {
-      --button-accent-color: var(--color-border-info-normal);
-      --button-color: var(--color-text-info-subdued);
-      --button-background: var(--color-background-info-normal);
+      --button-accent-color: var(--color-border-info-solid);
+      --button-color: var(--color-text-info-solid);
+      --button-background: var(--color-background-info-solid);
     }
 
     &[data-variant="success"] {
-      --button-accent-color: var(--color-border-success-normal);
-      --button-color: var(--color-text-success-subdued);
-      --button-background: var(--color-background-success-normal);
+      --button-accent-color: var(--color-border-success-solid);
+      --button-color: var(--color-text-success-solid);
+      --button-background: var(--color-background-success-solid);
     }
 
     &[data-variant="warning"] {
-      --button-accent-color: var(--color-border-warning-normal);
-      --button-color: var(--color-text-warning-subdued);
-      --button-background: var(--color-background-warning-normal);
+      --button-accent-color: var(--color-border-warning-solid);
+      --button-color: var(--color-text-warning-solid);
+      --button-background: var(--color-background-warning-solid);
     }
 
     &[data-variant="danger"] {
-      --button-accent-color: var(--color-border-danger-normal);
-      --button-color: var(--color-text-danger-subdued);
-      --button-background: var(--color-background-danger-normal);
+      --button-accent-color: var(--color-border-danger-solid);
+      --button-color: var(--color-text-danger-solid);
+      --button-background: var(--color-background-danger-solid);
     }
 
     /* An unfilled button takes its text colour from the variant's accent

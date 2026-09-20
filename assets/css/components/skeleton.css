@@ -1,5 +1,5 @@
 .skeleton {
-  --skeleton-background: var(--color-background-surface-1);
+  --skeleton-background: var(--color-background-surface);
   --skeleton-border-radius: var(--radius-md);
   --skeleton-text-line-block-size: var(--size-line-single);
   --skeleton-text-block-lines: 4;

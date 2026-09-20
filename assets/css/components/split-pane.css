@@ -1,9 +1,9 @@
 .split-pane {
   --split-pane-block-size: 10rem;
   --split-pane-separator-size: var(--spacer-1);
-  --split-pane-separator-color: var(--color-border-neutral-1);
+  --split-pane-separator-color: var(--color-border-control);
   --split-pane-separator-outline-width: var(--border-width-md);
-  --split-pane-separator-outline-color: var(--color-border-primary-normal);
+  --split-pane-separator-outline-color: var(--color-border-primary-solid);
 
   display: grid;
   inline-size: 100%;
