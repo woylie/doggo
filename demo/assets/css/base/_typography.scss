@@ -1,33 +1,35 @@
-h1,
-h2,
-h3,
-h4,
-h5,
-figure,
-p,
-ol,
-ul {
-  margin: 0;
-}
-
-table {
-  th,
-  td {
-    padding: var(--spacer-1);
-    text-align: start;
+:where(.demo-web) {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  figure,
+  p,
+  ol,
+  ul {
+    margin: 0;
   }
-}
 
-a {
-  color: var(--color-text-primary-soft);
-  text-decoration: none;
-}
+  table {
+    th,
+    td {
+      padding: var(--spacer-1);
+      text-align: start;
+    }
+  }
 
-a:hover,
-a:focus {
-  text-decoration: underline;
-}
+  a {
+    color: var(--color-text-primary-soft);
+    text-decoration: none;
+  }
 
-img {
-  max-width: 100%;
+  a:hover,
+  a:focus {
+    text-decoration: underline;
+  }
+
+  img {
+    max-width: 100%;
+  }
 }

@@ -3,14 +3,19 @@
 }
 
 html,
-body,
-.psb-sandbox {
+body {
   padding: 0;
   margin: 0;
+}
+
+.demo-web {
   font-family: var(--font-family-main);
   font-size: 100%;
   line-height: var(--size-line-single);
   color: var(--color-text-default);
+}
+
+body.demo-web {
   background: var(--color-background-page);
 }
 
