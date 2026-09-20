@@ -60,6 +60,11 @@ defmodule Doggo.Components.Alert do
   end
 
   @impl true
+  def css_path do
+    "components/alert.css"
+  end
+
+  @impl true
   def config do
     [
       type: :feedback,

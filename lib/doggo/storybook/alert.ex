@@ -6,6 +6,22 @@ defmodule Doggo.Storybook.Alert do
 
   def dependent_components, do: [:icon]
 
+  def template do
+    """
+    <div style="inline-size: 100%">
+      <.psb-variation/>
+    </div>
+    """
+  end
+
+  def modifier_variation_group_template(_name, _opts) do
+    """
+    <div style="display: grid; gap: 0.75rem; inline-size: 100%">
+      <.psb-variation-group/>
+    </div>
+    """
+  end
+
   def variations(opts) do
     [
       %Variation{
