@@ -626,6 +626,13 @@ defmodule Doggo.Components.Field do
             gettext_module={@gettext_module}
           />
         </legend>
+        <.field_description
+          :if={@description != []}
+          for={@id}
+          base_class={@base_class}
+        >
+          {render_slot(@description)}
+        </.field_description>
         <div>
           <input type="hidden" name={@name <> "[]"} value="" />
           <.checkbox
@@ -643,13 +650,6 @@ defmodule Doggo.Components.Field do
         </div>
       </fieldset>
       <.field_errors for={@id} errors={@errors} base_class={@base_class} />
-      <.field_description
-        :if={@description != []}
-        for={@id}
-        base_class={@base_class}
-      >
-        {render_slot(@description)}
-      </.field_description>
     </div>
     """
   end
@@ -681,6 +681,13 @@ defmodule Doggo.Components.Field do
             gettext_module={@gettext_module}
           />
         </legend>
+        <.field_description
+          :if={@description != []}
+          for={@id}
+          base_class={@base_class}
+        >
+          {render_slot(@description)}
+        </.field_description>
         <div>
           <Doggo.Components.RadioGroup.radio
             :for={option <- @options}
@@ -696,13 +703,6 @@ defmodule Doggo.Components.Field do
         </div>
       </fieldset>
       <.field_errors for={@id} errors={@errors} base_class={@base_class} />
-      <.field_description
-        :if={@description != []}
-        for={@id}
-        base_class={@base_class}
-      >
-        {render_slot(@description)}
-      </.field_description>
     </div>
     """
   end
@@ -1263,16 +1263,16 @@ defmodule Doggo.Components.Field do
             gettext_module={@gettext_module}
           />
         </legend>
+        <.field_description
+          :if={@description != []}
+          for={@id}
+          base_class={@base_class}
+        >
+          {render_slot(@description)}
+        </.field_description>
         {@input.(input_assigns(assigns))}
       </fieldset>
       <.field_errors for={@id} errors={@errors} base_class={@base_class} />
-      <.field_description
-        :if={@description != []}
-        for={@id}
-        base_class={@base_class}
-      >
-        {render_slot(@description)}
-      </.field_description>
     </div>
     """
   end
