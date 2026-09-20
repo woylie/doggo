@@ -128,7 +128,7 @@
   --color-border-warning-normal: var(--color-yellow-500);
   --color-border-warning-subdued: var(--color-yellow-100);
   --color-border-danger-normal: var(--color-red-500);
-  --color-border-danger-subdued: var(--color-blue-100);
+  --color-border-danger-subdued: var(--color-red-100);
   --color-border-disabled-normal: var(--color-gray-100);
 
   /* Everything else */
