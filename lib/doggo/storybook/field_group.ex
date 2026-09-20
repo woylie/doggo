@@ -4,9 +4,16 @@ defmodule Doggo.Storybook.FieldGroup do
 
   def dependent_components, do: [:field]
 
+  def layout, do: :one_column
+
   def template do
     """
-    <Phoenix.Component.form for={%{}} as={:story} :let={f}>
+    <Phoenix.Component.form
+      for={%{}}
+      as={:story}
+      :let={f}
+      style="inline-size: 100%"
+    >
       <.psb-variation />
     </Phoenix.Component.form>
     """
