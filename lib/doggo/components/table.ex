@@ -39,6 +39,11 @@ defmodule Doggo.Components.Table do
   end
 
   @impl true
+  def css_path do
+    "components/table.css"
+  end
+
+  @impl true
   def config do
     [
       type: :data,

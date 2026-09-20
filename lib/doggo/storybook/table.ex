@@ -2,6 +2,16 @@ defmodule Doggo.Storybook.Table do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
+  def layout, do: :one_column
+
+  def template do
+    """
+    <div style="inline-size: 100%">
+      <.psb-variation/>
+    </div>
+    """
+  end
+
   def variations(_opts) do
     [
       %Variation{
@@ -15,8 +25,8 @@ defmodule Doggo.Storybook.Table do
         },
         slots: [
           """
-          <:col :let={p} label="name"><%= p.name %></:col>
-          <:col :let={p} label="age"><%= p.age %></:col>
+          <:col :let={p} label="Name"><%= p.name %></:col>
+          <:col :let={p} label="Age"><%= p.age %></:col>
           """
         ]
       },
@@ -31,9 +41,9 @@ defmodule Doggo.Storybook.Table do
         },
         slots: [
           """
-          <:col :let={p} label="name"><%= p.name %></:col>
-          <:col :let={p} label="age"><%= p.age %></:col>
-          <:action>
+          <:col :let={p} label="Name"><%= p.name %></:col>
+          <:col :let={p} label="Age"><%= p.age %></:col>
+          <:action label="Actions">
             <.link>Edit</.link>
           </:action>
           """
@@ -51,8 +61,8 @@ defmodule Doggo.Storybook.Table do
         },
         slots: [
           """
-          <:col :let={p} label="name"><%= p.name %></:col>
-          <:col :let={p} label="age"><%= p.age %></:col>
+          <:col :let={p} label="Name"><%= p.name %></:col>
+          <:col :let={p} label="Age"><%= p.age %></:col>
           """
         ]
       },
@@ -67,8 +77,8 @@ defmodule Doggo.Storybook.Table do
         },
         slots: [
           """
-          <:col :let={p} label="name"><%= p.name %></:col>
-          <:col :let={p} label="age"><%= p.age %></:col>
+          <:col :let={p} label="Name"><%= p.name %></:col>
+          <:col :let={p} label="Age"><%= p.age %></:col>
           <:foot>
             <tr>
               <td>Avg age</td>
@@ -91,8 +101,8 @@ defmodule Doggo.Storybook.Table do
       },
       slots: [
         """
-        <:col :let={p} label="name"><%= p.name %></:col>
-        <:col :let={p} label="age"><%= p.age %></:col>
+        <:col :let={p} label="Name"><%= p.name %></:col>
+        <:col :let={p} label="Age"><%= p.age %></:col>
         """
       ]
     }
