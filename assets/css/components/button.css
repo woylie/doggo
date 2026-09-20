@@ -8,6 +8,7 @@
   --button-border-width: var(--border-width-sm);
   --button-border-color: var(--color-text-default);
   --button-unfilled-color: var(--color-text-default);
+  --button-unfilled-background-hover: var(--color-background-surface);
   --button-border-radius: var(--radius-sm);
   --button-brightness-hover: 110%;
   --button-brightness-active: 95%;
@@ -70,6 +71,7 @@
       --button-background: var(--color-background-primary-solid);
       --button-border-color: var(--color-border-primary-solid);
       --button-unfilled-color: var(--color-text-primary-soft);
+      --button-unfilled-background-hover: var(--color-background-primary-soft);
     }
 
     &[data-variant="secondary"] {
@@ -77,6 +79,9 @@
       --button-background: var(--color-background-secondary-solid);
       --button-border-color: var(--color-border-secondary-solid);
       --button-unfilled-color: var(--color-text-secondary-soft);
+      --button-unfilled-background-hover: var(
+        --color-background-secondary-soft
+      );
     }
 
     &[data-variant="info"] {
@@ -84,6 +89,7 @@
       --button-background: var(--color-background-info-solid);
       --button-border-color: var(--color-border-info-solid);
       --button-unfilled-color: var(--color-text-info-soft);
+      --button-unfilled-background-hover: var(--color-background-info-soft);
     }
 
     &[data-variant="success"] {
@@ -91,6 +97,7 @@
       --button-background: var(--color-background-success-solid);
       --button-border-color: var(--color-border-success-solid);
       --button-unfilled-color: var(--color-text-success-soft);
+      --button-unfilled-background-hover: var(--color-background-success-soft);
     }
 
     &[data-variant="warning"] {
@@ -98,6 +105,7 @@
       --button-background: var(--color-background-warning-solid);
       --button-border-color: var(--color-border-warning-solid);
       --button-unfilled-color: var(--color-text-warning-soft);
+      --button-unfilled-background-hover: var(--color-background-warning-soft);
     }
 
     &[data-variant="danger"] {
@@ -105,12 +113,23 @@
       --button-background: var(--color-background-danger-solid);
       --button-border-color: var(--color-border-danger-solid);
       --button-unfilled-color: var(--color-text-danger-soft);
+      --button-unfilled-background-hover: var(--color-background-danger-soft);
     }
 
     &[data-fill="outline"],
     &[data-fill="text"] {
       --button-color: var(--button-unfilled-color);
       --button-background: transparent;
+
+      /* Brightening a transparent button only washes out its label, so these
+       * take a tint on hover instead. The label already pairs with that tint:
+       * both come from the variant's soft tokens. */
+      &:hover,
+      &:focus {
+        --button-background: var(--button-unfilled-background-hover);
+
+        filter: none;
+      }
     }
 
     &[data-fill="text"] {
@@ -152,7 +171,7 @@
 
   &[aria-busy] {
     color: transparent;
-    pointer-events: none;
+    cursor: progress;
   }
 
   &[aria-busy]::after {
