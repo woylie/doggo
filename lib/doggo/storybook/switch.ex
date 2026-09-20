@@ -1,50 +1,73 @@
 defmodule Doggo.Storybook.Switch do
   @moduledoc false
+
   alias PhoenixStorybook.Stories.Variation
   alias PhoenixStorybook.Stories.VariationGroup
+
+  defp stacked do
+    """
+    <div style="display: grid; gap: 0.75rem">
+      <.psb-variation-group/>
+    </div>
+    """
+  end
+
+  defp toggle do
+    {:eval,
+     """
+     %JS{}
+     |> JS.toggle_attribute({"aria-checked", "true", "false"})
+     |> JS.toggle_attribute({"hidden", "true"}, to: {:inner, ".switch-state-on"})
+     |> JS.toggle_attribute({"hidden", "true"}, to: {:inner, ".switch-state-off"})
+     """}
+  end
 
   def variations(_opts) do
     [
       %VariationGroup{
         id: :default,
+        template: stacked(),
         variations: [
           %Variation{
             id: :on,
             attributes: %{
-              label: "Subscribe",
+              label: "Email notifications",
               checked: true,
-              phx_click: "toggle-subscription"
+              "phx-click": toggle()
             }
           },
           %Variation{
             id: :off,
             attributes: %{
-              label: "Subscribe",
+              label: "Two-factor authentication",
               checked: false,
-              phx_click: "toggle-subscription"
+              "phx-click": toggle()
             }
           }
         ]
       },
       %VariationGroup{
         id: :custom_text,
+        template: stacked(),
         variations: [
           %Variation{
             id: :on,
             attributes: %{
-              label: "Subscribe",
+              label: "Public profile",
               on_text: "yes",
+              off_text: "no",
               checked: true,
-              phx_click: "toggle-subscription"
+              "phx-click": toggle()
             }
           },
           %Variation{
             id: :off,
             attributes: %{
-              label: "Subscribe",
+              label: "Show activity status",
+              on_text: "yes",
               off_text: "no",
               checked: false,
-              phx_click: "toggle-subscription"
+              "phx-click": toggle()
             }
           }
         ]
@@ -55,9 +78,9 @@ defmodule Doggo.Storybook.Switch do
   def modifier_variation_base(_id, _name, _value, _opts) do
     %{
       attributes: %{
-        label: "Subscribe",
+        label: "Email notifications",
         checked: true,
-        phx_click: "toggle-subscription"
+        "phx-click": toggle()
       }
     }
   end

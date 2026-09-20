@@ -4202,10 +4202,14 @@ defmodule Doggo.ComponentsTest do
       control = find_one(button, "span.switch-control")
       assert Floki.children(control) == [{"span", [], []}]
 
-      span = find_one(button, "span.switch-state > span")
-      assert attribute(span, "class") == "switch-state-on"
-      assert attribute(span, "aria-hidden") == "true"
-      assert text(span) == "On"
+      on = find_one(button, "span.switch-state > span.switch-state-on")
+      assert attribute(on, "aria-hidden") == "true"
+      assert attribute(on, "hidden") == nil
+      assert text(on) == "On"
+
+      off = find_one(button, "span.switch-state > span.switch-state-off")
+      assert attribute(off, "hidden") == "hidden"
+      assert text(off) == "Off"
     end
 
     test "default unchecked" do
@@ -4219,9 +4223,12 @@ defmodule Doggo.ComponentsTest do
       button = find_one(html, "button:root")
       assert attribute(button, "aria-checked") == "false"
 
-      span = find_one(button, "span.switch-state > span")
-      assert attribute(span, "class") == "switch-state-off"
-      assert text(span) == "Off"
+      off = find_one(button, "span.switch-state > span.switch-state-off")
+      assert attribute(off, "hidden") == nil
+      assert text(off) == "Off"
+
+      on = find_one(button, "span.switch-state > span.switch-state-on")
+      assert attribute(on, "hidden") == "hidden"
     end
 
     test "with global attribute" do
