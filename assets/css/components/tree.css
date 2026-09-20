@@ -9,9 +9,9 @@
   --tree-group-padding-inline-start: var(--spacer-4);
   --tree-item-padding-block: var(--spacer-1);
   --tree-item-font-weight-tabbable: var(--weight-bold);
-  --tree-item-outline-width: var(--border-width-m);
-  --tree-item-outline-color: var(--color-border-primary-normal);
-  --tree-item-outline-offset: var(--border-width-s);
+  --tree-item-outline-width: var(--border-width-md);
+  --tree-item-outline-color: var(--color-border-primary-solid);
+  --tree-item-outline-offset: var(--border-width-sm);
   --tree-item-toggle-size: var(--spacer-6);
 
   padding-inline-start: 0;

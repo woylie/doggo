@@ -2,9 +2,9 @@
 .action-bar {
   --toolbar-gap: var(--spacer-2);
   --toolbar-padding: var(--spacer-1);
-  --toolbar-border-width: var(--border-width-s);
-  --toolbar-border-color: var(--color-border-neutral-1);
-  --toolbar-border-radius: var(--radius-s);
+  --toolbar-border-width: var(--border-width-sm);
+  --toolbar-border-color: var(--color-border-subtle);
+  --toolbar-border-radius: var(--radius-sm);
   --toolbar-group-gap: var(--spacer-1);
 
   display: flex;

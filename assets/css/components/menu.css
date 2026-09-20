@@ -4,14 +4,14 @@
   --menu-bar-gap: var(--spacer-2);
   --menu-item-padding-block: var(--spacer-1);
   --menu-item-padding-inline: var(--spacer-2);
-  --menu-item-font-size: var(--size-font-s);
-  --menu-item-border-width: var(--border-width-s);
-  --menu-item-border-radius: var(--radius-s);
-  --menu-item-background-hover: var(--color-background-disabled-normal);
-  --menu-item-border-color-focus: var(--color-border-primary-normal);
-  --menu-separator-size: var(--border-width-s);
+  --menu-item-font-size: var(--size-font-sm);
+  --menu-item-border-width: var(--border-width-sm);
+  --menu-item-border-radius: var(--radius-sm);
+  --menu-item-background-hover: var(--color-background-surface);
+  --menu-item-border-color-focus: var(--color-border-primary-solid);
+  --menu-separator-size: var(--border-width-sm);
   --menu-separator-margin-block: var(--spacer-1);
-  --menu-separator-color: var(--color-border-neutral-1);
+  --menu-separator-color: var(--color-border-subtle);
 
   padding: 0;
   margin: 0;
