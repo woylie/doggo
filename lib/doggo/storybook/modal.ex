@@ -1,6 +1,8 @@
 defmodule Doggo.Storybook.Modal do
   @moduledoc false
 
+  import Doggo.Storybook.Shared
+
   alias PhoenixStorybook.Stories.Variation
 
   def template do
@@ -34,6 +36,20 @@ defmodule Doggo.Storybook.Modal do
         slots: slots("modal-single-without-javascript", opts)
       },
       %Variation{
+        id: :long_content,
+        attributes: %{id: "dog-modal-long"},
+        slots: long_slots("modal-single-long-content", opts)
+      },
+      %Variation{
+        id: :close_icon,
+        note:
+          "The `:close` slot can be used to replace the label text with an icon. " <>
+            "`close_label` is still needed to provide an accessible name for " <>
+            "the button.",
+        attributes: %{id: "dog-modal-close-icon", close_label: "Close"},
+        slots: close_icon_slots("modal-single-close-icon", opts)
+      },
+      %Variation{
         id: :not_dismissable,
         note:
           "`dismissable={false}` renders `closedby=\"none\"` and no close " <>
@@ -63,6 +79,24 @@ defmodule Doggo.Storybook.Modal do
       attributes: %{id: id},
       slots: slots("modal-#{name}-dog-mod-var-#{name}-#{value}", opts)
     }
+  end
+
+  defp close_icon_slots(id, opts) do
+    icon = icon(:close, opts[:dependent_components])
+    slots(id, opts) ++ ["<:close>#{icon}</:close>"]
+  end
+
+  defp long_slots(id, opts) do
+    [title | rest] = slots(id, opts)
+
+    paragraphs =
+      Enum.map_join(1..20, "\n", fn i ->
+        "<p>Johnny was rehomed in #{2010 + i}. He is house trained, walks " <>
+          "well on a lead, and is happiest with a garden and someone at " <>
+          "home during the day. He does not get on with cats.</p>"
+      end)
+
+    [title, paragraphs | tl(rest)]
   end
 
   defp slots(id, opts) do
