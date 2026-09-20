@@ -132,22 +132,22 @@
   --color-border-disabled-normal: var(--color-gray-100);
 
   /* Everything else */
-  --border-width-s: 1px;
-  --border-width-m: 3px;
-  --border-width-l: 6px;
+  --border-width-sm: 1px;
+  --border-width-md: 3px;
+  --border-width-lg: 6px;
   --breakpoint-tablet: 769px;
   --breakpoint-desktop: 1024px;
   --breakpoint-widescreen: 1216px;
-  --duration-s: 100ms;
-  --duration-m: 200ms;
-  --duration-l: 400ms;
+  --duration-sm: 100ms;
+  --duration-md: 200ms;
+  --duration-lg: 400ms;
   --duration-xl: 600ms;
   --font-family-main: system-ui, sans-serif;
   --font-family-mono: ui-monospace, monospace;
   --letter-spacing-normal: normal;
   --letter-spacing-wide: 0.1em;
-  --radius-s: 4px;
-  --radius-m: 8px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
   --radius-circle: 50%;
   --radius-pill: 999rem;
   --shadow-elevation-low: 0px 1px 2px 0px #0000000d;
@@ -156,14 +156,14 @@
   --shadow-elevation-high:
     0px 10px 15px -3px #0000001a, 0px 4px 6px -2px #0000000d;
   --size-font-xs: 0.694rem;
-  --size-font-s: 0.833rem;
-  --size-font-m: 1rem;
-  --size-font-l: 1.2rem;
+  --size-font-sm: 0.833rem;
+  --size-font-md: 1rem;
+  --size-font-lg: 1.2rem;
   --size-font-xl: 1.44rem;
-  --size-font-xxl: 1.728rem;
-  --size-font-xxxl: 2.074rem;
-  --size-font-xxxxl: 2.488rem;
-  --size-font-xxxxxl: 2.986rem;
+  --size-font-2xl: 1.728rem;
+  --size-font-3xl: 2.074rem;
+  --size-font-4xl: 2.488rem;
+  --size-font-5xl: 2.986rem;
   --size-line-single: 1.5rem;
   --size-line-double: 3rem;
   --size-line-quarter: 0.375rem;

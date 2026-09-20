@@ -3,12 +3,12 @@
   --carousel-gap: var(--spacer-4);
   --carousel-item-opacity-inactive: 0.4;
   --carousel-item-scale-inactive: 0.9;
-  --carousel-item-transition-duration: var(--duration-l);
+  --carousel-item-transition-duration: var(--duration-lg);
   --carousel-controls-gap: var(--spacer-2);
   --carousel-pagination-gap: var(--spacer-1);
   --carousel-pagination-target-size: var(--spacer-6);
   --carousel-pagination-dot-size: var(--spacer-3);
-  --carousel-pagination-dot-border-width: var(--border-width-s);
+  --carousel-pagination-dot-border-width: var(--border-width-sm);
   --carousel-pagination-dot-color: var(--color-background-primary-normal);
   --carousel-pagination-dot-border-radius: var(--radius-pill);
 

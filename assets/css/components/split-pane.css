@@ -2,7 +2,7 @@
   --split-pane-block-size: 10rem;
   --split-pane-separator-size: var(--spacer-1);
   --split-pane-separator-color: var(--color-border-neutral-1);
-  --split-pane-separator-outline-width: var(--border-width-m);
+  --split-pane-separator-outline-width: var(--border-width-md);
   --split-pane-separator-outline-color: var(--color-border-primary-normal);
 
   display: grid;

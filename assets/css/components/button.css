@@ -1,14 +1,14 @@
 .button {
   --button-padding-block: var(--spacer-1);
   --button-padding-inline: var(--spacer-3);
-  --button-font-size: var(--size-font-s);
+  --button-font-size: var(--size-font-sm);
   --button-line-height: var(--size-line-single);
   --button-accent-color: var(--color-base-black);
   --button-color: inherit;
   --button-background: transparent;
-  --button-border-width: var(--border-width-s);
+  --button-border-width: var(--border-width-sm);
   --button-border-color: var(--button-accent-color);
-  --button-border-radius: var(--radius-s);
+  --button-border-radius: var(--radius-sm);
   --button-brightness-hover: 110%;
   --button-brightness-active: 95%;
   --button-circle-size: 3.5rem;
@@ -117,13 +117,13 @@
   }
 
   &[data-size="medium"] {
-    --button-font-size: var(--size-font-m);
+    --button-font-size: var(--size-font-md);
   }
 
   &[data-size="large"] {
     --button-padding-block: var(--spacer-2);
     --button-padding-inline: var(--spacer-4);
-    --button-font-size: var(--size-font-l);
+    --button-font-size: var(--size-font-lg);
   }
 
   &[data-shape="circle"] {

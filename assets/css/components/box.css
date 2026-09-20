@@ -2,11 +2,11 @@
   --box-padding-block: var(--spacer-6);
   --box-padding-inline: var(--spacer-6);
   --box-gap: var(--spacer-4);
-  --box-border-width: var(--border-width-s);
+  --box-border-width: var(--border-width-sm);
   --box-border-color: var(--color-border-neutral-1);
-  --box-border-radius: var(--radius-m);
+  --box-border-radius: var(--radius-md);
   --box-shadow: var(--shadow-elevation-medium);
-  --box-title-font-size: var(--size-font-l);
+  --box-title-font-size: var(--size-font-lg);
   --box-title-font-weight: var(--weight-medium);
   --box-banner-margin-block-end: var(--size-line-half);
   --box-footer-font-size: var(--size-font-xs);
