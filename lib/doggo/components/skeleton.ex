@@ -22,7 +22,7 @@ defmodule Doggo.Components.Skeleton do
     Render one of the primitive types in isolation:
 
     ```heex
-    <.skeleton type="text_line" />
+    <.skeleton type="text-line" />
     ```
 
     Combine primitives for complex layouts:
@@ -41,11 +41,13 @@ defmodule Doggo.Components.Skeleton do
     additional modifiers or use CSS properties:
 
     ```heex
-    <Doggo.skeleton type="text-line" variant="header" />
+    <.skeleton type="text-line" variant="header" />
     ```
 
-    ```heex
-    <Doggo.skeleton type="image" style="--aspect-ratio: 75%;" />
+    ```css
+    .pet-card .skeleton[data-type="image"] {
+      --skeleton-image-aspect-ratio: 1 / 1;
+    }
     ```
 
     ## Aria-busy attribute
