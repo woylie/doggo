@@ -3,32 +3,27 @@
   --property-list-gap: var(--spacer-2);
   --property-list-term-font-weight: var(--weight-medium);
   --property-list-term-inline-size: 8rem;
+  --property-list-value-min-inline-size: 40ch;
 
   > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--property-list-gap);
+    align-items: baseline;
+
     > dt {
+      flex: 1 1 var(--property-list-term-inline-size);
       margin: 0;
       font-weight: var(--property-list-term-font-weight);
     }
 
     > dd {
+      flex: 999 1 var(--property-list-value-min-inline-size);
       margin: 0;
     }
   }
 
-  & > div + div {
+  > div + div {
     margin-block-start: var(--property-list-row-gap);
-  }
-
-  @media (width >= 768px) {
-    > div {
-      display: flex;
-      flex-direction: row;
-      gap: var(--property-list-gap);
-      align-items: baseline;
-
-      > dt {
-        flex: 0 0 var(--property-list-term-inline-size);
-      }
-    }
   }
 }
