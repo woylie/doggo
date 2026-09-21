@@ -6,22 +6,30 @@ defmodule Doggo.Storybook.Avatar do
     [
       %Variation{
         id: :default,
-        attributes: %{src: src()}
+        attributes: %{src: src(), alt: "Nora Boston"}
       },
       %Variation{
         id: :image_fallback,
-        attributes: %{src: nil, placeholder_src: placeholder_src()}
+        attributes: %{src: nil, placeholder_src: placeholder_src(), alt: ""}
       },
       %Variation{
         id: :text_fallback,
-        attributes: %{src: nil, placeholder_content: "A"}
+        attributes: %{src: nil, placeholder_content: "NB"}
       }
     ]
   end
 
+  def modifier_variation_group_template(_name, _opts) do
+    """
+    <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center">
+      <.psb-variation-group/>
+    </div>
+    """
+  end
+
   def modifier_variation_base(_id, _name, _value, _opts) do
     %{
-      attributes: %{:src => src()}
+      attributes: %{src: src(), alt: "Nora Boston"}
     }
   end
 

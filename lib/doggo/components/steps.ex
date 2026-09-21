@@ -54,6 +54,11 @@ defmodule Doggo.Components.Steps do
   end
 
   @impl true
+  def css_path do
+    "components/steps.css"
+  end
+
+  @impl true
   def config do
     [
       type: :navigation,

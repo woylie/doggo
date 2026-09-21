@@ -8,8 +8,7 @@ defmodule Doggo.Components.Fallback do
   @impl true
   def doc do
     """
-    The fallback component renders a given value unless it is empty, in which case
-    it renders a fallback value instead.
+    Renders a value or a fallback value if the value is empty.
 
     The values `nil`, `""`, `[]` and `%{}` are treated as empty values.
 
@@ -47,6 +46,11 @@ defmodule Doggo.Components.Fallback do
     />
     ```
     """
+  end
+
+  @impl true
+  def css_path do
+    "components/fallback.css"
   end
 
   @impl true

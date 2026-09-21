@@ -6,7 +6,7 @@ defmodule Doggo.Storybook.Combobox do
   alias PhoenixStorybook.Stories.Variation
   alias PhoenixStorybook.Stories.VariationGroup
 
-  def dependent_components, do: [:icon]
+  def dependent_components, do: [:icon, :button]
 
   def variations(opts) do
     dependent_components = opts[:dependent_components]
@@ -17,6 +17,7 @@ defmodule Doggo.Storybook.Combobox do
         attributes: %{
           id: "dog-breed-selector",
           name: "breed",
+          "aria-label": "Dog breed",
           value: "Golden Retriever",
           list_label: "Dog breeds",
           options: [
@@ -33,6 +34,7 @@ defmodule Doggo.Storybook.Combobox do
         attributes: %{
           id: "dog-breed-selector",
           name: "breed",
+          "aria-label": "Dog breed",
           list_label: "Dog breeds",
           value: "french_bulldog",
           options: [
@@ -49,6 +51,7 @@ defmodule Doggo.Storybook.Combobox do
         attributes: %{
           id: "dog-breed-selector",
           name: "breed",
+          "aria-label": "Dog breed",
           list_label: "Dog breeds",
           value: "golden_retriever",
           options: [
@@ -64,6 +67,7 @@ defmodule Doggo.Storybook.Combobox do
         attributes: %{
           id: "dog-breed-selector",
           name: "breed",
+          "aria-label": "Dog breed",
           list_label: "Dog breeds",
           clearable: true,
           value: "golden_retriever",
@@ -80,6 +84,7 @@ defmodule Doggo.Storybook.Combobox do
         attributes: %{
           id: "dog-breed-selector",
           name: "breed",
+          "aria-label": "Dog breed",
           list_label: "Dog breeds",
           clearable: true,
           value: "golden_retriever",
@@ -100,6 +105,7 @@ defmodule Doggo.Storybook.Combobox do
         attributes: %{
           id: "dog-breed-selector",
           name: "breed",
+          "aria-label": "Dog breed",
           list_label: "Dog breeds",
           value: "labrador",
           options: [
@@ -127,6 +133,7 @@ defmodule Doggo.Storybook.Combobox do
         attributes: %{
           id: "dog-breed-selector",
           name: "breed",
+          "aria-label": "Dog breed",
           list_label: "Dog breeds",
           value: "golden_retriever",
           options: [
@@ -147,6 +154,7 @@ defmodule Doggo.Storybook.Combobox do
         attributes: %{
           id: "dog-breed-selector",
           name: "breed",
+          "aria-label": "Dog breed",
           list_label: "Dog breeds",
           value: "golden_retriever",
           options: [
@@ -191,6 +199,7 @@ defmodule Doggo.Storybook.Combobox do
         attributes: %{
           id: "dog-breed-selector",
           name: "breed",
+          "aria-label": "Dog breed",
           list_label: "Dog breeds",
           free_text: true,
           free_text_label: "Add breed",
@@ -206,6 +215,7 @@ defmodule Doggo.Storybook.Combobox do
         attributes: %{
           id: "dog-breed-selector",
           name: "breed",
+          "aria-label": "Dog breed",
           list_label: "Dog breeds",
           value: "golden_retriever",
           disabled: true,
@@ -221,6 +231,7 @@ defmodule Doggo.Storybook.Combobox do
         attributes: %{
           id: "dog-breed-selector",
           name: "breed",
+          "aria-label": "Dog breed",
           list_label: "Dog breeds",
           value: "golden_retriever",
           readonly: true,
@@ -237,7 +248,7 @@ defmodule Doggo.Storybook.Combobox do
         <form style="display: flex; flex-direction: column; gap: 1.5rem;
                      align-items: start">
           <.psb-variation-group/>
-          <button type="submit">Submit</button>
+          #{button("Submit", ~s|type="submit"|, opts[:dependent_components])}
         </form>
         """,
         variations: [
@@ -246,6 +257,7 @@ defmodule Doggo.Storybook.Combobox do
             attributes: %{
               id: "dog-breed-selector-required",
               name: "breed",
+              "aria-label": "Dog breed",
               list_label: "Dog breeds",
               required: true,
               options: [
@@ -260,6 +272,7 @@ defmodule Doggo.Storybook.Combobox do
             attributes: %{
               id: "dog-breed-selector-required-free-text",
               name: "other_breed",
+              "aria-label": "Other dog breed",
               list_label: "Dog breeds",
               required: true,
               free_text: true,

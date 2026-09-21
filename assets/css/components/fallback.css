@@ -1,0 +1,5 @@
+.fallback {
+  --fallback-color: var(--color-text-muted);
+
+  color: var(--fallback-color);
+}

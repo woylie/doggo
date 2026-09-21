@@ -7,6 +7,16 @@
   --toolbar-border-radius: var(--radius-sm);
   --toolbar-group-gap: var(--spacer-1);
 
+  /* WCAG 2.5.8 minimum target size is 24px */
+  --toolbar-item-size: 2.25rem;
+  --toolbar-item-color: var(--color-text-default);
+  --toolbar-item-color-disabled: var(--color-text-disabled);
+  --toolbar-item-background-hover: var(--color-background-surface);
+  --toolbar-item-border-radius: var(--radius-sm);
+  --toolbar-item-outline-width: var(--border-width-md);
+  --toolbar-item-outline-color: var(--color-border-primary-solid);
+  --toolbar-item-outline-offset: var(--border-width-sm);
+
   display: flex;
   gap: var(--toolbar-gap);
   align-items: center;
@@ -22,5 +32,34 @@
   &[aria-orientation="vertical"] {
     flex-direction: column;
     align-items: stretch;
+  }
+}
+
+:where(.toolbar, .action-bar) button {
+  display: grid;
+  place-items: center;
+  inline-size: var(--toolbar-item-size);
+  block-size: var(--toolbar-item-size);
+  padding: 0;
+  color: var(--toolbar-item-color);
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: var(--toolbar-item-border-radius);
+
+  &:hover {
+    background: var(--toolbar-item-background-hover);
+  }
+
+  &:focus-visible {
+    outline: var(--toolbar-item-outline-width) solid
+      var(--toolbar-item-outline-color);
+    outline-offset: var(--toolbar-item-outline-offset);
+  }
+
+  &:disabled {
+    color: var(--toolbar-item-color-disabled);
+    cursor: not-allowed;
+    background: none;
   }
 }

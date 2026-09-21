@@ -4,13 +4,22 @@ defmodule Doggo.Storybook.Toolbar do
   import Doggo.Storybook.Shared
   alias PhoenixStorybook.Stories.Variation
 
-  def dependent_components, do: [:button, :icon]
+  def dependent_components, do: [:icon]
 
   def variations(opts) do
     [
       %Variation{
         id: :default,
         attributes: %{id: "dog-toolbar-default", label: "Actions"},
+        slots: slots(opts)
+      },
+      %Variation{
+        id: :vertical,
+        attributes: %{
+          id: "dog-toolbar-vertical",
+          label: "Actions",
+          orientation: "vertical"
+        },
         slots: slots(opts)
       }
     ]
@@ -26,30 +35,23 @@ defmodule Doggo.Storybook.Toolbar do
   defp slots(opts) do
     dependent_components = opts[:dependent_components]
 
-    button_function =
-      if fun = dependent_components[:button] do
-        ".#{fun}"
-      else
-        "button"
-      end
+    control = fn event, label, icon_name ->
+      """
+      <button type="button" phx-click="#{event}" aria-label="#{label}">
+        #{icon(icon_name, dependent_components)}
+      </button>
+      """
+    end
 
     [
       """
       <div role="group">
-        <#{button_function} phx-click="feed-dog">
-          #{icon(:pot, dependent_components)}
-        </#{button_function}>
-        <#{button_function} phx-click="walk-dog">
-          #{icon(:paw, dependent_components)}
-        </#{button_function}>
+        #{control.("feed-dog", "Feed", :pot)}
+        #{control.("walk-dog", "Walk", :paw)}
       </div>
       <div role="group">
-        <#{button_function} phx-click="teach-trick">
-          #{icon(:teach, dependent_components)}
-        </#{button_function}>
-        <#{button_function} phx-click="groom-dog">
-          #{icon(:cut, dependent_components)}
-        </#{button_function}>
+        #{control.("teach-trick", "Teach a trick", :teach)}
+        #{control.("groom-dog", "Groom", :cut)}
       </div>
       """
     ]

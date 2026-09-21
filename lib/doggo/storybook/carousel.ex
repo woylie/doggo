@@ -32,6 +32,15 @@ defmodule Doggo.Storybook.Carousel do
         slots: slots_without_auto_rotation(opts)
       },
       %Variation{
+        id: :slow_rotation,
+        attributes: %{
+          label: "Our Dogs",
+          pagination: true,
+          rotation_interval_ms: 10_000
+        },
+        slots: slots(opts)
+      },
+      %Variation{
         id: :without_pagination,
         attributes: %{label: "Our Dogs"},
         slots: slots(opts)

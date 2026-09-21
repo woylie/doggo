@@ -1,8 +1,9 @@
 defmodule Doggo.Storybook.MenuItemRadioGroup do
   @moduledoc false
 
-  alias Phoenix.LiveView.JS
   alias PhoenixStorybook.Stories.Variation
+
+  @scope_id "theme-options"
 
   def dependent_components, do: [:menu]
 
@@ -12,11 +13,13 @@ defmodule Doggo.Storybook.MenuItemRadioGroup do
 
     if menu_fun do
       """
-      <.#{menu_fun} id="menu-:variation_id" label="Actions">
-        <:item>
-          <.psb-variation/>
-        </:item>
-      </.#{menu_fun}>
+      <div id="#{@scope_id}">
+        <.#{menu_fun} id="menu-:variation_id" label="Actions">
+          <:item>
+            <.psb-variation/>
+          </:item>
+        </.#{menu_fun}>
+      </div>
       """
     else
       """
@@ -29,10 +32,7 @@ defmodule Doggo.Storybook.MenuItemRadioGroup do
     [
       %Variation{
         id: :default,
-        attributes: %{
-          label: "Theme",
-          on_click: JS.dispatch("myapp:toggle-word-wrap")
-        },
+        attributes: %{label: "Theme"},
         slots: slots()
       }
     ]
@@ -40,22 +40,29 @@ defmodule Doggo.Storybook.MenuItemRadioGroup do
 
   def modifier_variation_base(_id, _name, _value, _opts) do
     %{
-      attributes: %{
-        label: "Theme",
-        on_click: JS.dispatch("myapp:toggle-word-wrap")
-      },
+      attributes: %{label: "Theme"},
       slots: slots()
     }
   end
 
   defp slots do
     [
-      """
-      <:item on_click={JS.dispatch("switch-theme-light")}>Light</:item>
-      """,
-      """
-      <:item on_click={JS.dispatch("switch-theme-dark")}>Dark</:item>
-      """
+      choice("light", "Light", " checked"),
+      choice("dark", "Dark", "")
     ]
+  end
+
+  defp choice(theme, label, checked) do
+    """
+    <:item#{checked}
+      on_click={
+        JS.set_attribute({"aria-checked", "false"},
+          to: "##{@scope_id} [role='menuitemradio']"
+        )
+        |> JS.set_attribute({"aria-checked", "true"})
+        |> JS.dispatch("switch-theme-#{theme}")
+      }
+    >#{label}</:item>
+    """
   end
 end

@@ -36,6 +36,16 @@ defmodule Doggo.Storybook.Accordion do
           expanded: :none
         },
         slots: slots()
+      },
+      %Variation{
+        id: :heading_level,
+        note:
+          "The `heading` should be chosen to follow the header hierarchy in the document outline.",
+        attributes: %{
+          id: "dog-breeds-heading",
+          heading: "h2"
+        },
+        slots: slots()
       }
     ]
   end

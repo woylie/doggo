@@ -1,0 +1,46 @@
+.navbar {
+  --navbar-gap: var(--spacer-6);
+  --navbar-padding-block: var(--spacer-3);
+  --navbar-padding-inline: var(--spacer-4);
+  --navbar-background: var(--color-background-surface);
+  --navbar-border-width: var(--border-width-sm);
+  --navbar-border-color: var(--color-border-subtle);
+  --navbar-brand-font-size: var(--size-font-lg);
+  --navbar-brand-font-weight: var(--weight-medium);
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--navbar-gap);
+  align-items: center;
+  padding: var(--navbar-padding-block) var(--navbar-padding-inline);
+  background: var(--navbar-background);
+  border-block-end: var(--navbar-border-width) solid var(--navbar-border-color);
+
+  > .navbar-brand {
+    flex-grow: 1;
+    flex-basis: calc((40rem - 100%) * 999);
+    font-size: var(--navbar-brand-font-size);
+    font-weight: var(--navbar-brand-font-weight);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.navbar-items {
+  --navbar-items-gap: var(--spacer-4);
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--navbar-items-gap);
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}

@@ -26,6 +26,11 @@ defmodule Doggo.Components.Breadcrumb do
   end
 
   @impl true
+  def css_path do
+    "components/breadcrumb.css"
+  end
+
+  @impl true
   def config do
     [
       type: :navigation,

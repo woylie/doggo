@@ -4,7 +4,7 @@ defmodule Doggo.Storybook.Alert do
   import Doggo.Storybook.Shared
   alias PhoenixStorybook.Stories.Variation
 
-  def dependent_components, do: [:icon]
+  def dependent_components, do: [:icon, :button]
 
   def template do
     """
@@ -58,7 +58,7 @@ defmodule Doggo.Storybook.Alert do
       %Variation{
         id: :action,
         attributes: %{title: "Session expired"},
-        slots: slots_with_action()
+        slots: slots_with_action(opts)
       }
     ]
   end
@@ -73,10 +73,10 @@ defmodule Doggo.Storybook.Alert do
     ["This is an alert."]
   end
 
-  defp slots_with_action do
+  defp slots_with_action(opts) do
     [
       "Your session has expired. Sign in again to continue.",
-      "<:action><button>Sign in</button></:action>"
+      "<:action>#{button("Sign in", ~s|type="button"|, opts[:dependent_components])}</:action>"
     ]
   end
 

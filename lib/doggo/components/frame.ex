@@ -34,6 +34,11 @@ defmodule Doggo.Components.Frame do
   end
 
   @impl true
+  def css_path do
+    "components/frame.css"
+  end
+
+  @impl true
   def config do
     [
       type: :media,

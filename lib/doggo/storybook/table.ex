@@ -1,6 +1,11 @@
 defmodule Doggo.Storybook.Table do
   @moduledoc false
+
+  import Doggo.Storybook.Shared
+
   alias PhoenixStorybook.Stories.Variation
+
+  def dependent_components, do: [:button]
 
   def layout, do: :one_column
 
@@ -12,7 +17,7 @@ defmodule Doggo.Storybook.Table do
     """
   end
 
-  def variations(_opts) do
+  def variations(opts) do
     [
       %Variation{
         id: :basic,
@@ -22,6 +27,37 @@ defmodule Doggo.Storybook.Table do
             %{id: 1, name: "George", age: 8},
             %{id: 2, name: "Mary", age: 5}
           ]
+        },
+        slots: [
+          """
+          <:col :let={p} label="Name"><%= p.name %></:col>
+          <:col :let={p} label="Age"><%= p.age %></:col>
+          """
+        ]
+      },
+      %Variation{
+        id: :column_attributes,
+        attributes: %{
+          id: "pets",
+          rows: [
+            %{id: 1, name: "George", age: 8},
+            %{id: 2, name: "Mary", age: 5}
+          ]
+        },
+        slots: [
+          """
+          <:col :let={p} label="Name" col_attrs={[style: "width: 70%"]}><%= p.name %></:col>
+          <:col :let={p} label="Age" col_attrs={[style: "width: 30%"]}><%= p.age %></:col>
+          """
+        ]
+      },
+      %Variation{
+        id: :row_id_and_item,
+        attributes: %{
+          id: "pets",
+          rows: [{1, %{name: "George", age: 8}}, {2, %{name: "Mary", age: 5}}],
+          row_id: {:eval, ~s|fn {id, _} -> "pet-\#{id}" end|},
+          row_item: {:eval, "fn {_, pet} -> pet end"}
         },
         slots: [
           """
@@ -115,12 +151,7 @@ defmodule Doggo.Storybook.Table do
           <:col :let={p} label="Name"><%= p.name %></:col>
           <:col :let={p} label="Age"><%= p.age %></:col>
           <:action :let={p} label="Actions">
-            <button
-              type="button"
-              phx-click={JS.toggle(to: "#table-row-clicked-\#{p.id}")}
-            >
-              Pick
-            </button>
+            #{button("Pick", ~s|type="button" phx-click={JS.toggle(to: "#table-row-clicked-\#{p.id}")}|, opts[:dependent_components])}
           </:action>
           """
         ]

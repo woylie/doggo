@@ -62,6 +62,11 @@ defmodule Doggo.Components.ToggleButton do
   end
 
   @impl true
+  def css_path do
+    "components/button.css"
+  end
+
+  @impl true
   def config do
     [
       type: :buttons,

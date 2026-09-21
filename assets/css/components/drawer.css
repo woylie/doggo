@@ -1,0 +1,43 @@
+.drawer {
+  --drawer-gap: var(--spacer-6);
+  --drawer-main-gap: var(--spacer-2);
+  --drawer-padding-block: var(--spacer-4);
+  --drawer-padding-inline: var(--spacer-4);
+  --drawer-background: var(--color-background-page);
+  --drawer-border-width: var(--border-width-sm);
+  --drawer-border-color: var(--color-border-subtle);
+  --drawer-header-font-size: var(--size-font-lg);
+  --drawer-header-font-weight: var(--weight-medium);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--drawer-gap);
+  block-size: 100%;
+  padding: var(--drawer-padding-block) 0;
+  background: var(--drawer-background);
+  border-inline-end: var(--drawer-border-width) solid var(--drawer-border-color);
+
+  > .drawer-header,
+  > .drawer-main,
+  > .drawer-footer {
+    padding-inline: var(--drawer-padding-inline);
+  }
+
+  > .drawer-header {
+    font-size: var(--drawer-header-font-size);
+    font-weight: var(--drawer-header-font-weight);
+  }
+
+  > .drawer-main {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--drawer-main-gap);
+    min-block-size: 0;
+    overflow-y: auto;
+  }
+
+  > .drawer-footer {
+    margin-block-start: auto;
+  }
+}

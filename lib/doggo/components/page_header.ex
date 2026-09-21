@@ -58,6 +58,11 @@ defmodule Doggo.Components.PageHeader do
   end
 
   @impl true
+  def css_path do
+    "components/page-header.css"
+  end
+
+  @impl true
   def config do
     [
       type: :layout,

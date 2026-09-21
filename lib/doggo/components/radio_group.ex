@@ -38,7 +38,7 @@ defmodule Doggo.Components.RadioGroup do
     To target the wrapper, you can use an attribute selector:
 
     ```css
-    [role="radio-group"] {}
+    [role="radiogroup"] {}
     ```
     """
   end
@@ -53,6 +53,11 @@ defmodule Doggo.Components.RadioGroup do
     The group is a single tab stop. The radios are native elements sharing a
     name, so the browser handles this.
     """
+  end
+
+  @impl true
+  def css_path do
+    "components/radio-group.css"
   end
 
   @impl true

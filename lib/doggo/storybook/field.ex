@@ -147,6 +147,15 @@ defmodule Doggo.Storybook.Field do
             }
           },
           %Variation{
+            id: :select_with_prompt,
+            attributes: %{
+              label: "Select with prompt",
+              type: "select",
+              prompt: "Choose a size",
+              options: ["Small", "Medium", "Large"]
+            }
+          },
+          %Variation{
             id: :multiple_select,
             attributes: %{
               label: "Multiple select",
@@ -175,6 +184,24 @@ defmodule Doggo.Storybook.Field do
             attributes: %{
               label: "Switch",
               type: "switch"
+            }
+          },
+          %Variation{
+            id: :switch_with_state_text,
+            attributes: %{
+              label: "Switch with state text",
+              type: "switch",
+              on_text: "Enabled",
+              off_text: "Disabled"
+            }
+          },
+          %Variation{
+            id: :hidden_label,
+            attributes: %{
+              label: "Search",
+              hide_label: true,
+              type: "search",
+              placeholder: "Search breeds"
             }
           },
           %Variation{
@@ -253,7 +280,7 @@ defmodule Doggo.Storybook.Field do
         ]
       },
       %VariationGroup{
-        id: :description_and_errors,
+        id: :autocomplete,
         description: "Autocomplete with datalist",
         variations: [
           %Variation{

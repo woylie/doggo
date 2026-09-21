@@ -5,6 +5,16 @@ defmodule Doggo.Storybook.Navbar do
 
   def dependent_components, do: [:navbar_items]
 
+  def layout, do: :one_column
+
+  def template do
+    """
+    <div style="inline-size: 100%">
+      <.psb-variation/>
+    </div>
+    """
+  end
+
   def variations(opts) do
     [
       %Variation{
@@ -42,7 +52,7 @@ defmodule Doggo.Storybook.Navbar do
           </:item>
           <:item>
             <Phoenix.Component.link navigate="/services">
-              services
+              Services
             </Phoenix.Component.link>
           </:item>
           <:item>
@@ -85,7 +95,7 @@ defmodule Doggo.Storybook.Navbar do
           </:item>
           <:item>
             <Phoenix.Component.link navigate="/services">
-              services
+              Services
             </Phoenix.Component.link>
           </:item>
         </.#{items_fun}>

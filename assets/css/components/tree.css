@@ -9,8 +9,10 @@
   --tree-group-padding-inline-start: var(--tree-item-toggle-size);
   --tree-item-padding-block: var(--spacer-1);
   --tree-item-gap: var(--spacer-1);
+
+  /* WCAG 2.5.8 minimum target size is 24px */
   --tree-item-toggle-size: var(--spacer-6);
-  --tree-item-caret-font-size: var(--size-font-sm);
+  --tree-item-caret-font-size: var(--size-font-lg);
   --tree-item-icon-size: 1em;
   --tree-item-caret-color: var(--color-text-muted);
   --tree-item-outline-width: var(--border-width-md);
@@ -27,7 +29,6 @@
   padding-block: var(--tree-item-padding-block);
 
   > .tree-item-toggle {
-    /* WCAG 2.5.8 minimum target size is 24px */
     display: grid;
     grid-column: 1;
     place-items: center;

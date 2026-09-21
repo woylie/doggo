@@ -8,8 +8,7 @@ defmodule Doggo.Components.Cluster do
   @impl true
   def doc do
     """
-    The cluster component is used to visually group child elements while
-    applying a consistent gap between them.
+    Groups child elements with a consistent gap between them.
 
     Common use cases are groups of buttons, groups of tags, or similar items.
 

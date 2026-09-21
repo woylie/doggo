@@ -2,8 +2,6 @@ defmodule Doggo.Storybook.DisclosureButton do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def container, do: {:div, class: "container"}
-
   def variations(opts) do
     [
       %Variation{
@@ -30,7 +28,7 @@ defmodule Doggo.Storybook.DisclosureButton do
 
   defp variation_template(id, _opts) do
     """
-    <div style="display: flex; flex-direction: column; gap: 1.5rem">
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; inline-size: 100%">
       <div>
         <.psb-variation-group/>
       </div>
@@ -41,7 +39,7 @@ defmodule Doggo.Storybook.DisclosureButton do
 
   defp variation_group_template(id, _opts) do
     """
-    <div  style="display: flex; flex-direction: column; gap: 1.5rem">
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; inline-size: 100%">
       <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
         <.psb-variation-group/>
       </div>

@@ -8,7 +8,7 @@ defmodule Doggo.Components.MenuGroup do
   @impl true
   def doc do
     """
-    This component can be used to group items within a `menu/1` or `menu_bar/1`.
+    Groups items within a `menu/1` or `menu_bar/1`.
 
     See also `menu_button/1`, `menu_item/1`, and `menu_item_checkbox/1`.
     """

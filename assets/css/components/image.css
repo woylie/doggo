@@ -1,0 +1,66 @@
+.image {
+  --image-frame-background: var(--color-background-surface);
+  --image-frame-border-radius: var(--radius-md);
+  --image-caption-font-size: var(--size-font-sm);
+  --image-caption-color: var(--color-text-muted);
+  --image-caption-margin-block-start: var(--spacer-2);
+
+  margin: 0;
+
+  > .image-frame {
+    overflow: hidden;
+    background: var(--image-frame-background);
+    border-radius: var(--image-frame-border-radius);
+
+    /* Can be rewritten with attr() once widely baseline available
+     * https://caniuse.com/css3-attr */
+    &[data-numerator="1"][data-denominator="1"] {
+      aspect-ratio: 1 / 1;
+    }
+
+    &[data-numerator="3"][data-denominator="2"] {
+      aspect-ratio: 3 / 2;
+    }
+
+    &[data-numerator="2"][data-denominator="3"] {
+      aspect-ratio: 2 / 3;
+    }
+
+    &[data-numerator="4"][data-denominator="3"] {
+      aspect-ratio: 4 / 3;
+    }
+
+    &[data-numerator="3"][data-denominator="4"] {
+      aspect-ratio: 3 / 4;
+    }
+
+    &[data-numerator="5"][data-denominator="4"] {
+      aspect-ratio: 5 / 4;
+    }
+
+    &[data-numerator="4"][data-denominator="5"] {
+      aspect-ratio: 4 / 5;
+    }
+
+    &[data-numerator="16"][data-denominator="9"] {
+      aspect-ratio: 16 / 9;
+    }
+
+    &[data-numerator="9"][data-denominator="16"] {
+      aspect-ratio: 9 / 16;
+    }
+
+    > img {
+      display: block;
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+    }
+  }
+
+  > figcaption {
+    margin-block-start: var(--image-caption-margin-block-start);
+    font-size: var(--image-caption-font-size);
+    color: var(--image-caption-color);
+  }
+}

@@ -2,6 +2,8 @@ defmodule Doggo.Storybook.TabNavigation do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
+  def layout, do: :one_column
+
   def variations(_opts) do
     [
       %Variation{

@@ -23,31 +23,27 @@ body.demo-web {
   align-self: stretch;
 }
 
-.demo-web button:not([class]) {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.demo-web
+  :where(
+    input:not([class], [type="checkbox"], [type="radio"]),
+    textarea,
+    select
+  ) {
   padding: var(--spacer-1) var(--spacer-3);
   font: inherit;
-  font-size: var(--size-font-sm);
-  line-height: var(--size-line-single);
-  color: var(--color-text-secondary-soft);
-  cursor: pointer;
-  background: transparent;
-  border: var(--border-width-sm) solid var(--color-border-secondary-solid);
+  color: var(--color-text-default);
+  background-color: var(--color-background-page);
+  border: var(--border-width-sm) solid var(--color-border-control);
   border-radius: var(--radius-sm);
+}
 
-  &:hover,
-  &:focus {
-    background: var(--color-background-secondary-soft);
-  }
-
-  &:disabled {
-    color: var(--color-text-disabled-solid);
-    cursor: not-allowed;
-    background: var(--color-background-disabled-solid);
-    border-color: var(--color-border-disabled-solid);
-  }
+.demo-web :where(select:not([multiple], [size])) {
+  padding-inline-end: var(--spacer-6);
+  appearance: none;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjODg4ODg4JyBzdHJva2Utd2lkdGg9JzInIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCc+PHBhdGggZD0nbTYgOSA2IDYgNi02Jy8+PC9zdmc+");
+  background-repeat: no-repeat;
+  background-position: right var(--spacer-2) top 50%;
+  background-size: var(--size-font-md);
 }
 
 @media screen and (prefers-reduced-motion: reduce) {

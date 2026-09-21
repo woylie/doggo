@@ -88,6 +88,11 @@ defmodule Doggo.Components.MenuButton do
   end
 
   @impl true
+  def css_path do
+    "components/menu.css"
+  end
+
+  @impl true
   def config do
     [
       type: :menu,

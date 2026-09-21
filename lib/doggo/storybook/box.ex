@@ -2,78 +2,75 @@ defmodule Doggo.Storybook.Box do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def dependent_components, do: [:button_link]
-
-  def container, do: {:div, class: "container"}
   def layout, do: :one_column
 
-  def variations(opts) do
+  def variations(_opts) do
     [
       %Variation{
         id: :minimal,
-        slots: [
-          body()
-        ]
+        slots: [body()]
       },
       %Variation{
         id: :title_action_footer,
         description: "With title, action, and footer",
-        slots: slots(:title_action_footer, opts)
+        slots: [title(), body(), action(), footer()]
       },
       %Variation{
         id: :banner,
-        description: "With banner",
-        slots: with_banner_slots(:banner, opts)
+        description: "With banner and title",
+        slots: [title(), banner(), body()]
+      },
+      %Variation{
+        id: :banner_without_title,
+        description: "With banner, without title",
+        slots: [banner(), body()]
+      },
+      %Variation{
+        id: :action_without_title,
+        description: "Action without title",
+        slots: [body(), action()]
+      },
+      %Variation{
+        id: :footer_only,
+        description: "No header",
+        slots: [body(), footer()]
       }
     ]
   end
 
-  def modifier_variation_base(id, _name, _value, opts) do
-    %{
-      slots: slots(id, opts)
-    }
+  def modifier_variation_base(_id, _name, _value, _opts) do
+    %{slots: [title(), body(), action(), footer()]}
   end
 
-  defp slots(_id, _opts) do
-    [
-      "<:title>Adopt a Loyal Friend</:title>",
-      body(),
-      """
-      <:action>
-        <.link patch="/profiles/1/edit">Edit</.link>
-      </:action>
-      """,
-      """
-      <:footer>
-        <p>Last edited: 2023/12/26</p>
-      </:footer>
-      """
-    ]
+  defp title do
+    "<:title>Adopt a Loyal Friend</:title>"
   end
 
-  defp with_banner_slots(_id, _opts) do
-    [
-      "<:title>Adopt a Loyal Friend</:title>",
-      """
-      <:banner>
-        <img
-          src="https://github.com/woylie/doggo/blob/main/assets/images/dog_1.webp?raw=true"
-          alt=""
-        />
-      </:banner>
-      """,
-      body(),
-      """
-      <:action>
-        <.link patch="/profiles/1/edit">Edit</.link>
-      </:action>
-      """,
-      """
-      <:footer>
-        <p>Last edited: 2023/12/26</p>
-      </:footer>
-      """
-    ]
+  defp action do
+    """
+    <:action>
+      <.link patch="/profiles/1/edit">Edit</.link>
+    </:action>
+    """
+  end
+
+  defp footer do
+    """
+    <:footer>
+      <p>Last edited: 2023/12/26</p>
+    </:footer>
+    """
+  end
+
+  defp banner do
+    """
+    <:banner>
+      <img
+        src="https://github.com/woylie/doggo/blob/main/assets/images/dog_1.webp?raw=true"
+        alt=""
+      />
+    </:banner>
+    """
   end
 
   defp body do

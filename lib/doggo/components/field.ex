@@ -216,10 +216,10 @@ defmodule Doggo.Components.Field do
 
     #### Radio group and checkbox group
 
-    The `radio-group` and `checkbox-group` types allow you to easily render groups
-    of radio buttons or checkboxes with a single component invocation. The
-    `options` attribute is required for these types and has the same format as
-    the options for the `select` type, except that options may not be nested.
+    The `radio-group` and `checkbox-group` render groups of radio buttons or
+    checkboxes with a single component invocation. The `options` attribute is
+    required for these types and has the same format as the options for the
+    `select` type, except that options may not be nested.
 
     ```heex
     <.field
