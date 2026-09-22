@@ -27,7 +27,6 @@ let opts = {
   entryPoints: ["js/app.js", "js/storybook.js"],
   bundle: true,
   logLevel: "info",
-  target: "es2017",
   target: ["es2017", "chrome121", "edge121", "firefox123", "safari17.4"],
   outdir: "../priv/static/assets",
   plugins: plugins,
