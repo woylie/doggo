@@ -46,6 +46,11 @@
       flex-direction: column;
     }
 
+    /* Set margin here so that a layout on the parent cannot override it. */
+    &:modal {
+      margin: auto;
+    }
+
     @media (width < 30rem) {
       inline-size: 100%;
       max-inline-size: none;
@@ -57,6 +62,18 @@
 
     &::backdrop {
       background-color: var(--dialog-backdrop-background);
+    }
+
+    /* Ensure that the autofocus element has a focus outline when opening
+     * the dialog (WCAG 2.4.7 minimum focus visibility).
+     *
+     * Elements with `tabindex="-1"` are excluded, since these are focused to
+     * put the reading position at the start of the content and cannot be
+     * activated.
+     */
+    &[open] :focus:not([tabindex="-1"]) {
+      outline: var(--dialog-outline-width) solid var(--dialog-outline-color);
+      outline-offset: var(--dialog-outline-offset);
     }
 
     > section {
