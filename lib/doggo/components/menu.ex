@@ -25,7 +25,7 @@ defmodule Doggo.Components.Menu do
     set the `label` attribute.
 
     ```heex
-    <.menu label="Actions">
+    <.menu id="actions-menu" label="Actions">
       <:item>
         <.menu_item on_click={JS.push("copy")}>Copy</.menu_item>
       </:item>
@@ -46,7 +46,7 @@ defmodule Doggo.Components.Menu do
     <.menu_button controls="actions-menu" id="actions-button">
       Actions
     </.menu_button>
-    <.menu labelledby="actions-button" hidden></.menu>
+    <.menu id="actions-menu" labelledby="actions-button" hidden></.menu>
 
     This component needs the `Doggo.Menu` JavaScript hook. See
     [Phoenix LiveView Hooks](readme.html#phoenix-liveview-hooks) for

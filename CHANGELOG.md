@@ -10,13 +10,27 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-09-22
+
+### Added
+
+- Add CSS examples for all remaining components.
+- Add `label` attribute to `table` to name the scroll container.
+
 ### Changed
 
-- Name the landmark that `app_bar`, `callout` and `drawer` render.
+- Name the landmarks that `app_bar`, `callout` and `drawer` render.
 - Render `callout` and `drawer` as a `div` and only set `role="complementary"`
   if they have a name in order to prevent unnamed landmarks.
-- `app_bar` and `drawer` now require an `id`.
+- Require `id` for `app_bar` and `drawer`.
 - Update component categories.
+- Render both states of a `switch` at once and toggle `hidden` between them
+  instead of rendering only the current one.
+- Use `-switch-state-on` and `-switch-state-off` classes on the switch of the
+  `field` component instead of a `data-state` attribute.
+- Put the scroll container of `table` in the tab order, name it with
+  `role="region"`, and set `scope="col"` on the header cells.
+- Render the title of a `modal` before the close button.
 
 ### Fixed
 
@@ -31,9 +45,14 @@ and this project adheres to
 
 ### How to upgrade
 
-Pass an `id` to `app_bar/1` and `drawer/1`. If your CSS or tests select the
-`aside` element that `callout/1` or `drawer/1` used to render, select the
-`callout` or `drawer` class instead.
+- Pass an `id` to `app_bar/1` and `drawer/1`.
+- If your CSS or tests select the `aside` element that `callout/1` or `drawer/1`
+  used to render, select the base class instead.
+- Because the component categories were updated, the location of the stories
+  also changed. Run `mix dog.gen.stories` again and delete the stories from
+  their old folder.
+- Replace `[data-state]` selectors on the switch of the `field` component with
+  `.field-switch-state-on` and `.field-switch-state-off`.
 
 ## [0.15.1] - 2026-09-11
 
@@ -1021,7 +1040,8 @@ After:
 
 Initial release.
 
-[unreleased]: https://github.com/woylie/doggo/compare/0.15.1...HEAD
+[unreleased]: https://github.com/woylie/doggo/compare/0.16.0...HEAD
+[0.16.0]: https://github.com/woylie/doggo/compare/0.15.1...0.16.0
 [0.15.1]: https://github.com/woylie/doggo/compare/0.15.0...0.15.1
 [0.15.0]: https://github.com/woylie/doggo/compare/0.14.9...0.15.0
 [0.14.9]: https://github.com/woylie/doggo/compare/0.14.8...0.14.9

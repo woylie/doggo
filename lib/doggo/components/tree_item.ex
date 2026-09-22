@@ -19,7 +19,7 @@ defmodule Doggo.Components.TreeItem do
   def usage do
     """
     ```heex
-    <.tree label="Dogs">
+    <.tree id="dog-tree" label="Dogs">
       <.tree_item>
         Breeds
         <:items>

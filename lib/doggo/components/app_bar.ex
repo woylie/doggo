@@ -17,7 +17,7 @@ defmodule Doggo.Components.AppBar do
   def usage do
     """
     ```heex
-    <.app_bar title="Page title">
+    <.app_bar id="app-bar" title="Page title">
       <:navigation label="Open menu" on_click={JS.push("toggle-menu")}>
         <.icon><Lucideicons.menu aria-hidden /></.icon>
       </:navigation>

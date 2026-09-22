@@ -20,7 +20,7 @@ defmodule Doggo.Components.MenuItemCheckbox do
   def usage do
     """
     ```heex
-    <.menu label="Actions">
+    <.menu id="actions-menu" label="Actions">
       <:item>
         <.menu_item_checkbox on_click={JS.dispatch("myapp:toggle-word-wrap")}>
           Word wrap

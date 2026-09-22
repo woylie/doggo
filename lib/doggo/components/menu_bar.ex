@@ -22,7 +22,7 @@ defmodule Doggo.Components.MenuBar do
   def usage do
     """
     ```heex
-    <.menu_bar label="Main">
+    <.menu_bar id="main-menu-bar" label="Main">
       <:item>
         <.menu_button controls="actions-menu" id="actions-button">
           Actions

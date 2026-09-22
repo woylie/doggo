@@ -19,7 +19,7 @@ defmodule Doggo.Components.Toolbar do
     buttons.
 
     ```heex
-    <.toolbar label="Actions for the dog">
+    <.toolbar id="dog-toolbar" label="Actions for the dog">
       <div role="group">
         <button phx-click="feed-dog">
           <.icon text="Feed dog"><Icons.feed /></.icon>

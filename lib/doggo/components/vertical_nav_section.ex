@@ -19,7 +19,7 @@ defmodule Doggo.Components.VerticalNavSection do
   def usage do
     """
     ```heex
-    <.vertical_nav_section>
+    <.vertical_nav_section id="search-section">
       <:title>Search</:title>
       <:item><input type="search" placeholder="Search" /></:item>
     </.vertical_nav_section>
