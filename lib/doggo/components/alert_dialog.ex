@@ -83,6 +83,34 @@ defmodule Doggo.Components.AlertDialog do
     the focus inside. `aria-modal` is not rendered, because `showModal()`
     already marks the component as a modal.
 
+    ## Focus
+
+    `showModal()` moves the focus into the dialog to the first element with the
+    `autofocus` attribute, or the first focusable element if no element has it.
+
+    The alert dialog is not dismissable by default, so the first focusable
+    element is usually the first control in the `:footer` slot. In a
+    dismissable alert dialog, it is the close button. Neither is likely to be
+    the right element to focus.
+
+    Set `autofocus` on the element that should receive the focus:
+
+    ```heex
+    <:footer>
+      <.button phx-click="end-session">Yes, end session</.button>
+      <.button
+        autofocus
+        phx-click={JS.exec("data-cancel", to: "#end-session-modal")}
+      >
+        No, continue training
+      </.button>
+    </:footer>
+    ```
+
+    In an alert dialog, the focus should move to the least destructive action,
+    as recommended in the
+    [ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/patterns/alertdialog/).
+
     ## CSS
 
     A dialog is hidden until it is opened, so no rule is needed for that. Style
