@@ -122,6 +122,69 @@ defmodule Doggo.Components.Modal do
     the focus inside. `aria-modal` is not rendered, because `showModal()`
     already marks the component as a modal.
 
+
+    ## Focus
+
+    `showModal()` moves the focus into the dialog to the first element with the
+    `autofocus` attribute, or the first focusable element if no element has it.
+
+    In a dismissable modal, the close button comes first in the markup, so it
+    receives the focus if no `autofocus` attribute is present. This is rarely
+    desired.
+
+    Set `autofocus` on the element that should receive the focus:
+
+    ```heex
+    <.modal id="edit-dog">
+      <:title>Edit dog</:title>
+      <form>
+        <input type="text" name="name" autofocus />
+      </form>
+    </.modal>
+    ```
+
+    The most appropriate element to focus depends on the dialog:
+
+    - If the reader has to work through the content, focus a static element at
+      the top. Opening a modal announces its title and the focused element, but
+      not the body. If a control is focused, the content remains unread until
+      the reader starts looking for it. Focusing a control also scrolls it into
+      view, which can push the beginning of a long body out of sight.
+    - If the dialog has focusable elements in the body, such as a form, set the
+      focus to the first such element (e.g. the first input).
+    - If the dialog only informs or continues a process, set the focus to the
+      `OK` or `Continue` button.
+    - If the dialog completes a step that is not easily reversible, set the
+      focus to the least destructive action.
+
+    To focus a static element, set both `tabindex="-1"` and `autofocus`:
+
+    ```heex
+    <.modal id="terms">
+      <:title>Terms of service</:title>
+      <p tabindex="-1" autofocus>Read the following before continuing.</p>
+      <h3>Eligibility</h3>
+      ...
+    </.modal>
+    ```
+
+    If the body is short, it can be announced when the modal opens instead by
+    setting `aria-describedby` to the id of the content element (modal id plus
+    `-content` suffix):
+
+    ```heex
+    <.modal id="delete-dog" aria-describedby="delete-dog-content">
+      <:title>Delete Bella?</:title>
+      <p>This cannot be undone.</p>
+    </.modal>
+    ```
+
+    A description is announced as a single run of text. Don't set
+    `aria-describedby` if the content has a structure to navigate, such as a
+    form, a table, or multiple paragraphs.
+
+    See also [ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/).
+
     ## CSS
 
     A dialog is hidden until it is opened, so no rule is needed for that. Style

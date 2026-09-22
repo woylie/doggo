@@ -52,7 +52,7 @@ defmodule Doggo.Components.Date do
     If you pass a `title_formatter`, a `title` attribute is added to the
     element. This can be useful if you want to render the value in a shortened
     or relative format, but still give the user access to the complete value.
-    Note that the title attribute is only be accessible to users who use
+    Note that the title attribute is only accessible to users who use
     a pointer device. Some screen readers may however announce the `datetime`
     attribute that is always added.
 
