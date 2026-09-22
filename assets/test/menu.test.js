@@ -188,6 +188,75 @@ describe("menu hook, closing", () => {
     expect(document.activeElement).toBe(button);
   });
 
+  it("closes on Escape while the focus is still on the button", () => {
+    const button = document.getElementById("opener");
+    button.focus();
+
+    press(button, "Escape");
+
+    expect(el.hasAttribute("hidden")).toBe(true);
+    expect(button.getAttribute("aria-expanded")).toBe("false");
+    expect(document.activeElement).toBe(button);
+  });
+
+  it("does not let that Escape reach a dialog around the button", () => {
+    const button = document.getElementById("opener");
+    button.focus();
+    const reachedTheDocument = vi.fn();
+    document.addEventListener("keydown", reachedTheDocument);
+
+    press(button, "Escape");
+    document.removeEventListener("keydown", reachedTheDocument);
+
+    expect(el.hasAttribute("hidden")).toBe(true);
+    expect(reachedTheDocument).not.toHaveBeenCalled();
+  });
+
+  it("closes on a click outside, leaving the focus where the click put it", () => {
+    const outside = document.createElement("button");
+    document.body.append(outside);
+    el.querySelector('[role="menuitem"]').focus();
+
+    outside.dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
+
+    expect(el.hasAttribute("hidden")).toBe(true);
+    expect(
+      document.getElementById("opener").getAttribute("aria-expanded"),
+    ).toBe("false");
+    expect(document.activeElement).not.toBe(document.getElementById("opener"));
+  });
+
+  it("stays open when the click is inside the menu", () => {
+    el.querySelector('[role="menuitem"]').dispatchEvent(
+      new window.MouseEvent("click", { bubbles: true }),
+    );
+
+    expect(el.hasAttribute("hidden")).toBe(false);
+  });
+
+  it("leaves a click on the button to the button's own toggle", () => {
+    const button = document.getElementById("opener");
+
+    button.dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
+
+    expect(el.hasAttribute("hidden")).toBe(false);
+    expect(button.getAttribute("aria-expanded")).toBe("true");
+  });
+
+  it("stops closing once destroyed", () => {
+    document.body.innerHTML =
+      '<button id="opener-2" aria-controls="menu-2" aria-expanded="true">Actions</button>' +
+      '<ul id="menu-2" role="menu"><li><button role="menuitem">One</button></li></ul>';
+    const menu = document.getElementById("menu-2");
+    initMenu(menu).destroy();
+    const outside = document.createElement("button");
+    document.body.append(outside);
+
+    outside.dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
+
+    expect(menu.hasAttribute("hidden")).toBe(false);
+  });
+
   it("does not let Escape reach a dialog around the menu", () => {
     el.querySelector('[role="menuitem"]').focus();
     const event = new window.KeyboardEvent("keydown", {
