@@ -46,6 +46,11 @@
       flex-direction: column;
     }
 
+    /* Set margin here so that a layout on the parent cannot override it. */
+    &:modal {
+      margin: auto;
+    }
+
     @media (width < 30rem) {
       inline-size: 100%;
       max-inline-size: none;
