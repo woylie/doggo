@@ -19,6 +19,8 @@ and this project adheres to
 
 ### Fixed
 
+- Put the `carousel`'s slide container in the tab order, so the slides can be
+  scrolled by keyboard.
 - Only set `aria-label` on a `bottom_navigation` item when its label is hidden.
 - Label an `avatar` that falls back to `placeholder_content`.
 - Remove `form`, `name` and `value` as global attributes from `date`.
