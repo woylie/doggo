@@ -6,6 +6,10 @@
   @extend .theme-dark;
 }
 
+.psb-welcome-page {
+  max-inline-size: var(--size-measure);
+}
+
 .psb-doc blockquote {
   padding: var(--spacer-4);
   margin: var(--spacer-4) 0;
