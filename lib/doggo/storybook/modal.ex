@@ -90,11 +90,13 @@ defmodule Doggo.Storybook.Modal do
   end
 
   defp long_slots(id, opts) do
-    [title | rest] = slots(id, opts)
+    [title | rest] = slots(id, opts, "")
 
     paragraphs =
       Enum.map_join(1..20, "\n", fn i ->
-        "<p>Johnny was rehomed in #{2010 + i}. He is house trained, walks " <>
+        attrs = if i == 1, do: ~s| tabindex="-1" autofocus|, else: ""
+
+        "<p#{attrs}>Johnny was rehomed in #{2010 + i}. He is house trained, walks " <>
           "well on a lead, and is happiest with a garden and someone at " <>
           "home during the day. He does not get on with cats.</p>"
       end)
@@ -102,7 +104,7 @@ defmodule Doggo.Storybook.Modal do
     [title, paragraphs | tl(rest)]
   end
 
-  defp slots(id, opts) do
+  defp slots(id, opts, close_attrs \\ " autofocus") do
     dependent_components = opts[:dependent_components]
 
     tag_name =
@@ -121,7 +123,7 @@ defmodule Doggo.Storybook.Modal do
       """,
       """
       <:footer>
-        <#{tag_name} phx-click={JS.exec("data-cancel", to: "##{id}")}>
+        <#{tag_name}#{close_attrs} phx-click={JS.exec("data-cancel", to: "##{id}")}>
           Close
         </#{tag_name}>
       </:footer>
