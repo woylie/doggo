@@ -28,6 +28,11 @@ defmodule Doggo.Components.VerticalNavSection do
   end
 
   @impl true
+  def css_path do
+    "components/vertical-nav.css"
+  end
+
+  @impl true
   def config do
     [
       type: :navigation,

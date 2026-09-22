@@ -12,7 +12,7 @@ defmodule Doggo.Storybook.MenuButton do
     menu =
       if menu_fun && item_fun do
         """
-        <.#{menu_fun} id="actions-menu" labelledby="actions-button" hidden>
+        <.#{menu_fun} id="menu-button-actions-menu" label="Actions" hidden>
           <:item>
             <.#{item_fun} on_click={JS.push("copy")}>Copy</.#{item_fun}>
           </:item>
@@ -44,8 +44,8 @@ defmodule Doggo.Storybook.MenuButton do
       %Variation{
         id: :default,
         attributes: %{
-          controls: "actions-menu",
-          id: "actions-button"
+          controls: "menu-button-actions-menu",
+          id: "menu-button-actions-button"
         },
         slots: ["Actions"]
       }
@@ -56,7 +56,7 @@ defmodule Doggo.Storybook.MenuButton do
     %{
       attributes: %{
         id: id,
-        controls: "actions-menu"
+        controls: "menu-button-actions-menu"
       },
       slots: ["Actions"]
     }

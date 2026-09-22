@@ -11,8 +11,21 @@
   --alert-title-font-weight: var(--weight-medium);
   --alert-icon-size: var(--size-font-lg);
   --alert-icon-block-size: var(--size-line-single);
+
+  /* WCAG 2.5.8 minimum target size is 24px */
   --alert-close-min-size: var(--spacer-6);
   --alert-close-padding-inline: var(--spacer-1);
+  --alert-action-padding-block: var(--spacer-1);
+  --alert-action-padding-inline: var(--spacer-3);
+  --alert-action-font-size: var(--size-font-sm);
+  --alert-action-border-width: var(--border-width-sm);
+  --alert-action-border-color: currentcolor;
+  --alert-action-border-radius: var(--radius-sm);
+  --alert-action-background-hover: color-mix(
+    in oklab,
+    currentcolor 12%,
+    transparent
+  );
   --alert-outline-width: var(--border-width-md);
   --alert-outline-color: var(--color-border-primary-solid);
   --alert-outline-offset: var(--border-width-sm);
@@ -66,6 +79,13 @@
     font-weight: var(--alert-title-font-weight);
   }
 
+  .alert-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--alert-gap);
+    align-items: center;
+  }
+
   > .alert-close {
     display: grid;
     flex: none;
@@ -82,6 +102,28 @@
     svg {
       inline-size: var(--alert-icon-size);
       block-size: var(--alert-icon-size);
+    }
+
+    &:focus-visible {
+      outline: var(--alert-outline-width) solid var(--alert-outline-color);
+      outline-offset: var(--alert-outline-offset);
+    }
+  }
+
+  .alert-actions button:not([class]) {
+    padding: var(--alert-action-padding-block)
+      var(--alert-action-padding-inline);
+    font-family: inherit;
+    font-size: var(--alert-action-font-size);
+    color: inherit;
+    cursor: pointer;
+    background: none;
+    border: var(--alert-action-border-width) solid
+      var(--alert-action-border-color);
+    border-radius: var(--alert-action-border-radius);
+
+    &:hover {
+      background: var(--alert-action-background-hover);
     }
 
     &:focus-visible {

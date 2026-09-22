@@ -3,6 +3,7 @@
   --field-label-font-weight: var(--weight-medium);
   --field-mark-color: var(--color-text-muted);
   --field-mark-font-size: var(--size-font-sm);
+  --field-input-font-size: 1rem;
   --field-input-padding-block: var(--spacer-2);
   --field-input-padding-inline: var(--spacer-3);
   --field-input-background: var(--color-background-page);
@@ -72,8 +73,12 @@
     inline-size: 100%;
     padding: var(--field-input-padding-block) var(--field-input-padding-inline);
     font: inherit;
+
+    /* Input font size should be at least 16px (1rem), or else Safari on iOS
+     * zooms the page when the input is focused. */
+    font-size: var(--field-input-font-size);
     color: inherit;
-    background: var(--field-input-background);
+    background-color: var(--field-input-background);
     border: var(--field-input-border-width) solid
       var(--field-input-border-color);
     border-radius: var(--field-input-border-radius);
@@ -190,6 +195,7 @@
       scale: -1 1;
     }
 
+    /* WCAG 2.3.3: no thumb transition if motion is not wanted. */
     @media (prefers-reduced-motion: reduce) {
       transition: none;
     }

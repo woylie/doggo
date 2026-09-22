@@ -8,8 +8,7 @@ defmodule Doggo.Components.Callout do
   @impl true
   def doc do
     """
-    Use the callout to highlight supplementary information related to the main
-    content.
+    Renders supplementary information related to the main content.
 
     For information that needs immediate attention of the user, use `alert/1`
     instead.
@@ -51,6 +50,11 @@ defmodule Doggo.Components.Callout do
     </.callout>
     ```
     """
+  end
+
+  @impl true
+  def css_path do
+    "components/callout.css"
   end
 
   @impl true

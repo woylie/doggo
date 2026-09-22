@@ -22,12 +22,17 @@ defmodule Doggo.Components.Image do
       ratio={{16, 9}}
     >
       <:caption>
-        Spotlight on canine couture: A dog fashion show where four-legged models
-        dazzle the runway with the latest in pet apparel.
+        Canine couture, spring collection: the season's boldest silhouettes, worn
+        on four legs.
       </:caption>
     </.image>
     ```
     """
+  end
+
+  @impl true
+  def css_path do
+    "components/image.css"
   end
 
   @impl true

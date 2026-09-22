@@ -33,6 +33,11 @@ defmodule Doggo.Components.AppBar do
   end
 
   @impl true
+  def css_path do
+    "components/app-bar.css"
+  end
+
+  @impl true
   def config do
     [
       type: :layout,

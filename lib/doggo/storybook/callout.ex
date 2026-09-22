@@ -4,7 +4,15 @@ defmodule Doggo.Storybook.Callout do
   import Doggo.Storybook.Shared
   alias PhoenixStorybook.Stories.Variation
 
-  def dependent_components, do: [:icon]
+  def dependent_components, do: [:icon, :button]
+
+  def template do
+    """
+    <div style="inline-size: 100%">
+      <.psb-variation/>
+    </div>
+    """
+  end
 
   def variations(opts) do
     dependent_components = opts[:dependent_components]
@@ -53,7 +61,7 @@ defmodule Doggo.Storybook.Callout do
             routine is changed.
           </p>
           """,
-          "<:action><button>Learn More</button></:action>"
+          "<:action>#{button("Learn More", ~s|type="button"|, dependent_components)}</:action>"
         ]
       }
     ]

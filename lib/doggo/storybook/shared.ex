@@ -17,6 +17,26 @@ defmodule Doggo.Storybook.Shared do
     end
   end
 
+  def button(text, attrs, dependent_components) do
+    if function_name = dependent_components[:button] do
+      ~s|<.#{function_name} #{attrs}>#{text}</.#{function_name}>|
+    else
+      ~s|<button #{attrs}>#{text}</button>|
+    end
+  end
+
+  def missing_components_note(dependent_components, names) do
+    case Enum.reject(names, &dependent_components[&1]) do
+      [] ->
+        nil
+
+      missing ->
+        names = Enum.map_join(missing, ", ", &"`#{&1}`")
+
+        "The following components are not compiled and are omitted from the example: `#{names}`"
+    end
+  end
+
   def icon(name, _dependent_components) do
     # This used to work before removing the inner block from the icon component.
     # Now we'd have to get the available icon names and pick one.
@@ -41,6 +61,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-plus"
+      aria-hidden="true"
     >
       <path d="M5 12h14"/>
       <path d="M12 5v14"/>
@@ -81,6 +102,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-calendar-days"
+      aria-hidden="true"
     >
       <rect width="18" height="18" x="3" y="4" rx="2" ry="2" /><line
         x1="16"
@@ -105,6 +127,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-check"
+      aria-hidden="true"
     >
       <path d="M20 6 9 17l-5-5" />
     </svg>
@@ -124,6 +147,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-x"
+      aria-hidden="true"
     >
       <path d="M18 6 6 18" />
       <path d="m6 6 12 12" />
@@ -144,6 +168,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-chevron-down"
+      aria-hidden="true"
     >
       <path d="m6 9 6 6 6-6" />
     </svg>
@@ -163,6 +188,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-chevron-left"
+      aria-hidden="true"
     >
       <path d="m15 18-6-6 6-6" />
     </svg>
@@ -182,6 +208,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-pause"
+      aria-hidden="true"
     >
       <rect x="14" y="4" width="4" height="16" rx="1" />
       <rect x="6" y="4" width="4" height="16" rx="1" />
@@ -202,6 +229,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-play"
+      aria-hidden="true"
     >
       <polygon points="6 3 20 12 6 21 6 3" />
     </svg>
@@ -221,6 +249,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-chevron-right"
+      aria-hidden="true"
     >
       <path d="m9 18 6-6-6-6" />
     </svg>
@@ -240,6 +269,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-scissors"
+      aria-hidden="true"
     >
       <circle cx="6" cy="6" r="3" /><path d="M8.12 8.12 12 12" /><path d="M20 4 8.12 15.88" /><circle
         cx="6"
@@ -283,6 +313,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-folder"
+      aria-hidden="true"
     >
       <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
     </svg>
@@ -302,6 +333,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-info"
+      aria-hidden="true"
     >
       <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/>
       <path d="M12 8h.01"/>
@@ -367,6 +399,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-mail"
+      aria-hidden="true"
     >
       <rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
     </svg>
@@ -386,6 +419,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-mails"
+      aria-hidden="true"
     >
       <rect width="16" height="13" x="6" y="4" rx="2" /><path d="m22 7-7.1 3.78c-.57.3-1.23.3-1.8 0L6 7" /><path d="M2 8v11c0 1.1.9 2 2 2h14" />
     </svg>
@@ -425,6 +459,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-paw-print"
+      aria-hidden="true"
     >
       <circle cx="11" cy="4" r="2" />
       <circle cx="18" cy="8" r="2" />
@@ -447,6 +482,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-cooking-pot"
+      aria-hidden="true"
     >
       <path d="M2 12h20" /><path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8" /><path d="m4 8 16-4" /><path d="m8.86 6.78-.45-1.81a2 2 0 0 1 1.45-2.43l1.94-.48a2 2 0 0 1 2.43 1.46l.45 1.8" />
     </svg>
@@ -486,6 +522,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-graduation-cap"
+      aria-hidden="true"
     >
       <path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c3 3 9 3 12 0v-5" />
     </svg>
@@ -505,6 +542,7 @@ defmodule Doggo.Storybook.Shared do
       stroke-linecap="round"
       stroke-linejoin="round"
       class="lucide lucide-user"
+      aria-hidden="true"
     >
       <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle
         cx="12"

@@ -2,7 +2,7 @@
   --card-padding-block: var(--spacer-4);
   --card-padding-inline: var(--spacer-4);
   --card-gap: var(--spacer-4);
-  --card-background: var(--color-background-surface);
+  --card-background: var(--color-background-page);
   --card-border-width: var(--border-width-sm);
   --card-border-color: var(--color-border-subtle);
   --card-border-radius: var(--radius-md);

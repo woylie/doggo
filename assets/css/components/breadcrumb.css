@@ -1,0 +1,35 @@
+.breadcrumb {
+  --breadcrumb-gap: var(--spacer-2);
+  --breadcrumb-separator: "/";
+  --breadcrumb-separator-color: var(--color-text-muted);
+  --breadcrumb-color-current: var(--color-text-default);
+
+  /* WCAG 1.4.1: colour is not the only thing marking the current page */
+  --breadcrumb-font-weight-current: var(--weight-medium);
+
+  > ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--breadcrumb-gap);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  li {
+    display: flex;
+    gap: var(--breadcrumb-gap);
+    align-items: center;
+  }
+
+  li + li::before {
+    color: var(--breadcrumb-separator-color);
+    content: var(--breadcrumb-separator) / "";
+  }
+
+  a[aria-current="page"] {
+    font-weight: var(--breadcrumb-font-weight-current);
+    color: var(--breadcrumb-color-current);
+    text-decoration: none;
+  }
+}

@@ -2,7 +2,6 @@ defmodule Doggo.Storybook.PropertyList do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def container, do: {:div, class: "container"}
   def layout, do: :one_column
 
   def variations(_opts) do

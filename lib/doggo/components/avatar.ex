@@ -42,6 +42,11 @@ defmodule Doggo.Components.Avatar do
   end
 
   @impl true
+  def css_path do
+    "components/avatar.css"
+  end
+
+  @impl true
   def config do
     [
       type: :media,

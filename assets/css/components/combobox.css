@@ -2,18 +2,24 @@
   --combobox-border-width: var(--border-width-sm);
   --combobox-border-color: var(--color-border-control);
   --combobox-border-radius: var(--radius-sm);
+  --combobox-input-font-size: 1rem;
   --combobox-input-padding-block: var(--spacer-1);
   --combobox-input-padding-inline: var(--spacer-2);
   --combobox-button-padding-inline: var(--spacer-2);
-  --combobox-button-icon-size: 1cap;
+  --combobox-button-icon-size: 1em;
+  --combobox-button-background-hover: var(--color-background-surface);
   --combobox-listbox-offset: var(--spacer-1);
   --combobox-listbox-max-block-size: 20rem;
   --combobox-listbox-background: var(--color-background-page);
+  --combobox-listbox-shadow: var(--shadow-elevation-medium);
   --combobox-option-min-block-size: var(--spacer-6);
   --combobox-option-padding-block: var(--spacer-1);
   --combobox-option-padding-inline: var(--spacer-2);
   --combobox-option-background-hover: var(--color-background-surface);
   --combobox-option-background-selected: var(--color-background-primary-soft);
+  --combobox-color-disabled: var(--color-text-disabled-solid);
+  --combobox-background-disabled: var(--color-background-disabled-solid);
+  --combobox-border-color-disabled: var(--color-border-disabled-solid);
   --combobox-option-color-disabled: var(--color-text-disabled);
   --combobox-option-term-font-weight: var(--weight-bold);
   --combobox-option-description-font-size: var(--size-font-sm);
@@ -43,6 +49,11 @@
       min-inline-size: 0;
       padding: var(--combobox-input-padding-block)
         var(--combobox-input-padding-inline);
+      font-family: inherit;
+
+      /* Input font size should be at least 16px (1rem), or else Safari on iOS
+       * zooms the page when the input is focused. */
+      font-size: var(--combobox-input-font-size);
       border: var(--combobox-border-width) solid var(--combobox-border-color);
       border-radius: var(--combobox-border-radius);
       border-start-end-radius: 0;
@@ -60,6 +71,32 @@
     background: none;
     border: var(--combobox-border-width) solid var(--combobox-border-color);
     border-inline-start: none;
+  }
+
+  .combobox-clear,
+  .combobox-toggle {
+    display: grid;
+    place-items: center;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+
+    &:hover {
+      background: var(--combobox-button-background-hover);
+    }
+  }
+
+  &:has(input:disabled) {
+    --combobox-border-color: var(--combobox-border-color-disabled);
+    --combobox-button-background-hover: none;
+
+    input,
+    .combobox-clear,
+    .combobox-toggle {
+      color: var(--combobox-color-disabled);
+      cursor: not-allowed;
+      background: var(--combobox-background-disabled);
+    }
   }
 
   .combobox-clear,
@@ -93,6 +130,7 @@
     background-color: var(--combobox-listbox-background);
     border: var(--combobox-border-width) solid var(--combobox-border-color);
     border-radius: var(--combobox-border-radius);
+    box-shadow: var(--combobox-listbox-shadow);
   }
 
   [role="option"] {

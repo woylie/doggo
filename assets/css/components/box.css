@@ -5,7 +5,8 @@
   --box-border-width: var(--border-width-sm);
   --box-border-color: var(--color-border-subtle);
   --box-border-radius: var(--radius-md);
-  --box-shadow: var(--shadow-elevation-medium);
+  --box-shadow: var(--shadow-elevation-low);
+  --box-background: var(--color-background-page);
   --box-title-font-size: var(--size-font-lg);
   --box-title-font-weight: var(--weight-medium);
   --box-banner-margin-block-end: var(--size-line-half);
@@ -13,6 +14,7 @@
   --box-footer-color: var(--color-text-muted);
 
   padding: var(--box-padding-block) 0;
+  background: var(--box-background);
   border: var(--box-border-width) solid var(--box-border-color);
   border-radius: var(--box-border-radius);
   box-shadow: var(--box-shadow);

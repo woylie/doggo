@@ -8,7 +8,7 @@ defmodule Doggo.Components.Badge do
   @impl true
   def doc do
     """
-    Generates a badge component, typically used for drawing attention to elements
+    Renders a badge, typically used for drawing attention to elements
     like notification counts.
     """
   end

@@ -6,59 +6,89 @@ defmodule Doggo.Storybook.PageHeader do
 
   def dependent_components, do: [:button_link]
 
+  def layout, do: :one_column
+
+  def template do
+    """
+    <div style="inline-size: 100%">
+      <.psb-variation/>
+    </div>
+    """
+  end
+
   def variations(opts) do
     [
       %Variation{
         id: :default,
-        attributes: attributes(),
-        slots: slots(:default, opts)
+        attributes: %{
+          title: "Puppy Profiles",
+          subtitle: "Share Your Pup's Story"
+        },
+        slots: [action(opts, "/puppies/new", "Add New Profile")]
       },
       %Variation{
         id: :with_navigation,
-        attributes: attributes(),
-        slots: slots(:with_navigation, opts)
+        attributes: %{
+          title: "Puppy Profiles",
+          subtitle: "Share Your Pup's Story"
+        },
+        slots: [
+          navigation(),
+          action(opts, "/puppies/1/edit", "Edit Profile")
+        ]
+      },
+      %Variation{
+        id: :without_subtitle,
+        attributes: %{title: "Puppy Profiles"},
+        slots: [action(opts, "/puppies/new", "Add New Profile")]
+      },
+      %Variation{
+        id: :without_actions,
+        attributes: %{
+          title: "Puppy Profiles",
+          subtitle: "Share Your Pup's Story"
+        },
+        slots: []
+      },
+      %Variation{
+        id: :title_only,
+        attributes: %{title: "Puppy Profiles"},
+        slots: []
+      },
+      %Variation{
+        id: :several_actions,
+        attributes: %{
+          title: "Puppy Profiles",
+          subtitle: "Share Your Pup's Story"
+        },
+        slots: [
+          action(opts, "/puppies/1/edit", "Edit Profile"),
+          action(opts, "/puppies/new", "Add New Profile")
+        ]
       }
     ]
   end
 
   def modifier_variation_base(_id, _name, _value, opts) do
     %{
-      attributes: attributes(),
-      slots: slots(:default, opts)
+      attributes: %{title: "Puppy Profiles", subtitle: "Share Your Pup's Story"},
+      slots: [action(opts, "/puppies/new", "Add New Profile")]
     }
   end
 
-  defp attributes do
-    %{
-      title: "Puppy Profiles",
-      subtitle: "Share Your Pup's Story"
-    }
+  defp navigation do
+    """
+    <:navigation navigate="/puppies">
+      Back to puppy list
+    </:navigation>
+    """
   end
 
-  defp slots(:default, opts) do
-    dependent_components = opts[:dependent_components]
-
-    [
-      """
-      <:action>
-        #{patch_link("/puppies/new", "Add New Profile", dependent_components)}
-      </:action>
-      """
-    ]
-  end
-
-  defp slots(:with_navigation, opts) do
-    dependent_components = opts[:dependent_components]
-
-    [
-      """
-      <:navigation navigate="/puppies">
-        Back to puppy list
-      </:navigation>
-      <:action>
-        #{patch_link("/puppies/1/edit", "Edit Profile", dependent_components)}
-      </:action>
-      """
-    ]
+  defp action(opts, url, text) do
+    """
+    <:action>
+      #{patch_link(url, text, opts[:dependent_components])}
+    </:action>
+    """
   end
 end

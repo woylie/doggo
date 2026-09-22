@@ -6,6 +6,14 @@ defmodule Doggo.Storybook.BottomNavigation do
 
   def dependent_components, do: [:icon]
 
+  def template do
+    """
+    <div style="inline-size: 100%">
+      <.psb-variation/>
+    </div>
+    """
+  end
+
   def variations(opts) do
     [
       %Variation{

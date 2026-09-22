@@ -5,10 +5,12 @@ defmodule Doggo.Storybook.Modal do
 
   alias PhoenixStorybook.Stories.Variation
 
-  def template do
+  def dependent_components, do: [:button]
+
+  def template(opts) do
     """
     <div>
-      <button phx-click={Doggo.show_modal(":variation_id")}>Open modal</button>
+      #{button("Open modal", ~s|type="button" phx-click={Doggo.show_modal(":variation_id")}|, opts[:dependent_components])}
       <.psb-variation/>
     </div>
     """
@@ -28,10 +30,11 @@ defmodule Doggo.Storybook.Modal do
       %Variation{
         id: :without_javascript,
         note:
-          "The opener is a plain button with `command` and `commandfor`, " <>
-            "which is the Invoker Commands API: HTML attributes and no " <>
-            "JavaScript. The hook acts on them where the browser does not.",
-        template: command_template(),
+          "The button has `command` and `commandfor` attributes, " <>
+            "which are part of the Invoker Commands API. This works with only " <>
+            "HTML attributes without any JavaScript. " <>
+            "If the browser doesn't support it, the hook fills the functionality.",
+        template: command_template(opts),
         attributes: %{id: "dog-modal-declarative"},
         slots: slots("modal-single-without-javascript", opts)
       },
@@ -43,9 +46,9 @@ defmodule Doggo.Storybook.Modal do
       %Variation{
         id: :close_icon,
         note:
-          "The `:close` slot can be used to replace the label text with an icon. " <>
-            "`close_label` is still needed to provide an accessible name for " <>
-            "the button.",
+          "The `:close` slot replaces the label text of the close button with " <>
+            "other content, usually an icon. `close_label` still gives the " <>
+            "button its accessible name.",
         attributes: %{id: "dog-modal-close-icon", close_label: "Close"},
         slots: close_icon_slots("modal-single-close-icon", opts)
       },
@@ -61,17 +64,17 @@ defmodule Doggo.Storybook.Modal do
     ]
   end
 
-  defp command_template do
+  defp command_template(opts) do
     """
     <div>
-      <button command="show-modal" commandfor=":variation_id">Open modal</button>
+      #{button("Open modal", ~s|type="button" command="show-modal" commandfor=":variation_id"|, opts[:dependent_components])}
       <.psb-variation/>
     </div>
     """
   end
 
-  def modifier_variation_group_template(_name, _opts) do
-    template()
+  def modifier_variation_group_template(_name, opts) do
+    template(opts)
   end
 
   def modifier_variation_base(id, name, value, opts) do

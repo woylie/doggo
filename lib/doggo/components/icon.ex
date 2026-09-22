@@ -150,9 +150,8 @@ defmodule Doggo.Components.Icon do
         doc: """
         Text that describes the icon.
 
-        This is the icon's accessible name. Omitting it renders an icon that
-        assistive technology cannot name, so omit it only where the icon is
-        decorative and sits next to visible text that already names the action.
+        This is the icon's accessible name. You should only omit it if the icon
+        is purely decorative.
         """
 
       attr :text_position, :string,

@@ -8,7 +8,7 @@ defmodule Doggo.Components.FieldGroup do
   @impl true
   def doc do
     """
-    Use the field group component to visually group multiple inputs in a form.
+    Groups inputs in a form visually.
 
     This component is intended for styling purposes and does not provide semantic
     grouping. For semantic grouping of related form elements, use the `<fieldset>`

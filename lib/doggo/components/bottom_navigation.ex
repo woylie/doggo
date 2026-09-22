@@ -44,6 +44,11 @@ defmodule Doggo.Components.BottomNavigation do
   end
 
   @impl true
+  def css_path do
+    "components/bottom-navigation.css"
+  end
+
+  @impl true
   def config do
     [
       type: :navigation,

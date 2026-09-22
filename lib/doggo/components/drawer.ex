@@ -8,7 +8,7 @@ defmodule Doggo.Components.Drawer do
   @impl true
   def doc do
     """
-    Renders a drawer with a `brand`, `top`, and `bottom` slot.
+    Renders a drawer with a `header`, `main`, and `footer` slot.
 
     All slots are optional, and you can render any content in them. If you want
     to use the drawer as a sidebar, you can use the `vertical_nav/1` and
@@ -79,6 +79,11 @@ defmodule Doggo.Components.Drawer do
     </.drawer>
     ```
     """
+  end
+
+  @impl true
+  def css_path do
+    "components/drawer.css"
   end
 
   @impl true

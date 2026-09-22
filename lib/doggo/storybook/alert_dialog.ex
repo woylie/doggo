@@ -1,11 +1,16 @@
 defmodule Doggo.Storybook.AlertDialog do
   @moduledoc false
+
+  import Doggo.Storybook.Shared
+
   alias PhoenixStorybook.Stories.Variation
 
-  def template do
+  def dependent_components, do: [:button, :icon]
+
+  def template(opts) do
     """
     <div>
-      <button phx-click={Doggo.show_modal(":variation_id")}>Open alert dialog</button>
+      #{button("Open alert dialog", ~s|type="button" phx-click={Doggo.show_modal(":variation_id")}|, opts[:dependent_components])}
       <.psb-variation/>
     </div>
     """
@@ -33,29 +38,48 @@ defmodule Doggo.Storybook.AlertDialog do
         slots: slots("alert-dialog-single-dismissable", opts)
       },
       %Variation{
+        id: :close_icon,
+        note:
+          "The `:close` slot replaces the label text of the close button with " <>
+            "other content, usually an icon. `close_label` still gives the " <>
+            "button its accessible name.",
+        attributes: %{
+          id: "dog-alert-close-icon",
+          dismissable: true,
+          close_label: "Close"
+        },
+        slots: close_icon_slots("alert-dialog-single-close-icon", opts)
+      },
+      %Variation{
         id: :without_javascript,
         note:
-          "The opener is a plain button with `command` and `commandfor`, " <>
-            "which is the Invoker Commands API: HTML attributes and no " <>
-            "JavaScript. The hook acts on them where the browser does not.",
-        template: command_template(),
+          "The button has `command` and `commandfor` attributes, " <>
+            "which are part of the Invoker Commands API. This works with only " <>
+            "HTML attributes without any JavaScript. " <>
+            "If the browser doesn't support it, the hook fills the functionality.",
+        template: command_template(opts),
         attributes: %{id: "dog-alert-declarative"},
         slots: slots("alert-dialog-single-without-javascript", opts)
       }
     ]
   end
 
-  defp command_template do
+  defp close_icon_slots(id, opts) do
+    icon = icon(:close, opts[:dependent_components])
+    slots(id, opts) ++ ["<:close>#{icon}</:close>"]
+  end
+
+  defp command_template(opts) do
     """
     <div>
-      <button command="show-modal" commandfor=":variation_id">Open alert dialog</button>
+      #{button("Open alert dialog", ~s|type="button" command="show-modal" commandfor=":variation_id"|, opts[:dependent_components])}
       <.psb-variation/>
     </div>
     """
   end
 
-  def modifier_variation_group_template(_name, _opts) do
-    template()
+  def modifier_variation_group_template(_name, opts) do
+    template(opts)
   end
 
   def modifier_variation_base(id, name, value, opts) do

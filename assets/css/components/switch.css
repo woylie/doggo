@@ -104,6 +104,7 @@
     cursor: not-allowed;
   }
 
+  /* WCAG 2.3.3: disable thumb transition when motion is not wanted */
   @media (prefers-reduced-motion: reduce) {
     .switch-control,
     .switch-control > span {

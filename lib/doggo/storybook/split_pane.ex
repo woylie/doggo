@@ -9,8 +9,7 @@ defmodule Doggo.Storybook.SplitPane do
       %Variation{
         id: :vertical,
         note:
-          "A vertical separator stands between two panes side by side, so " <>
-            "`Left` and `Right` move it.",
+          "The panes sit side by side. `Left` and `Right` move the separator.",
         attributes: %{
           id: "vertical-split-pane",
           orientation: :vertical,
@@ -27,8 +26,7 @@ defmodule Doggo.Storybook.SplitPane do
       %Variation{
         id: :horizontal,
         note:
-          "A horizontal separator stands between two panes above each " <>
-            "other, so `Up` and `Down` move it.",
+          "The panes sit above each other. `Up` and `Down` move the separator.",
         attributes: %{
           id: "horizontal-split-pane",
           orientation: :horizontal,

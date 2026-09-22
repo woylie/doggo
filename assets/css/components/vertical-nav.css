@@ -1,0 +1,89 @@
+.vertical-nav,
+.vertical-nav-nested,
+.vertical-nav-section {
+  --vertical-nav-gap: var(--spacer-1);
+  --vertical-nav-title-font-size: var(--size-font-sm);
+  --vertical-nav-title-font-weight: var(--weight-medium);
+  --vertical-nav-title-color: var(--color-text-muted);
+  --vertical-nav-title-margin-block-end: var(--spacer-1);
+  --vertical-nav-item-padding-block: var(--spacer-1);
+  --vertical-nav-item-padding-inline: var(--spacer-2);
+  --vertical-nav-item-border-radius: var(--radius-sm);
+  --vertical-nav-item-background-hover: var(--color-background-page);
+  --vertical-nav-item-background-current: var(
+    --color-background-secondary-soft
+  );
+
+  /* WCAG 1.4.1: colour is not the only thing marking the current page */
+  --vertical-nav-item-font-weight-current: var(--weight-medium);
+  --vertical-nav-group-gap: var(--spacer-3);
+  --vertical-nav-group-border-width: var(--border-width-sm);
+  --vertical-nav-group-border-color: var(--color-border-subtle);
+  --vertical-nav-outline-width: var(--border-width-md);
+  --vertical-nav-outline-color: var(--color-border-primary-solid);
+  --vertical-nav-outline-offset: var(--border-width-sm);
+
+  > ul {
+    display: grid;
+    gap: var(--vertical-nav-gap);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+}
+
+.vertical-nav-title,
+.vertical-nav-nested-title,
+.vertical-nav-section-title {
+  padding-inline: var(--vertical-nav-item-padding-inline);
+  margin-block-end: var(--vertical-nav-title-margin-block-end);
+  font-size: var(--vertical-nav-title-font-size);
+  font-weight: var(--vertical-nav-title-font-weight);
+  color: var(--vertical-nav-title-color);
+}
+
+:is(.vertical-nav, .vertical-nav-nested) > ul > li > a {
+  display: block;
+  padding: var(--vertical-nav-item-padding-block)
+    var(--vertical-nav-item-padding-inline);
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--vertical-nav-item-border-radius);
+
+  &:hover {
+    background: var(--vertical-nav-item-background-hover);
+  }
+
+  &:focus-visible {
+    outline: var(--vertical-nav-outline-width) solid
+      var(--vertical-nav-outline-color);
+    outline-offset: var(--vertical-nav-outline-offset);
+  }
+}
+
+:is(.vertical-nav, .vertical-nav-nested) > ul > li[aria-current="page"] > a {
+  font-weight: var(--vertical-nav-item-font-weight-current);
+  background: var(--vertical-nav-item-background-current);
+}
+
+li:not(:first-child) > .vertical-nav-nested,
+.vertical-nav-section:not(:first-child) {
+  padding-block-start: var(--vertical-nav-group-gap);
+  margin-block-start: var(--vertical-nav-group-gap);
+  border-block-start: var(--vertical-nav-group-border-width) solid
+    var(--vertical-nav-group-border-color);
+}
+
+.vertical-nav-section-item {
+  padding-inline: var(--vertical-nav-item-padding-inline);
+}
+
+.vertical-nav-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--vertical-nav-gap);
+}
+
+.vertical-nav-section-item > * {
+  max-inline-size: 100%;
+}

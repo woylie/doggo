@@ -16,14 +16,11 @@ defmodule Doggo.Storybook.Tooltip do
       },
       %Variation{
         id: :with_link,
-        note:
-          "The link takes the focus, so the link takes `aria-describedby`. " <>
-            "The component sets neither attribute here.",
         attributes: %{
           contains_link: true,
           id: "labrador-info-2"
         },
-        slots: slots_with_link("labrador-info-2")
+        slots: slots_with_link()
       },
       %Variation{
         id: :with_link_in_tooltip,
@@ -63,13 +60,10 @@ defmodule Doggo.Storybook.Tooltip do
     ]
   end
 
-  def slots_with_link(id) do
+  def slots_with_link do
     [
       """
-      <Phoenix.Component.link
-        navigate="/labradors"
-        aria-describedby="#{id}-tooltip"
-      >
+      <Phoenix.Component.link navigate="/labradors">
         Labrador Retriever
       </Phoenix.Component.link>
       """,
