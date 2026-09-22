@@ -15,6 +15,10 @@ defmodule DemoWeb.Endpoint do
     websocket: [connect_info: [session: @session_options]],
     longpoll: [connect_info: [session: @session_options]]
 
+  if Mix.env() == :prod do
+    plug DemoWeb.CanonicalHost, endpoint: __MODULE__
+  end
+
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phx.digest
