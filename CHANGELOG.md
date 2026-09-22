@@ -10,6 +10,10 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Fixed
+
+- Close a menu opened from a menu button when clicking outside it.
+
 ## [0.15.1] - 2026-09-11
 
 ### Fixed

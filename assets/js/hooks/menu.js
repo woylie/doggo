@@ -64,19 +64,51 @@ export function initMenu(menu) {
   // through the `aria-controls` pointing at it. Compared rather than put in a
   // selector, because the id is the caller's and may hold characters that
   // would change what the selector matches.
-  const close = () => {
-    const button = Array.from(
-      document.querySelectorAll("[aria-controls]"),
-    ).find((el) => el.getAttribute("aria-controls") === menu.id);
+  const getButton = () =>
+    Array.from(document.querySelectorAll("[aria-controls]")).find(
+      (el) => el.getAttribute("aria-controls") === menu.id,
+    );
+
+  const close = ({ focusButton } = { focusButton: true }) => {
+    const button = getButton();
 
     if (!button) return false;
 
     menu.setAttribute("hidden", "");
     button.setAttribute("aria-expanded", "false");
-    button.focus();
+
+    if (focusButton) button.focus();
 
     return true;
   };
+
+  const closeOnClickOutside = (e) => {
+    if (menu.hidden) return;
+
+    const button = getButton();
+
+    if (!button) return;
+    if (menu.contains(e.target) || button.contains(e.target)) return;
+
+    close({ focusButton: false });
+  };
+
+  document.addEventListener("click", closeOnClickOutside);
+
+  const closeOnButtonEscape = (e) => {
+    if (e.key !== "Escape" || menu.hidden) return;
+
+    const button = getButton();
+
+    if (!button || !button.contains(e.target)) return;
+
+    if (close()) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+
+  document.addEventListener("keydown", closeOnButtonEscape, true);
 
   menu.addEventListener("keydown", (e) => {
     const items = getItems();
@@ -124,7 +156,12 @@ export function initMenu(menu) {
 
   restoreTabStop();
 
-  return { update: restoreTabStop };
+  const destroy = () => {
+    document.removeEventListener("click", closeOnClickOutside);
+    document.removeEventListener("keydown", closeOnButtonEscape, true);
+  };
+
+  return { update: restoreTabStop, destroy };
 }
 
 export default {
@@ -134,5 +171,9 @@ export default {
 
   updated() {
     this.instance.update();
+  },
+
+  destroyed() {
+    this.instance.destroy();
   },
 };
