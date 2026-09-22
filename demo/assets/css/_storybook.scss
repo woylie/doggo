@@ -1,0 +1,7 @@
+@use "assets/css/tokens.css";
+
+/* stylelint-disable-next-line selector-class-pattern */
+.psb\:dark {
+  /* stylelint-disable-next-line scss/at-extend-no-missing-placeholder */
+  @extend .theme-dark;
+}

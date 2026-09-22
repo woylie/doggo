@@ -24,7 +24,11 @@ const plugins = [
 
 // Define esbuild options
 let opts = {
-  entryPoints: ["js/app.js", "js/storybook.js"],
+  entryPoints: [
+    { in: "js/app.js", out: "app" },
+    { in: "js/storybook.js", out: "storybook" },
+    { in: "css/storybook_theme.css", out: "storybook_theme" },
+  ],
   bundle: true,
   logLevel: "info",
   target: ["es2017", "chrome121", "edge121", "firefox123", "safari17.4"],

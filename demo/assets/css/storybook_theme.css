@@ -1,0 +1,31 @@
+:root,
+/* stylelint-disable-next-line selector-class-pattern */
+:root.psb\:dark {
+  --psb-color-background: var(--color-background-page);
+  --psb-color-foreground: var(--color-text-default);
+  --psb-color-card: var(--color-background-page);
+  --psb-color-card-foreground: var(--color-text-default);
+  --psb-color-popover: var(--color-background-surface);
+  --psb-color-popover-foreground: var(--color-text-default);
+  --psb-color-primary: var(--color-background-primary-solid);
+  --psb-color-primary-foreground: var(--color-text-primary-solid);
+  --psb-color-secondary: var(--color-background-secondary-solid);
+  --psb-color-secondary-foreground: var(--color-text-secondary-solid);
+  --psb-color-muted: var(--color-background-surface);
+  --psb-color-muted-foreground: var(--color-text-muted);
+  --psb-color-accent: var(--color-background-surface);
+  --psb-color-accent-foreground: var(--color-text-default);
+  --psb-color-destructive: var(--color-background-danger-solid);
+  --psb-color-destructive-foreground: var(--color-text-danger-solid);
+  --psb-color-border: var(--color-border-subtle);
+  --psb-color-input: var(--color-border-control);
+  --psb-color-ring: var(--color-border-primary-solid);
+  --psb-color-sidebar: var(--color-background-surface);
+  --psb-color-sidebar-foreground: var(--color-text-default);
+  --psb-color-sidebar-muted: var(--color-background-surface);
+  --psb-color-sidebar-muted-foreground: var(--color-text-muted);
+  --psb-color-sidebar-accent: var(--color-background-primary-soft);
+  --psb-color-sidebar-accent-foreground: var(--color-text-primary-soft);
+  --psb-color-sidebar-border: var(--color-border-subtle);
+  --psb-color-sidebar-ring: var(--color-border-primary-solid);
+}
