@@ -12,6 +12,8 @@ and this project adheres to
 
 ### Fixed
 
+- Stop the carousel rotating under the pointer after the pause button resumes
+  it.
 - Close a menu opened from a menu button when clicking outside it.
 
 ## [0.15.1] - 2026-09-11

@@ -112,6 +112,8 @@ export function initCarousel(carousel) {
 
   // Auto rotation
   let isPaused = false;
+  let isHovered = false;
+  let isFocused = false;
 
   // Stop auto rotation if the last items does not wrap.
   const hasShowEnded = () =>
@@ -123,8 +125,11 @@ export function initCarousel(carousel) {
     syncPauseControl();
   };
 
+  const canRotate = () =>
+    isAutoRotationEnabled() && !isPaused && !isHovered && !isFocused;
+
   const startAutoRotation = () => {
-    if (!isAutoRotationEnabled() || isPaused) return;
+    if (!canRotate()) return;
     if (autoRotationTimer != null) return;
 
     if (hasShowEnded()) {
@@ -260,12 +265,8 @@ export function initCarousel(carousel) {
   // Pause when hovering or focusing, resume when leaving, unless
   // rotation is paused with the pause button.
 
-  let isHovered = false;
-  let isFocused = false;
-
-  const resume = () => {
-    if (!isHovered && !isFocused) startAutoRotation();
-  };
+  const isPauseControl = (el) =>
+    el != null && el.closest?.(`.${baseClass}-pause`) != null;
 
   carousel.addEventListener("pointerenter", () => {
     isHovered = true;
@@ -274,12 +275,17 @@ export function initCarousel(carousel) {
 
   carousel.addEventListener("pointerleave", () => {
     isHovered = false;
-    resume();
+    startAutoRotation();
   });
 
-  carousel.addEventListener("focusin", () => {
-    isFocused = true;
-    stopAutoRotation();
+  carousel.addEventListener("focusin", (e) => {
+    isFocused = !isPauseControl(e.target);
+
+    if (isFocused) {
+      stopAutoRotation();
+    } else {
+      startAutoRotation();
+    }
   });
 
   carousel.addEventListener("focusout", (e) => {
@@ -288,7 +294,7 @@ export function initCarousel(carousel) {
     if (carousel.contains(e.relatedTarget)) return;
 
     isFocused = false;
-    resume();
+    startAutoRotation();
   });
 
   // Initialize
@@ -303,7 +309,7 @@ export function initCarousel(carousel) {
     // A patch can add or remove the pause button, and with it the
     // rotation. Starting is a no-op while it runs or is paused.
     if (isAutoRotationEnabled()) {
-      resume();
+      startAutoRotation();
     } else {
       stopAutoRotation();
     }

@@ -85,4 +85,41 @@ describe("carousel hook", () => {
 
     expect(activeIdx(el)).toBe("1");
   });
+
+  it("stays put under the pointer after the pause button resumes it", () => {
+    pointer(el, "pointerenter");
+    el.querySelector(".carousel-pause").click();
+    el.querySelector(".carousel-pause").click();
+    vi.advanceTimersByTime(20000);
+
+    expect(activeIdx(el)).toBe("0");
+  });
+
+  it("waits a full interval after the pointer leaves a resumed carousel", () => {
+    pointer(el, "pointerenter");
+    el.querySelector(".carousel-pause").click();
+    el.querySelector(".carousel-pause").click();
+    vi.advanceTimersByTime(4000);
+    pointer(el, "pointerleave");
+    vi.advanceTimersByTime(4900);
+
+    expect(activeIdx(el)).toBe("0");
+
+    vi.advanceTimersByTime(200);
+
+    expect(activeIdx(el)).toBe("1");
+  });
+
+  it("resumes with the focus left on the pause button", () => {
+    const pauseBtn = el.querySelector(".carousel-pause");
+
+    pointer(el, "pointerenter");
+    pauseBtn.focus();
+    pauseBtn.click();
+    pauseBtn.click();
+    pointer(el, "pointerleave");
+    vi.advanceTimersByTime(5000);
+
+    expect(activeIdx(el)).toBe("1");
+  });
 });
