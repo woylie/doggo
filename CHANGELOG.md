@@ -20,6 +20,7 @@ and this project adheres to
 ### Fixed
 
 - Only set `aria-label` on a `bottom_navigation` item when its label is hidden.
+- Label an `avatar` that falls back to `placeholder_content`.
 - Remove `form`, `name` and `value` as global attributes from `date`.
 - Stop the carousel rotating under the pointer after the pause button resumes
   it.

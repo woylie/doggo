@@ -152,7 +152,11 @@ defmodule Doggo.Components.Avatar do
 
   defp inner_avatar(assigns) do
     ~H"""
-    <span>{@placeholder_content}</span>
+    <span
+      role={@alt != "" && "img"}
+      aria-label={@alt != "" && @alt}
+      aria-hidden={@alt == "" && "true"}
+    >{@placeholder_content}</span>
     """
   end
 end
