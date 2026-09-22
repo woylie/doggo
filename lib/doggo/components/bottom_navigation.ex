@@ -96,7 +96,8 @@ defmodule Doggo.Components.BottomNavigation do
       attr :hide_labels, :boolean,
         default: false,
         doc: """
-        Hides the labels of the individual navigation items.
+        Hides the labels of the individual navigation items and sets labels as
+        `aria-label` attributes instead.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."
@@ -155,7 +156,7 @@ defmodule Doggo.Components.BottomNavigation do
             navigate={item[:navigate]}
             patch={item[:patch]}
             aria-current={@current_value in List.wrap(item.value) && "page"}
-            aria-label={item.label}
+            aria-label={@hide_labels && item.label}
           >
             <span class={"#{@base_class}-icon"}>{render_slot(item)}</span>
             <span :if={!@hide_labels}>{item.label}</span>

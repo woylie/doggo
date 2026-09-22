@@ -184,7 +184,7 @@ defmodule Doggo.ComponentsTest do
 
       a = find_one(nav, "ul > li > a")
       assert attribute(a, "aria-current") == nil
-      assert attribute(a, "aria-label") == "Profile"
+      assert attribute(a, "aria-label") == nil
       assert attribute(a, "href") == "/profile"
 
       assert text(a, "span.bottom-navigation-icon") == "profile-icon"
@@ -228,6 +228,7 @@ defmodule Doggo.ComponentsTest do
       a = find_one(html, "nav:root > ul > li > a")
       assert [span] = Floki.children(a)
       assert attribute(span, "class") == "bottom-navigation-icon"
+      assert attribute(a, "aria-label") == "Profile"
     end
 
     test "with single value" do
