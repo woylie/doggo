@@ -21,7 +21,7 @@ defmodule Doggo.Components.MenuItem do
   def usage do
     """
     ```heex
-    <.menu label="Actions">
+    <.menu id="actions-menu" label="Actions">
       <:item>
         <.menu_item on_click={JS.dispatch("myapp:copy")}>
           Copy

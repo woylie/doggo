@@ -22,7 +22,7 @@ defmodule Doggo.Components.Drawer do
     Minimal example:
 
     ```heex
-    <.drawer>
+    <.drawer id="drawer">
       <:main>Content</:main>
     </.drawer>
     ```
@@ -30,7 +30,7 @@ defmodule Doggo.Components.Drawer do
     With all slots:
 
     ```heex
-    <.drawer>
+    <.drawer id="drawer">
       <:header>Doggo</:header>
       <:main>Content at the top</:main>
       <:footer>Content at the bottom</:footer>
@@ -40,17 +40,17 @@ defmodule Doggo.Components.Drawer do
     With navigation and sections:
 
     ```heex
-    <.drawer>
+    <.drawer id="drawer">
       <:header>
         <.link navigate={~p"/"}>App</.link>
       </:header>
       <:main>
-        <.vertical_nav label="Main">
+        <.vertical_nav id="main-nav" label="Main">
           <:item>
             <.link navigate={~p"/dashboard"}>Dashboard</.link>
           </:item>
           <:item>
-            <.vertical_nav_nested>
+            <.vertical_nav_nested id="content-nav">
               <:title>Content</:title>
               <:item current_page>
                 <.link navigate={~p"/posts"}>Posts</.link>
@@ -61,13 +61,13 @@ defmodule Doggo.Components.Drawer do
             </.vertical_nav_nested>
           </:item>
         </.vertical_nav>
-        <.vertical_nav_section>
+        <.vertical_nav_section id="search">
           <:title>Search</:title>
           <:item><input type="search" placeholder="Search" /></:item>
         </.vertical_nav_section>
       </:main>
       <:footer>
-        <.vertical_nav label="User menu">
+        <.vertical_nav id="user-nav" label="User menu">
           <:item>
             <.link navigate={~p"/settings"}>Settings</.link>
           </:item>

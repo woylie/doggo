@@ -19,7 +19,7 @@ defmodule Doggo.Components.ActionBar do
   def usage do
     """
     ```heex
-    <.action_bar>
+    <.action_bar id="dog-actions">
       <:item label="Edit" on_click={JS.push("edit")}>
         <.icon><Lucideicons.pencil aria-hidden /></.icon>
       </:item>

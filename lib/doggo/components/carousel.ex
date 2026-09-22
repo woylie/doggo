@@ -80,7 +80,7 @@ defmodule Doggo.Components.Carousel do
   def usage do
     """
     ```heex
-    <.carousel label="Our Dogs">
+    <.carousel id="dog-carousel" label="Our Dogs">
       <:previous label="Previous Slide">
         <Heroicons.chevron_left />
       </:previous>
