@@ -60,7 +60,7 @@ defmodule Doggo.Components.Callout do
   @impl true
   def config do
     [
-      type: :miscellaneous,
+      type: :feedback,
       since: "0.6.0",
       maturity: :developing,
       modifiers: [

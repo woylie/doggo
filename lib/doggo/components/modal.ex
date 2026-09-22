@@ -218,7 +218,7 @@ defmodule Doggo.Components.Modal do
   @impl true
   def config do
     [
-      type: :miscellaneous,
+      type: :dialog,
       since: "0.6.0",
       maturity: :developing,
       modifiers: []

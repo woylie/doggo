@@ -16,6 +16,7 @@ and this project adheres to
 - Render `callout` and `drawer` as a `div` and only set `role="complementary"`
   if they have a name in order to prevent unnamed landmarks.
 - `app_bar` and `drawer` now require an `id`.
+- Update component categories.
 
 ### Fixed
 

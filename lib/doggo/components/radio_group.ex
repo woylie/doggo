@@ -63,7 +63,7 @@ defmodule Doggo.Components.RadioGroup do
   @impl true
   def config do
     [
-      type: :miscellaneous,
+      type: :form,
       since: "0.6.0",
       maturity: :developing,
       modifiers: []

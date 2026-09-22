@@ -58,7 +58,7 @@ defmodule Doggo.Components.ActionBar do
   @impl true
   def config do
     [
-      type: :miscellaneous,
+      type: :buttons,
       since: "0.6.0",
       maturity: :developing,
       modifiers: []
