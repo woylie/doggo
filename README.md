@@ -419,3 +419,10 @@ If you encounter any issues with a component, have suggestions for improvements,
 or need a component for a specific use case that isn't currently available,
 please don't hesitate to open a
 [Github issue](https://github.com/woylie/doggo/issues).
+
+## Related libraries
+
+- [ex_icon](https://github.com/woylie/ex_icon) - Generic icon library for
+  Phoenix LiveView.
+- [flop_phoenix](https://github.com/woylie/flop_phoenix) - Pagination, sortable
+  table and filter components for Flop.

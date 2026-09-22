@@ -1,3 +1,5 @@
 build
 package.json
 pnpm-lock.yaml
+test-results
+playwright-report

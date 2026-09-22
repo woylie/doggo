@@ -40,7 +40,6 @@
       gap: var(--carousel-gap);
       inline-size: 100%;
       container-type: inline-size;
-      overflow-x: hidden;
     }
 
     .carousel-items-container {
@@ -49,6 +48,14 @@
       scroll-behavior: smooth;
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
+
+      /* The container is in the tab order so that the slides can be scrolled
+       * with a keyboard. It therefore needs a focus ring. WCAG 2.4.7. */
+      &:focus-visible {
+        outline: var(--carousel-control-outline-width) solid
+          var(--carousel-control-outline-color);
+        outline-offset: var(--carousel-control-outline-offset);
+      }
 
       /* WCAG 2.3.3: disable smooth scrolling if motion is not wanted */
       @media (prefers-reduced-motion: reduce) {

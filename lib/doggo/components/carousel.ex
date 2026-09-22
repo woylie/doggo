@@ -13,6 +13,9 @@ defmodule Doggo.Components.Carousel do
     If a carousel only has a single item, no controls and no pagination are
     rendered.
 
+    The element around the slides has `tabindex="0"`, so that the slides can be
+    scrolled by keyboard and not only stepped through with the controls.
+
     ## Required CSS
 
     The element with the `-items-container` class has to be a horizontal scroll
@@ -397,7 +400,7 @@ defmodule Doggo.Components.Carousel do
             {render_slot(next)}
           </button>
         </div>
-        <div class={"#{@base_class}-items-container"}>
+        <div class={"#{@base_class}-items-container"} tabindex="0">
           <div
             id={"#{@id}-items"}
             class={"#{@base_class}-items"}
