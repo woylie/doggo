@@ -19,6 +19,7 @@ and this project adheres to
 
 ### Fixed
 
+- Remove `form`, `name` and `value` as global attributes from `date`.
 - Stop the carousel rotating under the pointer after the pause button resumes
   it.
 - Close a menu opened from a menu button when clicking outside it.
