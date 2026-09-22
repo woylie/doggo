@@ -23,7 +23,7 @@ const known = {
   "layout/drawer": ["landmark-unique"],
   "layout/page_header": ["landmark-no-duplicate-banner", "landmark-unique"],
   "media/carousel": ["landmark-unique"],
-  "miscellaneous/callout": ["landmark-unique"],
+  "feedback/callout": ["landmark-unique"],
   "navigation/bottom_navigation": ["landmark-unique"],
   "navigation/navbar": ["landmark-unique"],
   "navigation/steps": ["landmark-unique"],

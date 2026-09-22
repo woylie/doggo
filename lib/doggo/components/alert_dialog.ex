@@ -139,7 +139,7 @@ defmodule Doggo.Components.AlertDialog do
   @impl true
   def config do
     [
-      type: :feedback,
+      type: :dialog,
       since: "0.6.0",
       maturity: :developing,
       modifiers: []
