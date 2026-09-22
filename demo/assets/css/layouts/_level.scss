@@ -5,29 +5,31 @@
  * See also layouts/with-sidebar.
  */
 
-.level {
-  --gap: var(--spacer-4);
+@layer demo {
+  .level {
+    --gap: var(--spacer-4);
 
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--gap);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap);
 
-  > :first-child {
-    flex-grow: 1;
-    flex-basis: var(--width-left, 50%);
+    > :first-child {
+      flex-grow: 1;
+      flex-basis: var(--width-left, 50%);
+    }
+
+    > :last-child {
+      flex-grow: 1;
+      flex-basis: var(--width-right, 50%);
+    }
+
+    /*
+    You can add modifier classes for different ratios like this:
+
+        &.is-20-80 {
+          --width-left: 20%;
+          --width-right: 80%;
+        }
+    */
   }
-
-  > :last-child {
-    flex-grow: 1;
-    flex-basis: var(--width-right, 50%);
-  }
-
-  /*
-  You can add modifier classes for different ratios like this:
-
-      &.is-20-80 {
-        --width-left: 20%;
-        --width-right: 80%;
-      }
-  */
 }

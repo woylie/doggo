@@ -1,70 +1,73 @@
-.app-bar {
-  --app-bar-gap: var(--spacer-2);
-  --app-bar-padding-block: var(--spacer-2);
-  --app-bar-padding-inline: var(--spacer-4);
-  --app-bar-background: var(--color-background-surface);
-  --app-bar-border-width: var(--border-width-sm);
-  --app-bar-border-color: var(--color-border-subtle);
-  --app-bar-title-font-size: var(--size-font-lg);
-  --app-bar-title-font-weight: var(--weight-medium);
-  --app-bar-block-size: 4rem;
+@layer doggo {
+  .app-bar {
+    --app-bar-gap: var(--spacer-2);
+    --app-bar-padding-block: var(--spacer-2);
+    --app-bar-padding-inline: var(--spacer-4);
+    --app-bar-background: var(--color-background-surface);
+    --app-bar-border-width: var(--border-width-sm);
+    --app-bar-border-color: var(--color-border-subtle);
+    --app-bar-title-font-size: var(--size-font-lg);
+    --app-bar-title-font-weight: var(--weight-medium);
+    --app-bar-block-size: 4rem;
 
-  /* WCAG 2.5.5 enhanced target size is 44px */
-  --app-bar-item-min-size: 2.75rem;
-  --app-bar-item-border-radius: var(--radius-sm);
-  --app-bar-item-background-hover: var(--color-background-page);
-  --app-bar-icon-size: var(--size-font-xl);
-  --app-bar-outline-width: var(--border-width-md);
-  --app-bar-outline-color: var(--color-border-primary-solid);
-  --app-bar-outline-offset: var(--border-width-sm);
+    /* WCAG 2.5.5 enhanced target size is 44px */
+    --app-bar-item-min-size: 2.75rem;
+    --app-bar-item-border-radius: var(--radius-sm);
+    --app-bar-item-background-hover: var(--color-background-page);
+    --app-bar-icon-size: var(--size-font-xl);
+    --app-bar-outline-width: var(--border-width-md);
+    --app-bar-outline-color: var(--color-border-primary-solid);
+    --app-bar-outline-offset: var(--border-width-sm);
 
-  box-sizing: border-box;
-  display: flex;
-  gap: var(--app-bar-gap);
-  align-items: center;
-  min-block-size: var(--app-bar-block-size);
-  padding: var(--app-bar-padding-block) var(--app-bar-padding-inline);
-  background: var(--app-bar-background);
-  border-block-end: var(--app-bar-border-width) solid
-    var(--app-bar-border-color);
-
-  > h1 {
-    margin: 0;
-    font-size: var(--app-bar-title-font-size);
-    font-weight: var(--app-bar-title-font-weight);
-  }
-
-  > .app-bar-actions {
-    margin-inline-start: auto;
-  }
-
-  > :is(.app-bar-navigation, .app-bar-actions) {
+    box-sizing: border-box;
     display: flex;
     gap: var(--app-bar-gap);
     align-items: center;
+    min-block-size: var(--app-bar-block-size);
+    padding: var(--app-bar-padding-block) var(--app-bar-padding-inline);
+    background: var(--app-bar-background);
+    border-block-end: var(--app-bar-border-width) solid
+      var(--app-bar-border-color);
 
-    > a {
-      display: grid;
-      place-items: center;
-      min-inline-size: var(--app-bar-item-min-size);
-      min-block-size: var(--app-bar-item-min-size);
-      color: inherit;
-      text-decoration: none;
-      cursor: pointer;
-      border-radius: var(--app-bar-item-border-radius);
+    > h1 {
+      margin: 0;
+      font-size: var(--app-bar-title-font-size);
+      font-weight: var(--app-bar-title-font-weight);
+    }
 
-      &:hover {
-        background: var(--app-bar-item-background-hover);
-      }
+    > .app-bar-actions {
+      margin-inline-start: auto;
+    }
 
-      &:focus-visible {
-        outline: var(--app-bar-outline-width) solid var(--app-bar-outline-color);
-        outline-offset: var(--app-bar-outline-offset);
-      }
+    > :is(.app-bar-navigation, .app-bar-actions) {
+      display: flex;
+      gap: var(--app-bar-gap);
+      align-items: center;
 
-      svg {
-        inline-size: var(--app-bar-icon-size);
-        block-size: var(--app-bar-icon-size);
+      > a {
+        display: grid;
+        place-items: center;
+        min-inline-size: var(--app-bar-item-min-size);
+        min-block-size: var(--app-bar-item-min-size);
+        color: inherit;
+        text-decoration: none;
+        cursor: pointer;
+        border-radius: var(--app-bar-item-border-radius);
+
+        &:hover {
+          background: var(--app-bar-item-background-hover);
+        }
+
+        &:focus-visible {
+          outline: var(--app-bar-outline-width) solid
+            var(--app-bar-outline-color);
+          outline-offset: var(--app-bar-outline-offset);
+        }
+
+        svg {
+          inline-size: var(--app-bar-icon-size);
+          block-size: var(--app-bar-icon-size);
+        }
       }
     }
   }

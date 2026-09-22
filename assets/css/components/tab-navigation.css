@@ -1,67 +1,69 @@
-.tab-navigation {
-  --tab-navigation-gap: var(--spacer-1);
-  --tab-navigation-border-width: var(--border-width-sm);
-  --tab-navigation-border-color: var(--color-border-subtle);
-  --tab-navigation-tab-padding-block: var(--spacer-3);
-  --tab-navigation-tab-padding-block-end: calc(
-    var(--spacer-3) - var(--border-width-md)
-  );
-  --tab-navigation-tab-padding-inline: var(--spacer-3);
-  --tab-navigation-tab-color: var(--color-text-muted);
-  --tab-navigation-tab-color-hover: var(--color-text-default);
-  --tab-navigation-tab-background-hover: var(--color-background-surface);
-  --tab-navigation-tab-border-radius: var(--radius-sm);
-  --tab-navigation-tab-color-current: var(--color-text-default);
+@layer doggo {
+  .tab-navigation {
+    --tab-navigation-gap: var(--spacer-1);
+    --tab-navigation-border-width: var(--border-width-sm);
+    --tab-navigation-border-color: var(--color-border-subtle);
+    --tab-navigation-tab-padding-block: var(--spacer-3);
+    --tab-navigation-tab-padding-block-end: calc(
+      var(--spacer-3) - var(--border-width-md)
+    );
+    --tab-navigation-tab-padding-inline: var(--spacer-3);
+    --tab-navigation-tab-color: var(--color-text-muted);
+    --tab-navigation-tab-color-hover: var(--color-text-default);
+    --tab-navigation-tab-background-hover: var(--color-background-surface);
+    --tab-navigation-tab-border-radius: var(--radius-sm);
+    --tab-navigation-tab-color-current: var(--color-text-default);
 
-  /* WCAG 1.4.1: colour is not the only thing marking the current tab */
-  --tab-navigation-tab-font-weight-current: var(--weight-medium);
-  --tab-navigation-indicator-width: var(--border-width-md);
-  --tab-navigation-indicator-color: var(--color-border-primary-solid);
-  --tab-navigation-outline-width: var(--border-width-md);
-  --tab-navigation-outline-color: var(--color-border-primary-solid);
-  --tab-navigation-outline-offset: calc(-1 * var(--border-width-md));
+    /* WCAG 1.4.1: colour is not the only thing marking the current tab */
+    --tab-navigation-tab-font-weight-current: var(--weight-medium);
+    --tab-navigation-indicator-width: var(--border-width-md);
+    --tab-navigation-indicator-color: var(--color-border-primary-solid);
+    --tab-navigation-outline-width: var(--border-width-md);
+    --tab-navigation-outline-color: var(--color-border-primary-solid);
+    --tab-navigation-outline-offset: calc(-1 * var(--border-width-md));
 
-  inline-size: 100%;
-  overflow-x: auto;
+    inline-size: 100%;
+    overflow-x: auto;
 
-  > ul {
-    display: flex;
-    gap: var(--tab-navigation-gap);
-    align-items: center;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    border-block-end: var(--tab-navigation-border-width) solid
-      var(--tab-navigation-border-color);
-  }
-
-  a {
-    display: block;
-    padding-block: var(--tab-navigation-tab-padding-block)
-      var(--tab-navigation-tab-padding-block-end);
-    padding-inline: var(--tab-navigation-tab-padding-inline);
-    margin-block-end: calc(-1 * var(--tab-navigation-border-width));
-    color: var(--tab-navigation-tab-color);
-    text-decoration: none;
-    border-block-end: var(--tab-navigation-indicator-width) solid transparent;
-    border-start-start-radius: var(--tab-navigation-tab-border-radius);
-    border-start-end-radius: var(--tab-navigation-tab-border-radius);
-
-    &:hover {
-      color: var(--tab-navigation-tab-color-hover);
-      background: var(--tab-navigation-tab-background-hover);
+    > ul {
+      display: flex;
+      gap: var(--tab-navigation-gap);
+      align-items: center;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      border-block-end: var(--tab-navigation-border-width) solid
+        var(--tab-navigation-border-color);
     }
 
-    &:focus-visible {
-      outline: var(--tab-navigation-outline-width) solid
-        var(--tab-navigation-outline-color);
-      outline-offset: var(--tab-navigation-outline-offset);
-    }
+    a {
+      display: block;
+      padding-block: var(--tab-navigation-tab-padding-block)
+        var(--tab-navigation-tab-padding-block-end);
+      padding-inline: var(--tab-navigation-tab-padding-inline);
+      margin-block-end: calc(-1 * var(--tab-navigation-border-width));
+      color: var(--tab-navigation-tab-color);
+      text-decoration: none;
+      border-block-end: var(--tab-navigation-indicator-width) solid transparent;
+      border-start-start-radius: var(--tab-navigation-tab-border-radius);
+      border-start-end-radius: var(--tab-navigation-tab-border-radius);
 
-    &[aria-current] {
-      font-weight: var(--tab-navigation-tab-font-weight-current);
-      color: var(--tab-navigation-tab-color-current);
-      border-block-end-color: var(--tab-navigation-indicator-color);
+      &:hover {
+        color: var(--tab-navigation-tab-color-hover);
+        background: var(--tab-navigation-tab-background-hover);
+      }
+
+      &:focus-visible {
+        outline: var(--tab-navigation-outline-width) solid
+          var(--tab-navigation-outline-color);
+        outline-offset: var(--tab-navigation-outline-offset);
+      }
+
+      &[aria-current] {
+        font-weight: var(--tab-navigation-tab-font-weight-current);
+        color: var(--tab-navigation-tab-color-current);
+        border-block-end-color: var(--tab-navigation-indicator-color);
+      }
     }
   }
 }

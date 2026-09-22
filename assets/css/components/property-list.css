@@ -1,29 +1,31 @@
-.property-list {
-  --property-list-row-gap: var(--size-line-single);
-  --property-list-gap: var(--spacer-2);
-  --property-list-term-font-weight: var(--weight-medium);
-  --property-list-term-inline-size: 8rem;
-  --property-list-value-min-inline-size: 40ch;
+@layer doggo {
+  .property-list {
+    --property-list-row-gap: var(--size-line-single);
+    --property-list-gap: var(--spacer-2);
+    --property-list-term-font-weight: var(--weight-medium);
+    --property-list-term-inline-size: 8rem;
+    --property-list-value-min-inline-size: 40ch;
 
-  > div {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--property-list-gap);
-    align-items: baseline;
+    > div {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--property-list-gap);
+      align-items: baseline;
 
-    > dt {
-      flex: 1 1 var(--property-list-term-inline-size);
-      margin: 0;
-      font-weight: var(--property-list-term-font-weight);
+      > dt {
+        flex: 1 1 var(--property-list-term-inline-size);
+        margin: 0;
+        font-weight: var(--property-list-term-font-weight);
+      }
+
+      > dd {
+        flex: 999 1 var(--property-list-value-min-inline-size);
+        margin: 0;
+      }
     }
 
-    > dd {
-      flex: 999 1 var(--property-list-value-min-inline-size);
-      margin: 0;
+    > div + div {
+      margin-block-start: var(--property-list-row-gap);
     }
-  }
-
-  > div + div {
-    margin-block-start: var(--property-list-row-gap);
   }
 }

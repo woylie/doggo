@@ -1,109 +1,111 @@
-.callout {
-  --callout-gap: var(--spacer-3);
-  --callout-padding-block: var(--spacer-3);
-  --callout-padding-inline: var(--spacer-4);
-  --callout-color: var(--color-text-info-soft);
-  --callout-background: var(--color-background-info-soft);
-  --callout-border-color: var(--color-border-info-soft);
-  --callout-border-width: var(--border-width-sm);
-  --callout-accent-width: var(--border-width-md);
-  --callout-border-radius: var(--radius-md);
-  --callout-body-gap: var(--spacer-2);
-  --callout-title-font-weight: var(--weight-medium);
-  --callout-icon-size: var(--size-font-lg);
-  --callout-icon-block-size: var(--size-line-single);
-  --callout-actions-gap: var(--spacer-3);
-  --callout-action-padding-block: var(--spacer-1);
-  --callout-action-padding-inline: var(--spacer-3);
-  --callout-action-font-size: var(--size-font-sm);
-  --callout-action-border-width: var(--border-width-sm);
-  --callout-action-border-color: currentcolor;
-  --callout-action-border-radius: var(--radius-sm);
-  --callout-action-background-hover: color-mix(
-    in oklab,
-    currentcolor 12%,
-    transparent
-  );
-  --callout-outline-width: var(--border-width-md);
-  --callout-outline-color: var(--color-border-primary-solid);
-  --callout-outline-offset: var(--border-width-sm);
+@layer doggo {
+  .callout {
+    --callout-gap: var(--spacer-3);
+    --callout-padding-block: var(--spacer-3);
+    --callout-padding-inline: var(--spacer-4);
+    --callout-color: var(--color-text-info-soft);
+    --callout-background: var(--color-background-info-soft);
+    --callout-border-color: var(--color-border-info-soft);
+    --callout-border-width: var(--border-width-sm);
+    --callout-accent-width: var(--border-width-md);
+    --callout-border-radius: var(--radius-md);
+    --callout-body-gap: var(--spacer-2);
+    --callout-title-font-weight: var(--weight-medium);
+    --callout-icon-size: var(--size-font-lg);
+    --callout-icon-block-size: var(--size-line-single);
+    --callout-actions-gap: var(--spacer-3);
+    --callout-action-padding-block: var(--spacer-1);
+    --callout-action-padding-inline: var(--spacer-3);
+    --callout-action-font-size: var(--size-font-sm);
+    --callout-action-border-width: var(--border-width-sm);
+    --callout-action-border-color: currentcolor;
+    --callout-action-border-radius: var(--radius-sm);
+    --callout-action-background-hover: color-mix(
+      in oklab,
+      currentcolor 12%,
+      transparent
+    );
+    --callout-outline-width: var(--border-width-md);
+    --callout-outline-color: var(--color-border-primary-solid);
+    --callout-outline-offset: var(--border-width-sm);
 
-  display: flex;
-  gap: var(--callout-gap);
-  align-items: start;
-  padding: var(--callout-padding-block) var(--callout-padding-inline);
-  color: var(--callout-color);
-  background: var(--callout-background);
-  border: var(--callout-border-width) solid var(--callout-border-color);
-  border-inline-start-width: var(--callout-accent-width);
-  border-radius: var(--callout-border-radius);
-
-  &[data-level="success"] {
-    --callout-color: var(--color-text-success-soft);
-    --callout-background: var(--color-background-success-soft);
-    --callout-border-color: var(--color-border-success-soft);
-  }
-
-  &[data-level="warning"] {
-    --callout-color: var(--color-text-warning-soft);
-    --callout-background: var(--color-background-warning-soft);
-    --callout-border-color: var(--color-border-warning-soft);
-  }
-
-  &[data-level="danger"] {
-    --callout-color: var(--color-text-danger-soft);
-    --callout-background: var(--color-background-danger-soft);
-    --callout-border-color: var(--color-border-danger-soft);
-  }
-
-  > .callout-icon {
     display: flex;
-    flex: none;
-    align-items: center;
-    block-size: var(--callout-icon-block-size);
+    gap: var(--callout-gap);
+    align-items: start;
+    padding: var(--callout-padding-block) var(--callout-padding-inline);
+    color: var(--callout-color);
+    background: var(--callout-background);
+    border: var(--callout-border-width) solid var(--callout-border-color);
+    border-inline-start-width: var(--callout-accent-width);
+    border-radius: var(--callout-border-radius);
 
-    svg {
-      inline-size: var(--callout-icon-size);
-      block-size: var(--callout-icon-size);
-    }
-  }
-
-  > .callout-body {
-    display: grid;
-    flex: 1;
-    gap: var(--callout-body-gap);
-  }
-
-  .callout-title {
-    font-weight: var(--callout-title-font-weight);
-  }
-
-  .callout-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--callout-actions-gap);
-    align-items: center;
-  }
-
-  .callout-actions button:not([class]) {
-    padding: var(--callout-action-padding-block)
-      var(--callout-action-padding-inline);
-    font-family: inherit;
-    font-size: var(--callout-action-font-size);
-    color: inherit;
-    cursor: pointer;
-    background: none;
-    border: var(--callout-action-border-width) solid
-      var(--callout-action-border-color);
-    border-radius: var(--callout-action-border-radius);
-
-    &:hover {
-      background: var(--callout-action-background-hover);
+    &[data-level="success"] {
+      --callout-color: var(--color-text-success-soft);
+      --callout-background: var(--color-background-success-soft);
+      --callout-border-color: var(--color-border-success-soft);
     }
 
-    &:focus-visible {
-      outline: var(--callout-outline-width) solid var(--callout-outline-color);
-      outline-offset: var(--callout-outline-offset);
+    &[data-level="warning"] {
+      --callout-color: var(--color-text-warning-soft);
+      --callout-background: var(--color-background-warning-soft);
+      --callout-border-color: var(--color-border-warning-soft);
+    }
+
+    &[data-level="danger"] {
+      --callout-color: var(--color-text-danger-soft);
+      --callout-background: var(--color-background-danger-soft);
+      --callout-border-color: var(--color-border-danger-soft);
+    }
+
+    > .callout-icon {
+      display: flex;
+      flex: none;
+      align-items: center;
+      block-size: var(--callout-icon-block-size);
+
+      svg {
+        inline-size: var(--callout-icon-size);
+        block-size: var(--callout-icon-size);
+      }
+    }
+
+    > .callout-body {
+      display: grid;
+      flex: 1;
+      gap: var(--callout-body-gap);
+    }
+
+    .callout-title {
+      font-weight: var(--callout-title-font-weight);
+    }
+
+    .callout-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--callout-actions-gap);
+      align-items: center;
+    }
+
+    .callout-actions button:not([class]) {
+      padding: var(--callout-action-padding-block)
+        var(--callout-action-padding-inline);
+      font-family: inherit;
+      font-size: var(--callout-action-font-size);
+      color: inherit;
+      cursor: pointer;
+      background: none;
+      border: var(--callout-action-border-width) solid
+        var(--callout-action-border-color);
+      border-radius: var(--callout-action-border-radius);
+
+      &:hover {
+        background: var(--callout-action-background-hover);
+      }
+
+      &:focus-visible {
+        outline: var(--callout-outline-width) solid var(--callout-outline-color);
+        outline-offset: var(--callout-outline-offset);
+      }
     }
   }
 }

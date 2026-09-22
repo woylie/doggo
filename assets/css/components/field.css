@@ -1,258 +1,261 @@
-.field {
-  --field-gap: var(--spacer-1);
-  --field-label-font-weight: var(--weight-medium);
-  --field-mark-color: var(--color-text-muted);
-  --field-mark-font-size: var(--size-font-sm);
-  --field-input-font-size: 1rem;
-  --field-input-padding-block: var(--spacer-2);
-  --field-input-padding-inline: var(--spacer-3);
-  --field-input-background: var(--color-background-page);
-  --field-input-border-width: var(--border-width-sm);
-  --field-input-border-color: var(--color-border-control);
-  --field-input-border-color-invalid: var(--color-border-danger-solid);
-  --field-input-border-radius: var(--radius-sm);
-  --field-addon-color: var(--color-text-muted);
-  --field-addon-icon-size: var(--size-font-lg);
-  --field-addon-inline-size: calc(
-    2 * var(--field-input-padding-inline) + var(--field-addon-icon-size)
-  );
-  --field-option-gap: var(--spacer-2);
-  --field-switch-track-inline-size: 2.75rem;
-  --field-switch-track-block-size: 1.5rem;
-  --field-switch-track-background: var(--color-border-control);
-  --field-switch-track-background-checked: var(
-    --color-background-primary-solid
-  );
-  --field-switch-thumb-size: 1rem;
-  --field-switch-thumb-inset: var(--spacer-1);
+@layer doggo {
+  .field {
+    --field-gap: var(--spacer-1);
+    --field-label-font-weight: var(--weight-medium);
+    --field-mark-color: var(--color-text-muted);
+    --field-mark-font-size: var(--size-font-sm);
+    --field-input-font-size: 1rem;
+    --field-input-padding-block: var(--spacer-2);
+    --field-input-padding-inline: var(--spacer-3);
+    --field-input-background: var(--color-background-page);
+    --field-input-border-width: var(--border-width-sm);
+    --field-input-border-color: var(--color-border-control);
+    --field-input-border-color-invalid: var(--color-border-danger-solid);
+    --field-input-border-radius: var(--radius-sm);
+    --field-addon-color: var(--color-text-muted);
+    --field-addon-icon-size: var(--size-font-lg);
+    --field-addon-inline-size: calc(
+      2 * var(--field-input-padding-inline) + var(--field-addon-icon-size)
+    );
+    --field-option-gap: var(--spacer-2);
+    --field-switch-track-inline-size: 2.75rem;
+    --field-switch-track-block-size: 1.5rem;
+    --field-switch-track-background: var(--color-border-control);
+    --field-switch-track-background-checked: var(
+      --color-background-primary-solid
+    );
+    --field-switch-thumb-size: 1rem;
+    --field-switch-thumb-inset: var(--spacer-1);
 
-  /* travel = track - thumb - 2 * inset */
-  --field-switch-thumb-travel: 1.25rem;
-  --field-switch-thumb-background: var(--color-background-page);
-  --field-switch-duration: var(--duration-md);
-  --field-control-size: 1rem;
-  --field-option-description-indent: calc(
-    var(--field-control-size) + var(--field-option-gap)
-  );
-  --field-options-gap: var(--spacer-2);
-  --field-description-color: var(--color-text-muted);
-  --field-description-font-size: var(--size-font-sm);
-  --field-error-color: var(--color-text-danger);
-  --field-error-font-size: var(--size-font-sm);
-  --field-error-font-weight: var(--weight-medium);
-  --field-outline-width: var(--border-width-md);
-  --field-outline-color: var(--color-border-primary-solid);
-  --field-outline-offset: var(--border-width-sm);
+    /* travel = track - thumb - 2 * inset */
+    --field-switch-thumb-travel: 1.25rem;
+    --field-switch-thumb-background: var(--color-background-page);
+    --field-switch-duration: var(--duration-md);
+    --field-control-size: 1rem;
+    --field-option-description-indent: calc(
+      var(--field-control-size) + var(--field-option-gap)
+    );
+    --field-options-gap: var(--spacer-2);
+    --field-description-color: var(--color-text-muted);
+    --field-description-font-size: var(--size-font-sm);
+    --field-error-color: var(--color-text-danger);
+    --field-error-font-size: var(--size-font-sm);
+    --field-error-font-weight: var(--weight-medium);
+    --field-outline-width: var(--border-width-md);
+    --field-outline-color: var(--color-border-primary-solid);
+    --field-outline-offset: var(--border-width-sm);
 
-  display: grid;
-  gap: var(--field-gap);
+    display: grid;
+    gap: var(--field-gap);
 
-  > label,
-  legend {
-    font-weight: var(--field-label-font-weight);
-  }
-
-  .field-required-mark,
-  .field-optional-mark {
-    font-size: var(--field-mark-font-size);
-    font-weight: var(--weight-normal);
-    color: var(--field-mark-color);
-  }
-
-  :is(
-    input:not(
-      [type="checkbox"],
-      [type="radio"],
-      [type="range"],
-      [type="color"],
-      [type="hidden"]
-    ),
-    textarea,
-    select
-  ) {
-    inline-size: 100%;
-    padding: var(--field-input-padding-block) var(--field-input-padding-inline);
-    font: inherit;
-
-    /* Input font size should be at least 16px (1rem), or else Safari on iOS
-     * zooms the page when the input is focused. */
-    font-size: var(--field-input-font-size);
-    color: inherit;
-    background-color: var(--field-input-background);
-    border: var(--field-input-border-width) solid
-      var(--field-input-border-color);
-    border-radius: var(--field-input-border-radius);
-
-    &:focus-visible {
-      outline: var(--field-outline-width) solid var(--field-outline-color);
-      outline-offset: var(--field-outline-offset);
+    > label,
+    legend {
+      font-weight: var(--field-label-font-weight);
     }
-  }
 
-  &[data-invalid] :is(input, textarea, select) {
-    border-color: var(--field-input-border-color-invalid);
-  }
+    .field-required-mark,
+    .field-optional-mark {
+      font-size: var(--field-mark-font-size);
+      font-weight: var(--weight-normal);
+      color: var(--field-mark-color);
+    }
 
-  .field-input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
+    :is(
+      input:not(
+        [type="checkbox"],
+        [type="radio"],
+        [type="range"],
+        [type="color"],
+        [type="hidden"]
+      ),
+      textarea,
+      select
+    ) {
+      inline-size: 100%;
+      padding: var(--field-input-padding-block)
+        var(--field-input-padding-inline);
+      font: inherit;
 
-    > :is(.field-input-addon-left, .field-input-addon-right) {
-      position: absolute;
+      /* Input font size should be at least 16px (1rem), or else Safari on iOS
+       * zooms the page when the input is focused. */
+      font-size: var(--field-input-font-size);
+      color: inherit;
+      background-color: var(--field-input-background);
+      border: var(--field-input-border-width) solid
+        var(--field-input-border-color);
+      border-radius: var(--field-input-border-radius);
+
+      &:focus-visible {
+        outline: var(--field-outline-width) solid var(--field-outline-color);
+        outline-offset: var(--field-outline-offset);
+      }
+    }
+
+    &[data-invalid] :is(input, textarea, select) {
+      border-color: var(--field-input-border-color-invalid);
+    }
+
+    .field-input-wrapper {
+      position: relative;
       display: flex;
       align-items: center;
-      justify-content: center;
-      inline-size: var(--field-addon-inline-size);
-      color: var(--field-addon-color);
 
-      svg {
-        inline-size: var(--field-addon-icon-size);
-        block-size: var(--field-addon-icon-size);
+      > :is(.field-input-addon-left, .field-input-addon-right) {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        inline-size: var(--field-addon-inline-size);
+        color: var(--field-addon-color);
+
+        svg {
+          inline-size: var(--field-addon-icon-size);
+          block-size: var(--field-addon-icon-size);
+        }
+      }
+
+      > .field-input-addon-left {
+        inset-inline-start: 0;
+      }
+
+      > .field-input-addon-right {
+        inset-inline-end: 0;
+      }
+
+      &[data-addon~="left"] > input {
+        padding-inline-start: var(--field-addon-inline-size);
+      }
+
+      &[data-addon~="right"] > input {
+        padding-inline-end: var(--field-addon-inline-size);
       }
     }
 
-    > .field-input-addon-left {
-      inset-inline-start: 0;
+    input:is([type="checkbox"], [type="radio"]) {
+      flex: none;
+      inline-size: var(--field-control-size);
+      block-size: var(--field-control-size);
+      margin: 0;
     }
 
-    > .field-input-addon-right {
-      inset-inline-end: 0;
-    }
-
-    &[data-addon~="left"] > input {
-      padding-inline-start: var(--field-addon-inline-size);
-    }
-
-    &[data-addon~="right"] > input {
-      padding-inline-end: var(--field-addon-inline-size);
-    }
-  }
-
-  input:is([type="checkbox"], [type="radio"]) {
-    flex: none;
-    inline-size: var(--field-control-size);
-    block-size: var(--field-control-size);
-    margin: 0;
-  }
-
-  .field-checkbox,
-  .field-switch {
-    display: flex;
-    gap: var(--field-option-gap);
-    align-items: center;
-  }
-
-  .field-switch-state {
-    display: grid;
-    color: var(--field-description-color);
-
-    > span {
-      grid-area: 1 / 1;
-    }
-  }
-
-  .field-switch
-    input[role="switch"]:not(:checked)
-    ~ .field-switch-state
-    .field-switch-state-on,
-  .field-switch
-    input[role="switch"]:checked
-    ~ .field-switch-state
-    .field-switch-state-off {
-    visibility: hidden;
-  }
-
-  .field-switch input[role="switch"] {
-    flex: none;
-    inline-size: var(--field-switch-track-inline-size);
-    block-size: var(--field-switch-track-block-size);
-    appearance: none;
-    cursor: pointer;
-    background-color: var(--field-switch-track-background);
-    background-image: radial-gradient(
-      circle at
-        calc(
-          var(--field-switch-thumb-inset) + var(--field-switch-thumb-size) / 2
-        )
-        50%,
-      var(--field-switch-thumb-background)
-        calc(var(--field-switch-thumb-size) / 2),
-      transparent calc(var(--field-switch-thumb-size) / 2)
-    );
-    background-repeat: no-repeat;
-    border-radius: var(--radius-pill);
-    transition:
-      background-color var(--field-switch-duration) ease,
-      background-position var(--field-switch-duration) ease;
-
-    &:checked {
-      background-color: var(--field-switch-track-background-checked);
-      background-position-x: var(--field-switch-thumb-travel);
-    }
-
-    &:dir(rtl) {
-      scale: -1 1;
-    }
-
-    /* WCAG 2.3.3: no thumb transition if motion is not wanted. */
-    @media (prefers-reduced-motion: reduce) {
-      transition: none;
-    }
-  }
-
-  .field-checkbox-group,
-  .field-radio-group {
-    padding: 0;
-    margin: 0;
-    border: none;
-
-    > legend {
-      padding: 0;
-    }
-
-    > div {
-      display: grid;
-      margin-block-start: var(--field-gap);
-
-      > label:not(:first-of-type) {
-        margin-block-start: var(--field-options-gap);
-      }
-    }
-
-    label {
+    .field-checkbox,
+    .field-switch {
       display: flex;
       gap: var(--field-option-gap);
       align-items: center;
-      font-weight: var(--weight-normal);
+    }
+
+    .field-switch-state {
+      display: grid;
+      color: var(--field-description-color);
+
+      > span {
+        grid-area: 1 / 1;
+      }
+    }
+
+    .field-switch
+      input[role="switch"]:not(:checked)
+      ~ .field-switch-state
+      .field-switch-state-on,
+    .field-switch
+      input[role="switch"]:checked
+      ~ .field-switch-state
+      .field-switch-state-off {
+      visibility: hidden;
+    }
+
+    .field-switch input[role="switch"] {
+      flex: none;
+      inline-size: var(--field-switch-track-inline-size);
+      block-size: var(--field-switch-track-block-size);
+      appearance: none;
+      cursor: pointer;
+      background-color: var(--field-switch-track-background);
+      background-image: radial-gradient(
+        circle at
+          calc(
+            var(--field-switch-thumb-inset) + var(--field-switch-thumb-size) / 2
+          )
+          50%,
+        var(--field-switch-thumb-background)
+          calc(var(--field-switch-thumb-size) / 2),
+        transparent calc(var(--field-switch-thumb-size) / 2)
+      );
+      background-repeat: no-repeat;
+      border-radius: var(--radius-pill);
+      transition:
+        background-color var(--field-switch-duration) ease,
+        background-position var(--field-switch-duration) ease;
+
+      &:checked {
+        background-color: var(--field-switch-track-background-checked);
+        background-position-x: var(--field-switch-thumb-travel);
+      }
+
+      &:dir(rtl) {
+        scale: -1 1;
+      }
+
+      /* WCAG 2.3.3: no thumb transition if motion is not wanted. */
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
+    }
+
+    .field-checkbox-group,
+    .field-radio-group {
+      padding: 0;
+      margin: 0;
+      border: none;
+
+      > legend {
+        padding: 0;
+      }
+
+      > div {
+        display: grid;
+        margin-block-start: var(--field-gap);
+
+        > label:not(:first-of-type) {
+          margin-block-start: var(--field-options-gap);
+        }
+      }
+
+      label {
+        display: flex;
+        gap: var(--field-option-gap);
+        align-items: center;
+        font-weight: var(--weight-normal);
+      }
+    }
+
+    .field-description,
+    .field-option-description {
+      font-size: var(--field-description-font-size);
+      color: var(--field-description-color);
+    }
+
+    .field-option-description {
+      padding-inline-start: var(--field-option-description-indent);
+    }
+
+    .field-errors {
+      padding: 0;
+      margin: 0;
+      font-size: var(--field-error-font-size);
+      font-weight: var(--field-error-font-weight);
+      color: var(--field-error-color);
+      list-style: none;
     }
   }
 
-  .field-description,
-  .field-option-description {
-    font-size: var(--field-description-font-size);
-    color: var(--field-description-color);
+  .field:not([data-invalid]) .field-errors {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    clip-path: inset(50%);
   }
-
-  .field-option-description {
-    padding-inline-start: var(--field-option-description-indent);
-  }
-
-  .field-errors {
-    padding: 0;
-    margin: 0;
-    font-size: var(--field-error-font-size);
-    font-weight: var(--field-error-font-weight);
-    color: var(--field-error-color);
-    list-style: none;
-  }
-}
-
-.field:not([data-invalid]) .field-errors {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  overflow: hidden;
-  white-space: nowrap;
-  clip-path: inset(50%);
 }

@@ -1,114 +1,116 @@
-.switch {
-  --switch-gap: var(--spacer-3);
-  --switch-track-inline-size: 2.75rem;
-  --switch-track-block-size: 1.5rem;
-  --switch-track-padding: var(--spacer-1);
-  --switch-track-background: var(--color-border-control);
-  --switch-track-background-checked: var(--color-background-primary-solid);
-  --switch-track-border-radius: var(--radius-pill);
-  --switch-thumb-size: 1rem;
-  --switch-thumb-background: var(--color-background-page);
+@layer doggo {
+  .switch {
+    --switch-gap: var(--spacer-3);
+    --switch-track-inline-size: 2.75rem;
+    --switch-track-block-size: 1.5rem;
+    --switch-track-padding: var(--spacer-1);
+    --switch-track-background: var(--color-border-control);
+    --switch-track-background-checked: var(--color-background-primary-solid);
+    --switch-track-border-radius: var(--radius-pill);
+    --switch-thumb-size: 1rem;
+    --switch-thumb-background: var(--color-background-page);
 
-  /* travel = track - thumb - padding */
-  --switch-thumb-travel: 1.25rem;
-  --switch-state-color: var(--color-text-muted);
-  --switch-state-font-size: var(--size-font-sm);
-  --switch-duration: var(--duration-md);
-  --switch-outline-width: var(--border-width-md);
-  --switch-outline-color: var(--color-border-primary-solid);
-  --switch-outline-offset: var(--border-width-sm);
+    /* travel = track - thumb - padding */
+    --switch-thumb-travel: 1.25rem;
+    --switch-state-color: var(--color-text-muted);
+    --switch-state-font-size: var(--size-font-sm);
+    --switch-duration: var(--duration-md);
+    --switch-outline-width: var(--border-width-md);
+    --switch-outline-color: var(--color-border-primary-solid);
+    --switch-outline-offset: var(--border-width-sm);
 
-  display: inline-grid;
-  grid-template-columns: 1fr auto auto;
-  gap: var(--switch-gap);
-  align-items: center;
-  padding: 0;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-  background: none;
-  border: none;
-
-  &:dir(rtl) {
-    --switch-thumb-travel: -1.25rem;
-  }
-
-  &:focus-visible {
-    outline: var(--switch-outline-width) solid var(--switch-outline-color);
-    outline-offset: var(--switch-outline-offset);
-  }
-
-  .switch-control {
-    display: inline-flex;
-    flex-shrink: 0;
+    display: inline-grid;
+    grid-template-columns: 1fr auto auto;
+    gap: var(--switch-gap);
     align-items: center;
-    inline-size: var(--switch-track-inline-size);
-    block-size: var(--switch-track-block-size);
-    padding: var(--switch-track-padding);
-    background-color: var(--switch-track-background);
-    border-radius: var(--switch-track-border-radius);
-    transition: background-color var(--switch-duration) ease;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    background: none;
+    border: none;
 
-    > span {
-      inline-size: var(--switch-thumb-size);
-      block-size: var(--switch-thumb-size);
-      background-color: var(--switch-thumb-background);
-      border-radius: var(--radius-circle);
-      translate: 0;
-      transition: translate var(--switch-duration) ease;
-    }
-  }
-
-  &[aria-checked="true"] .switch-control {
-    background-color: var(--switch-track-background-checked);
-
-    > span {
-      translate: var(--switch-thumb-travel);
-    }
-  }
-
-  /* Both texts share one grid cell, so that the column is as wide as the
-   * longest text. The inactive text has to stay in the layout, so we use
-   * visibility instead of display here. */
-  .switch-state {
-    display: grid;
-    font-size: var(--switch-state-font-size);
-    color: var(--switch-state-color);
-
-    > span {
-      grid-area: 1 / 1;
+    &:dir(rtl) {
+      --switch-thumb-travel: -1.25rem;
     }
 
-    > span[hidden] {
-      display: block;
-      visibility: hidden;
+    &:focus-visible {
+      outline: var(--switch-outline-width) solid var(--switch-outline-color);
+      outline-offset: var(--switch-outline-offset);
     }
-  }
 
-  /*
-  Assistive technology reads the state from role="switch" and aria-checked. The
-  state text is aria-hidden, and the state is already visually represented by
-  the thumb position. You can safely hide the state text:
+    .switch-control {
+      display: inline-flex;
+      flex-shrink: 0;
+      align-items: center;
+      inline-size: var(--switch-track-inline-size);
+      block-size: var(--switch-track-block-size);
+      padding: var(--switch-track-padding);
+      background-color: var(--switch-track-background);
+      border-radius: var(--switch-track-border-radius);
+      transition: background-color var(--switch-duration) ease;
 
-  .switch-state {
-    display: none;
-  }
-  */
+      > span {
+        inline-size: var(--switch-thumb-size);
+        block-size: var(--switch-thumb-size);
+        background-color: var(--switch-thumb-background);
+        border-radius: var(--radius-circle);
+        translate: 0;
+        transition: translate var(--switch-duration) ease;
+      }
+    }
 
-  &:disabled {
-    --switch-track-background: var(--color-border-disabled-solid);
-    --switch-track-background-checked: var(--color-border-disabled-solid);
-    --switch-state-color: var(--color-text-disabled);
+    &[aria-checked="true"] .switch-control {
+      background-color: var(--switch-track-background-checked);
 
-    color: var(--color-text-disabled);
-    cursor: not-allowed;
-  }
+      > span {
+        translate: var(--switch-thumb-travel);
+      }
+    }
 
-  /* WCAG 2.3.3: disable thumb transition when motion is not wanted */
-  @media (prefers-reduced-motion: reduce) {
-    .switch-control,
-    .switch-control > span {
-      transition: none;
+    /* Both texts share one grid cell, so that the column is as wide as the
+     * longest text. The inactive text has to stay in the layout, so we use
+     * visibility instead of display here. */
+    .switch-state {
+      display: grid;
+      font-size: var(--switch-state-font-size);
+      color: var(--switch-state-color);
+
+      > span {
+        grid-area: 1 / 1;
+      }
+
+      > span[hidden] {
+        display: block;
+        visibility: hidden;
+      }
+    }
+
+    /*
+    Assistive technology reads the state from role="switch" and aria-checked. The
+    state text is aria-hidden, and the state is already visually represented by
+    the thumb position. You can safely hide the state text:
+
+    .switch-state {
+      display: none;
+    }
+    */
+
+    &:disabled {
+      --switch-track-background: var(--color-border-disabled-solid);
+      --switch-track-background-checked: var(--color-border-disabled-solid);
+      --switch-state-color: var(--color-text-disabled);
+
+      color: var(--color-text-disabled);
+      cursor: not-allowed;
+    }
+
+    /* WCAG 2.3.3: disable thumb transition when motion is not wanted */
+    @media (prefers-reduced-motion: reduce) {
+      .switch-control,
+      .switch-control > span {
+        transition: none;
+      }
     }
   }
 }

@@ -15,48 +15,50 @@
  * See also layouts/level.
  */
 
-.with-sidebar {
-  --sidebar-width: 10rem;
-  --content-min-width: 60%;
-  --gap: var(--spacer-4);
+@layer demo {
+  .with-sidebar {
+    --sidebar-width: 10rem;
+    --content-min-width: 60%;
+    --gap: var(--spacer-4);
 
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--gap);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap);
 
-  &:not(.has-sidebar-right) {
-    > :first-child {
-      flex-grow: 1;
-      flex-basis: var(--sidebar-width);
-    }
-
-    > :last-child {
-      flex-grow: 666;
-      flex-basis: 0;
-      min-width: var(--content-min-width);
-    }
-  }
-
-  &.has-sidebar-right {
-    > :last-child {
-      flex-grow: 1;
-      flex-basis: var(--sidebar-width);
-    }
-
-    > :first-child {
-      flex-grow: 666;
-      flex-basis: 0;
-      min-width: var(--content-min-width);
-    }
-  }
-
-  /*
-  You can add modifier classes like this:
-
-      .is-main {
-        --sidebar-width: 15rem;
-        --content-min-width: 65%;
-        --gap: var(--size-line-one-and-a-half) var(--spacer-6);
+    &:not(.has-sidebar-right) {
+      > :first-child {
+        flex-grow: 1;
+        flex-basis: var(--sidebar-width);
       }
-  */
+
+      > :last-child {
+        flex-grow: 666;
+        flex-basis: 0;
+        min-width: var(--content-min-width);
+      }
+    }
+
+    &.has-sidebar-right {
+      > :last-child {
+        flex-grow: 1;
+        flex-basis: var(--sidebar-width);
+      }
+
+      > :first-child {
+        flex-grow: 666;
+        flex-basis: 0;
+        min-width: var(--content-min-width);
+      }
+    }
+
+    /*
+    You can add modifier classes like this:
+
+        .is-main {
+          --sidebar-width: 15rem;
+          --content-min-width: 65%;
+          --gap: var(--size-line-one-and-a-half) var(--spacer-6);
+        }
+    */
+  }
 }

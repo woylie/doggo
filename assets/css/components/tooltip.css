@@ -1,68 +1,70 @@
-.tooltip-container {
-  --tooltip-offset: var(--spacer-1);
-  --tooltip-max-inline-size: var(--size-measure);
-  --tooltip-padding: var(--spacer-2);
-  --tooltip-font-size: var(--size-font-sm);
-  --tooltip-color: var(--color-background-page);
-  --tooltip-background: var(--color-text-default);
-  --tooltip-border-radius: var(--radius-sm);
-  --tooltip-shadow: var(--shadow-elevation-medium);
-  --tooltip-gap: var(--spacer-1);
-  --tooltip-link-color: currentcolor;
+@layer doggo {
+  .tooltip-container {
+    --tooltip-offset: var(--spacer-1);
+    --tooltip-max-inline-size: var(--size-measure);
+    --tooltip-padding: var(--spacer-2);
+    --tooltip-font-size: var(--size-font-sm);
+    --tooltip-color: var(--color-background-page);
+    --tooltip-background: var(--color-text-default);
+    --tooltip-border-radius: var(--radius-sm);
+    --tooltip-shadow: var(--shadow-elevation-medium);
+    --tooltip-gap: var(--spacer-1);
+    --tooltip-link-color: currentcolor;
 
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 
-  /* Switch to the Popover API (`popover="hint"`) and anchor positioning once
-     widely baseline available. */
-  [role="tooltip"] {
-    position: absolute;
-    inset-block-end: calc(100% + var(--tooltip-offset));
-    inset-inline-start: 0;
-    z-index: 1;
-    display: none;
-    inline-size: max-content;
-    max-inline-size: var(--tooltip-max-inline-size);
-    padding: var(--tooltip-padding);
-    font-size: var(--tooltip-font-size);
-    color: var(--tooltip-color);
-    background-color: var(--tooltip-background);
-    border-radius: var(--tooltip-border-radius);
-    box-shadow: var(--tooltip-shadow);
-
-    /* An invisible bridge across the gap to the trigger, so that the pointer
-     * can travel onto the tooltip without leaving the component and hiding it.
-     * Required by WCAG 2.2 1.4.13. */
-    &::after {
+    /* Switch to the Popover API (`popover="hint"`) and anchor positioning once
+       widely baseline available. */
+    [role="tooltip"] {
       position: absolute;
-      inset-block-start: 100%;
-      inset-inline: 0;
-      block-size: var(--tooltip-offset);
-      content: "";
+      inset-block-end: calc(100% + var(--tooltip-offset));
+      inset-inline-start: 0;
+      z-index: 1;
+      display: none;
+      inline-size: max-content;
+      max-inline-size: var(--tooltip-max-inline-size);
+      padding: var(--tooltip-padding);
+      font-size: var(--tooltip-font-size);
+      color: var(--tooltip-color);
+      background-color: var(--tooltip-background);
+      border-radius: var(--tooltip-border-radius);
+      box-shadow: var(--tooltip-shadow);
+
+      /* An invisible bridge across the gap to the trigger, so that the pointer
+       * can travel onto the tooltip without leaving the component and hiding it.
+       * Required by WCAG 2.2 1.4.13. */
+      &::after {
+        position: absolute;
+        inset-block-start: 100%;
+        inset-inline: 0;
+        block-size: var(--tooltip-offset);
+        content: "";
+      }
+
+      > * {
+        margin: 0;
+      }
+
+      > * + * {
+        margin-block-start: var(--tooltip-gap);
+      }
+
+      a {
+        color: var(--tooltip-link-color);
+        text-decoration: underline;
+      }
     }
 
-    > * {
-      margin: 0;
+    /* Shown on hover and on focus */
+    &:hover [role="tooltip"],
+    &:focus-within [role="tooltip"] {
+      display: block;
     }
 
-    > * + * {
-      margin-block-start: var(--tooltip-gap);
+    /* Set by the JavaScript hook when the user presses Escape. */
+    &[data-dismissed] [role="tooltip"] {
+      display: none;
     }
-
-    a {
-      color: var(--tooltip-link-color);
-      text-decoration: underline;
-    }
-  }
-
-  /* Shown on hover and on focus */
-  &:hover [role="tooltip"],
-  &:focus-within [role="tooltip"] {
-    display: block;
-  }
-
-  /* Set by the JavaScript hook when the user presses Escape. */
-  &[data-dismissed] [role="tooltip"] {
-    display: none;
   }
 }

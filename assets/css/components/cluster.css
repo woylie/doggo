@@ -6,28 +6,30 @@
  * This layout can be used to group buttons, tags, tabs etc.
  */
 
-.cluster {
-  --cluster-gap: var(--spacer-2);
+@layer doggo {
+  .cluster {
+    --cluster-gap: var(--spacer-2);
 
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--cluster-gap);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cluster-gap);
 
-  /*
-  For modifying the spacing, override the --cluster-gap property:
+    /*
+    For modifying the spacing, override the --cluster-gap property:
 
-      &.is-small {
-        --cluster-gap: var(--spacer-1);
-      }
+        &.is-small {
+          --cluster-gap: var(--spacer-1);
+        }
 
-  You may want to add a modifier for scrolling:
+    You may want to add a modifier for scrolling:
 
-      &.is-scrollable {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-      }
+        &.is-scrollable {
+          flex-wrap: nowrap;
+          overflow-x: auto;
+        }
 
-  Or you may want to add modifiers for the justify-content and align-items
-  properties.
-  */
+    Or you may want to add modifiers for the justify-content and align-items
+    properties.
+    */
+  }
 }

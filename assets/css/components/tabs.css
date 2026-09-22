@@ -1,78 +1,80 @@
-.tabs {
-  --tabs-gap: var(--spacer-4);
-  --tabs-list-gap: var(--spacer-1);
-  --tabs-rail-width: var(--border-width-sm);
-  --tabs-rail-color: var(--color-border-subtle);
-  --tabs-indicator-width: var(--border-width-md);
-  --tabs-indicator-color: var(--color-background-primary-solid);
-  --tabs-tab-padding-block: var(--spacer-2);
-  --tabs-tab-padding-inline: var(--spacer-3);
-  --tabs-tab-color: var(--color-text-muted);
-  --tabs-tab-color-selected: var(--color-text-default);
-  --tabs-tab-background-hover: var(--color-background-surface);
-  --tabs-outline-width: var(--border-width-md);
-  --tabs-outline-color: var(--color-border-primary-solid);
-  --tabs-outline-offset: var(--border-width-sm);
+@layer doggo {
+  .tabs {
+    --tabs-gap: var(--spacer-4);
+    --tabs-list-gap: var(--spacer-1);
+    --tabs-rail-width: var(--border-width-sm);
+    --tabs-rail-color: var(--color-border-subtle);
+    --tabs-indicator-width: var(--border-width-md);
+    --tabs-indicator-color: var(--color-background-primary-solid);
+    --tabs-tab-padding-block: var(--spacer-2);
+    --tabs-tab-padding-inline: var(--spacer-3);
+    --tabs-tab-color: var(--color-text-muted);
+    --tabs-tab-color-selected: var(--color-text-default);
+    --tabs-tab-background-hover: var(--color-background-surface);
+    --tabs-outline-width: var(--border-width-md);
+    --tabs-outline-color: var(--color-border-primary-solid);
+    --tabs-outline-offset: var(--border-width-sm);
 
-  display: flex;
-  flex-direction: column;
-  gap: var(--tabs-gap);
-
-  > [role="tablist"] {
     display: flex;
-    gap: var(--tabs-list-gap);
-    border-block-end: var(--tabs-rail-width) solid var(--tabs-rail-color);
-
-    > [role="tab"] {
-      padding: var(--tabs-tab-padding-block) var(--tabs-tab-padding-inline);
-      margin-block-end: calc(-1 * var(--tabs-rail-width));
-      font: inherit;
-      color: var(--tabs-tab-color);
-      cursor: pointer;
-      background: none;
-      border: none;
-      border-block-end: var(--tabs-indicator-width) solid transparent;
-
-      &:hover {
-        background: var(--tabs-tab-background-hover);
-      }
-
-      &:focus-visible {
-        outline: var(--tabs-outline-width) solid var(--tabs-outline-color);
-        outline-offset: var(--tabs-outline-offset);
-      }
-
-      &[aria-selected="true"] {
-        color: var(--tabs-tab-color-selected);
-        border-block-end-color: var(--tabs-indicator-color);
-      }
-    }
-  }
-
-  &:has(> [role="tablist"][aria-orientation="vertical"]) {
-    flex-direction: row;
-    align-items: start;
+    flex-direction: column;
+    gap: var(--tabs-gap);
 
     > [role="tablist"] {
-      flex-direction: column;
-      border-block-end: none;
-      border-inline-end: var(--tabs-rail-width) solid var(--tabs-rail-color);
+      display: flex;
+      gap: var(--tabs-list-gap);
+      border-block-end: var(--tabs-rail-width) solid var(--tabs-rail-color);
 
       > [role="tab"] {
-        margin-block-end: 0;
-        margin-inline-end: calc(-1 * var(--tabs-rail-width));
-        text-align: start;
-        border-block-end: none;
-        border-inline-end: var(--tabs-indicator-width) solid transparent;
+        padding: var(--tabs-tab-padding-block) var(--tabs-tab-padding-inline);
+        margin-block-end: calc(-1 * var(--tabs-rail-width));
+        font: inherit;
+        color: var(--tabs-tab-color);
+        cursor: pointer;
+        background: none;
+        border: none;
+        border-block-end: var(--tabs-indicator-width) solid transparent;
+
+        &:hover {
+          background: var(--tabs-tab-background-hover);
+        }
+
+        &:focus-visible {
+          outline: var(--tabs-outline-width) solid var(--tabs-outline-color);
+          outline-offset: var(--tabs-outline-offset);
+        }
 
         &[aria-selected="true"] {
-          border-inline-end-color: var(--tabs-indicator-color);
+          color: var(--tabs-tab-color-selected);
+          border-block-end-color: var(--tabs-indicator-color);
         }
       }
     }
 
-    > [role="tabpanel"] {
-      flex: 1;
+    &:has(> [role="tablist"][aria-orientation="vertical"]) {
+      flex-direction: row;
+      align-items: start;
+
+      > [role="tablist"] {
+        flex-direction: column;
+        border-block-end: none;
+        border-inline-end: var(--tabs-rail-width) solid var(--tabs-rail-color);
+
+        > [role="tab"] {
+          margin-block-end: 0;
+          margin-inline-end: calc(-1 * var(--tabs-rail-width));
+          text-align: start;
+          border-block-end: none;
+          border-inline-end: var(--tabs-indicator-width) solid transparent;
+
+          &[aria-selected="true"] {
+            border-inline-end-color: var(--tabs-indicator-color);
+          }
+        }
+      }
+
+      > [role="tabpanel"] {
+        flex: 1;
+      }
     }
   }
 }

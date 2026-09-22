@@ -1,12 +1,14 @@
-.field-group {
-  --field-group-gap: var(--spacer-4);
-  --field-group-min-inline-size: 16rem;
+@layer doggo {
+  .field-group {
+    --field-group-gap: var(--spacer-4);
+    --field-group-min-inline-size: 16rem;
 
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--field-group-gap);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--field-group-gap);
 
-  > * {
-    flex: 1 1 var(--field-group-min-inline-size);
+    > * {
+      flex: 1 1 var(--field-group-min-inline-size);
+    }
   }
 }

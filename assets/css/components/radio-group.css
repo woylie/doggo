@@ -1,23 +1,25 @@
-.radio-group {
-  --radio-group-gap: var(--spacer-4);
-  --radio-group-option-gap: var(--spacer-2);
-  --radio-group-control-size: 1rem;
+@layer doggo {
+  .radio-group {
+    --radio-group-gap: var(--spacer-4);
+    --radio-group-option-gap: var(--spacer-2);
+    --radio-group-control-size: 1rem;
 
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--radio-group-gap);
-  align-items: center;
-
-  label {
     display: flex;
-    gap: var(--radio-group-option-gap);
+    flex-wrap: wrap;
+    gap: var(--radio-group-gap);
     align-items: center;
-  }
 
-  input[type="radio"] {
-    flex: none;
-    inline-size: var(--radio-group-control-size);
-    block-size: var(--radio-group-control-size);
-    margin: 0;
+    label {
+      display: flex;
+      gap: var(--radio-group-option-gap);
+      align-items: center;
+    }
+
+    input[type="radio"] {
+      flex: none;
+      inline-size: var(--radio-group-control-size);
+      block-size: var(--radio-group-control-size);
+      margin: 0;
+    }
   }
 }
