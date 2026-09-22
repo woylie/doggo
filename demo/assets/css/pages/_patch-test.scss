@@ -1,0 +1,19 @@
+.patch-test-controls {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  display: grid;
+  gap: var(--spacer-2);
+  padding-block: var(--spacer-2);
+  background-color: var(--color-background-page);
+  border-block-end: var(--border-width-sm) solid var(--color-border-subtle);
+
+  label {
+    margin-inline-end: var(--spacer-2);
+  }
+}
+
+.patch-test {
+  padding-block: var(--spacer-6) var(--spacer-8);
+  padding-inline: var(--spacer-4);
+}

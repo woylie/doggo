@@ -3,17 +3,44 @@ defmodule DemoWeb.PatchTestLiveTest do
 
   import Phoenix.LiveViewTest
 
-  test "renders the harness with all six components", %{conn: conn} do
-    {:ok, live, html} = live(conn, ~p"/patch-test")
+  test "renders the component that is selected, and only that one", %{
+    conn: conn
+  } do
+    {:ok, _live, html} = live(conn, ~p"/patch-test")
 
     assert html =~ "LiveView patch test"
+    assert html =~ "test-modal"
 
-    for id <- ~w(test-modal test-alert-dialog test-tabs test-accordion
-                 test-disclosure) do
-      assert html =~ id
+    for id <- ~w(test-alert-dialog test-carousel test-tabs test-accordion
+                 test-split-pane test-disclosure) do
+      refute html =~ id
     end
+  end
 
-    assert has_element?(live, "button[aria-pressed]")
+  test "the picker selects the component under test", %{conn: conn} do
+    {:ok, live, _html} = live(conn, ~p"/patch-test")
+
+    html =
+      live
+      |> form("#component-picker", %{"component" => "toggle_button"})
+      |> render_change()
+
+    assert html =~ "test-toggle-button" or
+             has_element?(live, "button[aria-pressed]")
+
+    refute html =~ "test-modal"
+  end
+
+  test "the slide controls belong to the carousel", %{conn: conn} do
+    {:ok, live, _html} = live(conn, ~p"/patch-test")
+
+    refute has_element?(live, "#add-slide")
+
+    live
+    |> form("#component-picker", %{"component" => "carousel"})
+    |> render_change()
+
+    assert has_element?(live, "#add-slide")
   end
 
   test "bump increments the tick", %{conn: conn} do
