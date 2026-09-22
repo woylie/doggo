@@ -184,7 +184,7 @@ defmodule Doggo.ComponentsTest do
 
       a = find_one(nav, "ul > li > a")
       assert attribute(a, "aria-current") == nil
-      assert attribute(a, "aria-label") == "Profile"
+      assert attribute(a, "aria-label") == nil
       assert attribute(a, "href") == "/profile"
 
       assert text(a, "span.bottom-navigation-icon") == "profile-icon"
@@ -228,6 +228,7 @@ defmodule Doggo.ComponentsTest do
       a = find_one(html, "nav:root > ul > li > a")
       assert [span] = Floki.children(a)
       assert attribute(span, "class") == "bottom-navigation-icon"
+      assert attribute(a, "aria-label") == "Profile"
     end
 
     test "with single value" do
@@ -796,17 +797,17 @@ defmodule Doggo.ComponentsTest do
         <TestComponents.callout id="my-callout">Did you know?</TestComponents.callout>
         """)
 
-      aside = find_one(html, "aside:root")
-      assert attribute(aside, "class") == "callout"
-      assert attribute(aside, "data-level") == "info"
-      assert attribute(aside, "id") == "my-callout"
-      assert attribute(aside, "aria-labelledby") == nil
+      div = find_one(html, "div:root")
+      assert attribute(div, "class") == "callout"
+      assert attribute(div, "data-level") == "info"
+      assert attribute(div, "id") == "my-callout"
+      assert attribute(div, "aria-labelledby") == nil
 
-      assert text(aside, "div.callout-body > div.callout-message") ==
+      assert text(div, "div.callout-body > div.callout-message") ==
                "Did you know?"
 
-      assert Floki.find(aside, ".callout-icon") == []
-      assert Floki.find(aside, ".callout-title") == []
+      assert Floki.find(div, ".callout-icon") == []
+      assert Floki.find(div, ".callout-title") == []
       assert Floki.find(html, ".callout-actions") == []
     end
 
@@ -820,10 +821,10 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.callout>
         """)
 
-      aside = find_one(html, "aside:root")
-      assert attribute(aside, "aria-labelledby") == "my-callout-title"
+      div = find_one(html, "div:root")
+      assert attribute(div, "aria-labelledby") == "my-callout-title"
 
-      div = find_one(aside, ".callout-body > .callout-title")
+      div = find_one(div, ".callout-body > .callout-title")
       assert attribute(div, "id") == "my-callout-title"
       assert text(div) == "Did you know?"
     end
@@ -839,7 +840,7 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.callout>
         """)
 
-      assert text(html, "aside:root > .callout-icon") == "lightbulb"
+      assert text(html, "div:root > .callout-icon") == "lightbulb"
     end
 
     test "with action slot" do
@@ -867,7 +868,7 @@ defmodule Doggo.ComponentsTest do
         </TestComponents.callout>
         """)
 
-      assert attribute(html, "aside:root", "data-test") == "hello"
+      assert attribute(html, "div:root", "data-test") == "hello"
     end
   end
 
@@ -2545,10 +2546,15 @@ defmodule Doggo.ComponentsTest do
   describe "drawer/1" do
     test "default" do
       assigns = %{}
-      html = parse_heex(~H"<TestComponents.drawer></TestComponents.drawer>")
-      aside = find_one(html, "aside")
-      assert attribute(aside, "class") == "drawer"
-      assert Floki.children(aside) == []
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.drawer id="drawer-1"></TestComponents.drawer>
+        """)
+
+      div = find_one(html, "div")
+      assert attribute(div, "class") == "drawer"
+      assert Floki.children(div) == []
     end
 
     test "with header" do
@@ -2556,12 +2562,12 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.drawer>
+        <TestComponents.drawer id="drawer-2">
           <:header>Doggo</:header>
         </TestComponents.drawer>
         """)
 
-      assert text(html, "aside > div.drawer-header") == "Doggo"
+      assert text(html, "div > div.drawer-header") == "Doggo"
     end
 
     test "with main slot" do
@@ -2569,12 +2575,12 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.drawer>
+        <TestComponents.drawer id="drawer-3">
           <:main>Doggo</:main>
         </TestComponents.drawer>
         """)
 
-      assert text(html, "aside > div.drawer-main") == "Doggo"
+      assert text(html, "div > div.drawer-main") == "Doggo"
     end
 
     test "with footer slot" do
@@ -2582,12 +2588,12 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.drawer>
+        <TestComponents.drawer id="drawer-4">
           <:footer>Doggo</:footer>
         </TestComponents.drawer>
         """)
 
-      assert text(html, "aside > div.drawer-footer") == "Doggo"
+      assert text(html, "div > div.drawer-footer") == "Doggo"
     end
 
     test "with global attribute" do
@@ -2595,10 +2601,10 @@ defmodule Doggo.ComponentsTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.drawer data-what="ever"></TestComponents.drawer>
+        <TestComponents.drawer id="drawer-5" data-what="ever"></TestComponents.drawer>
         """)
 
-      assert attribute(html, "aside", "data-what") == "ever"
+      assert attribute(html, "div", "data-what") == "ever"
     end
   end
 

@@ -18,7 +18,12 @@ defmodule Doggo.Components.AppBarTest do
   describe "app_bar/1" do
     test "default" do
       assigns = %{}
-      html = parse_heex(~H"<TestComponents.app_bar></TestComponents.app_bar>")
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.app_bar id="app-bar-1"></TestComponents.app_bar>
+        """)
+
       header = find_one(html, "header")
       assert attribute(header, "class") == "app-bar"
       assert Floki.children(header) == []
@@ -29,7 +34,8 @@ defmodule Doggo.Components.AppBarTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.app_bar title="Some Title"></TestComponents.app_bar>
+        <TestComponents.app_bar id="app-bar-2" title="Some Title">
+        </TestComponents.app_bar>
         """)
 
       assert text(html, "header h1") == "Some Title"
@@ -40,7 +46,7 @@ defmodule Doggo.Components.AppBarTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.app_bar>
+        <TestComponents.app_bar id="app-bar-3">
           <:navigation label="Back" on_click="back">back-icon</:navigation>
         </TestComponents.app_bar>
         """)
@@ -57,7 +63,7 @@ defmodule Doggo.Components.AppBarTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.app_bar>
+        <TestComponents.app_bar id="app-bar-4">
           <:action label="Menu" on_click="open-menu">menu-icon</:action>
         </TestComponents.app_bar>
         """)
@@ -74,7 +80,8 @@ defmodule Doggo.Components.AppBarTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.app_bar data-what="ever"></TestComponents.app_bar>
+        <TestComponents.app_bar id="app-bar-5" data-what="ever">
+        </TestComponents.app_bar>
         """)
 
       assert attribute(html, "header", "data-what") == "ever"

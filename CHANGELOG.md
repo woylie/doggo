@@ -10,11 +10,27 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Changed
+
+- Name the landmark that `app_bar`, `callout` and `drawer` render.
+- Render `callout` and `drawer` as a `div` and only set `role="complementary"`
+  if they have a name in order to prevent unnamed landmarks.
+- `app_bar` and `drawer` now require an `id`.
+
 ### Fixed
 
+- Only set `aria-label` on a `bottom_navigation` item when its label is hidden.
+- Label an `avatar` that falls back to `placeholder_content`.
+- Remove `form`, `name` and `value` as global attributes from `date`.
 - Stop the carousel rotating under the pointer after the pause button resumes
   it.
 - Close a menu opened from a menu button when clicking outside it.
+
+### How to upgrade
+
+Pass an `id` to `app_bar/1` and `drawer/1`. If your CSS or tests select the
+`aside` element that `callout/1` or `drawer/1` used to render, select the
+`callout` or `drawer` class instead.
 
 ## [0.15.1] - 2026-09-11
 

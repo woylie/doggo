@@ -106,7 +106,8 @@ defmodule Doggo.Components.ButtonLink do
           "replace",
           "method",
           "csrf_token"
-        ]
+        ],
+        doc: "Any additional HTML attributes."
 
       slot :inner_block, required: true
     end

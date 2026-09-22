@@ -108,6 +108,7 @@ defmodule Doggo.Components.Drawer do
   @impl true
   def attrs_and_slots(_opts) do
     quote do
+      attr :id, :string, required: true
       attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :header, doc: "Optional slot for the brand name or logo."
@@ -134,8 +135,15 @@ defmodule Doggo.Components.Drawer do
   @impl true
   def render(assigns) do
     ~H"""
-    <aside class={@class} {@data_attrs} {@rest}>
-      <div :if={@header != []} class={"#{@base_class}-header"}>
+    <div
+      id={@id}
+      class={@class}
+      role={@header != [] && "complementary"}
+      aria-labelledby={@header != [] && "#{@id}-header"}
+      {@data_attrs}
+      {@rest}
+    >
+      <div :if={@header != []} id={"#{@id}-header"} class={"#{@base_class}-header"}>
         {render_slot(@header)}
       </div>
       <div :if={@main != []} class={"#{@base_class}-main"}>
@@ -144,7 +152,7 @@ defmodule Doggo.Components.Drawer do
       <div :if={@footer != []} class={"#{@base_class}-footer"}>
         {render_slot(@footer)}
       </div>
-    </aside>
+    </div>
     """
   end
 end

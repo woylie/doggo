@@ -140,7 +140,7 @@ defmodule Doggo.Components.Date do
         for this to work.
         """
 
-      attr :rest, :global, include: ~w(autofocus form name value)
+      attr :rest, :global, doc: "Any additional HTML attributes."
     end
   end
 

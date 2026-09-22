@@ -90,6 +90,27 @@ defmodule Doggo.Components.AvatarTest do
 
       assert Floki.find(html, "img") == []
       assert text(html, ":root > span") == "A"
+
+      assert attribute(html, ":root > span", "aria-hidden") == "true"
+      assert attribute(html, ":root > span", "role") == nil
+    end
+
+    test "with a named text placeholder" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.avatar
+          src={nil}
+          placeholder_content="A"
+          alt="Alfred Adler"
+        />
+        """)
+
+      span = find_one(html, ":root > span")
+      assert attribute(span, "role") == "img"
+      assert attribute(span, "aria-label") == "Alfred Adler"
+      assert attribute(span, "aria-hidden") == nil
     end
 
     test "without image or placeholder" do
@@ -112,6 +133,21 @@ defmodule Doggo.Components.AvatarTest do
         """)
 
       assert attribute(html, ":root > img", "src") == "placeholder.png"
+    end
+
+    test "the image placeholder takes the same alt as the image" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.avatar
+          src={nil}
+          placeholder_src="placeholder.png"
+          alt="Alfred Adler"
+        />
+        """)
+
+      assert attribute(html, ":root > img", "alt") == "Alfred Adler"
     end
 
     test "with global attribute" do

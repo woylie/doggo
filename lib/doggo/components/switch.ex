@@ -78,7 +78,7 @@ defmodule Doggo.Components.Switch do
         """
 
       attr :checked, :boolean, default: false
-      attr :rest, :global
+      attr :rest, :global, doc: "Any additional HTML attributes."
     end
   end
 

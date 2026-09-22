@@ -92,7 +92,7 @@ defmodule Doggo.FixturesTest do
 
     assert_fixture(
       ~H"""
-      <FixtureComponents.app_bar title="Dogs">
+      <FixtureComponents.app_bar id="app-bar-1" title="Dogs">
         <:navigation label="Open menu" on_click={JS.push("toggle-menu")}>
           menu-icon
         </:navigation>
@@ -393,7 +393,7 @@ defmodule Doggo.FixturesTest do
 
     assert_fixture(
       ~H"""
-      <FixtureComponents.drawer>
+      <FixtureComponents.drawer id="drawer-1">
         <:header>Doggo</:header>
         <:main>main</:main>
         <:footer>footer</:footer>

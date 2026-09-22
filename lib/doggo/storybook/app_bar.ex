@@ -20,35 +20,35 @@ defmodule Doggo.Storybook.AppBar do
     [
       %Variation{
         id: :default,
-        attributes: %{title: "Page title"},
+        attributes: %{id: "dog-app-bar-1", title: "Page title"},
         slots: [navigation(opts), search(opts), like(opts)]
       },
       %Variation{
         id: :without_navigation,
-        attributes: %{title: "Page title"},
+        attributes: %{id: "dog-app-bar-2", title: "Page title"},
         slots: [search(opts), like(opts)]
       },
       %Variation{
         id: :without_actions,
-        attributes: %{title: "Page title"},
+        attributes: %{id: "dog-app-bar-3", title: "Page title"},
         slots: [navigation(opts)]
       },
       %Variation{
         id: :title_only,
-        attributes: %{title: "Page title"},
+        attributes: %{id: "dog-app-bar-4", title: "Page title"},
         slots: []
       },
       %Variation{
         id: :without_title,
-        attributes: %{},
+        attributes: %{id: "dog-app-bar-5"},
         slots: [navigation(opts), search(opts), like(opts)]
       }
     ]
   end
 
-  def modifier_variation_base(_id, _name, value, opts) do
+  def modifier_variation_base(id, _name, value, opts) do
     %{
-      attributes: %{title: value},
+      attributes: %{id: id, title: value},
       slots: [navigation(opts), search(opts), like(opts)]
     }
   end
