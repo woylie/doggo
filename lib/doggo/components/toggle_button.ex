@@ -113,7 +113,7 @@ defmodule Doggo.Components.ToggleButton do
         """
 
       attr :disabled, :boolean, default: false
-      attr :rest, :global
+      attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :inner_block, required: true
     end

@@ -157,7 +157,7 @@ defmodule Doggo.Components.Datetime do
         for this to work.
         """
 
-      attr :rest, :global
+      attr :rest, :global, doc: "Any additional HTML attributes."
     end
   end
 

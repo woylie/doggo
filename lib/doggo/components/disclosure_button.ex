@@ -103,7 +103,9 @@ defmodule Doggo.Components.DisclosureButton do
         The DOM ID of the element that this button controls.
         """
 
-      attr :rest, :global, include: ~w(autofocus form name value)
+      attr :rest, :global,
+        include: ~w(autofocus form name value),
+        doc: "Any additional HTML attributes."
 
       slot :inner_block, required: true
     end

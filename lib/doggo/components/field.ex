@@ -115,7 +115,7 @@ defmodule Doggo.Components.Field do
     attr :describedby, :string, required: true
     attr :errormessage, :string, required: true
     attr :validations, :list, required: true
-    attr :rest, :global
+    attr :rest, :global, doc: "Any additional HTML attributes."
 
     def ranked(assigns) do
       ~H\"\"\"
@@ -427,7 +427,8 @@ defmodule Doggo.Components.Field do
         include:
           ~w(accept autocomplete capture cols disabled form list max maxlength min
          minlength multiple passwordrules pattern placeholder readonly required
-         rows size step)
+         rows size step),
+        doc: "Any additional HTML attributes."
 
       attr :gettext, :atom,
         doc: """

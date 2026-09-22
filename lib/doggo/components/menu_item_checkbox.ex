@@ -63,7 +63,7 @@ defmodule Doggo.Components.MenuItemCheckbox do
     quote do
       attr :checked, :boolean, default: false
       attr :on_click, JS, required: true
-      attr :rest, :global
+      attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :inner_block, required: true
     end

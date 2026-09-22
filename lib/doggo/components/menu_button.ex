@@ -130,7 +130,7 @@ defmodule Doggo.Components.MenuButton do
         `menu_bar/1`. This ensures that the `role` is set to `menuitem`.
         """
 
-      attr :rest, :global
+      attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :inner_block, required: true
     end
