@@ -1,153 +1,155 @@
-.carousel {
-  --carousel-item-max-inline-size: 600px;
+@layer doggo {
+  .carousel {
+    --carousel-item-max-inline-size: 600px;
 
-  /* Slides must not extend past the available space (WCAG 1.4.10). Use 100cqi
-   * instead of 100% to constrain it based on the container. */
-  --carousel-item-inline-size: min(
-    var(--carousel-item-max-inline-size),
-    100cqi
-  );
-  --carousel-gap: var(--spacer-4);
+    /* Slides must not extend past the available space (WCAG 1.4.10). Use 100cqi
+     * instead of 100% to constrain it based on the container. */
+    --carousel-item-inline-size: min(
+      var(--carousel-item-max-inline-size),
+      100cqi
+    );
+    --carousel-gap: var(--spacer-4);
 
-  /* WCAG 2.5.8 minimum target size is 24px */
-  --carousel-control-size: 2.5rem;
-  --carousel-control-color: var(--color-text-default);
-  --carousel-control-color-disabled: var(--color-text-disabled);
-  --carousel-control-background-hover: var(--color-background-surface);
-  --carousel-control-border-radius: var(--radius-sm);
-  --carousel-control-outline-width: var(--border-width-md);
-  --carousel-control-outline-color: var(--color-border-primary-solid);
-  --carousel-control-outline-offset: var(--border-width-sm);
-  --carousel-item-opacity-inactive: 0.4;
-  --carousel-item-scale-inactive: 0.9;
-  --carousel-item-transition-duration: var(--duration-lg);
-  --carousel-controls-gap: var(--spacer-2);
-  --carousel-pagination-gap: var(--spacer-1);
+    /* WCAG 2.5.8 minimum target size is 24px */
+    --carousel-control-size: 2.5rem;
+    --carousel-control-color: var(--color-text-default);
+    --carousel-control-color-disabled: var(--color-text-disabled);
+    --carousel-control-background-hover: var(--color-background-surface);
+    --carousel-control-border-radius: var(--radius-sm);
+    --carousel-control-outline-width: var(--border-width-md);
+    --carousel-control-outline-color: var(--color-border-primary-solid);
+    --carousel-control-outline-offset: var(--border-width-sm);
+    --carousel-item-opacity-inactive: 0.4;
+    --carousel-item-scale-inactive: 0.9;
+    --carousel-item-transition-duration: var(--duration-lg);
+    --carousel-controls-gap: var(--spacer-2);
+    --carousel-pagination-gap: var(--spacer-1);
 
-  /* WCAG 2.5.8 minimum target size is 24px */
-  --carousel-pagination-target-size: var(--spacer-6);
-  --carousel-pagination-dot-size: var(--spacer-3);
-  --carousel-pagination-dot-border-width: var(--border-width-sm);
-  --carousel-pagination-dot-color: var(--color-background-primary-solid);
-  --carousel-pagination-dot-border-radius: var(--radius-pill);
+    /* WCAG 2.5.8 minimum target size is 24px */
+    --carousel-pagination-target-size: var(--spacer-6);
+    --carousel-pagination-dot-size: var(--spacer-3);
+    --carousel-pagination-dot-border-width: var(--border-width-sm);
+    --carousel-pagination-dot-color: var(--color-background-primary-solid);
+    --carousel-pagination-dot-border-radius: var(--radius-pill);
 
-  inline-size: 100%;
-
-  .carousel-inner {
-    display: flex;
-    flex-direction: column;
-    gap: var(--carousel-gap);
     inline-size: 100%;
-    container-type: inline-size;
-    overflow-x: hidden;
-  }
 
-  .carousel-items-container {
-    inline-size: 100%;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-
-    /* WCAG 2.3.3: disable smooth scrolling if motion is not wanted */
-    @media (prefers-reduced-motion: reduce) {
-      scroll-behavior: auto;
-    }
-  }
-
-  .carousel-items {
-    display: flex;
-    inline-size: fit-content;
-
-    /* Provide enough padding on both sides so that items at the edges can be
-     * scrolled to the center. */
-    padding-inline: calc(50% - var(--carousel-item-inline-size) / 2);
-  }
-
-  .carousel-item {
-    flex-shrink: 0;
-    inline-size: var(--carousel-item-inline-size);
-    scroll-snap-align: center;
-    opacity: var(--carousel-item-opacity-inactive);
-    transform: scale(var(--carousel-item-scale-inactive));
-    transition:
-      opacity var(--carousel-item-transition-duration) ease,
-      transform var(--carousel-item-transition-duration) ease;
-
-    &[aria-current="true"] {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  .carousel-controls {
-    display: flex;
-    gap: var(--carousel-controls-gap);
-    align-items: center;
-    justify-content: center;
-
-    :is(.carousel-previous, .carousel-next, .carousel-pause) {
-      display: grid;
-      place-items: center;
-      inline-size: var(--carousel-control-size);
-      block-size: var(--carousel-control-size);
-      padding: 0;
-      color: var(--carousel-control-color);
-      cursor: pointer;
-      background: none;
-      border: none;
-      border-radius: var(--carousel-control-border-radius);
-
-      &:hover {
-        background: var(--carousel-control-background-hover);
-      }
-
-      &:focus-visible {
-        outline: var(--carousel-control-outline-width) solid
-          var(--carousel-control-outline-color);
-        outline-offset: var(--carousel-control-outline-offset);
-      }
-
-      &:disabled {
-        color: var(--carousel-control-color-disabled);
-        cursor: not-allowed;
-        background: none;
-      }
-    }
-
-    .carousel-pagination {
+    .carousel-inner {
       display: flex;
-      gap: var(--carousel-pagination-gap);
+      flex-direction: column;
+      gap: var(--carousel-gap);
+      inline-size: 100%;
+      container-type: inline-size;
+      overflow-x: hidden;
+    }
+
+    .carousel-items-container {
+      inline-size: 100%;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+
+      /* WCAG 2.3.3: disable smooth scrolling if motion is not wanted */
+      @media (prefers-reduced-motion: reduce) {
+        scroll-behavior: auto;
+      }
+    }
+
+    .carousel-items {
+      display: flex;
+      inline-size: fit-content;
+
+      /* Provide enough padding on both sides so that items at the edges can be
+       * scrolled to the center. */
+      padding-inline: calc(50% - var(--carousel-item-inline-size) / 2);
+    }
+
+    .carousel-item {
+      flex-shrink: 0;
+      inline-size: var(--carousel-item-inline-size);
+      scroll-snap-align: center;
+      opacity: var(--carousel-item-opacity-inactive);
+      transform: scale(var(--carousel-item-scale-inactive));
+      transition:
+        opacity var(--carousel-item-transition-duration) ease,
+        transform var(--carousel-item-transition-duration) ease;
+
+      &[aria-current="true"] {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .carousel-controls {
+      display: flex;
+      gap: var(--carousel-controls-gap);
+      align-items: center;
       justify-content: center;
 
-      button[role="tab"] {
+      :is(.carousel-previous, .carousel-next, .carousel-pause) {
         display: grid;
         place-items: center;
-        inline-size: var(--carousel-pagination-target-size);
-        block-size: var(--carousel-pagination-target-size);
+        inline-size: var(--carousel-control-size);
+        block-size: var(--carousel-control-size);
         padding: 0;
+        color: var(--carousel-control-color);
         cursor: pointer;
         background: none;
         border: none;
+        border-radius: var(--carousel-control-border-radius);
 
-        > span {
-          inline-size: var(--carousel-pagination-dot-size);
-          block-size: var(--carousel-pagination-dot-size);
-          border: var(--carousel-pagination-dot-border-width) solid
-            var(--carousel-pagination-dot-color);
-          border-radius: var(--carousel-pagination-dot-border-radius);
+        &:hover {
+          background: var(--carousel-control-background-hover);
         }
 
-        &[aria-selected="true"] > span {
-          background-color: var(--carousel-pagination-dot-color);
+        &:focus-visible {
+          outline: var(--carousel-control-outline-width) solid
+            var(--carousel-control-outline-color);
+          outline-offset: var(--carousel-control-outline-offset);
+        }
+
+        &:disabled {
+          color: var(--carousel-control-color-disabled);
+          cursor: not-allowed;
+          background: none;
+        }
+      }
+
+      .carousel-pagination {
+        display: flex;
+        gap: var(--carousel-pagination-gap);
+        justify-content: center;
+
+        button[role="tab"] {
+          display: grid;
+          place-items: center;
+          inline-size: var(--carousel-pagination-target-size);
+          block-size: var(--carousel-pagination-target-size);
+          padding: 0;
+          cursor: pointer;
+          background: none;
+          border: none;
+
+          > span {
+            inline-size: var(--carousel-pagination-dot-size);
+            block-size: var(--carousel-pagination-dot-size);
+            border: var(--carousel-pagination-dot-border-width) solid
+              var(--carousel-pagination-dot-color);
+            border-radius: var(--carousel-pagination-dot-border-radius);
+          }
+
+          &[aria-selected="true"] > span {
+            background-color: var(--carousel-pagination-dot-color);
+          }
         }
       }
     }
-  }
 
-  /* Swap pause/resume button content depending on the current state */
-  &:not([data-paused]) .carousel-pause > :last-child,
-  &[data-paused] .carousel-pause > :first-child {
-    display: none;
+    /* Swap pause/resume button content depending on the current state */
+    &:not([data-paused]) .carousel-pause > :last-child,
+    &[data-paused] .carousel-pause > :first-child {
+      display: none;
+    }
   }
 }

@@ -1,25 +1,27 @@
-.icon {
-  --icon-gap: var(--spacer-1);
-  --icon-size: 1.25cap;
+@layer doggo {
+  .icon {
+    --icon-gap: var(--spacer-1);
+    --icon-size: 1.25cap;
 
-  display: inline-flex;
-  gap: var(--icon-gap);
-  align-items: baseline;
+    display: inline-flex;
+    gap: var(--icon-gap);
+    align-items: baseline;
 
-  svg {
-    inline-size: var(--icon-size);
-    block-size: var(--icon-size);
-  }
+    svg {
+      inline-size: var(--icon-size);
+      block-size: var(--icon-size);
+    }
 
-  &:is([data-text-position="before"], [data-text-position="after"]) > svg {
-    transform: translateY(calc((var(--icon-size) - 1cap) / 2));
-  }
+    &:is([data-text-position="before"], [data-text-position="after"]) > svg {
+      transform: translateY(calc((var(--icon-size) - 1cap) / 2));
+    }
 
-  &[data-text-position="before"] {
-    flex-direction: row-reverse;
-  }
+    &[data-text-position="before"] {
+      flex-direction: row-reverse;
+    }
 
-  &[data-text-position="after"] {
-    flex-direction: row;
+    &[data-text-position="after"] {
+      flex-direction: row;
+    }
   }
 }

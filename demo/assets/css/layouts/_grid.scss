@@ -2,36 +2,38 @@
  * Generic responsive grid layout with optional maximum number of columns.
  */
 
-.grid {
-  --min-width: 10rem;
-  --max-columns: 5;
-  --gap: var(--spacer-4);
+@layer demo {
+  .grid {
+    --min-width: 10rem;
+    --max-columns: 5;
+    --gap: var(--spacer-4);
 
-  /* calculated */
-  --min-column-percent: calc(100% / var(--max-columns));
+    /* calculated */
+    --min-column-percent: calc(100% / var(--max-columns));
 
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(
-      clamp(var(--min-column-percent) - var(--gap), var(--min-width), 100%),
-      1fr
-    )
-  );
-  gap: var(--gap);
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(
+        clamp(var(--min-column-percent) - var(--gap), var(--min-width), 100%),
+        1fr
+      )
+    );
+    gap: var(--gap);
 
-  /*
-  You can add modifier classes like this:
+    /*
+    You can add modifier classes like this:
 
-      &.has-max-columns-3 {
-        --max-columns: 3;
-      }
+        &.has-max-columns-3 {
+          --max-columns: 3;
+        }
 
-  If you don't want to restrict the maximum number of columns, set the value to
-  a large number:
+    If you don't want to restrict the maximum number of columns, set the value to
+    a large number:
 
-      &.has-max-columns-auto {
-        --max-columns: 9999;
-      }
-  */
+        &.has-max-columns-auto {
+          --max-columns: 9999;
+        }
+    */
+  }
 }

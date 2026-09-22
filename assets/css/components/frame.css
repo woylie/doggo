@@ -1,58 +1,60 @@
-.frame {
-  --frame-background: var(--color-background-surface);
-  --frame-border-radius: 0;
+@layer doggo {
+  .frame {
+    --frame-background: var(--color-background-surface);
+    --frame-border-radius: 0;
 
-  display: block;
-  overflow: hidden;
-  background: var(--frame-background);
-  border-radius: var(--frame-border-radius);
-
-  /* Can be rewritten with attr() once widely baseline available
-   * https://caniuse.com/css3-attr */
-  &[data-numerator="1"][data-denominator="1"] {
-    aspect-ratio: 1 / 1;
-  }
-
-  &[data-numerator="3"][data-denominator="2"] {
-    aspect-ratio: 3 / 2;
-  }
-
-  &[data-numerator="2"][data-denominator="3"] {
-    aspect-ratio: 2 / 3;
-  }
-
-  &[data-numerator="4"][data-denominator="3"] {
-    aspect-ratio: 4 / 3;
-  }
-
-  &[data-numerator="3"][data-denominator="4"] {
-    aspect-ratio: 3 / 4;
-  }
-
-  &[data-numerator="5"][data-denominator="4"] {
-    aspect-ratio: 5 / 4;
-  }
-
-  &[data-numerator="4"][data-denominator="5"] {
-    aspect-ratio: 4 / 5;
-  }
-
-  &[data-numerator="16"][data-denominator="9"] {
-    aspect-ratio: 16 / 9;
-  }
-
-  &[data-numerator="9"][data-denominator="16"] {
-    aspect-ratio: 9 / 16;
-  }
-
-  &[data-shape="circle"] {
-    --frame-border-radius: var(--radius-circle);
-  }
-
-  > :is(img, video, picture, iframe) {
     display: block;
-    inline-size: 100%;
-    block-size: 100%;
-    object-fit: cover;
+    overflow: hidden;
+    background: var(--frame-background);
+    border-radius: var(--frame-border-radius);
+
+    /* Can be rewritten with attr() once widely baseline available
+     * https://caniuse.com/css3-attr */
+    &[data-numerator="1"][data-denominator="1"] {
+      aspect-ratio: 1 / 1;
+    }
+
+    &[data-numerator="3"][data-denominator="2"] {
+      aspect-ratio: 3 / 2;
+    }
+
+    &[data-numerator="2"][data-denominator="3"] {
+      aspect-ratio: 2 / 3;
+    }
+
+    &[data-numerator="4"][data-denominator="3"] {
+      aspect-ratio: 4 / 3;
+    }
+
+    &[data-numerator="3"][data-denominator="4"] {
+      aspect-ratio: 3 / 4;
+    }
+
+    &[data-numerator="5"][data-denominator="4"] {
+      aspect-ratio: 5 / 4;
+    }
+
+    &[data-numerator="4"][data-denominator="5"] {
+      aspect-ratio: 4 / 5;
+    }
+
+    &[data-numerator="16"][data-denominator="9"] {
+      aspect-ratio: 16 / 9;
+    }
+
+    &[data-numerator="9"][data-denominator="16"] {
+      aspect-ratio: 9 / 16;
+    }
+
+    &[data-shape="circle"] {
+      --frame-border-radius: var(--radius-circle);
+    }
+
+    > :is(img, video, picture, iframe) {
+      display: block;
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+    }
   }
 }

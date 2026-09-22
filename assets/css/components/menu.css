@@ -1,156 +1,159 @@
-.menu,
-.menu-bar,
-.menu-group,
-.menu-item-radio-group {
-  --menu-bar-gap: var(--spacer-2);
-  --menu-item-padding-block: var(--spacer-1);
-  --menu-item-padding-inline: var(--spacer-2);
-  --menu-item-font-size: var(--size-font-sm);
-  --menu-item-border-width: var(--border-width-sm);
-  --menu-item-border-radius: var(--radius-sm);
-  --menu-item-background-hover: var(--color-background-surface);
-  --menu-item-marker-inline-size: 1.25em;
-  --menu-item-border-color-focus: var(--color-border-primary-solid);
-  --menu-separator-size: var(--border-width-sm);
-  --menu-separator-margin: var(--spacer-1);
-  --menu-separator-color: var(--color-border-subtle);
-  --menu-offset: var(--spacer-1);
-  --menu-padding: var(--spacer-1);
-  --menu-background: var(--color-background-page);
-  --menu-border-width: var(--border-width-sm);
-  --menu-border-color: var(--color-border-subtle);
-  --menu-border-radius: var(--radius-sm);
-  --menu-shadow: var(--shadow-elevation-medium);
+@layer doggo {
+  .menu,
+  .menu-bar,
+  .menu-group,
+  .menu-item-radio-group {
+    --menu-bar-gap: var(--spacer-2);
+    --menu-item-padding-block: var(--spacer-1);
+    --menu-item-padding-inline: var(--spacer-2);
+    --menu-item-font-size: var(--size-font-sm);
+    --menu-item-border-width: var(--border-width-sm);
+    --menu-item-border-radius: var(--radius-sm);
+    --menu-item-background-hover: var(--color-background-surface);
+    --menu-item-marker-inline-size: 1.25em;
+    --menu-item-border-color-focus: var(--color-border-primary-solid);
+    --menu-separator-size: var(--border-width-sm);
+    --menu-separator-margin: var(--spacer-1);
+    --menu-separator-color: var(--color-border-subtle);
+    --menu-offset: var(--spacer-1);
+    --menu-padding: var(--spacer-1);
+    --menu-background: var(--color-background-page);
+    --menu-border-width: var(--border-width-sm);
+    --menu-border-color: var(--color-border-subtle);
+    --menu-border-radius: var(--radius-sm);
+    --menu-shadow: var(--shadow-elevation-medium);
 
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
 
-.menu,
-.menu-group,
-.menu-item-radio-group {
-  display: flex;
-  flex-direction: column;
-}
+  .menu,
+  .menu-group,
+  .menu-item-radio-group {
+    display: flex;
+    flex-direction: column;
+  }
 
-.menu[hidden],
-.menu-bar[hidden],
-.menu-group[hidden],
-.menu-item-radio-group[hidden] {
-  display: none;
-}
+  .menu[hidden],
+  .menu-bar[hidden],
+  .menu-group[hidden],
+  .menu-item-radio-group[hidden] {
+    display: none;
+  }
 
-.menu-bar {
-  display: flex;
-  flex-direction: row;
-  gap: var(--menu-bar-gap);
-}
+  .menu-bar {
+    display: flex;
+    flex-direction: row;
+    gap: var(--menu-bar-gap);
+  }
 
-.menu,
-.menu-bar,
-.menu-group,
-.menu-item-radio-group {
-  .menu-item,
-  .menu-button,
-  [role="menuitemcheckbox"],
-  [role="menuitemradio"] {
-    display: block;
-    inline-size: 100%;
-    padding: var(--menu-item-padding-block) var(--menu-item-padding-inline);
+  .menu,
+  .menu-bar,
+  .menu-group,
+  .menu-item-radio-group {
+    .menu-item,
+    .menu-button,
+    [role="menuitemcheckbox"],
+    [role="menuitemradio"] {
+      display: block;
+      inline-size: 100%;
+      padding: var(--menu-item-padding-block) var(--menu-item-padding-inline);
+      font-family: inherit;
+      font-size: var(--menu-item-font-size);
+      text-align: start;
+      cursor: pointer;
+      background: none;
+      border: var(--menu-item-border-width) solid transparent;
+      border-radius: var(--menu-item-border-radius);
+
+      &:hover {
+        background-color: var(--menu-item-background-hover);
+      }
+
+      &:focus-visible {
+        outline: none;
+        border-color: var(--menu-item-border-color-focus);
+      }
+    }
+
+    [role="menuitemcheckbox"]::before,
+    [role="menuitemradio"]::before {
+      display: inline-block;
+      visibility: hidden;
+      inline-size: var(--menu-item-marker-inline-size);
+      content: "✓";
+    }
+
+    [role="menuitemcheckbox"][aria-checked="true"]::before,
+    [role="menuitemradio"][aria-checked="true"]::before {
+      visibility: visible;
+    }
+
+    [role="separator"] {
+      background-color: var(--menu-separator-color);
+    }
+  }
+
+  :is(.menu, .menu-group, .menu-item-radio-group) > [role="separator"] {
+    block-size: var(--menu-separator-size);
+    margin-block: var(--menu-separator-margin);
+  }
+
+  .menu-bar > [role="separator"] {
+    align-self: stretch;
+    inline-size: var(--menu-separator-size);
+    margin-inline: var(--menu-separator-margin);
+  }
+
+  .menu-button {
+    --menu-button-padding-block: var(--spacer-1);
+    --menu-button-padding-inline: var(--spacer-3);
+    --menu-button-font-size: var(--size-font-sm);
+    --menu-button-border-width: var(--border-width-sm);
+    --menu-button-border-color: var(--color-border-secondary-solid);
+    --menu-button-border-radius: var(--radius-sm);
+    --menu-button-background-hover: var(--color-background-surface);
+    --menu-button-outline-width: var(--border-width-md);
+    --menu-button-outline-color: var(--color-border-primary-solid);
+    --menu-button-outline-offset: var(--border-width-sm);
+
+    padding: var(--menu-button-padding-block) var(--menu-button-padding-inline);
     font-family: inherit;
-    font-size: var(--menu-item-font-size);
-    text-align: start;
+    font-size: var(--menu-button-font-size);
+    color: inherit;
     cursor: pointer;
     background: none;
-    border: var(--menu-item-border-width) solid transparent;
-    border-radius: var(--menu-item-border-radius);
+    border: var(--menu-button-border-width) solid
+      var(--menu-button-border-color);
+    border-radius: var(--menu-button-border-radius);
 
     &:hover {
-      background-color: var(--menu-item-background-hover);
+      background: var(--menu-button-background-hover);
     }
 
     &:focus-visible {
-      outline: none;
-      border-color: var(--menu-item-border-color-focus);
+      outline: var(--menu-button-outline-width) solid
+        var(--menu-button-outline-color);
+      outline-offset: var(--menu-button-outline-offset);
     }
   }
 
-  [role="menuitemcheckbox"]::before,
-  [role="menuitemradio"]::before {
-    display: inline-block;
-    visibility: hidden;
-    inline-size: var(--menu-item-marker-inline-size);
-    content: "✓";
+  :has(> .menu-button + .menu) {
+    position: relative;
   }
 
-  [role="menuitemcheckbox"][aria-checked="true"]::before,
-  [role="menuitemradio"][aria-checked="true"]::before {
-    visibility: visible;
+  .menu-button + .menu {
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline-start: 0;
+    z-index: 1;
+    min-inline-size: max-content;
+    padding: var(--menu-padding);
+    margin-block-start: var(--menu-offset);
+    background: var(--menu-background);
+    border: var(--menu-border-width) solid var(--menu-border-color);
+    border-radius: var(--menu-border-radius);
+    box-shadow: var(--menu-shadow);
   }
-
-  [role="separator"] {
-    background-color: var(--menu-separator-color);
-  }
-}
-
-:is(.menu, .menu-group, .menu-item-radio-group) > [role="separator"] {
-  block-size: var(--menu-separator-size);
-  margin-block: var(--menu-separator-margin);
-}
-
-.menu-bar > [role="separator"] {
-  align-self: stretch;
-  inline-size: var(--menu-separator-size);
-  margin-inline: var(--menu-separator-margin);
-}
-
-.menu-button {
-  --menu-button-padding-block: var(--spacer-1);
-  --menu-button-padding-inline: var(--spacer-3);
-  --menu-button-font-size: var(--size-font-sm);
-  --menu-button-border-width: var(--border-width-sm);
-  --menu-button-border-color: var(--color-border-secondary-solid);
-  --menu-button-border-radius: var(--radius-sm);
-  --menu-button-background-hover: var(--color-background-surface);
-  --menu-button-outline-width: var(--border-width-md);
-  --menu-button-outline-color: var(--color-border-primary-solid);
-  --menu-button-outline-offset: var(--border-width-sm);
-
-  padding: var(--menu-button-padding-block) var(--menu-button-padding-inline);
-  font-family: inherit;
-  font-size: var(--menu-button-font-size);
-  color: inherit;
-  cursor: pointer;
-  background: none;
-  border: var(--menu-button-border-width) solid var(--menu-button-border-color);
-  border-radius: var(--menu-button-border-radius);
-
-  &:hover {
-    background: var(--menu-button-background-hover);
-  }
-
-  &:focus-visible {
-    outline: var(--menu-button-outline-width) solid
-      var(--menu-button-outline-color);
-    outline-offset: var(--menu-button-outline-offset);
-  }
-}
-
-:has(> .menu-button + .menu) {
-  position: relative;
-}
-
-.menu-button + .menu {
-  position: absolute;
-  inset-block-start: 100%;
-  inset-inline-start: 0;
-  z-index: 1;
-  min-inline-size: max-content;
-  padding: var(--menu-padding);
-  margin-block-start: var(--menu-offset);
-  background: var(--menu-background);
-  border: var(--menu-border-width) solid var(--menu-border-color);
-  border-radius: var(--menu-border-radius);
-  box-shadow: var(--menu-shadow);
 }

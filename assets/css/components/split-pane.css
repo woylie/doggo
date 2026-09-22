@@ -1,74 +1,78 @@
-.split-pane {
-  --split-pane-block-size: 10rem;
-  --split-pane-separator-size: var(--spacer-1);
-  --split-pane-separator-color: var(--color-border-control);
-  --split-pane-separator-color-hover: var(--color-background-primary-solid);
+@layer doggo {
+  .split-pane {
+    --split-pane-block-size: 10rem;
+    --split-pane-separator-size: var(--spacer-1);
+    --split-pane-separator-color: var(--color-border-control);
+    --split-pane-separator-color-hover: var(--color-background-primary-solid);
 
-  /* WCAG 2.5.8 minimum target size is 24px; grab area of separator needs to be
-   * widened. */
-  --split-pane-target-inline: var(--spacer-6);
-  --split-pane-separator-outline-width: var(--border-width-md);
-  --split-pane-separator-outline-color: var(--color-border-primary-solid);
+    /* WCAG 2.5.8 minimum target size is 24px; grab area of separator needs to be
+     * widened. */
+    --split-pane-target-inline: var(--spacer-6);
 
-  display: grid;
-  inline-size: 100%;
-  min-block-size: var(--split-pane-block-size);
+    /* Half the overhang on each side, so the grab area stays centred on the
+     * separator however wide the two are. */
+    --split-pane-target-inset: calc(
+      (var(--split-pane-separator-size) - var(--split-pane-target-inline)) / 2
+    );
+    --split-pane-separator-outline-width: var(--border-width-md);
+    --split-pane-separator-outline-color: var(--color-border-primary-solid);
 
-  &[data-orientation="vertical"] {
-    grid-template-columns:
-      var(--split-pane-position, 50%)
-      var(--split-pane-separator-size) 1fr;
-  }
+    display: grid;
+    inline-size: 100%;
+    min-block-size: var(--split-pane-block-size);
 
-  &[data-orientation="horizontal"] {
-    grid-template-rows:
-      var(--split-pane-position, 50%)
-      var(--split-pane-separator-size) 1fr;
-    block-size: var(--split-pane-block-size);
-  }
-
-  > * {
-    overflow: auto;
-  }
-
-  > [role="separator"] {
-    position: relative;
-    background-color: var(--split-pane-separator-color);
-
-    &:hover {
-      background-color: var(--split-pane-separator-color-hover);
+    &[data-orientation="vertical"] {
+      grid-template-columns:
+        var(--split-pane-position, 50%)
+        var(--split-pane-separator-size) 1fr;
     }
 
-    &::before {
-      position: absolute;
-      content: "";
+    &[data-orientation="horizontal"] {
+      grid-template-rows:
+        var(--split-pane-position, 50%)
+        var(--split-pane-separator-size) 1fr;
+      block-size: var(--split-pane-block-size);
     }
 
-    &:focus-visible {
-      outline: var(--split-pane-separator-outline-width) solid
-        var(--split-pane-separator-outline-color);
+    > * {
+      overflow: auto;
     }
-  }
 
-  &[data-orientation="vertical"] > [role="separator"] {
-    cursor: col-resize;
+    > [role="separator"] {
+      position: relative;
+      background-color: var(--split-pane-separator-color);
 
-    &::before {
-      inset-block: 0;
-      inset-inline: calc(
-        (var(--split-pane-separator-size) - var(--split-pane-target-inline)) / 2
-      );
+      &:hover {
+        background-color: var(--split-pane-separator-color-hover);
+      }
+
+      &::before {
+        position: absolute;
+        content: "";
+      }
+
+      &:focus-visible {
+        outline: var(--split-pane-separator-outline-width) solid
+          var(--split-pane-separator-outline-color);
+      }
     }
-  }
 
-  &[data-orientation="horizontal"] > [role="separator"] {
-    cursor: row-resize;
+    &[data-orientation="vertical"] > [role="separator"] {
+      cursor: col-resize;
 
-    &::before {
-      inset-block: calc(
-        (var(--split-pane-separator-size) - var(--split-pane-target-inline)) / 2
-      );
-      inset-inline: 0;
+      &::before {
+        inset-block: 0;
+        inset-inline: var(--split-pane-target-inset);
+      }
+    }
+
+    &[data-orientation="horizontal"] > [role="separator"] {
+      cursor: row-resize;
+
+      &::before {
+        inset-block: var(--split-pane-target-inset);
+        inset-inline: 0;
+      }
     }
   }
 }

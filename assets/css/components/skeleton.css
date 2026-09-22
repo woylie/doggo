@@ -1,73 +1,75 @@
-@keyframes skeleton-pulse {
-  50% {
-    opacity: var(--skeleton-pulse-opacity);
-  }
-}
-
-.skeleton {
-  --skeleton-background: var(--color-border-subtle);
-  --skeleton-border-radius: var(--radius-md);
-  --skeleton-duration: calc(2 * var(--duration-xl));
-  --skeleton-pulse-opacity: 50%;
-  --skeleton-text-line-block-size: var(--size-line-single);
-  --skeleton-text-line-thickness: var(--size-line-half);
-  --skeleton-text-block-lines: 4;
-  --skeleton-image-aspect-ratio: 3 / 2;
-  --skeleton-circle-size: 64px;
-  --skeleton-circle-border-radius: var(--radius-circle);
-  --skeleton-rectangle-inline-size: 200px;
-  --skeleton-rectangle-block-size: 100px;
-  --skeleton-square-size: 100px;
-
-  cursor: progress;
-  background: var(--skeleton-background);
-  border-radius: var(--skeleton-border-radius);
-  animation: skeleton-pulse var(--skeleton-duration) ease-in-out infinite;
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
+@layer doggo {
+  @keyframes skeleton-pulse {
+    50% {
+      opacity: var(--skeleton-pulse-opacity);
+    }
   }
 
-  &[data-type="text-line"],
-  &[data-type="text-block"] {
-    inline-size: 100%;
-    background: repeating-linear-gradient(
-      to bottom,
-      var(--skeleton-background) 0 var(--skeleton-text-line-thickness),
-      transparent var(--skeleton-text-line-thickness)
-        var(--skeleton-text-line-block-size)
-    );
-    border-radius: 0;
-  }
+  .skeleton {
+    --skeleton-background: var(--color-border-subtle);
+    --skeleton-border-radius: var(--radius-md);
+    --skeleton-duration: calc(2 * var(--duration-xl));
+    --skeleton-pulse-opacity: 50%;
+    --skeleton-text-line-block-size: var(--size-line-single);
+    --skeleton-text-line-thickness: var(--size-line-half);
+    --skeleton-text-block-lines: 4;
+    --skeleton-image-aspect-ratio: 3 / 2;
+    --skeleton-circle-size: 64px;
+    --skeleton-circle-border-radius: var(--radius-circle);
+    --skeleton-rectangle-inline-size: 200px;
+    --skeleton-rectangle-block-size: 100px;
+    --skeleton-square-size: 100px;
 
-  &[data-type="text-line"] {
-    block-size: var(--skeleton-text-line-block-size);
-  }
+    cursor: progress;
+    background: var(--skeleton-background);
+    border-radius: var(--skeleton-border-radius);
+    animation: skeleton-pulse var(--skeleton-duration) ease-in-out infinite;
 
-  &[data-type="text-block"] {
-    block-size: calc(
-      var(--skeleton-text-block-lines) * var(--skeleton-text-line-block-size)
-    );
-  }
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
 
-  &[data-type="image"] {
-    inline-size: 100%;
-    aspect-ratio: var(--skeleton-image-aspect-ratio);
-  }
+    &[data-type="text-line"],
+    &[data-type="text-block"] {
+      inline-size: 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        var(--skeleton-background) 0 var(--skeleton-text-line-thickness),
+        transparent var(--skeleton-text-line-thickness)
+          var(--skeleton-text-line-block-size)
+      );
+      border-radius: 0;
+    }
 
-  &[data-type="circle"] {
-    inline-size: var(--skeleton-circle-size);
-    block-size: var(--skeleton-circle-size);
-    border-radius: var(--skeleton-circle-border-radius);
-  }
+    &[data-type="text-line"] {
+      block-size: var(--skeleton-text-line-block-size);
+    }
 
-  &[data-type="rectangle"] {
-    inline-size: var(--skeleton-rectangle-inline-size);
-    block-size: var(--skeleton-rectangle-block-size);
-  }
+    &[data-type="text-block"] {
+      block-size: calc(
+        var(--skeleton-text-block-lines) * var(--skeleton-text-line-block-size)
+      );
+    }
 
-  &[data-type="square"] {
-    inline-size: var(--skeleton-square-size);
-    block-size: var(--skeleton-square-size);
+    &[data-type="image"] {
+      inline-size: 100%;
+      aspect-ratio: var(--skeleton-image-aspect-ratio);
+    }
+
+    &[data-type="circle"] {
+      inline-size: var(--skeleton-circle-size);
+      block-size: var(--skeleton-circle-size);
+      border-radius: var(--skeleton-circle-border-radius);
+    }
+
+    &[data-type="rectangle"] {
+      inline-size: var(--skeleton-rectangle-inline-size);
+      block-size: var(--skeleton-rectangle-block-size);
+    }
+
+    &[data-type="square"] {
+      inline-size: var(--skeleton-square-size);
+      block-size: var(--skeleton-square-size);
+    }
   }
 }

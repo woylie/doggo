@@ -2,26 +2,28 @@
  * A container with a max width and optional centering.
  */
 
-.container {
-  --max-width: var(--size-measure);
+@layer demo {
+  .container {
+    --max-width: var(--size-measure);
 
-  max-width: var(--max-width);
+    max-width: var(--max-width);
 
-  &.is-centered {
-    margin-inline: auto;
+    &.is-centered {
+      margin-inline: auto;
+    }
+
+    &.has-centered-children {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /*
+    To add width variations, override the --max-width value like this:
+
+        &.is-narrow {
+          --max-width: 32ch;
+        }
+    */
   }
-
-  &.has-centered-children {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  /*
-  To add width variations, override the --max-width value like this:
-
-      &.is-narrow {
-        --max-width: 32ch;
-      }
-  */
 }

@@ -1,96 +1,100 @@
-.steps {
-  --steps-gap: var(--spacer-4);
-  --steps-label-gap: var(--spacer-2);
+@layer doggo {
+  .steps {
+    --steps-gap: var(--spacer-4);
+    --steps-label-gap: var(--spacer-2);
 
-  /* WCAG 2.5.8 minimum target size is 24px */
-  --steps-marker-size: var(--spacer-6);
-  --steps-marker-font-size: var(--size-font-xs);
-  --steps-marker-border-width: var(--border-width-sm);
-  --steps-connector-inline-size: var(--spacer-4);
-  --steps-connector-block-size: var(--border-width-sm);
-  --steps-connector-color: var(--color-border-subtle);
-  --steps-color: var(--color-text-muted);
-  --steps-marker-color: var(--color-text-muted);
-  --steps-marker-background: transparent;
-  --steps-marker-border-color: var(--color-border-subtle);
-  --steps-color-current: var(--color-text-default);
+    /* WCAG 2.5.8 minimum target size is 24px */
+    --steps-marker-size: var(--spacer-6);
+    --steps-marker-font-size: var(--size-font-xs);
+    --steps-marker-border-width: var(--border-width-sm);
+    --steps-connector-inline-size: var(--spacer-4);
+    --steps-connector-block-size: var(--border-width-sm);
+    --steps-connector-color: var(--color-border-subtle);
+    --steps-color: var(--color-text-muted);
+    --steps-marker-color: var(--color-text-muted);
+    --steps-marker-background: transparent;
+    --steps-marker-border-color: var(--color-border-subtle);
+    --steps-color-current: var(--color-text-default);
 
-  /* WCAG 1.4.1: colour is not the only thing marking the current step */
-  --steps-font-weight-current: var(--weight-medium);
-  --steps-marker-color-current: var(--color-text-primary-solid);
-  --steps-marker-background-current: var(--color-background-primary-solid);
-  --steps-marker-border-color-current: var(--color-border-primary-solid);
-  --steps-color-completed: var(--color-text-default);
-  --steps-marker-color-completed: var(--color-text-secondary-solid);
-  --steps-marker-background-completed: var(--color-background-secondary-solid);
-  --steps-marker-border-color-completed: var(--color-border-secondary-solid);
+    /* WCAG 1.4.1: colour is not the only thing marking the current step */
+    --steps-font-weight-current: var(--weight-medium);
+    --steps-marker-color-current: var(--color-text-primary-solid);
+    --steps-marker-background-current: var(--color-background-primary-solid);
+    --steps-marker-border-color-current: var(--color-border-primary-solid);
+    --steps-color-completed: var(--color-text-default);
+    --steps-marker-color-completed: var(--color-text-secondary-solid);
+    --steps-marker-background-completed: var(
+      --color-background-secondary-solid
+    );
+    --steps-marker-border-color-completed: var(--color-border-secondary-solid);
 
-  > ol {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--steps-gap);
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    counter-reset: steps;
-  }
-
-  li {
-    display: flex;
-    gap: var(--steps-label-gap);
-    align-items: center;
-    color: var(--steps-color);
-    counter-increment: steps;
-
-    &::before {
-      display: grid;
-      place-items: center;
-      inline-size: var(--steps-marker-size);
-      block-size: var(--steps-marker-size);
-      font-size: var(--steps-marker-font-size);
-      color: var(--steps-marker-color);
-      content: counter(steps);
-      background: var(--steps-marker-background);
-      border: var(--steps-marker-border-width) solid
-        var(--steps-marker-border-color);
-      border-radius: var(--radius-circle);
+    > ol {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--steps-gap);
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      counter-reset: steps;
     }
 
-    &:not(:last-child)::after {
-      inline-size: var(--steps-connector-inline-size);
-      block-size: var(--steps-connector-block-size);
-      content: "";
-      background: var(--steps-connector-color);
+    li {
+      display: flex;
+      gap: var(--steps-label-gap);
+      align-items: center;
+      color: var(--steps-color);
+      counter-increment: steps;
+
+      &::before {
+        display: grid;
+        place-items: center;
+        inline-size: var(--steps-marker-size);
+        block-size: var(--steps-marker-size);
+        font-size: var(--steps-marker-font-size);
+        color: var(--steps-marker-color);
+        content: counter(steps);
+        background: var(--steps-marker-background);
+        border: var(--steps-marker-border-width) solid
+          var(--steps-marker-border-color);
+        border-radius: var(--radius-circle);
+      }
+
+      &:not(:last-child)::after {
+        inline-size: var(--steps-connector-inline-size);
+        block-size: var(--steps-connector-block-size);
+        content: "";
+        background: var(--steps-connector-color);
+      }
     }
-  }
 
-  li[data-state="current"] {
-    font-weight: var(--steps-font-weight-current);
-    color: var(--steps-color-current);
+    li[data-state="current"] {
+      font-weight: var(--steps-font-weight-current);
+      color: var(--steps-color-current);
 
-    &::before {
-      color: var(--steps-marker-color-current);
-      background: var(--steps-marker-background-current);
-      border-color: var(--steps-marker-border-color-current);
+      &::before {
+        color: var(--steps-marker-color-current);
+        background: var(--steps-marker-background-current);
+        border-color: var(--steps-marker-border-color-current);
+      }
     }
-  }
 
-  li[data-state="completed"] {
-    color: var(--steps-color-completed);
+    li[data-state="completed"] {
+      color: var(--steps-color-completed);
 
-    &::before {
-      color: var(--steps-marker-color-completed);
-      content: "✓" / "";
-      background: var(--steps-marker-background-completed);
-      border-color: var(--steps-marker-border-color-completed);
+      &::before {
+        color: var(--steps-marker-color-completed);
+        content: "✓" / "";
+        background: var(--steps-marker-background-completed);
+        border-color: var(--steps-marker-border-color-completed);
+      }
     }
-  }
 
-  a {
-    color: inherit;
+    a {
+      color: inherit;
 
-    &:hover {
-      text-decoration: underline;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }

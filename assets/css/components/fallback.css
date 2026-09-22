@@ -1,5 +1,7 @@
-.fallback {
-  --fallback-color: var(--color-text-muted);
+@layer doggo {
+  .fallback {
+    --fallback-color: var(--color-text-muted);
 
-  color: var(--fallback-color);
+    color: var(--fallback-color);
+  }
 }

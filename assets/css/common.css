@@ -1,8 +1,10 @@
-[data-visually-hidden] {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  overflow: hidden;
-  white-space: nowrap;
-  clip-path: inset(50%);
+@layer doggo {
+  [data-visually-hidden] {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    clip-path: inset(50%);
+  }
 }

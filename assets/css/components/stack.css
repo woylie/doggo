@@ -2,49 +2,51 @@
  * Applies a vertical margin between the child elements.
  */
 
-.stack {
-  --stack-space: var(--size-line-single);
+@layer doggo {
+  .stack {
+    --stack-space: var(--size-line-single);
 
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-  & > * {
-    margin-block: 0;
-  }
-
-  & > * + * {
-    margin-block-start: var(--stack-space);
-  }
-
-  &[data-recursive] {
-    & * {
+    & > * {
       margin-block: 0;
     }
 
-    & * + * {
+    & > * + * {
       margin-block-start: var(--stack-space);
     }
+
+    &[data-recursive] {
+      & * {
+        margin-block: 0;
+      }
+
+      & * + * {
+        margin-block-start: var(--stack-space);
+      }
+    }
+
+    /*
+    You can add modifiers like this:
+
+        &[data-size="small"] {
+          --stack-space: var(--size-line-half);
+        }
+
+    Or you can add exceptions like this:
+
+        & > .some-component + * {
+          --stack-space: var(--size-line-one-and-a-half);
+        }
+
+    This would apply a different margin between `.some-component` and the next
+    element. Alternatively, you could also change the margin between some
+    component and the previous element:
+
+        & > * + .some-component {
+          --stack-space: var(--size-line-one-and-a-half);
+        }
+    */
   }
-
-  /*
-  You can add modifiers like this:
-
-      &[data-size="small"] {
-        --stack-space: var(--size-line-half);
-      }
-
-  Or you can add exceptions like this:
-
-      & > .some-component + * {
-        --stack-space: var(--size-line-one-and-a-half);
-      }
-
-  This would apply a different margin between `.some-component` and the next
-  element. Alternatively, you could also change the margin between some
-  component and the previous element:
-
-      & > * + .some-component {
-        --stack-space: var(--size-line-one-and-a-half);
-      }
-  */
 }
