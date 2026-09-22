@@ -109,9 +109,10 @@ defmodule Doggo.Components.Callout do
   @impl true
   def render(assigns) do
     ~H"""
-    <aside
+    <div
       id={@id}
       class={@class}
+      role={@title && "complementary"}
       aria-labelledby={@title && "#{@id}-title"}
       {@data_attrs}
       {@rest}
@@ -132,7 +133,7 @@ defmodule Doggo.Components.Callout do
           <% end %>
         </div>
       </div>
-    </aside>
+    </div>
     """
   end
 end

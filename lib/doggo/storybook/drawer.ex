@@ -22,25 +22,32 @@ defmodule Doggo.Storybook.Drawer do
     [
       %Variation{
         id: :default,
+        attributes: %{id: "dog-drawer-default"},
         slots: [header(), main("default", opts), footer("default", opts)]
       },
       %Variation{
         id: :without_header,
+        attributes: %{id: "dog-drawer-without-header"},
         slots: [main("without-header", opts), footer("without-header", opts)]
       },
       %Variation{
         id: :without_footer,
+        attributes: %{id: "dog-drawer-without-footer"},
         slots: [header(), main("without-footer", opts)]
       },
       %Variation{
         id: :with_header_and_footer,
+        attributes: %{id: "dog-drawer-header-and-footer"},
         slots: [header(), footer("footer-only", opts)]
       }
     ]
   end
 
   def modifier_variation_base(id, _name, _value, opts) do
-    %{slots: [header(), main(id, opts), footer(id, opts)]}
+    %{
+      attributes: %{id: id},
+      slots: [header(), main(id, opts), footer(id, opts)]
+    }
   end
 
   defp header do

@@ -58,6 +58,8 @@ defmodule Doggo.Components.AppBar do
   @impl true
   def attrs_and_slots(_opts) do
     quote do
+      attr :id, :string, required: true
+
       attr :title, :string,
         default: nil,
         doc: "The page title. Will be set as `h1`."
@@ -110,7 +112,13 @@ defmodule Doggo.Components.AppBar do
   @impl true
   def render(assigns) do
     ~H"""
-    <header class={@class} {@data_attrs} {@rest}>
+    <header
+      id={@id}
+      class={@class}
+      aria-labelledby={@title && "#{@id}-title"}
+      {@data_attrs}
+      {@rest}
+    >
       <div :if={@navigation != []} class={"#{@base_class}-navigation"}>
         <.link
           :for={navigation <- @navigation}
@@ -121,7 +129,7 @@ defmodule Doggo.Components.AppBar do
           {render_slot(navigation)}
         </.link>
       </div>
-      <h1 :if={@title}>{@title}</h1>
+      <h1 :if={@title} id={"#{@id}-title"}>{@title}</h1>
       <div :if={@action != []} class={"#{@base_class}-actions"}>
         <.link
           :for={action <- @action}
