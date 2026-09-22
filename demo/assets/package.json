@@ -15,12 +15,16 @@
     "lint:prettier": "prettier . --check",
     "lint:prettier:fix": "prettier . --write",
     "lint:stylelint": "stylelint css ../../assets/css",
-    "lint:stylelint:fix": "stylelint css ../../assets/css --fix"
+    "lint:stylelint:fix": "stylelint css ../../assets/css --fix",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "browserslist": [
     "baseline widely available"
   ],
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.63.0",
     "autoprefixer": "10.5.4",
     "css-loader": "7.1.5",
     "esbuild": "0.28.2",

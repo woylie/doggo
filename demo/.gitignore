@@ -38,3 +38,7 @@ npm-debug.log
 /assets/node_modules/
 /.elixir_ls
 /.plts
+
+# Playwright
+/assets/test-results/
+/assets/playwright-report/
