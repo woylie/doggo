@@ -172,9 +172,14 @@ defmodule Doggo.Macros do
   def assemble_component_doc(module) do
     usage = module.usage()
     doc = module.doc()
+    config = module.config()
 
     [
       doc,
+      build_maturity_block(
+        Keyword.fetch!(config, :maturity),
+        Keyword.get(config, :maturity_note)
+      ),
       """
       ## Usage
 
@@ -211,15 +216,26 @@ defmodule Doggo.Macros do
     end
   end
 
-  defp build_maturity_info(maturity, nil) do
+  defp build_maturity_info(maturity, note) do
+    maturity_block(
+      "#### Maturity: #{maturity_to_string(maturity)} {: .info}",
+      note
+    )
+  end
+
+  defp build_maturity_block(maturity, note) do
+    maturity_block("**Maturity: #{maturity_to_string(maturity)}**", note)
+  end
+
+  defp maturity_block(heading, nil) do
     """
-    > #### Maturity: #{maturity_to_string(maturity)} {: .info}
+    > #{heading}
     """
   end
 
-  defp build_maturity_info(maturity, note) do
+  defp maturity_block(heading, note) do
     """
-    > #### Maturity: #{maturity_to_string(maturity)} {: .info}
+    > #{heading}
     >
     #{quote_note(note)}
     """

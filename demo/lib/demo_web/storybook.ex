@@ -7,6 +7,7 @@ defmodule DemoWeb.Storybook do
     # assets path are remote path, not local file-system paths
     css_path: "/assets/app.css",
     js_path: "/assets/storybook.js",
+    theme_path: "/assets/storybook_theme.css",
     sandbox_class: "demo-web",
     title: "Doggo Storybook #{Mix.Project.config()[:version]}",
     color_mode: true,

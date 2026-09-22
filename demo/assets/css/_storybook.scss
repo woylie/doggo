@@ -1,0 +1,32 @@
+@use "assets/css/tokens.css";
+
+/* stylelint-disable-next-line selector-class-pattern */
+.psb\:dark {
+  /* stylelint-disable-next-line scss/at-extend-no-missing-placeholder */
+  @extend .theme-dark;
+}
+
+.psb-welcome-page {
+  max-inline-size: var(--size-measure);
+}
+
+.psb-doc blockquote {
+  padding: var(--spacer-4);
+  margin: var(--spacer-4) 0;
+  background: var(--color-background-surface);
+  border-inline-start: var(--border-width-md) solid var(--color-border-control);
+  border-radius: var(--radius-sm);
+
+  > :first-child {
+    margin-block-start: 0;
+  }
+
+  > :last-child,
+  > :last-child > :last-child {
+    margin-block-end: 0;
+  }
+
+  li {
+    margin-inline-start: var(--spacer-4);
+  }
+}
