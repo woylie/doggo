@@ -74,8 +74,9 @@ defmodule Doggo.Components.Fallback do
       attr :value, :any,
         required: true,
         doc: """
-        The value to display. If the value is `nil`, `""`, `[]` or `%{}`, the
-        placeholder is rendered instead.
+        The value to display. If the value is `nil`, `""`, `[]`, `%{}` or a
+        string of only whitespace, before or after formatting, the placeholder
+        is rendered instead.
         """
 
       attr :formatter, :any,
@@ -111,11 +112,9 @@ defmodule Doggo.Components.Fallback do
   @impl true
   def render(%{value: value, formatter: formatter} = assigns) do
     value =
-      cond do
-        value in [nil, "", [], %{}] -> nil
-        is_nil(formatter) -> value
-        true -> formatter.(value)
-      end
+      if empty?(value) or is_nil(formatter), do: value, else: formatter.(value)
+
+    value = if empty?(value), do: nil, else: value
 
     assigns = assign(assigns, :value, value)
 
@@ -131,4 +130,7 @@ defmodule Doggo.Components.Fallback do
     >{@placeholder}</span>
     """
   end
+
+  defp empty?(value) when is_binary(value), do: String.trim(value) == ""
+  defp empty?(value), do: value in [nil, [], %{}]
 end

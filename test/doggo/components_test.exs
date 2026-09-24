@@ -2732,6 +2732,28 @@ defmodule Doggo.ComponentsTest do
              ]
     end
 
+    test "renders placeholder for whitespace-only string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.fallback value="  " />
+        """)
+
+      assert [{"span", _, ["-"]}] = html
+    end
+
+    test "renders placeholder if formatter returns empty string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.fallback value={[1]} formatter={fn _ -> " " end} />
+        """)
+
+      assert [{"span", _, ["-"]}] = html
+    end
+
     test "with placeholder" do
       assigns = %{}
 
