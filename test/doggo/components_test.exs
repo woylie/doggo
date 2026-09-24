@@ -2732,6 +2732,28 @@ defmodule Doggo.ComponentsTest do
              ]
     end
 
+    test "renders placeholder for whitespace-only string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.fallback value="  " />
+        """)
+
+      assert [{"span", _, ["-"]}] = html
+    end
+
+    test "renders placeholder if formatter returns empty string" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.fallback value={[1]} formatter={fn _ -> " " end} />
+        """)
+
+      assert [{"span", _, ["-"]}] = html
+    end
+
     test "with placeholder" do
       assigns = %{}
 
@@ -3665,6 +3687,20 @@ defmodule Doggo.ComponentsTest do
 
       assert attribute(html, ":root > .page-header-navigation > a", "href") ==
                "/pets"
+    end
+
+    test "renders navigation entry without link if it has no target" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.page_header title="Pets">
+          <:navigation>Back to pets</:navigation>
+        </TestComponents.page_header>
+        """)
+
+      assert Floki.find(html, ".page-header-navigation a") == []
+      assert text(html, ":root > .page-header-navigation") == "Back to pets"
     end
 
     test "with action" do

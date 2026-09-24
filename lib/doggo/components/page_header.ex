@@ -99,6 +99,8 @@ defmodule Doggo.Components.PageHeader do
         attr :label, :string,
           doc: """
           Optional aria label for the link. Use if the link has no text content.
+          Ignored for an entry without `href`, `navigate`, `patch` or
+          `on_click`, which renders its content without a link.
           """
 
         attr :href, :string
@@ -124,16 +126,10 @@ defmodule Doggo.Components.PageHeader do
     ~H"""
     <header class={@class} {@data_attrs} {@rest}>
       <div :if={@navigation != []} class={"#{@base_class}-navigation"}>
-        <.link
+        <.navigation_entry
           :for={navigation <- @navigation}
-          href={navigation[:href]}
-          navigate={navigation[:navigate]}
-          patch={navigation[:patch]}
-          phx-click={navigation[:on_click]}
-          aria-label={navigation[:label]}
-        >
-          {render_slot(navigation)}
-        </.link>
+          navigation={navigation}
+        />
       </div>
       <hgroup>
         <h1>{@title}</h1>
@@ -146,5 +142,23 @@ defmodule Doggo.Components.PageHeader do
       </div>
     </header>
     """
+  end
+
+  defp navigation_entry(%{navigation: navigation} = assigns) do
+    if Enum.any?([:href, :navigate, :patch, :on_click], &navigation[&1]) do
+      ~H"""
+      <.link
+        href={@navigation[:href]}
+        navigate={@navigation[:navigate]}
+        patch={@navigation[:patch]}
+        phx-click={@navigation[:on_click]}
+        aria-label={@navigation[:label]}
+      >
+        {render_slot(@navigation)}
+      </.link>
+      """
+    else
+      ~H"{render_slot(@navigation)}"
+    end
   end
 end

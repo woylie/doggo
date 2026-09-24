@@ -177,4 +177,16 @@ defmodule Doggo.Components.Accordion do
   def section_expanded?(_, :none), do: false
   def section_expanded?(1, :first), do: true
   def section_expanded?(_, :first), do: false
+
+  def section_expanded?(_, expanded) do
+    raise ArgumentError, """
+    invalid expanded value for .accordion
+
+    expanded must be one of :all, :none or :first.
+
+    Got:
+
+        #{inspect(expanded)}
+    """
+  end
 end
