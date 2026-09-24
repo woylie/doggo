@@ -3667,6 +3667,20 @@ defmodule Doggo.ComponentsTest do
                "/pets"
     end
 
+    test "renders navigation entry without link if it has no target" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.page_header title="Pets">
+          <:navigation>Back to pets</:navigation>
+        </TestComponents.page_header>
+        """)
+
+      assert Floki.find(html, ".page-header-navigation a") == []
+      assert text(html, ":root > .page-header-navigation") == "Back to pets"
+    end
+
     test "with action" do
       assigns = %{}
 

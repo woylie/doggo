@@ -20,6 +20,8 @@ and this project adheres to
 - Raise at compile time when a build macro is called in a module that does not
   `use Doggo.Components`.
 - Raise an `ArgumentError` for an invalid `expanded` value in `accordion`.
+- Render a `page_header` navigation entry without `href`, `navigate`, `patch`
+  or `on_click` as its content instead of inside an empty link.
 
 ## [0.16.0] - 2026-09-22
 
