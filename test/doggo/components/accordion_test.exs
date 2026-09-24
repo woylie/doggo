@@ -121,5 +121,19 @@ defmodule Doggo.Components.AccordionTest do
 
       assert attribute(html, ":root", "data-test") == "hello"
     end
+
+    test "raises for invalid expanded value" do
+      assigns = %{expanded: :some}
+
+      assert_raise ArgumentError,
+                   ~r/invalid expanded value for \.accordion/,
+                   fn ->
+                     parse_heex(~H"""
+                     <TestComponents.accordion id="dogs" expanded={@expanded}>
+                       <:section title="Golden Retriever">abc</:section>
+                     </TestComponents.accordion>
+                     """)
+                   end
+    end
   end
 end
