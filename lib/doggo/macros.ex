@@ -56,6 +56,10 @@ defmodule Doggo.Macros do
         {opts, extra} =
           Keyword.split(opts, [:name, :base_class, :data_attrs, :modifiers])
 
+        attrs_and_slots = module.attrs_and_slots(extra)
+
+        Doggo.Macros.validate_build!(unquote(name), opts, attrs_and_slots)
+
         component_info =
           opts
           |> Keyword.put(:component, unquote(name))
@@ -65,10 +69,14 @@ defmodule Doggo.Macros do
 
         name = Keyword.fetch!(opts, :name)
         modifiers = Keyword.fetch!(opts, :modifiers)
-        attrs_and_slots = module.attrs_and_slots(extra)
         docstring = Doggo.Macros.assemble_component_doc(module)
 
         quote do
+          Doggo.Macros.validate_module!(
+            unquote(component_info[:component]),
+            __ENV__
+          )
+
           @dog_components unquote(component_info)
 
           @doc unquote(docstring)
@@ -104,6 +112,114 @@ defmodule Doggo.Macros do
         end
       end
     end
+  end
+
+  @global_attributes ~w(
+    accesskey anchor autocapitalize autocorrect autofocus class contenteditable
+    dir draggable enterkeyhint exportparts hidden id inert inputmode is itemid
+    itemprop itemref itemscope itemtype lang nonce onabort onautocomplete
+    onautocompleteerror onblur oncancel oncanplay oncanplaythrough onchange
+    onclick onclose oncontextmenu oncuechange ondblclick ondrag ondragend
+    ondragenter ondragleave ondragover ondragstart ondrop ondurationchange
+    onemptied onended onerror onfocus oninput oninvalid onkeydown onkeypress
+    onkeyup onload onloadeddata onloadedmetadata onloadstart onmousedown
+    onmouseenter onmouseleave onmousemove onmouseout onmouseover onmouseup
+    onmousewheel onpause onplay onplaying onprogress onratechange onreset
+    onresize onscroll onseeked onseeking onselect onshow onsort onstalled
+    onsubmit onsuspend ontimeupdate ontoggle onvolumechange onwaiting part
+    popover role slot spellcheck style tabindex title translate
+    virtualkeyboardpolicy writingsuggestions xml:base xml:lang
+  )
+
+  @global_prefixes ~w(aria- data- phx-)
+
+  @phoenix_component_imports for {name, 1} <-
+                                   Phoenix.Component.__info__(:functions) ++
+                                     Phoenix.Component.__info__(:macros),
+                                 do: name
+
+  @doc false
+  def validate_build!(component, opts, attrs_and_slots) do
+    builder = :"build_#{component}"
+    name = Keyword.fetch!(opts, :name)
+    modifiers = Keyword.fetch!(opts, :modifiers)
+
+    if name in @phoenix_component_imports do
+      raise ArgumentError, """
+      #{builder}/1 cannot generate a function called #{name}/1
+
+      Phoenix.Component imports a function with the same name and arity. Please
+      choose a different name:
+
+          #{builder}(name: :my_#{name})
+      """
+    end
+
+    declared = [:class | declared_names(attrs_and_slots)]
+
+    for {modifier, _} <- modifiers do
+      validate_modifier!(builder, modifier, declared)
+    end
+
+    :ok
+  end
+
+  @doc false
+  def validate_module!(component, env) do
+    if not Module.has_attribute?(env.module, :dog_components) do
+      raise ArgumentError, """
+      build_#{component}/1 must be called in a module that uses Doggo.Components
+
+          defmodule MyAppWeb.CoreComponents do
+            use Doggo.Components
+            use Phoenix.Component
+
+            build_#{component}()
+          end
+      """
+    end
+
+    :ok
+  end
+
+  defp validate_modifier!(builder, modifier, declared) do
+    cond do
+      global_attribute?(to_string(modifier)) ->
+        raise ArgumentError, """
+        #{builder}/1 cannot use #{inspect(modifier)} as a modifier name
+
+        #{modifier} is a global HTML attribute and cannot be used as a modifier.
+        Please choose a different name.
+        """
+
+      modifier in declared ->
+        raise ArgumentError, """
+        #{builder}/1 cannot use #{inspect(modifier)} as a modifier name
+
+        The component already declares an attribute or slot with that name.
+        Please choose another name for the modifier.
+
+            modifier: #{inspect(modifier)}
+        """
+
+      true ->
+        :ok
+    end
+  end
+
+  defp global_attribute?(name) do
+    name in @global_attributes or String.starts_with?(name, @global_prefixes)
+  end
+
+  defp declared_names(attrs_and_slots) do
+    {_, names} =
+      Macro.prewalk(attrs_and_slots, [], fn
+        {:attr, _, [name | _]}, acc when is_atom(name) -> {nil, [name | acc]}
+        {:slot, _, [name | _]}, acc when is_atom(name) -> {nil, [name | acc]}
+        node, acc -> {node, acc}
+      end)
+
+    names
   end
 
   defp component_module(name) when is_atom(name) do

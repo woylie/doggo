@@ -10,6 +10,16 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Fixed
+
+- Raise at compile time when a modifier is named after a global HTML attribute.
+- Raise at compile time when a modifier has the name of an attribute or slot of
+  the component.
+- Raise at compile time when `name` is a function that `Phoenix.Component`
+  imports.
+- Raise at compile time when a build macro is called in a module that does not
+  `use Doggo.Components`.
+
 ## [0.16.0] - 2026-09-22
 
 ### Added
