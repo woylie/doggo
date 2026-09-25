@@ -139,6 +139,21 @@ defmodule Doggo.Storybook.Field do
             }
           },
           %Variation{
+            id: :file,
+            attributes: %{
+              type: "file",
+              label: "File"
+            }
+          },
+          %Variation{
+            id: :file_multiple,
+            attributes: %{
+              type: "file",
+              label: "Files",
+              multiple: true
+            }
+          },
+          %Variation{
             id: :select,
             attributes: %{
               label: "Select",
