@@ -43,76 +43,127 @@ defmodule Doggo.Macros do
       @doc since: unquote(since)
 
       defmacro unquote(builder_name)(opts \\ []) do
-        opts =
-          if Keyword.has_key?(opts, :icon_module) do
-            Keyword.update!(opts, :icon_module, &Macro.expand(&1, __CALLER__))
-          else
-            opts
-          end
-
+        component = unquote(name)
         module = unquote(module)
-        opts = Keyword.validate!(opts, unquote(defaults))
-
-        {opts, extra} =
-          Keyword.split(opts, [:name, :base_class, :data_attrs, :modifiers])
-
-        attrs_and_slots = module.attrs_and_slots(extra)
-
-        Doggo.Macros.validate_build!(unquote(name), opts, attrs_and_slots)
-
-        component_info =
-          opts
-          |> Keyword.put(:component, unquote(name))
-          |> Keyword.put(:data_attrs, unquote(data_attrs))
-          |> Keyword.put(:extra, extra)
-          |> Keyword.put(:type, unquote(type))
-
-        name = Keyword.fetch!(opts, :name)
-        modifiers = Keyword.fetch!(opts, :modifiers)
-        docstring = Doggo.Macros.assemble_component_doc(module)
+        defaults = unquote(Macro.escape(defaults))
+        data_attrs = unquote(data_attrs)
+        type = unquote(type)
 
         quote do
-          Doggo.Macros.validate_module!(
-            unquote(component_info[:component]),
+          Doggo.Macros.validate_module!(unquote(component), __ENV__)
+
+          Code.eval_quoted(
+            Doggo.Macros.build(
+              unquote(component),
+              unquote(module),
+              unquote(opts),
+              unquote(Macro.escape(defaults)),
+              unquote(data_attrs),
+              unquote(type)
+            ),
+            [],
             __ENV__
           )
-
-          @dog_components unquote(component_info)
-
-          @doc unquote(docstring)
-          @doc type: unquote(component_info[:type])
-
-          for {name, modifier_opts} <- unquote(modifiers) do
-            {type, modifier_opts} = Keyword.pop(modifier_opts, :type, :string)
-            attr name, type, modifier_opts
-          end
-
-          attr :class, :any,
-            default: [],
-            doc: """
-            Any additional classes to be added.
-
-            Variations of the component should be expressed via modifier
-            attributes, and it is preferable to use styles on the parent
-            container to arrange components on the page, but if you have to,
-            you can use this attribute to pass additional utility classes to
-            the component.
-
-            The value can be a string or a list of strings.
-            """
-
-          unquote(attrs_and_slots)
-
-          def unquote(name)(var!(assigns)) do
-            unquote(label_check(module, name))
-            unquote(prepare_class_and_data_attrs(opts))
-            unquote(module.init_block(opts, extra))
-            unquote(module).render(var!(assigns))
-          end
         end
       end
     end
   end
+
+  @doc false
+  def build(component, module, opts, defaults, data_attrs, type) do
+    validate_functions!(:"build_#{component}", opts)
+    opts = Keyword.validate!(opts, defaults)
+
+    {opts, extra} =
+      Keyword.split(opts, [:name, :base_class, :data_attrs, :modifiers])
+
+    attrs_and_slots = module.attrs_and_slots(extra)
+
+    validate_build!(component, opts, attrs_and_slots)
+
+    component_info =
+      opts
+      |> Keyword.put(:component, component)
+      |> Keyword.put(:data_attrs, data_attrs)
+      |> Keyword.put(:extra, extra)
+      |> Keyword.put(:type, type)
+
+    name = Keyword.fetch!(opts, :name)
+    modifiers = Keyword.fetch!(opts, :modifiers)
+    docstring = assemble_component_doc(module)
+
+    quote do
+      @dog_components unquote(Macro.escape(component_info))
+
+      @doc unquote(docstring)
+      @doc type: unquote(type)
+
+      for {name, modifier_opts} <- unquote(Macro.escape(modifiers)) do
+        {type, modifier_opts} = Keyword.pop(modifier_opts, :type, :string)
+        attr name, type, modifier_opts
+      end
+
+      attr :class, :any,
+        default: [],
+        doc: """
+        Any additional classes to be added.
+
+        Variations of the component should be expressed via modifier
+        attributes, and it is preferable to use styles on the parent
+        container to arrange components on the page, but if you have to,
+        you can use this attribute to pass additional utility classes to
+        the component.
+
+        The value can be a string or a list of strings.
+        """
+
+      unquote(attrs_and_slots)
+
+      def unquote(name)(var!(assigns)) do
+        unquote(label_check(module, name))
+        unquote(prepare_class_and_data_attrs(opts))
+        unquote(module.init_block(opts, extra))
+        unquote(module).render(var!(assigns))
+      end
+    end
+  end
+
+  defp validate_functions!(builder, opts) when is_list(opts) do
+    for {key, value} <- opts, fun = anonymous_function(value) do
+      raise ArgumentError, """
+      invalid #{key} option for #{builder}/1
+
+      Anonymous functions cannot be passed as a build option. Use a remote
+      capture of a named function instead, for example &MyModule.render_icon/1.
+
+      Got:
+
+          #{inspect(fun)}
+      """
+    end
+
+    :ok
+  end
+
+  defp validate_functions!(_builder, _opts), do: :ok
+
+  defp anonymous_function(fun) when is_function(fun) do
+    if Function.info(fun, :type) == {:type, :local}, do: fun
+  end
+
+  defp anonymous_function(value) when is_list(value) do
+    Enum.find_value(value, &anonymous_function/1)
+  end
+
+  defp anonymous_function(%{} = value) do
+    value |> Map.to_list() |> anonymous_function()
+  end
+
+  defp anonymous_function(value) when is_tuple(value) do
+    value |> Tuple.to_list() |> anonymous_function()
+  end
+
+  defp anonymous_function(_), do: nil
 
   @global_attributes ~w(
     accesskey anchor autocapitalize autocorrect autofocus class contenteditable

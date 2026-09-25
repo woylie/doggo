@@ -455,8 +455,8 @@ defmodule Doggo.Components.Field do
 
   defp extra_type_names(nil), do: []
 
-  defp extra_type_names({:%{}, _, pairs}) do
-    Enum.map(pairs, fn
+  defp extra_type_names(%{} = types) do
+    Enum.map(types, fn
       {type, _fun} when is_binary(type) ->
         type
 
@@ -466,7 +466,7 @@ defmodule Doggo.Components.Field do
 
         A type name has to be a string, got:
 
-            #{Macro.to_string(type)}
+            #{inspect(type)}
         """
     end)
   end
@@ -477,7 +477,7 @@ defmodule Doggo.Components.Field do
 
     The option has to be a map, got:
 
-        #{Macro.to_string(other)}
+        #{inspect(other)}
     """
   end
 
@@ -487,7 +487,7 @@ defmodule Doggo.Components.Field do
     optional_text = Keyword.fetch!(extra, :optional_text)
     gettext_module = Keyword.get(extra, :gettext_module)
 
-    extra_types = Keyword.get(extra, :extra_types) || Macro.escape(%{})
+    extra_types = Macro.escape(Keyword.get(extra, :extra_types) || %{})
 
     quote do
       var!(assigns) =

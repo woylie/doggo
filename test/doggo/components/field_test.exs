@@ -228,6 +228,32 @@ defmodule Doggo.Components.FieldTest do
     end
   end
 
+  describe "build_field/1 with :extra_types from a module attribute" do
+    test "registers extra types" do
+      defmodule FromAnAttribute do
+        use Doggo.Components
+        use Phoenix.Component
+
+        @types %{"ranked" => &FieldTest.ranked_input/1}
+        build_field(name: :attribute_field, extra_types: @types)
+      end
+
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <FromAnAttribute.attribute_field
+          name="rank"
+          value="3"
+          label="Rank"
+          type="ranked"
+        />
+        """)
+
+      assert attribute(html, ".ranked", "data-type") == "ranked"
+    end
+  end
+
   describe "build_field/1 with an invalid :extra_types option" do
     test "raises if the option is not a map" do
       error =
@@ -236,8 +262,7 @@ defmodule Doggo.Components.FieldTest do
             use Doggo.Components
             use Phoenix.Component
 
-            types = %{"ranked" => &FieldTest.ranked_input/1}
-            build_field(name: :bad_field, extra_types: types)
+            build_field(name: :bad_field, extra_types: ["ranked"])
           end
         end
 
