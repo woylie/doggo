@@ -36,7 +36,7 @@
       align-items: center;
       justify-content: space-between;
 
-      > h2 {
+      > :is(h1, h2, h3, h4, h5, h6) {
         margin: 0;
         font-size: var(--box-title-font-size);
         font-weight: var(--box-title-font-weight);

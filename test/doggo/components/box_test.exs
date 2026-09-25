@@ -46,6 +46,19 @@ defmodule Doggo.Components.BoxTest do
       assert text(html, "section:root > header > h2") == "Profile"
     end
 
+    test "renders title in heading with heading level" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.box heading="h3">
+          <:title>Profile</:title>
+        </TestComponents.box>
+        """)
+
+      assert text(html, "section:root > header > h3") == "Profile"
+    end
+
     test "renders banner" do
       assigns = %{}
 
