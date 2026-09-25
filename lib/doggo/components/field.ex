@@ -420,7 +420,7 @@ defmodule Doggo.Components.Field do
         default: false,
         doc: """
         Sets the `multiple` attribute on a select element to allow selecting
-        multiple options.
+        multiple options, or on a file input to allow selecting multiple files.
         """
 
       attr :rest, :global,
@@ -877,7 +877,8 @@ defmodule Doggo.Components.Field do
           id={@id}
           list={@options && "#{@id}_datalist"}
           type={@type}
-          value={Doggo.normalize_value(@type, @value)}
+          value={@type != "file" && Doggo.normalize_value(@type, @value)}
+          multiple={@type == "file" && @multiple}
           aria-describedby={@describedby}
           aria-errormessage={@errormessage}
           aria-invalid={@errors != [] && "true"}

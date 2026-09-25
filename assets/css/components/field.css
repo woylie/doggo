@@ -17,6 +17,14 @@
     --field-addon-inline-size: calc(
       2 * var(--field-input-padding-inline) + var(--field-addon-icon-size)
     );
+    --field-file-button-gap: var(--spacer-3);
+    --field-file-button-padding-block: var(--spacer-1);
+    --field-file-button-padding-inline: var(--spacer-3);
+    --field-file-button-inset: calc(
+      var(--field-file-button-padding-block) + var(--field-input-border-width)
+    );
+    --field-file-button-background: var(--color-background-surface);
+    --field-file-button-border-color: var(--color-border-control);
     --field-option-gap: var(--spacer-2);
     --field-switch-track-inline-size: 2.75rem;
     --field-switch-track-block-size: 1.5rem;
@@ -128,6 +136,26 @@
 
       &[data-addon~="right"] > input {
         padding-inline-end: var(--field-addon-inline-size);
+      }
+    }
+
+    input[type="file"] {
+      padding-block: calc(
+        var(--field-input-padding-block) - var(--field-file-button-inset)
+      );
+      cursor: pointer;
+
+      &::file-selector-button {
+        padding: var(--field-file-button-padding-block)
+          var(--field-file-button-padding-inline);
+        margin-inline-end: var(--field-file-button-gap);
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+        background-color: var(--field-file-button-background);
+        border: var(--field-input-border-width) solid
+          var(--field-file-button-border-color);
+        border-radius: var(--field-input-border-radius);
       }
     }
 
