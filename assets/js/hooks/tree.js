@@ -49,7 +49,7 @@ export function initTree(tree, writer = domWriter) {
     const active = getItems()[idx];
 
     for (const item of tree.querySelectorAll('[role="treeitem"]')) {
-      item.setAttribute("tabindex", item === active ? "0" : "-1");
+      writer.setAttribute(item, "tabindex", item === active ? "0" : "-1");
     }
   };
 

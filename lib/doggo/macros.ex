@@ -186,20 +186,27 @@ defmodule Doggo.Macros do
     cond do
       global_attribute?(to_string(modifier)) ->
         raise ArgumentError, """
-        #{builder}/1 cannot use #{inspect(modifier)} as a modifier name
+        invalid modifier name for #{builder}/1
 
-        #{modifier} is a global HTML attribute and cannot be used as a modifier.
-        Please choose a different name.
+        Global HTML attributes cannot be used as modifiers. Please choose a
+        different name.
+
+        Got:
+
+            #{inspect(modifier)}
         """
 
       modifier in declared ->
         raise ArgumentError, """
-        #{builder}/1 cannot use #{inspect(modifier)} as a modifier name
+        invalid modifier name for #{builder}/1
 
-        The component already declares an attribute or slot with that name.
-        Please choose another name for the modifier.
+        The component already declares an attribute or slot with that name, or
+        passes an HTML attribute with that name to its element. Please choose
+        another name.
 
-            modifier: #{inspect(modifier)}
+        Got:
+
+            #{inspect(modifier)}
         """
 
       true ->
@@ -214,13 +221,33 @@ defmodule Doggo.Macros do
   defp declared_names(attrs_and_slots) do
     {_, names} =
       Macro.prewalk(attrs_and_slots, [], fn
-        {:attr, _, [name | _]}, acc when is_atom(name) -> {nil, [name | acc]}
-        {:slot, _, [name | _]}, acc when is_atom(name) -> {nil, [name | acc]}
-        node, acc -> {node, acc}
+        {:attr, _, [name | args]}, acc when is_atom(name) ->
+          {nil, included_names(args) ++ [name | acc]}
+
+        {:slot, _, [name | _]}, acc when is_atom(name) ->
+          {nil, [name | acc]}
+
+        node, acc ->
+          {node, acc}
       end)
 
     names
   end
+
+  defp included_names([_type, opts]) when is_list(opts) do
+    case Keyword.get(opts, :include, []) do
+      {:sigil_w, _, [{:<<>>, _, [words]}, _]} ->
+        words |> String.split() |> Enum.map(&String.to_atom/1)
+
+      names when is_list(names) ->
+        for name <- names, is_binary(name), do: String.to_atom(name)
+
+      _ ->
+        []
+    end
+  end
+
+  defp included_names(_args), do: []
 
   defp component_module(name) when is_atom(name) do
     module_name = name |> Atom.to_string() |> Macro.camelize()

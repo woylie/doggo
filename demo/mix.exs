@@ -23,7 +23,8 @@ defmodule Demo.MixProject do
         list_unused_filters: true,
         plt_add_apps: [:ex_unit, :mix],
         plt_file: {:no_warn, ".plts/demo.plt"}
-      ]
+      ],
+      hex: hex()
     ]
   end
 
@@ -35,6 +36,10 @@ defmodule Demo.MixProject do
       mod: {Demo.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
+  end
+
+  def hex do
+    [ignore_advisories: ["EEF-CVE-2026-92106"]]
   end
 
   # Specifies which paths to compile per environment.

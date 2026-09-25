@@ -33,7 +33,8 @@ defmodule Doggo.MixProject do
       description: description(),
       package: package(),
       docs: docs(),
-      compilers: [:phoenix_live_view] ++ Mix.compilers()
+      compilers: [:phoenix_live_view] ++ Mix.compilers(),
+      hex: hex()
     ]
   end
 
@@ -50,6 +51,10 @@ defmodule Doggo.MixProject do
         "coveralls.json": :test
       ]
     ]
+  end
+
+  def hex do
+    [ignore_advisories: ["EEF-CVE-2026-92106"]]
   end
 
   # Run "mix help compile.app" to learn about applications.
