@@ -13,6 +13,7 @@ defmodule Doggo.Components.ImageTest do
     use Phoenix.Component
 
     build_image()
+    build_image(name: :wide_image, ratios: ["21:9"])
   end
 
   describe "image/1" do
@@ -69,6 +70,42 @@ defmodule Doggo.Components.ImageTest do
       assert attribute(html, ":root", "class") == "image"
       assert attribute(html, ":root .image-frame", "data-numerator") == "3"
       assert attribute(html, ":root .image-frame", "data-denominator") == "2"
+    end
+
+    test "renders no ratio by default" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.image src="image.png" alt="some text" />
+        """)
+
+      assert attribute(html, ":root .image-frame", "data-numerator") == nil
+      assert attribute(html, ":root .image-frame", "data-denominator") == nil
+    end
+
+    test "renders no ratio for value outside ratios" do
+      assigns = %{ratio: "16:9"}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.wide_image src="image.png" alt="some text" ratio={@ratio} />
+        """)
+
+      assert attribute(html, ":root .image-frame", "data-numerator") == nil
+      assert attribute(html, ":root .image-frame", "data-denominator") == nil
+    end
+
+    test "renders ratio with ratios option" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.wide_image src="image.png" alt="some text" ratio="21:9" />
+        """)
+
+      assert attribute(html, ":root .image-frame", "data-numerator") == "21"
+      assert attribute(html, ":root .image-frame", "data-denominator") == "9"
     end
 
     test "renders caption" do

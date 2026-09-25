@@ -13,6 +13,14 @@ defmodule Doggo.Components.Frame do
   end
 
   @impl true
+  def builder_doc do
+    """
+    - `:ratios` - The aspect ratios the `ratio` attribute accepts, as strings in
+      the format `n:d`. The first one is the default.
+    """
+  end
+
+  @impl true
   def usage do
     """
     Rendering an image with the aspect ratio 4:3.
@@ -26,7 +34,7 @@ defmodule Doggo.Components.Frame do
     Rendering an image as a circle.
 
     ```heex
-    <.frame circle>
+    <.frame shape="circle">
       <img src="image.png" alt="An example image illustrating the usage." />
     </.frame>
     ```
@@ -45,21 +53,10 @@ defmodule Doggo.Components.Frame do
       since: "0.6.0",
       maturity: :developing,
       modifiers: [
-        ratio: [
-          values: [
-            "1:1",
-            "3:2",
-            "2:3",
-            "4:3",
-            "3:4",
-            "5:4",
-            "4:5",
-            "16:9",
-            "9:16"
-          ],
-          default: "1:1"
-        ],
         shape: [values: [nil, "circle"], default: nil]
+      ],
+      extra: [
+        ratios: Doggo.default_ratios()
       ]
     ]
   end
@@ -70,42 +67,38 @@ defmodule Doggo.Components.Frame do
   end
 
   @impl true
-  def attrs_and_slots(_opts) do
+  def attrs_and_slots(opts) do
+    ratios = Doggo.validate_ratios!(:build_frame, Keyword.fetch!(opts, :ratios))
+
     quote do
+      attr :ratio, :string,
+        values: unquote(ratios),
+        default: unquote(hd(ratios)),
+        doc: """
+        The aspect ratio, rendered as `data-numerator` and `data-denominator`.
+        """
+
       attr :rest, :global, doc: "Any additional HTML attributes."
       slot :inner_block
     end
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
+  def init_block(_opts, extra) do
+    ratio_parts =
+      extra |> Keyword.fetch!(:ratios) |> Doggo.ratio_parts() |> Macro.escape()
+
+    quote do
+      {numerator, denominator} =
+        Map.get(unquote(ratio_parts), var!(assigns).ratio, {nil, nil})
+
+      var!(assigns) =
+        assign(var!(assigns), numerator: numerator, denominator: denominator)
+    end
   end
 
   @impl true
-  def render(%{data_attrs: %{data: data}} = assigns) do
-    {ratio, data} = Keyword.pop(data, :ratio)
-
-    {numerator, denominator} =
-      case ratio && String.split(ratio, ":") do
-        [n, d] ->
-          {n, d}
-
-        v ->
-          raise """
-          invalid ratio
-
-          Expected a ratio in the format n:d, e.g. "16:9", got: #{inspect(v)}
-          """
-      end
-
-    assigns =
-      assign(assigns,
-        data_attrs: %{data: data},
-        numerator: numerator,
-        denominator: denominator
-      )
-
+  def render(assigns) do
     ~H"""
     <div
       class={@class}

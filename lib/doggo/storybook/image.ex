@@ -1,6 +1,7 @@
 defmodule Doggo.Storybook.Image do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
+  alias PhoenixStorybook.Stories.VariationGroup
 
   def layout, do: :one_column
 
@@ -13,6 +14,10 @@ defmodule Doggo.Storybook.Image do
   end
 
   def modifier_variation_group_template(_name, _opts) do
+    gallery_template()
+  end
+
+  defp gallery_template do
     """
     <style>
       .psb-gallery {
@@ -44,7 +49,7 @@ defmodule Doggo.Storybook.Image do
     """
   end
 
-  def variations(_opts) do
+  def variations(opts) do
     [
       %Variation{
         id: :default,
@@ -70,6 +75,24 @@ defmodule Doggo.Storybook.Image do
           <:caption>Canine couture, spring collection: the season's boldest silhouettes, worn on four legs.</:caption>
           """
         ]
+      },
+      %VariationGroup{
+        id: :ratio,
+        template: gallery_template(),
+        variations:
+          Enum.map([nil | opts[:extra][:ratios]], fn ratio ->
+            %Variation{
+              id:
+                String.to_atom(
+                  "ratio_#{String.replace(ratio || "none", ":", "_")}"
+                ),
+              attributes:
+                Map.merge(attributes(), %{
+                  ratio: ratio,
+                  "data-label": ratio || "none"
+                })
+            }
+          end)
       }
     ]
   end
