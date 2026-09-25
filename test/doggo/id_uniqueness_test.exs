@@ -40,7 +40,7 @@ defmodule Doggo.IdUniquenessTest do
     build_vertical_nav_section()
   end
 
-  test "two of each component in one document have no colliding ids" do
+  test "renders no colliding ids for two of each component" do
     assigns = %{}
 
     parse_heex(~H"""

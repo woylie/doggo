@@ -16,7 +16,7 @@ defmodule Doggo.Components.AlertTest do
   end
 
   describe "alert/1" do
-    test "default" do
+    test "renders alert" do
       assigns = %{}
 
       html =
@@ -38,7 +38,7 @@ defmodule Doggo.Components.AlertTest do
       assert Floki.find(html, "button") == []
     end
 
-    test "with level" do
+    test "renders level as data attribute" do
       assigns = %{}
 
       html =
@@ -52,7 +52,7 @@ defmodule Doggo.Components.AlertTest do
       assert attribute(html, ":root", "data-level") == "warning"
     end
 
-    test "with title" do
+    test "labels alert with title" do
       assigns = %{}
 
       html =
@@ -69,7 +69,7 @@ defmodule Doggo.Components.AlertTest do
       assert text(div) == "Title"
     end
 
-    test "with icon" do
+    test "renders icon" do
       assigns = %{}
 
       html =
@@ -83,7 +83,7 @@ defmodule Doggo.Components.AlertTest do
       assert text(html, ":root > .alert-icon") == "some-icon"
     end
 
-    test "with on_click" do
+    test "renders close button with on_close" do
       assigns = %{}
 
       html =
@@ -102,7 +102,7 @@ defmodule Doggo.Components.AlertTest do
       assert text(button, "span") == "Close"
     end
 
-    test "with close label" do
+    test "renders close label" do
       assigns = %{}
 
       html =
@@ -117,7 +117,7 @@ defmodule Doggo.Components.AlertTest do
       assert text(button, "span") == "klose"
     end
 
-    test "with close slot" do
+    test "renders close slot in close button" do
       assigns = %{}
 
       html =
@@ -137,7 +137,7 @@ defmodule Doggo.Components.AlertTest do
       assert text(button) == "X"
     end
 
-    test "with action slot" do
+    test "renders actions" do
       assigns = %{}
 
       html =
@@ -153,7 +153,7 @@ defmodule Doggo.Components.AlertTest do
       assert Floki.find(html, ".alert-actions .alert-close") == []
     end
 
-    test "without action slot" do
+    test "omits actions without action slot" do
       assigns = %{}
 
       html =
@@ -164,7 +164,7 @@ defmodule Doggo.Components.AlertTest do
       assert Floki.find(html, ".alert-actions") == []
     end
 
-    test "with global attribute" do
+    test "renders global attributes" do
       assigns = %{}
 
       html =

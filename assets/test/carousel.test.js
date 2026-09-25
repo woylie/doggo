@@ -11,7 +11,7 @@ const activeIdx = (el) => el.getAttribute("data-active-index");
 const pointer = (el, type) =>
   el.dispatchEvent(new window.PointerEvent(type, { bubbles: true }));
 
-describe("carousel hook", () => {
+describe("initCarousel", () => {
   let el;
   let hook;
 

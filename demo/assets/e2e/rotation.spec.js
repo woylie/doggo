@@ -27,7 +27,7 @@ test("wraps to the first slide", async ({ page }) => {
   await selected(page, 1);
 });
 
-test("the pause control stops and resumes it", async ({ page }) => {
+test("stops and resumes with the pause control", async ({ page }) => {
   const control = page.getByRole("button", { name: /slide show/ });
 
   await control.click();

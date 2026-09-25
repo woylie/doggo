@@ -18,7 +18,7 @@ const visiblePanels = (el) =>
     .filter((panel) => !panel.hasAttribute("hidden"))
     .map((panel) => panel.id);
 
-describe("tabs hook", () => {
+describe("initTabs", () => {
   let el;
   let hook;
 
@@ -98,7 +98,7 @@ describe("tabs hook", () => {
     expect(visiblePanels(el)).toEqual(["tabs-panel-3"]);
   });
 
-  it("selects a tab when asked from outside, as `Doggo.show_tab/3` does", () => {
+  it("selects a tab on doggo:show-tab", () => {
     // The index in the event is one-based, matching the Elixir function.
     el.dispatchEvent(
       new window.CustomEvent("doggo:show-tab", { detail: { index: 2 } }),

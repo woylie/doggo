@@ -10,7 +10,7 @@ const tabIndexes = (el) =>
     header.getAttribute("tabindex"),
   );
 
-describe("accordion hook", () => {
+describe("initAccordion", () => {
   let el;
 
   const header = (name) =>

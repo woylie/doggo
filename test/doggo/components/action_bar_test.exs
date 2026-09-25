@@ -18,7 +18,7 @@ defmodule Doggo.Components.ActionBarTest do
   end
 
   describe "action_bar/1" do
-    test "default" do
+    test "renders action bar" do
       assigns = %{}
 
       html =
@@ -44,7 +44,7 @@ defmodule Doggo.Components.ActionBarTest do
       assert text(button) == "edit-icon"
     end
 
-    test "with global attribute" do
+    test "renders global attributes" do
       assigns = %{}
 
       html =

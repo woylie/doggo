@@ -31,7 +31,7 @@ const known = {
 };
 
 for (const story of storyPaths()) {
-  test(`${story} has no axe violations`, async ({ page }) => {
+  test(`reports no axe violations for ${story}`, async ({ page }) => {
     await page.goto(`/storybook/${story}`);
     await page.locator(".psb-sandbox").first().waitFor();
 

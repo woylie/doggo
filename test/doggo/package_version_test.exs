@@ -3,7 +3,7 @@ defmodule Doggo.PackageVersionTest do
 
   @package_json "package.json"
 
-  test "the npm package has the same version as the Hex package" do
+  test "has the same version on npm and Hex" do
     hex = Mix.Project.config()[:version]
     npm = npm_version()
 

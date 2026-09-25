@@ -18,7 +18,7 @@ defmodule Doggo.Components.AlertDialogTest do
   end
 
   describe "alert_dialog/1" do
-    test "default" do
+    test "renders alert dialog" do
       assigns = %{}
 
       html =
@@ -55,7 +55,7 @@ defmodule Doggo.Components.AlertDialogTest do
       assert text(html, "section > footer") == "paw"
     end
 
-    test "dismissable" do
+    test "renders close button with dismissable" do
       assigns = %{}
 
       html =
@@ -86,7 +86,7 @@ defmodule Doggo.Components.AlertDialogTest do
       assert text(a, "span") == "Close"
     end
 
-    test "opened" do
+    test "opens on mount with open" do
       assigns = %{}
 
       html =
@@ -102,7 +102,7 @@ defmodule Doggo.Components.AlertDialogTest do
       assert attribute(dialog, "phx-mounted") =~ "doggo:open"
     end
 
-    test "with close slot" do
+    test "renders close slot in close button" do
       assigns = %{}
 
       html =
@@ -117,7 +117,7 @@ defmodule Doggo.Components.AlertDialogTest do
       assert text(html, "button.alert-dialog-close") == "X"
     end
 
-    test "with close label" do
+    test "renders close label as aria-label" do
       assigns = %{}
 
       html =
@@ -132,7 +132,7 @@ defmodule Doggo.Components.AlertDialogTest do
                "Cancel"
     end
 
-    test "with global attribute" do
+    test "renders global attributes" do
       assigns = %{}
 
       html =
