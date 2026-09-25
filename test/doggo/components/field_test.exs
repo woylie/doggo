@@ -1023,6 +1023,43 @@ defmodule Doggo.Components.FieldTest do
       assert text(html, "label") == "Bio"
     end
 
+    test "renders file input without value" do
+      assigns = %{form: to_form(%{"avatar" => "uploads/avatar.png"})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field field={@form[:avatar]} label="Avatar" type="file" />
+        </.form>
+        """)
+
+      input = find_one(html, "input")
+      assert attribute(input, "type") == "file"
+      assert attribute(input, "name") == "avatar"
+      assert attribute(input, "value") == nil
+      assert attribute(input, "multiple") == nil
+    end
+
+    test "renders multiple on file input with multiple" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:docs]}
+            label="Documents"
+            type="file"
+            multiple
+          />
+        </.form>
+        """)
+
+      input = find_one(html, "input")
+      assert attribute(input, "name") == "docs[]"
+      assert attribute(input, "multiple") == "multiple"
+    end
+
     test "renders hidden input" do
       assigns = %{form: to_form(%{})}
 
