@@ -86,6 +86,9 @@ defmodule Doggo.Components.TreeItem do
         Whether the children of this item are shown. Has no effect on a leaf
         node. When `false`, the child list is hidden and `aria-expanded` reports
         the item as collapsed.
+
+        This is the initial state. Once the user has expanded or collapsed the
+        item, a later value from the server does not change it.
         """
 
       attr :selected, :boolean,
