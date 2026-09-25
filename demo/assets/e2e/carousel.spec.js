@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
   await selectComponent(page, "carousel");
 });
 
-test("the slides can be scrolled by keyboard", async ({ page }) => {
+test("scrolls the slides by keyboard", async ({ page }) => {
   const container = page.locator("#test-carousel .carousel-items-container");
   await container.focus();
 
@@ -19,7 +19,7 @@ test("the slides can be scrolled by keyboard", async ({ page }) => {
     .toBeGreaterThan(before);
 });
 
-test("the focused scroll container is marked", async ({ page }) => {
+test("marks the focused scroll container", async ({ page }) => {
   const container = page.locator("#test-carousel .carousel-items-container");
   await container.focus();
 

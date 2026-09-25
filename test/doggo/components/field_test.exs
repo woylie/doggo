@@ -96,7 +96,7 @@ defmodule Doggo.Components.FieldTest do
   end
 
   describe "field/1 with options given as keyword lists" do
-    test "renders the extra keys as attributes, so one option can be disabled" do
+    test "renders extra keys as attributes" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -119,7 +119,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "option[value='dog']", "disabled") == nil
     end
 
-    test "takes a selected key from the option" do
+    test "selects option with selected key" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -139,7 +139,7 @@ defmodule Doggo.Components.FieldTest do
   end
 
   describe "field/1 with hidden_input false" do
-    test "leaves out the input that submits false for a checkbox" do
+    test "leaves out false input for checkbox" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -158,7 +158,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input[type='checkbox']", "name") == "subscribe"
     end
 
-    test "leaves it out for a switch too" do
+    test "leaves out the false input for a switch" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -176,7 +176,7 @@ defmodule Doggo.Components.FieldTest do
       assert Floki.find(html, "input[type='hidden']") == []
     end
 
-    test "renders it by default" do
+    test "renders the false input by default" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -195,7 +195,7 @@ defmodule Doggo.Components.FieldTest do
   end
 
   describe "field/1 without a form field" do
-    test "renders from name and value alone" do
+    test "renders from name and value" do
       assigns = %{}
 
       html =
@@ -208,7 +208,7 @@ defmodule Doggo.Components.FieldTest do
       assert text(html, "label") =~ "Pet"
     end
 
-    test "renders a registered type from name and value alone" do
+    test "renders registered type from name and value" do
       assigns = %{}
 
       html =
@@ -229,7 +229,7 @@ defmodule Doggo.Components.FieldTest do
   end
 
   describe "build_field/1 with an invalid :extra_types option" do
-    test "says the map has to be written out" do
+    test "raises if the option is not a map" do
       error =
         assert_raise ArgumentError, fn ->
           defmodule FromAVariable do
@@ -245,7 +245,7 @@ defmodule Doggo.Components.FieldTest do
       assert error.message =~ "The option has to be a map"
     end
 
-    test "says a type name has to be a string" do
+    test "raises if a type name is not a string" do
       error =
         assert_raise ArgumentError, fn ->
           defmodule FromAnAtomKey do
@@ -264,7 +264,7 @@ defmodule Doggo.Components.FieldTest do
   end
 
   describe "field/1 with extra types" do
-    test "replaces a built-in type when one is registered under its name" do
+    test "replaces built-in type with registered type of same name" do
       assigns = %{form: to_form(%{"pet" => "2"})}
 
       html =
@@ -282,7 +282,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, ".ranked", "data-type") == "select"
     end
 
-    test "names a group with a legend instead of a label" do
+    test "names group with legend" do
       assigns = %{form: to_form(%{"perms" => ["read"]})}
 
       html =
@@ -312,7 +312,7 @@ defmodule Doggo.Components.FieldTest do
       assert find_one(html, ".field > .field-errors")
     end
 
-    test "renders a registered type through the caller's component" do
+    test "renders registered type with caller's component" do
       assigns = %{form: to_form(%{"rank" => "3"})}
 
       html =
@@ -338,7 +338,7 @@ defmodule Doggo.Components.FieldTest do
                "3"
     end
 
-    test "wires the aria attributes through to the caller's control" do
+    test "passes the aria attributes to the caller's control" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -364,7 +364,7 @@ defmodule Doggo.Components.FieldTest do
       assert Floki.find(html, ".ranked .field-errors") == []
     end
 
-    test "hands the registered type an explicit set of assigns" do
+    test "passes an explicit set of assigns to the registered type" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -383,7 +383,7 @@ defmodule Doggo.Components.FieldTest do
                  "name,options,prompt,rest,type,validations,value"
     end
 
-    test "keeps the built-in types working alongside" do
+    test "keeps the built-in types" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -400,7 +400,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input", "type") == "email"
     end
 
-    test "falls through for a type nobody registered" do
+    test "renders an input for an unregistered type" do
       assigns = %{form: to_form(%{}), type: "unregistered"}
 
       html =
@@ -419,7 +419,7 @@ defmodule Doggo.Components.FieldTest do
   end
 
   describe "field/1" do
-    test "with text input" do
+    test "renders text input" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -441,7 +441,7 @@ defmodule Doggo.Components.FieldTest do
       assert text(html, "label") == "Age"
     end
 
-    test "with text input and description" do
+    test "renders description" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -458,7 +458,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input", "aria-describedby") == "age_description"
     end
 
-    test "with hidden label" do
+    test "hides label visually with hide_label" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -472,7 +472,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(label, "data-visually-hidden") == "data-visually-hidden"
     end
 
-    test "with required text" do
+    test "renders required text" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -490,7 +490,7 @@ defmodule Doggo.Components.FieldTest do
       assert text(span) == "(required)"
     end
 
-    test "with required text, without gettext" do
+    test "renders required text without gettext module" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -508,7 +508,7 @@ defmodule Doggo.Components.FieldTest do
       assert text(span) == "(required)"
     end
 
-    test "with optional text" do
+    test "renders optional text" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -522,7 +522,7 @@ defmodule Doggo.Components.FieldTest do
       assert text(span) == "(optional)"
     end
 
-    test "with optional text, without_gettext" do
+    test "renders optional text without gettext module" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -536,7 +536,7 @@ defmodule Doggo.Components.FieldTest do
       assert text(span) == "(optional)"
     end
 
-    test "checkbox-group with nested options" do
+    test "renders nested options in checkbox group" do
       assigns = %{form: to_form(%{"color" => ["green"]})}
 
       html =
@@ -564,7 +564,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input[value='red']", "id") == "color_red"
     end
 
-    test "radio-group with nested options" do
+    test "renders nested options in radio group" do
       assigns = %{form: to_form(%{"size" => "l"})}
 
       html =
@@ -588,7 +588,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input[value='l']", "checked") == "checked"
     end
 
-    test "checkbox-group with option descriptions" do
+    test "renders option descriptions in checkbox group" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -614,7 +614,7 @@ defmodule Doggo.Components.FieldTest do
       assert text(html, "label:first-of-type") == "Blue"
     end
 
-    test "select rejects an option description" do
+    test "raises for select option with description" do
       assigns = %{form: to_form(%{})}
 
       error =
@@ -634,7 +634,7 @@ defmodule Doggo.Components.FieldTest do
       assert error.message =~ "Invalid :description on a select option"
     end
 
-    test "checkbox-group with a disabled option" do
+    test "disables option in checkbox group" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -656,7 +656,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input[value='blue']", "disabled") == nil
     end
 
-    test "radio-group with option descriptions" do
+    test "renders option descriptions in radio group" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -677,7 +677,7 @@ defmodule Doggo.Components.FieldTest do
                "size_l_description"
     end
 
-    test "keeps the field description alongside an option description" do
+    test "keeps field description with option description" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -700,7 +700,7 @@ defmodule Doggo.Components.FieldTest do
                "color_description color_blue_description"
     end
 
-    test "checkbox-group with optional text" do
+    test "renders optional text for checkbox group" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -719,7 +719,7 @@ defmodule Doggo.Components.FieldTest do
       assert text(span) == "(optional)"
     end
 
-    test "radio-group with optional text" do
+    test "renders optional text for radio group" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -738,7 +738,7 @@ defmodule Doggo.Components.FieldTest do
       assert text(span) == "(optional)"
     end
 
-    test "with checkbox" do
+    test "renders checkbox" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -768,7 +768,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input[type='checkbox']", "value") == "true"
     end
 
-    test "with checkbox and checked value" do
+    test "renders checked value for checkbox" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -788,7 +788,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input[type='checkbox']", "value") == "yes"
     end
 
-    test "with checkbox group" do
+    test "renders checkbox group" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -817,7 +817,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(input, "value") == "cat"
     end
 
-    test "with radio group" do
+    test "renders radio group" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -843,7 +843,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(input, "value") == "cat"
     end
 
-    test "with switch off" do
+    test "renders unchecked switch" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -864,7 +864,7 @@ defmodule Doggo.Components.FieldTest do
       refute attribute(html, "input[role='switch']", "checked")
     end
 
-    test "with switch on" do
+    test "renders checked switch" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -886,7 +886,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input[role='switch']", "checked")
     end
 
-    test "with select" do
+    test "renders select" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -941,7 +941,7 @@ defmodule Doggo.Components.FieldTest do
       assert [_, {"hr", [], []}, _] = options
     end
 
-    test "with multiple select" do
+    test "renders multiple select" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -965,7 +965,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "option:last-child", "selected") == "selected"
     end
 
-    test "with select, with groups" do
+    test "renders option groups in select" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -1002,7 +1002,7 @@ defmodule Doggo.Components.FieldTest do
              ) == "selected"
     end
 
-    test "with textarea" do
+    test "renders textarea" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -1023,7 +1023,7 @@ defmodule Doggo.Components.FieldTest do
       assert text(html, "label") == "Bio"
     end
 
-    test "with hidden input" do
+    test "renders hidden input" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -1038,7 +1038,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input", "value") == "jaja"
     end
 
-    test "with hidden input and list value" do
+    test "renders hidden input per list value" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -1060,7 +1060,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input:last-child", "value") == "ne"
     end
 
-    test "with add-ons" do
+    test "renders add-ons" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -1083,7 +1083,7 @@ defmodule Doggo.Components.FieldTest do
                "left right"
     end
 
-    test "with left add-on only" do
+    test "renders left add-on" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -1098,7 +1098,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, ".field-input-wrapper", "data-addon") == "left"
     end
 
-    test "with right add-on only" do
+    test "renders right add-on" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -1113,7 +1113,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, ".field-input-wrapper", "data-addon") == "right"
     end
 
-    test "without add-ons" do
+    test "omits add-on data attribute without add-ons" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -1126,7 +1126,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, ".field-input-wrapper", "data-addon") == nil
     end
 
-    test "with datalist" do
+    test "renders datalist" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -1153,7 +1153,7 @@ defmodule Doggo.Components.FieldTest do
       assert text(html, "datalist > option:last-child") == "Option B"
     end
 
-    test "with errors" do
+    test "renders errors" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -1171,7 +1171,7 @@ defmodule Doggo.Components.FieldTest do
       assert text(html, ".field-errors > li") == "wrong"
     end
 
-    test "with errors and description" do
+    test "references errors and description" do
       assigns = %{form: to_form(%{})}
 
       html =
@@ -1340,7 +1340,7 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input", "value") == ""
     end
 
-    test "always renders the error list as a live region" do
+    test "renders error list as live region" do
       assigns = %{form: to_form(%{})}
 
       html =

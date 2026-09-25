@@ -18,7 +18,7 @@ defmodule Doggo.Components.TableTest do
   end
 
   describe "table/1" do
-    test "default" do
+    test "renders table" do
       assigns = %{pets: [%{id: 1, name: "George"}]}
 
       html =
@@ -41,7 +41,7 @@ defmodule Doggo.Components.TableTest do
       assert text(html, "tbody > tr > td:last-child") == "link-to-1"
     end
 
-    test "with caption" do
+    test "labels scroll container with caption" do
       assigns = %{pets: [%{id: 1, name: "George"}]}
 
       html =
@@ -60,7 +60,7 @@ defmodule Doggo.Components.TableTest do
       assert attribute(div, "aria-label") == nil
     end
 
-    test "with label" do
+    test "labels scroll container with label" do
       assigns = %{pets: [%{id: 1, name: "George"}]}
 
       html =
@@ -76,7 +76,7 @@ defmodule Doggo.Components.TableTest do
       assert attribute(div, "aria-labelledby") == nil
     end
 
-    test "with label and caption" do
+    test "labels scroll container with label over caption" do
       assigns = %{pets: [%{id: 1, name: "George"}]}
 
       html =
@@ -97,7 +97,7 @@ defmodule Doggo.Components.TableTest do
       assert text(html, "table > caption") == "some text"
     end
 
-    test "without caption and label" do
+    test "omits region role without caption and label" do
       assigns = %{pets: [%{id: 1, name: "George"}]}
 
       html =
@@ -114,7 +114,7 @@ defmodule Doggo.Components.TableTest do
       assert attribute(div, "aria-labelledby") == nil
     end
 
-    test "with col attrs on column" do
+    test "renders col attrs of column" do
       assigns = %{pets: [%{id: 1, name: "George"}]}
 
       html =
@@ -131,7 +131,7 @@ defmodule Doggo.Components.TableTest do
                "width: 20%;"
     end
 
-    test "with col attrs on action" do
+    test "renders col attrs of action" do
       assigns = %{pets: [%{id: 1, name: "George"}]}
 
       html =
@@ -148,7 +148,7 @@ defmodule Doggo.Components.TableTest do
                "width: 20%;"
     end
 
-    test "with foot" do
+    test "renders foot" do
       assigns = %{pets: [%{id: 1, name: "George"}]}
 
       html =
@@ -162,7 +162,7 @@ defmodule Doggo.Components.TableTest do
       assert text(html, "table > tfoot") == "some foot"
     end
 
-    test "with row id" do
+    test "renders row id" do
       assigns = %{pets: [%{id: 1, name: "George"}]}
 
       html =
@@ -175,7 +175,7 @@ defmodule Doggo.Components.TableTest do
       assert attribute(html, "tbody > tr", "id") == "row-1"
     end
 
-    test "with row click" do
+    test "renders row click" do
       assigns = %{pets: [%{id: 1, name: "George"}]}
 
       html =
@@ -188,7 +188,7 @@ defmodule Doggo.Components.TableTest do
       assert attribute(html, "tbody td", "phx-click") == "clicked-1"
     end
 
-    test "with row item" do
+    test "maps rows with row_item" do
       assigns = %{pets: [%{id: 1, name: "George"}]}
 
       html =
@@ -201,7 +201,7 @@ defmodule Doggo.Components.TableTest do
       assert text(html, "tbody td") == "G"
     end
 
-    test "with stream" do
+    test "renders stream" do
       assigns = %{
         pets:
           LiveStream.new(

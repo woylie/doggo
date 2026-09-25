@@ -56,7 +56,7 @@ defmodule DoggoTest do
   end
 
   describe "ensure_label!/2" do
-    test "names the component as the caller built it" do
+    test "names the renamed component in the error" do
       assigns = %{}
 
       error =
@@ -71,7 +71,7 @@ defmodule DoggoTest do
       refute message =~ ".toolbar "
     end
 
-    test "raises on a label that is set but blank" do
+    test "raises if label is blank" do
       assigns = %{}
 
       assert_raise Doggo.InvalidLabelError, fn ->
@@ -83,7 +83,7 @@ defmodule DoggoTest do
       end
     end
 
-    test "raises on a labelledby that is set but blank" do
+    test "raises if labelledby is blank" do
       assigns = %{}
 
       assert_raise Doggo.InvalidLabelError, fn ->
@@ -95,7 +95,7 @@ defmodule DoggoTest do
       end
     end
 
-    test "accepts a blank labelledby next to a real label" do
+    test "accepts blank labelledby if label is set" do
       assigns = %{}
 
       assert rendered_to_string(~H"""
@@ -107,7 +107,7 @@ defmodule DoggoTest do
   end
 
   describe "show_modal/2" do
-    test "dispatches to the hook, which calls showModal()" do
+    test "dispatches doggo:open" do
       assert %Phoenix.LiveView.JS{ops: ops} = Doggo.show_modal("pet-modal")
 
       assert [["dispatch", %{event: "doggo:open", to: "#pet-modal"}]] = ops
@@ -115,15 +115,15 @@ defmodule DoggoTest do
   end
 
   describe "hide_modal/2" do
-    test "dispatches to the hook, which calls close()" do
+    test "dispatches doggo:close" do
       assert %Phoenix.LiveView.JS{ops: ops} = Doggo.hide_modal("pet-modal")
 
       assert [["dispatch", %{event: "doggo:close", to: "#pet-modal"}]] = ops
     end
   end
 
-  describe "classes/1" do
-    test "returns a list of base and nested classes and data attributes" do
+  describe "safelist/1" do
+    test "returns base and nested classes and data attributes" do
       assert Doggo.safelist(TestComponents) == [
                "button",
                "callout",

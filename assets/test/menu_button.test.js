@@ -3,7 +3,7 @@ import { initMenuButton } from "../js/hooks/menu_button.js";
 import menuFixture from "../../test/fixtures/menu.html?raw";
 import { press, render } from "./dom.js";
 
-describe("menu button hook", () => {
+describe("initMenuButton", () => {
   let button;
   let menu;
 

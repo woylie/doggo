@@ -18,59 +18,65 @@ defmodule Mix.Tasks.Dog.GenStoriesTest do
     build_menu(name: :context_menu)
   end
 
-  @tag :tmp_dir
-  test "writes stories for all configured components", %{tmp_dir: tmp_dir} do
-    assert capture_io(fn ->
-             Stories.run([
-               "--module",
-               "Mix.Tasks.Dog.GenStoriesTest.TestComponents",
-               "-o",
-               tmp_dir,
-               "--all"
-             ])
-           end)
+  describe "run/1" do
+    @tag :tmp_dir
+    test "writes stories for all configured components", %{tmp_dir: tmp_dir} do
+      assert capture_io(fn ->
+               Stories.run([
+                 "--module",
+                 "Mix.Tasks.Dog.GenStoriesTest.TestComponents",
+                 "-o",
+                 tmp_dir,
+                 "--all"
+               ])
+             end)
 
-    button_path = Path.join([tmp_dir, "buttons", "button.story.exs"])
-    menu_path = Path.join([tmp_dir, "menu", "context_menu.story.exs"])
+      button_path = Path.join([tmp_dir, "buttons", "button.story.exs"])
+      menu_path = Path.join([tmp_dir, "menu", "context_menu.story.exs"])
 
-    assert File.exists?(button_path)
+      assert File.exists?(button_path)
 
-    {formatter, _} = Mix.Tasks.Format.formatter_for_file(button_path)
+      {formatter, _} = Mix.Tasks.Format.formatter_for_file(button_path)
 
-    assert File.read!(button_path) ==
-             formatter.(Doggo.Storybook.story_template(TestComponents, :button))
+      assert File.read!(button_path) ==
+               formatter.(
+                 Doggo.Storybook.story_template(TestComponents, :button)
+               )
 
-    assert File.exists?(menu_path)
+      assert File.exists?(menu_path)
 
-    assert File.read!(menu_path) ==
-             formatter.(
-               Doggo.Storybook.story_template(TestComponents, :context_menu)
-             )
-  end
+      assert File.read!(menu_path) ==
+               formatter.(
+                 Doggo.Storybook.story_template(TestComponents, :context_menu)
+               )
+    end
 
-  @tag :tmp_dir
-  test "writes stories for single component", %{tmp_dir: tmp_dir} do
-    assert capture_io(fn ->
-             Stories.run([
-               "--module",
-               "Mix.Tasks.Dog.GenStoriesTest.TestComponents",
-               "-o",
-               tmp_dir,
-               "--component",
-               "button"
-             ])
-           end)
+    @tag :tmp_dir
+    test "writes stories for single component", %{tmp_dir: tmp_dir} do
+      assert capture_io(fn ->
+               Stories.run([
+                 "--module",
+                 "Mix.Tasks.Dog.GenStoriesTest.TestComponents",
+                 "-o",
+                 tmp_dir,
+                 "--component",
+                 "button"
+               ])
+             end)
 
-    button_path = Path.join([tmp_dir, "buttons", "button.story.exs"])
-    menu_path = Path.join([tmp_dir, "menu", "context_menu.story.exs"])
+      button_path = Path.join([tmp_dir, "buttons", "button.story.exs"])
+      menu_path = Path.join([tmp_dir, "menu", "context_menu.story.exs"])
 
-    assert File.exists?(button_path)
+      assert File.exists?(button_path)
 
-    {formatter, _} = Tasks.Format.formatter_for_file(button_path)
+      {formatter, _} = Tasks.Format.formatter_for_file(button_path)
 
-    assert File.read!(button_path) ==
-             formatter.(Doggo.Storybook.story_template(TestComponents, :button))
+      assert File.read!(button_path) ==
+               formatter.(
+                 Doggo.Storybook.story_template(TestComponents, :button)
+               )
 
-    refute File.exists?(menu_path)
+      refute File.exists?(menu_path)
+    end
   end
 end

@@ -16,7 +16,7 @@ defmodule Doggo.Components.AppBarTest do
   end
 
   describe "app_bar/1" do
-    test "default" do
+    test "renders app bar" do
       assigns = %{}
 
       html =
@@ -29,7 +29,7 @@ defmodule Doggo.Components.AppBarTest do
       assert Floki.children(header) == []
     end
 
-    test "with title" do
+    test "renders title" do
       assigns = %{}
 
       html =
@@ -41,7 +41,7 @@ defmodule Doggo.Components.AppBarTest do
       assert text(html, "header h1") == "Some Title"
     end
 
-    test "with navigation" do
+    test "renders navigation item" do
       assigns = %{}
 
       html =
@@ -58,7 +58,7 @@ defmodule Doggo.Components.AppBarTest do
       assert text(a) == "back-icon"
     end
 
-    test "with action" do
+    test "renders action item" do
       assigns = %{}
 
       html =
@@ -75,7 +75,7 @@ defmodule Doggo.Components.AppBarTest do
       assert text(a) == "menu-icon"
     end
 
-    test "with global attribute" do
+    test "renders global attributes" do
       assigns = %{}
 
       html =

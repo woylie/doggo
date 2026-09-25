@@ -16,7 +16,7 @@ defmodule Doggo.Components.AvatarTest do
   end
 
   describe "avatar/1" do
-    test "default" do
+    test "renders avatar" do
       assigns = %{}
 
       html =
@@ -33,7 +33,7 @@ defmodule Doggo.Components.AvatarTest do
       assert attribute(img, "loading") == "lazy"
     end
 
-    test "with size" do
+    test "renders size as data attribute" do
       assigns = %{}
 
       html =
@@ -45,7 +45,7 @@ defmodule Doggo.Components.AvatarTest do
       assert attribute(html, "div:root", "data-size") == "large"
     end
 
-    test "with circle" do
+    test "renders shape as data attribute" do
       assigns = %{}
 
       html =
@@ -58,7 +58,7 @@ defmodule Doggo.Components.AvatarTest do
       assert attribute(html, "div:root", "data-shape") == "circle"
     end
 
-    test "with loading" do
+    test "renders loading" do
       assigns = %{}
 
       html =
@@ -69,7 +69,7 @@ defmodule Doggo.Components.AvatarTest do
       assert attribute(html, ":root > img", "loading") == "eager"
     end
 
-    test "with alt" do
+    test "renders alt" do
       assigns = %{}
 
       html =
@@ -80,7 +80,7 @@ defmodule Doggo.Components.AvatarTest do
       assert attribute(html, ":root > img", "alt") == "Avatar"
     end
 
-    test "with text placeholder" do
+    test "renders hidden text placeholder without src" do
       assigns = %{}
 
       html =
@@ -95,7 +95,7 @@ defmodule Doggo.Components.AvatarTest do
       assert attribute(html, ":root > span", "role") == nil
     end
 
-    test "with a named text placeholder" do
+    test "names text placeholder with alt" do
       assigns = %{}
 
       html =
@@ -113,7 +113,7 @@ defmodule Doggo.Components.AvatarTest do
       assert attribute(span, "aria-hidden") == nil
     end
 
-    test "without image or placeholder" do
+    test "renders nothing without image or placeholder" do
       assigns = %{}
 
       html =
@@ -124,7 +124,7 @@ defmodule Doggo.Components.AvatarTest do
       assert html == []
     end
 
-    test "with image placeholder" do
+    test "renders image placeholder without src" do
       assigns = %{}
 
       html =
@@ -135,7 +135,7 @@ defmodule Doggo.Components.AvatarTest do
       assert attribute(html, ":root > img", "src") == "placeholder.png"
     end
 
-    test "the image placeholder takes the same alt as the image" do
+    test "renders alt on image placeholder" do
       assigns = %{}
 
       html =
@@ -150,7 +150,7 @@ defmodule Doggo.Components.AvatarTest do
       assert attribute(html, ":root > img", "alt") == "Alfred Adler"
     end
 
-    test "with global attribute" do
+    test "renders global attributes" do
       assigns = %{}
 
       html =

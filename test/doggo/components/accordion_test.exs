@@ -16,7 +16,7 @@ defmodule Doggo.Components.AccordionTest do
   end
 
   describe "accordion/1" do
-    test "with expanded all" do
+    test "expands all sections by default" do
       assigns = %{}
 
       html =
@@ -56,7 +56,7 @@ defmodule Doggo.Components.AccordionTest do
       assert text(div) == "def"
     end
 
-    test "with heading" do
+    test "renders heading level" do
       assigns = %{}
 
       html =
@@ -73,7 +73,7 @@ defmodule Doggo.Components.AccordionTest do
                )
     end
 
-    test "with expanded none" do
+    test "collapses all sections with expanded none" do
       assigns = %{}
 
       html =
@@ -91,7 +91,7 @@ defmodule Doggo.Components.AccordionTest do
       assert attribute(html, "#dogs-section-2", "hidden") == "hidden"
     end
 
-    test "with expanded first" do
+    test "expands first section with expanded first" do
       assigns = %{}
 
       html =
@@ -109,7 +109,7 @@ defmodule Doggo.Components.AccordionTest do
       assert attribute(html, "#dogs-section-2", "hidden") == "hidden"
     end
 
-    test "with global attribute" do
+    test "renders global attributes" do
       assigns = %{}
 
       html =

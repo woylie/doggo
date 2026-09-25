@@ -18,7 +18,7 @@ defmodule Doggo.FixturesTest do
 
   @fixture_dir Path.expand("../fixtures", __DIR__)
 
-  test "accordion" do
+  test "matches accordion fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -33,7 +33,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "action_bar" do
+  test "matches action_bar fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -48,7 +48,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "alert" do
+  test "matches alert fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -69,7 +69,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "alert_dialog" do
+  test "matches alert_dialog fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -87,7 +87,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "app_bar" do
+  test "matches app_bar fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -103,7 +103,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "avatar" do
+  test "matches avatar fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -114,7 +114,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "badge" do
+  test "matches badge fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -125,7 +125,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "bottom_navigation" do
+  test "matches bottom_navigation fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -141,7 +141,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "box" do
+  test "matches box fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -158,7 +158,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "breadcrumb" do
+  test "matches breadcrumb fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -173,7 +173,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "button" do
+  test "matches button fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -184,7 +184,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "button_link" do
+  test "matches button_link fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -197,7 +197,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "callout" do
+  test "matches callout fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -212,7 +212,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "card" do
+  test "matches card fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -232,7 +232,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "carousel" do
+  test "matches carousel fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -250,7 +250,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "cluster" do
+  test "matches cluster fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -261,7 +261,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "combobox" do
+  test "matches combobox fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -282,7 +282,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "combobox with a clear button" do
+  test "matches combobox fixture with clear button" do
     assigns = %{}
 
     assert_fixture(
@@ -304,7 +304,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "combobox with grouped options" do
+  test "matches combobox fixture with grouped options" do
     assigns = %{}
 
     assert_fixture(
@@ -330,7 +330,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "combobox with free text" do
+  test "matches combobox fixture with free text" do
     assigns = %{}
 
     assert_fixture(
@@ -353,7 +353,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "date" do
+  test "matches date fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -364,7 +364,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "datetime" do
+  test "matches datetime fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -375,7 +375,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "disclosure_button" do
+  test "matches disclosure_button fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -388,7 +388,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "drawer" do
+  test "matches drawer fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -403,7 +403,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "fallback" do
+  test "matches fallback fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -414,7 +414,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "field" do
+  test "matches field fixture" do
     assigns = %{
       form: to_form(%{"breed" => "dachshund", "sterilized" => "true"})
     }
@@ -458,7 +458,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "field_group" do
+  test "matches field_group fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -469,7 +469,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "frame" do
+  test "matches frame fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -480,7 +480,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "icon" do
+  test "matches icon fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -491,7 +491,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "icon_sprite" do
+  test "matches icon_sprite fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -502,7 +502,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "image" do
+  test "matches image fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -515,7 +515,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "menu" do
+  test "matches menu fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -563,7 +563,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "menu_bar" do
+  test "matches menu_bar fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -590,7 +590,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "menu_button" do
+  test "matches menu_button fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -603,7 +603,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "menu_group" do
+  test "matches menu_group fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -617,7 +617,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "menu_item" do
+  test "matches menu_item fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -630,7 +630,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "menu_item_checkbox" do
+  test "matches menu_item_checkbox fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -643,7 +643,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "menu_item_radio_group" do
+  test "matches menu_item_radio_group fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -657,7 +657,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "modal" do
+  test "matches modal fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -674,7 +674,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "navbar" do
+  test "matches navbar fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -688,7 +688,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "navbar_items" do
+  test "matches navbar_items fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -702,7 +702,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "page_header" do
+  test "matches page_header fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -716,7 +716,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "property_list" do
+  test "matches property_list fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -730,7 +730,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "radio_group" do
+  test "matches radio_group fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -747,7 +747,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "skeleton" do
+  test "matches skeleton fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -758,7 +758,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "split_pane" do
+  test "matches split_pane fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -779,7 +779,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "stack" do
+  test "matches stack fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -790,7 +790,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "steps" do
+  test "matches steps fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -805,7 +805,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "switch" do
+  test "matches switch fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -816,7 +816,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "tab_navigation" do
+  test "matches tab_navigation fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -830,7 +830,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "table" do
+  test "matches table fixture" do
     assigns = %{
       dogs: [%{id: 1, name: "George", breed: "Dachshund"}]
     }
@@ -850,7 +850,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "tabs" do
+  test "matches tabs fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -865,7 +865,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "tag" do
+  test "matches tag fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -876,7 +876,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "time" do
+  test "matches time fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -887,7 +887,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "toggle_button" do
+  test "matches toggle_button fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -900,7 +900,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "toolbar" do
+  test "matches toolbar fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -920,7 +920,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "tooltip" do
+  test "matches tooltip fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -934,7 +934,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "tree" do
+  test "matches tree fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -963,7 +963,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "tree_item" do
+  test "matches tree_item fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -979,7 +979,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "vertical_nav" do
+  test "matches vertical_nav fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -994,7 +994,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "vertical_nav_nested" do
+  test "matches vertical_nav_nested fixture" do
     assigns = %{}
 
     assert_fixture(
@@ -1009,7 +1009,7 @@ defmodule Doggo.FixturesTest do
     )
   end
 
-  test "vertical_nav_section" do
+  test "matches vertical_nav_section fixture" do
     assigns = %{}
 
     assert_fixture(

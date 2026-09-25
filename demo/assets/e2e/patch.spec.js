@@ -121,6 +121,23 @@ const components = [
       ).toHaveAttribute("aria-pressed", "true");
     },
   },
+  {
+    name: "tree",
+    async arrange(page) {
+      await page.locator("#tree-sporting > button").click();
+      await expect(page.locator("#tree-sporting")).toHaveAttribute(
+        "aria-expanded",
+        "false",
+      );
+    },
+    async assert(page) {
+      await expect(page.locator("#tree-sporting")).toHaveAttribute(
+        "aria-expanded",
+        "false",
+      );
+      await expect(page.getByText("Golden Retriever")).toBeHidden();
+    },
+  },
 ];
 
 for (const component of components) {

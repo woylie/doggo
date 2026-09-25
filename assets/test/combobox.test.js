@@ -41,7 +41,7 @@ const type = (el, value) => {
   input(el).dispatchEvent(new window.Event("input", { bubbles: true }));
 };
 
-describe("combobox hook", () => {
+describe("initCombobox", () => {
   let el;
   let hook;
 
@@ -60,14 +60,14 @@ describe("combobox hook", () => {
     expect(selectedIds(el)).toEqual(["breed-selector-option-2"]);
   });
 
-  it("opens on the current value, the way a native select does", () => {
+  it("opens on the current value", () => {
     press(input(el), "ArrowDown");
 
     expect(expanded(el)).toBe(true);
     expect(active(el)).toBe("breed-selector-option-2");
   });
 
-  it("opens on the current value with ArrowUp too", () => {
+  it("opens on the current value with ArrowUp", () => {
     press(input(el), "ArrowUp");
 
     expect(expanded(el)).toBe(true);
@@ -312,7 +312,7 @@ describe("combobox hook", () => {
     expect(hiddenInput(el).value).toBe("");
   });
 
-  it("reopens after the restore, without having lost the value", () => {
+  it("reopens with the restored value", () => {
     press(input(el), "ArrowDown");
     press(input(el), "Enter");
     type(el, "xyz");
@@ -331,7 +331,7 @@ describe("combobox hook", () => {
     expect(selectedIds(el)).toEqual([]);
   });
 
-  describe("Escape and what encloses the combobox", () => {
+  describe("when Escape is pressed", () => {
     const escape = (target) => {
       const event = new window.KeyboardEvent("keydown", {
         key: "Escape",
@@ -417,7 +417,7 @@ describe("combobox hook", () => {
     expect(active(el)).toBe(null);
   });
 
-  describe("a value that is not among options", () => {
+  describe("with a value that is not an option", () => {
     beforeEach(() => {
       el = render(fixture);
       input(el).value = "Corgi";
@@ -430,7 +430,7 @@ describe("combobox hook", () => {
       expect(selectedIds(el)).toEqual([]);
     });
 
-    it("shows every option, since the value is not a search term", () => {
+    it("shows every option", () => {
       press(input(el), "ArrowDown");
 
       expect(shown(el)).toEqual([
@@ -440,7 +440,7 @@ describe("combobox hook", () => {
       ]);
     });
 
-    it("opens on the first option, having no value to land on", () => {
+    it("opens on the first option", () => {
       press(input(el), "ArrowDown");
 
       expect(active(el)).toBe("breed-selector-option-1");
@@ -535,7 +535,7 @@ describe("combobox hook", () => {
     });
   });
 
-  describe("readonly and disabled", () => {
+  describe("when readonly or disabled", () => {
     const build = (attr) => {
       el = render(fixture);
       input(el)[attr] = true;
@@ -568,7 +568,7 @@ describe("combobox hook", () => {
     }
   });
 
-  describe("server filtering", () => {
+  describe("with server filtering", () => {
     beforeEach(() => {
       el = render(fixture);
       el.dataset.filter = "server";
@@ -610,7 +610,7 @@ describe("combobox hook", () => {
     });
   });
 
-  describe("disabled options", () => {
+  describe("with disabled options", () => {
     beforeEach(() => {
       el = render(fixture);
       el.querySelector("#breed-selector-option-2").setAttribute(
@@ -621,11 +621,11 @@ describe("combobox hook", () => {
       input(el).focus();
     });
 
-    it("stays visible", () => {
+    it("keeps them visible", () => {
       expect(el.querySelector("#breed-selector-option-2").hidden).toBe(false);
     });
 
-    it("is unreachable by the arrows in either direction", () => {
+    it("skips them with the arrow keys in either direction", () => {
       press(input(el), "ArrowDown");
 
       const visited = [active(el)];
@@ -643,7 +643,7 @@ describe("combobox hook", () => {
       ]);
     });
 
-    it("is not selected by a click", () => {
+    it("does not select them on click", () => {
       press(input(el), "ArrowDown");
       el.querySelector("#breed-selector-option-2").click();
 
@@ -651,7 +651,7 @@ describe("combobox hook", () => {
       expect(expanded(el)).toBe(true);
     });
   });
-  describe("grouped options", () => {
+  describe("with grouped options", () => {
     beforeEach(() => {
       el = render(groupedFixture);
       hook = initCombobox(el);
@@ -742,14 +742,14 @@ describe("combobox hook", () => {
       expect(input(el).value).toBe("Dachshund");
     });
   });
-  describe("free text", () => {
+  describe("with free text", () => {
     beforeEach(() => {
       el = render(freeTextFixture);
       hook = initCombobox(el);
       input(el).focus();
     });
 
-    it("is hidden until the term is not an option", () => {
+    it("hides the free text option until the term is not an option", () => {
       expect(freeText(el).hidden).toBe(true);
 
       type(el, "Corgi");
@@ -760,13 +760,13 @@ describe("combobox hook", () => {
       );
     });
 
-    it("stays hidden when the term matches an option exactly", () => {
+    it("hides the free text option when the term matches an option exactly", () => {
       type(el, "Dachshund");
 
       expect(freeText(el).hidden).toBe(true);
     });
 
-    it("stays hidden for an empty term", () => {
+    it("hides the free text option for an empty term", () => {
       type(el, "");
 
       expect(freeText(el).hidden).toBe(true);
@@ -808,7 +808,7 @@ describe("combobox hook", () => {
       expect(hiddenInput(el).value).toBe("Corgi");
     });
 
-    it("is offered while the server filters too", () => {
+    it("offers the free text option while the server filters", () => {
       el = render(freeTextFixture);
       el.dataset.filter = "server";
       hook = initCombobox(el);
@@ -819,7 +819,7 @@ describe("combobox hook", () => {
       expect(freeText(el).hidden).toBe(false);
     });
   });
-  describe("required tracks the value, not the search term", () => {
+  describe("when required", () => {
     const build = () => {
       el = render(fixture);
       input(el).required = true;
@@ -906,7 +906,7 @@ describe("combobox hook", () => {
       expect(input(el).checkValidity()).toBe(true);
     });
   });
-  describe("clear button", () => {
+  describe("with a clear button", () => {
     const build = () => {
       el = render(clearableFixture);
       hook = initCombobox(el);
@@ -928,7 +928,7 @@ describe("combobox hook", () => {
       expect(document.activeElement).toBe(input(el));
     });
 
-    it("hides itself once there is nothing to clear", () => {
+    it("hides the button once there is nothing to clear", () => {
       build();
       expect(clearButton(el).hidden).toBe(false);
 
@@ -936,7 +936,7 @@ describe("combobox hook", () => {
       expect(clearButton(el).hidden).toBe(true);
     });
 
-    it("reappears after a selection", () => {
+    it("shows the button again after a selection", () => {
       build();
       clearButton(el).dispatchEvent(new window.MouseEvent("click"));
 

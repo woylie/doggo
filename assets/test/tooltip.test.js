@@ -23,7 +23,7 @@ const pressEscape = () =>
 
 const dismissed = (el) => el.hasAttribute("data-dismissed");
 
-describe("tooltip hook", () => {
+describe("initTooltip", () => {
   let el;
   let hook;
 
@@ -39,7 +39,7 @@ describe("tooltip hook", () => {
     expect(dismissed(el)).toBe(true);
   });
 
-  it("dismisses a tooltip shown by hover, where the focus is elsewhere", () => {
+  it("dismisses a tooltip shown by hover", () => {
     pretend(el, { hover: true });
     pressEscape();
 
@@ -53,7 +53,7 @@ describe("tooltip hook", () => {
     expect(dismissed(el)).toBe(false);
   });
 
-  it("does not swallow Escape when the tooltip is not shown", () => {
+  it("lets Escape through when the tooltip is not shown", () => {
     pretend(el, {});
     const event = new window.KeyboardEvent("keydown", {
       key: "Escape",
@@ -66,7 +66,7 @@ describe("tooltip hook", () => {
     expect(stopped).not.toHaveBeenCalled();
   });
 
-  it("swallows Escape when it dismisses, so a dialog stays open", () => {
+  it("stops Escape when it dismisses the tooltip", () => {
     pretend(el, { focus: true });
     const event = new window.KeyboardEvent("keydown", {
       key: "Escape",

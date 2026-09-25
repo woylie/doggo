@@ -20,7 +20,7 @@ const withSupport = (prototype, property, body) => {
   }
 };
 
-describe("dialog hook", () => {
+describe("initDialog", () => {
   let el;
   let hook;
   let execJS;
@@ -56,7 +56,7 @@ describe("dialog hook", () => {
     expect(el.open).toBe(false);
   });
 
-  it("runs on_cancel when the dialog closes, however it was closed", () => {
+  it("runs on_cancel when the dialog closes", () => {
     dispatch(el, "doggo:open");
     el.close();
 
@@ -124,7 +124,7 @@ describe("dialog hook", () => {
       expect(el.open).toBe(false);
     });
 
-    it("closes on a click inside the close button, not only on it", () => {
+    it("closes on a click inside the close button", () => {
       dispatch(el, "doggo:open");
       el.querySelector("button[command='close'] span").click();
 
@@ -153,7 +153,7 @@ describe("dialog hook", () => {
   });
 
   describe("without the closedby attribute", () => {
-    it("closes on a click outside, which lands on the dialog itself", () => {
+    it("closes on a click outside", () => {
       dispatch(el, "doggo:open");
       el.click();
 
