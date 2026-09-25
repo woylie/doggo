@@ -1,14 +1,27 @@
 defmodule Doggo.Storybook.Frame do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
+  alias PhoenixStorybook.Stories.VariationGroup
 
   def layout, do: :one_column
 
-  def variations(_opts) do
+  def variations(opts) do
     [
       %Variation{
         id: :default,
         slots: slots()
+      },
+      %VariationGroup{
+        id: :ratio,
+        template: ratio_template(),
+        variations:
+          Enum.map(opts[:extra][:ratios], fn ratio ->
+            %Variation{
+              id: String.to_atom("ratio_#{String.replace(ratio, ":", "_")}"),
+              attributes: %{ratio: ratio, "data-label": ratio},
+              slots: slots()
+            }
+          end)
       }
     ]
   end
@@ -21,7 +34,7 @@ defmodule Doggo.Storybook.Frame do
     """
   end
 
-  def modifier_variation_group_template(:ratio, _opts) do
+  defp ratio_template do
     """
     <style>
       .psb-gallery {
@@ -67,13 +80,6 @@ defmodule Doggo.Storybook.Frame do
       <.psb-variation-group/>
     </div>
     """
-  end
-
-  def modifier_variation_base(_id, :ratio, value, _opts) do
-    %{
-      attributes: %{"data-label": to_string(value || "none")},
-      slots: slots()
-    }
   end
 
   def modifier_variation_base(_id, _name, _value, _opts) do

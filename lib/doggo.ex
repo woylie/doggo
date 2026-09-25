@@ -14,6 +14,44 @@ defmodule Doggo do
   def slide_label(n), do: "Slide #{n}"
 
   @doc false
+  def default_ratios do
+    ~w(1:1 3:2 2:3 4:3 3:4 5:4 4:5 16:9 9:16)
+  end
+
+  @doc false
+  def validate_ratios!(builder, ratios) do
+    if is_list(ratios) and ratios != [] and Enum.all?(ratios, &split_ratio/1) do
+      ratios
+    else
+      raise ArgumentError, """
+      invalid ratios option for #{builder}/1
+
+      The option has to be a non-empty list of literal strings in the format
+      n:d, e.g. ["16:9", "4:3"].
+
+      Got:
+
+          #{Macro.to_string(ratios)}
+      """
+    end
+  end
+
+  @doc false
+  def ratio_parts(ratios), do: Map.new(ratios, &{&1, split_ratio(&1)})
+
+  defp split_ratio(ratio) when is_binary(ratio) do
+    with [n, d] <- String.split(ratio, ":"),
+         {n, ""} when n > 0 <- Integer.parse(n),
+         {d, ""} when d > 0 <- Integer.parse(d) do
+      {Integer.to_string(n), Integer.to_string(d)}
+    else
+      _ -> nil
+    end
+  end
+
+  defp split_ratio(_), do: nil
+
+  @doc false
   def truncate_datetime(nil, _), do: nil
   def truncate_datetime(v, nil), do: v
   def truncate_datetime(v, :minute), do: %{v | second: 0, microsecond: {0, 0}}

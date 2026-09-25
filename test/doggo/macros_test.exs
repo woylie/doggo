@@ -90,6 +90,46 @@ defmodule Doggo.MacrosTest do
     end
   end
 
+  describe "build_frame/1" do
+    test "raises for invalid ratio in ratios" do
+      assert_raise ArgumentError,
+                   ~r/invalid ratios option for build_frame\/1.*Got:\s+\["16:9", "wide"\]/s,
+                   fn ->
+                     compile(
+                       InvalidRatio,
+                       ~s|build_frame(ratios: ["16:9", "wide"])|
+                     )
+                   end
+    end
+
+    test "raises for empty ratios" do
+      assert_raise ArgumentError,
+                   ~r/invalid ratios option for build_frame\/1/,
+                   fn -> compile(EmptyRatios, "build_frame(ratios: [])") end
+    end
+
+    test "raises for ratio as modifier" do
+      assert_raise ArgumentError,
+                   ~r/already declares an attribute or slot with that name/,
+                   fn ->
+                     compile(
+                       RatioModifier,
+                       ~s|build_frame(modifiers: [ratio: [values: ["1:1"]]])|
+                     )
+                   end
+    end
+  end
+
+  describe "build_image/1" do
+    test "raises for ratios that are not a list" do
+      assert_raise ArgumentError,
+                   ~r/invalid ratios option for build_image\/1.*Got:\s+"16:9"/s,
+                   fn ->
+                     compile(RatiosString, ~s|build_image(ratios: "16:9")|)
+                   end
+    end
+  end
+
   describe "build_badge/1" do
     test "raises if module does not use Doggo.Components" do
       assert_raise ArgumentError,
