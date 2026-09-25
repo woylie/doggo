@@ -59,7 +59,16 @@ defmodule Doggo.Components.MenuItemCheckbox do
   @impl true
   def attrs_and_slots(_opts) do
     quote do
-      attr :checked, :boolean, default: false
+      attr :checked, :any,
+        default: false,
+        values: [true, false, nil, :indeterminate],
+        doc: """
+        The checked state.
+
+        If set to `:indeterminate`, the `aria-checked="mixed"` attribute is
+        added, which stands for a group of items of which only some are
+        checked.
+        """
 
       attr :on_click, :any,
         required: true,
@@ -78,7 +87,7 @@ defmodule Doggo.Components.MenuItemCheckbox do
 
   @impl true
   def render(%{checked: checked} = assigns) do
-    assigns = assign(assigns, :checked, to_string(checked))
+    assigns = assign(assigns, :checked, aria_checked(checked))
 
     ~H"""
     <button
@@ -92,6 +101,22 @@ defmodule Doggo.Components.MenuItemCheckbox do
     >
       {render_slot(@inner_block)}
     </button>
+    """
+  end
+
+  defp aria_checked(true), do: "true"
+  defp aria_checked(checked) when checked in [false, nil], do: "false"
+  defp aria_checked(:indeterminate), do: "mixed"
+
+  defp aria_checked(checked) do
+    raise ArgumentError, """
+    invalid checked value for .menu_item_checkbox
+
+    checked must be true, false, nil or :indeterminate.
+
+    Got:
+
+        #{inspect(checked)}
     """
   end
 end

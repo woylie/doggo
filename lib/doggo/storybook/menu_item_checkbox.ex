@@ -41,6 +41,16 @@ defmodule Doggo.Storybook.MenuItemCheckbox do
           on_click: JS.toggle_attribute({"aria-checked", "true", "false"})
         },
         slots: ["Word wrap"]
+      },
+      %Variation{
+        id: :indeterminate,
+        note:
+          "`checked={:indeterminate}` is for an item that stands for a group of items of which only some are checked. Clicking it here checks it, and later clicks toggle it.",
+        attributes: %{
+          checked: :indeterminate,
+          on_click: JS.toggle_attribute({"aria-checked", "true", "false"})
+        },
+        slots: ["All notifications"]
       }
     ]
   end

@@ -90,6 +90,11 @@
       visibility: visible;
     }
 
+    [role="menuitemcheckbox"][aria-checked="mixed"]::before {
+      visibility: visible;
+      content: "–";
+    }
+
     [role="separator"] {
       background-color: var(--menu-separator-color);
     }
