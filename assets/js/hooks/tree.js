@@ -10,7 +10,26 @@ const labelOf = (item) =>
 const parentOf = (item) =>
   item.parentElement.closest('[role="treeitem"]') || null;
 
-export function initTree(tree) {
+const labelText = (item) => {
+  const label = labelOf(item);
+
+  if (!label) return "";
+
+  const copy = label.cloneNode(true);
+
+  for (const node of copy.querySelectorAll('[aria-hidden="true"], svg')) {
+    node.remove();
+  }
+
+  return copy.textContent;
+};
+
+const domWriter = {
+  setAttribute: (el, attr, value) => el.setAttribute(attr, value),
+  removeAttribute: (el, attr) => el.removeAttribute(attr),
+};
+
+export function initTree(tree, writer = domWriter) {
   // Visible items only. A collapsed branch takes its descendants out of the
   // sequence.
   const getItems = () =>
@@ -18,22 +37,6 @@ export function initTree(tree) {
       (item) => !item.closest('[role="group"][hidden]'),
     );
 
-  // The hook owns the expanded state. A patch re-renders the server's
-  // version, so it is remembered by position and applied again.
-  const pathOf = (item) => {
-    const path = [];
-
-    for (let node = item; node; node = parentOf(node)) {
-      const siblings = Array.from(
-        node.parentElement.querySelectorAll(':scope > [role="treeitem"]'),
-      );
-      path.unshift(siblings.indexOf(node));
-    }
-
-    return path.join("-");
-  };
-
-  const expandedPaths = new Set();
   let activeIdx = 0;
   let search = "";
   let searchTimeout;
@@ -56,24 +59,16 @@ export function initTree(tree) {
   };
 
   const setExpanded = (item, expanded) => {
-    item.setAttribute("aria-expanded", expanded ? "true" : "false");
+    writer.setAttribute(item, "aria-expanded", expanded ? "true" : "false");
 
     const group = groupOf(item);
 
     if (group) {
       if (expanded) {
-        group.removeAttribute("hidden");
+        writer.removeAttribute(group, "hidden");
       } else {
-        group.setAttribute("hidden", "");
+        writer.setAttribute(group, "hidden", "");
       }
-    }
-
-    const path = pathOf(item);
-
-    if (expanded) {
-      expandedPaths.add(path);
-    } else {
-      expandedPaths.delete(path);
     }
   };
 
@@ -106,8 +101,7 @@ export function initTree(tree) {
 
     const repeated = [...search].every((char) => char === search[0]);
     const items = getItems();
-    // The item's own label, but not nested items.
-    const labels = items.map((item) => labelOf(item)?.textContent ?? "");
+    const labels = items.map(labelText);
     const idx = searchIndex(
       labels,
       repeated ? search[0] : search,
@@ -131,7 +125,7 @@ export function initTree(tree) {
       if (isBranch(item) && !isExpanded(item)) {
         setExpanded(item, true);
       } else if (isBranch(item)) {
-        const child = groupOf(item).querySelector('[role="treeitem"]');
+        const child = groupOf(item)?.querySelector('[role="treeitem"]');
 
         if (child) moveTo(getItems().indexOf(child));
       }
@@ -155,6 +149,7 @@ export function initTree(tree) {
 
     const nextIdx = targetIndex(e.key, currentIdx, items.length, {
       orientation: "vertical",
+      wrap: false,
     });
 
     if (nextIdx !== null) {
@@ -170,12 +165,6 @@ export function initTree(tree) {
   });
 
   const restore = () => {
-    for (const item of tree.querySelectorAll('[role="treeitem"]')) {
-      if (isBranch(item) && expandedPaths.has(pathOf(item))) {
-        setExpanded(item, true);
-      }
-    }
-
     const items = getItems();
 
     if (items.length > 0) setActive(clamp(activeIdx, items.length));
@@ -188,7 +177,12 @@ export function initTree(tree) {
 
 export default {
   mounted() {
-    this.instance = initTree(this.el);
+    const js = this.js();
+
+    this.instance = initTree(this.el, {
+      setAttribute: (el, attr, value) => js.setAttribute(el, attr, value),
+      removeAttribute: (el, attr) => js.removeAttribute(el, attr),
+    });
   },
 
   updated() {

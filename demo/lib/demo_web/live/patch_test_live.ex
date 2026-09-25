@@ -23,7 +23,8 @@ defmodule DemoWeb.PatchTestLive do
     {"accordion", "Accordion"},
     {"split_pane", "Split pane"},
     {"disclosure_button", "Disclosure button"},
-    {"toggle_button", "Toggle button"}
+    {"toggle_button", "Toggle button"},
+    {"tree", "Tree"}
   ]
 
   @impl true
@@ -371,6 +372,46 @@ defmodule DemoWeb.PatchTestLive do
       <span id="toggle-on" hidden>pressed</span>
       <span id="toggle-off">not pressed</span>
       <p :if={@inside}>Tick next to the toggle: {@tick}</p>
+    </CoreComponents.stack>
+    <CoreComponents.stack :if={@component == "tree"}>
+      <h2>tree</h2>
+      <p>
+        Collapse a branch or expand <em>Working</em>, then bump. The
+        <em>Herding</em>
+        branch is a LiveComponent inside the tree; the second
+        tree is inside a LiveComponent. Each component has its own bump button.
+      </p>
+      <CoreComponents.tree id="test-tree" label="Patch test">
+        <CoreComponents.tree_item id="tree-sporting">
+          Sporting
+          <:items>
+            <CoreComponents.tree_item>Golden Retriever</CoreComponents.tree_item>
+            <CoreComponents.tree_item>
+              Irish Setter<span :if={@inside}> · tick {@tick}</span>
+            </CoreComponents.tree_item>
+          </:items>
+        </CoreComponents.tree_item>
+        <CoreComponents.tree_item id="tree-working" expanded={false}>
+          Working
+          <:items>
+            <CoreComponents.tree_item>Boxer</CoreComponents.tree_item>
+          </:items>
+        </CoreComponents.tree_item>
+        <.live_component module={DemoWeb.PatchTestTreeBranch} id="test-tree-branch" />
+      </CoreComponents.tree>
+      <div>
+        <CoreComponents.button
+          id="bump-tree-branch"
+          phx-click="bump"
+          phx-target="#tree-herding-component"
+        >
+          Update the component inside the tree
+        </CoreComponents.button>
+      </div>
+      <.live_component
+        module={DemoWeb.PatchTestTreeInComponent}
+        id="test-tree-in-component"
+      />
     </CoreComponents.stack>
     """
   end

@@ -24,6 +24,12 @@ and this project adheres to
   or `on_click` as its content instead of inside an empty link.
 - Render the `fallback` placeholder for a string of only whitespace and when the
   formatter returns an empty string.
+- Keep the expanded state the user chose for a `tree` branch through LiveView
+  patches, including patches of a LiveComponent inside the tree.
+- Stop `Up` and `Down` at the first and last item of a `tree`.
+- Ignore hidden text and icons in the `tree` type-ahead.
+- Stop the `tree` hook from failing on `Right` on an expanded branch without a
+  group.
 
 ## [0.16.0] - 2026-09-22
 

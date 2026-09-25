@@ -17,7 +17,6 @@ const visible = (el) =>
 describe("initTree", () => {
   describe("with a tree", () => {
     let el;
-    let hook;
 
     const item = (label) =>
       Array.from(el.querySelectorAll('[role="treeitem"]')).find(
@@ -26,7 +25,7 @@ describe("initTree", () => {
 
     beforeEach(() => {
       el = render(fixture);
-      hook = initTree(el);
+      initTree(el);
     });
 
     it("skips the items of a collapsed branch", () => {
@@ -181,18 +180,82 @@ describe("initTree", () => {
       expect(stops[0].closest('[role="group"][hidden]')).toBe(null);
     });
 
-    it("keeps a branch the user expanded open after a patch", () => {
-      item("Working").focus();
+    it("stops at the last item with Down and at the first with Up", () => {
+      item("Poodle").focus();
+      press(document.activeElement, "ArrowDown");
+      expect(focused()).toBe("Poodle");
+
+      item("Sporting").focus();
+      press(document.activeElement, "ArrowUp");
+      expect(focused()).toBe("Sporting");
+    });
+  });
+
+  describe("with a writer", () => {
+    it("writes the expanded state through the writer", () => {
+      const writes = [];
+      const el = render(fixture);
+
+      initTree(el, {
+        setAttribute: (target, attr, value) => {
+          writes.push(["set", attr, value]);
+          target.setAttribute(attr, value);
+        },
+        removeAttribute: (target, attr) => {
+          writes.push(["remove", attr]);
+          target.removeAttribute(attr);
+        },
+      });
+
+      const working = Array.from(el.querySelectorAll('[role="treeitem"]')).find(
+        (candidate) => labelOf(candidate) === "Working",
+      );
+
+      working.focus();
       press(document.activeElement, "ArrowRight");
-      expect(visible(el)).toContain("Boxer");
+      press(document.activeElement, "ArrowLeft");
 
-      // A patch renders the server's state again: Working collapsed.
-      const working = item("Working");
-      working.setAttribute("aria-expanded", "false");
-      working.querySelector('[role="group"]').setAttribute("hidden", "");
-      hook.update();
+      expect(writes).toEqual([
+        ["set", "aria-expanded", "true"],
+        ["remove", "hidden"],
+        ["set", "aria-expanded", "false"],
+        ["set", "hidden", ""],
+      ]);
+    });
+  });
 
-      expect(visible(el)).toContain("Boxer");
+  describe("with a branch without a group", () => {
+    it("does not fail on Right when the branch is expanded", () => {
+      const el = render(
+        '<ul id="tree" role="tree">' +
+          '<li role="treeitem" tabindex="0" aria-expanded="true">' +
+          '<button aria-hidden="true"></button><span>Empty</span>' +
+          "</li>" +
+          "</ul>",
+      );
+      initTree(el);
+      el.querySelector('[role="treeitem"]').focus();
+
+      expect(() => press(document.activeElement, "ArrowRight")).not.toThrow();
+    });
+  });
+
+  describe("with hidden text in a label", () => {
+    it("does not match text that is hidden or inside an icon", () => {
+      const el = render(
+        '<ul id="tree" role="tree">' +
+          '<li role="treeitem" tabindex="0"><span>Akita</span></li>' +
+          '<li role="treeitem" tabindex="-1">' +
+          '<span><span aria-hidden="true">x</span><svg><text>x</text></svg>Cur</span>' +
+          "</li>" +
+          '<li role="treeitem" tabindex="-1"><span>Xolo</span></li>' +
+          "</ul>",
+      );
+      initTree(el);
+      el.querySelector('[role="treeitem"]').focus();
+      press(document.activeElement, "x");
+
+      expect(document.activeElement.textContent).toBe("Xolo");
     });
   });
 

@@ -20,7 +20,7 @@ defmodule Doggo.Components.Tree do
     """
     ```heex
     <.tree id="dog-tree" label="Dogs">
-      <tree_item>
+      <.tree_item>
         Breeds
         <:items>
           <.tree_item>Golden Retriever</.tree_item>
@@ -35,6 +35,31 @@ defmodule Doggo.Components.Tree do
         </:items>
       </.tree_item>
     </.tree>
+    ```
+
+    ## From data
+
+    A `tree_item` with an `:items` slot is a branch, even if the slot is empty.
+    If you render the tree from data, conditionally hide the slot with an `:if`
+    attribute.
+
+    ```heex
+    <.tree id="breed-tree" label="Breeds">
+      <.breed_node :for={node <- @nodes} node={node} />
+    </.tree>
+    ```
+
+    ```elixir
+    defp breed_node(assigns) do
+      ~H\"""
+      <.tree_item>
+        {@node.name}
+        <:items :if={@node.children != []}>
+          <.breed_node :for={child <- @node.children} node={child} />
+        </:items>
+      </.tree_item>
+      \"""
+    end
     ```
 
     ## CSS
