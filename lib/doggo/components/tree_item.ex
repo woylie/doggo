@@ -92,8 +92,10 @@ defmodule Doggo.Components.TreeItem do
         """
 
       attr :selected, :boolean,
-        default: false,
-        doc: "Whether this item is selected."
+        default: nil,
+        doc: """
+        If set to `true`, an `aria-selected` attribute is added.
+        """
 
       attr :rest, :global, doc: "Any additional HTML attributes."
 
@@ -122,7 +124,7 @@ defmodule Doggo.Components.TreeItem do
     <li
       class={@class}
       role="treeitem"
-      aria-selected={to_string(@selected)}
+      aria-selected={@selected != nil && to_string(@selected)}
       aria-expanded={@items != [] && to_string(@expanded)}
       {@data_attrs}
       {@rest}
