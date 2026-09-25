@@ -31,6 +31,23 @@ defmodule Doggo.Storybook.VerticalNav do
         },
         template: section_template(opts),
         slots: slots("sectioned-nav", opts)
+      },
+      %Variation{
+        id: :without_landmark,
+        description: "Without landmark",
+        note:
+          "With `landmark={false}`, the component renders a `<div>`, and the label names the list. Use it when rendering the component inside an existing navigation landmark.",
+        attributes: %{
+          id: "vertical-nav-inner",
+          label: "Projects",
+          landmark: false
+        },
+        template: """
+        <nav aria-label="Main" style="inline-size: 16rem">
+          <.psb-variation/>
+        </nav>
+        """,
+        slots: slots("vertical-nav-inner", opts)
       }
     ]
   end

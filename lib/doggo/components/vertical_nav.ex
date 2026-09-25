@@ -18,6 +18,10 @@ defmodule Doggo.Components.VerticalNav do
     To include sections in your drawer or sidebar that are not part of the
     navigation menu (like informational text or a site search), use the
     `vertical_nav_section/1` component.
+
+    If the list is part of a navigation landmark you render yourself, set
+    `landmark={false}`. The component then renders a `<div>` instead of a
+    `<nav>`, and the label names the list.
     """
   end
 
@@ -41,6 +45,19 @@ defmodule Doggo.Components.VerticalNav do
         </.vertical_nav_nested>
       </:item>
     </.vertical_nav>
+    ```
+
+    Inside a navigation landmark:
+
+    ```heex
+    <nav aria-label="Main">
+      <.vertical_nav id="project-nav" landmark={false}>
+        <:title>Projects</:title>
+        <:item>
+          <.link navigate={~p"/projects/1"}>Adoption</.link>
+        </:item>
+      </.vertical_nav>
+    </nav>
     ```
     """
   end
@@ -72,11 +89,21 @@ defmodule Doggo.Components.VerticalNav do
     quote do
       attr :id, :string, required: true
 
+      attr :landmark, :boolean,
+        default: true,
+        doc: """
+        Renders the navigation as a `<nav>` landmark. Set it to `false` if the
+        component is placed inside an existing navigation landmark. The
+        component then renders a `<div>`, the label names the list instead,
+        and a label is optional.
+        """
+
       attr :label, :string,
         default: nil,
         doc: """
-        The aria label for the `<nav>` element. Not needed when the `:title`
-        slot is filled: the title labels the navigation then.
+        The aria label for the `<nav>` element, or for the list if `landmark`
+        is `false`. Not needed when the `:title` slot is filled: the title
+        labels the navigation then.
 
         Do not repeat the word `navigation` in the label. Screen readers
         announce the role along with the name. Using the role in the label
@@ -105,34 +132,42 @@ defmodule Doggo.Components.VerticalNav do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
+  def init_block(opts, _extra) do
+    name = ".#{Keyword.fetch!(opts, :name)}"
+
+    quote do
+      if var!(assigns).landmark do
+        Doggo.ensure_label!(var!(assigns), unquote(name), "Main")
+      end
+    end
   end
 
   @impl true
-  def example_label, do: "Main"
+  def render(assigns) do
+    assigns =
+      assign(assigns,
+        aria_label: assigns.title == [] && assigns.label,
+        aria_labelledby:
+          (assigns.title != [] && "#{assigns.id}-title") || assigns.labelledby
+      )
 
-  @impl true
-  def render(%{title: []} = assigns) do
-    render_nav(assigns)
-  end
-
-  def render(assigns), do: render_nav(assigns)
-
-  defp render_nav(assigns) do
     ~H"""
-    <nav
+    <.dynamic_tag
+      tag_name={if @landmark, do: "nav", else: "div"}
       class={@class}
       id={@id}
-      aria-label={@title == [] && @label}
-      aria-labelledby={(@title != [] && "#{@id}-title") || @labelledby}
+      aria-label={@landmark && @aria_label}
+      aria-labelledby={@landmark && @aria_labelledby}
       {@data_attrs}
       {@rest}
     >
       <div :if={@title != []} id={"#{@id}-title"} class={"#{@base_class}-title"}>
         {render_slot(@title)}
       </div>
-      <ul>
+      <ul
+        aria-label={!@landmark && @aria_label}
+        aria-labelledby={!@landmark && @aria_labelledby}
+      >
         <li
           :for={item <- @item}
           class={item[:class]}
@@ -141,7 +176,7 @@ defmodule Doggo.Components.VerticalNav do
           {render_slot(item)}
         </li>
       </ul>
-    </nav>
+    </.dynamic_tag>
     """
   end
 end
