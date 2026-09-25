@@ -215,11 +215,28 @@ describe("initTree", () => {
       press(document.activeElement, "ArrowRight");
       press(document.activeElement, "ArrowLeft");
 
-      expect(writes).toEqual([
+      expect(writes.filter(([, attr]) => attr !== "tabindex")).toEqual([
         ["set", "aria-expanded", "true"],
         ["remove", "hidden"],
         ["set", "aria-expanded", "false"],
         ["set", "hidden", ""],
+      ]);
+    });
+
+    it("writes the tab stop through the writer", () => {
+      const writes = [];
+      const el = render(fixture);
+
+      initTree(el, {
+        setAttribute: (target, attr, value) => {
+          if (attr === "tabindex") writes.push([labelOf(target), value]);
+          target.setAttribute(attr, value);
+        },
+        removeAttribute: (target, attr) => target.removeAttribute(attr),
+      });
+
+      expect(writes.filter(([, value]) => value === "0")).toEqual([
+        ["Sporting", "0"],
       ]);
     });
   });

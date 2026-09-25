@@ -26,6 +26,8 @@ and this project adheres to
   formatter returns an empty string.
 - Keep the expanded state the user chose for a `tree` branch through LiveView
   patches, including patches of a LiveComponent inside the tree.
+- Keep the tab stop of a `tree` through patches of a LiveComponent inside the
+  tree.
 - Stop `Up` and `Down` at the first and last item of a `tree`.
 - Ignore hidden text and icons in the `tree` type-ahead.
 - Stop the `tree` hook from failing on `Right` on an expanded branch without a

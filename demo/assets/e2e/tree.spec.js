@@ -44,4 +44,26 @@ test.describe("tree", () => {
     await expect(page.getByText("Pug · component tick 1")).toBeAttached();
     await expanded(page, "tree-toy", "false");
   });
+
+  test("keeps the tab stop through a patch of a LiveComponent inside the tree", async ({
+    page,
+  }) => {
+    await page.locator("#tree-herding").focus();
+    await expect(page.locator("#tree-herding")).toHaveAttribute(
+      "tabindex",
+      "0",
+    );
+
+    await page
+      .getByRole("button", { name: "Update the component inside the tree" })
+      .click();
+    await expect(page.getByText("Collie · component tick 1")).toBeAttached();
+    await expect(page.locator("#tree-herding")).toHaveAttribute(
+      "tabindex",
+      "0",
+    );
+    await expect(
+      page.locator('#test-tree [role="treeitem"][tabindex="0"]'),
+    ).toHaveCount(1);
+  });
 });
