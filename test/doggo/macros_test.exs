@@ -15,7 +15,7 @@ defmodule Doggo.MacrosTest do
   describe "build_button/1" do
     test "raises for global attribute as modifier name" do
       assert_raise ArgumentError,
-                   ~r/build_button\/1 cannot use :hidden as a modifier name/,
+                   ~r/invalid modifier name for build_button\/1.*Got:\s+:hidden/s,
                    fn ->
                      compile(
                        GlobalModifier,
@@ -35,9 +35,20 @@ defmodule Doggo.MacrosTest do
                    end
     end
 
+    test "raises for modifier named like included attribute" do
+      assert_raise ArgumentError,
+                   ~r/invalid modifier name for build_button\/1.*Got:\s+:value/s,
+                   fn ->
+                     compile(
+                       IncludedModifier,
+                       "build_button(modifiers: [value: [values: [\"a\"]]])"
+                     )
+                   end
+    end
+
     test "raises for modifier named class" do
       assert_raise ArgumentError,
-                   ~r/cannot use :class as a modifier name/,
+                   ~r/invalid modifier name for build_button\/1.*Got:\s+:class/s,
                    fn ->
                      compile(
                        ClassModifier,
@@ -61,6 +72,17 @@ defmodule Doggo.MacrosTest do
   end
 
   describe "build_button_link/1" do
+    test "raises for modifier named like attribute in include list" do
+      assert_raise ArgumentError,
+                   ~r/invalid modifier name for build_button_link\/1.*Got:\s+:target/s,
+                   fn ->
+                     compile(
+                       IncludedListModifier,
+                       "build_button_link(modifiers: [target: [values: [\"_blank\"]]])"
+                     )
+                   end
+    end
+
     test "raises for name imported by Phoenix.Component" do
       assert_raise ArgumentError,
                    ~r/build_button_link\/1 cannot generate a function called link\/1/,
