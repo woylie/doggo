@@ -72,6 +72,13 @@ defmodule Doggo.Components.Box do
   @impl true
   def attrs_and_slots(_opts) do
     quote do
+      attr :heading, :string,
+        default: "h2",
+        values: ["h1", "h2", "h3", "h4", "h5", "h6"],
+        doc: """
+        The heading level for the title.
+        """
+
       slot :title, doc: "The title for the box."
 
       slot :inner_block,
@@ -99,7 +106,11 @@ defmodule Doggo.Components.Box do
     ~H"""
     <section class={@class} {@data_attrs} {@rest}>
       <header :if={@title != [] || @banner != [] || @action != []}>
-        <h2 :if={@title != []}>{render_slot(@title)}</h2>
+        <.dynamic_tag
+          :if={@title != []}
+          tag_name={@heading}
+          phx-no-format
+        >{render_slot(@title)}</.dynamic_tag>
         <div :if={@action != []} class={"#{@base_class}-actions"}>
           <%= for action <- @action do %>
             {render_slot(action)}

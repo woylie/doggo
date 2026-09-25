@@ -16,6 +16,13 @@ defmodule Doggo.Storybook.Box do
         slots: [title(), body(), action(), footer()]
       },
       %Variation{
+        id: :heading_level,
+        note:
+          "The `heading` should be chosen to follow the header hierarchy in the document outline.",
+        attributes: %{heading: "h3"},
+        slots: [title(), body()]
+      },
+      %Variation{
         id: :banner,
         description: "With banner and title",
         slots: [title(), banner(), body()]
