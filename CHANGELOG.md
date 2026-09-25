@@ -10,6 +10,13 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [0.16.1] - 2026-09-25
+
+### Changed
+
+- The `expanded` attribute of the `tree_item` is now handled as initial state
+  only and cannot be updated by the server anymore.
+
 ### Fixed
 
 - Raise at compile time when a modifier is named after a global HTML attribute.
@@ -1063,7 +1070,8 @@ After:
 
 Initial release.
 
-[unreleased]: https://github.com/woylie/doggo/compare/0.16.0...HEAD
+[unreleased]: https://github.com/woylie/doggo/compare/0.16.1...HEAD
+[0.16.1]: https://github.com/woylie/doggo/compare/0.16.0...0.16.1
 [0.16.0]: https://github.com/woylie/doggo/compare/0.15.1...0.16.0
 [0.15.1]: https://github.com/woylie/doggo/compare/0.15.0...0.15.1
 [0.15.0]: https://github.com/woylie/doggo/compare/0.14.9...0.15.0
