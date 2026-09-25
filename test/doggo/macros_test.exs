@@ -13,6 +13,51 @@ defmodule Doggo.MacrosTest do
   end
 
   describe "build_button/1" do
+    test "accepts module attribute in options" do
+      [{module, _}] =
+        compile(AttributeOption, """
+        @sizes ["small", "large"]
+        build_button(modifiers: [size: [values: @sizes, default: "small"]])
+        """)
+
+      %{attrs: attrs} = module.__components__()[:button]
+      size = Enum.find(attrs, &(&1.name == :size))
+      assert size.opts[:values] == ["small", "large"]
+    end
+
+    test "accepts function call in options" do
+      [{module, _}] =
+        compile(FunctionCallOption, """
+        build_button(modifiers: [size: [values: Enum.map(~w(s l), &String.upcase/1)]])
+        """)
+
+      %{attrs: attrs} = module.__components__()[:button]
+      size = Enum.find(attrs, &(&1.name == :size))
+      assert size.opts[:values] == ["S", "L"]
+    end
+
+    test "accepts module attribute as options" do
+      [{module, _}] =
+        compile(AttributeOptions, """
+        @opts [name: :big_button, base_class: "big"]
+        build_button(@opts)
+        """)
+
+      assert %{big_button: info} = module.__dog_components__()
+      assert info[:base_class] == "big"
+    end
+
+    test "raises for anonymous function in options" do
+      assert_raise ArgumentError,
+                   ~r/invalid modifiers option for build_button\/1.*remote\ncapture/s,
+                   fn ->
+                     compile(
+                       AnonymousFunction,
+                       "build_button(modifiers: [size: [values: [fn -> 1 end]]])"
+                     )
+                   end
+    end
+
     test "raises for global attribute as modifier name" do
       assert_raise ArgumentError,
                    ~r/invalid modifier name for build_button\/1.*Got:\s+:hidden/s,

@@ -98,6 +98,16 @@ defmodule Doggo.Components do
 
   Some components have additional options that are mostly used to allow the
   customization of certain class names or to set the Gettext module.
+
+  The options are evaluated in the module body, so you can pass module
+  attributes and function calls:
+
+      @sizes ["small", "normal", "large"]
+
+      build_button(modifiers: [size: [values: @sizes, default: "normal"]])
+
+  Functions have to be remote captures such as `&MyAppWeb.Inputs.ranked/1`.
+  Anonymous functions cannot be compiled into the component.
   """
 
   use Phoenix.Component

@@ -26,12 +26,12 @@ defmodule Doggo do
       raise ArgumentError, """
       invalid ratios option for #{builder}/1
 
-      The option has to be a non-empty list of literal strings in the format
-      n:d, e.g. ["16:9", "4:3"].
+      The option has to be a non-empty list of strings in the format n:d, e.g.
+      ["16:9", "4:3"].
 
       Got:
 
-          #{Macro.to_string(ratios)}
+          #{inspect(ratios)}
       """
     end
   end
