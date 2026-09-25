@@ -78,7 +78,10 @@ defmodule Doggo.Components.MenuItemRadioGroup do
 
       slot :item, required: true do
         attr :checked, :boolean
-        attr :on_click, JS, required: true
+
+        attr :on_click, :any,
+          required: true,
+          doc: "`Phoenix.LiveView.JS` command or event name."
       end
     end
   end
@@ -96,7 +99,9 @@ defmodule Doggo.Components.MenuItemRadioGroup do
         <button
           type="button"
           role="menuitemradio"
-          phx-click={item.on_click}
+          phx-click={
+            Doggo.callback!(item.on_click, :on_click, ".menu_item_radio_group")
+          }
           aria-checked={to_string(item[:checked] || false)}
         >
           {render_slot(item)}

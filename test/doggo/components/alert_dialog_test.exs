@@ -132,6 +132,25 @@ defmodule Doggo.Components.AlertDialogTest do
                "Cancel"
     end
 
+    test "pushes event name on cancel with on_cancel event name" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.alert_dialog id="pet-alert_dialog" on_cancel="cancel">
+          <:title>Edit dog</:title>
+          dog-form
+        </TestComponents.alert_dialog>
+        """)
+
+      ops =
+        html
+        |> attribute("dialog:root", "data-cancel")
+        |> Phoenix.json_library().decode!()
+
+      assert ["push", %{"event" => "cancel"}] in ops
+    end
+
     test "renders global attributes" do
       assigns = %{}
 

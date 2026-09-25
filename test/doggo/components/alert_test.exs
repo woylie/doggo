@@ -102,6 +102,18 @@ defmodule Doggo.Components.AlertTest do
       assert text(button, "span") == "Close"
     end
 
+    test "raises for invalid on_close" do
+      assigns = %{on_close: %{event: "close"}}
+
+      assert_raise ArgumentError, ~r/invalid on_close value for \.alert/, fn ->
+        parse_heex(~H"""
+        <TestComponents.alert id="dog-alert" on_close={@on_close}>
+          message
+        </TestComponents.alert>
+        """)
+      end
+    end
+
     test "renders close label" do
       assigns = %{}
 

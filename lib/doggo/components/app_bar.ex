@@ -122,7 +122,7 @@ defmodule Doggo.Components.AppBar do
       <div :if={@navigation != []} class={"#{@base_class}-navigation"}>
         <.link
           :for={navigation <- @navigation}
-          phx-click={navigation.on_click}
+          phx-click={Doggo.callback!(navigation.on_click, :on_click, ".app_bar")}
           aria-label={navigation.label}
           title={navigation.label}
         >
@@ -133,7 +133,7 @@ defmodule Doggo.Components.AppBar do
       <div :if={@action != []} class={"#{@base_class}-actions"}>
         <.link
           :for={action <- @action}
-          phx-click={action.on_click}
+          phx-click={Doggo.callback!(action.on_click, :on_click, ".app_bar")}
           aria-label={action.label}
           title={action.label}
         >

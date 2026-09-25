@@ -181,7 +181,7 @@ defmodule Doggo.Components.Steps do
         {@completed_label}
       </span>
       <%= if @step[:on_click] && ((@linear && @index < @current_step) || (!@linear && @index != @current_step)) do %>
-        <.link phx-click={@step[:on_click]}>
+        <.link phx-click={Doggo.callback!(@step[:on_click], :on_click, ".steps")}>
           {render_slot(@step)}
         </.link>
       <% else %>

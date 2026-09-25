@@ -5,8 +5,6 @@ defmodule Doggo.Components.MenuItemCheckbox do
 
   use Phoenix.Component
 
-  alias Phoenix.LiveView.JS
-
   @impl true
   def doc do
     """
@@ -62,7 +60,11 @@ defmodule Doggo.Components.MenuItemCheckbox do
   def attrs_and_slots(_opts) do
     quote do
       attr :checked, :boolean, default: false
-      attr :on_click, JS, required: true
+
+      attr :on_click, :any,
+        required: true,
+        doc: "`Phoenix.LiveView.JS` command or event name."
+
       attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :inner_block, required: true
@@ -84,7 +86,7 @@ defmodule Doggo.Components.MenuItemCheckbox do
       type="button"
       role="menuitemcheckbox"
       aria-checked={@checked}
-      phx-click={@on_click}
+      phx-click={Doggo.callback!(@on_click, :on_click, ".menu_item_checkbox")}
       {@data_attrs}
       {@rest}
     >

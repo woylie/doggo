@@ -105,7 +105,7 @@ defmodule Doggo.Components.ToggleButton do
     quote do
       attr :pressed, :boolean, default: false
 
-      attr :on_click, JS,
+      attr :on_click, :any,
         required: true,
         doc: """
         `Phoenix.LiveView.JS` command or event name to trigger when the button is
@@ -133,7 +133,7 @@ defmodule Doggo.Components.ToggleButton do
       type="button"
       phx-click={
         JS.toggle_attribute(
-          @on_click,
+          Doggo.to_js!(@on_click, :on_click, ".toggle_button"),
           {"aria-pressed", "true", "false"}
         )
       }

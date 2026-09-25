@@ -242,11 +242,11 @@ defmodule Doggo.Components.Modal do
         default: false,
         doc: "Initializes the modal as open."
 
-      attr :on_cancel, JS,
+      attr :on_cancel, :any,
         default: %JS{},
         doc: """
-        An additional `Phoenix.LiveView.JS` command to execute when the dialog
-        is canceled. This command is executed in addition to closing the dialog. If
+        An additional `Phoenix.LiveView.JS` command or event name to execute
+        when the dialog is canceled. This command is executed in addition to closing the dialog. If
         you only want the dialog to be closed, you don't have to set this attribute.
         """
 
@@ -293,7 +293,9 @@ defmodule Doggo.Components.Modal do
       phx-hook="Doggo.Dialog"
       phx-mounted={Doggo.dialog_mounted(@id, @open)}
       phx-remove={Doggo.hide_modal(@id)}
-      data-cancel={JS.exec(@on_cancel, "phx-remove")}
+      data-cancel={
+        JS.exec(Doggo.to_js!(@on_cancel, :on_cancel, ".modal"), "phx-remove")
+      }
       {@data_attrs}
       {@rest}
     >
