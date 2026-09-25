@@ -994,6 +994,21 @@ defmodule Doggo.FixturesTest do
     )
   end
 
+  test "matches vertical_nav fixture without landmark" do
+    assigns = %{}
+
+    assert_fixture(
+      ~H"""
+      <FixtureComponents.vertical_nav id="project-nav" landmark={false}>
+        <:title>Projects</:title>
+        <:item current_page>item</:item>
+        <:item>another item</:item>
+      </FixtureComponents.vertical_nav>
+      """,
+      "vertical_nav_without_landmark.html"
+    )
+  end
+
   test "matches vertical_nav_nested fixture" do
     assigns = %{}
 
