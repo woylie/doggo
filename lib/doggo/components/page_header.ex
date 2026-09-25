@@ -151,7 +151,7 @@ defmodule Doggo.Components.PageHeader do
         href={@navigation[:href]}
         navigate={@navigation[:navigate]}
         patch={@navigation[:patch]}
-        phx-click={@navigation[:on_click]}
+        phx-click={Doggo.callback!(@navigation[:on_click], :on_click, ".page_header")}
         aria-label={@navigation[:label]}
       >
         {render_slot(@navigation)}

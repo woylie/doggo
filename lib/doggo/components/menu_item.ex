@@ -5,8 +5,6 @@ defmodule Doggo.Components.MenuItem do
 
   use Phoenix.Component
 
-  alias Phoenix.LiveView.JS
-
   @impl true
   def doc do
     """
@@ -60,7 +58,10 @@ defmodule Doggo.Components.MenuItem do
   @impl true
   def attrs_and_slots(_opts) do
     quote do
-      attr :on_click, JS, required: true
+      attr :on_click, :any,
+        required: true,
+        doc: "`Phoenix.LiveView.JS` command or event name."
+
       attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :inner_block, required: true
@@ -79,7 +80,7 @@ defmodule Doggo.Components.MenuItem do
       class={@class}
       type="button"
       role="menuitem"
-      phx-click={@on_click}
+      phx-click={Doggo.callback!(@on_click, :on_click, ".menu_item")}
       {@data_attrs}
       {@rest}
     >

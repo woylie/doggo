@@ -79,6 +79,38 @@ defmodule Doggo.Components.ToggleButtonTest do
       assert attribute(html, "button:root", "data-variant") == "danger"
     end
 
+    test "pushes event name with on_click event name" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.toggle_button on_click="toggle-mute">
+          Mute
+        </TestComponents.toggle_button>
+        """)
+
+      ops =
+        html
+        |> attribute("button:root", "phx-click")
+        |> Phoenix.json_library().decode!()
+
+      assert ["push", %{"event" => "toggle-mute"}] in ops
+    end
+
+    test "raises for invalid on_click" do
+      assigns = %{on_click: :mute}
+
+      assert_raise ArgumentError,
+                   ~r/invalid on_click value for \.toggle_button/,
+                   fn ->
+                     parse_heex(~H"""
+                     <TestComponents.toggle_button on_click={@on_click}>
+                       Mute
+                     </TestComponents.toggle_button>
+                     """)
+                   end
+    end
+
     test "renders global attributes" do
       assigns = %{}
 

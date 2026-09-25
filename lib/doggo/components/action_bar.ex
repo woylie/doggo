@@ -94,7 +94,10 @@ defmodule Doggo.Components.ActionBar do
         with `label="Remove record"` cannot be activated by voice.
         """ do
         attr :label, :string, required: true
-        attr :on_click, JS, required: true
+
+        attr :on_click, :any,
+          required: true,
+          doc: "`Phoenix.LiveView.JS` command or event name."
       end
     end
   end
@@ -118,7 +121,7 @@ defmodule Doggo.Components.ActionBar do
       <button
         :for={item <- @item}
         type="button"
-        phx-click={item.on_click}
+        phx-click={Doggo.callback!(item.on_click, :on_click, ".action_bar")}
         aria-label={item.label}
         title={item.label}
       >

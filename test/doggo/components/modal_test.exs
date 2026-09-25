@@ -121,6 +121,25 @@ defmodule Doggo.Components.ModalTest do
       assert attribute(html, "button.modal-close", "aria-label") == "Cancel"
     end
 
+    test "pushes event name on cancel with on_cancel event name" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.modal id="pet-modal" on_cancel="cancel">
+          <:title>Edit dog</:title>
+          dog-form
+        </TestComponents.modal>
+        """)
+
+      ops =
+        html
+        |> attribute("dialog:root", "data-cancel")
+        |> Phoenix.json_library().decode!()
+
+      assert ["push", %{"event" => "cancel"}] in ops
+    end
+
     test "renders global attributes" do
       assigns = %{}
 

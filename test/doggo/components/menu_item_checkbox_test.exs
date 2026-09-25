@@ -48,5 +48,18 @@ defmodule Doggo.Components.MenuItemCheckboxTest do
       button = find_one(html, "button:root")
       assert attribute(button, "aria-checked") == "true"
     end
+
+    test "renders event name in phx-click with on_click event name" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu_item_checkbox on_click="toggle-wrap">
+          Wrap
+        </TestComponents.menu_item_checkbox>
+        """)
+
+      assert attribute(html, ":root", "phx-click") == "toggle-wrap"
+    end
   end
 end

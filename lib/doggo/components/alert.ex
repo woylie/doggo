@@ -106,8 +106,8 @@ defmodule Doggo.Components.Alert do
       attr :on_close, :any,
         default: nil,
         doc: """
-        JS command to run when the close button is clicked. If not set, no close
-        button is rendered.
+        `Phoenix.LiveView.JS` command or event name to run when the close button
+        is clicked. If not set, no close button is rendered.
         """
 
       attr :close_label, :string,
@@ -171,7 +171,7 @@ defmodule Doggo.Components.Alert do
         type="button"
         class={"#{@base_class}-close"}
         aria-label={@close_label}
-        phx-click={@on_close}
+        phx-click={Doggo.callback!(@on_close, :on_close, ".alert")}
       >
         {render_slot(@close)}
         <span :if={@close == []}>{@close_label}</span>

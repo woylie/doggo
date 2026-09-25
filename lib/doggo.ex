@@ -52,6 +52,31 @@ defmodule Doggo do
   defp split_ratio(_), do: nil
 
   @doc false
+  def to_js!(value, attr, component) do
+    case callback!(value, attr, component) do
+      event when is_binary(event) -> JS.push(event)
+      js -> js
+    end
+  end
+
+  @doc false
+  def callback!(%JS{} = js, _attr, _component), do: js
+  def callback!(event, _attr, _component) when is_binary(event), do: event
+  def callback!(nil, _attr, _component), do: nil
+
+  def callback!(value, attr, component) do
+    raise ArgumentError, """
+    invalid #{attr} value for #{component}
+
+    #{attr} must be a Phoenix.LiveView.JS command or an event name as a string.
+
+    Got:
+
+        #{inspect(value)}
+    """
+  end
+
+  @doc false
   def truncate_datetime(nil, _), do: nil
   def truncate_datetime(v, nil), do: v
   def truncate_datetime(v, :minute), do: %{v | second: 0, microsecond: {0, 0}}
