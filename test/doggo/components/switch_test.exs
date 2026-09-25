@@ -16,6 +16,17 @@ defmodule Doggo.Components.SwitchTest do
   end
 
   describe "switch/1" do
+    test "renders unchecked switch with nil checked" do
+      assigns = %{checked: nil}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.switch label="Subscribe" checked={@checked} />
+        """)
+
+      assert attribute(html, "button:root", "aria-checked") == "false"
+    end
+
     test "renders checked switch" do
       assigns = %{}
 

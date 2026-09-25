@@ -94,7 +94,7 @@ defmodule Doggo.Components.Switch do
       class={@class}
       type="button"
       role="switch"
-      aria-checked={to_string(@checked)}
+      aria-checked={to_string(@checked == true)}
       {@data_attrs}
       {@rest}
     >

@@ -49,6 +49,49 @@ defmodule Doggo.Components.MenuItemCheckboxTest do
       assert attribute(button, "aria-checked") == "true"
     end
 
+    test "renders unchecked state with nil checked" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu_item_checkbox on_click="toggle-wrap" checked={nil}>
+          Wrap
+        </TestComponents.menu_item_checkbox>
+        """)
+
+      assert attribute(html, ":root", "aria-checked") == "false"
+    end
+
+    test "renders mixed state with indeterminate checked" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu_item_checkbox
+          on_click="toggle-all"
+          checked={:indeterminate}
+        >
+          All
+        </TestComponents.menu_item_checkbox>
+        """)
+
+      assert attribute(html, ":root", "aria-checked") == "mixed"
+    end
+
+    test "raises for invalid checked" do
+      assigns = %{checked: "yes"}
+
+      assert_raise ArgumentError,
+                   ~r/invalid checked value for \.menu_item_checkbox/,
+                   fn ->
+                     parse_heex(~H"""
+                     <TestComponents.menu_item_checkbox on_click="toggle-wrap" checked={@checked}>
+                       Wrap
+                     </TestComponents.menu_item_checkbox>
+                     """)
+                   end
+    end
+
     test "renders event name in phx-click with on_click event name" do
       assigns = %{}
 

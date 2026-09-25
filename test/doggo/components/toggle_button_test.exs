@@ -52,6 +52,19 @@ defmodule Doggo.Components.ToggleButtonTest do
       assert text(button) == "Mute"
     end
 
+    test "renders unpressed state with nil pressed" do
+      assigns = %{pressed: nil}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.toggle_button on_click="toggle-mute" pressed={@pressed}>
+          Mute
+        </TestComponents.toggle_button>
+        """)
+
+      assert attribute(html, "button:root", "aria-pressed") == "false"
+    end
+
     test "renders disabled button" do
       assigns = %{}
 

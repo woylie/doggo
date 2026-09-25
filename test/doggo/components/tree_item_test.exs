@@ -28,7 +28,7 @@ defmodule Doggo.Components.TreeItemTest do
 
       assert attribute(html, "li:root", "role") == "treeitem"
       assert attribute(html, ":root", "aria-expanded") == nil
-      assert attribute(html, ":root", "aria-selected") == "false"
+      assert attribute(html, ":root", "aria-selected") == nil
       assert text(html, ":root > span") == "Breeds"
       assert Floki.find(html, ":root ul") == []
     end
@@ -61,6 +61,17 @@ defmodule Doggo.Components.TreeItemTest do
       assert attribute(html, ":root", "aria-selected") == "true"
     end
 
+    test "renders unselected state with selected false" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tree_item selected={false}>Breeds</TestComponents.tree_item>
+        """)
+
+      assert attribute(html, ":root", "aria-selected") == "false"
+    end
+
     test "ignores expanded on leaf" do
       assigns = %{}
 
@@ -89,7 +100,7 @@ defmodule Doggo.Components.TreeItemTest do
 
       assert attribute(html, "li:root", "role") == "treeitem"
       assert attribute(html, ":root", "aria-expanded") == "true"
-      assert attribute(html, ":root", "aria-selected") == "false"
+      assert attribute(html, ":root", "aria-selected") == nil
       assert text(html, ":root > span") == "Breeds"
 
       assert ul = find_one(html, "li:root > ul")
@@ -99,14 +110,14 @@ defmodule Doggo.Components.TreeItemTest do
       assert li = find_one(ul, "li:first-child")
       assert attribute(li, "role") == "treeitem"
       assert attribute(li, ":root", "aria-expanded") == nil
-      assert attribute(li, ":root", "aria-selected") == "false"
+      assert attribute(li, ":root", "aria-selected") == nil
       assert text(li, ":root > span") == "Golden Retriever"
       assert Floki.find(li, ":root ul") == []
 
       assert li = find_one(ul, "li:last-child")
       assert attribute(li, "role") == "treeitem"
       assert attribute(li, ":root", "aria-expanded") == nil
-      assert attribute(li, ":root", "aria-selected") == "false"
+      assert attribute(li, ":root", "aria-selected") == nil
       assert text(li, ":root > span") == "Labrador Retriever"
       assert Floki.find(li, ":root ul") == []
     end
