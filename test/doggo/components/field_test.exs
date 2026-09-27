@@ -27,13 +27,13 @@ defmodule Doggo.Components.FieldTest do
     build_field(
       name: :field_with_extra_types,
       gettext_module: Doggo.Gettext,
-      extra_types: %{"ranked" => &FieldTest.ranked_input/1}
+      types: %{"ranked" => &FieldTest.ranked_input/1}
     )
 
     build_field(
       name: :field_with_group_type,
       gettext_module: Doggo.Gettext,
-      extra_types: %{
+      types: %{
         "permissions" => {&FieldTest.permissions_input/1, group: true}
       }
     )
@@ -41,7 +41,12 @@ defmodule Doggo.Components.FieldTest do
     build_field(
       name: :field_with_replaced_select,
       gettext_module: Doggo.Gettext,
-      extra_types: %{"select" => &FieldTest.ranked_input/1}
+      types: %{"select" => &FieldTest.ranked_input/1}
+    )
+
+    build_field(
+      name: :field_with_removed_types,
+      types: %{"week" => nil, "color" => nil, "text" => :default}
     )
   end
 
@@ -228,14 +233,14 @@ defmodule Doggo.Components.FieldTest do
     end
   end
 
-  describe "build_field/1 with :extra_types from a module attribute" do
-    test "registers extra types" do
+  describe "build_field/1 with :types from a module attribute" do
+    test "registers types" do
       defmodule FromAnAttribute do
         use Doggo.Components
         use Phoenix.Component
 
         @types %{"ranked" => &FieldTest.ranked_input/1}
-        build_field(name: :attribute_field, extra_types: @types)
+        build_field(name: :attribute_field, types: @types)
       end
 
       assigns = %{}
@@ -254,20 +259,31 @@ defmodule Doggo.Components.FieldTest do
     end
   end
 
-  describe "build_field/1 with an invalid :extra_types option" do
+  describe "build_field/1 with :types" do
+    test "removes types set to nil from type values" do
+      %{attrs: attrs} =
+        TestComponents.__components__()[:field_with_removed_types]
+
+      values = Enum.find(attrs, &(&1.name == :type)).opts[:values]
+
+      refute "week" in values
+      refute "color" in values
+      assert "text" in values
+      assert "select" in values
+    end
+
     test "raises if the option is not a map" do
       error =
         assert_raise ArgumentError, fn ->
-          defmodule FromAVariable do
+          defmodule FromAList do
             use Doggo.Components
             use Phoenix.Component
 
-            build_field(name: :bad_field, extra_types: ["ranked"])
+            build_field(name: :bad_field, types: ["ranked"])
           end
         end
 
-      assert error.message =~ "Invalid :extra_types option"
-      assert error.message =~ "The option has to be a map"
+      assert error.message =~ "invalid :types option for build_field/1"
     end
 
     test "raises if a type name is not a string" do
@@ -279,16 +295,63 @@ defmodule Doggo.Components.FieldTest do
 
             build_field(
               name: :bad_field,
-              extra_types: %{ranked: &FieldTest.ranked_input/1}
+              types: %{ranked: &FieldTest.ranked_input/1}
             )
           end
         end
 
-      assert error.message =~ "Invalid type name in :extra_types"
+      assert error.message =~ "invalid type name in :types"
+    end
+
+    test "raises for nil on a type that is not built in" do
+      error =
+        assert_raise ArgumentError, fn ->
+          defmodule FromUnknownNil do
+            use Doggo.Components
+            use Phoenix.Component
+
+            build_field(name: :bad_field, types: %{"ranked" => nil})
+          end
+        end
+
+      assert error.message =~ "apply to built-in types only"
+    end
+
+    test "raises for an invalid entry" do
+      error =
+        assert_raise ArgumentError, fn ->
+          defmodule FromInvalidEntry do
+            use Doggo.Components
+            use Phoenix.Component
+
+            build_field(name: :bad_field, types: %{"ranked" => :ranked})
+          end
+        end
+
+      assert error.message =~ "invalid entry in :types"
     end
   end
 
-  describe "field/1 with extra types" do
+  describe "build_field/1 with :extra_types" do
+    test "raises an error" do
+      error =
+        assert_raise ArgumentError, fn ->
+          defmodule FromExtraTypes do
+            use Doggo.Components
+            use Phoenix.Component
+
+            build_field(
+              name: :extra_field,
+              extra_types: %{"ranked" => &FieldTest.ranked_input/1}
+            )
+          end
+        end
+
+      assert error.message =~ "was replaced by :types"
+    end
+  end
+
+  describe "field/1 with types" do
     test "replaces built-in type with registered type of same name" do
       assigns = %{form: to_form(%{"pet" => "2"})}
 
