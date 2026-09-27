@@ -7,6 +7,10 @@ defmodule Doggo.Components.Field do
 
   alias Phoenix.HTML.Form
 
+  @built_in_types ~w(checkbox checkbox-group color date datetime-local email file
+                     hidden month number password range radio radio-group search
+                     select switch tel text textarea time url week)
+
   @impl true
   def doc do
     """
@@ -33,10 +37,10 @@ defmodule Doggo.Components.Field do
     - `:optional_text` - Defines a text that is rendered next to the label
       in optional fields. Defaults to `nil`. This value is translated
       if `gettext_module` is set.
-    - `:extra_types` - A map from a type name to a function component that
-      renders the control. If the field type consists of multiple inputs, it
-      should be marked as a group: `{component, group: true}`. See
-      *Custom types* below.
+    - `:types` - A map from a type name to the control that renders it. A map
+      value can be a function component, a function component marked as a group
+      (`{component, group: true}`), `:default` for the built-in control, or
+      `nil` to remove a built-in type. See *Custom types* below.
     """
   end
 
@@ -45,22 +49,34 @@ defmodule Doggo.Components.Field do
     """
     ### Custom types
 
-    You can register additional input types at build time with the `extra_types`
+    You can register additional input types at build time with the `types`
     option.
 
     ```elixir
     build_field(
-      extra_types: %{"ranked" => &MyAppWeb.Inputs.ranked/1}
+      types: %{"ranked" => &MyAppWeb.Inputs.ranked/1}
     )
     ```
 
-    The extra types can be rendered like any other types.
+    The additional types can be rendered like any other types.
 
     ```heex
     <.field field={@form[:rank]} type="ranked" label="Rank" />
     ```
 
-    You can also use this mechanism to override the built-in types.
+    The map is merged into the built-in types. You can set an entry to `nil` to
+    remove a built-in type you do not use, and to `:default` to keep the
+    built-in control, for example after a shared configuration replaced it.
+
+    ```elixir
+    build_field(
+      types: %{
+        "select" => &MyAppWeb.Inputs.select/1,
+        "color" => nil,
+        "week" => nil
+      }
+    )
+    ```
 
     ### Types that render a group
 
@@ -70,7 +86,7 @@ defmodule Doggo.Components.Field do
 
     ```elixir
     build_field(
-      extra_types: %{
+      types: %{
         "permissions" => {&MyAppWeb.Inputs.permissions/1, group: true}
       }
     )
@@ -271,6 +287,7 @@ defmodule Doggo.Components.Field do
         gettext_module: nil,
         required_text: "(required)",
         optional_text: nil,
+        types: nil,
         extra_types: nil
       ]
     ]
@@ -301,12 +318,11 @@ defmodule Doggo.Components.Field do
 
   @impl true
   def attrs_and_slots(opts) do
-    built_in_types =
-      ~w(checkbox checkbox-group color date datetime-local email file hidden
-       month number password range radio radio-group search select switch tel
-       text textarea time url week)
+    built_in_types = @built_in_types
 
-    extra_types = extra_type_names(Keyword.get(opts, :extra_types))
+    types = types!(opts)
+    removed = for {name, nil} <- types, do: name
+    added = for {name, entry} <- types, entry != nil, do: name
 
     quote do
       attr :id, :any, default: nil
@@ -332,7 +348,7 @@ defmodule Doggo.Components.Field do
 
       attr :type, :string,
         default: "text",
-        values: unquote(Enum.uniq(built_in_types ++ extra_types))
+        values: unquote(Enum.uniq((built_in_types -- removed) ++ added))
 
       attr :field, Phoenix.HTML.FormField,
         doc: "A form field struct, for example: @form[:name]"
@@ -453,31 +469,94 @@ defmodule Doggo.Components.Field do
     end
   end
 
-  defp extra_type_names(nil), do: []
+  @doc false
+  def types!(opts) do
+    if Keyword.get(opts, :extra_types) do
+      raise ArgumentError, """
+      the :extra_types option of build_field/1 was replaced by :types
 
-  defp extra_type_names(%{} = types) do
-    Enum.map(types, fn
-      {type, _fun} when is_binary(type) ->
-        type
+      Please rename the option from `:extra_types` to `:types`.
 
-      {type, _fun} ->
-        raise ArgumentError, """
-        Invalid type name in :extra_types
+      Example:
 
-        A type name has to be a string, got:
+          build_field(types: %{"ranked" => &MyAppWeb.Inputs.ranked/1})
+      """
+    end
 
-            #{inspect(type)}
-        """
-    end)
+    validate_types!(Keyword.get(opts, :types), :types)
   end
 
-  defp extra_type_names(other) do
-    raise ArgumentError, """
-    Invalid :extra_types option
+  defp validate_types!(nil, _option), do: %{}
 
-    The option has to be a map, got:
+  defp validate_types!(%{} = types, option) do
+    for {name, entry} <- types do
+      validate_type_name!(name, option)
+      validate_type_entry!(name, entry, option)
+    end
+
+    types
+  end
+
+  defp validate_types!(other, option) do
+    raise ArgumentError, """
+    invalid #{inspect(option)} option for build_field/1
+
+    The option has to be a map from type names to entries.
+
+    Got:
 
         #{inspect(other)}
+    """
+  end
+
+  defp validate_type_name!(name, _option) when is_binary(name), do: :ok
+
+  defp validate_type_name!(name, option) do
+    raise ArgumentError, """
+    invalid type name in #{inspect(option)} for build_field/1
+
+    A type name has to be a string.
+
+    Got:
+
+        #{inspect(name)}
+    """
+  end
+
+  defp validate_type_entry!(_name, entry, _option) when is_function(entry, 1),
+    do: :ok
+
+  defp validate_type_entry!(_name, {entry, opts}, _option)
+       when is_function(entry, 1) and is_list(opts),
+       do: :ok
+
+  defp validate_type_entry!(name, entry, :types)
+       when entry in [nil, :default] do
+    if name in @built_in_types do
+      :ok
+    else
+      raise ArgumentError, """
+      invalid entry in :types for build_field/1
+
+      `nil` and `:default` apply to built-in types only.
+
+      Got:
+
+          #{inspect(name)} => #{inspect(entry)}
+      """
+    end
+  end
+
+  defp validate_type_entry!(name, entry, option) do
+    raise ArgumentError, """
+    invalid entry in #{inspect(option)} for build_field/1
+
+    An entry has to be a function component, `{component, group: true}`,
+    `:default` or `nil`.
+
+    Got:
+
+        #{inspect(name)} => #{inspect(entry)}
     """
   end
 
@@ -487,7 +566,11 @@ defmodule Doggo.Components.Field do
     optional_text = Keyword.fetch!(extra, :optional_text)
     gettext_module = Keyword.get(extra, :gettext_module)
 
-    extra_types = Macro.escape(Keyword.get(extra, :extra_types) || %{})
+    custom_types =
+      extra
+      |> types!()
+      |> Map.filter(fn {_name, entry} -> entry not in [nil, :default] end)
+      |> Macro.escape()
 
     quote do
       var!(assigns) =
@@ -496,7 +579,7 @@ defmodule Doggo.Components.Field do
           gettext_module: unquote(gettext_module),
           required_text: unquote(required_text),
           optional_text: unquote(optional_text),
-          extra_types: unquote(extra_types)
+          custom_types: unquote(custom_types)
         )
     end
   end
@@ -555,9 +638,9 @@ defmodule Doggo.Components.Field do
     |> render()
   end
 
-  def render(%{type: type, extra_types: extra_types} = assigns)
-      when is_map_key(extra_types, type) do
-    case Map.fetch!(extra_types, type) do
+  def render(%{type: type, custom_types: custom_types} = assigns)
+      when is_map_key(custom_types, type) do
+    case Map.fetch!(custom_types, type) do
       {input, opts} ->
         if Keyword.get(opts, :group, false) do
           assigns |> assign(:input, input) |> extra_group()

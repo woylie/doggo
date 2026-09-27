@@ -22,6 +22,25 @@ defmodule Doggo.Storybook.Field do
   end
 
   def variations(opts) do
+    removed = for {type, nil} <- opts[:extra][:types] || %{}, do: type
+
+    opts
+    |> all_variations()
+    |> Enum.map(&without_types(&1, removed))
+    |> Enum.reject(&match?(%VariationGroup{variations: []}, &1))
+  end
+
+  defp without_types(%VariationGroup{} = group, removed) do
+    %{
+      group
+      | variations:
+          Enum.reject(group.variations, &(&1.attributes[:type] in removed))
+    }
+  end
+
+  defp without_types(variation, _removed), do: variation
+
+  defp all_variations(opts) do
     dependent_components = opts[:dependent_components]
 
     [
