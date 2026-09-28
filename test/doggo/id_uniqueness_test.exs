@@ -33,6 +33,7 @@ defmodule Doggo.IdUniquenessTest do
     build_table()
     build_tabs()
     build_toolbar()
+    build_toggletip()
     build_tooltip()
     build_tree()
     build_vertical_nav()
@@ -101,6 +102,9 @@ defmodule Doggo.IdUniquenessTest do
       <TestComponents.toolbar id={"toolbar-#{i}"} label="Actions">
         Content
       </TestComponents.toolbar>
+      <TestComponents.toggletip id={"toggletip-#{i}"} label="About">
+        Help
+      </TestComponents.toggletip>
       <TestComponents.tooltip id={"tooltip-#{i}"}>
         Term
         <:tooltip>Help</:tooltip>

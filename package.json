@@ -33,6 +33,7 @@
     "./combobox": "./assets/js/hooks/combobox.js",
     "./tabs": "./assets/js/hooks/tabs.js",
     "./toolbar": "./assets/js/hooks/toolbar.js",
+    "./toggletip": "./assets/js/hooks/toggletip.js",
     "./tooltip": "./assets/js/hooks/tooltip.js",
     "./menu": "./assets/js/hooks/menu.js",
     "./menu_button": "./assets/js/hooks/menu_button.js",

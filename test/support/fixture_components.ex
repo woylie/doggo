@@ -62,6 +62,7 @@ defmodule Doggo.FixtureComponents do
   build_time()
   build_toggle_button()
   build_toolbar()
+  build_toggletip()
   build_tooltip()
   build_tree()
   build_tree_item()

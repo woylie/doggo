@@ -24,6 +24,7 @@ defmodule DemoWeb.PatchTestLive do
     {"split_pane", "Split pane"},
     {"disclosure_button", "Disclosure button"},
     {"toggle_button", "Toggle button"},
+    {"toggletip", "Toggletip"},
     {"tree", "Tree"}
   ]
 
@@ -247,6 +248,14 @@ defmodule DemoWeb.PatchTestLive do
         <:title>Modal</:title>
         <p>Bump the tick and see whether this closes.</p>
         <p :if={@inside}>Tick inside the modal: {@tick}</p>
+        <div>
+          <CoreComponents.toggletip
+            id="test-modal-toggletip"
+            label="About the modal"
+          >
+            Escape closes this first.
+          </CoreComponents.toggletip>
+        </div>
         <:footer>
           <CoreComponents.button autofocus phx-click="bump">
             Bump from inside
@@ -372,6 +381,18 @@ defmodule DemoWeb.PatchTestLive do
       <span id="toggle-on" hidden>pressed</span>
       <span id="toggle-off">not pressed</span>
       <p :if={@inside}>Tick next to the toggle: {@tick}</p>
+    </CoreComponents.stack>
+    <CoreComponents.stack :if={@component == "toggletip"}>
+      <h2>toggletip</h2>
+      <p>Open the toggletip, then bump.</p>
+      <div>
+        <CoreComponents.toggletip id="test-toggletip" label="About the adoption fee">
+          <p>The fee covers vaccinations and a microchip.</p>
+          <p><a href="#fees">How fees are used</a></p>
+          <p :if={@inside}>Tick inside the panel: {@tick}</p>
+        </CoreComponents.toggletip>
+      </div>
+      <p>Text after the toggletip.</p>
     </CoreComponents.stack>
     <CoreComponents.stack :if={@component == "tree"}>
       <h2>tree</h2>
