@@ -89,6 +89,8 @@ defmodule Doggo.Components.Breadcrumb do
   def example_label, do: "Breadcrumb"
 
   @impl true
+  def render(%{item: []} = assigns), do: ~H""
+
   def render(%{item: item} = assigns) do
     [last_item | rest] = Enum.reverse(item)
 

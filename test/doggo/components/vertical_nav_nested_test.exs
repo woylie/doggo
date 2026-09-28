@@ -77,5 +77,20 @@ defmodule Doggo.Components.VerticalNavNestedTest do
 
       assert attribute(html, "li", "class") == "is-rad"
     end
+
+    test "renders nothing without items" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.vertical_nav_nested id="nested-nav">
+          <:title>Breeds</:title>
+          <:item :for={_ <- []} current_page>item</:item>
+          <:item :for={_ <- []}>another item</:item>
+        </TestComponents.vertical_nav_nested>
+        """)
+
+      assert html == []
+    end
   end
 end

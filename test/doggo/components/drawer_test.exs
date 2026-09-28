@@ -21,12 +21,13 @@ defmodule Doggo.Components.DrawerTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.drawer id="drawer-1"></TestComponents.drawer>
+        <TestComponents.drawer id="drawer-1">
+          <:main>Content</:main>
+        </TestComponents.drawer>
         """)
 
-      div = find_one(html, "div")
+      div = find_one(html, "div:root")
       assert attribute(div, "class") == "drawer"
-      assert Floki.children(div) == []
     end
 
     test "renders header" do
@@ -73,10 +74,23 @@ defmodule Doggo.Components.DrawerTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.drawer id="drawer-5" data-what="ever"></TestComponents.drawer>
+        <TestComponents.drawer id="drawer-5" data-what="ever">
+          <:main>Content</:main>
+        </TestComponents.drawer>
         """)
 
-      assert attribute(html, "div", "data-what") == "ever"
+      assert attribute(html, "div:root", "data-what") == "ever"
+    end
+
+    test "renders nothing without slots" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.drawer id="drawer" />
+        """)
+
+      assert html == []
     end
   end
 end

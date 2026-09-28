@@ -147,6 +147,8 @@ defmodule Doggo.Components.TabNavigation do
   def example_label, do: "Dog Profile Sections"
 
   @impl true
+  def render(%{item: []} = assigns), do: ~H""
+
   def render(assigns) do
     ~H"""
     <nav

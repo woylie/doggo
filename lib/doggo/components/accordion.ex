@@ -125,6 +125,8 @@ defmodule Doggo.Components.Accordion do
   end
 
   @impl true
+  def render(%{section: []} = assigns), do: ~H""
+
   def render(assigns) do
     ~H"""
     <div id={@id} class={@class} phx-hook="Doggo.Accordion" {@data_attrs} {@rest}>

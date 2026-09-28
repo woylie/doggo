@@ -145,6 +145,8 @@ defmodule Doggo.Components.Steps do
   def example_label, do: "Order process"
 
   @impl true
+  def render(%{step: []} = assigns), do: ~H""
+
   def render(assigns) do
     ~H"""
     <nav

@@ -158,6 +158,8 @@ defmodule Doggo.Components.Menu do
   def example_label, do: "Dog Actions"
 
   @impl true
+  def render(%{item: []} = assigns), do: ~H""
+
   def render(assigns) do
     ~H"""
     <ul

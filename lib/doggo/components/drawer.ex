@@ -136,6 +136,8 @@ defmodule Doggo.Components.Drawer do
   end
 
   @impl true
+  def render(%{header: [], main: [], footer: []} = assigns), do: ~H""
+
   def render(assigns) do
     ~H"""
     <div

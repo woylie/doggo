@@ -438,5 +438,23 @@ defmodule Doggo.Components.CarouselTest do
 
       assert attribute(html, ":root", "data-test") == "hello"
     end
+
+    test "renders nothing without items" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.carousel id="carousel" label="Dog Fashion Show" pagination>
+          <:pause label="Pause" resume_label="Resume">Pause</:pause>
+          <:previous label="Previous slide">Previous</:previous>
+          <:next label="Next slide">Next</:next>
+          <:item :for={_ <- []} label="1 of 3">Slide 1</:item>
+          <:item :for={_ <- []} label="2 of 3">Slide 2</:item>
+          <:item :for={_ <- []} label="3 of 3">Slide 3</:item>
+        </TestComponents.carousel>
+        """)
+
+      assert html == []
+    end
   end
 end

@@ -62,5 +62,19 @@ defmodule Doggo.Components.MenuGroupTest do
 
       assert attribute(html, ":root", "data-test") == "hello"
     end
+
+    test "renders nothing without items" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu_group label="Dog actions">
+          <:item :for={_ <- []}>feed</:item>
+          <:item :for={_ <- []}>walk</:item>
+        </TestComponents.menu_group>
+        """)
+
+      assert html == []
+    end
   end
 end

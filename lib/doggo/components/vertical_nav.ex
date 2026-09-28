@@ -147,6 +147,8 @@ defmodule Doggo.Components.VerticalNav do
   end
 
   @impl true
+  def render(%{item: []} = assigns), do: ~H""
+
   def render(assigns) do
     assigns =
       Doggo.assign_derived(
