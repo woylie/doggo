@@ -64,6 +64,9 @@ defmodule Doggo.Components.Fallback do
   end
 
   @impl true
+  def own_attributes, do: ["aria-label": :accessibility_text]
+
+  @impl true
   def nested_classes(_) do
     []
   end
@@ -122,10 +125,10 @@ defmodule Doggo.Components.Fallback do
     {@value}<span
       :if={is_nil(@value)}
       class={@class}
-      role="img"
+      role={Map.get(@rest, :role, "img")}
       aria-label={@accessibility_text}
       {@data_attrs}
-      {@rest}
+      {Map.delete(@rest, :role)}
       phx-no-format
     >{@placeholder}</span>
     """

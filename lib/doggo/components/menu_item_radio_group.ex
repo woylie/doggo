@@ -57,6 +57,9 @@ defmodule Doggo.Components.MenuItemRadioGroup do
   end
 
   @impl true
+  def own_attributes, do: ["aria-label": :label, role: nil]
+
+  @impl true
   def nested_classes(_) do
     []
   end

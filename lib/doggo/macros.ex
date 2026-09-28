@@ -135,6 +135,7 @@ defmodule Doggo.Macros do
 
       def unquote(name)(var!(assigns)) do
         unquote(label_check(module, name))
+        unquote(own_attributes_check(module, name))
         unquote(prepare)
         unquote(module.init_block(opts, extra))
         unquote(render)
@@ -535,6 +536,22 @@ defmodule Doggo.Macros do
     note
     |> String.split("\n")
     |> Enum.map_join("\n", &String.trim("> #{&1}"))
+  end
+
+  defp own_attributes_check(module, name) do
+    if function_exported?(module, :own_attributes, 0) do
+      quote do
+        require Doggo
+
+        Doggo.diagnostic do
+          Doggo.ensure_own_attributes!(
+            var!(assigns),
+            unquote(module.own_attributes()),
+            unquote(".#{name}")
+          )
+        end
+      end
+    end
   end
 
   @doc false

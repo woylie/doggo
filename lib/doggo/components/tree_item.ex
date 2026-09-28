@@ -73,6 +73,9 @@ defmodule Doggo.Components.TreeItem do
   end
 
   @impl true
+  def own_attributes, do: ["aria-expanded": nil, role: nil]
+
+  @impl true
   def nested_classes(base_class) do
     ["#{base_class}-toggle"]
   end

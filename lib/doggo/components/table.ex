@@ -72,6 +72,9 @@ defmodule Doggo.Components.Table do
   end
 
   @impl true
+  def own_attributes, do: ["aria-labelledby": nil, role: nil, tabindex: nil]
+
+  @impl true
   def nested_classes(_) do
     []
   end

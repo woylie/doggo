@@ -90,6 +90,15 @@ defmodule Doggo.Components.DisclosureButton do
   end
 
   @impl true
+  def own_attributes,
+    do: [
+      "aria-controls": :controls,
+      "aria-expanded": nil,
+      "phx-click": nil,
+      type: nil
+    ]
+
+  @impl true
   def nested_classes(_) do
     []
   end
