@@ -90,10 +90,10 @@ defmodule Doggo.Components.Breadcrumb do
     [last_item | rest] = Enum.reverse(item)
 
     assigns =
-      assign(
+      Doggo.assign_derived(
         assigns,
-        :item,
-        Enum.reverse([{:current, last_item} | rest])
+        [item: Enum.reverse([{:current, last_item} | rest])],
+        [:item]
       )
 
     ~H"""

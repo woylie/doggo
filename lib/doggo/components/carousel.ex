@@ -328,10 +328,14 @@ defmodule Doggo.Components.Carousel do
     multiple_items = length(assigns.item) > 1
 
     assigns =
-      assign(assigns,
-        multiple_items: multiple_items,
-        show_tabs: assigns.pagination and multiple_items,
-        rotating: assigns.pause != [] and multiple_items
+      Doggo.assign_derived(
+        assigns,
+        [
+          multiple_items: multiple_items,
+          show_tabs: assigns.pagination and multiple_items,
+          rotating: assigns.pause != [] and multiple_items
+        ],
+        [:item, :pagination, :pause]
       )
 
     ~H"""

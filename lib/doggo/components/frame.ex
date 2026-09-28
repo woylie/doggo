@@ -93,7 +93,11 @@ defmodule Doggo.Components.Frame do
         Map.get(unquote(ratio_parts), var!(assigns).ratio, {nil, nil})
 
       var!(assigns) =
-        assign(var!(assigns), numerator: numerator, denominator: denominator)
+        Doggo.assign_derived(
+          var!(assigns),
+          [numerator: numerator, denominator: denominator],
+          [:ratio]
+        )
     end
   end
 

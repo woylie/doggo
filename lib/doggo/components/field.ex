@@ -574,15 +574,29 @@ defmodule Doggo.Components.Field do
 
     quote do
       var!(assigns) =
-        assign(
+        Doggo.assign_derived(
           var!(assigns),
-          gettext_module: unquote(gettext_module),
-          required_text: unquote(required_text),
-          optional_text: unquote(optional_text),
-          custom_types: unquote(custom_types)
+          [
+            gettext_module: unquote(gettext_module),
+            required_text: unquote(required_text),
+            optional_text: unquote(optional_text),
+            custom_types: unquote(custom_types)
+          ],
+          []
         )
     end
   end
+
+  @derived_from [
+    :field,
+    :id,
+    :name,
+    :value,
+    :errors,
+    :validations,
+    :description,
+    :multiple
+  ]
 
   @impl true
   def render(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
@@ -603,21 +617,23 @@ defmodule Doggo.Components.Field do
 
     id = assigns.id || field.id
 
+    defaults = [
+      errors: errors,
+      validations: Form.input_validations(field.form, field.field),
+      name: if(assigns.multiple, do: field.name <> "[]", else: field.name),
+      value: field.value
+    ]
+
     assigns
-    |> assign(field: nil, id: id)
-    |> assign(
-      :describedby,
-      Doggo.input_aria_describedby(id, assigns.description, errors)
+    |> assign_input(
+      id,
+      errors,
+      for(
+        {key, value} <- defaults,
+        not is_map_key(assigns, key),
+        do: {key, value}
+      )
     )
-    |> assign(:errormessage, Doggo.input_aria_errormessage(id, errors))
-    |> assign_new(:errors, fn -> errors end)
-    |> assign_new(:validations, fn ->
-      Form.input_validations(field.form, field.field)
-    end)
-    |> assign_new(:name, fn ->
-      if assigns.multiple, do: field.name <> "[]", else: field.name
-    end)
-    |> assign_new(:value, fn -> field.value end)
     |> render()
   end
 
@@ -626,14 +642,9 @@ defmodule Doggo.Components.Field do
     id = assigns[:id] || assigns[:name]
 
     assigns
-    |> assign(
-      field: nil,
-      id: id,
+    |> assign_input(id, errors,
       errors: errors,
-      validations: Map.get(assigns, :validations) || [],
-      describedby:
-        Doggo.input_aria_describedby(id, assigns.description, errors),
-      errormessage: Doggo.input_aria_errormessage(id, errors)
+      validations: Map.get(assigns, :validations) || []
     )
     |> render()
   end
@@ -654,10 +665,7 @@ defmodule Doggo.Components.Field do
   end
 
   def render(%{type: "checkbox"} = assigns) do
-    assigns =
-      assign_new(assigns, :checked, fn ->
-        Form.normalize_value("checkbox", assigns[:value])
-      end)
+    assigns = assign_checked(assigns)
 
     ~H"""
     <div class={@class} data-invalid={@errors != []} {@data_attrs}>
@@ -793,10 +801,15 @@ defmodule Doggo.Components.Field do
 
   def render(%{type: "select"} = assigns) do
     assigns =
-      assign(
+      Doggo.assign_derived(
         assigns,
-        :value,
-        assigns[:value] |> List.wrap() |> Enum.map(&Phoenix.HTML.html_escape/1)
+        [
+          value:
+            assigns[:value]
+            |> List.wrap()
+            |> Enum.map(&Phoenix.HTML.html_escape/1)
+        ],
+        [:value]
       )
 
     ~H"""
@@ -844,10 +857,7 @@ defmodule Doggo.Components.Field do
   end
 
   def render(%{type: "switch"} = assigns) do
-    assigns =
-      assign_new(assigns, :checked, fn ->
-        Form.normalize_value("checkbox", assigns[:value])
-      end)
+    assigns = assign_checked(assigns)
 
     ~H"""
     <div class={@class} data-invalid={@errors != []} {@data_attrs}>
@@ -988,6 +998,30 @@ defmodule Doggo.Components.Field do
       </.field_description>
     </div>
     """
+  end
+
+  defp assign_input(assigns, id, errors, defaults) do
+    Doggo.assign_derived(
+      assigns,
+      [
+        field: nil,
+        id: id,
+        describedby:
+          Doggo.input_aria_describedby(id, assigns.description, errors),
+        errormessage: Doggo.input_aria_errormessage(id, errors)
+      ] ++ defaults,
+      @derived_from
+    )
+  end
+
+  defp assign_checked(assigns) when is_map_key(assigns, :checked), do: assigns
+
+  defp assign_checked(assigns) do
+    Doggo.assign_derived(
+      assigns,
+      [checked: Form.normalize_value("checkbox", assigns[:value])],
+      [:value]
+    )
   end
 
   attr :for, :string, required: true, doc: "The ID of the input."

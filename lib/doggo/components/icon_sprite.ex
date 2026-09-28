@@ -94,7 +94,11 @@ defmodule Doggo.Components.IconSprite do
 
     quote do
       var!(assigns) =
-        assign(var!(assigns), :sprite_url, unquote(sprite_url))
+        Doggo.assign_derived(
+          var!(assigns),
+          [sprite_url: unquote(sprite_url)],
+          []
+        )
     end
   end
 

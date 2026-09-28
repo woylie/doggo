@@ -210,17 +210,17 @@ defmodule Doggo.Components.Icon do
         var!(assigns) =
           assigns
           |> var!()
-          |> assign(:icon_module, unquote(icon_module))
-          |> assign(:icon_fun, icon_fun)
-          |> assign(:name, nil)
+          |> Doggo.assign_derived([icon_module: unquote(icon_module)], [])
+          |> Doggo.assign_derived([icon_fun: icon_fun, name: nil], [:name])
       end
     else
       quote do
         var!(assigns) =
-          assigns
-          |> var!()
-          |> assign(:icon_module, unquote(icon_module))
-          |> assign(:icon_fun, unquote(icon_fun))
+          Doggo.assign_derived(
+            var!(assigns),
+            [icon_module: unquote(icon_module), icon_fun: unquote(icon_fun)],
+            []
+          )
       end
     end
   end

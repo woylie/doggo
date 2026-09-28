@@ -442,14 +442,20 @@ defmodule Doggo.Components.Combobox do
     search_value = display_text(assigns.display_value, options, value)
 
     assigns =
-      assign(assigns,
-        options: options,
-        rest: rest,
-        search_name: search_name(name),
-        selected: selected,
-        value: value,
-        search_value: search_value,
-        shared_rest: shared
+      assigns
+      |> Doggo.assign_derived(
+        [
+          options: options,
+          search_name: search_name(name),
+          selected: selected,
+          value: value,
+          search_value: search_value
+        ],
+        [:name, :options, :value, :display_value]
+      )
+      |> Doggo.assign_derived(
+        [rest: rest, shared_rest: shared],
+        [:rest, :on_search]
       )
 
     ~H"""

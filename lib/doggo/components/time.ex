@@ -172,27 +172,16 @@ defmodule Doggo.Components.Time do
         %{
           value: value,
           precision: precision,
-          timezone: timezone,
-          formatter: formatter,
-          title_formatter: title_formatter
+          timezone: timezone
         } = assigns
       ) do
-    formatter = formatter || (&to_string/1)
-
     value =
       value
       |> Doggo.shift_zone(timezone)
       |> Doggo.truncate_datetime(precision)
       |> Doggo.to_time()
 
-    assigns =
-      assigns
-      |> assign(:datetime, value && Time.to_iso8601(value))
-      |> assign(
-        :title,
-        value && Doggo.time_title_attr(value, title_formatter)
-      )
-      |> assign(:value, value && formatter.(value))
+    assigns = Doggo.assign_time(assigns, value, &Time.to_iso8601/1)
 
     ~H"""
     <time

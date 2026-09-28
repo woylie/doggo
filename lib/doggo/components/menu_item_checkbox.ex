@@ -87,7 +87,12 @@ defmodule Doggo.Components.MenuItemCheckbox do
 
   @impl true
   def render(%{checked: checked} = assigns) do
-    assigns = assign(assigns, :checked, aria_checked(checked))
+    assigns =
+      Doggo.assign_derived(
+        assigns,
+        [checked: aria_checked(checked)],
+        [:checked]
+      )
 
     ~H"""
     <button

@@ -553,7 +553,14 @@ defmodule Doggo.Macros do
       unquote(build_data_attrs(modifier_names))
 
       var!(assigns) =
-        assign(var!(assigns), base_class: unquote(base_class), class: class)
+        Doggo.assign_derived(
+          var!(assigns),
+          [base_class: unquote(base_class)],
+          []
+        )
+
+      var!(assigns) =
+        Doggo.assign_derived(var!(assigns), [class: class], [:class])
     end
   end
 
@@ -569,21 +576,17 @@ defmodule Doggo.Macros do
     end
   end
 
-  defp build_data_attrs([]) do
-    quote do
-      var!(assigns) = assign(var!(assigns), :data_attrs, [])
-    end
-  end
-
   defp build_data_attrs(modifier_names) do
     quote do
       {modifier_assigns, var!(assigns)} =
         Map.split(var!(assigns), unquote(modifier_names))
 
       var!(assigns) =
-        assign(var!(assigns), :data_attrs, %{
-          data: Keyword.new(modifier_assigns)
-        })
+        Doggo.assign_derived(
+          var!(assigns),
+          [data_attrs: %{data: Keyword.new(modifier_assigns)}],
+          unquote(modifier_names)
+        )
     end
   end
 end
