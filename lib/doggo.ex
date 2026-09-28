@@ -14,6 +14,22 @@ defmodule Doggo do
   def slide_label(n), do: "Slide #{n}"
 
   @doc false
+  defmacro build(key) do
+    __CALLER__.module |> fetch_build!(key) |> Macro.escape()
+  end
+
+  @doc false
+  defmacro build(key, suffix) do
+    "#{fetch_build!(__CALLER__.module, key)}#{suffix}"
+  end
+
+  defp fetch_build!(module, key) do
+    module
+    |> Module.get_attribute(:__dog_build__)
+    |> Doggo.Template.fetch!(key)
+  end
+
+  @doc false
   def capture_name(fun) do
     {:module, module} = Function.info(fun, :module)
     {:name, name} = Function.info(fun, :name)

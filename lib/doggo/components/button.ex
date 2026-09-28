@@ -105,16 +105,18 @@ defmodule Doggo.Components.Button do
   end
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <button
-      type={@type}
-      class={@class}
-      disabled={@disabled}
-      {@data_attrs}
-      {@rest}
-      phx-no-format
-    >{render_slot(@inner_block)}</button>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <button
+        type={@type}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        disabled={@disabled}
+        {@data_attrs}
+        {@rest}
+        phx-no-format
+      >{render_slot(@inner_block)}</button>
+      """
+    end
   end
 end

@@ -96,8 +96,18 @@ defmodule Doggo.Macros do
     modifiers = Keyword.fetch!(opts, :modifiers)
     docstring = assemble_component_doc(module)
 
+    {prepare, render} =
+      if function_exported?(module, :template, 1) do
+        {build_data_attrs(Keyword.keys(modifiers)),
+         Doggo.Template.compile(module, Keyword.merge(opts, extra))}
+      else
+        {prepare_class_and_data_attrs(opts),
+         quote(do: unquote(module).render(var!(assigns)))}
+      end
+
     quote do
       @dog_components unquote(Macro.escape(component_info))
+      @__dog_build__ unquote(Macro.escape(Keyword.merge(opts, extra)))
 
       @doc unquote(docstring)
       @doc type: unquote(type)
@@ -125,9 +135,9 @@ defmodule Doggo.Macros do
 
       def unquote(name)(var!(assigns)) do
         unquote(label_check(module, name))
-        unquote(prepare_class_and_data_attrs(opts))
+        unquote(prepare)
         unquote(module.init_block(opts, extra))
-        unquote(module).render(var!(assigns))
+        unquote(render)
       end
     end
   end
