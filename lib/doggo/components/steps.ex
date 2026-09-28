@@ -70,6 +70,9 @@ defmodule Doggo.Components.Steps do
   end
 
   @impl true
+  def own_attributes, do: ["aria-label": :label]
+
+  @impl true
   def nested_classes(_) do
     []
   end

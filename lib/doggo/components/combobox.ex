@@ -252,6 +252,10 @@ defmodule Doggo.Components.Combobox do
   end
 
   @impl true
+  def own_attributes,
+    do: ["aria-controls": nil, "aria-expanded": nil, role: nil, type: nil]
+
+  @impl true
   def nested_classes(base_class) do
     [
       "#{base_class}-clear",

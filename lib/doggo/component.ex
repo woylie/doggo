@@ -82,6 +82,18 @@ defmodule Doggo.Component do
   @callback example_label() :: String.t()
 
   @doc """
+  Returns the attributes that the component sets explicitly and that can
+  also set via global attributes.
+
+  The value is the attribute that can be used instead of the global attribute,
+  or `nil`.
+
+  If diagnostics are enabled, passing these attributes as global attributes
+  raises an error to warn that these attributes are ignored by the browser.
+  """
+  @callback own_attributes() :: keyword(atom | nil)
+
+  @doc """
   Returns the components this component depends on.
   """
   @callback callees() :: keyword(atom)
@@ -91,6 +103,7 @@ defmodule Doggo.Component do
                       css_path: 0,
                       example_label: 0,
                       keyboard: 0,
+                      own_attributes: 0,
                       render: 1,
                       template: 1
 end

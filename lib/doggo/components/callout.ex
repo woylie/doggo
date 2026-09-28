@@ -78,6 +78,9 @@ defmodule Doggo.Components.Callout do
   end
 
   @impl true
+  def own_attributes, do: ["aria-labelledby": nil, role: nil]
+
+  @impl true
   def nested_classes(base_class) do
     [
       "#{base_class}-actions",

@@ -118,6 +118,9 @@ defmodule Doggo.Components.Tree do
   end
 
   @impl true
+  def own_attributes, do: ["aria-label": :label, "phx-hook": nil, role: nil]
+
+  @impl true
   def nested_classes(_) do
     []
   end

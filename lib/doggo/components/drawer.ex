@@ -97,6 +97,9 @@ defmodule Doggo.Components.Drawer do
   end
 
   @impl true
+  def own_attributes, do: ["aria-labelledby": nil]
+
+  @impl true
   def nested_classes(base_class) do
     [
       "#{base_class}-footer",
@@ -138,10 +141,10 @@ defmodule Doggo.Components.Drawer do
     <div
       id={@id}
       class={@class}
-      role={@header != [] && "complementary"}
+      role={Map.get(@rest, :role, @header != [] && "complementary")}
       aria-labelledby={@header != [] && "#{@id}-header"}
       {@data_attrs}
-      {@rest}
+      {Map.delete(@rest, :role)}
     >
       <div :if={@header != []} id={"#{@id}-header"} class={"#{@base_class}-header"}>
         {render_slot(@header)}

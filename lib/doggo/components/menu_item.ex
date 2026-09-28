@@ -51,6 +51,9 @@ defmodule Doggo.Components.MenuItem do
   end
 
   @impl true
+  def own_attributes, do: ["phx-click": :on_click, role: nil, type: nil]
+
+  @impl true
   def nested_classes(_) do
     []
   end

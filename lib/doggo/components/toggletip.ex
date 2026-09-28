@@ -76,6 +76,9 @@ defmodule Doggo.Components.Toggletip do
   def example_label, do: "About the adoption fee"
 
   @impl true
+  def own_attributes, do: ["phx-hook": nil]
+
+  @impl true
   def nested_classes(base_class) do
     [
       "#{base_class}-button",

@@ -116,6 +116,9 @@ defmodule Doggo.Components.SplitPane do
   end
 
   @impl true
+  def own_attributes, do: ["phx-hook": nil]
+
+  @impl true
   def nested_classes(_) do
     []
   end

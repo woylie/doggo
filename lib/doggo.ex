@@ -420,6 +420,29 @@ defmodule Doggo do
   end
 
   @doc false
+  def ensure_own_attributes!(assigns, own_attributes, component) do
+    rest = Map.get(assigns, :rest, %{})
+
+    for {name, instead} <- own_attributes, Map.has_key?(rest, name) do
+      raise ArgumentError, """
+      #{name} is set by #{component}
+
+      The component renders its own #{name} attribute. An attribute value passed
+      directly is ignored by the browser.#{use_instead(instead)}
+
+      Got:
+
+          #{name}=#{inspect(rest[name])}
+      """
+    end
+
+    :ok
+  end
+
+  defp use_instead(nil), do: ""
+  defp use_instead(attr), do: " Use the #{attr} attribute instead."
+
+  @doc false
   def ensure_label!(
         %{label: label, labelledby: labelledby},
         component,
