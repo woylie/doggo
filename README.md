@@ -26,6 +26,16 @@ def deps do
 end
 ```
 
+Enable diagnostic checks at render time in `config/dev.exs` and
+`config/test.exs` :
+
+```elixir
+config :doggo, :diagnostics, true
+```
+
+These checks raise errors if components are not wired up correctly, for example
+if an accessible name is not set. If disabled, the checks are not compiled.
+
 ### Compatibility
 
 This package is tested against the Elixir and OTP versions that are still

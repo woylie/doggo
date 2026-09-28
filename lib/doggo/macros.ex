@@ -541,11 +541,15 @@ defmodule Doggo.Macros do
   def label_check(module, name) do
     if function_exported?(module, :example_label, 0) do
       quote do
-        Doggo.ensure_label!(
-          var!(assigns),
-          unquote(".#{name}"),
-          unquote(module.example_label())
-        )
+        require Doggo
+
+        Doggo.diagnostic do
+          Doggo.ensure_label!(
+            var!(assigns),
+            unquote(".#{name}"),
+            unquote(module.example_label())
+          )
+        end
       end
     end
   end

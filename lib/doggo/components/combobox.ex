@@ -5,6 +5,8 @@ defmodule Doggo.Components.Combobox do
 
   use Phoenix.Component
 
+  require Doggo
+
   @search_debounce 300
 
   @impl true
@@ -423,7 +425,7 @@ defmodule Doggo.Components.Combobox do
 
   @impl true
   def render(%{name: name, options: options, value: value} = assigns) do
-    ensure_free_text_label!(assigns)
+    Doggo.diagnostic(do: ensure_free_text_label!(assigns))
 
     {options, _counters} = normalize_options(options, {1, 1})
 
@@ -652,7 +654,7 @@ defmodule Doggo.Components.Combobox do
   defp normalize_option(option, counters) when is_list(option) do
     {label, value, description, extra} = Doggo.option_from_keyword(option)
     {disabled, extra} = Keyword.pop(extra, :disabled, false)
-    ensure_no_extra_keys!(extra, option)
+    Doggo.diagnostic(do: ensure_no_extra_keys!(extra, option))
 
     build_option(label, value, description, disabled, counters)
   end

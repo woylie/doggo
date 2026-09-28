@@ -131,7 +131,9 @@ defmodule Doggo.Components.Toggletip do
   @impl true
   def template(_opts) do
     quote do
-      unquote(__MODULE__).ensure_icon!(var!(assigns))
+      Doggo.diagnostic do
+        unquote(__MODULE__).ensure_icon!(var!(assigns))
+      end
 
       ~H"""
       <div

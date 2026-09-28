@@ -7,6 +7,8 @@ defmodule Doggo.Components.Field do
 
   alias Phoenix.HTML.Form
 
+  require Doggo
+
   @built_in_types ~w(checkbox checkbox-group color date datetime-local email file
                      hidden month number password range radio radio-group search
                      select switch tel text textarea time url week)
@@ -1424,12 +1426,14 @@ defmodule Doggo.Components.Field do
     value = Phoenix.HTML.html_escape(option_value)
     {selected, extra} = Keyword.pop(options, :selected)
 
-    if extra[:description] do
-      raise ArgumentError, """
-      Invalid :description on a select option
+    Doggo.diagnostic do
+      if extra[:description] do
+        raise ArgumentError, """
+        Invalid :description on a select option
 
-      The `:description` option is not supported for `type="select"`.
-      """
+        The `:description` option is not supported for `type="select"`.
+        """
+      end
     end
 
     assigns =
