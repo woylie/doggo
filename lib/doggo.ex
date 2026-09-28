@@ -14,6 +14,13 @@ defmodule Doggo do
   def slide_label(n), do: "Slide #{n}"
 
   @doc false
+  defmacro diagnostic(do: block) do
+    if Application.compile_env(__CALLER__, :doggo, :diagnostics, false) do
+      block
+    end
+  end
+
+  @doc false
   defmacro build(key) do
     __CALLER__.module |> fetch_build!(key) |> Macro.escape()
   end

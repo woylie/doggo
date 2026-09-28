@@ -136,8 +136,12 @@ defmodule Doggo.Components.VerticalNav do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      if var!(assigns).landmark do
-        Doggo.ensure_label!(var!(assigns), unquote(name), "Main")
+      require Doggo
+
+      Doggo.diagnostic do
+        if var!(assigns).landmark do
+          Doggo.ensure_label!(var!(assigns), unquote(name), "Main")
+        end
       end
     end
   end
