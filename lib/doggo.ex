@@ -21,6 +21,31 @@ defmodule Doggo do
   end
 
   @doc false
+  def assign_derived(%{__changed__: changed} = assigns, derived, inputs)
+      when is_map(changed) do
+    if Enum.any?(inputs, &Map.has_key?(changed, &1)) do
+      assign(assigns, derived)
+    else
+      Enum.into(derived, assigns)
+    end
+  end
+
+  def assign_derived(assigns, derived, _inputs), do: assign(assigns, derived)
+
+  @doc false
+  def assign_time(assigns, value, to_iso) do
+    assign_derived(
+      assigns,
+      [
+        datetime: value && to_iso.(value),
+        title: value && time_title_attr(value, assigns.title_formatter),
+        value: value && (assigns.formatter || (&to_string/1)).(value)
+      ],
+      [:value, :precision, :timezone, :formatter, :title_formatter]
+    )
+  end
+
+  @doc false
   def to_js!(value, attr, component) do
     case callback!(value, attr, component) do
       event when is_binary(event) -> JS.push(event)

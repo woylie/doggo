@@ -150,29 +150,13 @@ defmodule Doggo.Components.Date do
   end
 
   @impl true
-  def render(
-        %{
-          value: value,
-          timezone: timezone,
-          formatter: formatter,
-          title_formatter: title_formatter
-        } = assigns
-      ) do
-    formatter = formatter || (&to_string/1)
-
+  def render(%{value: value, timezone: timezone} = assigns) do
     value =
       value
       |> Doggo.shift_zone(timezone)
       |> Doggo.to_date()
 
-    assigns =
-      assigns
-      |> assign(:datetime, value && Date.to_iso8601(value))
-      |> assign(
-        :title,
-        value && Doggo.time_title_attr(value, title_formatter)
-      )
-      |> assign(:value, value && formatter.(value))
+    assigns = Doggo.assign_time(assigns, value, &Date.to_iso8601/1)
 
     ~H"""
     <time

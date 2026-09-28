@@ -145,10 +145,14 @@ defmodule Doggo.Components.VerticalNav do
   @impl true
   def render(assigns) do
     assigns =
-      assign(assigns,
-        aria_label: assigns.title == [] && assigns.label,
-        aria_labelledby:
-          (assigns.title != [] && "#{assigns.id}-title") || assigns.labelledby
+      Doggo.assign_derived(
+        assigns,
+        [
+          aria_label: assigns.title == [] && assigns.label,
+          aria_labelledby:
+            (assigns.title != [] && "#{assigns.id}-title") || assigns.labelledby
+        ],
+        [:title, :label, :id, :labelledby]
       )
 
     ~H"""

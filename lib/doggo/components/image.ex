@@ -152,7 +152,8 @@ defmodule Doggo.Components.Image do
     frame = extra |> Keyword.fetch!(:frame) |> Macro.escape()
 
     quote do
-      var!(assigns) = assign(var!(assigns), :frame, unquote(frame))
+      var!(assigns) =
+        Doggo.assign_derived(var!(assigns), [frame: unquote(frame)], [])
     end
   end
 

@@ -126,7 +126,12 @@ defmodule Doggo.Components.ToggleButton do
 
   @impl true
   def render(%{pressed: pressed} = assigns) do
-    assigns = assign(assigns, :pressed, to_string(pressed == true))
+    assigns =
+      Doggo.assign_derived(
+        assigns,
+        [pressed: to_string(pressed == true)],
+        [:pressed]
+      )
 
     ~H"""
     <button
