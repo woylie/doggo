@@ -155,5 +155,20 @@ defmodule Doggo.Components.TabsTest do
 
       assert attribute(html, ":root", "data-test") == "hello"
     end
+
+    test "renders nothing without panels" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tabs id="tabs" label="Dog Breeds">
+          <:panel :for={_ <- []} label="Golden Retriever">Friendly.</:panel>
+          <:panel :for={_ <- []} label="Siberian Husky">Energetic.</:panel>
+          <:panel :for={_ <- []} label="Dachshund">Playful.</:panel>
+        </TestComponents.tabs>
+        """)
+
+      assert html == []
+    end
   end
 end

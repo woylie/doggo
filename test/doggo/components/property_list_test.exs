@@ -43,5 +43,19 @@ defmodule Doggo.Components.PropertyListTest do
 
       assert attribute(html, "dl", "data-test") == "value"
     end
+
+    test "renders nothing without properties" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.property_list>
+          <:prop :for={_ <- []} label="Name">George</:prop>
+          <:prop :for={_ <- []} label="Breed">Dachshund</:prop>
+        </TestComponents.property_list>
+        """)
+
+      assert html == []
+    end
   end
 end

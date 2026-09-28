@@ -104,6 +104,8 @@ defmodule Doggo.Components.MenuGroup do
   end
 
   @impl true
+  def render(%{item: []} = assigns), do: ~H""
+
   def render(assigns) do
     ~H"""
     <ul class={@class} role="group" aria-label={@label} {@data_attrs} {@rest}>

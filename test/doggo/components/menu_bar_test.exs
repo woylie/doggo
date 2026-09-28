@@ -103,5 +103,18 @@ defmodule Doggo.Components.MenuBarTest do
 
       assert attribute(html, ":root", "data-test") == "hello"
     end
+
+    test "renders nothing without items" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.menu_bar id="menu-bar" label="Main">
+          <:item :for={_ <- []}>Copy</:item>
+        </TestComponents.menu_bar>
+        """)
+
+      assert html == []
+    end
   end
 end

@@ -135,5 +135,20 @@ defmodule Doggo.Components.AccordionTest do
                      """)
                    end
     end
+
+    test "renders nothing without sections" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.accordion id="accordion">
+          <:section :for={_ <- []} title="Golden Retriever">Friendly.</:section>
+          <:section :for={_ <- []} title="Siberian Husky">Energetic.</:section>
+          <:section :for={_ <- []} title="Dachshund">Playful.</:section>
+        </TestComponents.accordion>
+        """)
+
+      assert html == []
+    end
   end
 end

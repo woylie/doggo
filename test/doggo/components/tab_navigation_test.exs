@@ -104,5 +104,21 @@ defmodule Doggo.Components.TabNavigationTest do
 
       assert attribute(html, "nav:root", "data-test") == "hello"
     end
+
+    test "renders nothing without items" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tab_navigation current_value={:appointments} label="Sections">
+          <:item :for={_ <- []} patch="/profile" value={:profile}>Profile</:item>
+          <:item :for={_ <- []} patch="/appointments" value={:appointments}>
+            Appointments
+          </:item>
+        </TestComponents.tab_navigation>
+        """)
+
+      assert html == []
+    end
   end
 end

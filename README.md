@@ -352,6 +352,8 @@ contains whitespace.
   attributes.
 - The library is designed without default styles and does not prefer any
   particular CSS framework.
+- Don't render a container if it doesn't have any children, for example a
+  navigation without links.
 
 ## Demo app
 

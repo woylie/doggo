@@ -69,6 +69,8 @@ defmodule Doggo.Components.NavbarItems do
   end
 
   @impl true
+  def render(%{item: []} = assigns), do: ~H""
+
   def render(assigns) do
     ~H"""
     <ul class={@class} {@data_attrs} {@rest}>

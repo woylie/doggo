@@ -75,6 +75,8 @@ defmodule Doggo.Components.VerticalNavSection do
   end
 
   @impl true
+  def render(%{item: []} = assigns), do: ~H""
+
   def render(assigns) do
     ~H"""
     <div

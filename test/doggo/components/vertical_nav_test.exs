@@ -147,5 +147,20 @@ defmodule Doggo.Components.VerticalNavTest do
 
       assert attribute(html, ":root", "data-test") == "hello"
     end
+
+    test "renders nothing without items" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.vertical_nav id="main-nav" label="Main">
+          <:title>Dogs</:title>
+          <:item :for={_ <- []} current_page>item</:item>
+          <:item :for={_ <- []}>another item</:item>
+        </TestComponents.vertical_nav>
+        """)
+
+      assert html == []
+    end
   end
 end

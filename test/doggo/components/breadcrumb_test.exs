@@ -73,5 +73,20 @@ defmodule Doggo.Components.BreadcrumbTest do
 
       assert attribute(html, "nav:root", "data-test") == "hello"
     end
+
+    test "renders nothing without items" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.breadcrumb label="Breadcrumb">
+          <:item :for={_ <- []} patch="/categories">Categories</:item>
+          <:item :for={_ <- []} patch="/categories/1">Reviews</:item>
+          <:item :for={_ <- []} patch="/categories/1/articles/1">The Movie</:item>
+        </TestComponents.breadcrumb>
+        """)
+
+      assert html == []
+    end
   end
 end

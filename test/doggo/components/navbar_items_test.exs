@@ -55,5 +55,19 @@ defmodule Doggo.Components.NavbarItemsTest do
 
       assert attribute(html, ":root", "data-test") == "hello"
     end
+
+    test "renders nothing without items" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.navbar_items>
+          <:item :for={_ <- []}>item</:item>
+          <:item :for={_ <- []}>another item</:item>
+        </TestComponents.navbar_items>
+        """)
+
+      assert html == []
+    end
   end
 end

@@ -68,6 +68,8 @@ defmodule Doggo.Components.PropertyList do
   end
 
   @impl true
+  def render(%{prop: []} = assigns), do: ~H""
+
   def render(assigns) do
     ~H"""
     <dl class={@class} {@data_attrs} {@rest}>

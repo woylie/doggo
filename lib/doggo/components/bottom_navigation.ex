@@ -143,6 +143,8 @@ defmodule Doggo.Components.BottomNavigation do
   def example_label, do: "Main"
 
   @impl true
+  def render(%{item: []} = assigns), do: ~H""
+
   def render(assigns) do
     ~H"""
     <nav

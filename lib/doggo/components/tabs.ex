@@ -142,6 +142,8 @@ defmodule Doggo.Components.Tabs do
   def example_label, do: "Dog Facts"
 
   @impl true
+  def render(%{panel: []} = assigns), do: ~H""
+
   def render(assigns) do
     ~H"""
     <div id={@id} class={@class} {@data_attrs} {@rest} phx-hook="Doggo.Tabs">

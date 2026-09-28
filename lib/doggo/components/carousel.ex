@@ -327,6 +327,8 @@ defmodule Doggo.Components.Carousel do
   def example_label, do: "Our Dogs"
 
   @impl true
+  def render(%{item: []} = assigns), do: ~H""
+
   def render(assigns) do
     multiple_items = length(assigns.item) > 1
 

@@ -131,5 +131,28 @@ defmodule Doggo.Components.BottomNavigationTest do
 
       assert attribute(html, "nav:root", "data-test") == "hello"
     end
+
+    test "renders nothing without items" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.bottom_navigation current_value={:appointments} label="Main">
+          <:item :for={_ <- []} label="Profile" href="/profile" value={:profile}>
+            profile-icon
+          </:item>
+          <:item
+            :for={_ <- []}
+            label="Appointments"
+            href="/appointments"
+            value={:appointments}
+          >
+            appointments-icon
+          </:item>
+        </TestComponents.bottom_navigation>
+        """)
+
+      assert html == []
+    end
   end
 end

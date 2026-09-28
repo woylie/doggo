@@ -80,6 +80,8 @@ defmodule Doggo.Components.VerticalNavNested do
   end
 
   @impl true
+  def render(%{item: []} = assigns), do: ~H""
+
   def render(assigns) do
     ~H"""
     <div class={@class} {@data_attrs} {@rest}>

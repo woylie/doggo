@@ -29,6 +29,9 @@ defmodule Doggo.Components.MenuButton do
     the toggled menu. Otherwise, visibility of the element will not align with
     the `aria-expanded` attribute of the button.
 
+    A menu isn't rendered if it doesn't have any menu items. Hide or disable
+    the menu button if this is the case.
+
     ```heex
     <div>
       <.menu_button controls="actions-menu" id="actions-button">

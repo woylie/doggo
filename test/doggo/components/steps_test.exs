@@ -179,5 +179,22 @@ defmodule Doggo.Components.StepsTest do
 
       assert attribute(html, "nav:root", "data-test") == "hello"
     end
+
+    test "renders nothing without steps" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.steps current_step={1} label="Adoption process">
+          <:step :for={_ <- []} on_click={Phoenix.LiveView.JS.push("go-to-step")}>
+            Meet the dog
+          </:step>
+          <:step :for={_ <- []}>Paperwork</:step>
+          <:step :for={_ <- []}>Take them home</:step>
+        </TestComponents.steps>
+        """)
+
+      assert html == []
+    end
   end
 end

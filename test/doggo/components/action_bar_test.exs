@@ -58,5 +58,22 @@ defmodule Doggo.Components.ActionBarTest do
 
       assert attribute(html, "div", "data-what") == "ever"
     end
+
+    test "renders nothing without items" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.action_bar id="action-bar">
+          <:item :for={_ <- []} label="Edit" on_click={JS.push("edit")}>edit</:item>
+          <:item :for={_ <- []} label="Move" on_click={JS.push("move")}>move</:item>
+          <:item :for={_ <- []} label="Archive" on_click={JS.push("archive")}>
+            archive
+          </:item>
+        </TestComponents.action_bar>
+        """)
+
+      assert html == []
+    end
   end
 end
