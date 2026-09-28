@@ -5,6 +5,9 @@ defmodule Doggo.TestHelpers do
 
   import Phoenix.LiveViewTest
 
+  alias Phoenix.HTML.Safe
+  alias Phoenix.LiveView.Rendered
+
   @doc """
   Renders the given HEEx template and parses it with Floki.
 
@@ -74,6 +77,22 @@ defmodule Doggo.TestHelpers do
     html
     |> find_one(selector)
     |> attribute(name)
+  end
+
+  @doc """
+  Returns the dynamic parts of a rendered template that LiveView would send,
+  as strings, including the parts of nested components.
+
+  Set `__changed__` in the assigns to mark the assigns that changed since the
+  previous render.
+  """
+  def sent_parts(%Rendered{dynamic: dynamic}) do
+    Enum.flat_map(dynamic.(true), fn
+      nil -> []
+      %Rendered{} = rendered -> sent_parts(rendered)
+      part when is_list(part) or is_binary(part) -> [IO.iodata_to_binary(part)]
+      part -> [part |> Safe.to_iodata() |> IO.iodata_to_binary()]
+    end)
   end
 
   def find_one(html, selector) do

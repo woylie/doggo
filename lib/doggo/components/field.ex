@@ -626,7 +626,7 @@ defmodule Doggo.Components.Field do
     id = assigns[:id] || assigns[:name]
 
     assigns
-    |> Map.merge(%{
+    |> assign(
       field: nil,
       id: id,
       errors: errors,
@@ -634,7 +634,7 @@ defmodule Doggo.Components.Field do
       describedby:
         Doggo.input_aria_describedby(id, assigns.description, errors),
       errormessage: Doggo.input_aria_errormessage(id, errors)
-    })
+    )
     |> render()
   end
 
