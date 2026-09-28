@@ -80,7 +80,7 @@ defmodule Doggo.Storybook.Image do
         id: :ratio,
         template: gallery_template(),
         variations:
-          Enum.map([nil | opts[:extra][:ratios]], fn ratio ->
+          Enum.map([nil | frame_ratios(opts)], fn ratio ->
             %Variation{
               id:
                 String.to_atom(
@@ -102,6 +102,11 @@ defmodule Doggo.Storybook.Image do
       attributes:
         Map.put(attributes(), :"data-label", to_string(value || "none"))
     }
+  end
+
+  defp frame_ratios(opts) do
+    {module, name} = Doggo.capture_name(opts[:extra][:frame])
+    get_in(module.__dog_components__(), [name, :extra, :ratios])
   end
 
   defp attributes do

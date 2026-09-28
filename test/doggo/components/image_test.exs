@@ -12,8 +12,10 @@ defmodule Doggo.Components.ImageTest do
     use Doggo.Components
     use Phoenix.Component
 
+    build_frame()
     build_image()
-    build_image(name: :wide_image, ratios: ["21:9"])
+    build_frame(name: :wide_frame, ratios: ["21:9"])
+    build_image(name: :wide_image, frame: &__MODULE__.wide_frame/1)
   end
 
   describe "image/1" do

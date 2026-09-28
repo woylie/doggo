@@ -56,7 +56,7 @@ defmodule Doggo.Components.Frame do
         shape: [values: [nil, "circle"], default: nil]
       ],
       extra: [
-        ratios: Doggo.default_ratios()
+        ratios: ~w(1:1 3:2 2:3 4:3 3:4 5:4 4:5 16:9 9:16)
       ]
     ]
   end
@@ -68,7 +68,7 @@ defmodule Doggo.Components.Frame do
 
   @impl true
   def attrs_and_slots(opts) do
-    ratios = Doggo.validate_ratios!(:build_frame, Keyword.fetch!(opts, :ratios))
+    ratios = validate_ratios!(Keyword.fetch!(opts, :ratios))
 
     quote do
       attr :ratio, :string,
@@ -86,7 +86,7 @@ defmodule Doggo.Components.Frame do
   @impl true
   def init_block(_opts, extra) do
     ratio_parts =
-      extra |> Keyword.fetch!(:ratios) |> Doggo.ratio_parts() |> Macro.escape()
+      extra |> Keyword.fetch!(:ratios) |> ratio_parts() |> Macro.escape()
 
     quote do
       {numerator, denominator} =
@@ -111,4 +111,35 @@ defmodule Doggo.Components.Frame do
     </div>
     """
   end
+
+  defp validate_ratios!(ratios) do
+    if is_list(ratios) and ratios != [] and Enum.all?(ratios, &split_ratio/1) do
+      ratios
+    else
+      raise ArgumentError, """
+      invalid ratios option for build_frame/1
+
+      The option has to be a non-empty list of strings in the format n:d, e.g.
+      ["16:9", "4:3"].
+
+      Got:
+
+          #{inspect(ratios)}
+      """
+    end
+  end
+
+  defp ratio_parts(ratios), do: Map.new(ratios, &{&1, split_ratio(&1)})
+
+  defp split_ratio(ratio) when is_binary(ratio) do
+    with [n, d] <- String.split(ratio, ":"),
+         {n, ""} when n > 0 <- Integer.parse(n),
+         {d, ""} when d > 0 <- Integer.parse(d) do
+      {Integer.to_string(n), Integer.to_string(d)}
+    else
+      _ -> nil
+    end
+  end
+
+  defp split_ratio(_), do: nil
 end

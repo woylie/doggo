@@ -9,14 +9,30 @@ defmodule Doggo.Components.Image do
   def doc do
     """
     Renders an image with an optional caption.
+
+    The component uses the `frame` component for the image's box. The `frame`
+    needs to be built before the `image`.
+
+    ```elixir
+    build_frame()
+    build_image()
+    ```
+
+    To use a frame build with a different name, set the `frame` option.
+
+    ```elixir
+    build_frame(name: :media_frame, ratios: ["21:9"])
+    build_image(frame: &__MODULE__.media_frame/1)
+    ```
     """
   end
 
   @impl true
   def builder_doc do
     """
-    - `:ratios` - The aspect ratios the `ratio` attribute accepts, as strings in
-      the format `n:d`.
+    - `:frame` - The build of the `frame` component that renders the image's
+      box, as a remote capture. Defaults to `&__MODULE__.frame/1`, the frame
+      built in the same module under its default name.
     """
   end
 
@@ -51,10 +67,13 @@ defmodule Doggo.Components.Image do
       maturity: :developing,
       modifiers: [],
       extra: [
-        ratios: Doggo.default_ratios()
+        frame: nil
       ]
     ]
   end
+
+  @impl true
+  def callees, do: [frame: :frame]
 
   @impl true
   def nested_classes(base_class) do
@@ -65,15 +84,15 @@ defmodule Doggo.Components.Image do
 
   @impl true
   def attrs_and_slots(opts) do
-    ratios = Doggo.validate_ratios!(:build_image, Keyword.fetch!(opts, :ratios))
+    ratios = get_in(opts, [:callees, :frame, :extra, :ratios])
 
     quote do
       attr :ratio, :string,
         values: unquote([nil | ratios]),
         default: nil,
         doc: """
-        The aspect ratio of the image frame, rendered as `data-numerator` and
-        `data-denominator`.
+        The aspect ratio of the image's box. The value is passed to the
+        `frame` component.
         """
 
       attr :src, :string,
@@ -130,15 +149,10 @@ defmodule Doggo.Components.Image do
 
   @impl true
   def init_block(_opts, extra) do
-    ratio_parts =
-      extra |> Keyword.fetch!(:ratios) |> Doggo.ratio_parts() |> Macro.escape()
+    frame = extra |> Keyword.fetch!(:frame) |> Macro.escape()
 
     quote do
-      {numerator, denominator} =
-        Map.get(unquote(ratio_parts), var!(assigns).ratio, {nil, nil})
-
-      var!(assigns) =
-        assign(var!(assigns), numerator: numerator, denominator: denominator)
+      var!(assigns) = assign(var!(assigns), :frame, unquote(frame))
     end
   end
 
@@ -150,11 +164,7 @@ defmodule Doggo.Components.Image do
       {@data_attrs}
       {@rest}
     >
-      <div
-        class={"#{@base_class}-frame"}
-        data-numerator={@numerator}
-        data-denominator={@denominator}
-      >
+      <.frame_box component={@frame} ratio={@ratio} class={"#{@base_class}-frame"}>
         <img
           src={@src}
           width={@width}
@@ -164,10 +174,20 @@ defmodule Doggo.Components.Image do
           srcset={build_srcset(@srcset)}
           sizes={@sizes}
         />
-      </div>
+      </.frame_box>
       <figcaption :if={@caption != []}>{render_slot(@caption)}</figcaption>
     </figure>
     """
+  end
+
+  attr :component, :any, required: true
+  attr :ratio, :string, required: true
+  attr :class, :string, required: true
+  slot :inner_block, required: true
+
+  defp frame_box(assigns) do
+    {component, assigns} = Map.pop(assigns, :component)
+    component.(assigns)
   end
 
   defp build_srcset(nil), do: nil
