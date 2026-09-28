@@ -13,6 +13,18 @@ defmodule Doggo.MacrosTest do
   end
 
   describe "build_button/1" do
+    test "renders build options as text" do
+      [{module, _}] =
+        compile(QuotedBaseClass, ~S"""
+        build_button(base_class: ~s|a"}{raise "x"}|)
+
+        def page(assigns), do: ~H"<.button>Save</.button>"
+        """)
+
+      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{}))
+      assert html =~ ~s(class="a&quot;}{raise &quot;x&quot;}")
+    end
+
     test "accepts module attribute in options" do
       [{module, _}] =
         compile(AttributeOption, """
@@ -166,6 +178,19 @@ defmodule Doggo.MacrosTest do
   end
 
   describe "build_image/1" do
+    test "builds without a base class" do
+      [{module, _}] =
+        compile(ImageWithoutBaseClass, ~S"""
+        build_frame()
+        build_image(base_class: nil)
+
+        def page(assigns), do: ~H"<.image src='a.png' alt='A' />"
+        """)
+
+      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{}))
+      assert html =~ ~s(class="frame -frame")
+    end
+
     test "raises without a frame build" do
       assert_raise ArgumentError,
                    ~r/missing frame build for image\/1.*build_frame\(\)/s,
@@ -239,6 +264,42 @@ defmodule Doggo.MacrosTest do
                build_frame(name: :media_frame)
                build_image(frame: &__MODULE__.media_frame/1)
                """)
+    end
+  end
+
+  describe "build_field/1" do
+    test "resolves module names in its template despite local aliases" do
+      [{module, _}] =
+        compile(AliasedDoggo, ~S"""
+        alias Doggo.MacrosTest.AliasedDoggo, as: Doggo
+
+        build_field()
+
+        def page(assigns), do: ~H|<.field name="a" label="A" value="" errors={["bad"]} />|
+        def aliased, do: Doggo
+        """)
+
+      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{}))
+      assert html =~ ~s(<div class="field-input-wrapper">)
+      assert html =~ ~s(<ul id="a_errors" class="field-errors")
+    end
+
+    test "builds two fields in one module" do
+      [{module, _}] =
+        compile(TwoFields, ~S"""
+        build_field()
+        build_field(name: :search_field, base_class: "search", required_text: "*")
+
+        def page(assigns) do
+          ~H"<.field name='a' label='A' value='' validations={[required: true]} /><.search_field name='b' label='B' value='' validations={[required: true]} />"
+        end
+        """)
+
+      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{}))
+      assert html =~ ~s(<div class="field">)
+      assert html =~ ~s(<div class="search">)
+      assert html =~ "(required)"
+      assert html =~ ~s(class="search-required-mark")
     end
   end
 

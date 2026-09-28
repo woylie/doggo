@@ -67,6 +67,12 @@ defmodule Doggo.Component do
   @callback render(assigns :: map()) :: Phoenix.LiveView.Rendered.t()
 
   @doc """
+  Returns the quoted HEEx template that the build compiles in the module that
+  builds the component.
+  """
+  @callback template(opts :: keyword) :: Macro.t()
+
+  @doc """
   Returns an example label for the error raised when no label is given.
 
   Implemented by components that need `label` or `labelledby`. The check is
@@ -84,5 +90,7 @@ defmodule Doggo.Component do
                       callees: 0,
                       css_path: 0,
                       example_label: 0,
-                      keyboard: 0
+                      keyboard: 0,
+                      render: 1,
+                      template: 1
 end

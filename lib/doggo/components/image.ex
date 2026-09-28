@@ -148,53 +148,41 @@ defmodule Doggo.Components.Image do
   end
 
   @impl true
-  def init_block(_opts, extra) do
-    frame = extra |> Keyword.fetch!(:frame) |> Macro.escape()
-
-    quote do
-      var!(assigns) =
-        Doggo.assign_derived(var!(assigns), [frame: unquote(frame)], [])
-    end
+  def init_block(_opts, _extra) do
+    []
   end
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <figure
-      class={@class}
-      {@data_attrs}
-      {@rest}
-    >
-      <.frame_box component={@frame} ratio={@ratio} class={"#{@base_class}-frame"}>
-        <img
-          src={@src}
-          width={@width}
-          height={@height}
-          alt={@alt}
-          loading={@loading}
-          srcset={build_srcset(@srcset)}
-          sizes={@sizes}
-        />
-      </.frame_box>
-      <figcaption :if={@caption != []}>{render_slot(@caption)}</figcaption>
-    </figure>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <figure
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+      >
+        <Doggo.Callee.frame ratio={@ratio} class={Doggo.build(:base_class, "-frame")}>
+          <img
+            src={@src}
+            width={@width}
+            height={@height}
+            alt={@alt}
+            loading={@loading}
+            srcset={Doggo.Components.Image.build_srcset(@srcset)}
+            sizes={@sizes}
+          />
+        </Doggo.Callee.frame>
+        <figcaption :if={@caption != []}>{render_slot(@caption)}</figcaption>
+      </figure>
+      """
+    end
   end
 
-  attr :component, :any, required: true
-  attr :ratio, :string, required: true
-  attr :class, :string, required: true
-  slot :inner_block, required: true
+  @doc false
+  def build_srcset(nil), do: nil
+  def build_srcset(srcset) when is_binary(srcset), do: srcset
 
-  defp frame_box(assigns) do
-    {component, assigns} = Map.pop(assigns, :component)
-    component.(assigns)
-  end
-
-  defp build_srcset(nil), do: nil
-  defp build_srcset(srcset) when is_binary(srcset), do: srcset
-
-  defp build_srcset(%{} = srcset) do
+  def build_srcset(%{} = srcset) do
     Enum.map_join(srcset, ", ", fn {width_or_density, url} ->
       "#{url} #{width_or_density}"
     end)
