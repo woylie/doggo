@@ -5,35 +5,19 @@ defmodule Doggo.Storybook.Tooltip do
   def variations(_opts) do
     [
       %Variation{
-        id: :with_text,
+        id: :with_button,
         note:
-          "The component makes the text focusable and points " <>
-            "`aria-describedby` at the tooltip.",
-        attributes: %{
-          id: "labrador-info-1"
-        },
-        slots: slots_with_text()
+          "The inner block receives the attributes that point " <>
+            "`aria-describedby` at the tooltip, and spreads them on the button.",
+        attributes: %{id: "delete-info-1"},
+        let: :trigger,
+        slots: slots_with_button()
       },
       %Variation{
         id: :with_link,
-        attributes: %{
-          contains_link: true,
-          id: "labrador-info-2"
-        },
+        attributes: %{id: "labrador-info-2"},
+        let: :trigger,
         slots: slots_with_link()
-      },
-      %Variation{
-        id: :with_link_in_tooltip,
-        note:
-          "The link is reachable: focusing it keeps the tooltip open, and " <>
-            "`Esc` still dismisses. But a screen reader reads a description " <>
-            "as text, so the link is announced without being announced as a " <>
-            "link. The ARIA Authoring Practices advise against interactive " <>
-            "content in a tooltip for that reason.",
-        attributes: %{
-          id: "labrador-info-3"
-        },
-        slots: slots_with_link_in_tooltip()
       }
     ]
   end
@@ -41,21 +25,18 @@ defmodule Doggo.Storybook.Tooltip do
   def modifier_variation_base(id, _name, _value, _opts) do
     %{
       attributes: %{id: id},
-      slots: slots_with_text()
+      let: :trigger,
+      slots: slots_with_button()
     }
   end
 
-  def slots_with_text do
+  def slots_with_button do
     [
-      "Labrador Retriever",
       """
-      <:tooltip>
-        <p><strong>Labrador Retriever</strong></p>
-        <p>
-          Labradors are known for their friendly nature and excellent
-          swimming abilities.
-        </p>
-      </:tooltip>
+      <button type="button" {trigger}>Delete</button>
+      """,
+      """
+      <:tooltip>Deletes the row and its history.</:tooltip>
       """
     ]
   end
@@ -63,7 +44,7 @@ defmodule Doggo.Storybook.Tooltip do
   def slots_with_link do
     [
       """
-      <Phoenix.Component.link navigate="/labradors">
+      <Phoenix.Component.link navigate="/labradors" {trigger}>
         Labrador Retriever
       </Phoenix.Component.link>
       """,
@@ -73,26 +54,6 @@ defmodule Doggo.Storybook.Tooltip do
         <p>
           Labradors are known for their friendly nature and excellent
           swimming abilities.
-        </p>
-      </:tooltip>
-      """
-    ]
-  end
-
-  def slots_with_link_in_tooltip do
-    [
-      "Labrador Retriever",
-      """
-      <:tooltip>
-        <p><strong>Labrador Retriever</strong></p>
-        <p>
-          Labradors are known for their friendly nature and excellent
-          swimming abilities.
-        </p>
-        <p>
-          <Phoenix.Component.link navigate="/labradors">
-            More about Labradors
-          </Phoenix.Component.link>
         </p>
       </:tooltip>
       """
