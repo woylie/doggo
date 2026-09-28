@@ -26,47 +26,37 @@ defmodule Doggo.Components.Tooltip do
   @impl true
   def usage do
     """
-    With an inline text:
+    A tooltip describes a control that already has a purpose of its own, such
+    as an icon button. Render the control in the inner block and spread the
+    attributes it receives on it, which point `aria-describedby` at the
+    tooltip:
 
     ```heex
-    <p>
-      Did you know that the
-      <.tooltip id="labrador-info">
-        Labrador Retriever
-        <:tooltip>
-          <p><strong>Labrador Retriever</strong></p>
-          <p>
-            Labradors are known for their friendly nature and excellent
-            swimming abilities.
-          </p>
-        </:tooltip>
-      </.tooltip>
-      is one of the most popular dog breeds in the world?
-    </p>
+    <.tooltip id="delete-info" :let={trigger}>
+      <.button phx-click="delete" {trigger}>Delete</.button>
+      <:tooltip>Deletes the row and its history.</:tooltip>
+    </.tooltip>
     ```
 
-    If the inner block contains a link or another focusable element, add the
-    `contains_link` attribute and put `aria-describedby` on that element. Its
-    value is the `id` of the component with `-tooltip` appended:
+    If the control already has a description, list both ids in one
+    `aria-describedby`, since a second attribute of the same name is ignored:
 
     ```heex
-    <p>
-      Did you know that the
-      <.tooltip id="labrador-info" contains_link>
-        <.link navigate={~p"/labradors"} aria-describedby="labrador-info-tooltip">
-          Labrador Retriever
-        </.link>
-        <:tooltip>
-          <p><strong>Labrador Retriever</strong></p>
-          <p>
-            Labradors are known for their friendly nature and excellent
-            swimming abilities.
-          </p>
-        </:tooltip>
-      </.tooltip>
-      is one of the most popular dog breeds in the world?
-    </p>
+    <.tooltip id="delete-info" :let={trigger}>
+      <.button
+        phx-click="delete"
+        aria-describedby={"delete-hint " <> trigger["aria-describedby"]}
+      >
+        Delete
+      </.button>
+      <:tooltip>Deletes the row and its history.</:tooltip>
+    </.tooltip>
     ```
+
+    Do not use a tooltip to explain text or to hide information behind an
+    info icon. The tooltip is announced when the control is focused, and a
+    control that exists only to show it does nothing when it is pressed. Put
+    the information in visible text instead.
 
     This component needs the `Doggo.Tooltip` JavaScript hook for `Esc` to
     dismiss the tooltip. See
@@ -82,7 +72,7 @@ defmodule Doggo.Components.Tooltip do
   @impl true
   def keyboard do
     """
-    - `Tab` - focus the described element, which shows the tooltip.
+    - `Tab` - focus the control, which shows the tooltip.
     - `Esc` - hide the tooltip while it is shown, without moving the focus.
     """
   end
@@ -120,26 +110,18 @@ defmodule Doggo.Components.Tooltip do
     quote do
       attr :id, :string, required: true
 
-      attr :contains_link, :boolean,
-        default: false,
-        doc: """
-        If `false`, the component sets `tabindex="0"` and `aria-describedby` on
-        the element wrapping the inner block, so that the tooltip is announced
-        and can be made visible by focusing that element.
-
-        Set this to `true` if the inner block already contains a focusable
-        element, such as a link or a button. The component then sets neither
-        `tabindex` nor `aria-describedby`, because both belong on the element
-        that receives the focus, and you render that element.
-
-        Set `aria-describedby` on it yourself. Its value is the `id` you passed
-        with `-tooltip` appended: a tooltip with `id="labrador-info"` needs
-        `aria-describedby="labrador-info-tooltip"`. See the usage example.
-        """
-
       attr :rest, :global, doc: "Any additional HTML attributes."
 
-      slot :inner_block, required: true
+      slot :inner_block,
+        required: true,
+        doc: """
+        The control the tooltip describes. The inner block receives the
+        attributes to spread on it, which point `aria-describedby` at the
+        tooltip. If the control has a description of its own, list both ids
+        in one attribute instead of spreading:
+        `aria-describedby={"hint " <> trigger["aria-describedby"]}`.
+        """
+
       slot :tooltip, required: true
     end
   end
@@ -160,12 +142,7 @@ defmodule Doggo.Components.Tooltip do
       {@data_attrs}
       {@rest}
     >
-      <span
-        tabindex={!@contains_link && "0"}
-        aria-describedby={!@contains_link && "#{@id}-tooltip"}
-      >
-        {render_slot(@inner_block)}
-      </span>
+      {render_slot(@inner_block, %{"aria-describedby" => "#{@id}-tooltip"})}
       <div role="tooltip" id={"#{@id}-tooltip"}>
         {render_slot(@tooltip)}
       </div>

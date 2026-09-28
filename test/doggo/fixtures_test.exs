@@ -925,9 +925,9 @@ defmodule Doggo.FixturesTest do
 
     assert_fixture(
       ~H"""
-      <FixtureComponents.tooltip id="tooltip">
-        Labrador Retriever
-        <:tooltip>A friendly breed.</:tooltip>
+      <FixtureComponents.tooltip :let={trigger} id="tooltip">
+        <button type="button" {trigger}>Delete</button>
+        <:tooltip>Deletes the row and its history.</:tooltip>
       </FixtureComponents.tooltip>
       """,
       "tooltip.html"
