@@ -54,6 +54,7 @@ defmodule Doggo.Macros do
 
           Code.eval_quoted(
             Doggo.Macros.build(
+              __MODULE__,
               unquote(component),
               unquote(module),
               unquote(opts),
@@ -70,14 +71,17 @@ defmodule Doggo.Macros do
   end
 
   @doc false
-  def build(component, module, opts, defaults, data_attrs, type) do
+  def build(caller, component, module, opts, defaults, data_attrs, type) do
     validate_functions!(:"build_#{component}", opts)
     opts = Keyword.validate!(opts, defaults)
 
     {opts, extra} =
       Keyword.split(opts, [:name, :base_class, :data_attrs, :modifiers])
 
-    attrs_and_slots = module.attrs_and_slots(extra)
+    {extra, callees} = resolve_callees!(caller, component, module, opts, extra)
+
+    attrs_and_slots =
+      module.attrs_and_slots(Keyword.put(extra, :callees, callees))
 
     validate_build!(component, opts, attrs_and_slots)
 
@@ -213,6 +217,83 @@ defmodule Doggo.Macros do
     end
 
     :ok
+  end
+
+  defp resolve_callees!(caller, component, module, opts, extra) do
+    Code.ensure_loaded!(module)
+
+    callees =
+      if function_exported?(module, :callees, 0), do: module.callees(), else: []
+
+    Enum.reduce(callees, {extra, %{}}, fn {option, callee}, {extra, acc} ->
+      fun = extra[option] || Function.capture(caller, callee, 1)
+      validate_callee!(component, option, fun)
+      info = callee_info!(caller, component, opts, option, callee, fun)
+      {Keyword.put(extra, option, fun), Map.put(acc, option, info)}
+    end)
+  end
+
+  defp validate_callee!(component, option, fun) do
+    if is_function(fun, 1) and Function.info(fun, :type) == {:type, :external} do
+      :ok
+    else
+      raise ArgumentError, """
+      invalid #{option} option for build_#{component}/1
+
+      The option has to be a remote capture of a function component, for
+      example &MyAppWeb.CoreComponents.#{option}/1.
+
+      Got:
+
+          #{inspect(fun)}
+      """
+    end
+  end
+
+  defp callee_info!(caller, component, opts, option, callee, fun) do
+    {callee_module, callee_name} = Doggo.capture_name(fun)
+    info = find_build(caller, callee_module, callee_name)
+
+    if info[:component] != callee do
+      name = Keyword.fetch!(opts, :name)
+
+      raise ArgumentError, """
+      missing #{callee} build for #{name}/1
+
+      #{name}/1 depends on the #{callee} component. #{callee} has to be built
+      first:
+
+          build_#{callee}()
+          build_#{component}()
+
+      To use a #{callee} build that uses a different name, pass the #{option}
+      option:
+
+          build_#{callee}(name: :my_#{callee})
+          build_#{component}(#{option}: &MyAppWeb.CoreComponents.my_#{callee}/1)
+
+      Expected a #{callee} build at:
+
+          #{inspect(callee_module)}.#{callee_name}/1
+      """
+    end
+
+    info
+  end
+
+  defp find_build(caller, caller, name) do
+    caller
+    |> Module.get_attribute(:dog_components)
+    |> Enum.find(&(&1[:name] == name))
+  end
+
+  defp find_build(_caller, module, name) do
+    with {:module, _} <- Code.ensure_compiled(module),
+         true <- function_exported?(module, :__dog_components__, 0) do
+      module.__dog_components__()[name]
+    else
+      _ -> nil
+    end
   end
 
   @doc false

@@ -75,5 +75,14 @@ defmodule Doggo.Component do
   """
   @callback example_label() :: String.t()
 
-  @optional_callbacks builder_doc: 0, css_path: 0, example_label: 0, keyboard: 0
+  @doc """
+  Returns the components this component depends on.
+  """
+  @callback callees() :: keyword(atom)
+
+  @optional_callbacks builder_doc: 0,
+                      callees: 0,
+                      css_path: 0,
+                      example_label: 0,
+                      keyboard: 0
 end

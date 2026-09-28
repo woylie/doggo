@@ -166,12 +166,79 @@ defmodule Doggo.MacrosTest do
   end
 
   describe "build_image/1" do
-    test "raises for ratios that are not a list" do
+    test "raises without a frame build" do
       assert_raise ArgumentError,
-                   ~r/invalid ratios option for build_image\/1.*Got:\s+"16:9"/s,
+                   ~r/missing frame build for image\/1.*build_frame\(\)/s,
+                   fn -> compile(ImageWithoutFrame, "build_image()") end
+    end
+
+    test "raises if the frame option names a function that is not a frame build" do
+      assert_raise ArgumentError, ~r/missing frame build for image\/1/, fn ->
+        compile(ImageWithButtonAsFrame, """
+        build_button()
+        build_image(frame: &__MODULE__.button/1)
+        """)
+      end
+    end
+
+    test "raises for a frame option that is not a remote capture" do
+      assert_raise ArgumentError,
+                   ~r/invalid frame option for build_image\/1/,
                    fn ->
-                     compile(RatiosString, ~s|build_image(ratios: "16:9")|)
+                     compile(
+                       ImageWithAtomFrame,
+                       "build_frame()\nbuild_image(frame: :frame)"
+                     )
                    end
+    end
+
+    test "raises if the frame is built after the image" do
+      assert_raise ArgumentError, ~r/missing frame build for image\/1/, fn ->
+        compile(ImageBeforeFrame, "build_image()\nbuild_frame()")
+      end
+    end
+
+    test "takes ratio values from the frame build" do
+      [{module, _}] =
+        compile(ImageRatios, """
+        build_frame(ratios: ["1:1", "21:9"])
+        build_image()
+        """)
+
+      %{attrs: attrs} = module.__components__()[:image]
+      ratio = Enum.find(attrs, &(&1.name == :ratio))
+      assert ratio.opts[:values] == [nil, "1:1", "21:9"]
+    end
+
+    test "accepts a frame build in another module" do
+      assert [{_, _}, {module, _}] =
+               Code.compile_string("""
+               defmodule Doggo.MacrosTest.FrameModule do
+                 use Doggo.Components
+                 use Phoenix.Component
+
+                 build_frame(ratios: ["3:2"])
+               end
+
+               defmodule Doggo.MacrosTest.ImageModule do
+                 use Doggo.Components
+                 use Phoenix.Component
+
+                 build_image(frame: &Doggo.MacrosTest.FrameModule.frame/1)
+               end
+               """)
+
+      %{attrs: attrs} = module.__components__()[:image]
+      ratio = Enum.find(attrs, &(&1.name == :ratio))
+      assert ratio.opts[:values] == [nil, "3:2"]
+    end
+
+    test "accepts a frame build under another name" do
+      assert [{_module, _}] =
+               compile(ImageWithNamedFrame, """
+               build_frame(name: :media_frame)
+               build_image(frame: &__MODULE__.media_frame/1)
+               """)
     end
   end
 
