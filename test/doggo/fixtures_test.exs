@@ -920,6 +920,20 @@ defmodule Doggo.FixturesTest do
     )
   end
 
+  test "matches toggletip fixture" do
+    assigns = %{}
+
+    assert_fixture(
+      ~H"""
+      <FixtureComponents.toggletip id="toggletip" label="About the fee">
+        <:icon>i</:icon>
+        The fee covers vaccinations.
+      </FixtureComponents.toggletip>
+      """,
+      "toggletip.html"
+    )
+  end
+
   test "matches tooltip fixture" do
     assigns = %{}
 

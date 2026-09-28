@@ -140,6 +140,7 @@ defmodule Doggo.StorybookTest do
       modifiers: [variant: [values: [nil, "yes"], default: nil]]
     )
 
+    build_toggletip(modifiers: [variant: [values: [nil, "yes"], default: nil]])
     build_toolbar(modifiers: [variant: [values: [nil, "yes"], default: nil]])
     build_tooltip(modifiers: [variant: [values: [nil, "yes"], default: nil]])
     build_tree(modifiers: [variant: [values: [nil, "yes"], default: nil]])

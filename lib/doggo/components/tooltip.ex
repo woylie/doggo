@@ -56,7 +56,8 @@ defmodule Doggo.Components.Tooltip do
     Do not use a tooltip to explain text or to hide information behind an
     info icon. The tooltip is announced when the control is focused, and a
     control that exists only to show it does nothing when it is pressed. Put
-    the information in visible text instead.
+    the information in visible text instead, or behind a `toggletip`, whose
+    button exists to reveal it.
 
     This component needs the `Doggo.Tooltip` JavaScript hook for `Esc` to
     dismiss the tooltip. See
