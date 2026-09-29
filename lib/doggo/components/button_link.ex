@@ -81,11 +81,11 @@ defmodule Doggo.Components.ButtonLink do
         doc: """
         Marks the link as unavailable.
 
-        Since `<a>` tags cannot have a `disabled` attribute, the link is rendered
-        without a destination, with `role="link"` and `aria-disabled="true"`. It
-        stays in the tab order, so that the state can be discovered, but neither
-        a click nor Enter activates it. Any `href`, `navigate` or `patch` you
-        pass is ignored.
+        Since `<a>` tags cannot have a `disabled` attribute, the link is
+        rendered without a destination, with `role="link"` and
+        `aria-disabled="true"`. It stays in the tab order, so that the state can
+        be discovered, but neither a click nor Enter activates it. Any `href`,
+        `navigate` or `patch` you pass is ignored.
 
         Style it with the `[aria-disabled]` selector.
         """

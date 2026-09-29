@@ -16,7 +16,8 @@ defmodule Doggo.Components.Date do
   @impl true
   def usage do
     """
-    By default, the given value is formatted for display with `to_string/1`. This:
+    By default, the given value is formatted for display with `to_string/1`.
+    This:
 
     ```heex
     <.date value={~D[2023-02-05]} />
@@ -126,8 +127,8 @@ defmodule Doggo.Components.Date do
         default: nil,
         doc: """
         When provided, this function is used to format the date value for the
-        `title` attribute. If the attribute is not set, no `title` attribute will
-        be added.
+        `title` attribute. If the attribute is not set, no `title` attribute
+        will be added.
         """
 
       attr :timezone, :string,

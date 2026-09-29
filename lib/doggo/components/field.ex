@@ -7,8 +7,6 @@ defmodule Doggo.Components.Field do
 
   alias Phoenix.HTML.Form
 
-  require Doggo
-
   @built_in_types ~w(checkbox checkbox-group color date datetime-local email file
                      hidden month number password range radio radio-group search
                      select switch tel text textarea time url week)
@@ -208,9 +206,9 @@ defmodule Doggo.Components.Field do
     }
     ```
 
-    The component has a `hide_label` attribute to visually hide labels while still
-    making them accessible to screen readers. If all labels within a form need to
-    be visually hidden, it may be more convenient to define a
+    The component has a `hide_label` attribute to visually hide labels while
+    still making them accessible to screen readers. If all labels within a form
+    need to be visually hidden, it may be more convenient to define a
     `.has-visually-hidden-labels` modifier class for the `<form>`.
 
     ```heex
@@ -253,11 +251,11 @@ defmodule Doggo.Components.Field do
     ```
 
     Note that the `checkbox-group` type renders an additional hidden input with
-    an empty value before the checkboxes. This ensures that a value exists in case
-    all checkboxes are unchecked. Consequently, the resulting list value includes
-    an extra empty string. While `Ecto.Changeset.cast/3` filters out empty strings
-    in array fields by default, you may need to handle the additional empty string
-    manual in other contexts.
+    an empty value before the checkboxes. This ensures that a value exists in
+    case all checkboxes are unchecked. Consequently, the resulting list value
+    includes an extra empty string. While `Ecto.Changeset.cast/3` filters out
+    empty strings in array fields by default, you may need to handle the
+    additional empty string manual in other contexts.
     """
   end
 
@@ -461,8 +459,8 @@ defmodule Doggo.Components.Field do
 
       attr :gettext, :atom,
         doc: """
-        The Gettext module to use for translating error messages. This option can
-        also be set globally, see above.
+        The Gettext module to use for translating error messages. This option
+        can also be set globally, see above.
         """
 
       slot :description,
@@ -536,12 +534,14 @@ defmodule Doggo.Components.Field do
     """
   end
 
-  defp validate_type_entry!(_name, entry, _option) when is_function(entry, 1),
-    do: :ok
+  defp validate_type_entry!(_name, entry, _option) when is_function(entry, 1) do
+    :ok
+  end
 
   defp validate_type_entry!(_name, {entry, opts}, _option)
-       when is_function(entry, 1) and is_list(opts),
-       do: :ok
+       when is_function(entry, 1) and is_list(opts) do
+    :ok
+  end
 
   defp validate_type_entry!(name, entry, :types)
        when entry in [nil, :default] do
@@ -574,9 +574,49 @@ defmodule Doggo.Components.Field do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
+  def init_block(_opts, extra) do
+    types = extra |> types!() |> Map.keys()
+
+    option_types =
+      (@built_in_types -- ["checkbox-group", "radio-group"]) -- types
+
+    quote do
+      require Doggo
+
+      Doggo.diagnostic do
+        unquote(__MODULE__).ensure_no_option_descriptions!(
+          var!(assigns),
+          unquote(option_types)
+        )
+      end
+    end
   end
+
+  @doc false
+  def ensure_no_option_descriptions!(%{type: type, options: options}, types)
+      when is_list(options) or is_map(options) do
+    if type in types, do: Enum.each(options, &ensure_no_description!/1)
+  end
+
+  def ensure_no_option_descriptions!(_assigns, _types), do: :ok
+
+  defp ensure_no_description!({_group_label, options})
+       when is_list(options) or is_map(options) do
+    Enum.each(options, &ensure_no_description!/1)
+  end
+
+  defp ensure_no_description!(option) when is_list(option) do
+    if option[:description] do
+      raise ArgumentError, """
+      invalid :description on an option for .field
+
+      The `:description` option is only supported by the `checkbox-group` and
+      `radio-group` types.
+      """
+    end
+  end
+
+  defp ensure_no_description!(_option), do: :ok
 
   @derived_from [
     :field,
@@ -618,16 +658,7 @@ defmodule Doggo.Components.Field do
       value: field.value
     ]
 
-    assign_input(
-      assigns,
-      id,
-      errors,
-      for(
-        {key, value} <- defaults,
-        not is_map_key(assigns, key),
-        do: {key, value}
-      )
-    )
+    assign_input(assigns, id, errors, Keyword.drop(defaults, Map.keys(assigns)))
   end
 
   def prepare(assigns, _gettext_module) when not is_map_key(assigns, :field) do
@@ -1086,8 +1117,9 @@ defmodule Doggo.Components.Field do
     end)
   end
 
-  defp clause_type({:->, _, [[{:when, _, [pattern, _]}], _]}),
-    do: clause_type({:->, [], [[pattern], nil]})
+  defp clause_type({:->, _, [[{:when, _, [pattern, _]}], _]}) do
+    clause_type({:->, [], [[pattern], nil]})
+  end
 
   defp clause_type({:->, _, [[{:%{}, _, fields}], _]}), do: fields[:type]
   defp clause_type(_clause), do: nil
@@ -1167,8 +1199,9 @@ defmodule Doggo.Components.Field do
     end
   end
 
-  defp custom_entry({input, opts}),
-    do: {input, Keyword.get(opts, :group, false)}
+  defp custom_entry({input, opts}) do
+    {input, Keyword.get(opts, :group, false)}
+  end
 
   defp custom_entry(input), do: {input, false}
 
@@ -1313,54 +1346,27 @@ defmodule Doggo.Components.Field do
   attr :gettext_module, :atom, required: true
 
   @doc false
-  def required_optional_mark(
-        %{
-          required: true,
-          required_text: required_text,
-          gettext_module: gettext_module
-        } = assigns
-      )
-      when is_binary(required_text) do
-    required_text =
-      if gettext_module,
-        # credo:disable-for-next-line
-        do: apply(Gettext, :gettext, [gettext_module, required_text]),
-        else: required_text
-
-    assigns = assign(assigns, :required_text, required_text)
-
-    ~H"""
-    <span class={"#{@base_class}-required-mark"} aria-hidden="true">
-      {@required_text}
-    </span>
-    """
-  end
-
-  def required_optional_mark(
-        %{
-          required: false,
-          optional_text: optional_text,
-          gettext_module: gettext_module
-        } = assigns
-      )
-      when is_binary(optional_text) do
-    optional_text =
-      if gettext_module,
-        # credo:disable-for-next-line
-        do: apply(Gettext, :gettext, [gettext_module, optional_text]),
-        else: optional_text
-
-    assigns = assign(assigns, :optional_text, optional_text)
-
-    ~H"""
-    <span class={"#{@base_class}-optional-mark"} aria-hidden="true">
-      {@optional_text}
-    </span>
-    """
-  end
-
   def required_optional_mark(assigns) do
-    ~H""
+    {kind, text} = mark(assigns)
+    text = translate_mark(text, assigns.gettext_module)
+    assigns = assign(assigns, kind: kind, text: text)
+
+    ~H"""
+    <span :if={@text} class={"#{@base_class}-#{@kind}-mark"} aria-hidden="true">
+      {@text}
+    </span>
+    """
+  end
+
+  defp mark(%{required: true, required_text: text}), do: {"required", text}
+  defp mark(%{optional_text: text}), do: {"optional", text}
+
+  defp translate_mark(text, _gettext_module) when not is_binary(text), do: nil
+  defp translate_mark(text, nil), do: text
+
+  defp translate_mark(text, gettext_module) do
+    # credo:disable-for-next-line
+    apply(Gettext, :gettext, [gettext_module, text])
   end
 
   attr :option, :any, required: true
@@ -1440,16 +1446,6 @@ defmodule Doggo.Components.Field do
 
     value = Phoenix.HTML.html_escape(option_value)
     {selected, extra} = Keyword.pop(options, :selected)
-
-    Doggo.diagnostic do
-      if extra[:description] do
-        raise ArgumentError, """
-        Invalid :description on a select option
-
-        The `:description` option is not supported for `type="select"`.
-        """
-      end
-    end
 
     assigns =
       assign(assigns,

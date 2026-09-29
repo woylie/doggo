@@ -11,8 +11,8 @@ defmodule Doggo.Components.PageHeader do
     Renders a header that is specific to the content of the current page.
 
     Unlike a site-wide header, which offers consistent navigation and elements
-    like logos throughout the website or application, this component is meant
-    to describe the unique content of each page. For instance, on an article page,
+    like logos throughout the website or application, this component is meant to
+    describe the unique content of each page. For instance, on an article page,
     it would display the article's title.
 
     It is typically used as a direct child of the `<main>` element.

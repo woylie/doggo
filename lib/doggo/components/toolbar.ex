@@ -100,8 +100,8 @@ defmodule Doggo.Components.Toolbar do
         doc: """
         A accessibility label for the toolbar. Set as `aria-label` attribute.
 
-        You should ensure that either the `label` or the `labelledby` attribute is
-        set.
+        You should ensure that either the `label` or the `labelledby` attribute
+        is set.
 
         Do not repeat the word `toolbar` in the label. Screen readers announce
         the role along with the name. Using the role in the label would make
@@ -120,8 +120,8 @@ defmodule Doggo.Components.Toolbar do
         <Doggo.toolbar labelledby="dog-toolbar-label"></Doggo.toolbar>
         ```
 
-        You should ensure that either the `label` or the `labelledby` attribute is
-        set.
+        You should ensure that either the `label` or the `labelledby` attribute
+        is set.
         """
 
       attr :controls, :string,

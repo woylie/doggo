@@ -10,8 +10,8 @@ defmodule Doggo.Components.Switch do
     """
     Renders a switch as a button.
 
-    If you want to render a switch as part of a form, use the `input/1` component
-    with the type `"switch"` instead.
+    If you want to render a switch as part of a form, use the `input/1`
+    component with the type `"switch"` instead.
 
     Note that this component only renders a button with a label, a state, and
     `<span>` with the class `switch-control`. You will need to style the switch
@@ -76,8 +76,8 @@ defmodule Doggo.Components.Switch do
       attr :off_text, :string,
         default: "Off",
         doc: """
-        The state text when the switch is off. This value should be translated to
-        the language in which the rest of the page is displayed.
+        The state text when the switch is off. This value should be translated
+        to the language in which the rest of the page is displayed.
         """
 
       attr :checked, :boolean, default: false

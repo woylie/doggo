@@ -7,8 +7,8 @@ defmodule Doggo.Storybook.MenuBar do
 
   @scope_id "menu-bar-all-items"
 
-  def dependent_components,
-    do: [
+  def dependent_components do
+    [
       :menu,
       :menu_button,
       :menu_item,
@@ -16,6 +16,7 @@ defmodule Doggo.Storybook.MenuBar do
       :menu_item_radio_group,
       :menu_group
     ]
+  end
 
   def template do
     """

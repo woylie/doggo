@@ -10,9 +10,9 @@ defmodule Doggo.Components.FieldGroup do
     """
     Groups inputs in a form visually.
 
-    This component is intended for styling purposes and does not provide semantic
-    grouping. For semantic grouping of related form elements, use the `<fieldset>`
-    and `<legend>` HTML elements instead.
+    This component is intended for styling purposes and does not provide
+    semantic grouping. For semantic grouping of related form elements, use the
+    `<fieldset>` and `<legend>` HTML elements instead.
     """
   end
 

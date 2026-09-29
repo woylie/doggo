@@ -90,11 +90,11 @@ defmodule Doggo.Components.Navbar do
       attr :label, :string,
         default: nil,
         doc: """
-        Aria label for the `<nav>` element (e.g. "Main"). The label is especially
-        important if you have multiple `<nav>` elements on the same page. If the
-        page is localized, the label should be translated, too. Do not include
-        "navigation" in the label, since screen readers will already announce the
-        "navigation" role as part of the label.
+        Aria label for the `<nav>` element (e.g. "Main"). The label is
+        especially important if you have multiple `<nav>` elements on the same
+        page. If the page is localized, the label should be translated, too. Do
+        not include "navigation" in the label, since screen readers will already
+        announce the "navigation" role as part of the label.
 
         Do not repeat the word `navigation` in the label. Screen readers
         announce the role along with the name. Using the role in the label

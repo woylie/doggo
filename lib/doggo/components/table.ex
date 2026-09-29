@@ -120,15 +120,16 @@ defmodule Doggo.Components.Table do
       attr :row_id, :any,
         default: nil,
         doc: """
-        Overrides the default function that retrieves the row ID from a stream item.
+        Overrides the default function that retrieves the row ID from a stream
+        item.
         """
 
       attr :row_click, :any,
         default: nil,
         doc: """
-        Sets the `phx-click` function attribute for each row `td`. Expects to be a
-        function that receives a row item as an argument. This does not add the
-        `phx-click` attribute to the `action` slot.
+        Sets the `phx-click` function attribute for each row `td`. Expects to be
+        a function that receives a row item as an argument. This does not add
+        the `phx-click` attribute to the `action` slot.
 
         This is a pointer convenience only. A `td` is not focusable, has no
         interactive role and takes no key events, so the action is unavailable
@@ -167,22 +168,23 @@ defmodule Doggo.Components.Table do
         </:col>
         ```
 
-        Any additional assigns will be added as attributes to the `<td>` elements.
+        Any additional assigns will be added as attributes to the `<td>`
+        elements.
 
         """ do
         attr :label, :any, doc: "The content for the header column."
 
         attr :col_attrs, :list,
           doc: """
-          If set, a `<colgroup>` element is rendered and the attributes are added
-          to the `<col>` element of the respective column.
+          If set, a `<colgroup>` element is rendered and the attributes are
+          added to the `<col>` element of the respective column.
           """
       end
 
       slot :action,
         doc: """
-        The slot for showing user actions in the last table column. These columns
-        do not receive the `row_click` attribute.
+        The slot for showing user actions in the last table column. These
+        columns do not receive the `row_click` attribute.
 
 
         ```elixir
@@ -195,8 +197,8 @@ defmodule Doggo.Components.Table do
 
         attr :col_attrs, :list,
           doc: """
-          If set, a `<colgroup>` element is rendered and the attributes are added
-          to the `<col>` element of the respective column.
+          If set, a `<colgroup>` element is rendered and the attributes are
+          added to the `<col>` element of the respective column.
           """
       end
 

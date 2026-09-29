@@ -25,8 +25,8 @@ defmodule Doggo.Components.DisclosureButton do
     toggle with the button.
 
     The initial state is hidden. Do not forget to add the `hidden` attribute to
-    the toggled element. Otherwise, visibility of the element will not align with
-    the `aria-expanded` attribute of the button.
+    the toggled element. Otherwise, visibility of the element will not align
+    with the `aria-expanded` attribute of the button.
 
     ```heex
     <.disclosure_button controls="data-table">
@@ -90,13 +90,14 @@ defmodule Doggo.Components.DisclosureButton do
   end
 
   @impl true
-  def own_attributes,
-    do: [
+  def own_attributes do
+    [
       "aria-controls": :controls,
       "aria-expanded": nil,
       "phx-click": nil,
       type: nil
     ]
+  end
 
   @impl true
   def nested_classes(_) do

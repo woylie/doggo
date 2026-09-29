@@ -71,8 +71,9 @@ defmodule Doggo.Storybook do
       end
 
       if unquote(function_exported?(storybook_module, :template, 0)) do
-        def template,
-          do: unquote(storybook_module).template()
+        def template do
+          unquote(storybook_module).template()
+        end
       end
 
       if unquote(function_exported?(storybook_module, :template, 1)) do

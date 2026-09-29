@@ -199,10 +199,11 @@ defmodule Doggo.Macros do
 
   @global_prefixes ~w(aria- data- phx-)
 
-  @phoenix_component_imports for {name, 1} <-
-                                   Phoenix.Component.__info__(:functions) ++
-                                     Phoenix.Component.__info__(:macros),
-                                 do: name
+  imports =
+    Phoenix.Component.__info__(:functions) ++
+      Phoenix.Component.__info__(:macros)
+
+  @phoenix_component_imports for {name, 1} <- imports, do: name
 
   @doc false
   def validate_build!(component, opts, attrs_and_slots) do

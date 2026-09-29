@@ -16,7 +16,8 @@ defmodule Doggo.Components.Time do
   @impl true
   def usage do
     """
-    By default, the given value is formatted for display with `to_string/1`. This:
+    By default, the given value is formatted for display with `to_string/1`.
+    This:
 
     ```heex
     <.time value={~T[12:22:06.003Z]} />
@@ -136,8 +137,8 @@ defmodule Doggo.Components.Time do
         default: nil,
         doc: """
         When provided, this function is used to format the time value for the
-        `title` attribute. If the attribute is not set, no `title` attribute will
-        be added.
+        `title` attribute. If the attribute is not set, no `title` attribute
+        will be added.
         """
 
       attr :precision, :atom,

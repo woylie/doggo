@@ -137,8 +137,8 @@ defmodule Doggo.Components.Tree do
         doc: """
         A accessibility label for the tree. Set as `aria-label` attribute.
 
-        You should ensure that either the `label` or the `labelledby` attribute is
-        set.
+        You should ensure that either the `label` or the `labelledby` attribute
+        is set.
 
         Do not repeat the word `tree` in the label. Screen readers announce the
         role along with the name. Using the role in the label would make screen
@@ -157,8 +157,8 @@ defmodule Doggo.Components.Tree do
         <.tree labelledby="dog-tree-label"></.tree>
         ```
 
-        You should ensure that either the `label` or the `labelledby` attribute is
-        set.
+        You should ensure that either the `label` or the `labelledby` attribute
+        is set.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."

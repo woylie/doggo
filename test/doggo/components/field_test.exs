@@ -719,7 +719,7 @@ defmodule Doggo.Components.FieldTest do
           """)
         end
 
-      assert error.message =~ "Invalid :description on a select option"
+      assert error.message =~ "invalid :description on an option for .field"
     end
 
     test "disables option in checkbox group" do

@@ -10,11 +10,12 @@ defmodule Doggo.Components.MenuButton do
     """
     Renders a button that toggles an actions menu.
 
-    This component can be used on its own or as part of a `menu_bar/1` or `menu/1`.
-    See also `menu_item/1`, `menu_item_checkbox/1`, and `menu_group/1`.
+    This component can be used on its own or as part of a `menu_bar/1` or
+    `menu/1`. See also `menu_item/1`, `menu_item_checkbox/1`, and
+    `menu_group/1`.
 
-    For a button that toggles the visibility of an element that is not a menu, use
-    `disclosure_button/1`. For a button that toggles other states, use
+    For a button that toggles the visibility of an element that is not a menu,
+    use `disclosure_button/1`. For a button that toggles other states, use
     `toggle_button/1`. See also `button/1` and `button_link/1`.
     """
   end
@@ -106,8 +107,8 @@ defmodule Doggo.Components.MenuButton do
   end
 
   @impl true
-  def own_attributes,
-    do: [
+  def own_attributes do
+    [
       "aria-controls": :controls,
       "aria-expanded": nil,
       "aria-haspopup": nil,
@@ -115,6 +116,7 @@ defmodule Doggo.Components.MenuButton do
       "phx-hook": nil,
       type: nil
     ]
+  end
 
   @impl true
   def nested_classes(_) do
@@ -127,8 +129,8 @@ defmodule Doggo.Components.MenuButton do
       attr :id, :string,
         required: true,
         doc: """
-        The DOM ID of the button. Set the `aria-labelledby` attribute of the toggled
-        menu to the same value.
+        The DOM ID of the button. Set the `aria-labelledby` attribute of the
+        toggled menu to the same value.
         """
 
       attr :controls, :string,

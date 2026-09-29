@@ -10,13 +10,13 @@ defmodule Doggo.Components.AlertDialog do
   @impl true
   def doc do
     """
-    Renders an alert dialog that requires the immediate attention and response of
-    the user.
+    Renders an alert dialog that requires the immediate attention and response
+    of the user.
 
     This component is meant for situations where critical information must be
-    conveyed, and an explicit response is required from the user. It is typically
-    used for confirmation dialogs, warning messages, error notifications, and
-    other scenarios where an immediate decision is necessary.
+    conveyed, and an explicit response is required from the user. It is
+    typically used for confirmation dialogs, warning messages, error
+    notifications, and other scenarios where an immediate decision is necessary.
 
     For non-critical dialogs, such as those containing forms or additional
     information, use `Doggo.Components.build_modal/1` instead.
@@ -147,13 +147,14 @@ defmodule Doggo.Components.AlertDialog do
   end
 
   @impl true
-  def own_attributes,
-    do: [
+  def own_attributes do
+    [
       "aria-describedby": nil,
       "aria-labelledby": nil,
       "phx-hook": nil,
       role: nil
     ]
+  end
 
   @impl true
   def nested_classes(base_class) do
@@ -175,9 +176,9 @@ defmodule Doggo.Components.AlertDialog do
       attr :on_cancel, :any,
         default: %JS{},
         doc: """
-        An additional `Phoenix.LiveView.JS` command or event name to execute
-        when the dialog is canceled. This command is executed in addition to closing the dialog. If
-        you only want the dialog to be closed, you don't have to set this attribute.
+        A `Phoenix.LiveView.JS` command or event name to run when the dialog
+        closes, for example to patch back to the URL the dialog was opened from.
+        This attribute is not required to close the dialog.
         """
 
       attr :closedby, :string,

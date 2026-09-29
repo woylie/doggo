@@ -85,8 +85,9 @@ defmodule Doggo.Components.Fallback do
       attr :formatter, :any,
         default: nil,
         doc: """
-        A 1-arity function that takes the value and returns the value for display.
-        The formatter function is only applied if `value` is not an empty value.
+        A 1-arity function that takes the value and returns the value for
+        display. The formatter function is only applied if `value` is not an
+        empty value.
         """
 
       attr :placeholder, :any,
