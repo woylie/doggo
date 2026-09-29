@@ -16,7 +16,7 @@ defmodule Doggo.Components.Navbar do
   def usage do
     """
     ```heex
-    <.navbar>
+    <.navbar label="Main">
       <:brand><.link navigate={~p"/"}>Pet Clinic</.link></:brand>
       <.navbar_items>
         <:item><.link navigate={~p"/about"}>About</.link></:item>
@@ -33,7 +33,7 @@ defmodule Doggo.Components.Navbar do
     control the display order of the brand and lists.
 
     ```heex
-    <.navbar>
+    <.navbar label="Main">
       <:brand><.link navigate={~p"/"}>Pet Clinic</.link></:brand>
       <.navbar_items class="navbar-main-links">
         <:item><.link navigate={~p"/about"}>About</.link></:item>
@@ -47,11 +47,12 @@ defmodule Doggo.Components.Navbar do
     </.navbar>
     ```
 
-    If you have multiple `<nav>` elements on your page, it is recommended to set
-    the `aria-label` attribute.
+    If a visible heading already names the navigation, point `labelledby` at it
+    instead of setting `label`.
 
     ```heex
-    <.navbar aria-label="main navigation">
+    <h2 id="site-nav-heading">Pet Clinic</h2>
+    <.navbar labelledby="site-nav-heading">
       <!-- ... -->
     </.navbar>
     ```
@@ -87,7 +88,7 @@ defmodule Doggo.Components.Navbar do
   def attrs_and_slots(_opts) do
     quote do
       attr :label, :string,
-        required: true,
+        default: nil,
         doc: """
         Aria label for the `<nav>` element (e.g. "Main"). The label is especially
         important if you have multiple `<nav>` elements on the same page. If the
@@ -98,6 +99,14 @@ defmodule Doggo.Components.Navbar do
         Do not repeat the word `navigation` in the label. Screen readers
         announce the role along with the name. Using the role in the label
         would make screen readers repeat it.
+        """
+
+      attr :labelledby, :string,
+        default: nil,
+        doc: """
+        The DOM ID of an element that labels this navigation.
+
+        Set either this attribute or `label`.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."
@@ -119,9 +128,18 @@ defmodule Doggo.Components.Navbar do
   end
 
   @impl true
+  def example_label, do: "Main"
+
+  @impl true
   def render(assigns) do
     ~H"""
-    <nav class={@class} aria-label={@label} {@data_attrs} {@rest}>
+    <nav
+      class={@class}
+      aria-label={@label}
+      aria-labelledby={@labelledby}
+      {@data_attrs}
+      {@rest}
+    >
       <div :if={@brand != []} class={"#{@base_class}-brand"}>
         {render_slot(@brand)}
       </div>
