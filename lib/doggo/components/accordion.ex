@@ -114,7 +114,7 @@ defmodule Doggo.Components.Accordion do
       attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :section, required: true do
-        attr :title, :string
+        attr :title, :string, required: true
       end
     end
   end
