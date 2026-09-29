@@ -235,7 +235,7 @@ defmodule DemoWeb.PatchTestLive do
       <h2>modal</h2>
       <p>
         <code>modal</code>
-        defaults to <code>dismissable</code>, so clicking
+        defaults to <code>closedby="any"</code>, so clicking
         outside it closes it. Use <strong>Bump from inside</strong>
         or start the auto-tick before opening.
       </p>

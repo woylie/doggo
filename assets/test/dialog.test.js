@@ -167,7 +167,24 @@ describe("initDialog", () => {
       expect(el.open).toBe(true);
     });
 
-    it("stays open on a click outside when it is not dismissable", () => {
+    it("stays open on a click outside with closerequest", () => {
+      el.setAttribute("closedby", "closerequest");
+      dispatch(el, "doggo:open");
+      el.click();
+
+      expect(el.open).toBe(true);
+    });
+
+    it("lets Escape through with closerequest", () => {
+      el.setAttribute("closedby", "closerequest");
+      dispatch(el, "doggo:open");
+      const event = new window.Event("cancel", { cancelable: true });
+      el.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(false);
+    });
+
+    it("stays open on a click outside with none", () => {
       el.setAttribute("closedby", "none");
       dispatch(el, "doggo:open");
       el.click();
@@ -175,7 +192,7 @@ describe("initDialog", () => {
       expect(el.open).toBe(true);
     });
 
-    it("holds Escape when it is not dismissable", () => {
+    it("holds Escape with none", () => {
       el.setAttribute("closedby", "none");
       dispatch(el, "doggo:open");
       const event = new window.Event("cancel", { cancelable: true });
@@ -184,7 +201,7 @@ describe("initDialog", () => {
       expect(event.defaultPrevented).toBe(true);
     });
 
-    it("lets Escape through when it is dismissable", () => {
+    it("lets Escape through with any", () => {
       dispatch(el, "doggo:open");
       const event = new window.Event("cancel", { cancelable: true });
       el.dispatchEvent(event);

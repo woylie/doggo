@@ -39,7 +39,6 @@ defmodule Doggo.Components.AlertDialogTest do
       assert attribute(dialog, "open") == nil
       assert attribute(dialog, "aria-modal") == nil
 
-      # An alert dialog is not dismissable by default.
       assert attribute(dialog, "closedby") == "none"
 
       # The browser owns the `open` attribute, so LiveView ignores it.
@@ -55,7 +54,7 @@ defmodule Doggo.Components.AlertDialogTest do
       assert text(html, "section > footer") == "paw"
     end
 
-    test "renders close button with dismissable" do
+    test "renders close button with closedby any" do
       assigns = %{}
 
       html =
@@ -63,7 +62,7 @@ defmodule Doggo.Components.AlertDialogTest do
         <TestComponents.alert_dialog
           id="pet-alert"
           on_cancel={JS.push("cancel")}
-          dismissable
+          closedby="any"
         >
           <:title>Edit dog</:title>
           dog-form
@@ -84,6 +83,21 @@ defmodule Doggo.Components.AlertDialogTest do
       assert attribute(a, "commandfor") == "pet-alert"
       assert attribute(a, "aria-label") == "Close"
       assert text(a, "span") == "Close"
+    end
+
+    test "renders close button with closedby closerequest" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.alert_dialog id="pet-alert" closedby="closerequest">
+          <:title>Edit dog</:title>
+          dog-form
+        </TestComponents.alert_dialog>
+        """)
+
+      assert [_] = Floki.find(html, ".alert-dialog-close")
+      assert attribute(html, "dialog:root", "closedby") == "closerequest"
     end
 
     test "opens on mount with open" do
@@ -107,7 +121,7 @@ defmodule Doggo.Components.AlertDialogTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.alert_dialog id="pet-alert" dismissable>
+        <TestComponents.alert_dialog id="pet-alert" closedby="any">
           <:title>Edit dog</:title>
           dog-form
           <:close>X</:close>
@@ -122,7 +136,7 @@ defmodule Doggo.Components.AlertDialogTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.alert_dialog id="pet-alert" close_label="Cancel" dismissable>
+        <TestComponents.alert_dialog id="pet-alert" close_label="Cancel" closedby="any">
           <:title>Edit dog</:title>
           dog-form
         </TestComponents.alert_dialog>

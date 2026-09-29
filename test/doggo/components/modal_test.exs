@@ -56,7 +56,7 @@ defmodule Doggo.Components.ModalTest do
       assert text(html, "section > footer") == "paw"
     end
 
-    test "omits close button without dismissable" do
+    test "omits close button with closedby none" do
       assigns = %{}
 
       html =
@@ -64,7 +64,7 @@ defmodule Doggo.Components.ModalTest do
         <TestComponents.modal
           id="pet-modal"
           on_cancel={JS.push("cancel")}
-          dismissable={false}
+          closedby="none"
         >
           <:title>Edit dog</:title>
           dog-form
@@ -74,6 +74,21 @@ defmodule Doggo.Components.ModalTest do
 
       assert Floki.find(html, ".modal-close") == []
       assert attribute(html, "dialog:root", "closedby") == "none"
+    end
+
+    test "renders close button with closedby closerequest" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.modal id="pet-modal" closedby="closerequest">
+          <:title>Edit dog</:title>
+          dog-form
+        </TestComponents.modal>
+        """)
+
+      assert [_] = Floki.find(html, ".modal-close")
+      assert attribute(html, "dialog:root", "closedby") == "closerequest"
     end
 
     test "opens on mount with open" do

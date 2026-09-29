@@ -71,8 +71,9 @@ defmodule Doggo.Components.AlertDialog do
 
     The alert dialog can be closed by:
 
-    - using `hide_modal/1`, or
-    - using the close button or `Esc` (only if `dismissable` is set).
+    - using `hide_modal/1`,
+    - using the close button or `Esc`, unless `closedby` is `"none"`, or
+    - clicking outside it, if `closedby` is `"any"`.
 
     Each of them runs `on_cancel` once.
 
@@ -88,10 +89,10 @@ defmodule Doggo.Components.AlertDialog do
     `showModal()` moves the focus into the dialog to the first element with the
     `autofocus` attribute, or the first focusable element if no element has it.
 
-    The alert dialog is not dismissable by default, so the first focusable
-    element is usually the first control in the `:footer` slot. In a
-    dismissable alert dialog, it is the close button. Neither is likely to be
-    the right element to focus.
+    An alert dialog renders no close button by default, so the first focusable
+    element is usually the first control in the `:footer` slot. With a close
+    button, it is the close button. Neither is likely to be the right element
+    to focus.
 
     Set `autofocus` on the element that should receive the focus:
 
@@ -118,16 +119,15 @@ defmodule Doggo.Components.AlertDialog do
 
     ## Caveats
 
-    An alert dialog is not dismissable by default, so it renders
-    `closedby="none"` and no close button, which leaves no way to dismiss it
-    from the component. Provide your own control in the `:footer` slot.
+    An alert dialog defaults to `closedby="none"`, which means that it does not
+    render a close button. Provide your own control in the `:footer` slot.
     """
   end
 
   @impl true
   def keyboard do
     """
-    - `Esc` - close the dialog (only if `dismissable` is set).
+    - `Esc` - close the dialog, unless `closedby` is `"none"`.
     """
   end
 
@@ -180,12 +180,19 @@ defmodule Doggo.Components.AlertDialog do
         you only want the dialog to be closed, you don't have to set this attribute.
         """
 
-      attr :dismissable, :boolean,
-        default: false,
+      attr :closedby, :string,
+        values: ["any", "closerequest", "none"],
+        default: "none",
         doc: """
-        When set to `true`, the dialog renders a close button and
-        `closedby="any"`, so that it can also be dismissed with the escape key
-        or by clicking outside it.
+        How the user can close the dialog. The value is rendered as the
+        dialog's `closedby` attribute.
+
+        - `"any"` - the close button, `Esc` and a click outside.
+        - `"closerequest"` - the close button and `Esc`, but not a click
+          outside. Use it for a form that should not lose its input to a stray
+          click.
+        - `"none"` - no close button is rendered and neither `Esc` nor a click
+          outside can close the dialog. You need to provide your own control.
         """
 
       attr :close_label, :string,
@@ -221,7 +228,7 @@ defmodule Doggo.Components.AlertDialog do
       class={@class}
       aria-labelledby={"#{@id}-title"}
       aria-describedby={"#{@id}-content"}
-      closedby={(@dismissable && "any") || "none"}
+      closedby={@closedby}
       phx-hook="Doggo.Dialog"
       phx-mounted={Doggo.dialog_mounted(@id, @open)}
       phx-remove={Doggo.hide_modal(@id)}
@@ -233,7 +240,7 @@ defmodule Doggo.Components.AlertDialog do
         <header>
           <h2 id={"#{@id}-title"}>{render_slot(@title)}</h2>
           <button
-            :if={@dismissable}
+            :if={@closedby != "none"}
             type="button"
             class={"#{@base_class}-close"}
             aria-label={@close_label}
