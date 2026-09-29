@@ -445,8 +445,8 @@ defmodule Doggo.Components.FieldTest do
 
       select = find_one(html, ".ranked > select")
       assert attribute(select, "aria-invalid") == "true"
-      assert attribute(select, "aria-errormessage") == "rank_errors"
-      assert attribute(select, "aria-describedby") =~ "rank_description"
+      assert attribute(select, "aria-errormessage") == "rank-errors"
+      assert attribute(select, "aria-describedby") =~ "rank-description"
 
       assert text(html, ".field-errors > li") == "is invalid"
       assert Floki.find(html, ".ranked .field-errors") == []
@@ -542,8 +542,8 @@ defmodule Doggo.Components.FieldTest do
         """)
 
       assert text(html, ".field-description") == "How old?"
-      assert attribute(html, ".field-description", "id") == "age_description"
-      assert attribute(html, "input", "aria-describedby") == "age_description"
+      assert attribute(html, ".field-description", "id") == "age-description"
+      assert attribute(html, "input", "aria-describedby") == "age-description"
     end
 
     test "hides label visually with hide_label" do
@@ -694,10 +694,10 @@ defmodule Doggo.Components.FieldTest do
         </.form>
         """)
 
-      assert text(html, "#color_blue_description") == "The colour of the sky"
+      assert text(html, "#color_blue-description") == "The colour of the sky"
 
       assert attribute(html, "input[value='blue']", "aria-describedby") ==
-               "color_blue_description"
+               "color_blue-description"
 
       assert text(html, "label:first-of-type") == "Blue"
     end
@@ -759,10 +759,10 @@ defmodule Doggo.Components.FieldTest do
         </.form>
         """)
 
-      assert text(html, "#size_l_description") == "Fits everyone"
+      assert text(html, "#size_l-description") == "Fits everyone"
 
       assert attribute(html, "input[value='l']", "aria-describedby") ==
-               "size_l_description"
+               "size_l-description"
     end
 
     test "keeps field description with option description" do
@@ -785,7 +785,7 @@ defmodule Doggo.Components.FieldTest do
         """)
 
       assert attribute(html, "input[value='blue']", "aria-describedby") ==
-               "color_description color_blue_description"
+               "color-description color_blue-description"
     end
 
     test "renders optional text for checkbox group" do
@@ -848,10 +848,10 @@ defmodule Doggo.Components.FieldTest do
       assert text(html, ".field-description") == "Please do."
 
       assert attribute(html, ".field-description", "id") ==
-               "subscribe_description"
+               "subscribe-description"
 
       assert attribute(html, "input[type='checkbox']", "aria-describedby") ==
-               "subscribe_description"
+               "subscribe-description"
 
       assert attribute(html, "input[type='checkbox']", "value") == "true"
     end
@@ -1105,7 +1105,7 @@ defmodule Doggo.Components.FieldTest do
       textarea = find_one(html, "textarea")
       assert attribute(textarea, "id") == "bio"
       assert attribute(textarea, "name") == "bio"
-      assert attribute(textarea, "aria-describedby") == "bio_description"
+      assert attribute(textarea, "aria-describedby") == "bio-description"
 
       assert attribute(html, "label", "for") == "bio"
       assert text(html, "label") == "Bio"
@@ -1265,8 +1265,8 @@ defmodule Doggo.Components.FieldTest do
         </.form>
         """)
 
-      assert attribute(html, "input", "list") == "species_datalist"
-      assert attribute(html, "datalist", "id") == "species_datalist"
+      assert attribute(html, "input", "list") == "species-datalist"
+      assert attribute(html, "datalist", "id") == "species-datalist"
 
       assert attribute(html, "datalist > option:first-child", "value") ==
                "option_a"
@@ -1289,9 +1289,9 @@ defmodule Doggo.Components.FieldTest do
         """)
 
       assert attribute(html, "input", "aria-invalid") == "true"
-      assert attribute(html, "input", "aria-errormessage") == "species_errors"
-      assert attribute(html, "input", "aria-describedby") == "species_errors"
-      assert attribute(html, "ul", "id") == "species_errors"
+      assert attribute(html, "input", "aria-errormessage") == "species-errors"
+      assert attribute(html, "input", "aria-describedby") == "species-errors"
+      assert attribute(html, "ul", "id") == "species-errors"
       assert attribute(html, "ul", "class") == "field-errors"
       assert text(html, ".field-errors > li") == "wrong"
     end
@@ -1309,19 +1309,19 @@ defmodule Doggo.Components.FieldTest do
         """)
 
       assert attribute(html, "input", "aria-invalid") == "true"
-      assert attribute(html, "input", "aria-errormessage") == "species_errors"
+      assert attribute(html, "input", "aria-errormessage") == "species-errors"
 
       assert attribute(html, "input", "aria-describedby") ==
-               "species_errors species_description"
+               "species-errors species-description"
 
-      assert attribute(html, "ul", "id") == "species_errors"
+      assert attribute(html, "ul", "id") == "species-errors"
       assert attribute(html, "ul", "class") == "field-errors"
       assert text(html, ".field-errors > li") == "wrong"
 
       assert text(html, ".field-description") == "What are you?"
 
       assert attribute(html, ".field-description", "id") ==
-               "species_description"
+               "species-description"
     end
 
     test "converts datetime to date string for date input" do
@@ -1479,7 +1479,7 @@ defmodule Doggo.Components.FieldTest do
       # reliably announced
       errors = find_one(html, ".field-errors")
       assert attribute(errors, "aria-live") == "polite"
-      assert attribute(errors, "id") == "species_errors"
+      assert attribute(errors, "id") == "species-errors"
       assert Floki.find(errors, "li") == []
     end
 
@@ -1558,6 +1558,29 @@ defmodule Doggo.Components.FieldTest do
       assert text(html, ".field-errors > li") == "seulement 5 chiens autorisés"
     end
 
+    test "keeps option ids apart from field ids for option value errors" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.field
+          type="checkbox-group"
+          name="tags"
+          label="Tags"
+          value={[]}
+          errors={["pick one"]}
+          options={["errors", "description"]}
+        >
+          <:description>Pick the tags.</:description>
+        </TestComponents.field>
+        """)
+
+      ids = Floki.attribute(html, "[id]", "id")
+      assert ids == Enum.uniq(ids)
+      assert "tags-errors" in ids
+      assert "tags_errors" in ids
+    end
+
     test "derives checkbox option ids without whitespace" do
       assigns = %{}
 
@@ -1579,10 +1602,10 @@ defmodule Doggo.Components.FieldTest do
         """)
 
       input = find_one(html, "input[type='checkbox']")
-      assert attribute(input, "id") == "breeds_golden-retriever"
+      assert attribute(input, "id") == "breeds_golden_retriever"
 
       assert attribute(input, "aria-describedby") =~
-               "breeds_golden-retriever_description"
+               "breeds_golden_retriever-description"
     end
   end
 end
