@@ -73,6 +73,7 @@ defmodule Doggo.AccessibilityRegressionTest do
         <TestComponents.table
           id="pets"
           rows={[%{id: 1, name: "Rex"}]}
+          scrollable={false}
           row_click={fn _ -> Phoenix.LiveView.JS.push("go") end}
         >
           <:col :let={p} label="Name">{p.name}</:col>

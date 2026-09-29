@@ -423,8 +423,32 @@ defmodule Doggo.Components.Combobox do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
+  def init_block(opts, _extra) do
+    name = ".#{Keyword.fetch!(opts, :name)}"
+
+    quote do
+      require Doggo
+
+      Doggo.diagnostic do
+        Doggo.ensure_name!(
+          var!(assigns).list_label,
+          unquote(name),
+          "list_label"
+        )
+
+        Doggo.ensure_name!(
+          var!(assigns).clear_label,
+          unquote(name),
+          "clear_label"
+        )
+
+        Doggo.ensure_optional_name!(
+          var!(assigns).free_text_label,
+          unquote(name),
+          "free_text_label"
+        )
+      end
+    end
   end
 
   @impl true

@@ -168,5 +168,18 @@ defmodule Doggo.Components.ModalTest do
 
       assert attribute(html, ":root", "data-test") == "hello"
     end
+
+    test "raises for blank close_label" do
+      assert_raise ArgumentError, ~r/blank close_label for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.modal id="pet-modal" close_label="">
+          <:title>Edit dog</:title>
+          dog-form
+        </TestComponents.modal>
+        """)
+      end
+    end
   end
 end

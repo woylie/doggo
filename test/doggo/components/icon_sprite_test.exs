@@ -86,5 +86,15 @@ defmodule Doggo.Components.IconSpriteTest do
 
       assert attribute(html, ":root", "data-test") == "hello"
     end
+
+    test "raises for blank text" do
+      assert_raise ArgumentError, ~r/blank text for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.icon_sprite name="edit" text="" />
+        """)
+      end
+    end
   end
 end

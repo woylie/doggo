@@ -154,5 +154,17 @@ defmodule Doggo.Components.BottomNavigationTest do
 
       assert html == []
     end
+
+    test "raises for blank label" do
+      assert_raise ArgumentError, ~r/blank label for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.bottom_navigation current_value={:show} label="Main">
+          <:item label=" " href="/profile" value={:show}>profile-icon</:item>
+        </TestComponents.bottom_navigation>
+        """)
+      end
+    end
   end
 end

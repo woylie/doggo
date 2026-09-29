@@ -23,6 +23,7 @@ defmodule Doggo.Storybook.Table do
         id: :basic,
         attributes: %{
           id: "pets",
+          scrollable: false,
           rows: [
             %{id: 1, name: "George", age: 8},
             %{id: 2, name: "Mary", age: 5}
@@ -39,6 +40,7 @@ defmodule Doggo.Storybook.Table do
         id: :column_attributes,
         attributes: %{
           id: "pets",
+          scrollable: false,
           rows: [
             %{id: 1, name: "George", age: 8},
             %{id: 2, name: "Mary", age: 5}
@@ -55,6 +57,7 @@ defmodule Doggo.Storybook.Table do
         id: :row_id_and_item,
         attributes: %{
           id: "pets",
+          scrollable: false,
           rows: [{1, %{name: "George", age: 8}}, {2, %{name: "Mary", age: 5}}],
           row_id: {:eval, ~s|fn {id, _} -> "pet-\#{id}" end|},
           row_item: {:eval, "fn {_, pet} -> pet end"}
@@ -70,6 +73,7 @@ defmodule Doggo.Storybook.Table do
         id: :actions,
         attributes: %{
           id: "pets",
+          scrollable: false,
           rows: [
             %{id: 1, name: "George", age: 8},
             %{id: 2, name: "Mary", age: 5}
@@ -106,6 +110,7 @@ defmodule Doggo.Storybook.Table do
         id: :foot,
         attributes: %{
           id: "pets",
+          scrollable: false,
           rows: [
             %{id: 1, name: "George", age: 8},
             %{id: 2, name: "Mary", age: 5}
@@ -140,6 +145,7 @@ defmodule Doggo.Storybook.Table do
         """,
         attributes: %{
           id: "pets",
+          scrollable: false,
           rows: [
             %{id: 1, name: "George", age: 8},
             %{id: 2, name: "Mary", age: 5}

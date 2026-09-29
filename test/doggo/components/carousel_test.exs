@@ -456,5 +456,36 @@ defmodule Doggo.Components.CarouselTest do
 
       assert html == []
     end
+
+    test "raises for blank label" do
+      assert_raise ArgumentError, ~r/blank label for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.carousel id="dog-carousel" label="Dog Carousel">
+          <:previous label=" ">Previous</:previous>
+          <:next label="Next">Next</:next>
+          <:item>A</:item>
+          <:item>B</:item>
+        </TestComponents.carousel>
+        """)
+      end
+    end
+
+    test "raises for blank pagination_label" do
+      assert_raise ArgumentError, ~r/blank pagination_label for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.carousel
+          id="dog-carousel"
+          label="Dog Carousel"
+          pagination_label=""
+        >
+          <:item>A</:item>
+        </TestComponents.carousel>
+        """)
+      end
+    end
   end
 end

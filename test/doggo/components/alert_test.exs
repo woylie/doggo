@@ -188,5 +188,27 @@ defmodule Doggo.Components.AlertTest do
 
       assert attribute(html, ":root", "data-test") == "hi"
     end
+
+    test "raises for blank title" do
+      assert_raise ArgumentError, ~r/blank title for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.alert id="some-alert" title=" ">message</TestComponents.alert>
+        """)
+      end
+    end
+
+    test "raises for blank close_label" do
+      assert_raise ArgumentError, ~r/blank close_label for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.alert id="some-alert" close_label="">
+          message
+        </TestComponents.alert>
+        """)
+      end
+    end
   end
 end

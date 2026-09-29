@@ -86,5 +86,17 @@ defmodule Doggo.Components.AppBarTest do
 
       assert attribute(html, "header", "data-what") == "ever"
     end
+
+    test "raises for blank label" do
+      assert_raise ArgumentError, ~r/blank label/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.app_bar id="app-bar-1">
+          <:action label=" " on_click="edit">Edit</:action>
+        </TestComponents.app_bar>
+        """)
+      end
+    end
   end
 end

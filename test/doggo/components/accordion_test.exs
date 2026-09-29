@@ -150,5 +150,17 @@ defmodule Doggo.Components.AccordionTest do
 
       assert html == []
     end
+
+    test "raises for blank title" do
+      assert_raise ArgumentError, ~r/blank title for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.accordion id="dog-breeds">
+          <:section title=" ">abc</:section>
+        </TestComponents.accordion>
+        """)
+      end
+    end
   end
 end

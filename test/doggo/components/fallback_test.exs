@@ -131,5 +131,15 @@ defmodule Doggo.Components.FallbackTest do
                 ], ["-"]}
              ]
     end
+
+    test "raises for blank accessibility_text" do
+      assert_raise ArgumentError, ~r/blank accessibility_text for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.fallback value={nil} accessibility_text=" " />
+        """)
+      end
+    end
   end
 end

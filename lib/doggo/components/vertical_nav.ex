@@ -102,8 +102,8 @@ defmodule Doggo.Components.VerticalNav do
         default: nil,
         doc: """
         The aria label for the `<nav>` element, or for the list if `landmark`
-        is `false`. Not needed when the `:title` slot is filled: the title
-        labels the navigation then.
+        is `false`. Set only one of `label`, `labelledby` and the `:title`
+        slot.
 
         Do not repeat the word `navigation` in the label. Screen readers
         announce the role along with the name. Using the role in the label
@@ -114,13 +114,17 @@ defmodule Doggo.Components.VerticalNav do
         default: nil,
         doc: """
         The DOM ID of an element that labels this navigation, for a heading the
-        component does not render itself. Not needed when the `:title` slot is
-        filled.
+        component does not render itself. Set only one of `label`, `labelledby`
+        and the `:title` slot.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."
 
-      slot :title, doc: "An optional slot for the title of the menu."
+      slot :title,
+        doc: """
+        An optional slot for the title of the menu. If used, it names the
+        navigation, and `label` and `labelledby` don't need to be set.
+        """
 
       slot :item, required: true, doc: "Items" do
         attr :class, :any,
@@ -139,10 +143,37 @@ defmodule Doggo.Components.VerticalNav do
       require Doggo
 
       Doggo.diagnostic do
-        if var!(assigns).landmark do
-          Doggo.ensure_label!(var!(assigns), unquote(name), "Main")
-        end
+        unquote(__MODULE__).ensure_one_name!(var!(assigns), unquote(name))
       end
+    end
+  end
+
+  @doc false
+  def ensure_one_name!(assigns, name) do
+    count =
+      Enum.count(
+        [
+          assigns.title != [],
+          Doggo.named?(assigns.label),
+          Doggo.named?(assigns.labelledby)
+        ],
+        & &1
+      )
+
+    if count == 1 or (count == 0 and not assigns.landmark) do
+      :ok
+    else
+      raise ArgumentError, """
+      invalid name for #{name}
+
+      #{name} needs exactly one name: the :title slot, label or labelledby. A
+      second name would be ignored. With landmark={false}, the name is
+      optional, but there is still at most one.
+
+          title: #{if assigns.title != [], do: "given", else: "none"}
+          label: #{inspect(assigns.label)}
+          labelledby: #{inspect(assigns.labelledby)}
+      """
     end
   end
 

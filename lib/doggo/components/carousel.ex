@@ -333,8 +333,38 @@ defmodule Doggo.Components.Carousel do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
+  def init_block(opts, _extra) do
+    name = ".#{Keyword.fetch!(opts, :name)}"
+
+    quote do
+      require Doggo
+
+      Doggo.diagnostic do
+        Doggo.ensure_name!(
+          var!(assigns).pagination_label,
+          unquote(name),
+          "pagination_label"
+        )
+
+        for entry <- var!(assigns).previous ++ var!(assigns).next do
+          Doggo.ensure_name!(entry[:label], unquote(name), "label")
+        end
+
+        for entry <- var!(assigns).pause do
+          Doggo.ensure_optional_name!(entry[:label], unquote(name), "label")
+
+          Doggo.ensure_optional_name!(
+            entry[:resume_label],
+            unquote(name),
+            "resume_label"
+          )
+        end
+
+        for entry <- var!(assigns).item,
+            do:
+              Doggo.ensure_optional_name!(entry[:label], unquote(name), "label")
+      end
+    end
   end
 
   @impl true

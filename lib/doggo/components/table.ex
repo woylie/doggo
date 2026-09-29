@@ -16,7 +16,7 @@ defmodule Doggo.Components.Table do
   def usage do
     """
     ```heex
-    <.table id="pets" rows={@pets}>
+    <.table id="pets" rows={@pets} caption="Pets">
       <:col :let={p} label="name"><%= p.name %></:col>
       <:col :let={p} label="age"><%= p.age %></:col>
     </.table>
@@ -29,7 +29,12 @@ defmodule Doggo.Components.Table do
     that it can also be reached by keyboard.
 
     ```heex
-    <.table id="pets" rows={@pets} row_click={&JS.navigate(~p"/pets/\#{&1}")}>
+    <.table
+      id="pets"
+      rows={@pets}
+      caption="Pets"
+      row_click={&JS.navigate(~p"/pets/\#{&1}")}
+    >
       <:col :let={p} label="name">
         <.link navigate={~p"/pets/\#{p}"}><%= p.name %></.link>
       </:col>
@@ -48,10 +53,12 @@ defmodule Doggo.Components.Table do
     }
     ```
 
-    If you don't, you'll end up with useless tabstops.
+    Set `caption` or `label` to name the container, which is then exposed as a
+    region. A blank value counts as unset.
 
-    Set `caption` or `label` to name the container.  Without a name it is not
-    exposed as a region, and tabbing to it will not announce anything.
+    If the table fits its container, or sits in another scroll container, set
+    `scrollable={false}`. The wrapper then has no `tabindex`, no role and no
+    name, and does not add a useless tab stop.
     """
   end
 
@@ -98,8 +105,16 @@ defmodule Doggo.Components.Table do
         Names the scroll container, which is in the tab order so that the table
         can be scrolled by keyboard.
 
-        If not set, the caption is used to name the container. If neither is
-        set, the container is not marked as a region.
+        If not set, the caption is used to name the container. A scrollable
+        container needs one of the two.
+        """
+
+      attr :scrollable, :boolean,
+        default: true,
+        doc: """
+        Puts the container in the tab order and exposes it as a named region,
+        so that a table wider than its container can be scrolled by keyboard.
+        Set it to `false` for a table that fits its container.
         """
 
       attr :row_id, :any,
@@ -200,9 +215,37 @@ defmodule Doggo.Components.Table do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
+  def init_block(opts, _extra) do
+    name = ".#{Keyword.fetch!(opts, :name)}"
+
+    quote do
+      require Doggo
+
+      Doggo.diagnostic do
+        unquote(__MODULE__).ensure_name!(var!(assigns), unquote(name))
+      end
+    end
   end
+
+  @doc false
+  def ensure_name!(%{scrollable: true, label: label, caption: caption}, name) do
+    if Doggo.named?(label) or Doggo.named?(caption) do
+      :ok
+    else
+      raise ArgumentError, """
+      missing name for scrollable #{name}
+
+      The container of a scrollable table is in the tab order, so it needs a
+      name. Set `caption` or `label`, or set `scrollable={false}` for a table
+      that fits its container.
+
+          label: #{inspect(label)}
+          caption: #{inspect(caption)}
+      """
+    end
+  end
+
+  def ensure_name!(_assigns, _name), do: :ok
 
   @impl true
   def render(assigns) do
@@ -216,10 +259,16 @@ defmodule Doggo.Components.Table do
     ~H"""
     <div
       class={@class}
-      tabindex="0"
-      role={(@label || @caption) && "region"}
-      aria-label={@label}
-      aria-labelledby={is_nil(@label) && @caption && "#{@id}-caption"}
+      tabindex={@scrollable && "0"}
+      role={
+        @scrollable && (Doggo.named?(@label) || Doggo.named?(@caption)) &&
+          "region"
+      }
+      aria-label={@scrollable && Doggo.named?(@label) && @label}
+      aria-labelledby={
+        @scrollable && !Doggo.named?(@label) && Doggo.named?(@caption) &&
+          "#{@id}-caption"
+      }
       {@data_attrs}
       {@rest}
     >

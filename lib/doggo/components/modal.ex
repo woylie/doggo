@@ -288,8 +288,20 @@ defmodule Doggo.Components.Modal do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
+  def init_block(opts, _extra) do
+    name = ".#{Keyword.fetch!(opts, :name)}"
+
+    quote do
+      require Doggo
+
+      Doggo.diagnostic do
+        Doggo.ensure_name!(
+          var!(assigns).close_label,
+          unquote(name),
+          "close_label"
+        )
+      end
+    end
   end
 
   @impl true

@@ -49,7 +49,7 @@ defmodule Doggo.IdUniquenessTest do
       <TestComponents.accordion id={"accordion-#{i}"}>
         <:section title="Section">Content</:section>
       </TestComponents.accordion>
-      <TestComponents.action_bar id={"action-bar-#{i}"}>
+      <TestComponents.action_bar id={"action-bar-#{i}"} label="Dog actions">
         <:item label="Edit" on_click={JS.push("edit")}>Edit</:item>
       </TestComponents.action_bar>
       <TestComponents.alert id={"alert-#{i}"} title="Title">
@@ -93,7 +93,11 @@ defmodule Doggo.IdUniquenessTest do
         <:primary>One</:primary>
         <:secondary>Two</:secondary>
       </TestComponents.split_pane>
-      <TestComponents.table id={"table-#{i}"} rows={[%{id: 1, name: "Rex"}]}>
+      <TestComponents.table
+        id={"table-#{i}"}
+        rows={[%{id: 1, name: "Rex"}]}
+        scrollable={false}
+      >
         <:col :let={r} label="Name">{r.name}</:col>
       </TestComponents.table>
       <TestComponents.tabs id={"tabs-#{i}"} label="Breeds">

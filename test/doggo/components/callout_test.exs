@@ -97,5 +97,17 @@ defmodule Doggo.Components.CalloutTest do
 
       assert attribute(html, "div:root", "data-test") == "hello"
     end
+
+    test "raises for blank title" do
+      assert_raise ArgumentError, ~r/blank title for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.callout id="my-callout" title="">
+          Did you know?
+        </TestComponents.callout>
+        """)
+      end
+    end
   end
 end
