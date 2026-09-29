@@ -42,6 +42,19 @@ defmodule Doggo.Components.Box do
       </:footer>
     </.box>
     ```
+
+    A box is not a named landmark by default. To turn it into one, set `id`
+    and point `aria-labelledby` at its title:
+
+    ```heex
+    <.box id="profile" aria-labelledby="profile-title">
+      <:title>Profile</:title>
+      <p>This is a profile.</p>
+    </.box>
+    ```
+
+    In this example, the body has the ID `profile-body`. You pass the ID to a
+    disclosure button in the `:action` slot to toggle visibility.
     """
   end
 
@@ -72,6 +85,13 @@ defmodule Doggo.Components.Box do
   @impl true
   def attrs_and_slots(_opts) do
     quote do
+      attr :id, :string,
+        default: nil,
+        doc: """
+        A DOM ID for the box. If set, the title gets the ID `{id}-title` and
+        the body `{id}-body`.
+        """
+
       attr :heading, :string,
         default: "h2",
         values: ["h1", "h2", "h3", "h4", "h5", "h6"],
@@ -104,11 +124,12 @@ defmodule Doggo.Components.Box do
   @impl true
   def render(assigns) do
     ~H"""
-    <section class={@class} {@data_attrs} {@rest}>
+    <section id={@id} class={@class} {@data_attrs} {@rest}>
       <header :if={@title != [] || @banner != [] || @action != []}>
         <.dynamic_tag
           :if={@title != []}
           tag_name={@heading}
+          id={@id && "#{@id}-title"}
           phx-no-format
         >{render_slot(@title)}</.dynamic_tag>
         <div :if={@action != []} class={"#{@base_class}-actions"}>
@@ -120,7 +141,7 @@ defmodule Doggo.Components.Box do
           {render_slot(@banner)}
         </div>
       </header>
-      <div class={"#{@base_class}-body"}>
+      <div id={@id && "#{@id}-body"} class={"#{@base_class}-body"}>
         {render_slot(@inner_block)}
       </div>
       <footer :if={@footer != []}>
