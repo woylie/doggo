@@ -78,6 +78,21 @@ defmodule Doggo.Components.Drawer do
       </:footer>
     </.drawer>
     ```
+
+    ## Semantics
+
+    With a `header`, the drawer renders `role="complementary"`, named by the
+    header. Set `role` to choose another landmark:
+
+    - `role="navigation"` for a drawer that is the site navigation. The header
+      still names it.
+    - `role={nil}` for a drawer that holds a `vertical_nav/1`, which is a
+      navigation landmark of its own. The page then has no `complementary`
+      landmark around it.
+
+    Without a `header`, the drawer is no landmark unless you set `role`, and
+    you name it with `aria-label`. With a `header`, the header names the
+    drawer, and an `aria-label` has no effect.
     """
   end
 
@@ -144,7 +159,9 @@ defmodule Doggo.Components.Drawer do
       id={@id}
       class={@class}
       role={Map.get(@rest, :role, @header != [] && "complementary")}
-      aria-labelledby={@header != [] && "#{@id}-header"}
+      aria-labelledby={
+        Map.get(@rest, :role, true) && @header != [] && "#{@id}-header"
+      }
       {@data_attrs}
       {Map.delete(@rest, :role)}
     >
