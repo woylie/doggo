@@ -1346,54 +1346,27 @@ defmodule Doggo.Components.Field do
   attr :gettext_module, :atom, required: true
 
   @doc false
-  def required_optional_mark(
-        %{
-          required: true,
-          required_text: required_text,
-          gettext_module: gettext_module
-        } = assigns
-      )
-      when is_binary(required_text) do
-    required_text =
-      if gettext_module,
-        # credo:disable-for-next-line
-        do: apply(Gettext, :gettext, [gettext_module, required_text]),
-        else: required_text
-
-    assigns = assign(assigns, :required_text, required_text)
-
-    ~H"""
-    <span class={"#{@base_class}-required-mark"} aria-hidden="true">
-      {@required_text}
-    </span>
-    """
-  end
-
-  def required_optional_mark(
-        %{
-          required: false,
-          optional_text: optional_text,
-          gettext_module: gettext_module
-        } = assigns
-      )
-      when is_binary(optional_text) do
-    optional_text =
-      if gettext_module,
-        # credo:disable-for-next-line
-        do: apply(Gettext, :gettext, [gettext_module, optional_text]),
-        else: optional_text
-
-    assigns = assign(assigns, :optional_text, optional_text)
-
-    ~H"""
-    <span class={"#{@base_class}-optional-mark"} aria-hidden="true">
-      {@optional_text}
-    </span>
-    """
-  end
-
   def required_optional_mark(assigns) do
-    ~H""
+    {kind, text} = mark(assigns)
+    text = translate_mark(text, assigns.gettext_module)
+    assigns = assign(assigns, kind: kind, text: text)
+
+    ~H"""
+    <span :if={@text} class={"#{@base_class}-#{@kind}-mark"} aria-hidden="true">
+      {@text}
+    </span>
+    """
+  end
+
+  defp mark(%{required: true, required_text: text}), do: {"required", text}
+  defp mark(%{optional_text: text}), do: {"optional", text}
+
+  defp translate_mark(text, _gettext_module) when not is_binary(text), do: nil
+  defp translate_mark(text, nil), do: text
+
+  defp translate_mark(text, gettext_module) do
+    # credo:disable-for-next-line
+    apply(Gettext, :gettext, [gettext_module, text])
   end
 
   attr :option, :any, required: true
