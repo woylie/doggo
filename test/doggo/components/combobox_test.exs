@@ -803,5 +803,38 @@ defmodule Doggo.Components.ComboboxTest do
       assert attribute(html, "input[type='text']", "placeholder") == "Search"
       assert attribute(html, "input[type='hidden']", "placeholder") == nil
     end
+
+    test "raises for blank list_label" do
+      assert_raise ArgumentError, ~r/blank list_label for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label=" "
+          options={["Blue", "Green"]}
+          value="Green"
+        />
+        """)
+      end
+    end
+
+    test "raises for blank free_text_label" do
+      assert_raise ArgumentError, ~r/blank free_text_label for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.combobox
+          id="color-selector"
+          name="color"
+          list_label="Colors"
+          free_text_label=""
+          options={["Blue", "Green"]}
+          value="Green"
+        />
+        """)
+      end
+    end
   end
 end

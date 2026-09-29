@@ -75,5 +75,17 @@ defmodule Doggo.Components.ActionBarTest do
 
       assert html == []
     end
+
+    test "raises for blank label" do
+      assert_raise ArgumentError, ~r/blank label for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.action_bar id="action-bar">
+          <:item label="" on_click={JS.push("edit")}>edit-icon</:item>
+        </TestComponents.action_bar>
+        """)
+      end
+    end
   end
 end

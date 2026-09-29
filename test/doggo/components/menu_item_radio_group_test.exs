@@ -82,5 +82,17 @@ defmodule Doggo.Components.MenuItemRadioGroupTest do
 
       assert html == []
     end
+
+    test "raises for blank label" do
+      assert_raise ArgumentError, ~r/blank label/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.menu_item_radio_group label=" ">
+          <:item on_click={JS.push("dark")}>Dark</:item>
+        </TestComponents.menu_item_radio_group>
+        """)
+      end
+    end
   end
 end

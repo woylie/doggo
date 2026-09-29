@@ -170,5 +170,17 @@ defmodule Doggo.Components.TabsTest do
 
       assert html == []
     end
+
+    test "raises for blank label" do
+      assert_raise ArgumentError, ~r/blank label for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.tabs id="my-tabs" label="My Tabs">
+          <:panel label=" ">some text</:panel>
+        </TestComponents.tabs>
+        """)
+      end
+    end
   end
 end

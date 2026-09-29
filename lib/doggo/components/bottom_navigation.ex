@@ -135,8 +135,18 @@ defmodule Doggo.Components.BottomNavigation do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
+  def init_block(opts, _extra) do
+    name = ".#{Keyword.fetch!(opts, :name)}"
+
+    quote do
+      require Doggo
+
+      Doggo.diagnostic do
+        for entry <- var!(assigns).item do
+          Doggo.ensure_name!(entry[:label], unquote(name), "label")
+        end
+      end
+    end
   end
 
   @impl true

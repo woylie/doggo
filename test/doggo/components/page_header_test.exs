@@ -95,5 +95,15 @@ defmodule Doggo.Components.PageHeaderTest do
 
       assert attribute(html, ":root", "data-test") == "hello"
     end
+
+    test "raises for blank title" do
+      assert_raise ArgumentError, ~r/blank title for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.page_header title=" " />
+        """)
+      end
+    end
   end
 end

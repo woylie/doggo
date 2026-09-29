@@ -84,5 +84,15 @@ defmodule Doggo.Components.SwitchTest do
 
       assert attribute(html, "button:root", "data-test") == "hello"
     end
+
+    test "raises for blank label" do
+      assert_raise ArgumentError, ~r/blank label for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.switch label="" checked={false} />
+        """)
+      end
+    end
   end
 end

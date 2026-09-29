@@ -178,5 +178,18 @@ defmodule Doggo.Components.AlertDialogTest do
 
       assert attribute(html, ":root", "data-test") == "hello"
     end
+
+    test "raises for blank close_label" do
+      assert_raise ArgumentError, ~r/blank close_label for/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.alert_dialog id="pet-alert" close_label=" ">
+          <:title>Edit dog</:title>
+          dog-form
+        </TestComponents.alert_dialog>
+        """)
+      end
+    end
   end
 end

@@ -76,5 +76,17 @@ defmodule Doggo.Components.MenuGroupTest do
 
       assert html == []
     end
+
+    test "raises for blank label" do
+      assert_raise ArgumentError, ~r/blank label/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.menu_group label="">
+          <:item>A</:item>
+        </TestComponents.menu_group>
+        """)
+      end
+    end
   end
 end

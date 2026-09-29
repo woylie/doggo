@@ -170,7 +170,21 @@ defmodule Doggo.Components.Icon do
   end
 
   @impl true
-  def init_block(_opts, extra) do
+  def init_block(opts, extra) do
+    name = ".#{Keyword.fetch!(opts, :name)}"
+
+    quote do
+      require Doggo
+
+      Doggo.diagnostic do
+        Doggo.ensure_optional_name!(var!(assigns).text, unquote(name), "text")
+      end
+
+      unquote(icon_block(extra))
+    end
+  end
+
+  defp icon_block(extra) do
     icon_module = Keyword.fetch!(extra, :icon_module)
     icon_fun = Keyword.fetch!(extra, :icon_fun)
 

@@ -57,5 +57,17 @@ defmodule Doggo.Components.PropertyListTest do
 
       assert html == []
     end
+
+    test "raises for blank label" do
+      assert_raise ArgumentError, ~r/blank label/, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.property_list>
+          <:prop label="">George</:prop>
+        </TestComponents.property_list>
+        """)
+      end
+    end
   end
 end

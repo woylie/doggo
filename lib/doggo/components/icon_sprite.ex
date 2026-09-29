@@ -89,10 +89,17 @@ defmodule Doggo.Components.IconSprite do
   end
 
   @impl true
-  def init_block(_opts, extra) do
+  def init_block(opts, extra) do
+    name = ".#{Keyword.fetch!(opts, :name)}"
     sprite_url = Keyword.fetch!(extra, :sprite_url)
 
     quote do
+      require Doggo
+
+      Doggo.diagnostic do
+        Doggo.ensure_optional_name!(var!(assigns).text, unquote(name), "text")
+      end
+
       var!(assigns) =
         Doggo.assign_derived(
           var!(assigns),

@@ -494,6 +494,29 @@ defmodule Doggo do
     end
   end
 
+  @doc false
+  def ensure_name!(name, component, attr) do
+    if labelled?(name) do
+      :ok
+    else
+      raise ArgumentError, """
+      blank #{attr} for #{component}
+
+      The #{attr} is the accessible name. Set it to a text that describes the
+      element, and make sure that it is translated.
+
+          #{attr}: #{inspect(name)}
+      """
+    end
+  end
+
+  @doc false
+  def ensure_optional_name!(nil, _component, _attr), do: :ok
+
+  def ensure_optional_name!(name, component, attr) do
+    ensure_name!(name, component, attr)
+  end
+
   defp labelled?(s) when is_binary(s), do: String.trim(s) != ""
   defp labelled?(_), do: false
 end
