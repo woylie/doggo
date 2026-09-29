@@ -162,5 +162,23 @@ defmodule Doggo.Components.AccordionTest do
         """)
       end
     end
+
+    test "accepts rendered content as title" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.accordion id="dog-breeds">
+          <:section title={rendered_title("Golden Retriever")}>abc</:section>
+        </TestComponents.accordion>
+        """)
+
+      assert text(html, "button > span > span") == "Golden Retriever"
+    end
+  end
+
+  defp rendered_title(title) do
+    assigns = %{title: title}
+    ~H"<span>{@title}</span>"
   end
 end
