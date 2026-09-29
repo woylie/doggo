@@ -49,7 +49,7 @@ defmodule Doggo.IdUniquenessTest do
       <TestComponents.accordion id={"accordion-#{i}"}>
         <:section title="Section">Content</:section>
       </TestComponents.accordion>
-      <TestComponents.action_bar id={"action-bar-#{i}"}>
+      <TestComponents.action_bar id={"action-bar-#{i}"} label="Dog actions">
         <:item label="Edit" on_click={JS.push("edit")}>Edit</:item>
       </TestComponents.action_bar>
       <TestComponents.alert id={"alert-#{i}"} title="Title">

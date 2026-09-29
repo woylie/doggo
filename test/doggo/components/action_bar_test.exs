@@ -23,7 +23,7 @@ defmodule Doggo.Components.ActionBarTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.action_bar id="action-bar">
+        <TestComponents.action_bar id="action-bar" label="Dog actions">
           <:item label="Edit" on_click={JS.push("edit")}>
             edit-icon
           </:item>
@@ -32,6 +32,7 @@ defmodule Doggo.Components.ActionBarTest do
 
       assert attribute(html, "div:root", "class") == "action-bar"
       assert attribute(html, ":root", "role") == "toolbar"
+      assert attribute(html, ":root", "aria-label") == "Dog actions"
 
       button = find_one(html, ":root > button")
       assert attribute(button, "type") == "button"
@@ -44,12 +45,54 @@ defmodule Doggo.Components.ActionBarTest do
       assert text(button) == "edit-icon"
     end
 
+    test "renders labelledby as aria-labelledby" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.action_bar id="action-bar" labelledby="dog-heading">
+          <:item label="Edit" on_click={JS.push("edit")}>edit-icon</:item>
+        </TestComponents.action_bar>
+        """)
+
+      assert attribute(html, ":root", "aria-label") == nil
+      assert attribute(html, ":root", "aria-labelledby") == "dog-heading"
+    end
+
+    test "raises if both label and labelledby are set" do
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.action_bar
+          id="action-bar"
+          label="Dog actions"
+          labelledby="dog-heading"
+        >
+          <:item label="Edit" on_click={JS.push("edit")}>edit-icon</:item>
+        </TestComponents.action_bar>
+        """)
+      end
+    end
+
+    test "raises if neither label nor labelledby are set" do
+      assert_raise Doggo.InvalidLabelError, fn ->
+        assigns = %{}
+
+        parse_heex(~H"""
+        <TestComponents.action_bar id="action-bar">
+          <:item label="Edit" on_click={JS.push("edit")}>edit-icon</:item>
+        </TestComponents.action_bar>
+        """)
+      end
+    end
+
     test "renders global attributes" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
-        <TestComponents.action_bar id="action-bar" data-what="ever">
+        <TestComponents.action_bar id="action-bar" label="Dog actions" data-what="ever">
           <:item label="Edit" on_click={JS.push("edit")}>
             edit-icon
           </:item>
@@ -64,7 +107,7 @@ defmodule Doggo.Components.ActionBarTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.action_bar id="action-bar">
+        <TestComponents.action_bar id="action-bar" label="Dog actions">
           <:item :for={_ <- []} label="Edit" on_click={JS.push("edit")}>edit</:item>
           <:item :for={_ <- []} label="Move" on_click={JS.push("move")}>move</:item>
           <:item :for={_ <- []} label="Archive" on_click={JS.push("archive")}>
@@ -81,7 +124,7 @@ defmodule Doggo.Components.ActionBarTest do
         assigns = %{}
 
         parse_heex(~H"""
-        <TestComponents.action_bar id="action-bar">
+        <TestComponents.action_bar id="action-bar" label="Dog actions">
           <:item label="" on_click={JS.push("edit")}>edit-icon</:item>
         </TestComponents.action_bar>
         """)

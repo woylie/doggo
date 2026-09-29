@@ -38,7 +38,7 @@ defmodule Doggo.FixturesTest do
 
     assert_fixture(
       ~H"""
-      <FixtureComponents.action_bar id="action-bar">
+      <FixtureComponents.action_bar id="action-bar" label="Dog actions">
         <:item label="Edit" on_click={JS.push("edit")}>edit</:item>
         <:item label="Move" on_click={JS.push("move")}>move</:item>
         <:item label="Archive" on_click={JS.push("archive")}>archive</:item>

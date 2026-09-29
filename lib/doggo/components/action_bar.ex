@@ -19,7 +19,7 @@ defmodule Doggo.Components.ActionBar do
   def usage do
     """
     ```heex
-    <.action_bar id="dog-actions">
+    <.action_bar id="dog-actions" label="Dog actions">
       <:item label="Edit" on_click={JS.push("edit")}>
         <.icon><Lucideicons.pencil aria-hidden /></.icon>
       </:item>
@@ -66,7 +66,7 @@ defmodule Doggo.Components.ActionBar do
   end
 
   @impl true
-  def own_attributes, do: ["phx-hook": nil, role: nil]
+  def own_attributes, do: ["aria-label": :label, "phx-hook": nil, role: nil]
 
   @impl true
   def nested_classes(_) do
@@ -79,6 +79,27 @@ defmodule Doggo.Components.ActionBar do
       attr :id, :string,
         required: true,
         doc: "A unique DOM ID. Required for the JavaScript hook."
+
+      attr :label, :string,
+        default: nil,
+        doc: """
+        The accessible name of the action bar, rendered as `aria-label`. It
+        says what the actions apply to, for example "Dog actions".
+
+        Set either `label` or `labelledby`.
+
+        Do not repeat the word `toolbar` in the label. Screen readers announce
+        the role along with the name. Using the role in the label would make
+        screen readers repeat it.
+        """
+
+      attr :labelledby, :string,
+        default: nil,
+        doc: """
+        The DOM ID of an element that labels the action bar.
+
+        Set either `label` or `labelledby`.
+        """
 
       attr :rest, :global, doc: "Any additional HTML attributes."
 
@@ -121,6 +142,9 @@ defmodule Doggo.Components.ActionBar do
   end
 
   @impl true
+  def example_label, do: "Dog actions"
+
+  @impl true
   def render(%{item: []} = assigns), do: ~H""
 
   def render(assigns) do
@@ -129,6 +153,8 @@ defmodule Doggo.Components.ActionBar do
       id={@id}
       role="toolbar"
       class={@class}
+      aria-label={@label}
+      aria-labelledby={@labelledby}
       phx-hook="Doggo.Toolbar"
       {@data_attrs}
       {@rest}
