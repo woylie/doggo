@@ -148,7 +148,7 @@ defmodule Doggo.Components.AlertDialogTest do
         |> attribute("dialog:root", "data-cancel")
         |> Phoenix.json_library().decode!()
 
-      assert ["push", %{"event" => "cancel"}] in ops
+      assert [["push", %{"event" => "cancel"}]] = ops
     end
 
     test "renders global attributes" do

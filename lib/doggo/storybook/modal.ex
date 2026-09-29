@@ -23,7 +23,7 @@ defmodule Doggo.Storybook.Modal do
         note:
           "`Doggo.show_modal/1` opens the dialog, which works on every " <>
             "browser and needs the hook. The close button in the footer uses " <>
-            "`JS.exec(\"data-cancel\")`.",
+            "`Doggo.hide_modal/1`.",
         attributes: %{id: "dog-modal-default"},
         slots: slots("modal-single-default", opts)
       },
@@ -123,7 +123,7 @@ defmodule Doggo.Storybook.Modal do
       """,
       """
       <:footer>
-        <#{tag_name}#{close_attrs} phx-click={JS.exec("data-cancel", to: "##{id}")}>
+        <#{tag_name}#{close_attrs} phx-click={Doggo.hide_modal("#{id}")}>
           Close
         </#{tag_name}>
       </:footer>

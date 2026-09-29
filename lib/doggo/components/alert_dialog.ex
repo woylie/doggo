@@ -37,7 +37,7 @@ defmodule Doggo.Components.AlertDialog do
         <.button phx-click="end-session">
           Yes, end session
         </.button>
-        <.button phx-click={JS.exec("data-cancel", to: "#end-session-modal")}>
+        <.button phx-click={Doggo.hide_modal("end-session-modal")}>
           No, continue training
         </.button>
       </:footer>
@@ -71,10 +71,10 @@ defmodule Doggo.Components.AlertDialog do
 
     The alert dialog can be closed by:
 
-    - using `hide_modal/1`,
-    - using `JS.exec("data-cancel", to: "#end-session-modal")`, which is what
-      the example above uses for its own control, or
+    - using `hide_modal/1`, or
     - using the close button or `Esc` (only if `dismissable` is set).
+
+    Each of them runs `on_cancel` once.
 
     ## Semantics
 
@@ -100,7 +100,7 @@ defmodule Doggo.Components.AlertDialog do
       <.button phx-click="end-session">Yes, end session</.button>
       <.button
         autofocus
-        phx-click={JS.exec("data-cancel", to: "#end-session-modal")}
+        phx-click={Doggo.hide_modal("end-session-modal")}
       >
         No, continue training
       </.button>
@@ -225,9 +225,7 @@ defmodule Doggo.Components.AlertDialog do
       phx-hook="Doggo.Dialog"
       phx-mounted={Doggo.dialog_mounted(@id, @open)}
       phx-remove={Doggo.hide_modal(@id)}
-      data-cancel={
-        JS.exec(Doggo.to_js!(@on_cancel, :on_cancel, ".alert_dialog"), "phx-remove")
-      }
+      data-cancel={Doggo.to_js!(@on_cancel, :on_cancel, ".alert_dialog")}
       {@data_attrs}
       {@rest}
     >
