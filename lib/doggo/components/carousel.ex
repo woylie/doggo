@@ -265,12 +265,26 @@ defmodule Doggo.Components.Carousel do
         Place the `carousel_item/1` component here.
         """
 
-      slot :previous do
-        attr :label, :string
+      slot :previous, doc: "A button that moves to the previous slide." do
+        attr :label, :string,
+          required: true,
+          doc: """
+          Accessible name of the button. It replaces the slot content as the
+          name, so it should contain any words the button shows. This value
+          should be translated to the language in which the rest of the page is
+          displayed.
+          """
       end
 
-      slot :next do
-        attr :label, :string
+      slot :next, doc: "A button that moves to the next slide." do
+        attr :label, :string,
+          required: true,
+          doc: """
+          Accessible name of the button. It replaces the slot content as the
+          name, so it should contain any words the button shows. This value
+          should be translated to the language in which the rest of the page is
+          displayed.
+          """
       end
 
       slot :pause,
@@ -375,7 +389,7 @@ defmodule Doggo.Components.Carousel do
             type="button"
             class={"#{@base_class}-previous"}
             aria-controls={"#{@id}-items"}
-            aria-label={previous.label}
+            aria-label={previous[:label]}
             disabled={!@loop}
           >
             {render_slot(previous)}
@@ -404,7 +418,7 @@ defmodule Doggo.Components.Carousel do
             type="button"
             class={"#{@base_class}-next"}
             aria-controls={"#{@id}-items"}
-            aria-label={next.label}
+            aria-label={next[:label]}
           >
             {render_slot(next)}
           </button>
