@@ -8,7 +8,8 @@ defmodule Doggo.Components.Tag do
   @impl true
   def doc do
     """
-    Renders a tag, typically used for displaying labels, categories, or keywords.
+    Renders a tag, typically used for displaying labels, categories, or
+    keywords.
     """
   end
 

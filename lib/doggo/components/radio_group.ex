@@ -90,10 +90,11 @@ defmodule Doggo.Components.RadioGroup do
       attr :label, :string,
         default: nil,
         doc: """
-        A accessibility label for the radio group. Set as `aria-label` attribute.
+        A accessibility label for the radio group. Set as `aria-label`
+        attribute.
 
-        You should ensure that either the `label` or the `labelledby` attribute is
-        set.
+        You should ensure that either the `label` or the `labelledby` attribute
+        is set.
 
         Do not repeat the word `radio group` in the label. Screen readers
         announce the role along with the name. Using the role in the label
@@ -112,8 +113,8 @@ defmodule Doggo.Components.RadioGroup do
         <.radio_group labelledby="dog-rg-label"></.radio_group>
         ```
 
-        You should ensure that either the `label` or the `labelledby` attribute is
-        set.
+        You should ensure that either the `label` or the `labelledby` attribute
+        is set.
         """
 
       attr :options, :list,

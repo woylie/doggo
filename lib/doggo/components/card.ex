@@ -67,14 +67,15 @@ defmodule Doggo.Components.Card do
 
       slot :image,
         doc: """
-        An optional image slot. The slot content will be rendered within a figure
-        element.
+        An optional image slot. The slot content will be rendered within a
+        figure element.
         """
 
       slot :header,
         doc: """
-        The header of the card. You typically want to wrap the header in a `h2` or
-        `h3` tag, or another header level, depending on the hierarchy on the page.
+        The header of the card. You typically want to wrap the header in a `h2`
+        or `h3` tag, or another header level, depending on the hierarchy on the
+        page.
         """
 
       slot :body, doc: "The main content of the card."

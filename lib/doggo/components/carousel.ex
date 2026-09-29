@@ -8,7 +8,8 @@ defmodule Doggo.Components.Carousel do
   @impl true
   def doc do
     """
-    Renders a carousel for presenting a sequence of items, such as images or text.
+    Renders a carousel for presenting a sequence of items, such as images or
+    text.
 
     If a carousel only has a single item, no controls and no pagination are
     rendered.
@@ -181,8 +182,8 @@ defmodule Doggo.Components.Carousel do
         doc: """
         A accessibility label for the carousel. Set as `aria-label` attribute.
 
-        You should ensure that either the `label` or the `labelledby` attribute is
-        set.
+        You should ensure that either the `label` or the `labelledby` attribute
+        is set.
 
         Do not repeat the word `carousel` in the label. Screen readers announce
         the role along with the name. Using the role in the label would make
@@ -201,24 +202,24 @@ defmodule Doggo.Components.Carousel do
         <.carousel labelledby="dog-carousel-label"></.carousel>
         ```
 
-        You should ensure that either the `label` or the `labelledby` attribute is
-        set.
+        You should ensure that either the `label` or the `labelledby` attribute
+        is set.
         """
 
       attr :carousel_roledescription, :string,
         default: "carousel",
         doc: """
         Sets the `aria-roledescription` attribute to describe the region as a
-        carousel. This value should be translated to the language in which the rest
-        of the page is displayed.
+        carousel. This value should be translated to the language in which the
+        rest of the page is displayed.
         """
 
       attr :slide_roledescription, :string,
         default: "slide",
         doc: """
-        Sets the `aria-roledescription` attribute to describe a slide. This value
-        should be translated to the language in which the rest of the page is
-        displayed.
+        Sets the `aria-roledescription` attribute to describe a slide. This
+        value should be translated to the language in which the rest of the page
+        is displayed.
         """
 
       attr :pagination, :boolean, default: false
@@ -233,9 +234,9 @@ defmodule Doggo.Components.Carousel do
       attr :pagination_slide_label, :any,
         default: &Doggo.slide_label/1,
         doc: """
-        1-arity function that takes the slide number as an argument and returns the
-        aria label for the pagination tab of a slide that has no `label` of its
-        own.
+        1-arity function that takes the slide number as an argument and returns
+        the aria label for the pagination tab of a slide that has no `label` of
+        its own.
         """
 
       attr :rotation_interval_ms, :integer,

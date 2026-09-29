@@ -106,8 +106,8 @@ defmodule Doggo.Components.Menu do
         doc: """
         A accessibility label for the menubar. Set as `aria-label` attribute.
 
-        You should ensure that either the `label` or the `labelledby` attribute is
-        set.
+        You should ensure that either the `label` or the `labelledby` attribute
+        is set.
 
         Do not repeat the word `menu` in the label. Screen readers announce the
         role along with the name. Using the role in the label would make screen
@@ -117,9 +117,9 @@ defmodule Doggo.Components.Menu do
       attr :labelledby, :string,
         default: nil,
         doc: """
-        The DOM ID of an element that labels this menubar. If the menu is toggled
-        by a `menu_button/1`, this attribute should be set to the DOM ID of that
-        button.
+        The DOM ID of an element that labels this menubar. If the menu is
+        toggled by a `menu_button/1`, this attribute should be set to the DOM ID
+        of that button.
 
         Example:
 
@@ -130,8 +130,8 @@ defmodule Doggo.Components.Menu do
         <Doggo.menu labelledby="actions-button" hidden></Doggo.menu>
         ```
 
-        You should ensure that either the `label` or the `labelledby` attribute is
-        set.
+        You should ensure that either the `label` or the `labelledby` attribute
+        is set.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."
@@ -140,10 +140,10 @@ defmodule Doggo.Components.Menu do
         attr :role, :string,
           values: ["none", "separator"],
           doc: """
-          Sets the role of the list item. If the item has a menu item, group, menu
-          item radio group or menu item checkbox as a child, use `"none"`. If you
-          want to render a visual separator, use `"separator"`. The default is
-          `"none"`.
+          Sets the role of the list item. If the item has a menu item, group,
+          menu item radio group or menu item checkbox as a child, use `"none"`.
+          If you want to render a visual separator, use `"separator"`. The
+          default is `"none"`.
           """
       end
     end

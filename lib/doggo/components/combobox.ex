@@ -155,7 +155,13 @@ defmodule Doggo.Components.Combobox do
     be overridden with the `:toggle` and `:clear` slots.
 
     ```heex
-    <.combobox id="dog-breed-selector" name="breed" list_label="Dog breeds" clearable options={@breeds}>
+    <.combobox
+      id="dog-breed-selector"
+      name="breed"
+      list_label="Dog breeds"
+      clearable
+      options={@breeds}
+    >
       <:clear><Heroicon.x_mark /></:clear>
       <:toggle><Heroicon.chevron_down /></:toggle>
     </.combobox>
@@ -304,9 +310,10 @@ defmodule Doggo.Components.Combobox do
       attr :list_label, :string,
         required: true,
         doc: """
-        Sets the aria label for the list box. For example, if the combobox allows
-        the user to select a country, the list label could be `"Countries"`. The
-        value should start with an uppercase letter and be localized.
+        Sets the aria label for the list box. For example, if the combobox
+        allows the user to select a country, the list label could be
+        `"Countries"`. The value should start with an uppercase letter and be
+        localized.
         """
 
       attr :options, :list,

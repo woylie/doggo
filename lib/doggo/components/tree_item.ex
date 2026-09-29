@@ -10,8 +10,8 @@ defmodule Doggo.Components.TreeItem do
     """
     Renders a tree item within a `tree/1`.
 
-    This component can be used as a direct child of `tree/1` or within the `items`
-    slot of this component.
+    This component can be used as a direct child of `tree/1` or within the
+    `items` slot of this component.
     """
   end
 
@@ -104,8 +104,9 @@ defmodule Doggo.Components.TreeItem do
 
       slot :items,
         doc: """
-        Slot for children of this item. Place one or more additional `tree_item/1`
-        components within this slot, or omit if this is a leaf node.
+        Slot for children of this item. Place one or more additional
+        `tree_item/1` components within this slot, or omit if this is a leaf
+        node.
         """
 
       slot :inner_block,

@@ -113,8 +113,8 @@ defmodule Doggo.Components.ToggleButton do
       attr :on_click, :any,
         required: true,
         doc: """
-        `Phoenix.LiveView.JS` command or event name to trigger when the button is
-        clicked.
+        `Phoenix.LiveView.JS` command or event name to trigger when the button
+        is clicked.
         """
 
       attr :disabled, :boolean, default: false

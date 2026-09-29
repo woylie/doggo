@@ -8,8 +8,8 @@ defmodule Doggo.Components.Alert do
   @impl true
   def doc do
     """
-    The alert component serves as a notification mechanism to provide feedback to
-    the user.
+    The alert component serves as a notification mechanism to provide feedback
+    to the user.
 
     For supplementary information that doesn't require the user's immediate
     attention, use `callout/1` instead.

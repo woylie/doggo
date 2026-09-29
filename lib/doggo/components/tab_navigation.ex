@@ -88,9 +88,9 @@ defmodule Doggo.Components.TabNavigation do
       attr :label, :string,
         default: nil,
         doc: """
-        Aria label for the `<nav>` element. The label is especially important if you
-        have multiple `<nav>` elements on the same page, since it allows users
-        to differentiate between different navigation sections.
+        Aria label for the `<nav>` element. The label is especially important if
+        you have multiple `<nav>` elements on the same page, since it allows
+        users to differentiate between different navigation sections.
 
         If the page is localized, ensure that the label is translated. Avoid
         using the word "navigation" in the label, since screen readers will

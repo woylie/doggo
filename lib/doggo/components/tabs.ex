@@ -93,8 +93,8 @@ defmodule Doggo.Components.Tabs do
         doc: """
         A accessibility label for the tabs. Set as `aria-label` attribute.
 
-        You should ensure that either the `label` or the `labelledby` attribute is
-        set.
+        You should ensure that either the `label` or the `labelledby` attribute
+        is set.
 
         Do not repeat the word `tab list` in the label. Screen readers announce
         the role along with the name. Using the role in the label would make
@@ -121,8 +121,8 @@ defmodule Doggo.Components.Tabs do
         <Doggo.tabs labelledby="my-tabs-label"></Doggo.tabs>
         ```
 
-        You should ensure that either the `label` or the `labelledby` attribute is
-        set.
+        You should ensure that either the `label` or the `labelledby` attribute
+        is set.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."

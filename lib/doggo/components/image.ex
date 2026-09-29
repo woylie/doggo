@@ -102,7 +102,8 @@ defmodule Doggo.Components.Image do
       attr :srcset, :any,
         default: nil,
         doc: """
-        A set of image URLs in different sizes. Can be passed as a string or a map.
+        A set of image URLs in different sizes. Can be passed as a string or a
+        map.
 
         For example, this map:
 
@@ -121,8 +122,8 @@ defmodule Doggo.Components.Image do
       attr :sizes, :string,
         default: nil,
         doc: """
-        Specifies media conditions for the image widths, if the `srcset` attribute
-        uses intrinsic widths.
+        Specifies media conditions for the image widths, if the `srcset`
+        attribute uses intrinsic widths.
 
         See https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/sizes.
         """
@@ -130,12 +131,12 @@ defmodule Doggo.Components.Image do
       attr :alt, :string,
         required: true,
         doc: """
-        A text description of the image for screen reader users and those with slow
-        internet. Effective alt text should concisely capture the image's essence
-        and function, considering its context within the content. Aim for clarity
-        and inclusivity without repeating information already conveyed by
-        surrounding text, and avoid starting with "Image of" as screen readers
-        automatically announce image presence.
+        A text description of the image for screen reader users and those with
+        slow internet. Effective alt text should concisely capture the image's
+        essence and function, considering its context within the content. Aim
+        for clarity and inclusivity without repeating information already
+        conveyed by surrounding text, and avoid starting with "Image of" as
+        screen readers automatically announce image presence.
         """
 
       attr :width, :integer, default: nil

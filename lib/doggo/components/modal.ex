@@ -248,9 +248,9 @@ defmodule Doggo.Components.Modal do
       attr :on_cancel, :any,
         default: %JS{},
         doc: """
-        An additional `Phoenix.LiveView.JS` command or event name to execute
-        when the dialog is canceled. This command is executed in addition to closing the dialog. If
-        you only want the dialog to be closed, you don't have to set this attribute.
+        A `Phoenix.LiveView.JS` command or event name to run when the dialog
+        closes, for example to patch back to the URL the dialog was opened from.
+        This attribute is not required to close the dialog.
         """
 
       attr :closedby, :string,

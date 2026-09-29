@@ -109,8 +109,8 @@ defmodule Doggo.Components.MenuBar do
         doc: """
         A accessibility label for the menubar. Set as `aria-label` attribute.
 
-        You should ensure that either the `label` or the `labelledby` attribute is
-        set.
+        You should ensure that either the `label` or the `labelledby` attribute
+        is set.
 
         Do not repeat the word `menu bar` in the label. Screen readers announce
         the role along with the name. Using the role in the label would make
@@ -129,8 +129,8 @@ defmodule Doggo.Components.MenuBar do
         <Doggo.menu_bar labelledby="dog-menu-label"></Doggo.menu_bar>
         ```
 
-        You should ensure that either the `label` or the `labelledby` attribute is
-        set.
+        You should ensure that either the `label` or the `labelledby` attribute
+        is set.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."
@@ -139,10 +139,10 @@ defmodule Doggo.Components.MenuBar do
         attr :role, :string,
           values: ["none", "separator"],
           doc: """
-          Sets the role of the list item. If the item has a menu item, group, menu
-          item radio group or menu item checkbox as a child, use `"none"`. If you
-          want to render a visual separator, use `"separator"`. The default is
-          `"none"`.
+          Sets the role of the list item. If the item has a menu item, group,
+          menu item radio group or menu item checkbox as a child, use `"none"`.
+          If you want to render a visual separator, use `"separator"`. The
+          default is `"none"`.
           """
       end
     end

@@ -16,7 +16,8 @@ defmodule Doggo.Components.Datetime do
   @impl true
   def usage do
     """
-    By default, the given value is formatted for display with `to_string/1`. This:
+    By default, the given value is formatted for display with `to_string/1`.
+    This:
 
     ```heex
     <.datetime value={~U[2023-02-05 12:22:06.003Z]} />
@@ -127,16 +128,16 @@ defmodule Doggo.Components.Datetime do
       attr :formatter, :any,
         default: nil,
         doc: """
-        A function that takes a `DateTime` or a `NaiveDateTime` as an argument and
-        returns the value formatted for display. Defaults to `to_string/1`.
+        A function that takes a `DateTime` or a `NaiveDateTime` as an argument
+        and returns the value formatted for display. Defaults to `to_string/1`.
         """
 
       attr :title_formatter, :any,
         default: nil,
         doc: """
-        When provided, this function is used to format the date time value for the
-        `title` attribute. If the attribute is not set, no `title` attribute will
-        be added.
+        When provided, this function is used to format the date time value for
+        the `title` attribute. If the attribute is not set, no `title` attribute
+        will be added.
         """
 
       attr :precision, :atom,

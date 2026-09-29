@@ -103,9 +103,9 @@ defmodule Doggo.Components.Avatar do
         doc: """
         Use alt text to identify the individual in an avatar if their name or
         identifier isn't otherwise provided in adjacent text. In contexts where
-        the user's name or identifying information is already displayed alongside
-        the avatar, use `alt=""` (the default) to avoid redundancy and treat the
-        avatar as a decorative element for screen readers.
+        the user's name or identifying information is already displayed
+        alongside the avatar, use `alt=""` (the default) to avoid redundancy and
+        treat the avatar as a decorative element for screen readers.
         """
 
       attr :loading, :string, values: ["eager", "lazy"], default: "lazy"

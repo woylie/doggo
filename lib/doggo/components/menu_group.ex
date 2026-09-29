@@ -89,8 +89,8 @@ defmodule Doggo.Components.MenuGroup do
         attr :role, :string,
           values: ["none", "separator"],
           doc: """
-          Sets the role of the list item. If the item has a menu item, menu
-          item radio group or menu item checkbox as a child, use `"none"`. If you
+          Sets the role of the list item. If the item has a menu item, menu item
+          radio group or menu item checkbox as a child, use `"none"`. If you
           want to render a visual separator, use `"separator"`. The default is
           `"none"`.
           """

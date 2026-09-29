@@ -92,8 +92,8 @@ defmodule Doggo.Components.BottomNavigation do
       attr :current_value, :any,
         required: true,
         doc: """
-        The current value used to compare the item values with. This could be the
-        current LiveView module, or the live action.
+        The current value used to compare the item values with. This could be
+        the current LiveView module, or the live action.
         """
 
       attr :hide_labels, :boolean,
@@ -108,8 +108,8 @@ defmodule Doggo.Components.BottomNavigation do
       slot :item,
         required: true,
         doc: """
-        Slot for the navigation items. The inner content should be used to render an
-        icon.
+        Slot for the navigation items. The inner content should be used to
+        render an icon.
         """ do
         attr :label, :string,
           required: true,

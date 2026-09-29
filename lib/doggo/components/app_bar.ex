@@ -71,8 +71,8 @@ defmodule Doggo.Components.AppBar do
 
       slot :navigation,
         doc: """
-        Slot for a single button left of the title, typically used for a menu button
-        that toggles a drawer, or for a back link.
+        Slot for a single button left of the title, typically used for a menu
+        button that toggles a drawer, or for a back link.
         """ do
         attr :label, :string,
           required: true,

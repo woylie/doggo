@@ -206,9 +206,9 @@ defmodule Doggo.Components.Field do
     }
     ```
 
-    The component has a `hide_label` attribute to visually hide labels while still
-    making them accessible to screen readers. If all labels within a form need to
-    be visually hidden, it may be more convenient to define a
+    The component has a `hide_label` attribute to visually hide labels while
+    still making them accessible to screen readers. If all labels within a form
+    need to be visually hidden, it may be more convenient to define a
     `.has-visually-hidden-labels` modifier class for the `<form>`.
 
     ```heex
@@ -251,11 +251,11 @@ defmodule Doggo.Components.Field do
     ```
 
     Note that the `checkbox-group` type renders an additional hidden input with
-    an empty value before the checkboxes. This ensures that a value exists in case
-    all checkboxes are unchecked. Consequently, the resulting list value includes
-    an extra empty string. While `Ecto.Changeset.cast/3` filters out empty strings
-    in array fields by default, you may need to handle the additional empty string
-    manual in other contexts.
+    an empty value before the checkboxes. This ensures that a value exists in
+    case all checkboxes are unchecked. Consequently, the resulting list value
+    includes an extra empty string. While `Ecto.Changeset.cast/3` filters out
+    empty strings in array fields by default, you may need to handle the
+    additional empty string manual in other contexts.
     """
   end
 
@@ -459,8 +459,8 @@ defmodule Doggo.Components.Field do
 
       attr :gettext, :atom,
         doc: """
-        The Gettext module to use for translating error messages. This option can
-        also be set globally, see above.
+        The Gettext module to use for translating error messages. This option
+        can also be set globally, see above.
         """
 
       slot :description,

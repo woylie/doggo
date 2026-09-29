@@ -120,8 +120,8 @@ defmodule Doggo.Components.Steps do
 
         If `false`, also upcoming steps are clickable.
 
-        If you don't want any clickable links to be rendered, omit the `on_click`
-        attribute on the `:step` slots.
+        If you don't want any clickable links to be rendered, omit the
+        `on_click` attribute on the `:step` slots.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."
@@ -129,8 +129,8 @@ defmodule Doggo.Components.Steps do
       slot :step, required: true do
         attr :on_click, :any,
           doc: """
-          Event name or `Phoenix.LiveView.JS` command to execute when clicking on
-          the step.
+          Event name or `Phoenix.LiveView.JS` command to execute when clicking
+          on the step.
           """
       end
     end

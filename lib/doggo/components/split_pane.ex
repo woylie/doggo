@@ -129,10 +129,12 @@ defmodule Doggo.Components.SplitPane do
       attr :label, :string,
         default: nil,
         doc: """
-        An accessibility label for the separator if the primary pane has no visible
-        label. If it has a visible label, set the `labelledby` attribute instead.
+        An accessibility label for the separator if the primary pane has no
+        visible label. If it has a visible label, set the `labelledby` attribute
+        instead.
 
-        Note that the label should describe the primary pane, not the resize handle.
+        Note that the label should describe the primary pane, not the resize
+        handle.
 
         Do not repeat the word `separator` in the label. Screen readers
         announce the role along with the name. Using the role in the label
@@ -142,8 +144,8 @@ defmodule Doggo.Components.SplitPane do
       attr :labelledby, :string,
         default: nil,
         doc: """
-        If the primary pane has a visible label, set this attribute to the DOM ID
-        of that label. Otherwise, provide a label via the `label` attribute.
+        If the primary pane has a visible label, set this attribute to the DOM
+        ID of that label. Otherwise, provide a label via the `label` attribute.
         """
 
       attr :id, :string, required: true
