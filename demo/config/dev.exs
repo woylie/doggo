@@ -15,6 +15,7 @@ config :demo, DemoWeb.Endpoint,
   ],
   check_origin: false,
   code_reloader: true,
+  reloadable_apps: [:demo, :doggo],
   debug_errors: true,
   secret_key_base:
     "7I09KWxcUUDVCHxt1eWTxz/zRZ4K9839EiL/iutqCNQORX+I2K62EM4/Y8HH+60G",
@@ -52,9 +53,15 @@ config :demo, DemoWeb.Endpoint,
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/demo_web/(controllers|live|components)/.*(ex|heex)$",
-      ~r"storybook/.*(exs)$"
+      ~r"storybook/.*(exs)$",
+      ~r"lib/doggo/.*ex$"
     ]
   ]
+
+config :phoenix_live_reload, :dirs, [
+  Path.expand("..", __DIR__),
+  Path.expand("../..", __DIR__)
+]
 
 # Enable dev routes for dashboard and mailbox
 config :demo, dev_routes: true
