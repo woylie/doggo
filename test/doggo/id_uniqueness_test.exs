@@ -93,7 +93,11 @@ defmodule Doggo.IdUniquenessTest do
         <:primary>One</:primary>
         <:secondary>Two</:secondary>
       </TestComponents.split_pane>
-      <TestComponents.table id={"table-#{i}"} rows={[%{id: 1, name: "Rex"}]}>
+      <TestComponents.table
+        id={"table-#{i}"}
+        rows={[%{id: 1, name: "Rex"}]}
+        scrollable={false}
+      >
         <:col :let={r} label="Name">{r.name}</:col>
       </TestComponents.table>
       <TestComponents.tabs id={"tabs-#{i}"} label="Breeds">

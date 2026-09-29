@@ -485,7 +485,7 @@ defmodule Doggo do
         component,
         example_label
       ) do
-    if labelled?(label) != labelled?(labelledby) do
+    if named?(label) != named?(labelledby) do
       :ok
     else
       raise Doggo.InvalidLabelError,
@@ -496,7 +496,7 @@ defmodule Doggo do
 
   @doc false
   def ensure_name!(name, component, attr) do
-    if labelled?(name) do
+    if named?(name) do
       :ok
     else
       raise ArgumentError, """
@@ -517,6 +517,7 @@ defmodule Doggo do
     ensure_name!(name, component, attr)
   end
 
-  defp labelled?(s) when is_binary(s), do: String.trim(s) != ""
-  defp labelled?(_), do: false
+  @doc false
+  def named?(s) when is_binary(s), do: String.trim(s) != ""
+  def named?(_), do: false
 end

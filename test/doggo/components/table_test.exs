@@ -23,7 +23,7 @@ defmodule Doggo.Components.TableTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.table id="pets" rows={@pets}>
+        <TestComponents.table id="pets" rows={@pets} label="Pets">
           <:col :let={p} label="Name">{p.name}</:col>
           <:action :let={p} label="Link">link-to-{p.id}</:action>
         </TestComponents.table>
@@ -97,21 +97,50 @@ defmodule Doggo.Components.TableTest do
       assert text(html, "table > caption") == "some text"
     end
 
-    test "omits region role without caption and label" do
+    test "omits tab stop and region with scrollable false" do
       assigns = %{pets: [%{id: 1, name: "George"}]}
 
       html =
         parse_heex(~H"""
-        <TestComponents.table id="pets" rows={@pets}>
+        <TestComponents.table id="pets" rows={@pets} caption="Pets" scrollable={false}>
           <:col :let={p} label="Name">{p.name}</:col>
         </TestComponents.table>
         """)
 
       div = find_one(html, "div:root")
-      assert attribute(div, "tabindex") == "0"
+      assert attribute(div, "tabindex") == nil
       assert attribute(div, "role") == nil
       assert attribute(div, "aria-label") == nil
       assert attribute(div, "aria-labelledby") == nil
+      assert text(html, "caption") == "Pets"
+    end
+
+    test "names region by caption if label is blank" do
+      assigns = %{pets: [%{id: 1, name: "George"}]}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.table id="pets" rows={@pets} label=" " caption="Pets">
+          <:col :let={p} label="Name">{p.name}</:col>
+        </TestComponents.table>
+        """)
+
+      div = find_one(html, "div:root")
+      assert attribute(div, "role") == "region"
+      assert attribute(div, "aria-label") == nil
+      assert attribute(div, "aria-labelledby") == "pets-caption"
+    end
+
+    test "raises without name if scrollable" do
+      assert_raise ArgumentError, ~r/missing name for scrollable/, fn ->
+        assigns = %{pets: [%{id: 1, name: "George"}]}
+
+        parse_heex(~H"""
+        <TestComponents.table id="pets" rows={@pets} label="">
+          <:col :let={p} label="Name">{p.name}</:col>
+        </TestComponents.table>
+        """)
+      end
     end
 
     test "renders col attrs of column" do
@@ -119,7 +148,7 @@ defmodule Doggo.Components.TableTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.table id="pets" rows={@pets}>
+        <TestComponents.table id="pets" rows={@pets} scrollable={false}>
           <:col :let={p} label="Name" col_attrs={[style: "width: 20%;"]}>
             {p.name}
           </:col>
@@ -136,7 +165,7 @@ defmodule Doggo.Components.TableTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.table id="pets" rows={@pets}>
+        <TestComponents.table id="pets" rows={@pets} scrollable={false}>
           <:col :let={p} label="Name">{p.name}</:col>
           <:action :let={p} label="Link" col_attrs={[style: "width: 20%;"]}>
             link-to-{p.id}
@@ -153,7 +182,7 @@ defmodule Doggo.Components.TableTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.table id="pets" rows={@pets}>
+        <TestComponents.table id="pets" rows={@pets} scrollable={false}>
           <:col :let={p} label="Name">{p.name}</:col>
           <:foot>some foot</:foot>
         </TestComponents.table>
@@ -167,7 +196,12 @@ defmodule Doggo.Components.TableTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.table id="pets" rows={@pets} row_id={&"row-#{&1.id}"}>
+        <TestComponents.table
+          id="pets"
+          rows={@pets}
+          row_id={&"row-#{&1.id}"}
+          scrollable={false}
+        >
           <:col :let={p} label="Name">{p.name}</:col>
         </TestComponents.table>
         """)
@@ -180,7 +214,12 @@ defmodule Doggo.Components.TableTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.table id="pets" rows={@pets} row_click={&"clicked-#{&1.id}"}>
+        <TestComponents.table
+          id="pets"
+          rows={@pets}
+          row_click={&"clicked-#{&1.id}"}
+          scrollable={false}
+        >
           <:col :let={p} label="Name">{p.name}</:col>
         </TestComponents.table>
         """)
@@ -193,7 +232,12 @@ defmodule Doggo.Components.TableTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.table id="pets" rows={@pets} row_item={&Map.put(&1, :name, "G")}>
+        <TestComponents.table
+          id="pets"
+          rows={@pets}
+          row_item={&Map.put(&1, :name, "G")}
+          scrollable={false}
+        >
           <:col :let={p} label="Name">{p.name}</:col>
         </TestComponents.table>
         """)
@@ -214,7 +258,7 @@ defmodule Doggo.Components.TableTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.table id="pets" rows={@pets}>
+        <TestComponents.table id="pets" rows={@pets} scrollable={false}>
           <:col :let={{id, p}} label="Name">{id} {p.name}</:col>
         </TestComponents.table>
         """)
