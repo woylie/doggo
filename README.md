@@ -445,6 +445,7 @@ component at any level:
 
 - Adding an attribute.
 - Adding a class.
+- Changing the whitespace between elements.
 - Removing an attribute that normally no CSS styles are attached to.
 
 These changes **are** breaking:
