@@ -5,8 +5,6 @@ defmodule Doggo.Components.Combobox do
 
   use Phoenix.Component
 
-  require Doggo
-
   @search_debounce 300
 
   @impl true
@@ -448,14 +446,15 @@ defmodule Doggo.Components.Combobox do
           unquote(name),
           "free_text_label"
         )
+
+        unquote(__MODULE__).ensure_free_text_label!(var!(assigns))
+        unquote(__MODULE__).ensure_option_keys!(var!(assigns).options)
       end
     end
   end
 
   @impl true
   def render(%{name: name, options: options, value: value} = assigns) do
-    Doggo.diagnostic(do: ensure_free_text_label!(assigns))
-
     {options, _counters} = normalize_options(options, {1, 1})
 
     value = value && to_string(value)
@@ -684,8 +683,7 @@ defmodule Doggo.Components.Combobox do
 
   defp normalize_option(option, counters) when is_list(option) do
     {label, value, description, extra} = Doggo.option_from_keyword(option)
-    {disabled, extra} = Keyword.pop(extra, :disabled, false)
-    Doggo.diagnostic(do: ensure_no_extra_keys!(extra, option))
+    {disabled, _extra} = Keyword.pop(extra, :disabled, false)
 
     build_option(label, value, description, disabled, counters)
   end
@@ -731,8 +729,9 @@ defmodule Doggo.Components.Combobox do
   defp option?(%{options: options}), do: Enum.any?(options, &option?/1)
   defp option?(_), do: false
 
-  defp ensure_free_text_label!(%{free_text: true, free_text_label: label})
-       when not is_binary(label) or label == "" do
+  @doc false
+  def ensure_free_text_label!(%{free_text: true, free_text_label: label})
+      when not is_binary(label) or label == "" do
     raise ArgumentError, """
     missing free_text_label for .combobox
 
@@ -743,7 +742,30 @@ defmodule Doggo.Components.Combobox do
     """
   end
 
-  defp ensure_free_text_label!(_), do: :ok
+  def ensure_free_text_label!(_), do: :ok
+
+  @doc false
+  def ensure_option_keys!(options) when is_list(options) or is_map(options) do
+    Enum.each(options, &ensure_keys_of_option!/1)
+  end
+
+  def ensure_option_keys!(_options), do: :ok
+
+  defp ensure_keys_of_option!({_group_label, options})
+       when is_list(options) or is_map(options) do
+    ensure_option_keys!(options)
+  end
+
+  defp ensure_keys_of_option!(option) when is_map(option) do
+    ensure_option_keys!(option)
+  end
+
+  defp ensure_keys_of_option!(option) when is_list(option) do
+    {_label, _value, _description, extra} = Doggo.option_from_keyword(option)
+    ensure_no_extra_keys!(Keyword.delete(extra, :disabled), option)
+  end
+
+  defp ensure_keys_of_option!(_option), do: :ok
 
   defp ensure_no_extra_keys!([], _option), do: :ok
 

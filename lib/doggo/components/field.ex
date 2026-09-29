@@ -7,8 +7,6 @@ defmodule Doggo.Components.Field do
 
   alias Phoenix.HTML.Form
 
-  require Doggo
-
   @built_in_types ~w(checkbox checkbox-group color date datetime-local email file
                      hidden month number password range radio radio-group search
                      select switch tel text textarea time url week)
@@ -576,9 +574,49 @@ defmodule Doggo.Components.Field do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
+  def init_block(_opts, extra) do
+    types = extra |> types!() |> Map.keys()
+
+    option_types =
+      (@built_in_types -- ["checkbox-group", "radio-group"]) -- types
+
+    quote do
+      require Doggo
+
+      Doggo.diagnostic do
+        unquote(__MODULE__).ensure_no_option_descriptions!(
+          var!(assigns),
+          unquote(option_types)
+        )
+      end
+    end
   end
+
+  @doc false
+  def ensure_no_option_descriptions!(%{type: type, options: options}, types)
+      when is_list(options) or is_map(options) do
+    if type in types, do: Enum.each(options, &ensure_no_description!/1)
+  end
+
+  def ensure_no_option_descriptions!(_assigns, _types), do: :ok
+
+  defp ensure_no_description!({_group_label, options})
+       when is_list(options) or is_map(options) do
+    Enum.each(options, &ensure_no_description!/1)
+  end
+
+  defp ensure_no_description!(option) when is_list(option) do
+    if option[:description] do
+      raise ArgumentError, """
+      invalid :description on an option for .field
+
+      The `:description` option is only supported by the `checkbox-group` and
+      `radio-group` types.
+      """
+    end
+  end
+
+  defp ensure_no_description!(_option), do: :ok
 
   @derived_from [
     :field,
@@ -1435,16 +1473,6 @@ defmodule Doggo.Components.Field do
 
     value = Phoenix.HTML.html_escape(option_value)
     {selected, extra} = Keyword.pop(options, :selected)
-
-    Doggo.diagnostic do
-      if extra[:description] do
-        raise ArgumentError, """
-        Invalid :description on a select option
-
-        The `:description` option is not supported for `type="select"`.
-        """
-      end
-    end
 
     assigns =
       assign(assigns,
