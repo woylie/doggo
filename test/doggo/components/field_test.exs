@@ -1557,5 +1557,32 @@ defmodule Doggo.Components.FieldTest do
 
       assert text(html, ".field-errors > li") == "seulement 5 chiens autorisés"
     end
+
+    test "derives checkbox option ids without whitespace" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.field
+          type="checkbox-group"
+          name="breeds"
+          label="Breeds"
+          value={[]}
+          options={[
+            [
+              key: "Golden Retriever",
+              value: "golden retriever",
+              description: "Friendly"
+            ]
+          ]}
+        />
+        """)
+
+      input = find_one(html, "input[type='checkbox']")
+      assert attribute(input, "id") == "breeds_golden-retriever"
+
+      assert attribute(input, "aria-describedby") =~
+               "breeds_golden-retriever_description"
+    end
   end
 end

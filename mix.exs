@@ -110,6 +110,7 @@ defmodule Doggo.MixProject do
       groups_for_docs: [
         Buttons: &(&1[:type] == :buttons),
         Data: &(&1[:type] == :data),
+        Dialog: &(&1[:type] == :dialog),
         Feedback: &(&1[:type] == :feedback),
         Form: &(&1[:type] == :form),
         Layout: &(&1[:type] == :layout),

@@ -1470,7 +1470,7 @@ defmodule Doggo.Components.Field do
       <input
         type="checkbox"
         name={@name <> "[]"}
-        id={@id <> "_#{@option_value}"}
+        id={@id <> "_" <> Doggo.id_fragment(@option_value)}
         value={@option_value}
         checked={Doggo.checked?(@option_value, @value)}
         aria-describedby={@describedby}
