@@ -47,7 +47,7 @@ defmodule Doggo.Components.Modal do
       <:title>Show pet</:title>
       <p>My pet is called Johnny.</p>
       <:footer>
-        <.link phx-click={JS.exec("data-cancel", to: "#pet-modal")}>
+        <.link phx-click={Doggo.hide_modal("pet-modal")}>
           Close
         </.link>
       </:footer>
@@ -76,7 +76,7 @@ defmodule Doggo.Components.Modal do
       <:title>Show pet</:title>
       <p>My pet is called Johnny.</p>
       <:footer>
-        <.link phx-click={JS.exec("data-cancel", to: "#pet-modal")}>
+        <.link phx-click={Doggo.hide_modal("pet-modal")}>
           Close
         </.link>
       </:footer>
@@ -108,12 +108,11 @@ defmodule Doggo.Components.Modal do
 
     ### Closing
 
-    Four things close the dialog, and all of them run `on_cancel`:
+    Three things close the dialog, and all of them run `on_cancel`:
 
     - the close button the component renders, which uses `command="close"`
     - `Esc` and a click outside, unless `dismissable` is set to `false`
     - `hide_modal/1`
-    - `JS.exec("data-cancel", to: "#pet-modal")`
 
     ## Semantics
 
@@ -296,9 +295,7 @@ defmodule Doggo.Components.Modal do
       phx-hook="Doggo.Dialog"
       phx-mounted={Doggo.dialog_mounted(@id, @open)}
       phx-remove={Doggo.hide_modal(@id)}
-      data-cancel={
-        JS.exec(Doggo.to_js!(@on_cancel, :on_cancel, ".modal"), "phx-remove")
-      }
+      data-cancel={Doggo.to_js!(@on_cancel, :on_cancel, ".modal")}
       {@data_attrs}
       {@rest}
     >

@@ -111,10 +111,10 @@ defmodule Doggo.Storybook.AlertDialog do
       """,
       """
       <:footer>
-        <#{tag_name} phx-click={JS.exec("data-cancel", to: "##{id}")}>
+        <#{tag_name} phx-click={Doggo.hide_modal("#{id}")}>
           Yes, end session
         </#{tag_name}>
-        <#{tag_name} autofocus phx-click={JS.exec("data-cancel", to: "##{id}")}>
+        <#{tag_name} autofocus phx-click={Doggo.hide_modal("#{id}")}>
           No, continue training
         </#{tag_name}>
       </:footer>
