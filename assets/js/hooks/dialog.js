@@ -9,7 +9,7 @@ const hasClosedBy = () => "closedBy" in HTMLDialogElement.prototype;
 export function initDialog(dialog, { execJS = () => {} } = {}) {
   let invoke;
 
-  const dismissable = () => dialog.getAttribute("closedby") === "any";
+  const closedBy = () => dialog.getAttribute("closedby");
 
   // Dispatched by `Doggo.show_modal/2`.
   dialog.addEventListener("doggo:open", () => {
@@ -47,13 +47,13 @@ export function initDialog(dialog, { execJS = () => {} } = {}) {
     // `closedby="none"` has to hold Escape as well, which is the one part of
     // the attribute that native `<dialog>` does not give us anyway.
     dialog.addEventListener("cancel", (e) => {
-      if (!dismissable()) e.preventDefault();
+      if (closedBy() === "none") e.preventDefault();
     });
 
     // A click on the backdrop reaches the dialog itself, never a child, so
     // the target is the test for being outside.
     dialog.addEventListener("click", (e) => {
-      if (dismissable() && e.target === dialog) dialog.close();
+      if (closedBy() === "any" && e.target === dialog) dialog.close();
     });
   }
 

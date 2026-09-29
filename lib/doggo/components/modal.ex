@@ -108,10 +108,11 @@ defmodule Doggo.Components.Modal do
 
     ### Closing
 
-    Three things close the dialog, and all of them run `on_cancel`:
+    These close the dialog, and all of them run `on_cancel`:
 
-    - the close button the component renders, which uses `command="close"`
-    - `Esc` and a click outside, unless `dismissable` is set to `false`
+    - the close button the component renders, which uses `command="close"`,
+      and `Esc`, unless `closedby` is `"none"`
+    - a click outside, if `closedby` is `"any"`
     - `hide_modal/1`
 
     ## Semantics
@@ -127,9 +128,9 @@ defmodule Doggo.Components.Modal do
     `showModal()` moves the focus into the dialog to the first element with the
     `autofocus` attribute, or the first focusable element if no element has it.
 
-    In a dismissable modal, the close button comes first in the markup, so it
-    receives the focus if no `autofocus` attribute is present. This is rarely
-    desired.
+    Unless `closedby` is `"none"`, the close button comes first in the markup,
+    so it receives the focus if no `autofocus` attribute is present. This is
+    rarely desired.
 
     Set `autofocus` on the element that should receive the focus:
 
@@ -191,16 +192,16 @@ defmodule Doggo.Components.Modal do
 
     ## Caveats
 
-    Setting `dismissable={false}` removes the close button and renders
-    `closedby="none"`, which leaves no way to dismiss the dialog from the
-    component. Provide your own control in the `:footer` slot when you do that.
+    Setting `closedby="none"` removes the close button, which leaves no way to
+    dismiss the dialog from the component. Provide your own control in the
+    `:footer` slot when you do that.
     """
   end
 
   @impl true
   def keyboard do
     """
-    - `Esc` - close the dialog, unless `dismissable` is set to `false`.
+    - `Esc` - close the dialog, unless `closedby` is `"none"`.
 
     Opening the dialog moves the focus to the first focusable element inside it,
     and closing it returns the focus to the element that opened it. The focus
@@ -252,12 +253,19 @@ defmodule Doggo.Components.Modal do
         you only want the dialog to be closed, you don't have to set this attribute.
         """
 
-      attr :dismissable, :boolean,
-        default: true,
+      attr :closedby, :string,
+        values: ["any", "closerequest", "none"],
+        default: "any",
         doc: """
-        When set to `true`, the dialog renders a close button and
-        `closedby="any"`, so that it can also be dismissed with the escape key
-        or by clicking outside it.
+        How the user can close the dialog. The value is rendered as the
+        dialog's `closedby` attribute.
+
+        - `"any"` - the close button, `Esc` and a click outside.
+        - `"closerequest"` - the close button and `Esc`, but not a click
+          outside. Use it for a form that should not lose its input to a stray
+          click.
+        - `"none"` - no close button is rendered and neither `Esc` nor a click
+          outside can close the dialog. You need to provide your own control.
         """
 
       attr :close_label, :string,
@@ -291,7 +299,7 @@ defmodule Doggo.Components.Modal do
       id={@id}
       class={@class}
       aria-labelledby={"#{@id}-title"}
-      closedby={(@dismissable && "any") || "none"}
+      closedby={@closedby}
       phx-hook="Doggo.Dialog"
       phx-mounted={Doggo.dialog_mounted(@id, @open)}
       phx-remove={Doggo.hide_modal(@id)}
@@ -303,7 +311,7 @@ defmodule Doggo.Components.Modal do
         <header>
           <h2 id={"#{@id}-title"}>{render_slot(@title)}</h2>
           <button
-            :if={@dismissable}
+            :if={@closedby != "none"}
             type="button"
             class={"#{@base_class}-close"}
             aria-label={@close_label}

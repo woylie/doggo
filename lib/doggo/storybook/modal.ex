@@ -53,13 +53,24 @@ defmodule Doggo.Storybook.Modal do
         slots: close_icon_slots("modal-single-close-icon", opts)
       },
       %Variation{
-        id: :not_dismissable,
+        id: :closedby_closerequest,
         note:
-          "`dismissable={false}` renders `closedby=\"none\"` and no close " <>
-            "button, so neither `Esc` nor a click outside closes it. The " <>
-            "control in the footer is the only way out.",
-        attributes: %{id: "dog-modal-not-dismissable", dismissable: false},
-        slots: slots("modal-single-not-dismissable", opts)
+          "With `closedby=\"closerequest\"`, a close button is rendered and " <>
+            "`Esc` closes the dialog, but a click outside does not. Use it " <>
+            "for a form that should not lose its input to a stray click.",
+        attributes: %{
+          id: "dog-modal-closedby-closerequest",
+          closedby: "closerequest"
+        },
+        slots: slots("modal-single-closedby-closerequest", opts)
+      },
+      %Variation{
+        id: :closedby_none,
+        note:
+          "With `closedby=\"none\"`, no close button is rendered and neither " <>
+            "`Esc` nor a click outside closes it.",
+        attributes: %{id: "dog-modal-closedby-none", closedby: "none"},
+        slots: slots("modal-single-closedby-none", opts)
       }
     ]
   end

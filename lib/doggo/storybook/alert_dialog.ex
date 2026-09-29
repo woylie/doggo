@@ -21,21 +21,32 @@ defmodule Doggo.Storybook.AlertDialog do
       %Variation{
         id: :default,
         note:
-          "An alert dialog is not dismissable by default, so it renders " <>
-            "`closedby=\"none\"` and no close button. Neither `Esc` nor a " <>
-            "click outside closes it, which is the point: the answer has to " <>
-            "come from the footer.",
+          "An alert dialog defaults to `closedby=\"none\"`, which means " <>
+            "that no close button is rendered and neither `Esc` nor a " <>
+            "click outside closes it.",
         attributes: %{id: "dog-alert-default"},
         slots: slots("alert-dialog-single-default", opts)
       },
       %Variation{
-        id: :dismissable,
+        id: :closedby_any,
         note:
-          "`dismissable` adds the close button and `closedby=\"any\"`, so " <>
-            "`Esc` and a click outside close it as well. Use it only when " <>
-            "dismissing the dialog is itself a valid answer.",
-        attributes: %{id: "dog-alert-dismissable", dismissable: true},
-        slots: slots("alert-dialog-single-dismissable", opts)
+          "With `closedby=\"any\"`, a close button is rendered and the " <>
+            "dialog can be closed with `Esc` and a click outside. Use it only " <>
+            "when dismissing the dialog is itself a valid answer.",
+        attributes: %{id: "dog-alert-closedby-any", closedby: "any"},
+        slots: slots("alert-dialog-single-closedby-any", opts)
+      },
+      %Variation{
+        id: :closedby_closerequest,
+        note:
+          "With `closedby=\"closerequest\"`, a close button is rendered and " <>
+            "the dialog can be closed with `Esc`, but not with a click " <>
+            "outside.",
+        attributes: %{
+          id: "dog-alert-closedby-closerequest",
+          closedby: "closerequest"
+        },
+        slots: slots("alert-dialog-single-closedby-closerequest", opts)
       },
       %Variation{
         id: :close_icon,
@@ -45,7 +56,7 @@ defmodule Doggo.Storybook.AlertDialog do
             "button its accessible name.",
         attributes: %{
           id: "dog-alert-close-icon",
-          dismissable: true,
+          closedby: "any",
           close_label: "Close"
         },
         slots: close_icon_slots("alert-dialog-single-close-icon", opts)
