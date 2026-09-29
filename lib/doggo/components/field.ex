@@ -897,7 +897,7 @@ defmodule Doggo.Components.Field do
               base_class={Doggo.build(:base_class)}
               gettext_module={Doggo.build(:gettext_module)}
             >
-              <span class={Doggo.build(:base_class, "-switch-label")}>{@label}</span>
+              <span class={Doggo.build(:base_class, "-switch-label")} dir="auto">{@label}</span>
               <input :if={@hidden_input} type="hidden" name={@name} value="false" />
               <input
                 type="checkbox"
