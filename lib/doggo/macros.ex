@@ -50,6 +50,7 @@ defmodule Doggo.Macros do
         type = unquote(type)
 
         quote do
+          unquote(module).module_info(:module)
           Doggo.Macros.validate_module!(unquote(component), __ENV__)
 
           Code.eval_quoted(

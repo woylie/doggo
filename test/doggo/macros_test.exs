@@ -115,6 +115,16 @@ defmodule Doggo.MacrosTest do
     end
   end
 
+  describe "build macros" do
+    test "depend on the component module at compile time" do
+      env = %{__ENV__ | requires: [Doggo.Components | __ENV__.requires]}
+      ast = Macro.expand_once(quote(do: Doggo.Components.build_button()), env)
+
+      assert Macro.to_string(ast) =~
+               "Doggo.Components.Button.module_info(:module)"
+    end
+  end
+
   describe "build_alert/1" do
     test "raises for modifier named like slot" do
       assert_raise ArgumentError,
