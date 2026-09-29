@@ -2,8 +2,9 @@ defmodule Doggo.Storybook.Drawer do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
 
-  def dependent_components,
-    do: [:vertical_nav, :vertical_nav_nested, :vertical_nav_section]
+  def dependent_components do
+    [:vertical_nav, :vertical_nav_nested, :vertical_nav_section]
+  end
 
   def layout, do: :one_column
 

@@ -6,13 +6,14 @@ defmodule Doggo.Storybook.Menu do
 
   @scope_id "menu-all-items"
 
-  def dependent_components,
-    do: [
+  def dependent_components do
+    [
       :menu_item,
       :menu_item_checkbox,
       :menu_item_radio_group,
       :menu_group
     ]
+  end
 
   def variations(opts) do
     [

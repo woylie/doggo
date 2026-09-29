@@ -106,8 +106,8 @@ defmodule Doggo.Components.MenuButton do
   end
 
   @impl true
-  def own_attributes,
-    do: [
+  def own_attributes do
+    [
       "aria-controls": :controls,
       "aria-expanded": nil,
       "aria-haspopup": nil,
@@ -115,6 +115,7 @@ defmodule Doggo.Components.MenuButton do
       "phx-hook": nil,
       type: nil
     ]
+  end
 
   @impl true
   def nested_classes(_) do

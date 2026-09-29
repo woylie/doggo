@@ -96,8 +96,9 @@ defmodule Doggo.Components.ToggleButton do
   end
 
   @impl true
-  def own_attributes,
-    do: ["aria-pressed": nil, "phx-click": :on_click, type: nil]
+  def own_attributes do
+    ["aria-pressed": nil, "phx-click": :on_click, type: nil]
+  end
 
   @impl true
   def nested_classes(_) do

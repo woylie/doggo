@@ -166,8 +166,9 @@ defmodule Doggo do
   def input_aria_describedby(id, [], _errors), do: field_errors_id(id)
   def input_aria_describedby(id, _description, []), do: field_description_id(id)
 
-  def input_aria_describedby(id, _description, _errors),
-    do: "#{field_errors_id(id)} #{field_description_id(id)}"
+  def input_aria_describedby(id, _description, _errors) do
+    "#{field_errors_id(id)} #{field_description_id(id)}"
+  end
 
   @doc false
   def option_from_keyword(option) do

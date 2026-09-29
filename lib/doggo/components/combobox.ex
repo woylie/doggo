@@ -252,8 +252,9 @@ defmodule Doggo.Components.Combobox do
   end
 
   @impl true
-  def own_attributes,
-    do: ["aria-controls": nil, "aria-expanded": nil, role: nil, type: nil]
+  def own_attributes do
+    ["aria-controls": nil, "aria-expanded": nil, role: nil, type: nil]
+  end
 
   @impl true
   def nested_classes(base_class) do
@@ -578,8 +579,9 @@ defmodule Doggo.Components.Combobox do
     end
   end
 
-  defp display_text(nil, options, value),
-    do: option_label(options, value) || value
+  defp display_text(nil, options, value) do
+    option_label(options, value) || value
+  end
 
   defp display_text(display_value, _options, _value), do: display_value
 

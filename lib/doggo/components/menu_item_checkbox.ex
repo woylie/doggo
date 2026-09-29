@@ -52,8 +52,9 @@ defmodule Doggo.Components.MenuItemCheckbox do
   end
 
   @impl true
-  def own_attributes,
-    do: ["aria-checked": nil, "phx-click": :on_click, role: nil, type: nil]
+  def own_attributes do
+    ["aria-checked": nil, "phx-click": :on_click, role: nil, type: nil]
+  end
 
   @impl true
   def nested_classes(_) do

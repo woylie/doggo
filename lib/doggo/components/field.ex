@@ -536,12 +536,14 @@ defmodule Doggo.Components.Field do
     """
   end
 
-  defp validate_type_entry!(_name, entry, _option) when is_function(entry, 1),
-    do: :ok
+  defp validate_type_entry!(_name, entry, _option) when is_function(entry, 1) do
+    :ok
+  end
 
   defp validate_type_entry!(_name, {entry, opts}, _option)
-       when is_function(entry, 1) and is_list(opts),
-       do: :ok
+       when is_function(entry, 1) and is_list(opts) do
+    :ok
+  end
 
   defp validate_type_entry!(name, entry, :types)
        when entry in [nil, :default] do
@@ -618,16 +620,7 @@ defmodule Doggo.Components.Field do
       value: field.value
     ]
 
-    assign_input(
-      assigns,
-      id,
-      errors,
-      for(
-        {key, value} <- defaults,
-        not is_map_key(assigns, key),
-        do: {key, value}
-      )
-    )
+    assign_input(assigns, id, errors, Keyword.drop(defaults, Map.keys(assigns)))
   end
 
   def prepare(assigns, _gettext_module) when not is_map_key(assigns, :field) do
@@ -1086,8 +1079,9 @@ defmodule Doggo.Components.Field do
     end)
   end
 
-  defp clause_type({:->, _, [[{:when, _, [pattern, _]}], _]}),
-    do: clause_type({:->, [], [[pattern], nil]})
+  defp clause_type({:->, _, [[{:when, _, [pattern, _]}], _]}) do
+    clause_type({:->, [], [[pattern], nil]})
+  end
 
   defp clause_type({:->, _, [[{:%{}, _, fields}], _]}), do: fields[:type]
   defp clause_type(_clause), do: nil
@@ -1167,8 +1161,9 @@ defmodule Doggo.Components.Field do
     end
   end
 
-  defp custom_entry({input, opts}),
-    do: {input, Keyword.get(opts, :group, false)}
+  defp custom_entry({input, opts}) do
+    {input, Keyword.get(opts, :group, false)}
+  end
 
   defp custom_entry(input), do: {input, false}
 

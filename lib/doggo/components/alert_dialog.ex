@@ -147,13 +147,14 @@ defmodule Doggo.Components.AlertDialog do
   end
 
   @impl true
-  def own_attributes,
-    do: [
+  def own_attributes do
+    [
       "aria-describedby": nil,
       "aria-labelledby": nil,
       "phx-hook": nil,
       role: nil
     ]
+  end
 
   @impl true
   def nested_classes(base_class) do
