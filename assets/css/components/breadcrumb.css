@@ -17,18 +17,18 @@
       list-style: none;
     }
 
-    li {
+    .breadcrumb-item {
       display: flex;
       gap: var(--breadcrumb-gap);
       align-items: center;
     }
 
-    li + li::before {
+    .breadcrumb-item + .breadcrumb-item::before {
       color: var(--breadcrumb-separator-color);
       content: var(--breadcrumb-separator) / "";
     }
 
-    a[aria-current="page"] {
+    .breadcrumb-link[aria-current="page"] {
       font-weight: var(--breadcrumb-font-weight-current);
       color: var(--breadcrumb-color-current);
       text-decoration: none;

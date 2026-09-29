@@ -842,7 +842,7 @@ defmodule Doggo.Components.FieldTest do
         </.form>
         """)
 
-      assert attribute(html, "label", "class") == "field-checkbox"
+      assert attribute(html, "label", "class") == "field-label field-checkbox"
       assert attribute(html, "input[type='hidden']", "value") == "false"
 
       assert text(html, ".field-description") == "Please do."
@@ -1606,6 +1606,71 @@ defmodule Doggo.Components.FieldTest do
 
       assert attribute(input, "aria-describedby") =~
                "breeds_golden_retriever-description"
+    end
+
+    test "renders only classes and data attributes listed in the safelist" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <div>
+          <TestComponents.field
+            :for={type <- ~w(text textarea file hidden checkbox switch)}
+            type={type}
+            name={type}
+            label={type}
+            value=""
+            errors={["is invalid"]}
+            hide_label
+          >
+            <:description>Description</:description>
+          </TestComponents.field>
+          <TestComponents.field type="text" name="addon" label="Addon" value="">
+            <:addon_left>left</:addon_left>
+            <:addon_right>right</:addon_right>
+          </TestComponents.field>
+          <TestComponents.field
+            type="text"
+            name="list"
+            label="List"
+            value=""
+            options={["a", "b"]}
+          />
+          <TestComponents.field
+            type="select"
+            name="select"
+            label="Select"
+            value={[]}
+            multiple
+            options={[{"Group", ["a", "b"]}]}
+          />
+          <TestComponents.field
+            :for={type <- ~w(checkbox-group radio-group)}
+            type={type}
+            name={type}
+            label={type}
+            value={[]}
+            validations={[required: true]}
+            options={[[key: "A", value: "a", description: "Option"], {"Group", ["b"]}]}
+          />
+        </div>
+        """)
+
+      safelist = Doggo.safelist(TestComponents)
+
+      classes =
+        html
+        |> Floki.attribute("[class]", "class")
+        |> Enum.flat_map(&String.split/1)
+
+      data_attrs =
+        for {_, attrs, _} <- Floki.find(html, "*"),
+            {name, _} <- attrs,
+            String.starts_with?(name, "data-"),
+            do: name
+
+      assert Enum.uniq(classes) -- safelist == []
+      assert Enum.uniq(data_attrs) -- safelist == []
     end
   end
 end

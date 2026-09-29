@@ -24,13 +24,13 @@
       margin-block-start: var(--card-gap);
     }
 
-    > header,
-    > .card-body,
-    > footer {
+    .card-header,
+    .card-body,
+    .card-footer {
       padding: 0 var(--card-padding-inline);
     }
 
-    > figure {
+    .card-image {
       margin: calc(-1 * var(--card-padding-block)) 0 0;
 
       > img {
@@ -42,7 +42,7 @@
       }
     }
 
-    > header {
+    .card-header {
       font-size: var(--card-header-font-size);
       font-weight: var(--card-header-font-weight);
 
@@ -53,7 +53,7 @@
       }
     }
 
-    > footer {
+    .card-footer {
       display: flex;
       flex-wrap: wrap;
       gap: var(--card-footer-gap);

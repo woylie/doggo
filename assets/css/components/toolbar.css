@@ -36,7 +36,7 @@
     }
   }
 
-  :where(.toolbar, .action-bar) button {
+  :where(.toolbar button, .action-bar-item) {
     display: grid;
     place-items: center;
     inline-size: var(--toolbar-item-size);

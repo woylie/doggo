@@ -211,8 +211,8 @@ defmodule Doggo.Components.VerticalNav do
       >
         <li
           :for={item <- @item}
-          class={item[:class]}
           aria-current={item[:current_page] && "page"}
+          {Doggo.class_attr(item[:class])}
         >
           {render_slot(item)}
         </li>

@@ -19,55 +19,55 @@
     --accordion-panel-padding-block-start: var(--spacer-1);
     --accordion-panel-padding-block-end: var(--spacer-4);
 
-    > div + div {
+    .accordion-section + .accordion-section {
       border-block-start: var(--accordion-border-width) solid
         var(--accordion-border-color);
     }
 
-    > div > :is(h2, h3, h4, h5, h6) {
+    .accordion-header {
       margin: 0;
       font-size: inherit;
+    }
 
-      > button {
-        display: flex;
-        gap: var(--accordion-trigger-gap);
-        align-items: center;
-        justify-content: space-between;
-        inline-size: 100%;
-        padding: var(--accordion-trigger-padding-block)
-          var(--accordion-trigger-padding-inline);
-        font: inherit;
-        font-size: var(--accordion-trigger-font-size);
-        font-weight: var(--accordion-trigger-font-weight);
-        color: var(--accordion-trigger-color);
-        text-align: start;
-        cursor: pointer;
-        background: var(--accordion-trigger-background);
-        border: none;
+    .accordion-trigger {
+      display: flex;
+      gap: var(--accordion-trigger-gap);
+      align-items: center;
+      justify-content: space-between;
+      inline-size: 100%;
+      padding: var(--accordion-trigger-padding-block)
+        var(--accordion-trigger-padding-inline);
+      font: inherit;
+      font-size: var(--accordion-trigger-font-size);
+      font-weight: var(--accordion-trigger-font-weight);
+      color: var(--accordion-trigger-color);
+      text-align: start;
+      cursor: pointer;
+      background: var(--accordion-trigger-background);
+      border: none;
 
-        &:hover {
-          background: var(--accordion-trigger-background-hover);
-        }
+      &:hover {
+        background: var(--accordion-trigger-background-hover);
+      }
 
-        &:focus-visible {
-          outline: var(--accordion-outline-width) solid
-            var(--accordion-outline-color);
-          outline-offset: var(--accordion-outline-offset);
-        }
+      &:focus-visible {
+        outline: var(--accordion-outline-width) solid
+          var(--accordion-outline-color);
+        outline-offset: var(--accordion-outline-offset);
+      }
 
-        &::after {
-          font-size: var(--accordion-marker-font-size);
-          color: var(--accordion-marker-color);
-          content: "\25BC"; /* Down-pointing triangle (▼) */
-        }
+      &::after {
+        font-size: var(--accordion-marker-font-size);
+        color: var(--accordion-marker-color);
+        content: "\25BC"; /* Down-pointing triangle (▼) */
+      }
 
-        &[aria-expanded="true"]::after {
-          content: "\25B2"; /* Up-pointing triangle (▲) */
-        }
+      &[aria-expanded="true"]::after {
+        content: "\25B2"; /* Up-pointing triangle (▲) */
       }
     }
 
-    > div > [role="region"] {
+    .accordion-panel {
       padding-block: var(--accordion-panel-padding-block-start)
         var(--accordion-panel-padding-block-end);
       padding-inline: var(--accordion-panel-padding-inline);

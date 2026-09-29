@@ -69,8 +69,8 @@ defmodule Doggo.Components.ActionBar do
   def own_attributes, do: ["aria-label": :label, "phx-hook": nil, role: nil]
 
   @impl true
-  def nested_classes(_) do
-    []
+  def nested_classes(base_class) do
+    ["#{base_class}-item"]
   end
 
   @impl true
@@ -162,6 +162,7 @@ defmodule Doggo.Components.ActionBar do
       <button
         :for={item <- @item}
         type="button"
+        class={"#{@base_class}-item"}
         phx-click={Doggo.callback!(item.on_click, :on_click, ".action_bar")}
         aria-label={item.label}
         title={item.label}

@@ -511,6 +511,10 @@ defmodule Doggo do
   end
 
   @doc false
+  def class_attr(nil), do: []
+  def class_attr(class), do: [class: class]
+
+  @doc false
   def ensure_optional_name!(nil, _component, _attr), do: :ok
 
   def ensure_optional_name!(name, component, attr) do

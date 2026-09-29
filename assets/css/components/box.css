@@ -24,25 +24,25 @@
       margin-block-start: var(--box-gap);
     }
 
-    > header,
-    > .box-body,
-    > footer {
+    .box-header,
+    .box-body,
+    .box-footer {
       padding: 0 var(--box-padding-inline);
     }
 
-    > header {
+    .box-header {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
 
-      > :is(h1, h2, h3, h4, h5, h6) {
+      .box-title {
         margin: 0;
         font-size: var(--box-title-font-size);
         font-weight: var(--box-title-font-weight);
       }
 
-      > .box-banner {
+      .box-banner {
         flex: 0 0 calc(100% + 2 * var(--box-padding-inline));
         order: -1;
         margin-block: calc(-1 * var(--box-padding-block))
@@ -56,7 +56,7 @@
       }
     }
 
-    > footer {
+    .box-footer {
       font-size: var(--box-footer-font-size);
       color: var(--box-footer-color);
     }

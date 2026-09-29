@@ -52,7 +52,12 @@ defmodule Doggo.Components.Card do
 
   @impl true
   def nested_classes(base_class) do
-    ["#{base_class}-body"]
+    [
+      "#{base_class}-body",
+      "#{base_class}-footer",
+      "#{base_class}-header",
+      "#{base_class}-image"
+    ]
   end
 
   @impl true
@@ -91,12 +96,18 @@ defmodule Doggo.Components.Card do
   def render(assigns) do
     ~H"""
     <article class={@class} {@data_attrs} {@rest}>
-      <figure :if={@image != []}>{render_slot(@image)}</figure>
-      <header :if={@header != []}>{render_slot(@header)}</header>
+      <figure :if={@image != []} class={"#{@base_class}-image"}>
+        {render_slot(@image)}
+      </figure>
+      <header :if={@header != []} class={"#{@base_class}-header"}>
+        {render_slot(@header)}
+      </header>
       <div :if={@body != []} class={"#{@base_class}-body"}>
         {render_slot(@body)}
       </div>
-      <footer :if={@footer != []}>{render_slot(@footer)}</footer>
+      <footer :if={@footer != []} class={"#{@base_class}-footer"}>
+        {render_slot(@footer)}
+      </footer>
     </article>
     """
   end

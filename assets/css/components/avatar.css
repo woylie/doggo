@@ -16,14 +16,14 @@
     background: var(--avatar-background);
     border-radius: var(--avatar-border-radius);
 
-    > img {
+    :is(.avatar-image, img.avatar-placeholder) {
       display: block;
       inline-size: 100%;
       block-size: 100%;
       object-fit: cover;
     }
 
-    > span {
+    span.avatar-placeholder {
       font-size: var(--avatar-placeholder-font-size);
       font-weight: var(--avatar-placeholder-font-weight);
       color: var(--avatar-placeholder-color);

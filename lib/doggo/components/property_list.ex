@@ -56,6 +56,9 @@ defmodule Doggo.Components.PropertyList do
     quote do
       slot :prop, required: true, doc: "A property to be rendered." do
         attr :label, :string, required: true
+
+        attr :class, :any,
+          doc: "Additional classes for the row that holds the term and value."
       end
 
       attr :rest, :global, doc: "Any additional HTML attributes."
@@ -83,7 +86,7 @@ defmodule Doggo.Components.PropertyList do
   def render(assigns) do
     ~H"""
     <dl class={@class} {@data_attrs} {@rest}>
-      <div :for={prop <- @prop}>
+      <div :for={prop <- @prop} {Doggo.class_attr(prop[:class])}>
         <dt>{prop.label}</dt>
         <dd>{render_slot(prop)}</dd>
       </div>
