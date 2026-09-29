@@ -178,21 +178,28 @@ defmodule Doggo.Components.Steps do
         index > current_step -> "upcoming"
       end
 
-    assigns = assign(assigns, state: state)
+    clickable =
+      assigns.step[:on_click] != nil and clickable?(state, assigns.linear)
+
+    assigns = assign(assigns, state: state, clickable: clickable)
 
     ~H"""
-    <li data-state={@state} aria-current={@index == @current_step && "step"}>
-      <span :if={@index < @current_step} data-visually-hidden>
+    <li data-state={@state} aria-current={@state == "current" && "step"}>
+      <span :if={@state == "completed"} data-visually-hidden>
         {@completed_label}
       </span>
-      <%= if @step[:on_click] && ((@linear && @index < @current_step) || (!@linear && @index != @current_step)) do %>
-        <.link phx-click={Doggo.callback!(@step[:on_click], :on_click, ".steps")}>
-          {render_slot(@step)}
-        </.link>
-      <% else %>
-        <span>{render_slot(@step)}</span>
-      <% end %>
+      <.link
+        :if={@clickable}
+        phx-click={Doggo.callback!(@step[:on_click], :on_click, ".steps")}
+      >
+        {render_slot(@step)}
+      </.link>
+      <span :if={!@clickable}>{render_slot(@step)}</span>
     </li>
     """
   end
+
+  defp clickable?("completed", _linear), do: true
+  defp clickable?("upcoming", linear), do: not linear
+  defp clickable?("current", _linear), do: false
 end
