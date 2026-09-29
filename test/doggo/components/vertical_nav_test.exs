@@ -29,7 +29,6 @@ defmodule Doggo.Components.VerticalNavTest do
       div = find_one(html, "nav:root")
       assert attribute(div, "id") == "main-nav"
       assert attribute(div, "aria-label") == "Main"
-      assert Floki.find(html, ".drawer-nav-title") == []
       assert text(html, ":root > ul > li") == "item"
     end
 
@@ -51,13 +50,15 @@ defmodule Doggo.Components.VerticalNavTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.vertical_nav id="main-nav" label="Main">
+        <TestComponents.vertical_nav id="main-nav">
           <:title>some title</:title>
           <:item>item</:item>
         </TestComponents.vertical_nav>
         """)
 
       assert text(html, ":root > div.vertical-nav-title") == "some title"
+      assert attribute(html, "nav:root", "aria-labelledby") == "main-nav-title"
+      assert attribute(html, "nav:root", "aria-label") == nil
     end
 
     test "renders item class" do
@@ -123,12 +124,42 @@ defmodule Doggo.Components.VerticalNavTest do
       assert attribute(html, ":root > ul", "aria-labelledby") == nil
     end
 
-    test "raises without label" do
+    test "raises without name" do
       assigns = %{}
 
-      assert_raise Doggo.InvalidLabelError, fn ->
+      assert_raise ArgumentError, ~r/invalid name/, fn ->
         parse_heex(~H"""
         <TestComponents.vertical_nav id="main-nav">
+          <:item>item</:item>
+        </TestComponents.vertical_nav>
+        """)
+      end
+    end
+
+    test "raises with title and label" do
+      assigns = %{}
+
+      assert_raise ArgumentError, ~r/invalid name/, fn ->
+        parse_heex(~H"""
+        <TestComponents.vertical_nav id="main-nav" label="Main">
+          <:title>Dogs</:title>
+          <:item>item</:item>
+        </TestComponents.vertical_nav>
+        """)
+      end
+    end
+
+    test "raises with two names without landmark" do
+      assigns = %{}
+
+      assert_raise ArgumentError, ~r/invalid name/, fn ->
+        parse_heex(~H"""
+        <TestComponents.vertical_nav
+          id="main-nav"
+          label="Main"
+          labelledby="heading"
+          landmark={false}
+        >
           <:item>item</:item>
         </TestComponents.vertical_nav>
         """)
@@ -153,7 +184,7 @@ defmodule Doggo.Components.VerticalNavTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.vertical_nav id="main-nav" label="Main">
+        <TestComponents.vertical_nav id="main-nav">
           <:title>Dogs</:title>
           <:item :for={_ <- []} current_page>item</:item>
           <:item :for={_ <- []}>another item</:item>

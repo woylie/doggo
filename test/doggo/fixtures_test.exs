@@ -998,7 +998,7 @@ defmodule Doggo.FixturesTest do
 
     assert_fixture(
       ~H"""
-      <FixtureComponents.vertical_nav id="main-nav" label="Main">
+      <FixtureComponents.vertical_nav id="main-nav">
         <:title>Dogs</:title>
         <:item current_page>item</:item>
         <:item>another item</:item>
