@@ -523,5 +523,6 @@ defmodule Doggo do
 
   @doc false
   def named?(s) when is_binary(s), do: String.trim(s) != ""
-  def named?(_), do: false
+  def named?(nil), do: false
+  def named?(_), do: true
 end
