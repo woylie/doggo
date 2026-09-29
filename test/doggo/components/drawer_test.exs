@@ -43,6 +43,34 @@ defmodule Doggo.Components.DrawerTest do
       assert text(html, "div > div.drawer-header") == "Doggo"
     end
 
+    test "names drawer by header with navigation role" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.drawer id="drawer-2" role="navigation">
+          <:header>Doggo</:header>
+        </TestComponents.drawer>
+        """)
+
+      assert attribute(html, "div:root", "role") == "navigation"
+      assert attribute(html, "div:root", "aria-labelledby") == "drawer-2-header"
+    end
+
+    test "omits name with role nil" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.drawer id="drawer-2" role={nil}>
+          <:header>Doggo</:header>
+        </TestComponents.drawer>
+        """)
+
+      assert attribute(html, "div:root", "role") == nil
+      assert attribute(html, "div:root", "aria-labelledby") == nil
+    end
+
     test "renders main" do
       assigns = %{}
 
