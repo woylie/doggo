@@ -458,6 +458,8 @@ These changes **are** breaking:
 - Reordering elements.
 - Renaming a JavaScript hook.
 
+The output format of `mix dog.safelist` only changes in a major release.
+
 ## Feedback
 
 If you encounter any issues with a component, have suggestions for improvements,

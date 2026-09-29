@@ -18,6 +18,12 @@ defmodule Mix.Tasks.Dog.Safelist do
 
       mix dog.safelist -m MyAppWeb.CoreComponents -o assets/doggo_safelist.txt --check
 
+  ## Output
+
+  Prints one class or data attribute name per line, sorted. With `--output`,
+  the file starts with two `#` comment lines and a blank line. The format only
+  changes in a major release.
+
   ## Command line options
 
     * `-m`, `--module` - the module the Doggo components are compiled into.
