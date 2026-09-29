@@ -148,15 +148,15 @@ defmodule Doggo.ChangeTrackingTest do
     test "sends the error references if the errors changed" do
       assigns = %{label: "Dog", errors: ["is invalid"]}
       parts = render(&field/1, assigns, %{errors: true})
-      assert ~s( aria-describedby="dog_errors") in parts
-      assert ~s( aria-errormessage="dog_errors") in parts
+      assert ~s( aria-describedby="dog-errors") in parts
+      assert ~s( aria-errormessage="dog-errors") in parts
     end
 
     test "does not send the error references if only the label changed" do
       assigns = %{label: "Name", errors: ["is invalid"]}
       parts = render(&field/1, assigns, %{label: true})
       assert "Name" in parts
-      refute ~s( aria-describedby="dog_errors") in parts
+      refute ~s( aria-describedby="dog-errors") in parts
     end
 
     test "sends the value if the form changed" do

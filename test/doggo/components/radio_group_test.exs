@@ -135,12 +135,12 @@ defmodule Doggo.Components.RadioGroupTest do
         """)
 
       input = find_one(html, "input")
-      assert attribute(input, "id") == "breeds_golden-retriever"
+      assert attribute(input, "id") == "breeds_golden_retriever"
 
       assert attribute(input, "aria-describedby") ==
-               "breeds_golden-retriever_description"
+               "breeds_golden_retriever-description"
 
-      assert attribute(html, "#breeds_golden-retriever_description", "id")
+      assert attribute(html, "#breeds_golden_retriever-description", "id")
     end
   end
 end

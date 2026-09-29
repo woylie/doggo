@@ -4,6 +4,8 @@ defmodule DoggoTest do
 
   import Phoenix.LiveViewTest, only: [rendered_to_string: 1]
 
+  alias Phoenix.HTML.Form
+
   defmodule TestComponents do
     @moduledoc """
     Generates components for tests.
@@ -149,9 +151,11 @@ defmodule DoggoTest do
   end
 
   describe "id_fragment/1" do
-    test "replaces whitespace" do
-      assert Doggo.id_fragment("golden  retriever\tpuppy") ==
-               "golden-retriever-puppy"
+    test "matches Phoenix.HTML.Form.input_id/3" do
+      for value <- ["golden retriever", "a&b", "hündchen", "sit.stay", 42] do
+        assert "dog_breeds_" <> Doggo.id_fragment(value) ==
+                 Form.input_id(:dog, :breeds, value)
+      end
     end
   end
 

@@ -1008,7 +1008,7 @@ defmodule Doggo.Components.Field do
               <input
                 name={@name}
                 id={@id}
-                list={@options && "#{@id}_datalist"}
+                list={@options && "#{@id}-datalist"}
                 type={@type}
                 value={@type != "file" && Doggo.normalize_value(@type, @value)}
                 multiple={@type == "file" && @multiple}
@@ -1031,7 +1031,7 @@ defmodule Doggo.Components.Field do
                 {render_slot(@addon_right)}
               </div>
             </div>
-            <datalist :if={@options} id={"#{@id}_datalist"}>
+            <datalist :if={@options} id={"#{@id}-datalist"}>
               <Doggo.Components.Field.option :for={option <- @options} option={option} />
             </datalist>
             <Doggo.Components.Field.field_errors

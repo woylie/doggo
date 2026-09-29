@@ -193,7 +193,7 @@ defmodule Doggo do
 
     id =
       if description do
-        "#{assigns.id}_#{id_fragment(assigns.option_value)}_description"
+        "#{assigns.id}_#{id_fragment(assigns.option_value)}-description"
       end
 
     Map.merge(assigns, %{
@@ -227,10 +227,10 @@ defmodule Doggo do
   end
 
   @doc false
-  def field_errors_id(id) when is_binary(id), do: "#{id}_errors"
+  def field_errors_id(id) when is_binary(id), do: "#{id}-errors"
 
   @doc false
-  def field_description_id(id) when is_binary(id), do: "#{id}_description"
+  def field_description_id(id) when is_binary(id), do: "#{id}-description"
 
   @doc false
   def translate_error({msg, opts}, nil) do
@@ -370,7 +370,8 @@ defmodule Doggo do
 
   @doc false
   def id_fragment(value) do
-    value |> to_string() |> String.replace(~r/\s+/u, "-")
+    {:safe, value} = Phoenix.HTML.html_escape(value)
+    value |> IO.iodata_to_binary() |> String.replace(~r/\W/u, "_")
   end
 
   @doc false

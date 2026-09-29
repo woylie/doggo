@@ -281,7 +281,7 @@ defmodule Doggo.MacrosTest do
 
       html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{}))
       assert html =~ ~s(<div class="field-input-wrapper">)
-      assert html =~ ~s(<ul id="a_errors" class="field-errors")
+      assert html =~ ~s(<ul id="a-errors" class="field-errors")
     end
 
     test "builds two fields in one module" do
