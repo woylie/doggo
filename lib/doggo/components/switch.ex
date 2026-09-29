@@ -109,7 +109,7 @@ defmodule Doggo.Components.Switch do
       {@data_attrs}
       {@rest}
     >
-      <span class={"#{@base_class}-label"}>{@label}</span>
+      <span class={"#{@base_class}-label"} dir="auto">{@label}</span>
       <span class={"#{@base_class}-control"}><span></span></span>
       <span class={"#{@base_class}-state"}>
         <span

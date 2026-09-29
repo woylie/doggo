@@ -342,6 +342,35 @@ The `data-invalid` attribute is set on the field wrapper whenever the field has
 errors. The `:empty` selector does not work here, because the rendered list
 contains whitespace.
 
+### Text direction
+
+Some components render text you pass in an attribute next to text of their
+own, such as a switch label beside its state text. These elements have
+`dir="auto"`. The browser takes their direction from the text itself, and
+right-to-left text in a left-to-right page does not reorder the text around
+it.
+
+Text you pass in a slot is not automatically isolated. If it can hold text in
+another direction, wrap it in `<bdi>`.
+
+```heex
+<.steps current_step={1}>
+  <:step><bdi>{@first_step_name}</bdi></:step>
+  <:step><bdi>{@second_step_name}</bdi></:step>
+</.steps>
+```
+
+The `field` label holds your label text next to the required or optional
+mark, without an element of its own. If your labels can be in a different
+direction than the page, set `unicode-bidi: plaintext` on the label. The
+browser then takes the label's direction from its content.
+
+```css
+.field label {
+  unicode-bidi: plaintext;
+}
+```
+
 ## Design decisions
 
 - Favor semantic HTML elements over CSS classes for structure and clarity.
@@ -428,6 +457,8 @@ These changes **are** breaking:
 - Changing an element type.
 - Reordering elements.
 - Renaming a JavaScript hook.
+
+The output format of `mix dog.safelist` only changes in a major release.
 
 ## Feedback
 

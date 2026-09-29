@@ -553,8 +553,8 @@ defmodule Doggo.Components.Combobox do
           data-free-text
           hidden
         >
-          <span class={"#{@base_class}-option-label"}>{@free_text_label}</span>
-          <span class={"#{@base_class}-option-term"}></span>
+          <span class={"#{@base_class}-option-label"} dir="auto">{@free_text_label}</span>
+          <span class={"#{@base_class}-option-term"} dir="auto"></span>
         </div>
       </div>
       <input
@@ -628,10 +628,11 @@ defmodule Doggo.Components.Combobox do
       aria-disabled={@entry.disabled && "true"}
       data-value={@entry.value}
     >
-      <span class={"#{@base_class}-option-label"}>{@entry.label}</span>
+      <span class={"#{@base_class}-option-label"} dir="auto">{@entry.label}</span>
       <span
         :if={@entry.description}
         class={"#{@base_class}-option-description"}
+        dir="auto"
       >
         {@entry.description}
       </span>
