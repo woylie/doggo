@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-09-29
+
 ### Added
 
 - `Doggo.Components`: Accept module attributes and function calls in build options, and raise for an anonymous function.
@@ -909,7 +911,8 @@ After:
 
 Initial release.
 
-[Unreleased]: https://github.com/woylie/doggo/compare/0.16.1...HEAD
+[Unreleased]: https://github.com/woylie/doggo/compare/0.17.0...HEAD
+[0.17.0]: https://github.com/woylie/doggo/compare/0.16.1...0.17.0
 [0.16.1]: https://github.com/woylie/doggo/compare/0.16.0...0.16.1
 [0.16.0]: https://github.com/woylie/doggo/compare/0.15.1...0.16.0
 [0.15.1]: https://github.com/woylie/doggo/compare/0.15.0...0.15.1
