@@ -59,6 +59,44 @@ defmodule Doggo.Components.BoxTest do
       assert text(html, "section:root > header > h3") == "Profile"
     end
 
+    test "derives title and body ids with id" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.box id="profile" aria-labelledby="profile-title">
+          <:title>Profile</:title>
+          Content
+        </TestComponents.box>
+        """)
+
+      assert attribute(html, "section:root", "id") == "profile"
+
+      assert attribute(html, "section:root", "aria-labelledby") ==
+               "profile-title"
+
+      assert attribute(html, "section:root > header > h2", "id") ==
+               "profile-title"
+
+      assert attribute(html, ".box-body", "id") == "profile-body"
+    end
+
+    test "renders no ids without id" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.box>
+          <:title>Profile</:title>
+          Content
+        </TestComponents.box>
+        """)
+
+      assert attribute(html, "section:root", "id") == nil
+      assert attribute(html, "section:root > header > h2", "id") == nil
+      assert attribute(html, ".box-body", "id") == nil
+    end
+
     test "renders banner" do
       assigns = %{}
 
