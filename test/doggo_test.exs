@@ -112,6 +112,12 @@ defmodule DoggoTest do
 
       assert [["dispatch", %{event: "doggo:open", to: "#pet-modal"}]] = ops
     end
+
+    test "escapes the id in the selector" do
+      assert %Phoenix.LiveView.JS{ops: ops} = Doggo.show_modal("pet:1.2")
+
+      assert [["dispatch", %{to: "#pet\\:1\\.2"}]] = ops
+    end
   end
 
   describe "hide_modal/2" do
@@ -119,6 +125,33 @@ defmodule DoggoTest do
       assert %Phoenix.LiveView.JS{ops: ops} = Doggo.hide_modal("pet-modal")
 
       assert [["dispatch", %{event: "doggo:close", to: "#pet-modal"}]] = ops
+    end
+  end
+
+  describe "id_selector/1" do
+    test "keeps ids that need no escaping" do
+      assert Doggo.id_selector("pet-modal_1") == "#pet-modal_1"
+    end
+
+    test "escapes selector syntax" do
+      assert Doggo.id_selector("pet:1.2") == "#pet\\:1\\.2"
+      assert Doggo.id_selector("a b") == "#a\\ b"
+    end
+
+    test "escapes a leading digit" do
+      assert Doggo.id_selector("1pet") == "#\\31 pet"
+      assert Doggo.id_selector("-1pet") == "#-\\31 pet"
+    end
+
+    test "keeps non-ASCII characters" do
+      assert Doggo.id_selector("hündchen") == "#hündchen"
+    end
+  end
+
+  describe "id_fragment/1" do
+    test "replaces whitespace" do
+      assert Doggo.id_fragment("golden  retriever\tpuppy") ==
+               "golden-retriever-puppy"
     end
   end
 

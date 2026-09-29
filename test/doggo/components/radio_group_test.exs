@@ -114,5 +114,33 @@ defmodule Doggo.Components.RadioGroupTest do
 
       assert attribute(html, ":root", "data-test") == "hi"
     end
+
+    test "derives option ids without whitespace" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.radio_group
+          id="breeds"
+          name="breed"
+          label="Breed"
+          options={[
+            [
+              key: "Golden Retriever",
+              value: "golden retriever",
+              description: "Friendly"
+            ]
+          ]}
+        />
+        """)
+
+      input = find_one(html, "input")
+      assert attribute(input, "id") == "breeds_golden-retriever"
+
+      assert attribute(input, "aria-describedby") ==
+               "breeds_golden-retriever_description"
+
+      assert attribute(html, "#breeds_golden-retriever_description", "id")
+    end
   end
 end

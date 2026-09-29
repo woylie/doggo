@@ -193,7 +193,7 @@ defmodule Doggo do
 
     id =
       if description do
-        "#{assigns.id}_#{assigns.option_value}_description"
+        "#{assigns.id}_#{id_fragment(assigns.option_value)}_description"
       end
 
     Map.merge(assigns, %{
@@ -298,7 +298,7 @@ defmodule Doggo do
   @doc since: "0.1.0"
   @spec hide_modal(JS.t(), String.t()) :: JS.t()
   def hide_modal(js \\ %JS{}, id) when is_binary(id) do
-    JS.dispatch(js, "doggo:close", to: "##{id}")
+    JS.dispatch(js, "doggo:close", to: id_selector(id))
   end
 
   @doc """
@@ -317,7 +317,7 @@ defmodule Doggo do
   @doc since: "0.1.0"
   @spec show_modal(JS.t(), String.t()) :: JS.t()
   def show_modal(js \\ %JS{}, id) when is_binary(id) do
-    JS.dispatch(js, "doggo:open", to: "##{id}")
+    JS.dispatch(js, "doggo:open", to: id_selector(id))
   end
 
   @doc """
@@ -336,7 +336,10 @@ defmodule Doggo do
   @spec show_tab(JS.t(), String.t(), integer()) :: JS.t()
   def show_tab(js \\ %JS{}, id, index)
       when is_binary(id) and is_integer(index) do
-    JS.dispatch(js, "doggo:show-tab", to: "##{id}", detail: %{index: index})
+    JS.dispatch(js, "doggo:show-tab",
+      to: id_selector(id),
+      detail: %{index: index}
+    )
   end
 
   @doc false
@@ -351,10 +354,10 @@ defmodule Doggo do
       when is_binary(id) and is_integer(index) do
     %JS{}
     |> JS.toggle_attribute({"aria-expanded", "true", "false"},
-      to: "##{id}-trigger-#{index}"
+      to: id_selector("#{id}-trigger-#{index}")
     )
     |> JS.toggle_attribute({"hidden", ""},
-      to: "##{id}-section-#{index}"
+      to: id_selector("#{id}-section-#{index}")
     )
   end
 
@@ -362,7 +365,40 @@ defmodule Doggo do
   def toggle_disclosure(target_id) when is_binary(target_id) do
     %JS{}
     |> JS.toggle_attribute({"aria-expanded", "true", "false"})
-    |> JS.toggle_attribute({"hidden", ""}, to: "##{target_id}")
+    |> JS.toggle_attribute({"hidden", ""}, to: id_selector(target_id))
+  end
+
+  @doc false
+  def id_fragment(value) do
+    value |> to_string() |> String.replace(~r/\s+/u, "-")
+  end
+
+  @doc false
+  def id_selector(id), do: "#" <> css_escape(id)
+
+  defp css_escape("-"), do: "\\-"
+  defp css_escape("-" <> rest), do: "-" <> escape_start(rest)
+  defp css_escape(id), do: escape_start(id)
+
+  defp escape_start(<<c, rest::binary>>) when c in ?0..?9 do
+    hex_escape(c) <> escape_rest(rest)
+  end
+
+  defp escape_start(id), do: escape_rest(id)
+
+  defp escape_rest(id) do
+    Regex.replace(
+      ~r/[\x{1}-\x{1f}\x{7f}]|[^\x{80}-\x{10ffff}A-Za-z0-9_-]/u,
+      id,
+      fn
+        <<c::utf8>> when c < 0x20 or c == 0x7F -> hex_escape(c)
+        char -> "\\" <> char
+      end
+    )
+  end
+
+  defp hex_escape(c) do
+    "\\" <> String.downcase(Integer.to_string(c, 16)) <> " "
   end
 
   ## Modifier classes
