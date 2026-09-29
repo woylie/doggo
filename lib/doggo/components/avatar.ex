@@ -63,8 +63,8 @@ defmodule Doggo.Components.Avatar do
   end
 
   @impl true
-  def nested_classes(_) do
-    []
+  def nested_classes(base_class) do
+    ["#{base_class}-image", "#{base_class}-placeholder"]
   end
 
   @impl true
@@ -133,6 +133,7 @@ defmodule Doggo.Components.Avatar do
         placeholder_content={@placeholder_content}
         alt={@alt}
         loading={@loading}
+        base_class={@base_class}
       />
     </div>
     """
@@ -140,19 +141,25 @@ defmodule Doggo.Components.Avatar do
 
   defp inner_avatar(%{src: src} = assigns) when is_binary(src) do
     ~H"""
-    <img src={@src} alt={@alt} loading={@loading} />
+    <img class={"#{@base_class}-image"} src={@src} alt={@alt} loading={@loading} />
     """
   end
 
   defp inner_avatar(%{placeholder_src: src} = assigns) when is_binary(src) do
     ~H"""
-    <img src={@placeholder_src} alt={@alt} loading={@loading} />
+    <img
+      class={"#{@base_class}-placeholder"}
+      src={@placeholder_src}
+      alt={@alt}
+      loading={@loading}
+    />
     """
   end
 
   defp inner_avatar(assigns) do
     ~H"""
     <span
+      class={"#{@base_class}-placeholder"}
       role={@alt != "" && "img"}
       aria-label={@alt != "" && @alt}
       aria-hidden={@alt == "" && "true"}

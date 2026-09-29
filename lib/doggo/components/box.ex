@@ -78,7 +78,10 @@ defmodule Doggo.Components.Box do
     [
       "#{base_class}-actions",
       "#{base_class}-banner",
-      "#{base_class}-body"
+      "#{base_class}-body",
+      "#{base_class}-footer",
+      "#{base_class}-header",
+      "#{base_class}-title"
     ]
   end
 
@@ -125,11 +128,15 @@ defmodule Doggo.Components.Box do
   def render(assigns) do
     ~H"""
     <section id={@id} class={@class} {@data_attrs} {@rest}>
-      <header :if={@title != [] || @banner != [] || @action != []}>
+      <header
+        :if={@title != [] || @banner != [] || @action != []}
+        class={"#{@base_class}-header"}
+      >
         <.dynamic_tag
           :if={@title != []}
           tag_name={@heading}
           id={@id && "#{@id}-title"}
+          class={"#{@base_class}-title"}
           phx-no-format
         >{render_slot(@title)}</.dynamic_tag>
         <div :if={@action != []} class={"#{@base_class}-actions"}>
@@ -144,7 +151,7 @@ defmodule Doggo.Components.Box do
       <div id={@id && "#{@id}-body"} class={"#{@base_class}-body"}>
         {render_slot(@inner_block)}
       </div>
-      <footer :if={@footer != []}>
+      <footer :if={@footer != []} class={"#{@base_class}-footer"}>
         {render_slot(@footer)}
       </footer>
     </section>

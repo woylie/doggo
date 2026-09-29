@@ -9,7 +9,7 @@
     gap: var(--radio-group-gap);
     align-items: center;
 
-    label {
+    .radio-group-radio {
       display: flex;
       gap: var(--radio-group-option-gap);
       align-items: center;

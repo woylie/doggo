@@ -136,8 +136,8 @@ defmodule Doggo.Components.Icon do
   end
 
   @impl true
-  def nested_classes(_) do
-    []
+  def nested_classes(base_class) do
+    ["#{base_class}-text"]
   end
 
   @impl true
@@ -254,6 +254,7 @@ defmodule Doggo.Components.Icon do
         fun={@icon_fun}
       /><span
         :if={@text}
+        class={"#{@base_class}-text"}
         data-visually-hidden={@text_position == "hidden"}
         phx-no-format
       >{@text}</span></span>

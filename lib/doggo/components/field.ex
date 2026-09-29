@@ -284,7 +284,12 @@ defmodule Doggo.Components.Field do
       since: "0.6.0",
       maturity: :developing,
       modifiers: [],
-      data_attrs: ["data-invalid", "data-state"],
+      data_attrs: [
+        "data-addon",
+        "data-invalid",
+        "data-multiple",
+        "data-visually-hidden"
+      ],
       extra: [
         gettext_module: nil,
         required_text: "(required)",
@@ -308,8 +313,11 @@ defmodule Doggo.Components.Field do
       "#{base_class}-input-addon-left",
       "#{base_class}-input-addon-right",
       "#{base_class}-input-wrapper",
+      "#{base_class}-label",
       "#{base_class}-option-description",
+      "#{base_class}-option-group",
       "#{base_class}-optional-mark",
+      "#{base_class}-radio",
       "#{base_class}-radio-group",
       "#{base_class}-required-mark",
       "#{base_class}-select",
@@ -727,7 +735,7 @@ defmodule Doggo.Components.Field do
             {@data_attrs}
           >
             <fieldset class={Doggo.build(:base_class, "-checkbox-group")}>
-              <legend>
+              <legend class={Doggo.build(:base_class, "-label")}>
                 {@label}
                 <Doggo.Components.Field.required_optional_mark
                   required={@validations[:required] || false}
@@ -786,7 +794,7 @@ defmodule Doggo.Components.Field do
             {@data_attrs}
           >
             <fieldset class={Doggo.build(:base_class, "-radio-group")}>
-              <legend>
+              <legend class={Doggo.build(:base_class, "-label")}>
                 {@label}
                 <Doggo.Components.Field.required_optional_mark
                   required={@validations[:required] || false}
@@ -1093,7 +1101,7 @@ defmodule Doggo.Components.Field do
         {@data_attrs}
       >
         <fieldset class={"#{Doggo.build(:base_class)}-#{@type}"}>
-          <legend>
+          <legend class={Doggo.build(:base_class, "-label")}>
             {@label}
             <Doggo.Components.Field.required_optional_mark
               required={@validations[:required] || false}
@@ -1277,7 +1285,11 @@ defmodule Doggo.Components.Field do
   @doc false
   def label(assigns) do
     ~H"""
-    <label for={@for} class={@class} data-visually-hidden={@visually_hidden}>
+    <label
+      for={@for}
+      class={["#{@base_class}-label" | List.wrap(@class)]}
+      data-visually-hidden={@visually_hidden}
+    >
       {render_slot(@inner_block)}
       <.required_optional_mark
         required={@required}

@@ -47,7 +47,7 @@
       }
     }
 
-    > span {
+    > .tree-item-label {
       display: flex;
       grid-column: 2;
       gap: var(--tree-item-gap);
@@ -68,14 +68,14 @@
       content: "▾";
     }
 
-    &[aria-selected="true"] > span::after {
+    &[aria-selected="true"] > .tree-item-label::after {
       content: "✓";
     }
 
     &:focus-visible {
       outline: none;
 
-      > span {
+      > .tree-item-label {
         outline: var(--tree-item-outline-width) solid
           var(--tree-item-outline-color);
         outline-offset: var(--tree-item-outline-offset);

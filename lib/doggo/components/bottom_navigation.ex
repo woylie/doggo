@@ -63,7 +63,7 @@ defmodule Doggo.Components.BottomNavigation do
 
   @impl true
   def nested_classes(base_class) do
-    ["#{base_class}-icon"]
+    ["#{base_class}-icon", "#{base_class}-label"]
   end
 
   @impl true
@@ -174,7 +174,7 @@ defmodule Doggo.Components.BottomNavigation do
             aria-label={@hide_labels && item.label}
           >
             <span class={"#{@base_class}-icon"}>{render_slot(item)}</span>
-            <span :if={!@hide_labels}>{item.label}</span>
+            <span :if={!@hide_labels} class={"#{@base_class}-label"}>{item.label}</span>
           </.link>
         </li>
       </ul>

@@ -44,8 +44,8 @@ defmodule Doggo.Components.Breadcrumb do
   def own_attributes, do: ["aria-label": :label]
 
   @impl true
-  def nested_classes(_) do
-    []
+  def nested_classes(base_class) do
+    ["#{base_class}-item", "#{base_class}-link"]
   end
 
   @impl true
@@ -110,8 +110,8 @@ defmodule Doggo.Components.Breadcrumb do
       {@rest}
     >
       <ol>
-        <li :for={current_item <- @item}>
-          <.breadcrumb_link item={current_item} />
+        <li :for={current_item <- @item} class={"#{@base_class}-item"}>
+          <.breadcrumb_link item={current_item} base_class={@base_class} />
         </li>
       </ol>
     </nav>
@@ -126,6 +126,7 @@ defmodule Doggo.Components.Breadcrumb do
       navigate={@item[:navigate]}
       patch={@item[:patch]}
       href={@item[:href]}
+      class={"#{@base_class}-link"}
       aria-current="page"
     >
       {render_slot(@item)}
@@ -135,7 +136,12 @@ defmodule Doggo.Components.Breadcrumb do
 
   defp breadcrumb_link(assigns) do
     ~H"""
-    <.link navigate={@item[:navigate]} patch={@item[:patch]} href={@item[:href]}>
+    <.link
+      navigate={@item[:navigate]}
+      patch={@item[:patch]}
+      href={@item[:href]}
+      class={"#{@base_class}-link"}
+    >
       {render_slot(@item)}
     </.link>
     """

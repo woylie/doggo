@@ -84,8 +84,13 @@ defmodule Doggo.Components.Accordion do
   def own_attributes, do: ["phx-hook": nil]
 
   @impl true
-  def nested_classes(_) do
-    []
+  def nested_classes(base_class) do
+    [
+      "#{base_class}-header",
+      "#{base_class}-panel",
+      "#{base_class}-section",
+      "#{base_class}-trigger"
+    ]
   end
 
   @impl true
@@ -147,6 +152,7 @@ defmodule Doggo.Components.Accordion do
         id={@id}
         expanded={@expanded}
         heading={@heading}
+        base_class={@base_class}
       />
     </div>
     """
@@ -163,10 +169,11 @@ defmodule Doggo.Components.Accordion do
     assigns = assign(assigns, aria_expanded: to_string(expanded))
 
     ~H"""
-    <div>
-      <.dynamic_tag tag_name={@heading}>
+    <div class={"#{@base_class}-section"}>
+      <.dynamic_tag tag_name={@heading} class={"#{@base_class}-header"}>
         <button
           id={"#{@id}-trigger-#{@index}"}
+          class={"#{@base_class}-trigger"}
           type="button"
           aria-expanded={@aria_expanded}
           aria-controls={"#{@id}-section-#{@index}"}
@@ -177,6 +184,7 @@ defmodule Doggo.Components.Accordion do
       </.dynamic_tag>
       <div
         id={"#{@id}-section-#{@index}"}
+        class={"#{@base_class}-panel"}
         role="region"
         aria-labelledby={"#{@id}-trigger-#{@index}"}
         hidden={@aria_expanded != "true"}

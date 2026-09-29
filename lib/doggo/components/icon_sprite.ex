@@ -56,8 +56,8 @@ defmodule Doggo.Components.IconSprite do
   end
 
   @impl true
-  def nested_classes(_) do
-    []
+  def nested_classes(base_class) do
+    ["#{base_class}-text"]
   end
 
   @impl true
@@ -114,7 +114,11 @@ defmodule Doggo.Components.IconSprite do
     ~H"""
     <span class={@class} data-text-position={@text_position} {@data_attrs} {@rest}>
       <svg aria-hidden="true"><use href={"#{@sprite_url}##{@name}"} /></svg>
-      <span :if={@text} data-visually-hidden={@text_position == "hidden"}>
+      <span
+        :if={@text}
+        class={"#{@base_class}-text"}
+        data-visually-hidden={@text_position == "hidden"}
+      >
         {@text}
       </span>
     </span>

@@ -77,7 +77,7 @@ defmodule Doggo.Components.TreeItem do
 
   @impl true
   def nested_classes(base_class) do
-    ["#{base_class}-toggle"]
+    ["#{base_class}-label", "#{base_class}-toggle"]
   end
 
   @impl true
@@ -139,7 +139,7 @@ defmodule Doggo.Components.TreeItem do
         tabindex="-1"
         aria-hidden="true"
       ></button>
-      <span>{render_slot(@inner_block)}</span>
+      <span class={"#{@base_class}-label"}>{render_slot(@inner_block)}</span>
       <ul :if={@items != []} role="group" hidden={!@expanded}>
         {render_slot(@items)}
       </ul>

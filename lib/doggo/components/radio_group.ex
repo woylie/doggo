@@ -74,8 +74,8 @@ defmodule Doggo.Components.RadioGroup do
   def own_attributes, do: ["aria-label": :label, role: nil]
 
   @impl true
-  def nested_classes(_) do
-    []
+  def nested_classes(base_class) do
+    ["#{base_class}-option-description", "#{base_class}-radio"]
   end
 
   @impl true
@@ -187,7 +187,7 @@ defmodule Doggo.Components.RadioGroup do
       |> Doggo.describe_option()
 
     ~H"""
-    <label>
+    <label class={"#{@base_class}-radio"}>
       <input
         type="radio"
         name={@name}
