@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- `alert_dialog`, `modal`: Remove the focus ring Safari draws around a focused `tabindex="-1"` element in the example CSS.
+
 ## [0.17.0] - 2026-09-29
 
 ### Added

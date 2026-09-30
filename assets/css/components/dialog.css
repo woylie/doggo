@@ -67,13 +67,17 @@
     /* Ensure that the autofocus element has a focus outline when opening
      * the dialog (WCAG 2.4.7 minimum focus visibility).
      *
-     * Elements with `tabindex="-1"` are excluded, since these are focused to
-     * put the reading position at the start of the content and cannot be
-     * activated.
+     * Elements with `tabindex="-1"` get no outline, not even the one Safari
+     * draws by default, since these are focused to put the reading position
+     * at the start of the content and cannot be activated.
      */
     &[open] :focus:not([tabindex="-1"]) {
       outline: var(--dialog-outline-width) solid var(--dialog-outline-color);
       outline-offset: var(--dialog-outline-offset);
+    }
+
+    &[open] [tabindex="-1"]:focus {
+      outline: none;
     }
 
     > section {
