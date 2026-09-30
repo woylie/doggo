@@ -139,38 +139,34 @@ defmodule Doggo.Components.TabNavigation do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
   def example_label, do: "Dog Profile Sections"
 
   @impl true
-  def render(%{item: []} = assigns), do: ~H""
-
-  def render(assigns) do
-    ~H"""
-    <nav
-      aria-label={@label}
-      aria-labelledby={@labelledby}
-      class={@class}
-      {@data_attrs}
-      {@rest}
-    >
-      <ul>
-        <li :for={item <- @item}>
-          <.link
-            href={item[:href]}
-            navigate={item[:navigate]}
-            patch={item[:patch]}
-            aria-current={@current_value in List.wrap(item.value) && "page"}
-          >
-            {render_slot(item)}
-          </.link>
-        </li>
-      </ul>
-    </nav>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <nav
+        :if={@item != []}
+        aria-label={@label}
+        aria-labelledby={@labelledby}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+      >
+        <ul>
+          <li :for={item <- @item}>
+            <.link
+              href={item[:href]}
+              navigate={item[:navigate]}
+              patch={item[:patch]}
+              aria-current={@current_value in List.wrap(item.value) && "page"}
+            >
+              {render_slot(item)}
+            </.link>
+          </li>
+        </ul>
+      </nav>
+      """
+    end
   end
 end

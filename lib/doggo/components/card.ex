@@ -89,27 +89,28 @@ defmodule Doggo.Components.Card do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
-  def render(assigns) do
-    ~H"""
-    <article class={@class} {@data_attrs} {@rest}>
-      <figure :if={@image != []} class={"#{@base_class}-image"}>
-        {render_slot(@image)}
-      </figure>
-      <header :if={@header != []} class={"#{@base_class}-header"}>
-        {render_slot(@header)}
-      </header>
-      <div :if={@body != []} class={"#{@base_class}-body"}>
-        {render_slot(@body)}
-      </div>
-      <footer :if={@footer != []} class={"#{@base_class}-footer"}>
-        {render_slot(@footer)}
-      </footer>
-    </article>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <article
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+      >
+        <figure :if={@image != []} class={Doggo.build(:base_class, "-image")}>
+          {render_slot(@image)}
+        </figure>
+        <header :if={@header != []} class={Doggo.build(:base_class, "-header")}>
+          {render_slot(@header)}
+        </header>
+        <div :if={@body != []} class={Doggo.build(:base_class, "-body")}>
+          {render_slot(@body)}
+        </div>
+        <footer :if={@footer != []} class={Doggo.build(:base_class, "-footer")}>
+          {render_slot(@footer)}
+        </footer>
+      </article>
+      """
+    end
   end
 end

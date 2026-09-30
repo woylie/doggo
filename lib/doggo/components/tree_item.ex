@@ -118,33 +118,30 @@ defmodule Doggo.Components.TreeItem do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
-  def render(assigns) do
-    ~H"""
-    <li
-      class={@class}
-      role="treeitem"
-      aria-selected={@selected != nil && to_string(@selected)}
-      aria-expanded={@items != [] && to_string(@expanded)}
-      {@data_attrs}
-      {@rest}
-    >
-      <button
-        :if={@items != []}
-        type="button"
-        class={"#{@base_class}-toggle"}
-        tabindex="-1"
-        aria-hidden="true"
-      ></button>
-      <span class={"#{@base_class}-label"}>{render_slot(@inner_block)}</span>
-      <ul :if={@items != []} role="group" hidden={!@expanded}>
-        {render_slot(@items)}
-      </ul>
-    </li>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <li
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        role="treeitem"
+        aria-selected={@selected != nil && to_string(@selected)}
+        aria-expanded={@items != [] && to_string(@expanded)}
+        {@data_attrs}
+        {@rest}
+      >
+        <button
+          :if={@items != []}
+          type="button"
+          class={Doggo.build(:base_class, "-toggle")}
+          tabindex="-1"
+          aria-hidden="true"
+        ></button>
+        <span class={Doggo.build(:base_class, "-label")}>{render_slot(@inner_block)}</span>
+        <ul :if={@items != []} role="group" hidden={!@expanded}>
+          {render_slot(@items)}
+        </ul>
+      </li>
+      """
+    end
   end
 end

@@ -117,12 +117,10 @@ defmodule Doggo.Components.PageHeader do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         Doggo.ensure_name!(var!(assigns).title, unquote(name), "title")
 
@@ -130,33 +128,35 @@ defmodule Doggo.Components.PageHeader do
             do:
               Doggo.ensure_optional_name!(entry[:label], unquote(name), "label")
       end
+
+      ~H"""
+      <header
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+      >
+        <div :if={@navigation != []} class={Doggo.build(:base_class, "-navigation")}>
+          <Doggo.Components.PageHeader.navigation_entry
+            :for={navigation <- @navigation}
+            navigation={navigation}
+          />
+        </div>
+        <hgroup>
+          <h1>{@title}</h1>
+          <p :if={@subtitle}>{@subtitle}</p>
+        </hgroup>
+        <div :if={@action != []} class={Doggo.build(:base_class, "-actions")}>
+          <%= for action <- @action do %>
+            {render_slot(action)}
+          <% end %>
+        </div>
+      </header>
+      """
     end
   end
 
-  @impl true
-  def render(assigns) do
-    ~H"""
-    <header class={@class} {@data_attrs} {@rest}>
-      <div :if={@navigation != []} class={"#{@base_class}-navigation"}>
-        <.navigation_entry
-          :for={navigation <- @navigation}
-          navigation={navigation}
-        />
-      </div>
-      <hgroup>
-        <h1>{@title}</h1>
-        <p :if={@subtitle}>{@subtitle}</p>
-      </hgroup>
-      <div :if={@action != []} class={"#{@base_class}-actions"}>
-        <%= for action <- @action do %>
-          {render_slot(action)}
-        <% end %>
-      </div>
-    </header>
-    """
-  end
-
-  defp navigation_entry(%{navigation: navigation} = assigns) do
+  @doc false
+  def navigation_entry(%{navigation: navigation} = assigns) do
     if Enum.any?([:href, :navigate, :patch, :on_click], &navigation[&1]) do
       ~H"""
       <.link

@@ -127,49 +127,43 @@ defmodule Doggo.Components.ActionBar do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def example_label, do: "Dog actions"
+
+  @impl true
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         for entry <- var!(assigns).item do
           Doggo.ensure_name!(entry[:label], unquote(name), "label")
         end
       end
-    end
-  end
 
-  @impl true
-  def example_label, do: "Dog actions"
-
-  @impl true
-  def render(%{item: []} = assigns), do: ~H""
-
-  def render(assigns) do
-    ~H"""
-    <div
-      id={@id}
-      role="toolbar"
-      class={@class}
-      aria-label={@label}
-      aria-labelledby={@labelledby}
-      phx-hook="Doggo.Toolbar"
-      {@data_attrs}
-      {@rest}
-    >
-      <button
-        :for={item <- @item}
-        type="button"
-        class={"#{@base_class}-item"}
-        phx-click={Doggo.callback!(item.on_click, :on_click, ".action_bar")}
-        aria-label={item.label}
-        title={item.label}
+      ~H"""
+      <div
+        :if={@item != []}
+        id={@id}
+        role="toolbar"
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        aria-label={@label}
+        aria-labelledby={@labelledby}
+        phx-hook="Doggo.Toolbar"
+        {@data_attrs}
+        {@rest}
       >
-        {render_slot(item)}
-      </button>
-    </div>
-    """
+        <button
+          :for={item <- @item}
+          type="button"
+          class={Doggo.build(:base_class, "-item")}
+          phx-click={Doggo.callback!(item.on_click, :on_click, ".action_bar")}
+          aria-label={item.label}
+          title={item.label}
+        >
+          {render_slot(item)}
+        </button>
+      </div>
+      """
+    end
   end
 end

@@ -169,24 +169,9 @@ defmodule Doggo.Components.Icon do
     end
   end
 
-  @impl true
-  def init_block(opts, extra) do
-    name = ".#{Keyword.fetch!(opts, :name)}"
-
-    quote do
-      require Doggo
-
-      Doggo.diagnostic do
-        Doggo.ensure_optional_name!(var!(assigns).text, unquote(name), "text")
-      end
-
-      unquote(icon_block(extra))
-    end
-  end
-
-  defp icon_block(extra) do
-    icon_module = Keyword.fetch!(extra, :icon_module)
-    icon_fun = Keyword.fetch!(extra, :icon_fun)
+  defp icon_block(opts) do
+    icon_module = Keyword.fetch!(opts, :icon_module)
+    icon_fun = Keyword.fetch!(opts, :icon_fun)
 
     if is_nil(icon_module) do
       raise """
@@ -222,43 +207,45 @@ defmodule Doggo.Components.Icon do
             """
 
         var!(assigns) =
-          assigns
-          |> var!()
-          |> Doggo.assign_derived([icon_module: unquote(icon_module)], [])
-          |> Doggo.assign_derived([icon_fun: icon_fun, name: nil], [:name])
-      end
-    else
-      quote do
-        var!(assigns) =
           Doggo.assign_derived(
             var!(assigns),
-            [icon_module: unquote(icon_module), icon_fun: unquote(icon_fun)],
-            []
+            [icon_fun: icon_fun, name: nil],
+            [:name]
           )
       end
     end
   end
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <span
-      class={@class}
-      data-text-position={@text_position}
-      {@data_attrs}
-      {@rest}
-      phx-no-format
-    ><Doggo.Components.Icon.dynamic_icon
-        name={@name}
-        module={@icon_module}
-        fun={@icon_fun}
-      /><span
-        :if={@text}
-        class={"#{@base_class}-text"}
-        data-visually-hidden={@text_position == "hidden"}
+  def template(opts) do
+    name = ".#{Keyword.fetch!(opts, :name)}"
+
+    quote do
+      Doggo.diagnostic do
+        Doggo.ensure_optional_name!(var!(assigns).text, unquote(name), "text")
+      end
+
+      unquote(icon_block(opts))
+
+      ~H"""
+      <span
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        data-text-position={@text_position}
+        {@data_attrs}
+        {@rest}
         phx-no-format
-      >{@text}</span></span>
-    """
+      ><Doggo.Components.Icon.dynamic_icon
+          name={@name}
+          module={Doggo.build(:icon_module)}
+          fun={Doggo.build(:icon_fun) || @icon_fun}
+        /><span
+          :if={@text}
+          class={Doggo.build(:base_class, "-text")}
+          data-visually-hidden={@text_position == "hidden"}
+          phx-no-format
+        >{@text}</span></span>
+      """
+    end
   end
 
   @doc false

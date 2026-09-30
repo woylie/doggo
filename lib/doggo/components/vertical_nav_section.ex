@@ -70,33 +70,33 @@ defmodule Doggo.Components.VerticalNavSection do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
-  def render(%{item: []} = assigns), do: ~H""
-
-  def render(assigns) do
-    ~H"""
-    <div
-      id={@id}
-      class={@class}
-      role={@title != [] && "group"}
-      aria-labelledby={@title != [] && "#{@id}-title"}
-      {@data_attrs}
-      {@rest}
-    >
-      <div :if={@title != []} id={"#{@id}-title"} class={"#{@base_class}-title"}>
-        {render_slot(@title)}
-      </div>
+  def template(_opts) do
+    quote do
+      ~H"""
       <div
-        :for={item <- @item}
-        class={["#{@base_class}-item" | List.wrap(item[:class] || [])]}
+        :if={@item != []}
+        id={@id}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        role={@title != [] && "group"}
+        aria-labelledby={@title != [] && "#{@id}-title"}
+        {@data_attrs}
+        {@rest}
       >
-        {render_slot(item)}
+        <div
+          :if={@title != []}
+          id={"#{@id}-title"}
+          class={Doggo.build(:base_class, "-title")}
+        >
+          {render_slot(@title)}
+        </div>
+        <div
+          :for={item <- @item}
+          class={[Doggo.build(:base_class, "-item") | List.wrap(item[:class] || [])]}
+        >
+          {render_slot(item)}
+        </div>
       </div>
-    </div>
-    """
+      """
+    end
   end
 end

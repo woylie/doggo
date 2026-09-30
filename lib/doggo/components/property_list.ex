@@ -66,31 +66,29 @@ defmodule Doggo.Components.PropertyList do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         for prop <- var!(assigns).prop do
           Doggo.ensure_name!(prop[:label], unquote(name), "label")
         end
       end
+
+      ~H"""
+      <dl
+        :if={@prop != []}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+      >
+        <div :for={prop <- @prop} {Doggo.class_attr(prop[:class])}>
+          <dt>{prop.label}</dt>
+          <dd>{render_slot(prop)}</dd>
+        </div>
+      </dl>
+      """
     end
-  end
-
-  @impl true
-  def render(%{prop: []} = assigns), do: ~H""
-
-  def render(assigns) do
-    ~H"""
-    <dl class={@class} {@data_attrs} {@rest}>
-      <div :for={prop <- @prop} {Doggo.class_attr(prop[:class])}>
-        <dt>{prop.label}</dt>
-        <dd>{render_slot(prop)}</dd>
-      </div>
-    </dl>
-    """
   end
 end

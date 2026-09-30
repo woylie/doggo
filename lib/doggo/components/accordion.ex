@@ -125,37 +125,37 @@ defmodule Doggo.Components.Accordion do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         for entry <- var!(assigns).section do
           Doggo.ensure_name!(entry[:title], unquote(name), "title")
         end
       end
-    end
-  end
 
-  @impl true
-  def render(%{section: []} = assigns), do: ~H""
-
-  def render(assigns) do
-    ~H"""
-    <div id={@id} class={@class} phx-hook="Doggo.Accordion" {@data_attrs} {@rest}>
-      <.section
-        :for={{section, index} <- Enum.with_index(@section, 1)}
-        section={section}
-        index={index}
+      ~H"""
+      <div
+        :if={@section != []}
         id={@id}
-        expanded={@expanded}
-        heading={@heading}
-        base_class={@base_class}
-      />
-    </div>
-    """
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        phx-hook="Doggo.Accordion"
+        {@data_attrs}
+        {@rest}
+      >
+        <Doggo.Components.Accordion.section
+          :for={{section, index} <- Enum.with_index(@section, 1)}
+          section={section}
+          index={index}
+          id={@id}
+          expanded={@expanded}
+          heading={@heading}
+          base_class={Doggo.build(:base_class)}
+        />
+      </div>
+      """
+    end
   end
 
   @doc false

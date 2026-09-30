@@ -107,7 +107,7 @@ defmodule Doggo.Components.MenuBar do
       attr :label, :string,
         default: nil,
         doc: """
-        A accessibility label for the menubar. Set as `aria-label` attribute.
+        An accessibility label for the menu bar. Set as `aria-label` attribute.
 
         You should ensure that either the `label` or the `labelledby` attribute
         is set.
@@ -149,34 +149,30 @@ defmodule Doggo.Components.MenuBar do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
   def example_label, do: "Dog Actions"
 
   @impl true
-  def render(%{item: []} = assigns), do: ~H""
-
-  def render(assigns) do
-    ~H"""
-    <ul
-      id={@id}
-      class={@class}
-      role="menubar"
-      phx-hook="Doggo.Menu"
-      aria-label={@label}
-      aria-labelledby={@labelledby}
-      {@data_attrs}
-      {@rest}
-    >
-      <li :for={item <- @item} role={item[:role] || "none"}>
-        <%= if item[:role] != "separator" do %>
-          {render_slot(item)}
-        <% end %>
-      </li>
-    </ul>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <ul
+        :if={@item != []}
+        id={@id}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        role="menubar"
+        phx-hook="Doggo.Menu"
+        aria-label={@label}
+        aria-labelledby={@labelledby}
+        {@data_attrs}
+        {@rest}
+      >
+        <li :for={item <- @item} role={item[:role] || "none"}>
+          <%= if item[:role] != "separator" do %>
+            {render_slot(item)}
+          <% end %>
+        </li>
+      </ul>
+      """
+    end
   end
 end

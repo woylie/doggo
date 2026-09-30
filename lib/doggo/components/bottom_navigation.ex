@@ -135,50 +135,44 @@ defmodule Doggo.Components.BottomNavigation do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def example_label, do: "Main"
+
+  @impl true
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         for entry <- var!(assigns).item do
           Doggo.ensure_name!(entry[:label], unquote(name), "label")
         end
       end
+
+      ~H"""
+      <nav
+        :if={@item != []}
+        aria-label={@label}
+        aria-labelledby={@labelledby}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+      >
+        <ul>
+          <li :for={item <- @item}>
+            <.link
+              href={item[:href]}
+              navigate={item[:navigate]}
+              patch={item[:patch]}
+              aria-current={@current_value in List.wrap(item.value) && "page"}
+              aria-label={@hide_labels && item.label}
+            >
+              <span class={Doggo.build(:base_class, "-icon")}>{render_slot(item)}</span>
+              <span :if={!@hide_labels} class={Doggo.build(:base_class, "-label")}>{item.label}</span>
+            </.link>
+          </li>
+        </ul>
+      </nav>
+      """
     end
-  end
-
-  @impl true
-  def example_label, do: "Main"
-
-  @impl true
-  def render(%{item: []} = assigns), do: ~H""
-
-  def render(assigns) do
-    ~H"""
-    <nav
-      aria-label={@label}
-      aria-labelledby={@labelledby}
-      class={@class}
-      {@data_attrs}
-      {@rest}
-    >
-      <ul>
-        <li :for={item <- @item}>
-          <.link
-            href={item[:href]}
-            navigate={item[:navigate]}
-            patch={item[:patch]}
-            aria-current={@current_value in List.wrap(item.value) && "page"}
-            aria-label={@hide_labels && item.label}
-          >
-            <span class={"#{@base_class}-icon"}>{render_slot(item)}</span>
-            <span :if={!@hide_labels} class={"#{@base_class}-label"}>{item.label}</span>
-          </.link>
-        </li>
-      </ul>
-    </nav>
-    """
   end
 end

@@ -72,23 +72,20 @@ defmodule Doggo.Components.MenuItem do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
-  def render(assigns) do
-    ~H"""
-    <button
-      class={@class}
-      type="button"
-      role="menuitem"
-      phx-click={Doggo.callback!(@on_click, :on_click, ".menu_item")}
-      {@data_attrs}
-      {@rest}
-    >
-      {render_slot(@inner_block)}
-    </button>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <button
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        type="button"
+        role="menuitem"
+        phx-click={Doggo.callback!(@on_click, :on_click, ".menu_item")}
+        {@data_attrs}
+        {@rest}
+      >
+        {render_slot(@inner_block)}
+      </button>
+      """
+    end
   end
 end

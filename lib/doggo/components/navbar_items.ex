@@ -64,20 +64,20 @@ defmodule Doggo.Components.NavbarItems do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
-  def render(%{item: []} = assigns), do: ~H""
-
-  def render(assigns) do
-    ~H"""
-    <ul class={@class} {@data_attrs} {@rest}>
-      <li :for={item <- @item} {Doggo.class_attr(item[:class])}>
-        {render_slot(item)}
-      </li>
-    </ul>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <ul
+        :if={@item != []}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+      >
+        <li :for={item <- @item} {Doggo.class_attr(item[:class])}>
+          {render_slot(item)}
+        </li>
+      </ul>
+      """
+    end
   end
 end

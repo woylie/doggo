@@ -135,19 +135,6 @@ defmodule Doggo.Components.VerticalNav do
     end
   end
 
-  @impl true
-  def init_block(opts, _extra) do
-    name = ".#{Keyword.fetch!(opts, :name)}"
-
-    quote do
-      require Doggo
-
-      Doggo.diagnostic do
-        unquote(__MODULE__).ensure_one_name!(var!(assigns), unquote(name))
-      end
-    end
-  end
-
   @doc false
   def ensure_one_name!(assigns, name) do
     count =
@@ -178,46 +165,58 @@ defmodule Doggo.Components.VerticalNav do
   end
 
   @impl true
-  def render(%{item: []} = assigns), do: ~H""
+  def template(opts) do
+    name = ".#{Keyword.fetch!(opts, :name)}"
 
-  def render(assigns) do
-    assigns =
-      Doggo.assign_derived(
-        assigns,
-        [
-          aria_label: assigns.title == [] && assigns.label,
-          aria_labelledby:
-            (assigns.title != [] && "#{assigns.id}-title") || assigns.labelledby
-        ],
-        [:title, :label, :id, :labelledby]
-      )
+    quote do
+      Doggo.diagnostic do
+        unquote(__MODULE__).ensure_one_name!(var!(assigns), unquote(name))
+      end
 
-    ~H"""
-    <.dynamic_tag
-      tag_name={if @landmark, do: "nav", else: "div"}
-      class={@class}
-      id={@id}
-      aria-label={@landmark && @aria_label}
-      aria-labelledby={@landmark && @aria_labelledby}
-      {@data_attrs}
-      {@rest}
-    >
-      <div :if={@title != []} id={"#{@id}-title"} class={"#{@base_class}-title"}>
-        {render_slot(@title)}
-      </div>
-      <ul
-        aria-label={!@landmark && @aria_label}
-        aria-labelledby={!@landmark && @aria_labelledby}
+      var!(assigns) =
+        Doggo.assign_derived(
+          var!(assigns),
+          [
+            aria_label: var!(assigns).title == [] && var!(assigns).label,
+            aria_labelledby:
+              (var!(assigns).title != [] && "#{var!(assigns).id}-title") ||
+                var!(assigns).labelledby
+          ],
+          [:title, :label, :id, :labelledby]
+        )
+
+      ~H"""
+      <.dynamic_tag
+        :if={@item != []}
+        tag_name={if @landmark, do: "nav", else: "div"}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        id={@id}
+        aria-label={@landmark && @aria_label}
+        aria-labelledby={@landmark && @aria_labelledby}
+        {@data_attrs}
+        {@rest}
       >
-        <li
-          :for={item <- @item}
-          aria-current={item[:current_page] && "page"}
-          {Doggo.class_attr(item[:class])}
+        <div
+          :if={@title != []}
+          id={"#{@id}-title"}
+          class={Doggo.build(:base_class, "-title")}
         >
-          {render_slot(item)}
-        </li>
-      </ul>
-    </.dynamic_tag>
-    """
+          {render_slot(@title)}
+        </div>
+        <ul
+          aria-label={!@landmark && @aria_label}
+          aria-labelledby={!@landmark && @aria_labelledby}
+        >
+          <li
+            :for={item <- @item}
+            aria-current={item[:current_page] && "page"}
+            {Doggo.class_attr(item[:class])}
+          >
+            {render_slot(item)}
+          </li>
+        </ul>
+      </.dynamic_tag>
+      """
+    end
   end
 end

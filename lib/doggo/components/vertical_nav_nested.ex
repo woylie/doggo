@@ -75,29 +75,33 @@ defmodule Doggo.Components.VerticalNavNested do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
-  def render(%{item: []} = assigns), do: ~H""
-
-  def render(assigns) do
-    ~H"""
-    <div class={@class} {@data_attrs} {@rest}>
-      <div :if={@title != []} id={"#{@id}-title"} class={"#{@base_class}-title"}>
-        {render_slot(@title)}
-      </div>
-      <ul id={@id} aria-labelledby={@title != [] && "#{@id}-title"}>
-        <li
-          :for={item <- @item}
-          aria-current={item[:current_page] && "page"}
-          {Doggo.class_attr(item[:class])}
+  def template(_opts) do
+    quote do
+      ~H"""
+      <div
+        :if={@item != []}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+      >
+        <div
+          :if={@title != []}
+          id={"#{@id}-title"}
+          class={Doggo.build(:base_class, "-title")}
         >
-          {render_slot(item)}
-        </li>
-      </ul>
-    </div>
-    """
+          {render_slot(@title)}
+        </div>
+        <ul id={@id} aria-labelledby={@title != [] && "#{@id}-title"}>
+          <li
+            :for={item <- @item}
+            aria-current={item[:current_page] && "page"}
+            {Doggo.class_attr(item[:class])}
+          >
+            {render_slot(item)}
+          </li>
+        </ul>
+      </div>
+      """
+    end
   end
 end

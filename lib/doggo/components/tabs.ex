@@ -134,57 +134,57 @@ defmodule Doggo.Components.Tabs do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def example_label, do: "Dog Facts"
+
+  @impl true
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         for entry <- var!(assigns).panel do
           Doggo.ensure_name!(entry[:label], unquote(name), "label")
         end
       end
-    end
-  end
 
-  @impl true
-  def example_label, do: "Dog Facts"
-
-  @impl true
-  def render(%{panel: []} = assigns), do: ~H""
-
-  def render(assigns) do
-    ~H"""
-    <div id={@id} class={@class} {@data_attrs} {@rest} phx-hook="Doggo.Tabs">
+      ~H"""
       <div
-        role="tablist"
-        aria-label={@label}
-        aria-labelledby={@labelledby}
-        aria-orientation={@orientation == "vertical" && "vertical"}
+        :if={@panel != []}
+        id={@id}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+        phx-hook="Doggo.Tabs"
       >
-        <button
-          :for={{panel, index} <- Enum.with_index(@panel, 1)}
-          type="button"
-          role="tab"
-          id={"#{@id}-tab-#{index}"}
-          aria-selected={to_string(index == 1)}
-          aria-controls={"#{@id}-panel-#{index}"}
-          tabindex={if index == 1, do: "0", else: "-1"}
+        <div
+          role="tablist"
+          aria-label={@label}
+          aria-labelledby={@labelledby}
+          aria-orientation={@orientation == "vertical" && "vertical"}
         >
-          {panel.label}
-        </button>
+          <button
+            :for={{panel, index} <- Enum.with_index(@panel, 1)}
+            type="button"
+            role="tab"
+            id={"#{@id}-tab-#{index}"}
+            aria-selected={to_string(index == 1)}
+            aria-controls={"#{@id}-panel-#{index}"}
+            tabindex={if index == 1, do: "0", else: "-1"}
+          >
+            {panel.label}
+          </button>
+        </div>
+        <div
+          :for={{panel, index} <- Enum.with_index(@panel, 1)}
+          id={"#{@id}-panel-#{index}"}
+          role="tabpanel"
+          aria-labelledby={"#{@id}-tab-#{index}"}
+          hidden={index != 1}
+        >
+          {render_slot(panel)}
+        </div>
       </div>
-      <div
-        :for={{panel, index} <- Enum.with_index(@panel, 1)}
-        id={"#{@id}-panel-#{index}"}
-        role="tabpanel"
-        aria-labelledby={"#{@id}-tab-#{index}"}
-        hidden={index != 1}
-      >
-        {render_slot(panel)}
-      </div>
-    </div>
-    """
+      """
+    end
   end
 end

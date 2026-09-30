@@ -114,41 +114,45 @@ defmodule Doggo.Components.ButtonLink do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
+  def template(_opts) do
+    quote do
+      case var!(assigns) do
+        %{disabled: true} ->
+          # `Phoenix.Component.link/1` falls back to `href="#"` when no
+          # destination is given. Use <a> directly, so that the link cannot be
+          # activated. `role="link"` restores the semantics of <a> without
+          # `href`.
+          var!(assigns) =
+            Phoenix.Component.update(
+              var!(assigns),
+              :rest,
+              &Map.drop(&1, ~w(href navigate patch replace method csrf_token)a)
+            )
 
-  @impl true
-  def render(%{disabled: true} = assigns) do
-    # `Phoenix.Component.link/1` falls back to `href="#"` when no destination is
-    # given. Use <a> directly, so that the link cannot be activated.
-    # `role="link"` restores the semantics of <a> without `href`.
-    assigns =
-      update(
-        assigns,
-        :rest,
-        &Map.drop(&1, ~w(href navigate patch replace method csrf_token)a)
-      )
+          ~H"""
+          <a
+            class={[Doggo.build(:base_class) | List.wrap(@class)]}
+            role="link"
+            aria-disabled="true"
+            tabindex="0"
+            {@data_attrs}
+            {@rest}
+          >
+            {render_slot(@inner_block)}
+          </a>
+          """
 
-    ~H"""
-    <a
-      class={@class}
-      role="link"
-      aria-disabled="true"
-      tabindex="0"
-      {@data_attrs}
-      {@rest}
-    >
-      {render_slot(@inner_block)}
-    </a>
-    """
-  end
-
-  def render(assigns) do
-    ~H"""
-    <.link class={@class} {@data_attrs} {@rest}>
-      {render_slot(@inner_block)}
-    </.link>
-    """
+        _ ->
+          ~H"""
+          <.link
+            class={[Doggo.build(:base_class) | List.wrap(@class)]}
+            {@data_attrs}
+            {@rest}
+          >
+            {render_slot(@inner_block)}
+          </.link>
+          """
+      end
+    end
   end
 end

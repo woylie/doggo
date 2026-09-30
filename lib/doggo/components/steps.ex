@@ -137,40 +137,37 @@ defmodule Doggo.Components.Steps do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
   def example_label, do: "Order process"
 
   @impl true
-  def render(%{step: []} = assigns), do: ~H""
-
-  def render(assigns) do
-    ~H"""
-    <nav
-      aria-label={@label}
-      aria-labelledby={@labelledby}
-      class={@class}
-      {@data_attrs}
-      {@rest}
-    >
-      <ol>
-        <.step
-          :for={{step, index} <- Enum.with_index(@step)}
-          step={step}
-          index={index}
-          current_step={@current_step}
-          completed_label={@completed_label}
-          linear={@linear}
-        />
-      </ol>
-    </nav>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <nav
+        :if={@step != []}
+        aria-label={@label}
+        aria-labelledby={@labelledby}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+      >
+        <ol>
+          <Doggo.Components.Steps.step
+            :for={{step, index} <- Enum.with_index(@step)}
+            step={step}
+            index={index}
+            current_step={@current_step}
+            completed_label={@completed_label}
+            linear={@linear}
+          />
+        </ol>
+      </nav>
+      """
+    end
   end
 
-  defp step(%{index: index, current_step: current_step} = assigns) do
+  @doc false
+  def step(%{index: index, current_step: current_step} = assigns) do
     state =
       cond do
         index == current_step -> "current"

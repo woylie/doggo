@@ -90,37 +90,37 @@ defmodule Doggo.Components.MenuItemRadioGroup do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         Doggo.ensure_name!(var!(assigns).label, unquote(name), "label")
       end
+
+      ~H"""
+      <ul
+        :if={@item != []}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        role="group"
+        aria-label={@label}
+        {@data_attrs}
+        {@rest}
+      >
+        <li :for={item <- @item} role="none">
+          <button
+            type="button"
+            role="menuitemradio"
+            phx-click={
+              Doggo.callback!(item.on_click, :on_click, ".menu_item_radio_group")
+            }
+            aria-checked={to_string(item[:checked] || false)}
+          >
+            {render_slot(item)}
+          </button>
+        </li>
+      </ul>
+      """
     end
-  end
-
-  @impl true
-  def render(%{item: []} = assigns), do: ~H""
-
-  def render(assigns) do
-    ~H"""
-    <ul class={@class} role="group" aria-label={@label} {@data_attrs} {@rest}>
-      <li :for={item <- @item} role="none">
-        <button
-          type="button"
-          role="menuitemradio"
-          phx-click={
-            Doggo.callback!(item.on_click, :on_click, ".menu_item_radio_group")
-          }
-          aria-checked={to_string(item[:checked] || false)}
-        >
-          {render_slot(item)}
-        </button>
-      </li>
-    </ul>
-    """
   end
 end

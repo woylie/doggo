@@ -131,26 +131,23 @@ defmodule Doggo.Components.Tooltip do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
-  def render(assigns) do
-    ~H"""
-    <span
-      id={@id}
-      class={@class}
-      data-aria-tooltip
-      phx-hook="Doggo.Tooltip"
-      {@data_attrs}
-      {@rest}
-    >
-      {render_slot(@inner_block, %{"aria-describedby" => "#{@id}-tooltip"})}
-      <div role="tooltip" id={"#{@id}-tooltip"}>
-        {render_slot(@tooltip)}
-      </div>
-    </span>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <span
+        id={@id}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        data-aria-tooltip
+        phx-hook="Doggo.Tooltip"
+        {@data_attrs}
+        {@rest}
+      >
+        {render_slot(@inner_block, %{"aria-describedby" => "#{@id}-tooltip"})}
+        <div role="tooltip" id={"#{@id}-tooltip"}>
+          {render_slot(@tooltip)}
+        </div>
+      </span>
+      """
+    end
   end
 end

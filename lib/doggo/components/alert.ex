@@ -140,12 +140,10 @@ defmodule Doggo.Components.Alert do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         Doggo.ensure_name!(
           var!(assigns).close_label,
@@ -155,45 +153,49 @@ defmodule Doggo.Components.Alert do
 
         Doggo.ensure_optional_name!(var!(assigns).title, unquote(name), "title")
       end
-    end
-  end
 
-  @impl true
-  def render(assigns) do
-    ~H"""
-    <div
-      id={@id}
-      role="alert"
-      aria-labelledby={@title && "#{@id}-title"}
-      class={@class}
-      {@data_attrs}
-      {@rest}
-    >
-      <div :if={@icon != []} class={"#{@base_class}-icon"}>
-        {render_slot(@icon)}
-      </div>
-      <div class={"#{@base_class}-body"}>
-        <div :if={@title} id={"#{@id}-title"} class={"#{@base_class}-title"}>
-          {@title}
-        </div>
-        <div class={"#{@base_class}-message"}>{render_slot(@inner_block)}</div>
-        <div :if={@action != []} class={"#{@base_class}-actions"}>
-          <%= for action <- @action do %>
-            {render_slot(action)}
-          <% end %>
-        </div>
-      </div>
-      <button
-        :if={@on_close}
-        type="button"
-        class={"#{@base_class}-close"}
-        aria-label={@close_label}
-        phx-click={Doggo.callback!(@on_close, :on_close, ".alert")}
+      ~H"""
+      <div
+        id={@id}
+        role="alert"
+        aria-labelledby={@title && "#{@id}-title"}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
       >
-        {render_slot(@close)}
-        <span :if={@close == []}>{@close_label}</span>
-      </button>
-    </div>
-    """
+        <div :if={@icon != []} class={Doggo.build(:base_class, "-icon")}>
+          {render_slot(@icon)}
+        </div>
+        <div class={Doggo.build(:base_class, "-body")}>
+          <div
+            :if={@title}
+            id={"#{@id}-title"}
+            class={Doggo.build(:base_class, "-title")}
+          >
+            {@title}
+          </div>
+          <div
+            class={Doggo.build(:base_class, "-message")}
+            phx-no-format
+          >{render_slot(@inner_block)}</div>
+          <div :if={@action != []} class={Doggo.build(:base_class, "-actions")}>
+            <%= for action <- @action do %>
+              {render_slot(action)}
+            <% end %>
+          </div>
+        </div>
+        <button
+          :if={@on_close}
+          type="button"
+          class={Doggo.build(:base_class, "-close")}
+          aria-label={@close_label}
+          phx-click={Doggo.callback!(@on_close, :on_close, ".alert")}
+        >
+          {render_slot(@close)}
+          <span :if={@close == []}>{@close_label}</span>
+        </button>
+      </div>
+      """
+    end
   end
 end

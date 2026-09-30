@@ -105,46 +105,45 @@ defmodule Doggo.Components.Callout do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         Doggo.ensure_optional_name!(var!(assigns).title, unquote(name), "title")
       end
-    end
-  end
 
-  @impl true
-  def render(assigns) do
-    ~H"""
-    <div
-      id={@id}
-      class={@class}
-      role={@title && "complementary"}
-      aria-labelledby={@title && "#{@id}-title"}
-      {@data_attrs}
-      {@rest}
-    >
-      <div :if={@icon != []} class={"#{@base_class}-icon"}>
-        {render_slot(@icon)}
+      ~H"""
+      <div
+        id={@id}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        role={@title && "complementary"}
+        aria-labelledby={@title && "#{@id}-title"}
+        {@data_attrs}
+        {@rest}
+      >
+        <div :if={@icon != []} class={Doggo.build(:base_class, "-icon")}>
+          {render_slot(@icon)}
+        </div>
+        <div class={Doggo.build(:base_class, "-body")}>
+          <div
+            :if={@title}
+            id={"#{@id}-title"}
+            class={Doggo.build(:base_class, "-title")}
+          >
+            {@title}
+          </div>
+          <div class={Doggo.build(:base_class, "-message")}>
+            {render_slot(@inner_block)}
+          </div>
+          <div :if={@action != []} class={Doggo.build(:base_class, "-actions")}>
+            <%= for action <- @action do %>
+              {render_slot(action)}
+            <% end %>
+          </div>
+        </div>
       </div>
-      <div class={"#{@base_class}-body"}>
-        <div :if={@title} id={"#{@id}-title"} class={"#{@base_class}-title"}>
-          {@title}
-        </div>
-        <div class={"#{@base_class}-message"}>
-          {render_slot(@inner_block)}
-        </div>
-        <div :if={@action != []} class={"#{@base_class}-actions"}>
-          <%= for action <- @action do %>
-            {render_slot(action)}
-          <% end %>
-        </div>
-      </div>
-    </div>
-    """
+      """
+    end
   end
 end

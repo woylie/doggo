@@ -93,16 +93,17 @@ defmodule Doggo.Components.Tag do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
-  def render(assigns) do
-    ~H"""
-    <span class={@class} {@data_attrs} {@rest}>
-      {render_slot(@inner_block)}
-    </span>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <span
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+      >
+        {render_slot(@inner_block)}
+      </span>
+      """
+    end
   end
 end

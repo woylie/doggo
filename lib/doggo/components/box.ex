@@ -120,41 +120,43 @@ defmodule Doggo.Components.Box do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
-  def render(assigns) do
-    ~H"""
-    <section id={@id} class={@class} {@data_attrs} {@rest}>
-      <header
-        :if={@title != [] || @banner != [] || @action != []}
-        class={"#{@base_class}-header"}
+  def template(_opts) do
+    quote do
+      ~H"""
+      <section
+        id={@id}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
       >
-        <.dynamic_tag
-          :if={@title != []}
-          tag_name={@heading}
-          id={@id && "#{@id}-title"}
-          class={"#{@base_class}-title"}
-          phx-no-format
-        >{render_slot(@title)}</.dynamic_tag>
-        <div :if={@action != []} class={"#{@base_class}-actions"}>
-          <%= for action <- @action do %>
-            {render_slot(action)}
-          <% end %>
+        <header
+          :if={@title != [] || @banner != [] || @action != []}
+          class={Doggo.build(:base_class, "-header")}
+        >
+          <.dynamic_tag
+            :if={@title != []}
+            tag_name={@heading}
+            id={@id && "#{@id}-title"}
+            class={Doggo.build(:base_class, "-title")}
+            phx-no-format
+          >{render_slot(@title)}</.dynamic_tag>
+          <div :if={@action != []} class={Doggo.build(:base_class, "-actions")}>
+            <%= for action <- @action do %>
+              {render_slot(action)}
+            <% end %>
+          </div>
+          <div :if={@banner != []} class={Doggo.build(:base_class, "-banner")}>
+            {render_slot(@banner)}
+          </div>
+        </header>
+        <div id={@id && "#{@id}-body"} class={Doggo.build(:base_class, "-body")}>
+          {render_slot(@inner_block)}
         </div>
-        <div :if={@banner != []} class={"#{@base_class}-banner"}>
-          {render_slot(@banner)}
-        </div>
-      </header>
-      <div id={@id && "#{@id}-body"} class={"#{@base_class}-body"}>
-        {render_slot(@inner_block)}
-      </div>
-      <footer :if={@footer != []} class={"#{@base_class}-footer"}>
-        {render_slot(@footer)}
-      </footer>
-    </section>
-    """
+        <footer :if={@footer != []} class={Doggo.build(:base_class, "-footer")}>
+          {render_slot(@footer)}
+        </footer>
+      </section>
+      """
+    end
   end
 end

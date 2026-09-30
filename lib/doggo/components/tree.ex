@@ -173,28 +173,25 @@ defmodule Doggo.Components.Tree do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
   def example_label, do: "Dog Breeds"
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <ul
-      id={@id}
-      class={@class}
-      role="tree"
-      phx-hook="Doggo.Tree"
-      aria-label={@label}
-      aria-labelledby={@labelledby}
-      {@data_attrs}
-      {@rest}
-    >
-      {render_slot(@inner_block)}
-    </ul>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <ul
+        id={@id}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        role="tree"
+        phx-hook="Doggo.Tree"
+        aria-label={@label}
+        aria-labelledby={@labelledby}
+        {@data_attrs}
+        {@rest}
+      >
+        {render_slot(@inner_block)}
+      </ul>
+      """
+    end
   end
 end

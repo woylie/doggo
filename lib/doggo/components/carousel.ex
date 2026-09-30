@@ -334,12 +334,13 @@ defmodule Doggo.Components.Carousel do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def example_label, do: "Our Dogs"
+
+  @impl true
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         Doggo.ensure_name!(
           var!(assigns).pagination_label,
@@ -365,116 +366,109 @@ defmodule Doggo.Components.Carousel do
             do:
               Doggo.ensure_optional_name!(entry[:label], unquote(name), "label")
       end
-    end
-  end
 
-  @impl true
-  def example_label, do: "Our Dogs"
+      multiple_items = length(var!(assigns).item) > 1
 
-  @impl true
-  def render(%{item: []} = assigns), do: ~H""
+      var!(assigns) =
+        Doggo.assign_derived(
+          var!(assigns),
+          [
+            multiple_items: multiple_items,
+            show_tabs: var!(assigns).pagination and multiple_items,
+            rotating: var!(assigns).pause != [] and multiple_items
+          ],
+          [:item, :pagination, :pause]
+        )
 
-  def render(assigns) do
-    multiple_items = length(assigns.item) > 1
-
-    assigns =
-      Doggo.assign_derived(
-        assigns,
-        [
-          multiple_items: multiple_items,
-          show_tabs: assigns.pagination and multiple_items,
-          rotating: assigns.pause != [] and multiple_items
-        ],
-        [:item, :pagination, :pause]
-      )
-
-    ~H"""
-    <section
-      id={@id}
-      class={@class}
-      aria-label={@label}
-      aria-labelledby={@labelledby}
-      aria-roledescription={@carousel_roledescription}
-      data-active-index="0"
-      data-loop={@loop}
-      data-rotation-interval-ms={@rotating && @rotation_interval_ms}
-      {@data_attrs}
-      {@rest}
-      phx-hook="Doggo.Carousel"
-    >
-      <div class={"#{@base_class}-inner"}>
-        <div :if={@multiple_items} class={"#{@base_class}-controls"}>
-          <button
-            :for={pause <- @pause}
-            type="button"
-            class={"#{@base_class}-pause"}
-            aria-controls={"#{@id}-items"}
-            aria-label={pause[:label] || "Pause slide show"}
-            data-pause-label={pause[:label] || "Pause slide show"}
-            data-resume-label={pause[:resume_label] || "Resume slide show"}
-          >
-            {render_slot(pause)}
-          </button>
-          <button
-            :for={previous <- @previous}
-            type="button"
-            class={"#{@base_class}-previous"}
-            aria-controls={"#{@id}-items"}
-            aria-label={previous[:label]}
-            disabled={!@loop}
-          >
-            {render_slot(previous)}
-          </button>
-          <div
-            :if={@show_tabs}
-            class={"#{@base_class}-pagination"}
-            role="tablist"
-            aria-label={@pagination_label}
-          >
+      ~H"""
+      <section
+        :if={@item != []}
+        id={@id}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        aria-label={@label}
+        aria-labelledby={@labelledby}
+        aria-roledescription={@carousel_roledescription}
+        data-active-index="0"
+        data-loop={@loop}
+        data-rotation-interval-ms={@rotating && @rotation_interval_ms}
+        {@data_attrs}
+        {@rest}
+        phx-hook="Doggo.Carousel"
+      >
+        <div class={Doggo.build(:base_class, "-inner")}>
+          <div :if={@multiple_items} class={Doggo.build(:base_class, "-controls")}>
             <button
-              :for={{item, index} <- Enum.with_index(@item, 1)}
+              :for={pause <- @pause}
               type="button"
-              role="tab"
-              id={"#{@id}-tab-#{index}"}
-              aria-selected={to_string(index == 1)}
-              aria-controls={"#{@id}-item-#{index}"}
-              aria-label={item[:label] || @pagination_slide_label.(index)}
-              tabindex={index != 1 && "-1"}
+              class={Doggo.build(:base_class, "-pause")}
+              aria-controls={"#{@id}-items"}
+              aria-label={pause[:label] || "Pause slide show"}
+              data-pause-label={pause[:label] || "Pause slide show"}
+              data-resume-label={pause[:resume_label] || "Resume slide show"}
             >
-              <span></span>
+              {render_slot(pause)}
+            </button>
+            <button
+              :for={previous <- @previous}
+              type="button"
+              class={Doggo.build(:base_class, "-previous")}
+              aria-controls={"#{@id}-items"}
+              aria-label={previous[:label]}
+              disabled={!@loop}
+            >
+              {render_slot(previous)}
+            </button>
+            <div
+              :if={@show_tabs}
+              class={Doggo.build(:base_class, "-pagination")}
+              role="tablist"
+              aria-label={@pagination_label}
+            >
+              <button
+                :for={{item, index} <- Enum.with_index(@item, 1)}
+                type="button"
+                role="tab"
+                id={"#{@id}-tab-#{index}"}
+                aria-selected={to_string(index == 1)}
+                aria-controls={"#{@id}-item-#{index}"}
+                aria-label={item[:label] || @pagination_slide_label.(index)}
+                tabindex={index != 1 && "-1"}
+              >
+                <span></span>
+              </button>
+            </div>
+            <button
+              :for={next <- @next}
+              type="button"
+              class={Doggo.build(:base_class, "-next")}
+              aria-controls={"#{@id}-items"}
+              aria-label={next[:label]}
+            >
+              {render_slot(next)}
             </button>
           </div>
-          <button
-            :for={next <- @next}
-            type="button"
-            class={"#{@base_class}-next"}
-            aria-controls={"#{@id}-items"}
-            aria-label={next[:label]}
-          >
-            {render_slot(next)}
-          </button>
-        </div>
-        <div class={"#{@base_class}-items-container"} tabindex="0">
-          <div
-            id={"#{@id}-items"}
-            class={"#{@base_class}-items"}
-            aria-live={if @rotating, do: "off", else: "polite"}
-          >
+          <div class={Doggo.build(:base_class, "-items-container")} tabindex="0">
             <div
-              :for={{item, index} <- Enum.with_index(@item, 1)}
-              id={"#{@id}-item-#{index}"}
-              class={"#{@base_class}-item"}
-              role={if @show_tabs, do: "tabpanel", else: "group"}
-              aria-roledescription={@slide_roledescription}
-              aria-label={if not @show_tabs, do: item[:label]}
-              aria-labelledby={@show_tabs && "#{@id}-tab-#{index}"}
+              id={"#{@id}-items"}
+              class={Doggo.build(:base_class, "-items")}
+              aria-live={if @rotating, do: "off", else: "polite"}
             >
-              {render_slot(item)}
+              <div
+                :for={{item, index} <- Enum.with_index(@item, 1)}
+                id={"#{@id}-item-#{index}"}
+                class={Doggo.build(:base_class, "-item")}
+                role={if @show_tabs, do: "tabpanel", else: "group"}
+                aria-roledescription={@slide_roledescription}
+                aria-label={if not @show_tabs, do: item[:label]}
+                aria-labelledby={@show_tabs && "#{@id}-tab-#{index}"}
+              >
+                {render_slot(item)}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-    """
+      </section>
+      """
+    end
   end
 end

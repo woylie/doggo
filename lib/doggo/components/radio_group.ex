@@ -138,38 +138,35 @@ defmodule Doggo.Components.RadioGroup do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
   def example_label, do: "Favorite Dog"
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <div
-      id={@id}
-      role="radiogroup"
-      aria-label={@label}
-      aria-labelledby={@labelledby}
-      class={@class}
-      {@data_attrs}
-      {@rest}
-    >
-      <.radio
-        :for={option <- @options}
-        option={option}
-        name={@name}
+  def template(_opts) do
+    quote do
+      ~H"""
+      <div
         id={@id}
-        value={@value}
-        errors={[]}
-        description={[]}
-        required={@required}
-        base_class={@base_class}
-      />
-    </div>
-    """
+        role="radiogroup"
+        aria-label={@label}
+        aria-labelledby={@labelledby}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+      >
+        <Doggo.Components.RadioGroup.radio
+          :for={option <- @options}
+          option={option}
+          name={@name}
+          id={@id}
+          value={@value}
+          errors={[]}
+          description={[]}
+          required={@required}
+          base_class={Doggo.build(:base_class)}
+        />
+      </div>
+      """
+    end
   end
 
   @doc false
