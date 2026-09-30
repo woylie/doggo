@@ -101,7 +101,7 @@ defmodule Doggo do
   end
 
   @doc false
-  def assign_time(assigns, value, component, default_formatter \\ &to_string/1) do
+  def assign_time(assigns, value, component, default_formatter) do
     formatter = time_formatter!(assigns.formatter, :formatter, component)
 
     title_formatter =
@@ -110,7 +110,7 @@ defmodule Doggo do
     assign_derived(
       assigns,
       [
-        datetime: value && datetime_attr(value),
+        datetime: value && datetime_attr(value, assigns.precision),
         title: value && title_formatter && title_formatter.(value),
         value: value && (formatter || default_formatter).(value)
       ],
@@ -141,19 +141,33 @@ defmodule Doggo do
     if is_struct(value) and value.__struct__ in structs do
       value
     else
-      raise ArgumentError, """
-      invalid value for #{component}
-
-      Expected one of:
-
-      #{Enum.map_join(structs, "\n", &"    #{inspect(&1)}")}
-
-      Got:
-
-          #{inspect(value)}
-      #{time_value_hint(value)}
-      """
+      raise ArgumentError, expected_message(:value, component, structs, value)
     end
+  end
+
+  @doc false
+  def time_precision!(%{precision: precision}, values, component) do
+    if is_nil(precision) or precision in values do
+      precision
+    else
+      raise ArgumentError,
+            expected_message(:precision, component, values, precision)
+    end
+  end
+
+  defp expected_message(attr, component, expected, value) do
+    """
+    invalid #{attr} for #{component}
+
+    Expected one of:
+
+    #{Enum.map_join(expected, "\n", &"    #{inspect(&1)}")}
+
+    Got:
+
+        #{inspect(value)}
+    #{time_value_hint(value)}
+    """
   end
 
   defp time_value_hint(%Date{}), do: "\nUse .date for a Date."
@@ -210,34 +224,63 @@ defmodule Doggo do
   def shift_zone(v, _), do: v
 
   @doc false
-  def datetime_attr(%Date{} = date) do
+  def datetime_attr(%Date{} = date, precision) do
     date = Date.convert!(date, Calendar.ISO)
-    if date.year > 0, do: Date.to_iso8601(date)
+
+    if date.year > 0 or precision == :month_day do
+      date_string(date, precision)
+    end
   end
 
-  def datetime_attr(%Time{} = time) do
+  def datetime_attr(%Time{} = time, precision) do
     time
     |> Time.convert!(Calendar.ISO)
     |> Time.truncate(:millisecond)
     |> Time.to_iso8601()
+    |> drop_seconds(precision)
   end
 
   # An offset with seconds, such as +09:18:59 in Tokyo before 1888, is written
   # in UTC, because the HTML format has no seconds in offsets.
-  def datetime_attr(%DateTime{utc_offset: utc, std_offset: std} = dt)
+  def datetime_attr(%DateTime{utc_offset: utc, std_offset: std} = dt, precision)
       when rem(utc + std, 60) != 0 do
-    dt |> DateTime.shift_zone!("Etc/UTC") |> datetime_attr()
+    dt |> DateTime.shift_zone!("Etc/UTC") |> datetime_attr(precision)
   end
 
-  def datetime_attr(%struct{} = value)
+  def datetime_attr(%struct{} = value, precision)
       when struct in [DateTime, NaiveDateTime] do
     value =
       value
       |> struct.convert!(Calendar.ISO)
       |> struct.truncate(:millisecond)
 
-    if value.year > 0, do: struct.to_iso8601(value)
+    if value.year > 0 do
+      value |> struct.to_iso8601() |> drop_seconds(precision)
+    end
   end
+
+  @doc false
+  def date_string(date, precision) do
+    iso = Date.to_iso8601(date)
+
+    case precision do
+      :year -> String.slice(iso, 0..-7//1)
+      :month -> String.slice(iso, 0..-4//1)
+      :month_day -> String.slice(iso, -5..-1//1)
+      _ -> iso
+    end
+  end
+
+  @doc false
+  def datetime_string(value, precision) do
+    value |> to_string() |> drop_seconds(precision)
+  end
+
+  defp drop_seconds(iso, :minute) do
+    String.replace(iso, ~r/(\d\d:\d\d):00/, "\\1", global: false)
+  end
+
+  defp drop_seconds(iso, _), do: iso
 
   @doc false
   def to_date(%Date{} = d), do: d

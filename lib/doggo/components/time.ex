@@ -5,6 +5,8 @@ defmodule Doggo.Components.Time do
 
   use Phoenix.Component
 
+  @precisions [:minute, :second, :millisecond, :microsecond]
+
   @impl true
   def doc do
     """
@@ -144,7 +146,7 @@ defmodule Doggo.Components.Time do
         """
 
       attr :precision, :atom,
-        values: [:minute, :second, :millisecond, :microsecond, nil],
+        values: unquote(@precisions ++ [nil]),
         default: nil,
         doc: """
         Precision to truncate the given value with. The truncation is applied on
@@ -173,18 +175,21 @@ defmodule Doggo.Components.Time do
   @impl true
   def template(_opts) do
     quote do
+      precision =
+        Doggo.time_precision!(var!(assigns), unquote(@precisions), ".time")
+
       value =
         var!(assigns).value
         |> Doggo.time_value!([Time, DateTime, NaiveDateTime], ".time")
         |> Doggo.shift_zone(var!(assigns).timezone)
-        |> Doggo.truncate_datetime(var!(assigns).precision)
+        |> Doggo.truncate_datetime(precision)
 
       var!(assigns) =
         Doggo.assign_time(
           var!(assigns),
           value,
           ".time",
-          &(&1 |> Doggo.to_time() |> to_string())
+          &(&1 |> Doggo.to_time() |> Doggo.datetime_string(precision))
         )
 
       ~H"""

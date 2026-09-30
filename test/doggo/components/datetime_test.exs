@@ -158,8 +158,8 @@ defmodule Doggo.Components.DatetimeTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "2023-12-27T18:30:00Z"
-      assert text(time) == "2023-12-27 18:30:00Z"
+      assert attribute(time, "datetime") == "2023-12-27T18:30Z"
+      assert text(time) == "2023-12-27 18:30Z"
     end
 
     test "renders NaiveDateTime with microsecond precision" do
@@ -226,8 +226,8 @@ defmodule Doggo.Components.DatetimeTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "2023-12-27T18:30:00"
-      assert text(time) == "2023-12-27 18:30:00"
+      assert attribute(time, "datetime") == "2023-12-27T18:30"
+      assert text(time) == "2023-12-27 18:30"
     end
 
     test "shifts DateTime to time zone" do
@@ -318,6 +318,18 @@ defmodule Doggo.Components.DatetimeTest do
                        value={~N[2023-12-27 18:30:21]}
                        formatter="short"
                      />
+                     """)
+                   end
+    end
+
+    test "raises for invalid precision" do
+      assigns = %{precision: :hour}
+
+      assert_raise ArgumentError,
+                   ~r/invalid precision for \.datetime.*:hour/s,
+                   fn ->
+                     parse_heex(~H"""
+                     <TestComponents.datetime value={~N[2023-12-27 18:30:21]} precision={@precision} />
                      """)
                    end
     end
