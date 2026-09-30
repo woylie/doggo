@@ -101,17 +101,64 @@ defmodule Doggo do
   end
 
   @doc false
-  def assign_time(assigns, value, to_iso) do
+  def assign_time(assigns, value, component, default_formatter \\ &to_string/1) do
+    formatter = time_formatter!(assigns.formatter, :formatter, component)
+
+    title_formatter =
+      time_formatter!(assigns.title_formatter, :title_formatter, component)
+
     assign_derived(
       assigns,
       [
-        datetime: value && to_iso.(value),
-        title: value && time_title_attr(value, assigns.title_formatter),
-        value: value && (assigns.formatter || (&to_string/1)).(value)
+        datetime: value && datetime_attr(value),
+        title: value && title_formatter && title_formatter.(value),
+        value: value && (formatter || default_formatter).(value)
       ],
       [:value, :precision, :timezone, :formatter, :title_formatter]
     )
   end
+
+  defp time_formatter!(fun, _attr, _component)
+       when is_nil(fun) or is_function(fun, 1),
+       do: fun
+
+  defp time_formatter!(value, attr, component) do
+    raise ArgumentError, """
+    invalid #{attr} value for #{component}
+
+    #{attr} must be a function that takes one argument.
+
+    Got:
+
+        #{inspect(value)}
+    """
+  end
+
+  @doc false
+  def time_value!(nil, _structs, _component), do: nil
+
+  def time_value!(value, structs, component) do
+    if is_struct(value) and value.__struct__ in structs do
+      value
+    else
+      raise ArgumentError, """
+      invalid value for #{component}
+
+      Expected one of:
+
+      #{Enum.map_join(structs, "\n", &"    #{inspect(&1)}")}
+
+      Got:
+
+          #{inspect(value)}
+      #{time_value_hint(value)}
+      """
+    end
+  end
+
+  defp time_value_hint(%Date{}), do: "\nUse .date for a Date."
+  defp time_value_hint(%Time{}), do: "\nUse .time for a Time."
+  defp time_value_hint(_), do: ""
 
   @doc false
   def to_js!(value, attr, component) do
@@ -163,18 +210,34 @@ defmodule Doggo do
   def shift_zone(v, _), do: v
 
   @doc false
-  def datetime_attr(%DateTime{} = dt) do
-    DateTime.to_iso8601(dt)
+  def datetime_attr(%Date{} = date) do
+    date = Date.convert!(date, Calendar.ISO)
+    if date.year > 0, do: Date.to_iso8601(date)
   end
 
-  def datetime_attr(%NaiveDateTime{} = dt) do
-    NaiveDateTime.to_iso8601(dt)
+  def datetime_attr(%Time{} = time) do
+    time
+    |> Time.convert!(Calendar.ISO)
+    |> Time.truncate(:millisecond)
+    |> Time.to_iso8601()
   end
 
-  # don't add title attribute if no title formatter is set
-  @doc false
-  def time_title_attr(_, nil), do: nil
-  def time_title_attr(v, fun) when is_function(fun, 1), do: fun.(v)
+  # An offset with seconds, such as +09:18:59 in Tokyo before 1888, is written
+  # in UTC, because the HTML format has no seconds in offsets.
+  def datetime_attr(%DateTime{utc_offset: utc, std_offset: std} = dt)
+      when rem(utc + std, 60) != 0 do
+    dt |> DateTime.shift_zone!("Etc/UTC") |> datetime_attr()
+  end
+
+  def datetime_attr(%struct{} = value)
+      when struct in [DateTime, NaiveDateTime] do
+    value =
+      value
+      |> struct.convert!(Calendar.ISO)
+      |> struct.truncate(:millisecond)
+
+    if value.year > 0, do: struct.to_iso8601(value)
+  end
 
   @doc false
   def to_date(%Date{} = d), do: d

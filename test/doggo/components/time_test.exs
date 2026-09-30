@@ -40,7 +40,7 @@ defmodule Doggo.Components.TimeTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "18:30:21"
+      assert attribute(time, "datetime") == "2023-12-27T18:30:21Z"
       assert text(time) == "18:30:21"
     end
 
@@ -54,7 +54,7 @@ defmodule Doggo.Components.TimeTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "18:30:21"
+      assert attribute(time, "datetime") == "2023-12-27T18:30:21"
       assert text(time) == "18:30:21"
     end
 
@@ -116,7 +116,7 @@ defmodule Doggo.Components.TimeTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "18:30:21.107074"
+      assert attribute(time, "datetime") == "18:30:21.107"
       assert text(time) == "18:30:21.107074"
     end
 
@@ -175,7 +175,7 @@ defmodule Doggo.Components.TimeTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "18:30:21.107074"
+      assert attribute(time, "datetime") == "2023-12-27T18:30:21.107Z"
       assert text(time) == "18:30:21.107074"
     end
 
@@ -192,7 +192,7 @@ defmodule Doggo.Components.TimeTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "18:30:21.107"
+      assert attribute(time, "datetime") == "2023-12-27T18:30:21.107Z"
       assert text(time) == "18:30:21.107"
     end
 
@@ -209,7 +209,7 @@ defmodule Doggo.Components.TimeTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "18:30:21"
+      assert attribute(time, "datetime") == "2023-12-27T18:30:21Z"
       assert text(time) == "18:30:21"
     end
 
@@ -226,7 +226,7 @@ defmodule Doggo.Components.TimeTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "18:30:00"
+      assert attribute(time, "datetime") == "2023-12-27T18:30:00Z"
       assert text(time) == "18:30:00"
     end
 
@@ -243,7 +243,7 @@ defmodule Doggo.Components.TimeTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "18:30:21.107074"
+      assert attribute(time, "datetime") == "2023-12-27T18:30:21.107"
       assert text(time) == "18:30:21.107074"
     end
 
@@ -260,7 +260,7 @@ defmodule Doggo.Components.TimeTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "18:30:21.107"
+      assert attribute(time, "datetime") == "2023-12-27T18:30:21.107"
       assert text(time) == "18:30:21.107"
     end
 
@@ -274,7 +274,7 @@ defmodule Doggo.Components.TimeTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "18:30:21"
+      assert attribute(time, "datetime") == "2023-12-27T18:30:21"
       assert text(time) == "18:30:21"
     end
 
@@ -288,7 +288,7 @@ defmodule Doggo.Components.TimeTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "18:30:00"
+      assert attribute(time, "datetime") == "2023-12-27T18:30:00"
       assert text(time) == "18:30:00"
     end
 
@@ -302,8 +302,35 @@ defmodule Doggo.Components.TimeTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "03:30:21"
+      assert attribute(time, "datetime") == "2023-12-28T03:30:21+09:00"
       assert text(time) == "03:30:21"
+    end
+
+    test "passes shifted DateTime to formatter" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time
+          value={~U[2023-12-27T18:30:21Z]}
+          timezone="Asia/Tokyo"
+          formatter={&"#{&1.hour}:#{&1.minute} #{&1.zone_abbr}"}
+        />
+        """)
+
+      assert text(html, "time") == "3:30 JST"
+    end
+
+    test "raises for Date" do
+      assigns = %{}
+
+      assert_raise ArgumentError,
+                   ~r/invalid value for \.time.*Use \.date for a Date/s,
+                   fn ->
+                     parse_heex(~H"""
+                     <TestComponents.time value={~D[2023-12-27]} />
+                     """)
+                   end
     end
   end
 end

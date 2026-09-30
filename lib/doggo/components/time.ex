@@ -16,17 +16,18 @@ defmodule Doggo.Components.Time do
   @impl true
   def usage do
     """
-    By default, the given value is formatted for display with `to_string/1`.
-    This:
+    By default, the time part of the given value is formatted for display with
+    `to_string/1`. For a `DateTime` or `NaiveDateTime`, the `datetime` attribute
+    holds the full value. This:
 
     ```heex
-    <.time value={~T[12:22:06.003Z]} />
+    <.time value={~T[12:22:06.003]} />
     ```
 
     Will be rendered as:
 
     ```html
-    <time datetime="12:22:06.003">
+    <time class="time" datetime="12:22:06.003">
       12:22:06.003
     </time>
     ```
@@ -45,7 +46,7 @@ defmodule Doggo.Components.Time do
     Which, depending on your locale, may be rendered as:
 
     ```html
-    <time datetime="14:22:06.003">
+    <time class="time" datetime="14:22:06.003">
       14:22:06 PM
     </time>
     ```
@@ -87,7 +88,7 @@ defmodule Doggo.Components.Time do
     Which would be rendered as:
 
     ```html
-    <time datetime="08:22:05">
+    <time class="time" datetime="2023-02-06T08:22:05+09:00">
       08:22:05
     </time>
     ```
@@ -106,7 +107,6 @@ defmodule Doggo.Components.Time do
       handling of the `<time>` element and its `datetime` attribute by screen
       readers and the limited accessibility of the title attribute.
       """,
-      base_class: nil,
       modifiers: []
     ]
   end
@@ -129,8 +129,10 @@ defmodule Doggo.Components.Time do
         default: nil,
         doc: """
         A function that takes a `Time`, `DateTime`, or `NaiveDateTime` as an
-        argument and returns the value formatted for display. Defaults to
-        `to_string/1`.
+        argument and returns the value formatted for display. A `DateTime` is
+        shifted to `timezone` before it is passed to the formatter.
+
+        Defaults to `to_string/1` on the time part of the value.
         """
 
       attr :title_formatter, :any,
@@ -153,10 +155,15 @@ defmodule Doggo.Components.Time do
         default: nil,
         doc: """
         If set and the given value is a `DateTime`, the value will be shifted to
-        that time zone. This affects both the display value and the `datetime` tag.
+        that time zone. This affects both the display value and the `datetime`
+        attribute. A `NaiveDateTime` is not shifted.
+
         Note that you need to
         [configure a time zone database](https://hexdocs.pm/elixir/DateTime.html#module-time-zone-database)
         for this to work.
+
+        An unknown time zone raises an error. Validate a time zone taken from
+        user input or the browser before you pass it to this component.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."
@@ -168,12 +175,17 @@ defmodule Doggo.Components.Time do
     quote do
       value =
         var!(assigns).value
+        |> Doggo.time_value!([Time, DateTime, NaiveDateTime], ".time")
         |> Doggo.shift_zone(var!(assigns).timezone)
         |> Doggo.truncate_datetime(var!(assigns).precision)
-        |> Doggo.to_time()
 
       var!(assigns) =
-        Doggo.assign_time(var!(assigns), value, &Time.to_iso8601/1)
+        Doggo.assign_time(
+          var!(assigns),
+          value,
+          ".time",
+          &(&1 |> Doggo.to_time() |> to_string())
+        )
 
       ~H"""
       <time
