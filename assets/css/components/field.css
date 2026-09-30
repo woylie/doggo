@@ -107,7 +107,7 @@
       display: flex;
       align-items: center;
 
-      > :is(.field-input-addon-left, .field-input-addon-right) {
+      > :is(.field-input-addon-start, .field-input-addon-end) {
         position: absolute;
         display: flex;
         align-items: center;
@@ -121,19 +121,19 @@
         }
       }
 
-      > .field-input-addon-left {
+      > .field-input-addon-start {
         inset-inline-start: 0;
       }
 
-      > .field-input-addon-right {
+      > .field-input-addon-end {
         inset-inline-end: 0;
       }
 
-      &[data-addon~="left"] > input {
+      &[data-addon~="start"] > input {
         padding-inline-start: var(--field-addon-inline-size);
       }
 
-      &[data-addon~="right"] > input {
+      &[data-addon~="end"] > input {
         padding-inline-end: var(--field-addon-inline-size);
       }
     }
