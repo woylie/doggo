@@ -142,5 +142,21 @@ defmodule Doggo.Components.RadioGroupTest do
 
       assert attribute(html, "#breeds_golden_retriever-description", "id")
     end
+
+    test "renders option label with markup" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.radio_group
+          id="favorite-dog"
+          name="favorite-dog"
+          label="Favorite Dog"
+          options={[{~H"<b>Collie</b>", "collie"}]}
+        />
+        """)
+
+      assert text(html, "label > b") == "Collie"
+    end
   end
 end

@@ -55,7 +55,9 @@ defmodule Doggo.Components.PropertyList do
   def attrs_and_slots(_opts) do
     quote do
       slot :prop, required: true, doc: "A property to be rendered." do
-        attr :label, :string, required: true
+        attr :label, :any,
+          required: true,
+          doc: "The term, as a string or HEEx."
 
         attr :class, :any,
           doc: "Additional classes for the row that holds the term and value."

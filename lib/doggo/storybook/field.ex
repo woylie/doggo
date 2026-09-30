@@ -495,50 +495,50 @@ defmodule Doggo.Storybook.Field do
         id: :addons,
         variations: [
           %Variation{
-            id: :addon_left,
+            id: :addon_start,
             attributes: %{
               type: "text",
-              label: "Left",
+              label: "Start",
               placeholder: "Some text"
             },
             slots: [
               """
-              <:addon_left>
+              <:addon_start>
                 #{icon(:mail, dependent_components)}
-              </:addon_left>
+              </:addon_start>
               """
             ]
           },
           %Variation{
-            id: :addon_right,
+            id: :addon_end,
             attributes: %{
               type: "text",
-              label: "Right",
+              label: "End",
               placeholder: "Some text"
             },
             slots: [
               """
-              <:addon_right>
+              <:addon_end>
                 #{icon(:mail, dependent_components)}
-              </:addon_right>
+              </:addon_end>
               """
             ]
           },
           %Variation{
-            id: :addon_left_and_right,
+            id: :addon_start_and_end,
             attributes: %{
               type: "text",
-              label: "Left and right",
+              label: "Start and end",
               placeholder: "Some text"
             },
             slots: [
               """
-              <:addon_left>
+              <:addon_start>
                 #{icon(:mail, dependent_components)}
-              </:addon_left>
-              <:addon_right>
+              </:addon_start>
+              <:addon_end>
                 #{icon(:check, dependent_components)}
-              </:addon_right>
+              </:addon_end>
               """
             ]
           }

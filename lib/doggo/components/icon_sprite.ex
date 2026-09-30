@@ -24,16 +24,16 @@ defmodule Doggo.Components.IconSprite do
   @impl true
   def usage do
     """
-    Render an icon with visually hidden text:
+    Render an icon with a visually hidden label:
 
     ```heex
-    <.icon name="arrow-left" text="Go back" />
+    <.icon_sprite name="arrow-left" label="Go back" />
     ```
 
-    To display the text visibly:
+    To display the label visibly:
 
     ```heex
-    <.icon name="arrow-left" text="Go back" text_position={:right} />
+    <.icon_sprite name="arrow-left" label="Go back" label_position="after" />
     ```
     """
   end
@@ -60,7 +60,7 @@ defmodule Doggo.Components.IconSprite do
 
   @impl true
   def nested_classes(base_class) do
-    ["#{base_class}-text"]
+    ["#{base_class}-label"]
   end
 
   @impl true
@@ -70,18 +70,18 @@ defmodule Doggo.Components.IconSprite do
         required: true,
         doc: "Icon name as used in the sprite."
 
-      attr :text, :string,
+      attr :label, :string,
         default: nil,
         doc: """
         Text that describes the icon.
         """
 
-      attr :text_position, :string,
+      attr :label_position, :string,
         default: "hidden",
         values: ["before", "after", "hidden"],
         doc: """
-        Position of the text relative to the icon. If set to `"hidden"`, the
-        `text` is visually hidden, but still accessible to screen readers.
+        Position of the label relative to the icon. If set to `"hidden"`, the
+        `label` is visually hidden, but still accessible to screen readers.
 
         This requires a CSS rule for the `data-visually-hidden` attribute. See
         [Visually hidden text](readme.html#visually-hidden-text).
@@ -97,23 +97,23 @@ defmodule Doggo.Components.IconSprite do
 
     quote do
       Doggo.diagnostic do
-        Doggo.ensure_optional_name!(var!(assigns).text, unquote(name), "text")
+        Doggo.ensure_optional_name!(var!(assigns).label, unquote(name), "label")
       end
 
       ~H"""
       <span
         class={[Doggo.build(:base_class) | List.wrap(@class)]}
-        data-text-position={@text_position}
+        data-label-position={@label_position}
         {@data_attrs}
         {@rest}
       >
         <svg aria-hidden="true"><use href={"#{Doggo.build(:sprite_url)}##{@name}"} /></svg>
         <span
-          :if={@text}
-          class={Doggo.build(:base_class, "-text")}
-          data-visually-hidden={@text_position == "hidden"}
+          :if={@label}
+          class={Doggo.build(:base_class, "-label")}
+          data-visually-hidden={@label_position == "hidden"}
         >
-          {@text}
+          {@label}
         </span>
       </span>
       """

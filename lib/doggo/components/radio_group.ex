@@ -122,6 +122,9 @@ defmodule Doggo.Components.RadioGroup do
         doc: """
         A list of options. It can be given a list values or as a list of
         `{label, value}` tuples.
+
+        The label can be HEEx, such as an icon or a symbol. It must not contain
+        interactive elements, since it is rendered in a `<label>` element.
         """
 
       attr :value, :any,

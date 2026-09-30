@@ -21,7 +21,9 @@ defmodule Doggo.Components.PageHeaderTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.page_header title="Pets" />
+        <TestComponents.page_header>
+          <:title>Pets</:title>
+        </TestComponents.page_header>
         """)
 
       assert attribute(html, "header:root", "class") == "page-header"
@@ -36,7 +38,9 @@ defmodule Doggo.Components.PageHeaderTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.page_header title="Pets" subtitle="All of them" />
+        <TestComponents.page_header subtitle="All of them">
+          <:title>Pets</:title>
+        </TestComponents.page_header>
         """)
 
       assert text(html, ":root > hgroup > p") == "All of them"
@@ -47,7 +51,8 @@ defmodule Doggo.Components.PageHeaderTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.page_header title="Pets">
+        <TestComponents.page_header>
+          <:title>Pets</:title>
           <:navigation navigate="/pets">Back to pets</:navigation>
         </TestComponents.page_header>
         """)
@@ -63,7 +68,8 @@ defmodule Doggo.Components.PageHeaderTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.page_header title="Pets">
+        <TestComponents.page_header>
+          <:title>Pets</:title>
           <:navigation>Back to pets</:navigation>
         </TestComponents.page_header>
         """)
@@ -77,7 +83,8 @@ defmodule Doggo.Components.PageHeaderTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.page_header title="Pets">
+        <TestComponents.page_header>
+          <:title>Pets</:title>
           <:action>Create</:action>
         </TestComponents.page_header>
         """)
@@ -90,20 +97,12 @@ defmodule Doggo.Components.PageHeaderTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.page_header title="Pets" data-test="hello" />
+        <TestComponents.page_header data-test="hello">
+          <:title>Pets</:title>
+        </TestComponents.page_header>
         """)
 
       assert attribute(html, ":root", "data-test") == "hello"
-    end
-
-    test "raises for blank title" do
-      assert_raise ArgumentError, ~r/blank title for/, fn ->
-        assigns = %{}
-
-        parse_heex(~H"""
-        <TestComponents.page_header title=" " />
-        """)
-      end
     end
   end
 end

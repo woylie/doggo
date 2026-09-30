@@ -22,7 +22,7 @@ defmodule Doggo.Components.DrawerTest do
       html =
         parse_heex(~H"""
         <TestComponents.drawer id="drawer-1">
-          <:main>Content</:main>
+          <:body>Content</:body>
         </TestComponents.drawer>
         """)
 
@@ -71,17 +71,17 @@ defmodule Doggo.Components.DrawerTest do
       assert attribute(html, "div:root", "aria-labelledby") == nil
     end
 
-    test "renders main" do
+    test "renders body" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
         <TestComponents.drawer id="drawer-3">
-          <:main>Doggo</:main>
+          <:body>Doggo</:body>
         </TestComponents.drawer>
         """)
 
-      assert text(html, "div > div.drawer-main") == "Doggo"
+      assert text(html, "div > div.drawer-body") == "Doggo"
     end
 
     test "renders footer" do
@@ -103,7 +103,7 @@ defmodule Doggo.Components.DrawerTest do
       html =
         parse_heex(~H"""
         <TestComponents.drawer id="drawer-5" data-what="ever">
-          <:main>Content</:main>
+          <:body>Content</:body>
         </TestComponents.drawer>
         """)
 

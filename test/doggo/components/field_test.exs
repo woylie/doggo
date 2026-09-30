@@ -148,6 +148,31 @@ defmodule Doggo.Components.FieldTest do
 
       assert attribute(html, "option[value='cat']", "selected") == "selected"
     end
+
+    test "renders label and description with markup in a radio group" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:shipping]}
+            type="radio-group"
+            label="Shipping"
+            options={[
+              [
+                key: ~H"<b>Express</b>",
+                value: "express",
+                description: ~H"<i>Tomorrow</i>"
+              ]
+            ]}
+          />
+        </.form>
+        """)
+
+      assert text(html, "label.field-radio > b") == "Express"
+      assert text(html, ".field-option-description > i") == "Tomorrow"
+    end
   end
 
   describe "field/1 with hidden_input false" do
@@ -1213,20 +1238,20 @@ defmodule Doggo.Components.FieldTest do
         parse_heex(~H"""
         <.form for={@form}>
           <TestComponents.field field={@form[:addons]} type="text">
-            <:addon_left>left</:addon_left>
-            <:addon_right>right</:addon_right>
+            <:addon_start>start</:addon_start>
+            <:addon_end>end</:addon_end>
           </TestComponents.field>
         </.form>
         """)
 
-      assert text(html, ".field-input-wrapper > .field-input-addon-left") ==
-               "left"
+      assert text(html, ".field-input-wrapper > .field-input-addon-start") ==
+               "start"
 
-      assert text(html, ".field-input-wrapper > .field-input-addon-right") ==
-               "right"
+      assert text(html, ".field-input-wrapper > .field-input-addon-end") ==
+               "end"
 
       assert attribute(html, ".field-input-wrapper", "data-addon") ==
-               "left right"
+               "start end"
     end
 
     test "renders left add-on" do
@@ -1236,12 +1261,12 @@ defmodule Doggo.Components.FieldTest do
         parse_heex(~H"""
         <.form for={@form}>
           <TestComponents.field field={@form[:addons]} type="text">
-            <:addon_left>left</:addon_left>
+            <:addon_start>start</:addon_start>
           </TestComponents.field>
         </.form>
         """)
 
-      assert attribute(html, ".field-input-wrapper", "data-addon") == "left"
+      assert attribute(html, ".field-input-wrapper", "data-addon") == "start"
     end
 
     test "renders right add-on" do
@@ -1251,12 +1276,12 @@ defmodule Doggo.Components.FieldTest do
         parse_heex(~H"""
         <.form for={@form}>
           <TestComponents.field field={@form[:addons]} type="text">
-            <:addon_right>right</:addon_right>
+            <:addon_end>end</:addon_end>
           </TestComponents.field>
         </.form>
         """)
 
-      assert attribute(html, ".field-input-wrapper", "data-addon") == "right"
+      assert attribute(html, ".field-input-wrapper", "data-addon") == "end"
     end
 
     test "omits add-on data attribute without add-ons" do
@@ -1644,8 +1669,8 @@ defmodule Doggo.Components.FieldTest do
             <:description>Description</:description>
           </TestComponents.field>
           <TestComponents.field type="text" name="addon" label="Addon" value="">
-            <:addon_left>left</:addon_left>
-            <:addon_right>right</:addon_right>
+            <:addon_start>start</:addon_start>
+            <:addon_end>end</:addon_end>
           </TestComponents.field>
           <TestComponents.field
             type="text"

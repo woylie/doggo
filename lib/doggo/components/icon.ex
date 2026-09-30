@@ -8,7 +8,7 @@ defmodule Doggo.Components.Icon do
   @impl true
   def doc do
     """
-    Renders an icon with optional text.
+    Renders an icon with an optional label.
 
     The component does not make assumptions about the icon library. Instead, it
     allows you to reference functions from libraries or custom functions that
@@ -52,7 +52,7 @@ defmodule Doggo.Components.Icon do
     reference a function component in the configured module.
 
     ```heex
-    <.icon name="bug_ant" text="report bug" />
+    <.icon name="bug_ant" label="report bug" />
     ```
 
     In this example, the icon component will use `Heroicons.bug_ant/1` to render
@@ -72,7 +72,7 @@ defmodule Doggo.Components.Icon do
     on to the referenced function component.
 
     ```heex
-    <.icon name="circle-question" text="help" />
+    <.icon name="circle-question" label="help" />
     ```
 
     In this example, the generated markup will be similar to:
@@ -85,25 +85,25 @@ defmodule Doggo.Components.Icon do
 
     ## Text display
 
-    Render an icon with visually hidden text:
+    Render an icon with a visually hidden label:
 
     ```heex
-    <.icon name="bug_ant" text="report bug" />
+    <.icon name="bug_ant" label="report bug" />
     ```
 
-    To display the text visibly:
+    To display the label visibly:
 
     ```heex
-    <.icon name="bug_ant" text="report bug" text_position="after" />
+    <.icon name="bug_ant" label="report bug" label_position="after" />
     ```
 
     Or:
 
     ```heex
-    <.icon name="bug_ant" text="report bug" text_position="before" />
+    <.icon name="bug_ant" label="report bug" label_position="before" />
     ```
 
-    The `text_position` attribute values are chosen to work with both
+    The `label_position` attribute values are chosen to work with both
     left-to-right and right-to-left languages. Refer to the CSS example for
     applying the position correctly.
 
@@ -126,7 +126,7 @@ defmodule Doggo.Components.Icon do
       since: "0.6.0",
       maturity: :refining,
       modifiers: [],
-      data_attrs: ["data-text-position", "data-visually-hidden"],
+      data_attrs: ["data-label-position", "data-visually-hidden"],
       extra: [
         icon_module: nil,
         icon_fun: nil,
@@ -137,7 +137,7 @@ defmodule Doggo.Components.Icon do
 
   @impl true
   def nested_classes(base_class) do
-    ["#{base_class}-text"]
+    ["#{base_class}-label"]
   end
 
   @impl true
@@ -145,7 +145,7 @@ defmodule Doggo.Components.Icon do
     quote do
       attr :name, :string, required: true, doc: "The name of the icon."
 
-      attr :text, :string,
+      attr :label, :string,
         default: nil,
         doc: """
         Text that describes the icon.
@@ -154,12 +154,12 @@ defmodule Doggo.Components.Icon do
         is purely decorative.
         """
 
-      attr :text_position, :string,
+      attr :label_position, :string,
         default: "hidden",
         values: ["before", "after", "hidden"],
         doc: """
-        Position of the text relative to the icon. If set to `"hidden"`, the
-        `text` is visually hidden, but still accessible to screen readers.
+        Position of the label relative to the icon. If set to `"hidden"`, the
+        `label` is visually hidden, but still accessible to screen readers.
 
         This requires a CSS rule for the `data-visually-hidden` attribute. See
         [Visually hidden text](readme.html#visually-hidden-text).
@@ -222,7 +222,7 @@ defmodule Doggo.Components.Icon do
 
     quote do
       Doggo.diagnostic do
-        Doggo.ensure_optional_name!(var!(assigns).text, unquote(name), "text")
+        Doggo.ensure_optional_name!(var!(assigns).label, unquote(name), "label")
       end
 
       unquote(icon_block(opts))
@@ -230,7 +230,7 @@ defmodule Doggo.Components.Icon do
       ~H"""
       <span
         class={[Doggo.build(:base_class) | List.wrap(@class)]}
-        data-text-position={@text_position}
+        data-label-position={@label_position}
         {@data_attrs}
         {@rest}
         phx-no-format
@@ -239,11 +239,11 @@ defmodule Doggo.Components.Icon do
           module={Doggo.build(:icon_module)}
           fun={Doggo.build(:icon_fun) || @icon_fun}
         /><span
-          :if={@text}
-          class={Doggo.build(:base_class, "-text")}
-          data-visually-hidden={@text_position == "hidden"}
+          :if={@label}
+          class={Doggo.build(:base_class, "-label")}
+          data-visually-hidden={@label_position == "hidden"}
           phx-no-format
-        >{@text}</span></span>
+        >{@label}</span></span>
       """
     end
   end

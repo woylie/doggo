@@ -55,9 +55,9 @@ defmodule Doggo.FixturesTest do
       ~H"""
       <FixtureComponents.alert
         id="alert"
-        title="Session expired"
         on_close={JS.push("dismiss")}
       >
+        <:title>Session expired</:title>
         Sign in again to continue.
         <:icon>info-icon</:icon>
         <:action>sign-in-button</:action>
@@ -90,7 +90,8 @@ defmodule Doggo.FixturesTest do
 
     assert_fixture(
       ~H"""
-      <FixtureComponents.app_bar id="app-bar-1" title="Dogs">
+      <FixtureComponents.app_bar id="app-bar-1">
+        <:title>Dogs</:title>
         <:navigation label="Open menu" on_click={JS.push("toggle-menu")}>
           menu-icon
         </:navigation>
@@ -200,7 +201,8 @@ defmodule Doggo.FixturesTest do
 
     assert_fixture(
       ~H"""
-      <FixtureComponents.callout id="callout" title="Did you know?">
+      <FixtureComponents.callout id="callout">
+        <:title>Did you know?</:title>
         <p>Dogs have three eyelids.</p>
         <:icon>info-icon</:icon>
         <:action><button>Learn More</button></:action>
@@ -393,7 +395,7 @@ defmodule Doggo.FixturesTest do
       ~H"""
       <FixtureComponents.drawer id="drawer-1">
         <:header>Doggo</:header>
-        <:main>main</:main>
+        <:body>body</:body>
         <:footer>footer</:footer>
       </FixtureComponents.drawer>
       """,
@@ -483,7 +485,7 @@ defmodule Doggo.FixturesTest do
 
     assert_fixture(
       ~H"""
-      <FixtureComponents.icon name="info" text="Info" />
+      <FixtureComponents.icon name="info" label="Info" />
       """,
       "icon.html"
     )
@@ -494,7 +496,7 @@ defmodule Doggo.FixturesTest do
 
     assert_fixture(
       ~H"""
-      <FixtureComponents.icon_sprite name="edit" text="Edit" />
+      <FixtureComponents.icon_sprite name="edit" label="Edit" />
       """,
       "icon_sprite.html"
     )
@@ -705,7 +707,8 @@ defmodule Doggo.FixturesTest do
 
     assert_fixture(
       ~H"""
-      <FixtureComponents.page_header title="Dogs" subtitle="All of them">
+      <FixtureComponents.page_header subtitle="All of them">
+        <:title>Dogs</:title>
         <:navigation label="Back" patch="/">back-icon</:navigation>
         <:action>action</:action>
       </FixtureComponents.page_header>

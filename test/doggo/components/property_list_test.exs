@@ -69,5 +69,18 @@ defmodule Doggo.Components.PropertyListTest do
         """)
       end
     end
+
+    test "renders label with markup" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.property_list>
+          <:prop label={~H"<b>Name</b>"}>George</:prop>
+        </TestComponents.property_list>
+        """)
+
+      assert text(html, "dl > div > dt > b") == "Name"
+    end
   end
 end

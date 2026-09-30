@@ -30,24 +30,24 @@ defmodule Doggo.Storybook.IconSprite do
             id: :after,
             attributes: %{
               name: "user",
-              text: "text after icon",
-              text_position: "after"
+              label: "text after icon",
+              label_position: "after"
             }
           },
           %Variation{
             id: :before,
             attributes: %{
               name: "heart",
-              text: "text before icon",
-              text_position: "before"
+              label: "text before icon",
+              label_position: "before"
             }
           },
           %Variation{
             id: :hidden,
             attributes: %{
               name: "settings",
-              text: "text hidden",
-              text_position: "hidden"
+              label: "text hidden",
+              label_position: "hidden"
             }
           }
         ]
@@ -60,24 +60,24 @@ defmodule Doggo.Storybook.IconSprite do
             id: :after,
             attributes: %{
               name: "user",
-              text: "متن بعد از نماد",
-              text_position: "after"
+              label: "متن بعد از نماد",
+              label_position: "after"
             }
           },
           %Variation{
             id: :before,
             attributes: %{
               name: "heart",
-              text: "متن قبل از نماد",
-              text_position: "before"
+              label: "متن قبل از نماد",
+              label_position: "before"
             }
           },
           %Variation{
             id: :hidden,
             attributes: %{
               name: "settings",
-              text: "متن مخفی",
-              text_position: "hidden"
+              label: "متن مخفی",
+              label_position: "hidden"
             }
           }
         ],

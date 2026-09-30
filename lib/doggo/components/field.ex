@@ -317,8 +317,8 @@ defmodule Doggo.Components.Field do
       "#{base_class}-checkbox-group",
       "#{base_class}-description",
       "#{base_class}-errors",
-      "#{base_class}-input-addon-left",
-      "#{base_class}-input-addon-right",
+      "#{base_class}-input-addon-start",
+      "#{base_class}-input-addon-end",
       "#{base_class}-input-wrapper",
       "#{base_class}-label",
       "#{base_class}-option-description",
@@ -451,6 +451,19 @@ defmodule Doggo.Components.Field do
         only supported for checkbox and radio groups.
 
             options={[[key: "Blue", value: "blue", description: "Sky"]]}
+
+        In checkbox and radio groups, the label and the description can be
+        HEEx, such as an icon beside the label. They must not contain
+        interactive elements, since the label is a `<label>` element. A select
+        option can only be text.
+
+            options={[
+              [
+                key: ~H"<.icon name="truck" /> Express",
+                value: "express",
+                description: "Delivered tomorrow"
+              ]
+            ]}
         """
 
       attr :multiple, :boolean,
@@ -470,15 +483,15 @@ defmodule Doggo.Components.Field do
       slot :description,
         doc: "A field description to render underneath the input."
 
-      slot :addon_left,
+      slot :addon_start,
         doc: """
-        Can be used to render an icon left in the input. Only supported for
+        Can be used to render an icon at the start of the input. Only supported for
         single-line inputs.
         """
 
-      slot :addon_right,
+      slot :addon_end,
         doc: """
-        Can be used to render an icon left in the input. Only supported for
+        Can be used to render an icon at the end of the input. Only supported for
         single-line inputs.
         """
     end
@@ -1066,16 +1079,16 @@ defmodule Doggo.Components.Field do
                 {@rest}
               />
               <div
-                :if={@addon_left != []}
-                class={Doggo.build(:base_class, "-input-addon-left")}
+                :if={@addon_start != []}
+                class={Doggo.build(:base_class, "-input-addon-start")}
               >
-                {render_slot(@addon_left)}
+                {render_slot(@addon_start)}
               </div>
               <div
-                :if={@addon_right != []}
-                class={Doggo.build(:base_class, "-input-addon-right")}
+                :if={@addon_end != []}
+                class={Doggo.build(:base_class, "-input-addon-end")}
               >
-                {render_slot(@addon_right)}
+                {render_slot(@addon_end)}
               </div>
             </div>
             <datalist :if={@options} id={"#{@id}-datalist"}>
@@ -1226,18 +1239,16 @@ defmodule Doggo.Components.Field do
   end
 
   @doc false
-  def assign_addon(
-        %{addon_left: addon_left, addon_right: addon_right} = assigns
-      ) do
+  def assign_addon(%{addon_start: addon_start, addon_end: addon_end} = assigns) do
     addon =
-      case {addon_left, addon_right} do
+      case {addon_start, addon_end} do
         {[], []} -> nil
-        {_, []} -> "left"
-        {[], _} -> "right"
-        {_, _} -> "left right"
+        {_, []} -> "start"
+        {[], _} -> "end"
+        {_, _} -> "start end"
       end
 
-    Doggo.assign_derived(assigns, [addon: addon], [:addon_left, :addon_right])
+    Doggo.assign_derived(assigns, [addon: addon], [:addon_start, :addon_end])
   end
 
   defp assign_input(assigns, id, errors, defaults) do

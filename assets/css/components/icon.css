@@ -12,15 +12,15 @@
       block-size: var(--icon-size);
     }
 
-    &:is([data-text-position="before"], [data-text-position="after"]) > svg {
+    &:is([data-label-position="before"], [data-label-position="after"]) > svg {
       transform: translateY(calc((var(--icon-size) - 1cap) / 2));
     }
 
-    &[data-text-position="before"] {
+    &[data-label-position="before"] {
       flex-direction: row-reverse;
     }
 
-    &[data-text-position="after"] {
+    &[data-label-position="after"] {
       flex-direction: row;
     }
   }

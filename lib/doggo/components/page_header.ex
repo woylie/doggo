@@ -24,7 +24,8 @@ defmodule Doggo.Components.PageHeader do
     """
     ```heex
     <main>
-      <.page_header title="Puppy Profiles" subtitle="Share Your Pup's Story">
+      <.page_header subtitle="Share Your Pup's Story">
+        <:title>Puppy Profiles</:title>
         <:action>
           <.button_link patch={~p"/puppies/new"}>Add New Profile</.button_link>
         </:action>
@@ -40,7 +41,8 @@ defmodule Doggo.Components.PageHeader do
 
     ```heex
     <main>
-      <.page_header title="Puppy Profile">
+      <.page_header>
+        <:title>Puppy Profile</:title>
         <:navigation navigate={~p"/puppies"}>
           Back to puppy list
         </:navigation>
@@ -83,13 +85,11 @@ defmodule Doggo.Components.PageHeader do
   @impl true
   def attrs_and_slots(_opts) do
     quote do
-      attr :title, :string,
-        required: true,
-        doc: "The title for the current page."
-
       attr :subtitle, :string, default: nil, doc: "An optional sub title."
 
       attr :rest, :global, doc: "Any additional HTML attributes."
+
+      slot :title, required: true, doc: "The title for the current page."
 
       slot :navigation,
         doc: """
@@ -122,8 +122,6 @@ defmodule Doggo.Components.PageHeader do
 
     quote do
       Doggo.diagnostic do
-        Doggo.ensure_name!(var!(assigns).title, unquote(name), "title")
-
         for entry <- var!(assigns).navigation,
             do:
               Doggo.ensure_optional_name!(entry[:label], unquote(name), "label")
@@ -142,7 +140,7 @@ defmodule Doggo.Components.PageHeader do
           />
         </div>
         <hgroup>
-          <h1>{@title}</h1>
+          <h1>{render_slot(@title)}</h1>
           <p :if={@subtitle}>{@subtitle}</p>
         </hgroup>
         <div :if={@action != []} class={Doggo.build(:base_class, "-actions")}>

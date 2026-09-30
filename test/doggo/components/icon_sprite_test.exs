@@ -52,12 +52,12 @@ defmodule Doggo.Components.IconSpriteTest do
       assert attribute(svg, "use", "href") == "/assets/icons/sprite.svg#edit"
     end
 
-    test "renders visually hidden text" do
+    test "renders visually hidden label" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
-        <TestComponents.icon_sprite name="edit" text="some-text" />
+        <TestComponents.icon_sprite name="edit" label="some-text" />
         """)
 
       assert span = find_one(html, "span > span")
@@ -65,33 +65,41 @@ defmodule Doggo.Components.IconSpriteTest do
       assert text(span) == "some-text"
     end
 
-    test "renders text before icon" do
+    test "renders label before icon" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
-        <TestComponents.icon_sprite name="edit" text="some-text" text_position="before" />
+        <TestComponents.icon_sprite
+          name="edit"
+          label="some-text"
+          label_position="before"
+        />
         """)
 
       span = find_one(html, "span:root")
       assert attribute(span, "class") == "icon"
-      assert attribute(span, "data-text-position") == "before"
+      assert attribute(span, "data-label-position") == "before"
       assert span = find_one(html, "span > span")
       refute attribute(span, "data-visually-hidden")
       assert text(span) == "some-text"
     end
 
-    test "renders text after icon" do
+    test "renders label after icon" do
       assigns = %{}
 
       html =
         parse_heex(~H"""
-        <TestComponents.icon_sprite name="edit" text="some-text" text_position="after" />
+        <TestComponents.icon_sprite
+          name="edit"
+          label="some-text"
+          label_position="after"
+        />
         """)
 
       span = find_one(html, "span:root")
       assert attribute(span, "class") == "icon"
-      assert attribute(span, "data-text-position") == "after"
+      assert attribute(span, "data-label-position") == "after"
       assert span = find_one(html, "span > span")
       refute attribute(span, "data-visually-hidden")
       assert text(span) == "some-text"
@@ -108,12 +116,12 @@ defmodule Doggo.Components.IconSpriteTest do
       assert attribute(html, ":root", "data-test") == "hello"
     end
 
-    test "raises for blank text" do
-      assert_raise ArgumentError, ~r/blank text for/, fn ->
+    test "raises for blank label" do
+      assert_raise ArgumentError, ~r/blank label for/, fn ->
         assigns = %{}
 
         parse_heex(~H"""
-        <TestComponents.icon_sprite name="edit" text="" />
+        <TestComponents.icon_sprite name="edit" label="" />
         """)
       end
     end

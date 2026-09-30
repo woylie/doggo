@@ -8,7 +8,7 @@ defmodule Doggo.Components.Drawer do
   @impl true
   def doc do
     """
-    Renders a drawer with a `header`, `main`, and `footer` slot.
+    Renders a drawer with a `header`, `body`, and `footer` slot.
 
     All slots are optional, and you can render any content in them. If you want
     to use the drawer as a sidebar, you can use the `vertical_nav/1` and
@@ -23,7 +23,7 @@ defmodule Doggo.Components.Drawer do
 
     ```heex
     <.drawer id="drawer">
-      <:main>Content</:main>
+      <:body>Content</:body>
     </.drawer>
     ```
 
@@ -32,7 +32,7 @@ defmodule Doggo.Components.Drawer do
     ```heex
     <.drawer id="drawer">
       <:header>Doggo</:header>
-      <:main>Content at the top</:main>
+      <:body>Content at the top</:body>
       <:footer>Content at the bottom</:footer>
     </.drawer>
     ```
@@ -44,7 +44,7 @@ defmodule Doggo.Components.Drawer do
       <:header>
         <.link navigate={~p"/"}>App</.link>
       </:header>
-      <:main>
+      <:body>
         <.vertical_nav id="main-nav" label="Main">
           <:item>
             <.link navigate={~p"/dashboard"}>Dashboard</.link>
@@ -65,7 +65,7 @@ defmodule Doggo.Components.Drawer do
           <:title>Search</:title>
           <:item><input type="search" placeholder="Search" /></:item>
         </.vertical_nav_section>
-      </:main>
+      </:body>
       <:footer>
         <.vertical_nav id="user-nav" label="User menu">
           <:item>
@@ -119,7 +119,7 @@ defmodule Doggo.Components.Drawer do
     [
       "#{base_class}-footer",
       "#{base_class}-header",
-      "#{base_class}-main"
+      "#{base_class}-body"
     ]
   end
 
@@ -131,7 +131,7 @@ defmodule Doggo.Components.Drawer do
 
       slot :header, doc: "Optional slot for the brand name or logo."
 
-      slot :main,
+      slot :body,
         doc: """
         Slot for content that is rendered after the brand, at the start of the
         side bar.
@@ -150,7 +150,7 @@ defmodule Doggo.Components.Drawer do
     quote do
       ~H"""
       <div
-        :if={@header != [] or @main != [] or @footer != []}
+        :if={@header != [] or @body != [] or @footer != []}
         id={@id}
         class={[Doggo.build(:base_class) | List.wrap(@class)]}
         role={Map.get(@rest, :role, @header != [] && "complementary")}
@@ -167,8 +167,8 @@ defmodule Doggo.Components.Drawer do
         >
           {render_slot(@header)}
         </div>
-        <div :if={@main != []} class={Doggo.build(:base_class, "-main")}>
-          {render_slot(@main)}
+        <div :if={@body != []} class={Doggo.build(:base_class, "-body")}>
+          {render_slot(@body)}
         </div>
         <div :if={@footer != []} class={Doggo.build(:base_class, "-footer")}>
           {render_slot(@footer)}

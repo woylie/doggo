@@ -58,7 +58,7 @@ defmodule Doggo.OwnAttributesTest do
         parse_heex(~H"""
         <FixtureComponents.drawer id="nav-drawer" role="navigation">
           <:header>Menu</:header>
-          <:main>Links</:main>
+          <:body>Links</:body>
         </FixtureComponents.drawer>
         """)
 

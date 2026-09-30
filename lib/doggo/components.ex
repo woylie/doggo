@@ -117,13 +117,13 @@ defmodule Doggo.Components do
   Set the defaults of attributes and slots once for every call of the
   component. An attribute or slot passed at the call overrides the default.
 
-      build_icon(defaults: [text_position: "after"])
+      build_icon(defaults: [label_position: "after"])
 
       build_fallback(defaults: [placeholder: gettext("n/a")])
 
       build_alert(defaults: [icon: ~H|<.icon name="info" />|])
 
-  A literal, such as `text_position: "after"`, or a remote capture becomes the
+  A literal, such as `label_position: "after"`, or a remote capture becomes the
   default of the attribute and is listed in the docs of the component. Any
   other expression is evaluated each time the component renders without the
   attribute, so `gettext("n/a")` returns the text for the current locale. An

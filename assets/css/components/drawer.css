@@ -1,7 +1,7 @@
 @layer doggo {
   .drawer {
     --drawer-gap: var(--spacer-6);
-    --drawer-main-gap: var(--spacer-2);
+    --drawer-body-gap: var(--spacer-2);
     --drawer-padding-block: var(--spacer-4);
     --drawer-padding-inline: var(--spacer-4);
     --drawer-background: var(--color-background-page);
@@ -20,7 +20,7 @@
       var(--drawer-border-color);
 
     > .drawer-header,
-    > .drawer-main,
+    > .drawer-body,
     > .drawer-footer {
       padding-inline: var(--drawer-padding-inline);
     }
@@ -30,11 +30,11 @@
       font-weight: var(--drawer-header-font-weight);
     }
 
-    > .drawer-main {
+    > .drawer-body {
       display: flex;
       flex: 1;
       flex-direction: column;
-      gap: var(--drawer-main-gap);
+      gap: var(--drawer-body-gap);
       min-block-size: 0;
       overflow-y: auto;
     }

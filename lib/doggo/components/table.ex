@@ -201,7 +201,7 @@ defmodule Doggo.Components.Table do
         </:action>
         ```
         """ do
-        attr :label, :string, doc: "The content for the header column."
+        attr :label, :any, doc: "The content for the header column."
 
         attr :col_attrs, :list,
           doc: """

@@ -34,7 +34,8 @@ defmodule Doggo.Components.AppBarTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.app_bar id="app-bar-2" title="Some Title">
+        <TestComponents.app_bar id="app-bar-2">
+          <:title>Some Title</:title>
         </TestComponents.app_bar>
         """)
 

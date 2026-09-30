@@ -17,7 +17,8 @@ defmodule Doggo.Components.AppBar do
   def usage do
     """
     ```heex
-    <.app_bar id="app-bar" title="Page title">
+    <.app_bar id="app-bar">
+      <:title>Page title</:title>
       <:navigation label="Open menu" on_click={JS.push("toggle-menu")}>
         <.icon><Lucideicons.menu aria-hidden /></.icon>
       </:navigation>
@@ -63,11 +64,9 @@ defmodule Doggo.Components.AppBar do
     quote do
       attr :id, :string, required: true
 
-      attr :title, :string,
-        default: nil,
-        doc: "The page title. Will be set as `h1`."
-
       attr :rest, :global, doc: "Any additional HTML attributes."
+
+      slot :title, doc: "The page title. Will be set as `h1`."
 
       slot :navigation,
         doc: """
@@ -122,7 +121,7 @@ defmodule Doggo.Components.AppBar do
       <header
         id={@id}
         class={[Doggo.build(:base_class) | List.wrap(@class)]}
-        aria-labelledby={@title && "#{@id}-title"}
+        aria-labelledby={@title != [] && "#{@id}-title"}
         {@data_attrs}
         {@rest}
       >
@@ -136,7 +135,7 @@ defmodule Doggo.Components.AppBar do
             {render_slot(navigation)}
           </.link>
         </div>
-        <h1 :if={@title} id={"#{@id}-title"}>{@title}</h1>
+        <h1 :if={@title != []} id={"#{@id}-title"}>{render_slot(@title)}</h1>
         <div :if={@action != []} class={Doggo.build(:base_class, "-actions")}>
           <.link
             :for={action <- @action}
