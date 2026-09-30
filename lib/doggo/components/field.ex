@@ -451,6 +451,19 @@ defmodule Doggo.Components.Field do
         only supported for checkbox and radio groups.
 
             options={[[key: "Blue", value: "blue", description: "Sky"]]}
+
+        In checkbox and radio groups, the label and the description can be
+        HEEx, such as an icon beside the label. They must not contain
+        interactive elements, since the label is a `<label>` element. A select
+        option can only be text.
+
+            options={[
+              [
+                key: ~H"<.icon name="truck" /> Express",
+                value: "express",
+                description: "Delivered tomorrow"
+              ]
+            ]}
         """
 
       attr :multiple, :boolean,

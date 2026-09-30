@@ -148,6 +148,31 @@ defmodule Doggo.Components.FieldTest do
 
       assert attribute(html, "option[value='cat']", "selected") == "selected"
     end
+
+    test "renders label and description with markup in a radio group" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:shipping]}
+            type="radio-group"
+            label="Shipping"
+            options={[
+              [
+                key: ~H"<b>Express</b>",
+                value: "express",
+                description: ~H"<i>Tomorrow</i>"
+              ]
+            ]}
+          />
+        </.form>
+        """)
+
+      assert text(html, "label.field-radio > b") == "Express"
+      assert text(html, ".field-option-description > i") == "Tomorrow"
+    end
   end
 
   describe "field/1 with hidden_input false" do
