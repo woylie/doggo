@@ -74,6 +74,14 @@ defmodule Doggo.Components.Carousel do
     the labels of the `:pause` slot default to English. They are announced by
     screen readers and should be translated. The `pagination_slide_label` and
     the labels of the `:previous` and `:next` slots should also be translated.
+
+    ## Defaults
+
+    A default for the `:pause`, `:previous` or `:next` slot turns on rotation or
+    the previous and next buttons for every carousel of the build, and a call
+    cannot turn them off. If some carousels need them and others do not, build
+    the carousel a second time under another `name:` with other defaults, or set
+    no defaults and pass the slots at each call.
     """
   end
 

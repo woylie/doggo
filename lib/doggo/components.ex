@@ -96,9 +96,11 @@ defmodule Doggo.Components do
     modifiers that can be overridden. Any attribute type is allowed, but since
     the value will be used as data attribute value, it needs to be possible to
     convert the value to a string. The `:type` option defaults to `:string`.
+  - `defaults` - Defaults for the optional attributes and slots of the
+    component. See [Defaults](#module-defaults).
 
   Some components have additional options that are mostly used to allow the
-  customization of certain class names or to set the Gettext module.
+  customization of certain class names.
 
   The options are evaluated in the module body, so you can pass module
   attributes and function calls:
@@ -109,6 +111,48 @@ defmodule Doggo.Components do
 
   Functions have to be remote captures such as `&MyAppWeb.Inputs.ranked/1`.
   Anonymous functions cannot be compiled into the component.
+
+  ## Defaults
+
+  Set the defaults of attributes and slots once for every call of the
+  component. An attribute or slot passed at the call overrides the default.
+
+      build_icon(defaults: [text_position: "after"])
+
+      build_fallback(defaults: [placeholder: gettext("n/a")])
+
+      build_alert(defaults: [icon: ~H|<.icon name="info" />|])
+
+  A literal, such as `text_position: "after"`, or a remote capture becomes the
+  default of the attribute and is listed in the docs of the component. Any
+  other expression, such as `gettext("n/a")`, is evaluated when the component
+  renders without the attribute, so that it follows the current locale. An
+  expression cannot read the assigns of the component. The default applies
+  when the attribute is not passed. Passing `nil` keeps `nil`.
+
+  Only defaults written in the build call are evaluated at render. Defaults
+  from a module attribute, as in `build_alert(defaults: @defaults)`, are
+  evaluated when the module compiles, so a `gettext` call there is translated
+  once, into the locale at compile time.
+
+  A slot default is a remote capture of a function component or inline HEEx.
+  It renders when the slot is empty, with the values of the modifiers of the
+  component as assigns, such as `@level` for `alert`. For a slot with
+  attributes, pass them in a keyword list with the content as `inner_block`:
+
+      build_carousel(
+        defaults: [
+          previous: [
+            label: gettext("Previous slide"),
+            inner_block: ~H|<.icon name="chevron-left" />|
+          ]
+        ]
+      )
+
+  A default `label` for a landmark, such as `breadcrumb`, names every instance
+  the same. If a page has two, pass a label to each.
+
+  The default of a modifier is set in `modifiers:`.
   """
 
   use Phoenix.Component

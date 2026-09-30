@@ -126,6 +126,181 @@ defmodule Doggo.MacrosTest do
   end
 
   describe "build_alert/1" do
+    test "renders an expression default" do
+      [{module, _}] =
+        compile(ExpressionDefault, ~S"""
+        def title, do: "Notice"
+
+        build_alert(defaults: [title: title() <> " for you"])
+
+        def page(assigns), do: ~H|<.alert id="a">Hi</.alert>|
+        """)
+
+      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{}))
+      assert html =~ "Notice for you"
+    end
+
+    test "renders the value of the call instead of the default" do
+      [{module, _}] =
+        compile(DefaultOverride, ~S"""
+        build_alert(defaults: [title: String.upcase("notice")])
+
+        def page(assigns), do: ~H|<.alert id="a" title="Own">Hi</.alert>|
+        """)
+
+      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{}))
+      assert html =~ "Own"
+      refute html =~ "NOTICE"
+    end
+
+    test "keeps nil passed by the call" do
+      [{module, _}] =
+        compile(DefaultNil, ~S"""
+        build_alert(defaults: [title: String.upcase("notice")])
+
+        def page(assigns),
+          do: ~H|<.alert id="a" title={@title}>Hi</.alert>|
+        """)
+
+      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{title: nil}))
+      refute html =~ "NOTICE"
+    end
+
+    test "does not send an expression default if another attribute changed" do
+      [{module, _}] =
+        compile(DefaultChangeTracking, ~S"""
+        build_alert(defaults: [title: String.upcase("notice")])
+
+        def page(assigns),
+          do: ~H|<.alert id="a" level={@level}>Hi</.alert>|
+        """)
+
+      parts =
+        %{level: "danger", __changed__: %{level: true}}
+        |> module.page()
+        |> Doggo.TestHelpers.sent_parts()
+
+      refute Enum.any?(parts, &(&1 =~ "NOTICE"))
+    end
+
+    test "renders a slot default" do
+      [{module, _}] =
+        compile(SlotDefault, ~S"""
+        def warning_icon(assigns), do: ~H|<b>!</b>|
+
+        build_alert(defaults: [icon: &__MODULE__.warning_icon/1])
+
+        def page(assigns), do: ~H|<.alert id="a">Hi</.alert>|
+        """)
+
+      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{}))
+      assert html =~ "<b>!</b>"
+    end
+
+    test "renders an inline slot default with the modifier values" do
+      [{module, _}] =
+        compile(InlineSlotDefault, ~S"""
+        build_alert(defaults: [icon: ~H|<i data-icon={@level}></i>|])
+
+        def page(assigns),
+          do: ~H|<.alert id="a" level="warning">Hi</.alert>|
+        """)
+
+      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{}))
+      assert html =~ ~s(<i data-icon="warning"></i>)
+    end
+
+    test "sends a slot default again if a modifier changed" do
+      [{module, _}] =
+        compile(SlotDefaultChangeTracking, ~S"""
+        build_alert(defaults: [icon: ~H|<i data-icon={@level}></i>|])
+
+        def page(assigns),
+          do: ~H|<.alert id="a" level={@level}>Hi</.alert>|
+        """)
+
+      parts =
+        %{level: "danger", __changed__: %{level: true}}
+        |> module.page()
+        |> Doggo.TestHelpers.sent_parts()
+
+      assert Enum.any?(parts, &(&1 =~ ~s(data-icon="danger")))
+    end
+
+    test "raises for an anonymous function as a default" do
+      assert_raise ArgumentError, ~r/is an anonymous function/, fn ->
+        compile(AnonymousDefault, ~S"""
+        @defaults [title: fn -> "x" end]
+        build_alert(defaults: @defaults)
+        """)
+      end
+    end
+
+    test "raises for a default of an unknown attribute" do
+      assert_raise ArgumentError,
+                   ~r/invalid default for build_alert\/1.*:titl.*:title/s,
+                   fn ->
+                     compile(
+                       UnknownDefault,
+                       ~S|build_alert(defaults: [titl: "x"])|
+                     )
+                   end
+    end
+
+    test "raises for a default of a required attribute" do
+      assert_raise ArgumentError,
+                   ~r/invalid default for build_alert\/1.*:id/s,
+                   fn ->
+                     compile(
+                       RequiredDefault,
+                       ~S|build_alert(defaults: [id: "a"])|
+                     )
+                   end
+    end
+
+    test "raises for a default of a modifier" do
+      assert_raise ArgumentError, ~r/:level is a modifier.*modifiers:/s, fn ->
+        compile(ModifierDefault, ~S|build_alert(defaults: [level: "info"])|)
+      end
+    end
+
+    test "raises for a default of the global attributes" do
+      assert_raise ArgumentError,
+                   ~r/invalid default for build_alert\/1.*:rest/s,
+                   fn ->
+                     compile(
+                       RestDefault,
+                       ~S|build_alert(defaults: [rest: %{}])|
+                     )
+                   end
+    end
+
+    test "raises for a default that reads assigns" do
+      assert_raise ArgumentError, ~r/reads the component's assigns/, fn ->
+        compile(
+          AssignsDefault,
+          ~S|build_alert(defaults: [title: assigns.level])|
+        )
+      end
+    end
+
+    test "raises for a slot default that is not a function component" do
+      assert_raise ArgumentError, ~r/The content of a slot default/, fn ->
+        compile(TextSlotDefault, ~S|build_alert(defaults: [icon: "x"])|)
+      end
+    end
+
+    test "raises for a default capture of a function that does not exist" do
+      assert_raise ArgumentError,
+                   ~r/refers to a function that does not exist/,
+                   fn ->
+                     compile(
+                       MissingCapture,
+                       ~S|build_alert(defaults: [icon: &Enum.nope/1])|
+                     )
+                   end
+    end
+
     test "raises for modifier named like slot" do
       assert_raise ArgumentError,
                    ~r/already declares an attribute or slot with that name/,
@@ -310,6 +485,85 @@ defmodule Doggo.MacrosTest do
       assert html =~ ~s(<div class="search">)
       assert html =~ "(required)"
       assert html =~ ~s(class="search-required-mark")
+    end
+  end
+
+  describe "build_breadcrumb/1" do
+    test "applies an expression default for the label before the label check" do
+      [{module, _}] =
+        compile(LabelExpressionDefault, ~S"""
+        build_breadcrumb(defaults: [label: String.capitalize("breadcrumb")])
+
+        def page(assigns),
+          do: ~H|<.breadcrumb><:item href="/">Home</:item></.breadcrumb>|
+        """)
+
+      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{}))
+      assert html =~ ~s(aria-label="Breadcrumb")
+    end
+  end
+
+  describe "build_carousel/1" do
+    test "renders a slot default with slot attributes" do
+      [{module, _}] =
+        compile(SlotAttributesDefault, ~S"""
+        build_carousel(
+          defaults: [
+            previous: [label: String.upcase("back"), inner_block: ~H|<b>‹</b>|],
+            next: [label: "Forward", inner_block: ~H|<b>›</b>|]
+          ]
+        )
+
+        def page(assigns),
+          do: ~H|<.carousel id="c" label="Dogs"><:item label="1">A</:item><:item label="2">B</:item></.carousel>|
+        """)
+
+      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{}))
+      assert html =~ ~r/aria-label="BACK"[^>]*>\s*<b>‹<\/b>/
+      assert html =~ ~r/aria-label="Forward"[^>]*>\s*<b>›<\/b>/
+    end
+
+    test "raises for a slot default without a required slot attribute" do
+      assert_raise ArgumentError, ~r/Missing:\n\n\s+\[:label\]/, fn ->
+        compile(
+          MissingSlotAttribute,
+          ~S|build_carousel(defaults: [previous: ~H"<b>‹</b>"])|
+        )
+      end
+    end
+
+    test "raises for a slot default with an unknown slot attribute" do
+      assert_raise ArgumentError, ~r/Unknown:\n\n\s+\[:title\]/, fn ->
+        compile(
+          UnknownSlotAttribute,
+          ~S|build_carousel(defaults: [previous: [label: "Back", title: "x", inner_block: ~H"<b>‹</b>"]])|
+        )
+      end
+    end
+  end
+
+  describe "build_icon/1" do
+    test "writes a literal default into the declaration" do
+      [{module, _}] =
+        compile(LiteralDefault, ~S"""
+        build_icon(icon_module: Doggo.FixtureIcons, defaults: [text_position: "after"])
+        """)
+
+      %{attrs: attrs} = module.__components__()[:icon]
+
+      assert Enum.find(attrs, &(&1.name == :text_position)).opts[:default] ==
+               "after"
+    end
+
+    test "raises for a literal default that is not one of the values" do
+      assert_raise ArgumentError,
+                   ~r/must be one of the attribute's values/,
+                   fn ->
+                     compile(
+                       InvalidLiteralDefault,
+                       ~S|build_icon(icon_module: Doggo.FixtureIcons, defaults: [text_position: "above"])|
+                     )
+                   end
     end
   end
 
