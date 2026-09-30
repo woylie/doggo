@@ -209,6 +209,6 @@ jobs:
       - name: Run Hex Audit
         run: mix hex.audit
       - name: Run Dialyzer
-        run: mix dialyzer
+        run: mix dialyzer --force-check
       - name: Run tests
         run: mix test --warnings-as-errors

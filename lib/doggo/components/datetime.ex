@@ -26,7 +26,7 @@ defmodule Doggo.Components.Datetime do
     Will be rendered as:
 
     ```html
-    <time datetime="2023-02-05T12:22:06.003Z">
+    <time class="datetime" datetime="2023-02-05T12:22:06.003Z">
       2023-02-05 12:22:06.003Z
     </time>
     ```
@@ -45,7 +45,7 @@ defmodule Doggo.Components.Datetime do
     Which, depending on your locale, may be rendered as:
 
     ```html
-    <time datetime="2023-02-05T14:22:06.003Z">
+    <time class="datetime" datetime="2023-02-05T14:22:06.003Z">
       Feb 2, 2023, 14:22:06 PM
     </time>
     ```
@@ -87,7 +87,7 @@ defmodule Doggo.Components.Datetime do
     Which would be rendered as:
 
     ```html
-    <time datetime="2023-02-06T08:22:05+09:00">
+    <time class="datetime" datetime="2023-02-06T08:22:05+09:00">
       2023-02-06 08:22:05+09:00 JST Asia/Tokyo
     </time>
     ```
@@ -106,7 +106,6 @@ defmodule Doggo.Components.Datetime do
       handling of the `<time>` element and its `datetime` attribute by screen
       readers and the limited accessibility of the title attribute.
       """,
-      base_class: nil,
       modifiers: []
     ]
   end
@@ -152,10 +151,15 @@ defmodule Doggo.Components.Datetime do
         default: nil,
         doc: """
         If set and the given value is a `DateTime`, the value will be shifted to
-        that time zone. This affects both the display value and the `datetime` tag.
+        that time zone. This affects both the display value and the `datetime`
+        attribute. A `NaiveDateTime` is not shifted.
+
         Note that you need to
         [configure a time zone database](https://hexdocs.pm/elixir/DateTime.html#module-time-zone-database)
         for this to work.
+
+        An unknown time zone raises an error. Validate a time zone taken from
+        user input or the browser before you pass it to this component.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."
@@ -167,11 +171,12 @@ defmodule Doggo.Components.Datetime do
     quote do
       value =
         var!(assigns).value
+        |> Doggo.time_value!([DateTime, NaiveDateTime], ".datetime")
         |> Doggo.shift_zone(var!(assigns).timezone)
         |> Doggo.truncate_datetime(var!(assigns).precision)
 
       var!(assigns) =
-        Doggo.assign_time(var!(assigns), value, &Doggo.datetime_attr/1)
+        Doggo.assign_time(var!(assigns), value, ".datetime")
 
       ~H"""
       <time

@@ -121,5 +121,43 @@ defmodule Doggo.Components.DateTest do
       assert attribute(time, "datetime") == "2023-12-28"
       assert text(time) == "2023-12-28"
     end
+
+    test "omits datetime attribute for year before 1" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.date value={Date.new!(-5, 1, 1)} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == nil
+      assert text(time) == "-0005-01-01"
+    end
+
+    test "raises for Time" do
+      assigns = %{}
+
+      assert_raise ArgumentError,
+                   ~r/invalid value for \.date.*Use \.time for a Time/s,
+                   fn ->
+                     parse_heex(~H"""
+                     <TestComponents.date value={~T[18:30:21]} />
+                     """)
+                   end
+    end
+
+    test "raises for invalid title formatter" do
+      assigns = %{}
+
+      assert_raise ArgumentError,
+                   ~r/invalid title_formatter value for \.date/,
+                   fn ->
+                     parse_heex(~H"""
+                     <TestComponents.date value={~D[2023-12-27]} title_formatter="x" />
+                     """)
+                   end
+    end
   end
 end
