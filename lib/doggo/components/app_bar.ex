@@ -123,37 +123,39 @@ defmodule Doggo.Components.AppBar do
   end
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <header
-      id={@id}
-      class={@class}
-      aria-labelledby={@title && "#{@id}-title"}
-      {@data_attrs}
-      {@rest}
-    >
-      <div :if={@navigation != []} class={"#{@base_class}-navigation"}>
-        <.link
-          :for={navigation <- @navigation}
-          phx-click={Doggo.callback!(navigation.on_click, :on_click, ".app_bar")}
-          aria-label={navigation.label}
-          title={navigation.label}
-        >
-          {render_slot(navigation)}
-        </.link>
-      </div>
-      <h1 :if={@title} id={"#{@id}-title"}>{@title}</h1>
-      <div :if={@action != []} class={"#{@base_class}-actions"}>
-        <.link
-          :for={action <- @action}
-          phx-click={Doggo.callback!(action.on_click, :on_click, ".app_bar")}
-          aria-label={action.label}
-          title={action.label}
-        >
-          {render_slot(action)}
-        </.link>
-      </div>
-    </header>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <header
+        id={@id}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        aria-labelledby={@title && "#{@id}-title"}
+        {@data_attrs}
+        {@rest}
+      >
+        <div :if={@navigation != []} class={Doggo.build(:base_class, "-navigation")}>
+          <.link
+            :for={navigation <- @navigation}
+            phx-click={Doggo.callback!(navigation.on_click, :on_click, ".app_bar")}
+            aria-label={navigation.label}
+            title={navigation.label}
+          >
+            {render_slot(navigation)}
+          </.link>
+        </div>
+        <h1 :if={@title} id={"#{@id}-title"}>{@title}</h1>
+        <div :if={@action != []} class={Doggo.build(:base_class, "-actions")}>
+          <.link
+            :for={action <- @action}
+            phx-click={Doggo.callback!(action.on_click, :on_click, ".app_bar")}
+            aria-label={action.label}
+            title={action.label}
+          >
+            {render_slot(action)}
+          </.link>
+        </div>
+      </header>
+      """
+    end
   end
 end

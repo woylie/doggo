@@ -97,14 +97,8 @@ defmodule Doggo.Macros do
     modifiers = Keyword.fetch!(opts, :modifiers)
     docstring = assemble_component_doc(module)
 
-    {prepare, render} =
-      if function_exported?(module, :template, 1) do
-        {build_data_attrs(Keyword.keys(modifiers)),
-         Doggo.Template.compile(module, Keyword.merge(opts, extra))}
-      else
-        {prepare_class_and_data_attrs(opts),
-         quote(do: unquote(module).render(var!(assigns)))}
-      end
+    modifier_data = build_data_attrs(Keyword.keys(modifiers))
+    template = Doggo.Template.compile(module, Keyword.merge(opts, extra))
 
     quote do
       @dog_components unquote(Macro.escape(component_info))
@@ -137,9 +131,9 @@ defmodule Doggo.Macros do
       def unquote(name)(var!(assigns)) do
         unquote(label_check(module, name))
         unquote(own_attributes_check(module, name))
-        unquote(prepare)
+        unquote(modifier_data)
         unquote(module.init_block(opts, extra))
-        unquote(render)
+        unquote(template)
       end
     end
   end
@@ -570,42 +564,6 @@ defmodule Doggo.Macros do
           )
         end
       end
-    end
-  end
-
-  def prepare_class_and_data_attrs(opts) do
-    modifiers = Keyword.fetch!(opts, :modifiers)
-    modifier_names = Keyword.keys(modifiers)
-    base_class = Keyword.fetch!(opts, :base_class)
-
-    quote do
-      additional_classes =
-        if value = var!(assigns)[:class], do: List.wrap(value), else: []
-
-      unquote(combine_classes(base_class))
-      unquote(build_data_attrs(modifier_names))
-
-      var!(assigns) =
-        Doggo.assign_derived(
-          var!(assigns),
-          [base_class: unquote(base_class)],
-          []
-        )
-
-      var!(assigns) =
-        Doggo.assign_derived(var!(assigns), [class: class], [:class])
-    end
-  end
-
-  defp combine_classes(nil) do
-    quote do
-      class = additional_classes
-    end
-  end
-
-  defp combine_classes(base_class) do
-    quote do
-      class = [unquote(base_class) | additional_classes]
     end
   end
 

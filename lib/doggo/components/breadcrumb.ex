@@ -89,36 +89,47 @@ defmodule Doggo.Components.Breadcrumb do
   def example_label, do: "Breadcrumb"
 
   @impl true
-  def render(%{item: []} = assigns), do: ~H""
+  def template(_opts) do
+    quote do
+      var!(assigns) =
+        case var!(assigns).item do
+          [] ->
+            var!(assigns)
 
-  def render(%{item: item} = assigns) do
-    [last_item | rest] = Enum.reverse(item)
+          item ->
+            [last_item | rest] = Enum.reverse(item)
 
-    assigns =
-      Doggo.assign_derived(
-        assigns,
-        [item: Enum.reverse([{:current, last_item} | rest])],
-        [:item]
-      )
+            Doggo.assign_derived(
+              var!(assigns),
+              [item: Enum.reverse([{:current, last_item} | rest])],
+              [:item]
+            )
+        end
 
-    ~H"""
-    <nav
-      aria-label={@label}
-      aria-labelledby={@labelledby}
-      class={@class}
-      {@data_attrs}
-      {@rest}
-    >
-      <ol>
-        <li :for={current_item <- @item} class={"#{@base_class}-item"}>
-          <.breadcrumb_link item={current_item} base_class={@base_class} />
-        </li>
-      </ol>
-    </nav>
-    """
+      ~H"""
+      <nav
+        :if={@item != []}
+        aria-label={@label}
+        aria-labelledby={@labelledby}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+      >
+        <ol>
+          <li :for={current_item <- @item} class={Doggo.build(:base_class, "-item")}>
+            <Doggo.Components.Breadcrumb.breadcrumb_link
+              item={current_item}
+              base_class={Doggo.build(:base_class)}
+            />
+          </li>
+        </ol>
+      </nav>
+      """
+    end
   end
 
-  defp breadcrumb_link(%{item: {:current, current_item}} = assigns) do
+  @doc false
+  def breadcrumb_link(%{item: {:current, current_item}} = assigns) do
     assigns = assign(assigns, :item, current_item)
 
     ~H"""
@@ -134,7 +145,7 @@ defmodule Doggo.Components.Breadcrumb do
     """
   end
 
-  defp breadcrumb_link(assigns) do
+  def breadcrumb_link(assigns) do
     ~H"""
     <.link
       navigate={@item[:navigate]}

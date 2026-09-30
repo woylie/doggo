@@ -131,20 +131,22 @@ defmodule Doggo.Components.Navbar do
   def example_label, do: "Main"
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <nav
-      class={@class}
-      aria-label={@label}
-      aria-labelledby={@labelledby}
-      {@data_attrs}
-      {@rest}
-    >
-      <div :if={@brand != []} class={"#{@base_class}-brand"}>
-        {render_slot(@brand)}
-      </div>
-      {render_slot(@inner_block)}
-    </nav>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <nav
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        aria-label={@label}
+        aria-labelledby={@labelledby}
+        {@data_attrs}
+        {@rest}
+      >
+        <div :if={@brand != []} class={Doggo.build(:base_class, "-brand")}>
+          {render_slot(@brand)}
+        </div>
+        {render_slot(@inner_block)}
+      </nav>
+      """
+    end
   end
 end

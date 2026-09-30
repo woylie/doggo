@@ -119,33 +119,36 @@ defmodule Doggo.Components.Avatar do
   end
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <div
-      :if={@src || @placeholder_src || @placeholder_content}
-      class={@class}
-      {@data_attrs}
-      {@rest}
-    >
-      <.inner_avatar
-        src={@src}
-        placeholder_src={@placeholder_src}
-        placeholder_content={@placeholder_content}
-        alt={@alt}
-        loading={@loading}
-        base_class={@base_class}
-      />
-    </div>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <div
+        :if={@src || @placeholder_src || @placeholder_content}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+      >
+        <Doggo.Components.Avatar.inner_avatar
+          src={@src}
+          placeholder_src={@placeholder_src}
+          placeholder_content={@placeholder_content}
+          alt={@alt}
+          loading={@loading}
+          base_class={Doggo.build(:base_class)}
+        />
+      </div>
+      """
+    end
   end
 
-  defp inner_avatar(%{src: src} = assigns) when is_binary(src) do
+  @doc false
+  def inner_avatar(%{src: src} = assigns) when is_binary(src) do
     ~H"""
     <img class={"#{@base_class}-image"} src={@src} alt={@alt} loading={@loading} />
     """
   end
 
-  defp inner_avatar(%{placeholder_src: src} = assigns) when is_binary(src) do
+  def inner_avatar(%{placeholder_src: src} = assigns) when is_binary(src) do
     ~H"""
     <img
       class={"#{@base_class}-placeholder"}
@@ -156,7 +159,7 @@ defmodule Doggo.Components.Avatar do
     """
   end
 
-  defp inner_avatar(assigns) do
+  def inner_avatar(assigns) do
     ~H"""
     <span
       class={"#{@base_class}-placeholder"}

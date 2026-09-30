@@ -250,60 +250,62 @@ defmodule Doggo.Components.Table do
   def ensure_name!(_assigns, _name), do: :ok
 
   @impl true
-  def render(assigns) do
-    assigns =
-      with %{rows: %Phoenix.LiveView.LiveStream{}} <- assigns do
-        assign(assigns,
-          row_id: assigns.row_id || fn {id, _item} -> id end
-        )
-      end
+  def template(_opts) do
+    quote do
+      var!(assigns) =
+        with %{rows: %Phoenix.LiveView.LiveStream{}} <- var!(assigns) do
+          Phoenix.Component.assign(var!(assigns),
+            row_id: var!(assigns).row_id || fn {id, _item} -> id end
+          )
+        end
 
-    ~H"""
-    <div
-      class={@class}
-      tabindex={@scrollable && "0"}
-      role={
-        @scrollable && (Doggo.named?(@label) || Doggo.named?(@caption)) &&
-          "region"
-      }
-      aria-label={@scrollable && Doggo.named?(@label) && @label}
-      aria-labelledby={
-        @scrollable && !Doggo.named?(@label) && Doggo.named?(@caption) &&
-          "#{@id}-caption"
-      }
-      {@data_attrs}
-      {@rest}
-    >
-      <table id={@id}>
-        <caption :if={@caption} id={"#{@id}-caption"}>{@caption}</caption>
-        <colgroup :if={
-          Enum.any?(@col, & &1[:col_attrs]) or Enum.any?(@action, & &1[:col_attrs])
-        }>
-          <col :for={col <- @col} {col[:col_attrs] || []} />
-          <col :for={action <- @action} {action[:col_attrs] || []} />
-        </colgroup>
-        <thead>
-          <tr>
-            <th :for={col <- @col} scope="col">{col[:label]}</th>
-            <th :for={action <- @action} scope="col">{action[:label]}</th>
-          </tr>
-        </thead>
-        <tbody
-          id={@id <> "-tbody"}
-          phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
-        >
-          <tr :for={row <- @rows} id={@row_id && @row_id.(row)}>
-            <td :for={col <- @col} phx-click={@row_click && @row_click.(row)}>
-              {render_slot(col, @row_item.(row))}
-            </td>
-            <td :for={action <- @action}>
-              {render_slot(action, @row_item.(row))}
-            </td>
-          </tr>
-        </tbody>
-        <tfoot :if={@foot != []}>{render_slot(@foot)}</tfoot>
-      </table>
-    </div>
-    """
+      ~H"""
+      <div
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        tabindex={@scrollable && "0"}
+        role={
+          @scrollable && (Doggo.named?(@label) || Doggo.named?(@caption)) &&
+            "region"
+        }
+        aria-label={@scrollable && Doggo.named?(@label) && @label}
+        aria-labelledby={
+          @scrollable && !Doggo.named?(@label) && Doggo.named?(@caption) &&
+            "#{@id}-caption"
+        }
+        {@data_attrs}
+        {@rest}
+      >
+        <table id={@id}>
+          <caption :if={@caption} id={"#{@id}-caption"}>{@caption}</caption>
+          <colgroup :if={
+            Enum.any?(@col, & &1[:col_attrs]) or Enum.any?(@action, & &1[:col_attrs])
+          }>
+            <col :for={col <- @col} {col[:col_attrs] || []} />
+            <col :for={action <- @action} {action[:col_attrs] || []} />
+          </colgroup>
+          <thead>
+            <tr>
+              <th :for={col <- @col} scope="col">{col[:label]}</th>
+              <th :for={action <- @action} scope="col">{action[:label]}</th>
+            </tr>
+          </thead>
+          <tbody
+            id={@id <> "-tbody"}
+            phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
+          >
+            <tr :for={row <- @rows} id={@row_id && @row_id.(row)}>
+              <td :for={col <- @col} phx-click={@row_click && @row_click.(row)}>
+                {render_slot(col, @row_item.(row))}
+              </td>
+              <td :for={action <- @action}>
+                {render_slot(action, @row_item.(row))}
+              </td>
+            </tr>
+          </tbody>
+          <tfoot :if={@foot != []}>{render_slot(@foot)}</tfoot>
+        </table>
+      </div>
+      """
+    end
   end
 end

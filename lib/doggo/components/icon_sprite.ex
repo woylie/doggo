@@ -89,9 +89,8 @@ defmodule Doggo.Components.IconSprite do
   end
 
   @impl true
-  def init_block(opts, extra) do
+  def init_block(opts, _extra) do
     name = ".#{Keyword.fetch!(opts, :name)}"
-    sprite_url = Keyword.fetch!(extra, :sprite_url)
 
     quote do
       require Doggo
@@ -99,29 +98,29 @@ defmodule Doggo.Components.IconSprite do
       Doggo.diagnostic do
         Doggo.ensure_optional_name!(var!(assigns).text, unquote(name), "text")
       end
-
-      var!(assigns) =
-        Doggo.assign_derived(
-          var!(assigns),
-          [sprite_url: unquote(sprite_url)],
-          []
-        )
     end
   end
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <span class={@class} data-text-position={@text_position} {@data_attrs} {@rest}>
-      <svg aria-hidden="true"><use href={"#{@sprite_url}##{@name}"} /></svg>
+  def template(_opts) do
+    quote do
+      ~H"""
       <span
-        :if={@text}
-        class={"#{@base_class}-text"}
-        data-visually-hidden={@text_position == "hidden"}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        data-text-position={@text_position}
+        {@data_attrs}
+        {@rest}
       >
-        {@text}
+        <svg aria-hidden="true"><use href={"#{Doggo.build(:sprite_url)}##{@name}"} /></svg>
+        <span
+          :if={@text}
+          class={Doggo.build(:base_class, "-text")}
+          data-visually-hidden={@text_position == "hidden"}
+        >
+          {@text}
+        </span>
       </span>
-    </span>
-    """
+      """
+    end
   end
 end

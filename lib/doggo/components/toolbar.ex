@@ -152,22 +152,24 @@ defmodule Doggo.Components.Toolbar do
   def example_label, do: "Dog profile actions"
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <div
-      id={@id}
-      class={@class}
-      role="toolbar"
-      aria-label={@label}
-      aria-labelledby={@labelledby}
-      aria-controls={@controls}
-      aria-orientation={@orientation == "vertical" && "vertical"}
-      phx-hook="Doggo.Toolbar"
-      {@data_attrs}
-      {@rest}
-    >
-      {render_slot(@inner_block)}
-    </div>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <div
+        id={@id}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        role="toolbar"
+        aria-label={@label}
+        aria-labelledby={@labelledby}
+        aria-controls={@controls}
+        aria-orientation={@orientation == "vertical" && "vertical"}
+        phx-hook="Doggo.Toolbar"
+        {@data_attrs}
+        {@rest}
+      >
+        {render_slot(@inner_block)}
+      </div>
+      """
+    end
   end
 end

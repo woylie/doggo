@@ -61,12 +61,6 @@ defmodule Doggo.Component do
   @callback init_block(opts :: Keyword.t(), extra :: Keyword.t()) :: Macro.t()
 
   @doc """
-  The Phoenix component that receives the prepared class and additional
-  attributes from the init block.
-  """
-  @callback render(assigns :: map()) :: Phoenix.LiveView.Rendered.t()
-
-  @doc """
   Returns the quoted HEEx template that the build compiles in the module that
   builds the component.
   """
@@ -103,7 +97,5 @@ defmodule Doggo.Component do
                       css_path: 0,
                       example_label: 0,
                       keyboard: 0,
-                      own_attributes: 0,
-                      render: 1,
-                      template: 1
+                      own_attributes: 0
 end

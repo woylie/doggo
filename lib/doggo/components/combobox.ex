@@ -461,7 +461,93 @@ defmodule Doggo.Components.Combobox do
   end
 
   @impl true
-  def render(%{name: name, options: options, value: value} = assigns) do
+  def template(_opts) do
+    quote do
+      var!(assigns) = unquote(__MODULE__).prepare(var!(assigns))
+
+      ~H"""
+      <div
+        id={"#{@id}-combobox"}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        phx-hook="Doggo.Combobox"
+        data-filter={@on_search && "server"}
+        {@data_attrs}
+      >
+        <div class={Doggo.build(:base_class, "-input-wrapper")}>
+          <input
+            id={@id}
+            type="text"
+            role="combobox"
+            name={@search_name}
+            value={@search_value}
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-controls={"#{@id}-listbox"}
+            phx-change={@on_search}
+            {@rest}
+            {@shared_rest}
+          />
+          <button
+            :if={@clearable}
+            id={"#{@id}-clear"}
+            type="button"
+            class={Doggo.build(:base_class, "-clear")}
+            tabindex="-1"
+            data-clear
+            aria-label={@clear_label}
+            hidden={@value in [nil, ""]}
+          >
+            {render_slot(@clear)}
+            <span :if={@clear == []}>×</span>
+          </button>
+          <button
+            id={"#{@id}-button"}
+            type="button"
+            class={Doggo.build(:base_class, "-toggle")}
+            tabindex="-1"
+            aria-label={@list_label}
+            aria-expanded="false"
+            aria-controls={"#{@id}-listbox"}
+          >
+            {render_slot(@toggle)}
+            <span :if={@toggle == []}>▼</span>
+          </button>
+        </div>
+        <div id={"#{@id}-listbox"} role="listbox" aria-label={@list_label} hidden>
+          <Doggo.Components.Combobox.combobox_entry
+            :for={entry <- @options}
+            entry={entry}
+            id={@id}
+            base_class={Doggo.build(:base_class)}
+            selected={@selected}
+          />
+          <div
+            :if={@free_text}
+            id={"#{@id}-option-free-text"}
+            role="option"
+            class={Doggo.build(:base_class, "-option-free-text")}
+            aria-selected="false"
+            data-free-text
+            hidden
+          >
+            <span class={Doggo.build(:base_class, "-option-label")} dir="auto">{@free_text_label}</span>
+            <span class={Doggo.build(:base_class, "-option-term")} dir="auto"></span>
+          </div>
+        </div>
+        <input
+          type="hidden"
+          id={"#{@id}-value"}
+          name={@name}
+          value={@value}
+          {@shared_rest}
+        />
+      </div>
+      """
+    end
+  end
+
+  @doc false
+  def prepare(%{name: name, options: options, value: value} = assigns) do
     {options, _counters} = normalize_options(options, {1, 1})
 
     value = value && to_string(value)
@@ -478,101 +564,21 @@ defmodule Doggo.Components.Combobox do
 
     search_value = display_text(assigns.display_value, options, value)
 
-    assigns =
-      assigns
-      |> Doggo.assign_derived(
-        [
-          options: options,
-          search_name: search_name(name),
-          selected: selected,
-          value: value,
-          search_value: search_value
-        ],
-        [:name, :options, :value, :display_value]
-      )
-      |> Doggo.assign_derived(
-        [rest: rest, shared_rest: shared],
-        [:rest, :on_search]
-      )
-
-    ~H"""
-    <div
-      id={"#{@id}-combobox"}
-      class={@class}
-      phx-hook="Doggo.Combobox"
-      data-filter={@on_search && "server"}
-      {@data_attrs}
-    >
-      <div class={"#{@base_class}-input-wrapper"}>
-        <input
-          id={@id}
-          type="text"
-          role="combobox"
-          name={@search_name}
-          value={@search_value}
-          aria-autocomplete="list"
-          aria-expanded="false"
-          aria-controls={"#{@id}-listbox"}
-          phx-change={@on_search}
-          {@rest}
-          {@shared_rest}
-        />
-        <button
-          :if={@clearable}
-          id={"#{@id}-clear"}
-          type="button"
-          class={"#{@base_class}-clear"}
-          tabindex="-1"
-          data-clear
-          aria-label={@clear_label}
-          hidden={@value in [nil, ""]}
-        >
-          {render_slot(@clear)}
-          <span :if={@clear == []}>×</span>
-        </button>
-        <button
-          id={"#{@id}-button"}
-          type="button"
-          class={"#{@base_class}-toggle"}
-          tabindex="-1"
-          aria-label={@list_label}
-          aria-expanded="false"
-          aria-controls={"#{@id}-listbox"}
-        >
-          {render_slot(@toggle)}
-          <span :if={@toggle == []}>▼</span>
-        </button>
-      </div>
-      <div id={"#{@id}-listbox"} role="listbox" aria-label={@list_label} hidden>
-        <.combobox_entry
-          :for={entry <- @options}
-          entry={entry}
-          id={@id}
-          base_class={@base_class}
-          selected={@selected}
-        />
-        <div
-          :if={@free_text}
-          id={"#{@id}-option-free-text"}
-          role="option"
-          class={"#{@base_class}-option-free-text"}
-          aria-selected="false"
-          data-free-text
-          hidden
-        >
-          <span class={"#{@base_class}-option-label"} dir="auto">{@free_text_label}</span>
-          <span class={"#{@base_class}-option-term"} dir="auto"></span>
-        </div>
-      </div>
-      <input
-        type="hidden"
-        id={"#{@id}-value"}
-        name={@name}
-        value={@value}
-        {@shared_rest}
-      />
-    </div>
-    """
+    assigns
+    |> Doggo.assign_derived(
+      [
+        options: options,
+        search_name: search_name(name),
+        selected: selected,
+        value: value,
+        search_value: search_value
+      ],
+      [:name, :options, :value, :display_value]
+    )
+    |> Doggo.assign_derived(
+      [rest: rest, shared_rest: shared],
+      [:rest, :on_search]
+    )
   end
 
   defp search_name(name) do
@@ -594,7 +600,8 @@ defmodule Doggo.Components.Combobox do
   # A listbox allows only `option` and `group` as accessibility children in
   # ARIA 1.2 and in the 1.3 draft. Axe fails a separator as a chil
   # (dequelabs/axe-core#3938). Hide it from accessibility tree.
-  defp combobox_entry(%{entry: :separator} = assigns) do
+  @doc false
+  def combobox_entry(%{entry: :separator} = assigns) do
     ~H"""
     <hr aria-hidden="true" />
     """
@@ -603,7 +610,7 @@ defmodule Doggo.Components.Combobox do
   # The group label is a visible element referenced by `aria-labelledby`, and
   # the options sit directly inside the group, following the grouped listbox
   # example of the ARIA Authoring Practices.
-  defp combobox_entry(%{entry: %{group: _}} = assigns) do
+  def combobox_entry(%{entry: %{group: _}} = assigns) do
     ~H"""
     <div
       role="group"
@@ -627,7 +634,7 @@ defmodule Doggo.Components.Combobox do
     """
   end
 
-  defp combobox_entry(assigns) do
+  def combobox_entry(assigns) do
     ~H"""
     <div
       id={"#{@id}-option-#{@entry.index}"}

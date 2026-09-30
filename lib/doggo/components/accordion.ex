@@ -140,22 +140,29 @@ defmodule Doggo.Components.Accordion do
   end
 
   @impl true
-  def render(%{section: []} = assigns), do: ~H""
-
-  def render(assigns) do
-    ~H"""
-    <div id={@id} class={@class} phx-hook="Doggo.Accordion" {@data_attrs} {@rest}>
-      <.section
-        :for={{section, index} <- Enum.with_index(@section, 1)}
-        section={section}
-        index={index}
+  def template(_opts) do
+    quote do
+      ~H"""
+      <div
+        :if={@section != []}
         id={@id}
-        expanded={@expanded}
-        heading={@heading}
-        base_class={@base_class}
-      />
-    </div>
-    """
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        phx-hook="Doggo.Accordion"
+        {@data_attrs}
+        {@rest}
+      >
+        <Doggo.Components.Accordion.section
+          :for={{section, index} <- Enum.with_index(@section, 1)}
+          section={section}
+          index={index}
+          id={@id}
+          expanded={@expanded}
+          heading={@heading}
+          base_class={Doggo.build(:base_class)}
+        />
+      </div>
+      """
+    end
   end
 
   @doc false

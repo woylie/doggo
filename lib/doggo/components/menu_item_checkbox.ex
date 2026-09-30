@@ -91,34 +91,37 @@ defmodule Doggo.Components.MenuItemCheckbox do
   end
 
   @impl true
-  def render(%{checked: checked} = assigns) do
-    assigns =
-      Doggo.assign_derived(
-        assigns,
-        [checked: aria_checked(checked)],
-        [:checked]
-      )
+  def template(_opts) do
+    quote do
+      var!(assigns) =
+        Doggo.assign_derived(
+          var!(assigns),
+          [checked: unquote(__MODULE__).aria_checked(var!(assigns).checked)],
+          [:checked]
+        )
 
-    ~H"""
-    <button
-      class={@class}
-      type="button"
-      role="menuitemcheckbox"
-      aria-checked={@checked}
-      phx-click={Doggo.callback!(@on_click, :on_click, ".menu_item_checkbox")}
-      {@data_attrs}
-      {@rest}
-    >
-      {render_slot(@inner_block)}
-    </button>
-    """
+      ~H"""
+      <button
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        type="button"
+        role="menuitemcheckbox"
+        aria-checked={@checked}
+        phx-click={Doggo.callback!(@on_click, :on_click, ".menu_item_checkbox")}
+        {@data_attrs}
+        {@rest}
+      >
+        {render_slot(@inner_block)}
+      </button>
+      """
+    end
   end
 
-  defp aria_checked(true), do: "true"
-  defp aria_checked(checked) when checked in [false, nil], do: "false"
-  defp aria_checked(:indeterminate), do: "mixed"
+  @doc false
+  def aria_checked(true), do: "true"
+  def aria_checked(checked) when checked in [false, nil], do: "false"
+  def aria_checked(:indeterminate), do: "mixed"
 
-  defp aria_checked(checked) do
+  def aria_checked(checked) do
     raise ArgumentError, """
     invalid checked value for .menu_item_checkbox
 

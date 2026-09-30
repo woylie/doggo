@@ -168,31 +168,28 @@ defmodule Doggo.Components.Datetime do
   end
 
   @impl true
-  def render(
-        %{
-          value: value,
-          precision: precision,
-          timezone: timezone
-        } = assigns
-      ) do
-    value =
-      value
-      |> Doggo.shift_zone(timezone)
-      |> Doggo.truncate_datetime(precision)
+  def template(_opts) do
+    quote do
+      value =
+        var!(assigns).value
+        |> Doggo.shift_zone(var!(assigns).timezone)
+        |> Doggo.truncate_datetime(var!(assigns).precision)
 
-    assigns = Doggo.assign_time(assigns, value, &Doggo.datetime_attr/1)
+      var!(assigns) =
+        Doggo.assign_time(var!(assigns), value, &Doggo.datetime_attr/1)
 
-    ~H"""
-    <time
-      :if={@value}
-      class={@class}
-      datetime={@datetime}
-      title={@title}
-      {@data_attrs}
-      {@rest}
-    >
-      {@value}
-    </time>
-    """
+      ~H"""
+      <time
+        :if={@value}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        datetime={@datetime}
+        title={@title}
+        {@data_attrs}
+        {@rest}
+      >
+        {@value}
+      </time>
+      """
+    end
   end
 end

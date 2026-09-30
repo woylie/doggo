@@ -126,25 +126,38 @@ defmodule Doggo.Components.Fallback do
   end
 
   @impl true
-  def render(%{value: value, formatter: formatter} = assigns) do
+  def template(_opts) do
+    quote do
+      var!(assigns) =
+        Phoenix.Component.assign(
+          var!(assigns),
+          :value,
+          unquote(__MODULE__).format_value(
+            var!(assigns).value,
+            var!(assigns).formatter
+          )
+        )
+
+      ~H"""
+      {@value}<span
+        :if={is_nil(@value)}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        role={Map.get(@rest, :role, "img")}
+        aria-label={@accessibility_text}
+        {@data_attrs}
+        {Map.delete(@rest, :role)}
+        phx-no-format
+      >{@placeholder}</span>
+      """
+    end
+  end
+
+  @doc false
+  def format_value(value, formatter) do
     value =
       if empty?(value) or is_nil(formatter), do: value, else: formatter.(value)
 
-    value = if empty?(value), do: nil, else: value
-
-    assigns = assign(assigns, :value, value)
-
-    ~H"""
-    {@value}<span
-      :if={is_nil(@value)}
-      class={@class}
-      role={Map.get(@rest, :role, "img")}
-      aria-label={@accessibility_text}
-      {@data_attrs}
-      {Map.delete(@rest, :role)}
-      phx-no-format
-    >{@placeholder}</span>
-    """
+    if empty?(value), do: nil, else: value
   end
 
   defp empty?(value) when is_binary(value), do: String.trim(value) == ""

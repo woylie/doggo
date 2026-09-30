@@ -102,18 +102,20 @@ defmodule Doggo.Components.Frame do
   end
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <div
-      class={@class}
-      data-numerator={@numerator}
-      data-denominator={@denominator}
-      {@data_attrs}
-      {@rest}
-    >
-      {render_slot(@inner_block)}
-    </div>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <div
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        data-numerator={@numerator}
+        data-denominator={@denominator}
+        {@data_attrs}
+        {@rest}
+      >
+        {render_slot(@inner_block)}
+      </div>
+      """
+    end
   end
 
   defp validate_ratios!(ratios) do

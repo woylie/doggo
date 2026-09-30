@@ -189,33 +189,42 @@ defmodule Doggo.Components.SplitPane do
   def example_label, do: "Sidebar"
 
   @impl true
-  def render(%{default_size: size, min_size: min, max_size: max} = assigns) do
-    assigns = assign(assigns, :default_size, size |> max(min) |> min(max))
+  def template(_opts) do
+    quote do
+      var!(assigns) =
+        Phoenix.Component.assign(
+          var!(assigns),
+          :default_size,
+          var!(assigns).default_size
+          |> max(var!(assigns).min_size)
+          |> min(var!(assigns).max_size)
+        )
 
-    ~H"""
-    <div
-      id={@id}
-      class={@class}
-      data-orientation={@orientation}
-      phx-hook="Doggo.SplitPane"
-      {@data_attrs}
-      {@rest}
-    >
-      <div id={"#{@id}-primary"}>{render_slot(@primary)}</div>
+      ~H"""
       <div
-        role="separator"
-        tabindex="0"
-        aria-label={@label}
-        aria-labelledby={@labelledby}
-        aria-controls={"#{@id}-primary"}
-        aria-orientation={@orientation}
-        aria-valuenow={@default_size}
-        aria-valuemin={@min_size}
-        aria-valuemax={@max_size}
+        id={@id}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        data-orientation={@orientation}
+        phx-hook="Doggo.SplitPane"
+        {@data_attrs}
+        {@rest}
       >
+        <div id={"#{@id}-primary"}>{render_slot(@primary)}</div>
+        <div
+          role="separator"
+          tabindex="0"
+          aria-label={@label}
+          aria-labelledby={@labelledby}
+          aria-controls={"#{@id}-primary"}
+          aria-orientation={@orientation}
+          aria-valuenow={@default_size}
+          aria-valuemin={@min_size}
+          aria-valuemax={@max_size}
+        >
+        </div>
+        <div id={"#{@id}-secondary"}>{render_slot(@secondary)}</div>
       </div>
-      <div id={"#{@id}-secondary"}>{render_slot(@secondary)}</div>
-    </div>
-    """
+      """
+    end
   end
 end

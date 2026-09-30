@@ -151,30 +151,35 @@ defmodule Doggo.Components.Drawer do
   end
 
   @impl true
-  def render(%{header: [], main: [], footer: []} = assigns), do: ~H""
-
-  def render(assigns) do
-    ~H"""
-    <div
-      id={@id}
-      class={@class}
-      role={Map.get(@rest, :role, @header != [] && "complementary")}
-      aria-labelledby={
-        Map.get(@rest, :role, true) && @header != [] && "#{@id}-header"
-      }
-      {@data_attrs}
-      {Map.delete(@rest, :role)}
-    >
-      <div :if={@header != []} id={"#{@id}-header"} class={"#{@base_class}-header"}>
-        {render_slot(@header)}
+  def template(_opts) do
+    quote do
+      ~H"""
+      <div
+        :if={@header != [] or @main != [] or @footer != []}
+        id={@id}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        role={Map.get(@rest, :role, @header != [] && "complementary")}
+        aria-labelledby={
+          Map.get(@rest, :role, true) && @header != [] && "#{@id}-header"
+        }
+        {@data_attrs}
+        {Map.delete(@rest, :role)}
+      >
+        <div
+          :if={@header != []}
+          id={"#{@id}-header"}
+          class={Doggo.build(:base_class, "-header")}
+        >
+          {render_slot(@header)}
+        </div>
+        <div :if={@main != []} class={Doggo.build(:base_class, "-main")}>
+          {render_slot(@main)}
+        </div>
+        <div :if={@footer != []} class={Doggo.build(:base_class, "-footer")}>
+          {render_slot(@footer)}
+        </div>
       </div>
-      <div :if={@main != []} class={"#{@base_class}-main"}>
-        {render_slot(@main)}
-      </div>
-      <div :if={@footer != []} class={"#{@base_class}-footer"}>
-        {render_slot(@footer)}
-      </div>
-    </div>
-    """
+      """
+    end
   end
 end

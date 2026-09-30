@@ -5,8 +5,6 @@ defmodule Doggo.Components.ToggleButton do
 
   use Phoenix.Component
 
-  alias Phoenix.LiveView.JS
-
   @impl true
   def doc do
     """
@@ -130,31 +128,33 @@ defmodule Doggo.Components.ToggleButton do
   end
 
   @impl true
-  def render(%{pressed: pressed} = assigns) do
-    assigns =
-      Doggo.assign_derived(
-        assigns,
-        [pressed: to_string(pressed == true)],
-        [:pressed]
-      )
-
-    ~H"""
-    <button
-      type="button"
-      phx-click={
-        JS.toggle_attribute(
-          Doggo.to_js!(@on_click, :on_click, ".toggle_button"),
-          {"aria-pressed", "true", "false"}
+  def template(_opts) do
+    quote do
+      var!(assigns) =
+        Doggo.assign_derived(
+          var!(assigns),
+          [pressed: to_string(var!(assigns).pressed == true)],
+          [:pressed]
         )
-      }
-      aria-pressed={@pressed}
-      class={@class}
-      disabled={@disabled}
-      {@data_attrs}
-      {@rest}
-    >
-      {render_slot(@inner_block)}
-    </button>
-    """
+
+      ~H"""
+      <button
+        type="button"
+        phx-click={
+          Phoenix.LiveView.JS.toggle_attribute(
+            Doggo.to_js!(@on_click, :on_click, ".toggle_button"),
+            {"aria-pressed", "true", "false"}
+          )
+        }
+        aria-pressed={@pressed}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        disabled={@disabled}
+        {@data_attrs}
+        {@rest}
+      >
+        {render_slot(@inner_block)}
+      </button>
+      """
+    end
   end
 end

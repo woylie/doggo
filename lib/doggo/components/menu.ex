@@ -158,26 +158,27 @@ defmodule Doggo.Components.Menu do
   def example_label, do: "Dog Actions"
 
   @impl true
-  def render(%{item: []} = assigns), do: ~H""
-
-  def render(assigns) do
-    ~H"""
-    <ul
-      id={@id}
-      class={@class}
-      role="menu"
-      phx-hook="Doggo.Menu"
-      aria-label={@label}
-      aria-labelledby={@labelledby}
-      {@data_attrs}
-      {@rest}
-    >
-      <li :for={item <- @item} role={item[:role] || "none"}>
-        <%= if item[:role] != "separator" do %>
-          {render_slot(item)}
-        <% end %>
-      </li>
-    </ul>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <ul
+        :if={@item != []}
+        id={@id}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        role="menu"
+        phx-hook="Doggo.Menu"
+        aria-label={@label}
+        aria-labelledby={@labelledby}
+        {@data_attrs}
+        {@rest}
+      >
+        <li :for={item <- @item} role={item[:role] || "none"}>
+          <%= if item[:role] != "separator" do %>
+            {render_slot(item)}
+          <% end %>
+        </li>
+      </ul>
+      """
+    end
   end
 end

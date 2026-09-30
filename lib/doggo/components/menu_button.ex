@@ -158,23 +158,25 @@ defmodule Doggo.Components.MenuButton do
   end
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <button
-      class={@class}
-      id={@id}
-      type="button"
-      role={@menuitem && "menuitem"}
-      aria-haspopup="true"
-      aria-expanded="false"
-      phx-hook="Doggo.MenuButton"
-      aria-controls={@controls}
-      phx-click={Doggo.toggle_disclosure(@controls)}
-      {@data_attrs}
-      {@rest}
-    >
-      {render_slot(@inner_block)}
-    </button>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <button
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        id={@id}
+        type="button"
+        role={@menuitem && "menuitem"}
+        aria-haspopup="true"
+        aria-expanded="false"
+        phx-hook="Doggo.MenuButton"
+        aria-controls={@controls}
+        phx-click={Doggo.toggle_disclosure(@controls)}
+        {@data_attrs}
+        {@rest}
+      >
+        {render_slot(@inner_block)}
+      </button>
+      """
+    end
   end
 end

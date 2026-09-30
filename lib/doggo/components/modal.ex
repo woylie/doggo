@@ -305,43 +305,45 @@ defmodule Doggo.Components.Modal do
   end
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <dialog
-      id={@id}
-      class={@class}
-      aria-labelledby={"#{@id}-title"}
-      closedby={@closedby}
-      phx-hook="Doggo.Dialog"
-      phx-mounted={Doggo.dialog_mounted(@id, @open)}
-      phx-remove={Doggo.hide_modal(@id)}
-      data-cancel={Doggo.to_js!(@on_cancel, :on_cancel, ".modal")}
-      {@data_attrs}
-      {@rest}
-    >
-      <section>
-        <header>
-          <h2 id={"#{@id}-title"}>{render_slot(@title)}</h2>
-          <button
-            :if={@closedby != "none"}
-            type="button"
-            class={"#{@base_class}-close"}
-            aria-label={@close_label}
-            command="close"
-            commandfor={@id}
-          >
-            {render_slot(@close)}
-            <span :if={@close == []}>{@close_label}</span>
-          </button>
-        </header>
-        <div id={"#{@id}-content"} class={"#{@base_class}-content"}>
-          {render_slot(@inner_block)}
-        </div>
-        <footer :if={@footer != []}>
-          {render_slot(@footer)}
-        </footer>
-      </section>
-    </dialog>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <dialog
+        id={@id}
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        aria-labelledby={"#{@id}-title"}
+        closedby={@closedby}
+        phx-hook="Doggo.Dialog"
+        phx-mounted={Doggo.dialog_mounted(@id, @open)}
+        phx-remove={Doggo.hide_modal(@id)}
+        data-cancel={Doggo.to_js!(@on_cancel, :on_cancel, ".modal")}
+        {@data_attrs}
+        {@rest}
+      >
+        <section>
+          <header>
+            <h2 id={"#{@id}-title"}>{render_slot(@title)}</h2>
+            <button
+              :if={@closedby != "none"}
+              type="button"
+              class={Doggo.build(:base_class, "-close")}
+              aria-label={@close_label}
+              command="close"
+              commandfor={@id}
+            >
+              {render_slot(@close)}
+              <span :if={@close == []}>{@close_label}</span>
+            </button>
+          </header>
+          <div id={"#{@id}-content"} class={Doggo.build(:base_class, "-content")}>
+            {render_slot(@inner_block)}
+          </div>
+          <footer :if={@footer != []}>
+            {render_slot(@footer)}
+          </footer>
+        </section>
+      </dialog>
+      """
+    end
   end
 end

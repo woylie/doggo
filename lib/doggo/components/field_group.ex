@@ -75,11 +75,17 @@ defmodule Doggo.Components.FieldGroup do
   end
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <div class={@class} {@data_attrs} {@rest}>
-      {render_slot(@inner_block)}
-    </div>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <div
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+      >
+        {render_slot(@inner_block)}
+      </div>
+      """
+    end
   end
 end

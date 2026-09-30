@@ -123,9 +123,16 @@ defmodule Doggo.Components.Skeleton do
   end
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <div class={@class} {@data_attrs} {@rest}></div>
-    """
+  def template(_opts) do
+    quote do
+      ~H"""
+      <div
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        {@data_attrs}
+        {@rest}
+      >
+      </div>
+      """
+    end
   end
 end

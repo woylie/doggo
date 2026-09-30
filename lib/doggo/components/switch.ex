@@ -99,35 +99,37 @@ defmodule Doggo.Components.Switch do
   end
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <button
-      class={@class}
-      type="button"
-      role="switch"
-      aria-checked={to_string(@checked == true)}
-      {@data_attrs}
-      {@rest}
-    >
-      <span class={"#{@base_class}-label"} dir="auto">{@label}</span>
-      <span class={"#{@base_class}-control"}><span></span></span>
-      <span class={"#{@base_class}-state"}>
-        <span
-          class={"#{@base_class}-state-on"}
-          aria-hidden="true"
-          hidden={!@checked}
-        >
-          {@on_text}
+  def template(_opts) do
+    quote do
+      ~H"""
+      <button
+        class={[Doggo.build(:base_class) | List.wrap(@class)]}
+        type="button"
+        role="switch"
+        aria-checked={to_string(@checked == true)}
+        {@data_attrs}
+        {@rest}
+      >
+        <span class={Doggo.build(:base_class, "-label")} dir="auto">{@label}</span>
+        <span class={Doggo.build(:base_class, "-control")}><span></span></span>
+        <span class={Doggo.build(:base_class, "-state")}>
+          <span
+            class={Doggo.build(:base_class, "-state-on")}
+            aria-hidden="true"
+            hidden={!@checked}
+          >
+            {@on_text}
+          </span>
+          <span
+            class={Doggo.build(:base_class, "-state-off")}
+            aria-hidden="true"
+            hidden={@checked}
+          >
+            {@off_text}
+          </span>
         </span>
-        <span
-          class={"#{@base_class}-state-off"}
-          aria-hidden="true"
-          hidden={@checked}
-        >
-          {@off_text}
-        </span>
-      </span>
-    </button>
-    """
+      </button>
+      """
+    end
   end
 end
