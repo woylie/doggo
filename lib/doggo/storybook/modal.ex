@@ -44,15 +44,6 @@ defmodule Doggo.Storybook.Modal do
         slots: long_slots("modal-single-long-content", opts)
       },
       %Variation{
-        id: :close_icon,
-        note:
-          "The `:close` slot replaces the label text of the close button with " <>
-            "other content, usually an icon. `close_label` still gives the " <>
-            "button its accessible name.",
-        attributes: %{id: "dog-modal-close-icon", close_label: "Close"},
-        slots: close_icon_slots("modal-single-close-icon", opts)
-      },
-      %Variation{
         id: :closedby_closerequest,
         note:
           "With `closedby=\"closerequest\"`, a close button is rendered and " <>
@@ -93,11 +84,6 @@ defmodule Doggo.Storybook.Modal do
       attributes: %{id: id},
       slots: slots("modal-#{name}-dog-mod-var-#{name}-#{value}", opts)
     }
-  end
-
-  defp close_icon_slots(id, opts) do
-    icon = icon(:close, opts[:dependent_components])
-    slots(id, opts) ++ ["<:close>#{icon}</:close>"]
   end
 
   defp long_slots(id, opts) do

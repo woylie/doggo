@@ -1,4 +1,4 @@
-defmodule Doggo.Defaults do
+defmodule Doggo.BuildOptions do
   @moduledoc false
 
   @doc false
@@ -18,6 +18,79 @@ defmodule Doggo.Defaults do
   end
 
   def split(opts), do: {opts, []}
+
+  @doc false
+  def split_render_options(opts, kinds) when is_list(opts) do
+    {render, opts} =
+      Enum.split_with(opts, fn
+        {key, value} -> Keyword.has_key?(kinds, key) and not static?(value)
+        _ -> false
+      end)
+
+    {opts, render}
+  end
+
+  def split_render_options(opts, _kinds), do: {opts, []}
+
+  @doc false
+  def render_options!(builder, kinds, values, render) do
+    for {key, kind} <- kinds do
+      case Keyword.fetch(render, key) do
+        {:ok, ast} ->
+          validate_expression!(builder, "The #{inspect(key)} option", ast)
+          validate_render_expression!(builder, key, kind, ast)
+
+        :error ->
+          validate_render_literal!(builder, key, kind, Keyword.get(values, key))
+      end
+    end
+
+    for {key, ast} <- render, do: {key, content_function(ast)}
+  end
+
+  defp validate_render_expression!(builder, key, :content, ast) do
+    if not (remote_capture?(ast) or match?({:sigil_H, _, _}, ast)) do
+      raise ArgumentError,
+            render_option_message(builder, key, :content, Macro.to_string(ast))
+    end
+  end
+
+  defp validate_render_expression!(_builder, _key, _kind, _ast), do: :ok
+
+  defp validate_render_literal!(builder, key, kind, value) do
+    valid? =
+      case kind do
+        :string -> is_nil(value) or is_binary(value)
+        :content -> is_nil(value) or is_function(value, 1)
+        :function -> is_function(value)
+      end
+
+    if not valid? do
+      raise ArgumentError,
+            render_option_message(builder, key, kind, inspect(value))
+    end
+
+    :ok
+  end
+
+  defp render_option_message(builder, key, kind, got) do
+    expected =
+      case kind do
+        :string -> "a string or an expression that returns one"
+        :content -> "a remote capture of a function component, or inline HEEx"
+        :function -> "a function"
+      end
+
+    """
+    invalid #{inspect(key)} option for #{builder}/1
+
+    The option takes #{expected}.
+
+    Got:
+
+        #{got}
+    """
+  end
 
   @doc false
   def escape!(builder, literals) do
@@ -162,7 +235,7 @@ defmodule Doggo.Defaults do
         validate_capture!(builder, caller, name, ast)
 
       not Macro.quoted_literal?(ast) ->
-        validate_expression!(builder, name, ast)
+        validate_expression!(builder, "The default of #{inspect(name)}", ast)
 
       is_list(declaration.values) and
           literal_value(ast) not in declaration.values ->
@@ -219,7 +292,12 @@ defmodule Doggo.Defaults do
     end
 
     for {_attr, attr_ast} <- attrs,
-        do: validate_expression!(builder, name, attr_ast)
+        do:
+          validate_expression!(
+            builder,
+            "The default of #{inspect(name)}",
+            attr_ast
+          )
 
     :ok
   end
@@ -286,7 +364,7 @@ defmodule Doggo.Defaults do
     :ok
   end
 
-  defp validate_expression!(builder, name, ast) do
+  defp validate_expression!(builder, subject, ast) do
     {_, assigns?} =
       Macro.prewalk(ast, false, fn
         {:sigil_H, _, _}, acc ->
@@ -301,11 +379,10 @@ defmodule Doggo.Defaults do
 
     if assigns? do
       raise ArgumentError, """
-      invalid default for #{builder}/1
+      invalid expression for #{builder}/1
 
-      The default of #{inspect(name)} reads the component's assigns. A default
-      is evaluated before the component renders and cannot depend on its
-      attributes.
+      #{subject} reads the component's assigns. It is evaluated before the
+      component renders and cannot depend on its attributes.
       """
     end
 
@@ -335,7 +412,7 @@ defmodule Doggo.Defaults do
       opts
       |> Keyword.delete(:default)
       |> append_doc(
-        "Defaults to `#{Macro.to_string(ast)}`, evaluated at render."
+        "Defaults to `#{Macro.to_string(ast)}`, evaluated at render time."
       )
     end
   end
@@ -355,25 +432,16 @@ defmodule Doggo.Defaults do
   defp default_code(name, ast, %{kind: :slot}) do
     {content, attrs} = slot_default(ast)
 
-    fun =
-      case content do
-        {:sigil_H, _, _} ->
-          quote do
-            fn map ->
-              var!(assigns) = map
-              unquote(content)
-            end
-          end
-
-        capture ->
-          capture
-      end
-
     quote do
       var!(assigns) =
-        Doggo.slot_default(var!(assigns), unquote(name), unquote(fun), fn ->
-          %{unquote_splicing(attrs)}
-        end)
+        Doggo.slot_default(
+          var!(assigns),
+          unquote(name),
+          unquote(content_function(content)),
+          fn ->
+            %{unquote_splicing(attrs)}
+          end
+        )
     end
   end
 
@@ -385,4 +453,15 @@ defmodule Doggo.Defaults do
         end)
     end
   end
+
+  defp content_function({:sigil_H, _, _} = sigil) do
+    quote do
+      fn map ->
+        var!(assigns) = map
+        unquote(sigil)
+      end
+    end
+  end
+
+  defp content_function(ast), do: ast
 end

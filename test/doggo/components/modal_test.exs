@@ -15,6 +15,9 @@ defmodule Doggo.Components.ModalTest do
     use Phoenix.Component
 
     build_modal()
+    build_modal(name: :modal_with_close_1, close: ~H"X")
+    build_modal(name: :modal_with_close_2, close_label: "Cancel")
+    build_modal(name: :modal_with_close_3, close_label: "")
   end
 
   describe "modal/1" do
@@ -112,11 +115,10 @@ defmodule Doggo.Components.ModalTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.modal id="pet-modal" open>
+        <TestComponents.modal_with_close_1 id="pet-modal" open>
           <:title>Edit dog</:title>
           dog-form
-          <:close>X</:close>
-        </TestComponents.modal>
+        </TestComponents.modal_with_close_1>
         """)
 
       assert text(html, "button.modal-close") == "X"
@@ -127,10 +129,10 @@ defmodule Doggo.Components.ModalTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.modal id="pet-modal" close_label="Cancel" open>
+        <TestComponents.modal_with_close_2 id="pet-modal" open>
           <:title>Edit dog</:title>
           dog-form
-        </TestComponents.modal>
+        </TestComponents.modal_with_close_2>
         """)
 
       assert attribute(html, "button.modal-close", "aria-label") == "Cancel"
@@ -174,10 +176,10 @@ defmodule Doggo.Components.ModalTest do
         assigns = %{}
 
         parse_heex(~H"""
-        <TestComponents.modal id="pet-modal" close_label="">
+        <TestComponents.modal_with_close_3 id="pet-modal">
           <:title>Edit dog</:title>
           dog-form
-        </TestComponents.modal>
+        </TestComponents.modal_with_close_3>
         """)
       end
     end

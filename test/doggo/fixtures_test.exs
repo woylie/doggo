@@ -56,12 +56,10 @@ defmodule Doggo.FixturesTest do
       <FixtureComponents.alert
         id="alert"
         title="Session expired"
-        close_label="Dismiss"
         on_close={JS.push("dismiss")}
       >
         Sign in again to continue.
         <:icon>info-icon</:icon>
-        <:close>close-icon</:close>
         <:action>sign-in-button</:action>
       </FixtureComponents.alert>
       """,

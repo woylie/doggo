@@ -14,25 +14,23 @@ defmodule Doggo.Components.FieldTest do
     use Doggo.Components
     use Phoenix.Component
 
-    build_field(gettext_module: Doggo.Gettext)
+    build_field(translate_error: &FieldTest.translate_error/1)
 
     build_field(
       name: :field_with_optional_text,
-      gettext_module: Doggo.Gettext,
+      translate_error: &FieldTest.translate_error/1,
       optional_text: "(optional)"
     )
 
-    build_field(name: :field_without_gettext, optional_text: "(optional)")
-
     build_field(
       name: :field_with_extra_types,
-      gettext_module: Doggo.Gettext,
+      translate_error: &FieldTest.translate_error/1,
       types: %{"ranked" => &FieldTest.ranked_input/1}
     )
 
     build_field(
       name: :field_with_group_type,
-      gettext_module: Doggo.Gettext,
+      translate_error: &FieldTest.translate_error/1,
       types: %{
         "permissions" => {&FieldTest.permissions_input/1, group: true}
       }
@@ -40,7 +38,7 @@ defmodule Doggo.Components.FieldTest do
 
     build_field(
       name: :field_with_replaced_select,
-      gettext_module: Doggo.Gettext,
+      translate_error: &FieldTest.translate_error/1,
       types: %{"select" => &FieldTest.ranked_input/1}
     )
 
@@ -51,6 +49,15 @@ defmodule Doggo.Components.FieldTest do
   end
 
   @doc false
+  @translations %{
+    "weird dog" => "chien bizarre",
+    "only %{count} dog(s) allowed" => "seulement %{count} chiens autorisés"
+  }
+
+  def translate_error({msg, opts}) do
+    Doggo.translate_error({Map.get(@translations, msg, msg), opts})
+  end
+
   def ranked_input(assigns) do
     ~H"""
     <div
@@ -332,6 +339,52 @@ defmodule Doggo.Components.FieldTest do
     end
   end
 
+  describe "build_field/1 with :gettext_module" do
+    test "raises with the replacement" do
+      error =
+        assert_raise ArgumentError, fn ->
+          defmodule FromGettextModule do
+            use Doggo.Components
+            use Phoenix.Component
+
+            build_field(gettext_module: MyAppWeb.Gettext)
+          end
+        end
+
+      assert error.message =~
+               "the :gettext_module option of build_field/1 was replaced"
+
+      assert error.message =~
+               "translate_error: &MyAppWeb.CoreComponents.translate_error/1"
+    end
+  end
+
+  describe "build_field/1 with an expression as required_text" do
+    test "evaluates the text at render time" do
+      defmodule WithRenderText do
+        use Doggo.Components
+        use Phoenix.Component
+
+        build_field(required_text: Process.get(:required_text, "required"))
+      end
+
+      assigns = %{}
+      Process.put(:required_text, "Pflichtfeld")
+
+      html =
+        parse_heex(~H"""
+        <WithRenderText.field
+          name="age"
+          label="Age"
+          value=""
+          validations={[required: true]}
+        />
+        """)
+
+      assert text(html, "label > span.field-required-mark") == "Pflichtfeld"
+    end
+  end
+
   describe "build_field/1 with :extra_types" do
     test "raises an error" do
       error =
@@ -578,24 +631,6 @@ defmodule Doggo.Components.FieldTest do
       assert text(span) == "(required)"
     end
 
-    test "renders required text without gettext module" do
-      assigns = %{form: to_form(%{})}
-
-      html =
-        parse_heex(~H"""
-        <.form for={@form}>
-          <TestComponents.field_without_gettext
-            field={@form[:age]}
-            label="Age"
-            validations={[required: true]}
-          />
-        </.form>
-        """)
-
-      span = find_one(html, "label > span.field-required-mark")
-      assert text(span) == "(required)"
-    end
-
     test "renders optional text" do
       assigns = %{form: to_form(%{})}
 
@@ -603,20 +638,6 @@ defmodule Doggo.Components.FieldTest do
         parse_heex(~H"""
         <.form for={@form}>
           <TestComponents.field_with_optional_text field={@form[:age]} label="Age" />
-        </.form>
-        """)
-
-      span = find_one(html, "label > span.field-optional-mark")
-      assert text(span) == "(optional)"
-    end
-
-    test "renders optional text without gettext module" do
-      assigns = %{form: to_form(%{})}
-
-      html =
-        parse_heex(~H"""
-        <.form for={@form}>
-          <TestComponents.field_without_gettext field={@form[:age]} label="Age" />
         </.form>
         """)
 
@@ -1507,7 +1528,7 @@ defmodule Doggo.Components.FieldTest do
       assert Floki.find(html, ".field-errors > li") == []
     end
 
-    test "inserts gettext variables in errors without gettext module" do
+    test "interpolates values in errors without translate_error" do
       assigns = %{form: to_form(%{"what" => "what"})}
 
       html =
@@ -1522,7 +1543,7 @@ defmodule Doggo.Components.FieldTest do
       assert text(html, ".field-errors > li") == "weird dog"
     end
 
-    test "translates errors with gettext" do
+    test "translates errors with translate_error" do
       assigns = %{form: to_form(%{"what" => "what"})}
 
       html =
@@ -1535,23 +1556,20 @@ defmodule Doggo.Components.FieldTest do
       assert text(html, ".field-errors > li") == "chien bizarre"
     end
 
-    test "translates errors with numbers with gettext" do
+    test "translates errors with values with translate_error" do
       assigns = %{form: to_form(%{"what" => "what"})}
 
       html =
         parse_heex(~H"""
         <.form for={@form}>
-          <TestComponents.field
-            field={
-              %{
-                @form[:what]
-                | errors: [
-                    {"only %{count} dog(s) allowed", [count: 5]}
-                  ]
-              }
+          <TestComponents.field field={
+            %{
+              @form[:what]
+              | errors: [
+                  {"only %{count} dog(s) allowed", [count: 5]}
+                ]
             }
-            gettext={Doggo.Gettext}
-          />
+          } />
         </.form>
         """)
 

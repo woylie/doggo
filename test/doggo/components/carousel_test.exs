@@ -13,6 +13,20 @@ defmodule Doggo.Components.CarouselTest do
     use Phoenix.Component
 
     build_carousel()
+
+    build_carousel(
+      name: :japanese_pagination_carousel,
+      pagination_label: "スライド",
+      pagination_slide_label: fn n -> "スライド#{n}" end
+    )
+
+    build_carousel(
+      name: :japanese_carousel,
+      carousel_roledescription: "カルーセル",
+      slide_roledescription: "スライド"
+    )
+
+    build_carousel(name: :blank_pagination_label_carousel, pagination_label: "")
   end
 
   describe "carousel/1" do
@@ -87,16 +101,14 @@ defmodule Doggo.Components.CarouselTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.carousel
+        <TestComponents.japanese_pagination_carousel
           id="dog-carousel"
           label="Dog Carousel"
-          pagination_label="スライド"
-          pagination_slide_label={&"スライド#{&1}"}
           pagination
         >
           <:item label="1 of 2">A</:item>
           <:item label="2 of 2">B</:item>
-        </TestComponents.carousel>
+        </TestComponents.japanese_pagination_carousel>
         """)
 
       div = find_one(html, ".carousel-controls > .carousel-pagination")
@@ -133,15 +145,14 @@ defmodule Doggo.Components.CarouselTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.carousel
+        <TestComponents.japanese_pagination_carousel
           id="dog-carousel"
           label="Dog Carousel"
-          pagination_slide_label={&"スライド#{&1}"}
           pagination
         >
           <:item>A</:item>
           <:item>B</:item>
-        </TestComponents.carousel>
+        </TestComponents.japanese_pagination_carousel>
         """)
 
       div = find_one(html, ".carousel-pagination")
@@ -215,14 +226,9 @@ defmodule Doggo.Components.CarouselTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.carousel
-          id="dog-carousel"
-          label="Dog Carousel"
-          carousel_roledescription="カルーセル"
-          slide_roledescription="スライド"
-        >
+        <TestComponents.japanese_carousel id="dog-carousel" label="Dog Carousel">
           <:item label="1 of 1"></:item>
-        </TestComponents.carousel>
+        </TestComponents.japanese_carousel>
         """)
 
       assert attribute(html, ":root", "aria-roledescription") == "カルーセル"
@@ -477,13 +483,12 @@ defmodule Doggo.Components.CarouselTest do
         assigns = %{}
 
         parse_heex(~H"""
-        <TestComponents.carousel
+        <TestComponents.blank_pagination_label_carousel
           id="dog-carousel"
           label="Dog Carousel"
-          pagination_label=""
         >
           <:item>A</:item>
-        </TestComponents.carousel>
+        </TestComponents.blank_pagination_label_carousel>
         """)
       end
     end

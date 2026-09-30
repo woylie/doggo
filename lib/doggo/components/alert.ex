@@ -34,13 +34,18 @@ defmodule Doggo.Components.Alert do
     </.alert>
     ```
 
-    Dismissable, with an icon in the close button:
+    Dismissable:
 
     ```heex
-    <.alert id="some-alert" on_close={JS.push("dismiss")} close_label="Dismiss">
+    <.alert id="some-alert" on_close={JS.push("dismiss")}>
       message
-      <:close><Heroicon.x_mark /></:close>
     </.alert>
+    ```
+
+    The close button's name and content are set in the build call:
+
+    ```elixir
+    build_alert(close_label: gettext("Dismiss"), close: ~H|<Heroicon.x_mark />|)
     ```
 
     With an action:
@@ -55,7 +60,7 @@ defmodule Doggo.Components.Alert do
     ```
 
     The `close_label` is the button's accessible name, so it is needed whether
-    or not the `:close` slot is filled.
+    or not `close` is set.
     """
   end
 
@@ -65,11 +70,27 @@ defmodule Doggo.Components.Alert do
   end
 
   @impl true
+  def builder_doc do
+    """
+    - `:close_label` - The accessible name of the close button, and its text
+      when `:close` is not set. Defaults to `"Close"`. An expression, such as
+      `gettext("Close")` or any other function call, is evaluated at render
+      time.
+    - `:close` - The content of the close button: a remote capture of a
+      function component or inline HEEx, such as `~H|<.icon name="x" />|`. It
+      renders with the values of the modifiers as assigns. Defaults to `nil`,
+      which renders `close_label` as text.
+    """
+  end
+
+  @impl true
   def config do
     [
       type: :feedback,
       since: "0.6.0",
       maturity: :developing,
+      extra: [close_label: "Close", close: nil],
+      render_options: [close_label: :string, close: :content],
       modifiers: [
         level: [
           values: [
@@ -113,23 +134,10 @@ defmodule Doggo.Components.Alert do
         is clicked. If not set, no close button is rendered.
         """
 
-      attr :close_label, :string,
-        default: "Close",
-        doc: """
-        Aria label for the close button. This value should be translated to the
-        language in which the rest of the page is displayed.
-        """
-
       attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :inner_block, required: true, doc: "The main content of the alert."
       slot :icon, doc: "Optional slot to render an icon."
-
-      slot :close,
-        doc: """
-        The content for the close button. Defaults to the value of
-        `close_label`.
-        """
 
       slot :action,
         doc: """
@@ -146,7 +154,7 @@ defmodule Doggo.Components.Alert do
     quote do
       Doggo.diagnostic do
         Doggo.ensure_name!(
-          var!(assigns).close_label,
+          Doggo.build(:close_label),
           unquote(name),
           "close_label"
         )
@@ -188,11 +196,14 @@ defmodule Doggo.Components.Alert do
           :if={@on_close}
           type="button"
           class={Doggo.build(:base_class, "-close")}
-          aria-label={@close_label}
+          aria-label={Doggo.build(:close_label)}
           phx-click={Doggo.callback!(@on_close, :on_close, ".alert")}
         >
-          {render_slot(@close)}
-          <span :if={@close == []}>{@close_label}</span>
+          <Doggo.control_content
+            content={Doggo.build(:close)}
+            modifiers={@data_attrs.data}
+            label={Doggo.build(:close_label)}
+          />
         </button>
       </div>
       """

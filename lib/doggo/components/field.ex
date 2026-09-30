@@ -25,18 +25,20 @@ defmodule Doggo.Components.Field do
   @impl true
   def builder_doc do
     """
-    - `:gettext_module` - If set, errors as well as the `required_text` and
-      `optional_text` are automatically translated using this module. This only
-      works if the `:field` attribute is set. Without it,
-      errors passed to the component are rendered unchanged.
-    - `:required_text` - Defines a text that is rendered next to the label
-      in required fields. Defaults to `"(required)"`. This value is translated
-      if `gettext_module` is set. If you use a symbol like an asterisk, it is
-      good practice to add a sentence explaining that fields marked with an
-      that symbol are required.
-    - `:optional_text` - Defines a text that is rendered next to the label
-      in optional fields. Defaults to `nil`. This value is translated
-      if `gettext_module` is set.
+    - `:required_text` - The text rendered next to the label of a required
+      field. Defaults to `"(required)"`. An expression is evaluated at render
+      time, so `gettext("required")`, or a call to any other translation
+      function, returns the text for the current locale. `nil` renders no mark.
+      If you use a symbol such as an asterisk, add a sentence that explains
+      that fields marked with it are required.
+    - `:optional_text` - The text rendered next to the label of an optional
+      field. Defaults to `nil`, which renders no mark. Evaluated at render time,
+      same as `required_text`.
+    - `:translate_error` - A remote capture of a function that receives an
+      error of the form's field, such as
+      `{"can't be blank", [validation: :required]}`, and returns the message.
+      Without it, the message is rendered with its values interpolated and
+      untranslated. Errors passed in `errors` are rendered as given.
     - `:types` - A map from a type name to the control that renders it. A map
       value can be a function component, a function component marked as a group
       (`{component, group: true}`), `:default` for the built-in control, or
@@ -173,12 +175,17 @@ defmodule Doggo.Components.Field do
     Note that the `class` attribute is applied to the outer container, while
     the `rest` global attribute is applied to the `<input>` element.
 
-    ### Gettext
+    ### Translations
 
-    To translate field errors as well as the `required_text` and `optional_text`
-    using Gettext, set the `gettext_module` option when building the component:
+    Pass the texts as calls to your translation library, and point
+    `translate_error` at the function that translates your errors. With
+    Gettext:
 
-        build_field(gettext_module: MyApp.Gettext)
+        build_field(
+          required_text: gettext("required"),
+          optional_text: gettext("optional"),
+          translate_error: &MyAppWeb.CoreComponents.translate_error/1
+        )
 
     ### Label positioning
 
@@ -292,9 +299,11 @@ defmodule Doggo.Components.Field do
         gettext_module: nil,
         required_text: "(required)",
         optional_text: nil,
+        translate_error: nil,
         types: nil,
         extra_types: nil
-      ]
+      ],
+      render_options: [required_text: :string, optional_text: :string]
     ]
   end
 
@@ -329,6 +338,7 @@ defmodule Doggo.Components.Field do
 
   @impl true
   def attrs_and_slots(opts) do
+    replaced_gettext_module!(opts)
     built_in_types = @built_in_types
 
     types = types!(opts)
@@ -457,12 +467,6 @@ defmodule Doggo.Components.Field do
          rows size step),
         doc: "Any additional HTML attributes."
 
-      attr :gettext, :atom,
-        doc: """
-        The Gettext module to use for translating error messages. This option
-        can also be set globally, see above.
-        """
-
       slot :description,
         doc: "A field description to render underneath the input."
 
@@ -481,6 +485,25 @@ defmodule Doggo.Components.Field do
   end
 
   @doc false
+  defp replaced_gettext_module!(opts) do
+    if opts[:gettext_module] do
+      raise ArgumentError, """
+      the :gettext_module option of build_field/1 was replaced
+
+      Pass the texts as `gettext` calls, and point `:translate_error` at the
+      error translation of your application.
+
+      Example:
+
+          build_field(
+            required_text: gettext("required"),
+            optional_text: gettext("optional"),
+            translate_error: &MyAppWeb.CoreComponents.translate_error/1
+          )
+      """
+    end
+  end
+
   def types!(opts) do
     if Keyword.get(opts, :extra_types) do
       raise ArgumentError, """
@@ -613,7 +636,7 @@ defmodule Doggo.Components.Field do
   @doc false
   def prepare(
         %{field: %Phoenix.HTML.FormField{} = field} = assigns,
-        gettext_module
+        translate_error
       ) do
     errors =
       cond do
@@ -623,7 +646,7 @@ defmodule Doggo.Components.Field do
         Phoenix.Component.used_input?(field) ->
           Enum.map(
             field.errors,
-            &Doggo.translate_error(&1, gettext_module)
+            translate_error || (&Doggo.translate_error/1)
           )
 
         true ->
@@ -642,7 +665,7 @@ defmodule Doggo.Components.Field do
     assign_input(assigns, id, errors, Keyword.drop(defaults, Map.keys(assigns)))
   end
 
-  def prepare(assigns, _gettext_module) when not is_map_key(assigns, :field) do
+  def prepare(assigns, _translate_error) when not is_map_key(assigns, :field) do
     errors = Map.get(assigns, :errors) || []
     id = assigns[:id] || assigns[:name]
 
@@ -652,7 +675,7 @@ defmodule Doggo.Components.Field do
     )
   end
 
-  def prepare(assigns, _gettext_module), do: assigns
+  def prepare(assigns, _translate_error), do: assigns
 
   @impl true
   def template(opts) do
@@ -678,7 +701,7 @@ defmodule Doggo.Components.Field do
       var!(assigns) =
         unquote(__MODULE__).prepare(
           var!(assigns),
-          unquote(Keyword.get(opts, :gettext_module))
+          Doggo.build(:translate_error)
         )
 
       unquote(
@@ -718,7 +741,6 @@ defmodule Doggo.Components.Field do
               optional_text={Doggo.build(:optional_text)}
               class={Doggo.build(:base_class, "-checkbox")}
               base_class={Doggo.build(:base_class)}
-              gettext_module={Doggo.build(:gettext_module)}
             >
               <input :if={@hidden_input} type="hidden" name={@name} value="false" />
               <input
@@ -765,7 +787,6 @@ defmodule Doggo.Components.Field do
                   required_text={Doggo.build(:required_text)}
                   optional_text={Doggo.build(:optional_text)}
                   base_class={Doggo.build(:base_class)}
-                  gettext_module={Doggo.build(:gettext_module)}
                 />
               </legend>
               <Doggo.Components.Field.field_description
@@ -824,7 +845,6 @@ defmodule Doggo.Components.Field do
                   required_text={Doggo.build(:required_text)}
                   optional_text={Doggo.build(:optional_text)}
                   base_class={Doggo.build(:base_class)}
-                  gettext_module={Doggo.build(:gettext_module)}
                 />
               </legend>
               <Doggo.Components.Field.field_description
@@ -873,7 +893,6 @@ defmodule Doggo.Components.Field do
               optional_text={Doggo.build(:optional_text)}
               base_class={Doggo.build(:base_class)}
               visually_hidden={@hide_label}
-              gettext_module={Doggo.build(:gettext_module)}
             >
               {@label}
             </Doggo.Components.Field.label>
@@ -926,7 +945,6 @@ defmodule Doggo.Components.Field do
               optional_text={Doggo.build(:optional_text)}
               class={Doggo.build(:base_class, "-switch")}
               base_class={Doggo.build(:base_class)}
-              gettext_module={Doggo.build(:gettext_module)}
             >
               <span class={Doggo.build(:base_class, "-switch-label")} dir="auto">{@label}</span>
               <input :if={@hidden_input} type="hidden" name={@name} value="false" />
@@ -987,7 +1005,6 @@ defmodule Doggo.Components.Field do
               optional_text={Doggo.build(:optional_text)}
               base_class={Doggo.build(:base_class)}
               visually_hidden={@hide_label}
-              gettext_module={Doggo.build(:gettext_module)}
             >
               {@label}
             </Doggo.Components.Field.label>
@@ -1031,7 +1048,6 @@ defmodule Doggo.Components.Field do
               optional_text={Doggo.build(:optional_text)}
               base_class={Doggo.build(:base_class)}
               visually_hidden={@hide_label}
-              gettext_module={Doggo.build(:gettext_module)}
             >
               {@label}
             </Doggo.Components.Field.label>
@@ -1132,7 +1148,6 @@ defmodule Doggo.Components.Field do
               required_text={Doggo.build(:required_text)}
               optional_text={Doggo.build(:optional_text)}
               base_class={Doggo.build(:base_class)}
-              gettext_module={Doggo.build(:gettext_module)}
             />
           </legend>
           <Doggo.Components.Field.field_description
@@ -1169,7 +1184,6 @@ defmodule Doggo.Components.Field do
           optional_text={Doggo.build(:optional_text)}
           base_class={Doggo.build(:base_class)}
           visually_hidden={@hide_label}
-          gettext_module={Doggo.build(:gettext_module)}
         >
           {@label}
         </Doggo.Components.Field.label>
@@ -1284,7 +1298,6 @@ defmodule Doggo.Components.Field do
   attr :for, :string, default: nil, doc: "The ID of the input."
   attr :class, :string, default: nil
   attr :base_class, :string, required: true
-  attr :gettext_module, :atom, required: true
   attr :required, :boolean, default: false
 
   attr :required_text, :any,
@@ -1321,7 +1334,6 @@ defmodule Doggo.Components.Field do
         required_text={@required_text}
         optional_text={@optional_text}
         base_class={@base_class}
-        gettext_module={@gettext_module}
       />
     </label>
     """
@@ -1335,12 +1347,10 @@ defmodule Doggo.Components.Field do
   attr :required_text, :any, required: true
   attr :optional_text, :any, required: true
   attr :base_class, :string, required: true
-  attr :gettext_module, :atom, required: true
 
   @doc false
   def required_optional_mark(assigns) do
     {kind, text} = mark(assigns)
-    text = translate_mark(text, assigns.gettext_module)
     assigns = assign(assigns, kind: kind, text: text)
 
     ~H"""
@@ -1352,14 +1362,6 @@ defmodule Doggo.Components.Field do
 
   defp mark(%{required: true, required_text: text}), do: {"required", text}
   defp mark(%{optional_text: text}), do: {"optional", text}
-
-  defp translate_mark(text, _gettext_module) when not is_binary(text), do: nil
-  defp translate_mark(text, nil), do: text
-
-  defp translate_mark(text, gettext_module) do
-    # credo:disable-for-next-line
-    apply(Gettext, :gettext, [gettext_module, text])
-  end
 
   attr :option, :any, required: true
   attr :selected_values, :list, default: []

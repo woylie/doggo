@@ -49,19 +49,6 @@ defmodule Doggo.Storybook.AlertDialog do
         slots: slots("alert-dialog-single-closedby-closerequest", opts)
       },
       %Variation{
-        id: :close_icon,
-        note:
-          "The `:close` slot replaces the label text of the close button with " <>
-            "other content, usually an icon. `close_label` still gives the " <>
-            "button its accessible name.",
-        attributes: %{
-          id: "dog-alert-close-icon",
-          closedby: "any",
-          close_label: "Close"
-        },
-        slots: close_icon_slots("alert-dialog-single-close-icon", opts)
-      },
-      %Variation{
         id: :without_javascript,
         note:
           "The button has `command` and `commandfor` attributes, " <>
@@ -73,11 +60,6 @@ defmodule Doggo.Storybook.AlertDialog do
         slots: slots("alert-dialog-single-without-javascript", opts)
       }
     ]
-  end
-
-  defp close_icon_slots(id, opts) do
-    icon = icon(:close, opts[:dependent_components])
-    slots(id, opts) ++ ["<:close>#{icon}</:close>"]
   end
 
   defp command_template(opts) do

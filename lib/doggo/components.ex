@@ -125,12 +125,12 @@ defmodule Doggo.Components do
 
   A literal, such as `text_position: "after"`, or a remote capture becomes the
   default of the attribute and is listed in the docs of the component. Any
-  other expression, such as `gettext("n/a")`, is evaluated when the component
-  renders without the attribute, so that it follows the current locale. An
-  expression cannot read the assigns of the component. The default applies
-  when the attribute is not passed. Passing `nil` keeps `nil`.
+  other expression is evaluated each time the component renders without the
+  attribute, so `gettext("n/a")` returns the text for the current locale. An
+  expression cannot read the assigns of the component. If the attribute is not
+  passed, the default is used. If it is passed as `nil`, its value is `nil`.
 
-  Only defaults written in the build call are evaluated at render. Defaults
+  Only defaults written in the build call are evaluated at render time. Defaults
   from a module attribute, as in `build_alert(defaults: @defaults)`, are
   evaluated when the module compiles, so a `gettext` call there is translated
   once, into the locale at compile time.

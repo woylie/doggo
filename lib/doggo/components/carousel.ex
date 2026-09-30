@@ -70,10 +70,11 @@ defmodule Doggo.Components.Carousel do
 
     ## Localization
 
-    `carousel_roledescription`, `slide_roledescription`, `pagination_label` and
-    the labels of the `:pause` slot default to English. They are announced by
-    screen readers and should be translated. The `pagination_slide_label` and
-    the labels of the `:previous` and `:next` slots should also be translated.
+    The build options `carousel_roledescription`, `slide_roledescription`,
+    `pagination_label` and `pagination_slide_label`, and the labels of the
+    `:pause` slot, default to English. They are announced by screen readers and
+    should be translated, as should the labels of the `:previous` and `:next`
+    slots.
 
     ## Defaults
 
@@ -144,6 +145,28 @@ defmodule Doggo.Components.Carousel do
   end
 
   @impl true
+  def builder_doc do
+    """
+    - `:carousel_roledescription` - The `aria-roledescription` of the
+      carousel. Defaults to `"carousel"`.
+    - `:slide_roledescription` - The `aria-roledescription` of a slide.
+      Defaults to `"slide"`.
+    - `:pagination_label` - The name of the tablist of slide pickers. Defaults
+      to `"Slides"`.
+    - `:pagination_slide_label` - A function that takes the slide number and
+      returns the name of the pagination tab of a slide without a `label`.
+      Defaults to `&Doggo.slide_label/1`.
+
+    All four values should be translated to the language in which the rest of
+    the page is displayed. The texts are evaluated at render time, so
+    `gettext("carousel")`, or a call to any other translation function, returns
+    the text for the current locale. `pagination_slide_label` can be written as
+    an anonymous function in the build call, such as
+    `fn n -> gettext("Slide %{n}", n: n) end`.
+    """
+  end
+
+  @impl true
   def config do
     [
       type: :media,
@@ -158,6 +181,18 @@ defmodule Doggo.Components.Carousel do
       `:developing` because the API is new and has not been proven in production
       yet.
       """,
+      extra: [
+        carousel_roledescription: "carousel",
+        slide_roledescription: "slide",
+        pagination_label: "Slides",
+        pagination_slide_label: &Doggo.slide_label/1
+      ],
+      render_options: [
+        carousel_roledescription: :string,
+        slide_roledescription: :string,
+        pagination_label: :string,
+        pagination_slide_label: :function
+      ],
       modifiers: []
     ]
   end
@@ -214,38 +249,7 @@ defmodule Doggo.Components.Carousel do
         is set.
         """
 
-      attr :carousel_roledescription, :string,
-        default: "carousel",
-        doc: """
-        Sets the `aria-roledescription` attribute to describe the region as a
-        carousel. This value should be translated to the language in which the
-        rest of the page is displayed.
-        """
-
-      attr :slide_roledescription, :string,
-        default: "slide",
-        doc: """
-        Sets the `aria-roledescription` attribute to describe a slide. This
-        value should be translated to the language in which the rest of the page
-        is displayed.
-        """
-
       attr :pagination, :boolean, default: false
-
-      attr :pagination_label, :string,
-        default: "Slides",
-        doc: """
-        Labels the tablist of slide pickers. This value should be translated to
-        the language in which the rest of the page is displayed.
-        """
-
-      attr :pagination_slide_label, :any,
-        default: &Doggo.slide_label/1,
-        doc: """
-        1-arity function that takes the slide number as an argument and returns
-        the aria label for the pagination tab of a slide that has no `label` of
-        its own.
-        """
 
       attr :rotation_interval_ms, :integer,
         default: 5000,
@@ -351,7 +355,7 @@ defmodule Doggo.Components.Carousel do
     quote do
       Doggo.diagnostic do
         Doggo.ensure_name!(
-          var!(assigns).pagination_label,
+          Doggo.build(:pagination_label),
           unquote(name),
           "pagination_label"
         )
@@ -395,7 +399,7 @@ defmodule Doggo.Components.Carousel do
         class={[Doggo.build(:base_class) | List.wrap(@class)]}
         aria-label={@label}
         aria-labelledby={@labelledby}
-        aria-roledescription={@carousel_roledescription}
+        aria-roledescription={Doggo.build(:carousel_roledescription)}
         data-active-index="0"
         data-loop={@loop}
         data-rotation-interval-ms={@rotating && @rotation_interval_ms}
@@ -430,7 +434,7 @@ defmodule Doggo.Components.Carousel do
               :if={@show_tabs}
               class={Doggo.build(:base_class, "-pagination")}
               role="tablist"
-              aria-label={@pagination_label}
+              aria-label={Doggo.build(:pagination_label)}
             >
               <button
                 :for={{item, index} <- Enum.with_index(@item, 1)}
@@ -439,7 +443,9 @@ defmodule Doggo.Components.Carousel do
                 id={"#{@id}-tab-#{index}"}
                 aria-selected={to_string(index == 1)}
                 aria-controls={"#{@id}-item-#{index}"}
-                aria-label={item[:label] || @pagination_slide_label.(index)}
+                aria-label={
+                  item[:label] || Doggo.build(:pagination_slide_label).(index)
+                }
                 tabindex={index != 1 && "-1"}
               >
                 <span></span>
@@ -466,7 +472,7 @@ defmodule Doggo.Components.Carousel do
                 id={"#{@id}-item-#{index}"}
                 class={Doggo.build(:base_class, "-item")}
                 role={if @show_tabs, do: "tabpanel", else: "group"}
-                aria-roledescription={@slide_roledescription}
+                aria-roledescription={Doggo.build(:slide_roledescription)}
                 aria-label={if not @show_tabs, do: item[:label]}
                 aria-labelledby={@show_tabs && "#{@id}-tab-#{index}"}
               >

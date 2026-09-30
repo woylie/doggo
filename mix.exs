@@ -72,7 +72,6 @@ defmodule Doggo.MixProject do
       {:ex_doc, "0.40.3", only: :dev, runtime: false},
       {:excoveralls, "0.18.5", runtime: false, only: [:test]},
       {:floki, "== 0.38.4", only: :test},
-      {:gettext, "~> 1.0", optional: true},
       {:lazy_html, "== 0.1.12", only: :test},
       {:makeup_diff, "0.1.1", only: :dev},
       {:makeup_js, "== 0.1.0", only: :dev},

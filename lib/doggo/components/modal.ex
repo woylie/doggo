@@ -216,11 +216,27 @@ defmodule Doggo.Components.Modal do
   end
 
   @impl true
+  def builder_doc do
+    """
+    - `:close_label` - The accessible name of the close button, and its text
+      when `:close` is not set. Defaults to `"Close"`. An expression, such as
+      `gettext("Close")` or a call to any other function, is evaluated at render
+      time.
+    - `:close` - The content of the close button: a remote capture of a
+      function component or inline HEEx, such as `~H|<.icon name="x" />|`. It
+      renders with the values of the modifiers as assigns. Defaults to `nil`,
+      which renders `close_label` as text.
+    """
+  end
+
+  @impl true
   def config do
     [
       type: :dialog,
       since: "0.6.0",
       maturity: :developing,
+      extra: [close_label: "Close", close: nil],
+      render_options: [close_label: :string, close: :content],
       modifiers: []
     ]
   end
@@ -268,18 +284,8 @@ defmodule Doggo.Components.Modal do
           outside can close the dialog. You need to provide your own control.
         """
 
-      attr :close_label, :string,
-        default: "Close",
-        doc: """
-        Aria label for the close button. This value should be translated to the
-        language in which the rest of the page is displayed.
-        """
-
       slot :title, required: true
       slot :inner_block, required: true, doc: "The modal body."
-
-      slot :close,
-        doc: "The content for the 'close' link. Defaults to the word 'close'."
 
       slot :footer
 
@@ -294,7 +300,7 @@ defmodule Doggo.Components.Modal do
     quote do
       Doggo.diagnostic do
         Doggo.ensure_name!(
-          var!(assigns).close_label,
+          Doggo.build(:close_label),
           unquote(name),
           "close_label"
         )
@@ -320,12 +326,15 @@ defmodule Doggo.Components.Modal do
               :if={@closedby != "none"}
               type="button"
               class={Doggo.build(:base_class, "-close")}
-              aria-label={@close_label}
+              aria-label={Doggo.build(:close_label)}
               command="close"
               commandfor={@id}
             >
-              {render_slot(@close)}
-              <span :if={@close == []}>{@close_label}</span>
+              <Doggo.control_content
+                content={Doggo.build(:close)}
+                modifiers={@data_attrs.data}
+                label={Doggo.build(:close_label)}
+              />
             </button>
           </header>
           <div id={"#{@id}-content"} class={Doggo.build(:base_class, "-content")}>

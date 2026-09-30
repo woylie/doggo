@@ -488,6 +488,49 @@ defmodule Doggo.MacrosTest do
     end
   end
 
+  describe "build macros with render options" do
+    test "raise for a content option that is not a function component" do
+      assert_raise ArgumentError,
+                   ~r/invalid :close option for build_alert\/1/,
+                   fn ->
+                     compile(StringContentOption, ~S|build_alert(close: "x")|)
+                   end
+    end
+
+    test "raise for a content expression that is not inline HEEx" do
+      assert_raise ArgumentError,
+                   ~r/invalid :close option for build_alert\/1/,
+                   fn ->
+                     compile(
+                       CallContentOption,
+                       ~S|build_alert(close: String.upcase("x"))|
+                     )
+                   end
+    end
+
+    test "raise for an expression that reads assigns" do
+      assert_raise ArgumentError,
+                   ~r/The :close_label option reads the component's assigns/,
+                   fn ->
+                     compile(
+                       AssignsRenderOption,
+                       ~S|build_alert(close_label: assigns.id)|
+                     )
+                   end
+    end
+
+    test "raise for a function option that is not a function" do
+      assert_raise ArgumentError,
+                   ~r/invalid :pagination_slide_label option for build_carousel\/1/,
+                   fn ->
+                     compile(
+                       StringFunctionOption,
+                       ~S|build_carousel(pagination_slide_label: "x")|
+                     )
+                   end
+    end
+  end
+
   describe "build_breadcrumb/1" do
     test "applies an expression default for the label before the label check" do
       [{module, _}] =

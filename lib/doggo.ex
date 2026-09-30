@@ -22,7 +22,23 @@ defmodule Doggo do
 
   @doc false
   defmacro build(key) do
-    __CALLER__.module |> fetch_build!(key) |> Macro.escape()
+    case Module.get_attribute(__CALLER__.module, :__dog_render__) do
+      %{^key => expression} -> expression
+      _ -> __CALLER__.module |> fetch_build!(key) |> Macro.escape()
+    end
+  end
+
+  attr :content, :any, required: true
+  attr :modifiers, :list, required: true
+  attr :label, :string, required: true
+
+  @doc false
+  def control_content(%{content: nil} = assigns) do
+    ~H"<span>{@label}</span>"
+  end
+
+  def control_content(assigns) do
+    ~H"{@content.(Map.new(@modifiers))}"
   end
 
   @doc false
@@ -263,28 +279,10 @@ defmodule Doggo do
   def field_description_id(id) when is_binary(id), do: "#{id}-description"
 
   @doc false
-  def translate_error({msg, opts}, nil) do
+  def translate_error({msg, opts}) do
     Enum.reduce(opts, msg, fn {key, value}, acc ->
       String.replace(acc, "%{#{key}}", fn _ -> to_string(value) end)
     end)
-  end
-
-  def translate_error({msg, opts}, gettext_module)
-      when is_atom(gettext_module) do
-    if count = opts[:count] do
-      # credo:disable-for-next-line
-      apply(Gettext, :dngettext, [
-        gettext_module,
-        "errors",
-        msg,
-        msg,
-        count,
-        opts
-      ])
-    else
-      # credo:disable-for-next-line
-      apply(Gettext, :dgettext, [gettext_module, "errors", msg, opts])
-    end
   end
 
   ## Helpers
