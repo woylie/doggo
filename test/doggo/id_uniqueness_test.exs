@@ -52,14 +52,16 @@ defmodule Doggo.IdUniquenessTest do
       <TestComponents.action_bar id={"action-bar-#{i}"} label="Dog actions">
         <:item label="Edit" on_click={JS.push("edit")}>Edit</:item>
       </TestComponents.action_bar>
-      <TestComponents.alert id={"alert-#{i}"} title="Title">
+      <TestComponents.alert id={"alert-#{i}"}>
+        <:title>Title</:title>
         Message
       </TestComponents.alert>
       <TestComponents.alert_dialog id={"alert-dialog-#{i}"}>
         <:title>Title</:title>
         Message
       </TestComponents.alert_dialog>
-      <TestComponents.callout id={"callout-#{i}"} title="Title">
+      <TestComponents.callout id={"callout-#{i}"}>
+        <:title>Title</:title>
         Message
       </TestComponents.callout>
       <TestComponents.carousel id={"carousel-#{i}"} label="Dogs">

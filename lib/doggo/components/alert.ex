@@ -28,7 +28,8 @@ defmodule Doggo.Components.Alert do
     With title, icon and level:
 
     ```heex
-    <.alert id="some-alert" level={:info} title="Info">
+    <.alert id="some-alert" level={:info}>
+      <:title>Info</:title>
       message
       <:icon><Heroicon.light_bulb /></:icon>
     </.alert>
@@ -51,7 +52,8 @@ defmodule Doggo.Components.Alert do
     With an action:
 
     ```heex
-    <.alert id="some-alert" title="Session expired">
+    <.alert id="some-alert">
+      <:title>Session expired</:title>
       Your session has expired. Sign in again to continue.
       <:action>
         <.button phx-click="sign-in">Sign in</.button>
@@ -125,8 +127,6 @@ defmodule Doggo.Components.Alert do
     quote do
       attr :id, :string, required: true
 
-      attr :title, :string, default: nil, doc: "An optional title."
-
       attr :on_close, :any,
         default: nil,
         doc: """
@@ -136,6 +136,7 @@ defmodule Doggo.Components.Alert do
 
       attr :rest, :global, doc: "Any additional HTML attributes."
 
+      slot :title, doc: "An optional title."
       slot :inner_block, required: true, doc: "The main content of the alert."
       slot :icon, doc: "Optional slot to render an icon."
 
@@ -158,15 +159,13 @@ defmodule Doggo.Components.Alert do
           unquote(name),
           "close_label"
         )
-
-        Doggo.ensure_optional_name!(var!(assigns).title, unquote(name), "title")
       end
 
       ~H"""
       <div
         id={@id}
         role="alert"
-        aria-labelledby={@title && "#{@id}-title"}
+        aria-labelledby={@title != [] && "#{@id}-title"}
         class={[Doggo.build(:base_class) | List.wrap(@class)]}
         {@data_attrs}
         {@rest}
@@ -176,11 +175,11 @@ defmodule Doggo.Components.Alert do
         </div>
         <div class={Doggo.build(:base_class, "-body")}>
           <div
-            :if={@title}
+            :if={@title != []}
             id={"#{@id}-title"}
             class={Doggo.build(:base_class, "-title")}
           >
-            {@title}
+            {render_slot(@title)}
           </div>
           <div
             class={Doggo.build(:base_class, "-message")}

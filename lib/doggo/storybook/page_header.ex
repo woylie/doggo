@@ -20,48 +20,44 @@ defmodule Doggo.Storybook.PageHeader do
     [
       %Variation{
         id: :default,
-        attributes: %{
-          title: "Puppy Profiles",
-          subtitle: "Share Your Pup's Story"
-        },
-        slots: [action(opts, "/puppies/new", "Add New Profile")]
+        attributes: %{subtitle: "Share Your Pup's Story"},
+        slots: [
+          "<:title>Puppy Profiles</:title>",
+          action(opts, "/puppies/new", "Add New Profile")
+        ]
       },
       %Variation{
         id: :with_navigation,
-        attributes: %{
-          title: "Puppy Profiles",
-          subtitle: "Share Your Pup's Story"
-        },
+        attributes: %{subtitle: "Share Your Pup's Story"},
         slots: [
+          "<:title>Puppy Profiles</:title>",
           navigation(),
           action(opts, "/puppies/1/edit", "Edit Profile")
         ]
       },
       %Variation{
         id: :without_subtitle,
-        attributes: %{title: "Puppy Profiles"},
-        slots: [action(opts, "/puppies/new", "Add New Profile")]
+        attributes: %{},
+        slots: [
+          "<:title>Puppy Profiles</:title>",
+          action(opts, "/puppies/new", "Add New Profile")
+        ]
       },
       %Variation{
         id: :without_actions,
-        attributes: %{
-          title: "Puppy Profiles",
-          subtitle: "Share Your Pup's Story"
-        },
-        slots: []
+        attributes: %{subtitle: "Share Your Pup's Story"},
+        slots: ["<:title>Puppy Profiles</:title>"]
       },
       %Variation{
         id: :title_only,
-        attributes: %{title: "Puppy Profiles"},
-        slots: []
+        attributes: %{},
+        slots: ["<:title>Puppy Profiles</:title>"]
       },
       %Variation{
         id: :several_actions,
-        attributes: %{
-          title: "Puppy Profiles",
-          subtitle: "Share Your Pup's Story"
-        },
+        attributes: %{subtitle: "Share Your Pup's Story"},
         slots: [
+          "<:title>Puppy Profiles</:title>",
           action(opts, "/puppies/1/edit", "Edit Profile"),
           action(opts, "/puppies/new", "Add New Profile")
         ]
@@ -71,8 +67,11 @@ defmodule Doggo.Storybook.PageHeader do
 
   def modifier_variation_base(_id, _name, _value, opts) do
     %{
-      attributes: %{title: "Puppy Profiles", subtitle: "Share Your Pup's Story"},
-      slots: [action(opts, "/puppies/new", "Add New Profile")]
+      attributes: %{subtitle: "Share Your Pup's Story"},
+      slots: [
+        "<:title>Puppy Profiles</:title>",
+        action(opts, "/puppies/new", "Add New Profile")
+      ]
     }
   end
 

@@ -31,13 +31,13 @@ defmodule Doggo.Storybook.Alert do
       },
       %Variation{
         id: :title,
-        attributes: %{title: "This is the title."},
-        slots: slots()
+        attributes: %{},
+        slots: ["<:title>This is the title.</:title>" | slots()]
       },
       %Variation{
         id: :icon,
-        attributes: %{title: "This is the title."},
-        slots: slots_with_icon(opts)
+        attributes: %{},
+        slots: ["<:title>This is the title.</:title>" | slots_with_icon(opts)]
       },
       %Variation{
         id: :close_button,
@@ -48,8 +48,8 @@ defmodule Doggo.Storybook.Alert do
       },
       %Variation{
         id: :action,
-        attributes: %{title: "Session expired"},
-        slots: slots_with_action(opts)
+        attributes: %{},
+        slots: ["<:title>Session expired</:title>" | slots_with_action(opts)]
       }
     ]
   end

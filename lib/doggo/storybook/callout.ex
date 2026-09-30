@@ -33,15 +33,17 @@ defmodule Doggo.Storybook.Callout do
       },
       %Variation{
         id: :with_title,
-        attributes: %{title: "Dog Care Tip"},
+        attributes: %{},
         slots: [
+          "<:title>Dog Care Tip</:title>",
           "<p>Regular exercise is essential for keeping your dog healthy and happy.</p>"
         ]
       },
       %Variation{
         id: :with_title_and_icon,
-        attributes: %{title: "Fun Dog Fact"},
+        attributes: %{},
         slots: [
+          "<:title>Fun Dog Fact</:title>",
           """
           <p>
             Did you know? Dogs have a sense of time and can get upset when their
@@ -53,8 +55,9 @@ defmodule Doggo.Storybook.Callout do
       },
       %Variation{
         id: :with_action,
-        attributes: %{title: "Fun Dog Fact"},
+        attributes: %{},
         slots: [
+          "<:title>Fun Dog Fact</:title>",
           """
           <p>
             Did you know? Dogs have a sense of time and can get upset when their
@@ -69,8 +72,9 @@ defmodule Doggo.Storybook.Callout do
 
   def modifier_variation_base(_id, _name, _value, _opts) do
     %{
-      attributes: %{title: "Dog Care Tip"},
+      attributes: %{},
       slots: [
+        "<:title>Dog Care Tip</:title>",
         "<p>Regular exercise is essential for keeping your dog healthy and happy.</p>"
       ]
     }

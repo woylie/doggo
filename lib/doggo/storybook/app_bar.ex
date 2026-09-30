@@ -20,23 +20,28 @@ defmodule Doggo.Storybook.AppBar do
     [
       %Variation{
         id: :default,
-        attributes: %{id: "dog-app-bar-1", title: "Page title"},
-        slots: [navigation(opts), search(opts), like(opts)]
+        attributes: %{id: "dog-app-bar-1"},
+        slots: [
+          "<:title>Page title</:title>",
+          navigation(opts),
+          search(opts),
+          like(opts)
+        ]
       },
       %Variation{
         id: :without_navigation,
-        attributes: %{id: "dog-app-bar-2", title: "Page title"},
-        slots: [search(opts), like(opts)]
+        attributes: %{id: "dog-app-bar-2"},
+        slots: ["<:title>Page title</:title>", search(opts), like(opts)]
       },
       %Variation{
         id: :without_actions,
-        attributes: %{id: "dog-app-bar-3", title: "Page title"},
-        slots: [navigation(opts)]
+        attributes: %{id: "dog-app-bar-3"},
+        slots: ["<:title>Page title</:title>", navigation(opts)]
       },
       %Variation{
         id: :title_only,
-        attributes: %{id: "dog-app-bar-4", title: "Page title"},
-        slots: []
+        attributes: %{id: "dog-app-bar-4"},
+        slots: ["<:title>Page title</:title>"]
       },
       %Variation{
         id: :without_title,
@@ -48,8 +53,13 @@ defmodule Doggo.Storybook.AppBar do
 
   def modifier_variation_base(id, _name, value, opts) do
     %{
-      attributes: %{id: id, title: value},
-      slots: [navigation(opts), search(opts), like(opts)]
+      attributes: %{id: id},
+      slots: [
+        "<:title>#{value}</:title>",
+        navigation(opts),
+        search(opts),
+        like(opts)
+      ]
     }
   end
 

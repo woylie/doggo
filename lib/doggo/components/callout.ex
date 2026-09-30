@@ -21,7 +21,8 @@ defmodule Doggo.Components.Callout do
     Standard callout:
 
     ```heex
-    <.callout id="callout-dog-care-tip" title="Dog Care Tip">
+    <.callout id="callout-dog-care-tip">
+      <:title>Dog Care Tip</:title>
       <p>Regular exercise is essential for keeping your dog healthy and happy.</p>
     </.callout>
     ```
@@ -29,7 +30,8 @@ defmodule Doggo.Components.Callout do
     Callout with an icon:
 
     ```heex
-    <.callout id="callout-fun-dog-fact" title="Fun Dog Fact">
+    <.callout id="callout-fun-dog-fact">
+      <:title>Fun Dog Fact</:title>
       <:icon><Heroicons.information_circle /></:icon>
       <p>
         Did you know? Dogs have a sense of time and can get upset when their
@@ -41,7 +43,8 @@ defmodule Doggo.Components.Callout do
     Callout with an action:
 
     ```heex
-    <.callout id="callout-fun-dog-fact" title="Fun Dog Fact">
+    <.callout id="callout-fun-dog-fact">
+      <:title>Fun Dog Fact</:title>
       <p>
         Did you know? Dogs have a sense of time and can get upset when their
         routine is changed.
@@ -95,9 +98,9 @@ defmodule Doggo.Components.Callout do
   def attrs_and_slots(_opts) do
     quote do
       attr :id, :string, required: true
-      attr :title, :string, default: nil, doc: "An optional title."
       attr :rest, :global, doc: "Any additional HTML attributes."
 
+      slot :title, doc: "An optional title."
       slot :inner_block, required: true, doc: "The main content of the alert."
       slot :icon, doc: "Optional slot to render an icon."
       slot :action, doc: "Optional slot for action links or buttons."
@@ -105,20 +108,14 @@ defmodule Doggo.Components.Callout do
   end
 
   @impl true
-  def template(opts) do
-    name = ".#{Keyword.fetch!(opts, :name)}"
-
+  def template(_opts) do
     quote do
-      Doggo.diagnostic do
-        Doggo.ensure_optional_name!(var!(assigns).title, unquote(name), "title")
-      end
-
       ~H"""
       <div
         id={@id}
         class={[Doggo.build(:base_class) | List.wrap(@class)]}
-        role={@title && "complementary"}
-        aria-labelledby={@title && "#{@id}-title"}
+        role={@title != [] && "complementary"}
+        aria-labelledby={@title != [] && "#{@id}-title"}
         {@data_attrs}
         {@rest}
       >
@@ -127,11 +124,11 @@ defmodule Doggo.Components.Callout do
         </div>
         <div class={Doggo.build(:base_class, "-body")}>
           <div
-            :if={@title}
+            :if={@title != []}
             id={"#{@id}-title"}
             class={Doggo.build(:base_class, "-title")}
           >
-            {@title}
+            {render_slot(@title)}
           </div>
           <div class={Doggo.build(:base_class, "-message")}>
             {render_slot(@inner_block)}

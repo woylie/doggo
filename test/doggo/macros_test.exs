@@ -113,6 +113,72 @@ defmodule Doggo.MacrosTest do
                      )
                    end
     end
+
+    test "renders an expression default" do
+      [{module, _}] =
+        compile(ExpressionDefault, ~S"""
+        def type, do: "sub"
+
+        build_button(defaults: [type: type() <> "mit"])
+
+        def page(assigns), do: ~H|<.button>Hi</.button>|
+        """)
+
+      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{}))
+      assert html =~ ~s(type="submit")
+    end
+
+    test "renders the value of the call instead of the default" do
+      [{module, _}] =
+        compile(DefaultOverride, ~S"""
+        build_button(defaults: [type: String.downcase("SUBMIT")])
+
+        def page(assigns), do: ~H|<.button type="reset">Hi</.button>|
+        """)
+
+      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{}))
+      assert html =~ ~s(type="reset")
+      refute html =~ "submit"
+    end
+
+    test "keeps nil passed by the call" do
+      [{module, _}] =
+        compile(DefaultNil, ~S"""
+        build_button(defaults: [type: String.downcase("SUBMIT")])
+
+        def page(assigns),
+          do: ~H|<.button type={@type}>Hi</.button>|
+        """)
+
+      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{type: nil}))
+      refute html =~ "submit"
+    end
+
+    test "does not send an expression default if another attribute changed" do
+      [{module, _}] =
+        compile(DefaultChangeTracking, ~S"""
+        build_button(defaults: [type: String.downcase("SUBMIT")])
+
+        def page(assigns),
+          do: ~H|<.button variant={@variant}>Hi</.button>|
+        """)
+
+      parts =
+        %{variant: "danger", __changed__: %{variant: true}}
+        |> module.page()
+        |> Doggo.TestHelpers.sent_parts()
+
+      refute Enum.any?(parts, &(&1 =~ "submit"))
+    end
+
+    test "raises for a default that reads assigns" do
+      assert_raise ArgumentError, ~r/reads the component's assigns/, fn ->
+        compile(
+          AssignsDefault,
+          ~S|build_button(defaults: [type: assigns.variant])|
+        )
+      end
+    end
   end
 
   describe "build macros" do
@@ -126,63 +192,6 @@ defmodule Doggo.MacrosTest do
   end
 
   describe "build_alert/1" do
-    test "renders an expression default" do
-      [{module, _}] =
-        compile(ExpressionDefault, ~S"""
-        def title, do: "Notice"
-
-        build_alert(defaults: [title: title() <> " for you"])
-
-        def page(assigns), do: ~H|<.alert id="a">Hi</.alert>|
-        """)
-
-      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{}))
-      assert html =~ "Notice for you"
-    end
-
-    test "renders the value of the call instead of the default" do
-      [{module, _}] =
-        compile(DefaultOverride, ~S"""
-        build_alert(defaults: [title: String.upcase("notice")])
-
-        def page(assigns), do: ~H|<.alert id="a" title="Own">Hi</.alert>|
-        """)
-
-      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{}))
-      assert html =~ "Own"
-      refute html =~ "NOTICE"
-    end
-
-    test "keeps nil passed by the call" do
-      [{module, _}] =
-        compile(DefaultNil, ~S"""
-        build_alert(defaults: [title: String.upcase("notice")])
-
-        def page(assigns),
-          do: ~H|<.alert id="a" title={@title}>Hi</.alert>|
-        """)
-
-      html = Phoenix.LiveViewTest.rendered_to_string(module.page(%{title: nil}))
-      refute html =~ "NOTICE"
-    end
-
-    test "does not send an expression default if another attribute changed" do
-      [{module, _}] =
-        compile(DefaultChangeTracking, ~S"""
-        build_alert(defaults: [title: String.upcase("notice")])
-
-        def page(assigns),
-          do: ~H|<.alert id="a" level={@level}>Hi</.alert>|
-        """)
-
-      parts =
-        %{level: "danger", __changed__: %{level: true}}
-        |> module.page()
-        |> Doggo.TestHelpers.sent_parts()
-
-      refute Enum.any?(parts, &(&1 =~ "NOTICE"))
-    end
-
     test "renders a slot default" do
       [{module, _}] =
         compile(SlotDefault, ~S"""
@@ -273,15 +282,6 @@ defmodule Doggo.MacrosTest do
                        ~S|build_alert(defaults: [rest: %{}])|
                      )
                    end
-    end
-
-    test "raises for a default that reads assigns" do
-      assert_raise ArgumentError, ~r/reads the component's assigns/, fn ->
-        compile(
-          AssignsDefault,
-          ~S|build_alert(defaults: [title: assigns.level])|
-        )
-      end
     end
 
     test "raises for a slot default that is not a function component" do
