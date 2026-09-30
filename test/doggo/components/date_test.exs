@@ -159,5 +159,99 @@ defmodule Doggo.Components.DateTest do
                      """)
                    end
     end
+
+    test "renders year for year precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.date value={~D[1980-05-17]} precision={:year} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "1980"
+      assert text(time) == "1980"
+    end
+
+    test "renders month for month precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.date value={~D[1980-05-17]} precision={:month} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "1980-05"
+      assert text(time) == "1980-05"
+    end
+
+    test "renders yearless date for month_day precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.date value={~D[1980-05-17]} precision={:month_day} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "05-17"
+      assert text(time) == "05-17"
+    end
+
+    test "renders date for day precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.date value={~U[1980-05-17T18:30:21Z]} precision={:day} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "datetime") == "1980-05-17"
+      assert text(time) == "1980-05-17"
+    end
+
+    test "renders yearless date for year before 1" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.date value={Date.new!(-5, 5, 17)} precision={:month_day} />
+        """)
+
+      assert attribute(html, "time", "datetime") == "05-17"
+    end
+
+    test "passes full date to formatter with precision" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.date
+          value={~D[1980-05-17]}
+          precision={:year}
+          formatter={&to_string(&1.day)}
+        />
+        """)
+
+      assert text(html, "time") == "17"
+    end
+
+    test "raises for invalid precision" do
+      assigns = %{precision: :hour}
+
+      assert_raise ArgumentError,
+                   ~r/invalid precision for \.date.*:hour/s,
+                   fn ->
+                     parse_heex(~H"""
+                     <TestComponents.date value={~D[1980-05-17]} precision={@precision} />
+                     """)
+                   end
+    end
   end
 end

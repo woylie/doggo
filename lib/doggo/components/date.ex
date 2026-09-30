@@ -5,6 +5,8 @@ defmodule Doggo.Components.Date do
 
   use Phoenix.Component
 
+  @precisions [:year, :month, :month_day, :day]
+
   @impl true
   def doc do
     """
@@ -16,7 +18,7 @@ defmodule Doggo.Components.Date do
   @impl true
   def usage do
     """
-    By default, the given value is formatted for display with `to_string/1`.
+    By default, the given value is formatted for display in the ISO 8601 format.
     This:
 
     ```heex
@@ -47,6 +49,23 @@ defmodule Doggo.Components.Date do
     ```html
     <time class="date" datetime="2023-02-05">
       Feb 2, 2023
+    </time>
+    ```
+
+    Set `precision` to show fewer units of the date, for example only the year
+    of a birthdate. The option is applied to the `datetime` attribute and the
+    default formatter. The `formatter` and `title_formatter` functions receive
+    the full date.
+
+    ```heex
+    <.date value={~D[1980-05-17]} precision={:year} />
+    ```
+
+    Which would be rendered as:
+
+    ```html
+    <time class="date" datetime="1980">
+      1980
     </time>
     ```
 
@@ -119,7 +138,8 @@ defmodule Doggo.Components.Date do
         default: nil,
         doc: """
         A function that takes a `Date` as an argument and returns the value
-        formatted for display. Defaults to `to_string/1`.
+        formatted for display. Defaults to the ISO 8601 format, limited to
+        `precision`.
         """
 
       attr :title_formatter, :any,
@@ -128,6 +148,19 @@ defmodule Doggo.Components.Date do
         When provided, this function is used to format the date value for the
         `title` attribute. If the attribute is not set, no `title` attribute
         will be added.
+        """
+
+      attr :precision, :atom,
+        values: unquote(@precisions ++ [nil]),
+        default: nil,
+        doc: """
+        The smallest unit that the `datetime` attribute and the default text
+        show. For `1980-05-17`:
+
+        - `:year`: `1980`
+        - `:month`: `1980-05`
+        - `:month_day`: `05-17`, month and day without the year
+        - `:day` or `nil`: `1980-05-17`
         """
 
       attr :timezone, :string,
@@ -152,6 +185,9 @@ defmodule Doggo.Components.Date do
   @impl true
   def template(_opts) do
     quote do
+      precision =
+        Doggo.time_precision!(var!(assigns), unquote(@precisions), ".date")
+
       value =
         var!(assigns).value
         |> Doggo.time_value!([Date, DateTime, NaiveDateTime], ".date")
@@ -159,7 +195,12 @@ defmodule Doggo.Components.Date do
         |> Doggo.to_date()
 
       var!(assigns) =
-        Doggo.assign_time(var!(assigns), value, ".date")
+        Doggo.assign_time(
+          var!(assigns),
+          value,
+          ".date",
+          &Doggo.date_string(&1, precision)
+        )
 
       ~H"""
       <time
