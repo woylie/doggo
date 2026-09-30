@@ -18,16 +18,16 @@ defmodule Doggo.Components.Toggletip do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     With an icon, the label names the button for screen readers:
 
     ```heex
-    <.toggletip id="adoption-fee-info" label="About the adoption fee">
+    <.#{name} id="adoption-fee-info" label="About the adoption fee">
       <:icon><.icon name="info" /></:icon>
       The fee covers vaccinations, a microchip and the first vet visit.
       <a href="/adoption/fees">How fees are used</a>
-    </.toggletip>
+    </.#{name}>
     ```
 
     Without an icon, the label is the button's visible text.

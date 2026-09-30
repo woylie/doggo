@@ -16,37 +16,37 @@ defmodule Doggo.Components.TreeItem do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
     <.tree id="dog-tree" label="Dogs">
-      <.tree_item>
+      <.#{name}>
         Breeds
         <:items>
-          <.tree_item>Golden Retriever</.tree_item>
-          <.tree_item>Labrador Retriever</.tree_item>
+          <.#{name}>Golden Retriever</.#{name}>
+          <.#{name}>Labrador Retriever</.#{name}>
         </:items>
-      </.tree_item>
-      <.tree_item>
+      </.#{name}>
+      <.#{name}>
         Characteristics
         <:items>
-          <.tree_item>Playful</.tree_item>
-          <.tree_item>Loyal</.tree_item>
+          <.#{name}>Playful</.#{name}>
+          <.#{name}>Loyal</.#{name}>
         </:items>
-      </.tree_item>
+      </.#{name}>
     </.tree>
     ```
 
     Icons can be added before the label:
 
     ```heex
-    <.tree_item>
+    <.#{name}>
       <Heroicon.folder /> Breeds
       <:items>
-        <.tree_item><Heroicon.document /> Golden Retriever</.tree_item>
-        <.tree_item><Heroicon.document /> Labrador Retriever</.tree_item>
+        <.#{name}><Heroicon.document /> Golden Retriever</.#{name}>
+        <.#{name}><Heroicon.document /> Labrador Retriever</.#{name}>
       </:items>
-    </.tree_item>
+    </.#{name}>
     ```
     """
   end

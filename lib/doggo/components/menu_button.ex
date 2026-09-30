@@ -21,7 +21,7 @@ defmodule Doggo.Components.MenuButton do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Set the `controls` attribute to the DOM ID of the element that you want to
     toggle with the button.
@@ -35,9 +35,9 @@ defmodule Doggo.Components.MenuButton do
 
     ```heex
     <div>
-      <.menu_button controls="actions-menu" id="actions-button">
+      <.#{name} controls="actions-menu" id="actions-button">
         Actions
-      </.menu_button>
+      </.#{name}>
 
       <.menu id="actions-menu" labelledby="actions-button" hidden>
         <:item>
@@ -65,9 +65,9 @@ defmodule Doggo.Components.MenuButton do
     ```heex
     <.menu id="actions-menu">
       <:item>
-        <.menu_button controls="actions-menu" id="actions-button" menuitem>
+        <.#{name} controls="actions-menu" id="actions-button" menuitem>
           Dog Actions
-        </.menu_button>
+        </.#{name}>
         <.menu id="dog-actions-menu" labelledby="actions-button" hidden>
           <:item><!-- ... --></:item>
         </.menu>

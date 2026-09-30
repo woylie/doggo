@@ -14,10 +14,10 @@ defmodule Doggo.Components.Badge do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.badge>8</.badge>
+    <.#{name}>8</.#{name}>
     ```
 
     ## On a control
@@ -30,7 +30,7 @@ defmodule Doggo.Components.Badge do
     <.button>
       <Heroicon.envelope />
       <span data-visually-hidden>Messages</span>
-      <.badge>3<span data-visually-hidden> unread</span></.badge>
+      <.#{name}>3<span data-visually-hidden> unread</span></.#{name}>
     </.button>
     ```
 

@@ -16,14 +16,14 @@ defmodule Doggo.Components.Combobox do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ## Options
 
     With simple values:
 
     ```heex
-    <.combobox
+    <.#{name}
       id="dog-breed-selector"
       name="breed"
       list_label="Dog breeds"
@@ -40,7 +40,7 @@ defmodule Doggo.Components.Combobox do
     With label/value pairs:
 
     ```heex
-    <.combobox
+    <.#{name}
       id="dog-breed-selector"
       name="breed"
       list_label="Dog breeds"
@@ -57,7 +57,7 @@ defmodule Doggo.Components.Combobox do
     With descriptions and a disabled option:
 
     ```heex
-    <.combobox
+    <.#{name}
       id="dog-breed-selector"
       name="breed"
       list_label="Dog breeds"
@@ -80,7 +80,7 @@ defmodule Doggo.Components.Combobox do
 
     ```heex
     <label for="dog-breed-selector">Breed</label>
-    <.combobox
+    <.#{name}
       id="dog-breed-selector"
       name="breed"
       list_label="Dog breeds"
@@ -93,7 +93,7 @@ defmodule Doggo.Components.Combobox do
 
     ```heex
     <h2 id="breed-heading">Breed</h2>
-    <.combobox
+    <.#{name}
       id="dog-breed-selector"
       name="breed"
       list_label="Dog breeds"
@@ -116,7 +116,7 @@ defmodule Doggo.Components.Combobox do
     ```heex
     <.form for={@form} phx-change="validate" phx-submit="save">
       <label for="dog-breed-selector">Breed</label>
-      <.combobox
+      <.#{name}
         id="dog-breed-selector"
         name={@form[:breed].name}
         value={@form[:breed].value}
@@ -141,7 +141,7 @@ defmodule Doggo.Components.Combobox do
     unselects the current selection and clears the search term.
 
     ```heex
-    <.combobox
+    <.#{name}
       id="dog-breed-selector"
       name="breed"
       list_label="Dog breeds"
@@ -167,7 +167,7 @@ defmodule Doggo.Components.Combobox do
     entered value that is not among the options.
 
     ```heex
-    <.combobox
+    <.#{name}
       id="dog-breed-selector"
       name="breed"
       list_label="Dog breeds"
@@ -184,7 +184,7 @@ defmodule Doggo.Components.Combobox do
     parameter described above.
 
     ```heex
-    <.combobox
+    <.#{name}
       id="dog-breed-selector"
       name="breed"
       list_label="Dog breeds"

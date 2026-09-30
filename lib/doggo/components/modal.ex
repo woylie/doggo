@@ -19,7 +19,7 @@ defmodule Doggo.Components.Modal do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     The dialog is opened with `showModal()` in one of three ways: from the URL,
     with the `show_modal/1` and `hide_modal/1` functions, or with a button that
@@ -38,7 +38,7 @@ defmodule Doggo.Components.Modal do
     #### Example
 
     ```heex
-    <.modal
+    <.#{name}
       :if={@live_action == :show}
       id="pet-modal"
       on_cancel={JS.patch(~p"/pets")}
@@ -51,7 +51,7 @@ defmodule Doggo.Components.Modal do
           Close
         </.link>
       </:footer>
-    </.modal>
+    </.#{name}>
     ```
 
     To open the modal, patch or navigate to the URL associated with the live
@@ -72,7 +72,7 @@ defmodule Doggo.Components.Modal do
     #### Example
 
     ```heex
-    <.modal id="pet-modal">
+    <.#{name} id="pet-modal">
       <:title>Show pet</:title>
       <p>My pet is called Johnny.</p>
       <:footer>
@@ -80,7 +80,7 @@ defmodule Doggo.Components.Modal do
           Close
         </.link>
       </:footer>
-    </.modal>
+    </.#{name}>
     ```
 
     To open the modal, use the `show_modal/1` function.
@@ -135,12 +135,12 @@ defmodule Doggo.Components.Modal do
     Set `autofocus` on the element that should receive the focus:
 
     ```heex
-    <.modal id="edit-dog">
+    <.#{name} id="edit-dog">
       <:title>Edit dog</:title>
       <form>
         <input type="text" name="name" autofocus />
       </form>
-    </.modal>
+    </.#{name}>
     ```
 
     The most appropriate element to focus depends on the dialog:
@@ -160,12 +160,12 @@ defmodule Doggo.Components.Modal do
     To focus a static element, set both `tabindex="-1"` and `autofocus`:
 
     ```heex
-    <.modal id="terms">
+    <.#{name} id="terms">
       <:title>Terms of service</:title>
       <p tabindex="-1" autofocus>Read the following before continuing.</p>
       <h3>Eligibility</h3>
       ...
-    </.modal>
+    </.#{name}>
     ```
 
     If the body is short, it can be announced when the modal opens instead by
@@ -173,10 +173,10 @@ defmodule Doggo.Components.Modal do
     `-content` suffix):
 
     ```heex
-    <.modal id="delete-dog" aria-describedby="delete-dog-content">
+    <.#{name} id="delete-dog" aria-describedby="delete-dog-content">
       <:title>Delete Bella?</:title>
       <p>This cannot be undone.</p>
-    </.modal>
+    </.#{name}>
     ```
 
     A description is announced as a single run of text. Don't set

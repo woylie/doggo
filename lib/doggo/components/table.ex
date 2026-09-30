@@ -13,13 +13,13 @@ defmodule Doggo.Components.Table do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name, base_class: base_class}) do
     """
     ```heex
-    <.table id="pets" rows={@pets} caption="Pets">
+    <.#{name} id="pets" rows={@pets} caption="Pets">
       <:col :let={p} label="name"><%= p.name %></:col>
       <:col :let={p} label="age"><%= p.age %></:col>
-    </.table>
+    </.#{name}>
     ```
 
     ## Row actions
@@ -29,7 +29,7 @@ defmodule Doggo.Components.Table do
     that it can also be reached by keyboard.
 
     ```heex
-    <.table
+    <.#{name}
       id="pets"
       rows={@pets}
       caption="Pets"
@@ -38,7 +38,7 @@ defmodule Doggo.Components.Table do
       <:col :let={p} label="name">
         <.link navigate={~p"/pets/\#{p}"}><%= p.name %></.link>
       </:col>
-    </.table>
+    </.#{name}>
     ```
 
     ## Scroll container
@@ -48,7 +48,7 @@ defmodule Doggo.Components.Table do
     make the container scrollable:
 
     ```css
-    .table-container {
+    .#{base_class}-container {
       overflow-x: auto;
     }
     ```

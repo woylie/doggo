@@ -87,10 +87,10 @@ defmodule Doggo.Components.Carousel do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.carousel id="dog-carousel" label="Our Dogs">
+    <.#{name} id="dog-carousel" label="Our Dogs">
       <:previous label="Previous Slide">
         <Heroicons.chevron_left />
       </:previous>
@@ -118,7 +118,7 @@ defmodule Doggo.Components.Carousel do
           ratio="16:9"
         />
       </:item>
-    </.carousel>
+    </.#{name}>
     ```
 
     This component needs the `Doggo.Carousel` JavaScript hook. See

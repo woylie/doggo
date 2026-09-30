@@ -17,30 +17,30 @@ defmodule Doggo.Components.Drawer do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Minimal example:
 
     ```heex
-    <.drawer id="drawer">
+    <.#{name} id="drawer">
       <:body>Content</:body>
-    </.drawer>
+    </.#{name}>
     ```
 
     With all slots:
 
     ```heex
-    <.drawer id="drawer">
+    <.#{name} id="drawer">
       <:header>Doggo</:header>
       <:body>Content at the top</:body>
       <:footer>Content at the bottom</:footer>
-    </.drawer>
+    </.#{name}>
     ```
 
     With navigation and sections:
 
     ```heex
-    <.drawer id="drawer">
+    <.#{name} id="drawer">
       <:header>
         <.link navigate={~p"/"}>App</.link>
       </:header>
@@ -76,7 +76,7 @@ defmodule Doggo.Components.Drawer do
           </:item>
         </.vertical_nav>
       </:footer>
-    </.drawer>
+    </.#{name}>
     ```
 
     ## Semantics

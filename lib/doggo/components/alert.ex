@@ -17,30 +17,30 @@ defmodule Doggo.Components.Alert do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Minimal example:
 
     ```heex
-    <.alert id="some-alert"></.alert>
+    <.#{name} id="some-alert"></.#{name}>
     ```
 
     With title, icon and level:
 
     ```heex
-    <.alert id="some-alert" level={:info}>
+    <.#{name} id="some-alert" level={:info}>
       <:title>Info</:title>
       message
       <:icon><Heroicon.light_bulb /></:icon>
-    </.alert>
+    </.#{name}>
     ```
 
     Dismissable:
 
     ```heex
-    <.alert id="some-alert" on_close={JS.push("dismiss")}>
+    <.#{name} id="some-alert" on_close={JS.push("dismiss")}>
       message
-    </.alert>
+    </.#{name}>
     ```
 
     The close button's name and content are set in the build call:
@@ -52,13 +52,13 @@ defmodule Doggo.Components.Alert do
     With an action:
 
     ```heex
-    <.alert id="some-alert">
+    <.#{name} id="some-alert">
       <:title>Session expired</:title>
       Your session has expired. Sign in again to continue.
       <:action>
         <.button phx-click="sign-in">Sign in</.button>
       </:action>
-    </.alert>
+    </.#{name}>
     ```
 
     The `close_label` is the button's accessible name, so it is needed whether

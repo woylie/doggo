@@ -16,19 +16,19 @@ defmodule Doggo.Components.Date do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name, base_class: base_class}) do
     """
     By default, the given value is formatted for display in the ISO 8601 format.
     This:
 
     ```heex
-    <.date value={~D[2023-02-05]} />
+    <.#{name} value={~D[2023-02-05]} />
     ```
 
     Will be rendered as:
 
     ```html
-    <time class="date" datetime="2023-02-05">
+    <time class="#{base_class}" datetime="2023-02-05">
       2023-02-05
     </time>
     ```
@@ -38,7 +38,7 @@ defmodule Doggo.Components.Date do
     application, you could do this:
 
     ```heex
-    <.date
+    <.#{name}
       value={~D[2023-02-05]}
       formatter={&MyApp.Cldr.Date.to_string!/1}
     />
@@ -47,7 +47,7 @@ defmodule Doggo.Components.Date do
     Which, depending on your locale, may be rendered as:
 
     ```html
-    <time class="date" datetime="2023-02-05">
+    <time class="#{base_class}" datetime="2023-02-05">
       Feb 2, 2023
     </time>
     ```
@@ -58,13 +58,13 @@ defmodule Doggo.Components.Date do
     the full date.
 
     ```heex
-    <.date value={~D[1980-05-17]} precision={:year} />
+    <.#{name} value={~D[1980-05-17]} precision={:year} />
     ```
 
     Which would be rendered as:
 
     ```html
-    <time class="date" datetime="1980">
+    <time class="#{base_class}" datetime="1980">
       1980
     </time>
     ```
@@ -77,7 +77,7 @@ defmodule Doggo.Components.Date do
     attribute that is always added.
 
     ```heex
-    <.date
+    <.#{name}
       value={@date}
       formatter={&relative_date/1}
       title_formatter={&MyApp.Cldr.Date.to_string!/1}
@@ -88,7 +88,7 @@ defmodule Doggo.Components.Date do
     before converting it to a date:
 
     ```heex
-    <.date
+    <.#{name}
       value={~U[2023-02-05 23:22:05Z]}
       timezone="Asia/Tokyo"
     />
@@ -97,7 +97,7 @@ defmodule Doggo.Components.Date do
     Which would be rendered as:
 
     ```html
-    <time class="date" datetime="2023-02-06">
+    <time class="#{base_class}" datetime="2023-02-06">
       2023-02-06
     </time>
     ```

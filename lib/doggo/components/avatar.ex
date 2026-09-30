@@ -13,30 +13,30 @@ defmodule Doggo.Components.Avatar do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Minimal example with only the `src` attribute:
 
     ```heex
-    <.avatar src="avatar.png" />
+    <.#{name} src="avatar.png" />
     ```
 
     Render avatar as a circle:
 
     ```heex
-    <.avatar src="avatar.png" circle />
+    <.#{name} src="avatar.png" circle />
     ```
 
     Use a placeholder image in case the avatar is not set:
 
     ```heex
-    <.avatar src={@user.avatar_url} placeholder_src="fallback.png" />
+    <.#{name} src={@user.avatar_url} placeholder_src="fallback.png" />
     ```
 
     Render an text as the placeholder value:
 
     ```heex
-    <.avatar src={@user.avatar_url} placeholder_content="A" />
+    <.#{name} src={@user.avatar_url} placeholder_content="A" />
     ```
     """
   end

@@ -21,22 +21,22 @@ defmodule Doggo.Components.Frame do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Rendering an image with the aspect ratio 4:3.
 
     ```heex
-    <.frame ratio="4:3">
+    <.#{name} ratio="4:3">
       <img src="image.png" alt="An example image illustrating the usage." />
-    </.frame>
+    </.#{name}>
     ```
 
     Rendering an image as a circle.
 
     ```heex
-    <.frame shape="circle">
+    <.#{name} shape="circle">
       <img src="image.png" alt="An example image illustrating the usage." />
-    </.frame>
+    </.#{name}>
     ```
     """
   end

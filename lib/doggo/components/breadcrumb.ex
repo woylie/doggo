@@ -13,14 +13,14 @@ defmodule Doggo.Components.Breadcrumb do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.breadcrumb label="Breadcrumb">
+    <.#{name} label="Breadcrumb">
       <:item patch="/categories">Categories</:item>
       <:item patch="/categories/1">Reviews</:item>
       <:item patch="/categories/1/articles/1">The Movie</:item>
-    </.breadcrumb>
+    </.#{name}>
     ```
     """
   end

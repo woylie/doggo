@@ -19,10 +19,10 @@ defmodule Doggo.Components.MenuBar do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.menu_bar id="main-menu-bar" label="Main">
+    <.#{name} id="main-menu-bar" label="Main">
       <:item>
         <.menu_button controls="actions-menu" id="actions-button">
           Actions
@@ -52,7 +52,7 @@ defmodule Doggo.Components.MenuBar do
           Help
         </.menu_item>
       </:item>
-    </.menu_bar>
+    </.#{name}>
     ```
 
     This component needs the `Doggo.Menu` JavaScript hook. See

@@ -21,25 +21,25 @@ defmodule Doggo.Components.Fallback do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Render the value of `@some_value` if it's available, or display the
     default placeholder otherwise:
 
     ```heex
-    <.fallback value={@some_value} />
+    <.#{name} value={@some_value} />
     ```
 
     Apply a formatter function to `@some_value` if it is not `nil`:
 
     ```heex
-    <.fallback value={@some_value} formatter={&format_date/1} />
+    <.#{name} value={@some_value} formatter={&format_date/1} />
     ```
 
     Set a custom placeholder and text for screen readers:
 
     ```heex
-    <.fallback
+    <.#{name}
       value={@some_value}
       placeholder="n/a"
       accessibility_text="not available"

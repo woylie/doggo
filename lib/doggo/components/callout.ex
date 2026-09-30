@@ -16,41 +16,41 @@ defmodule Doggo.Components.Callout do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Standard callout:
 
     ```heex
-    <.callout id="callout-dog-care-tip">
+    <.#{name} id="callout-dog-care-tip">
       <:title>Dog Care Tip</:title>
       <p>Regular exercise is essential for keeping your dog healthy and happy.</p>
-    </.callout>
+    </.#{name}>
     ```
 
     Callout with an icon:
 
     ```heex
-    <.callout id="callout-fun-dog-fact">
+    <.#{name} id="callout-fun-dog-fact">
       <:title>Fun Dog Fact</:title>
       <:icon><Heroicons.information_circle /></:icon>
       <p>
         Did you know? Dogs have a sense of time and can get upset when their
         routine is changed.
       </p>
-    </.callout>
+    </.#{name}>
     ```
 
     Callout with an action:
 
     ```heex
-    <.callout id="callout-fun-dog-fact">
+    <.#{name} id="callout-fun-dog-fact">
       <:title>Fun Dog Fact</:title>
       <p>
         Did you know? Dogs have a sense of time and can get upset when their
         routine is changed.
       </p>
       <:action><.link>Learn More</.link></:action>
-    </.callout>
+    </.#{name}>
     ```
     """
   end

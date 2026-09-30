@@ -20,16 +20,16 @@ defmodule Doggo.Components.PageHeader do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
     <main>
-      <.page_header subtitle="Share Your Pup's Story">
+      <.#{name} subtitle="Share Your Pup's Story">
         <:title>Puppy Profiles</:title>
         <:action>
           <.button_link patch={~p"/puppies/new"}>Add New Profile</.button_link>
         </:action>
-      </.page_header>
+      </.#{name}>
 
       <section>
         <!-- Content -->
@@ -41,7 +41,7 @@ defmodule Doggo.Components.PageHeader do
 
     ```heex
     <main>
-      <.page_header>
+      <.#{name}>
         <:title>Puppy Profile</:title>
         <:navigation navigate={~p"/puppies"}>
           Back to puppy list
@@ -49,7 +49,7 @@ defmodule Doggo.Components.PageHeader do
         <:action>
           <.button_link patch={~p"/puppies/new"}>Add New Profile</.button_link>
         </:action>
-      </.page_header>
+      </.#{name}>
 
       <section>
         <!-- Content -->

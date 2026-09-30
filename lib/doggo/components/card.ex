@@ -14,10 +14,10 @@ defmodule Doggo.Components.Card do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.card>
+    <.#{name}>
       <:image>
         <img src="image.png" alt="Picture of a dog dressed in a poncho." />
       </:image>
@@ -30,7 +30,7 @@ defmodule Doggo.Components.Card do
         <span>2023-11-15 12:24</span>
         <span>Events</span>
       </:footer>
-    </.card>
+    </.#{name}>
     ```
     """
   end

@@ -22,18 +22,18 @@ defmodule Doggo.Components.IconSprite do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Render an icon with a visually hidden label:
 
     ```heex
-    <.icon_sprite name="arrow-left" label="Go back" />
+    <.#{name} name="arrow-left" label="Go back" />
     ```
 
     To display the label visibly:
 
     ```heex
-    <.icon_sprite name="arrow-left" label="Go back" label_position="after" />
+    <.#{name} name="arrow-left" label="Go back" label_position="after" />
     ```
     """
   end

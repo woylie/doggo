@@ -26,10 +26,10 @@ defmodule Doggo.Components.VerticalNav do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.vertical_nav id="main-nav" label="Main">
+    <.#{name} id="main-nav" label="Main">
       <:item>
         <.link navigate={~p"/dashboard"}>Dashboard</.link>
       </:item>
@@ -44,19 +44,19 @@ defmodule Doggo.Components.VerticalNav do
           </:item>
         </.vertical_nav_nested>
       </:item>
-    </.vertical_nav>
+    </.#{name}>
     ```
 
     Inside a navigation landmark:
 
     ```heex
     <nav aria-label="Main">
-      <.vertical_nav id="project-nav" landmark={false}>
+      <.#{name} id="project-nav" landmark={false}>
         <:title>Projects</:title>
         <:item>
           <.link navigate={~p"/projects/1"}>Adoption</.link>
         </:item>
-      </.vertical_nav>
+      </.#{name}>
     </nav>
     ```
     """

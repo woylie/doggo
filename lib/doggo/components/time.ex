@@ -16,20 +16,20 @@ defmodule Doggo.Components.Time do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name, base_class: base_class}) do
     """
     By default, the time part of the given value is formatted for display with
     `to_string/1`. For a `DateTime` or `NaiveDateTime`, the `datetime` attribute
     holds the full value. This:
 
     ```heex
-    <.time value={~T[12:22:06.003]} />
+    <.#{name} value={~T[12:22:06.003]} />
     ```
 
     Will be rendered as:
 
     ```html
-    <time class="time" datetime="12:22:06.003">
+    <time class="#{base_class}" datetime="12:22:06.003">
       12:22:06.003
     </time>
     ```
@@ -39,7 +39,7 @@ defmodule Doggo.Components.Time do
     application, you could do this:
 
     ```heex
-    <.time
+    <.#{name}
       value={~T[12:22:06.003]}
       formatter={&MyApp.Cldr.Time.to_string!/1}
     />
@@ -48,7 +48,7 @@ defmodule Doggo.Components.Time do
     Which, depending on your locale, may be rendered as:
 
     ```html
-    <time class="time" datetime="14:22:06.003">
+    <time class="#{base_class}" datetime="14:22:06.003">
       14:22:06 PM
     </time>
     ```
@@ -57,7 +57,7 @@ defmodule Doggo.Components.Time do
     formatter.
 
     ```heex
-    <.time
+    <.#{name}
       value={~U[2023-02-05 12:22:06.003Z]}
       precision={:minute}
     />
@@ -71,7 +71,7 @@ defmodule Doggo.Components.Time do
     attribute that is always added.
 
     ```heex
-    <.time
+    <.#{name}
       value={@time}
       formatter={&relative_time/1}
       title_formatter={&MyApp.Cldr.Time.to_string!/1}
@@ -81,7 +81,7 @@ defmodule Doggo.Components.Time do
     Finally, the component can shift a `DateTime` to a different time zone:
 
     ```heex
-    <.time
+    <.#{name}
       value={~U[2023-02-05 23:22:05Z]}
       timezone="Asia/Tokyo"
     />
@@ -90,7 +90,7 @@ defmodule Doggo.Components.Time do
     Which would be rendered as:
 
     ```html
-    <time class="time" datetime="2023-02-06T08:22:05+09:00">
+    <time class="#{base_class}" datetime="2023-02-06T08:22:05+09:00">
       08:22:05
     </time>
     ```

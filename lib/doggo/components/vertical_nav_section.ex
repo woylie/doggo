@@ -16,13 +16,13 @@ defmodule Doggo.Components.VerticalNavSection do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.vertical_nav_section id="search-section">
+    <.#{name} id="search-section">
       <:title>Search</:title>
       <:item><input type="search" placeholder="Search" /></:item>
-    </.vertical_nav_section>
+    </.#{name}>
     ```
     """
   end

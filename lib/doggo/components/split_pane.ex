@@ -13,12 +13,12 @@ defmodule Doggo.Components.SplitPane do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Vertical separator with label:
 
     ```heex
-    <.split_pane
+    <.#{name}
       id="sidebar-splitter"
       label="Sidebar"
       orientation="vertical"
@@ -26,13 +26,13 @@ defmodule Doggo.Components.SplitPane do
     >
       <:primary>One</:primary>
       <:secondary>Two</:secondary>
-    </.split_pane>
+    </.#{name}>
     ```
 
     Vertical separator with visible label:
 
     ```heex
-    <.split_pane id="sidebar-splitter"
+    <.#{name} id="sidebar-splitter"
       labelledby="sidebar-label"
       orientation="vertical"
       default_size={30}
@@ -42,13 +42,13 @@ defmodule Doggo.Components.SplitPane do
         <p>One</p>
       </:primary>
       <:secondary>Two</:secondary>
-    </.split_pane>
+    </.#{name}>
     ```
 
     Nested window splitters:
 
     ```heex
-    <.split_pane
+    <.#{name}
       id="sidebar-splitter"
       label="Sidebar"
       orientation="vertical"
@@ -56,7 +56,7 @@ defmodule Doggo.Components.SplitPane do
     >
       <:primary>One</:primary>
       <:secondary>
-        <.split_pane
+        <.#{name}
           id="filter-splitter"
           label="Filters"
           orientation="horizontal"
@@ -64,9 +64,9 @@ defmodule Doggo.Components.SplitPane do
         >
           <:primary>Two</:primary>
           <:secondary>Three</:secondary>
-        </.split_pane>
+        </.#{name}>
       </:secondary>
-    </.split_pane>
+    </.#{name}>
     ```
 
     The size of the primary pane is written to the `--split-pane-position`

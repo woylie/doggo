@@ -37,10 +37,10 @@ defmodule Doggo.Components.Image do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.image
+    <.#{name}
       src="https://github.com/woylie/doggo/blob/main/assets/images/dog_1.webp?raw=true"
       alt="A gray-muzzled dog in a camouflage coat and harness."
       ratio="16:9"
@@ -49,7 +49,7 @@ defmodule Doggo.Components.Image do
         Canine couture, spring collection: the season's boldest silhouettes, worn
         on four legs.
       </:caption>
-    </.image>
+    </.#{name}>
     ```
     """
   end

@@ -18,14 +18,14 @@ defmodule Doggo.Components.ToggleButton do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     With a `Phoenix.LiveView.JS` command:
 
     ```heex
-    <.toggle_button on_click={JS.push("toggle-mute")} pressed={@muted}>
+    <.#{name} on_click={JS.push("toggle-mute")} pressed={@muted}>
       Mute
-    </.toggle_button>
+    </.#{name}>
     ```
 
     ## Accessibility

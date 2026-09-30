@@ -31,7 +31,7 @@ defmodule Doggo.Components.Icon do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name, base_class: base_class}) do
     """
     ## Configuration
 
@@ -52,7 +52,7 @@ defmodule Doggo.Components.Icon do
     reference a function component in the configured module.
 
     ```heex
-    <.icon name="bug_ant" label="report bug" />
+    <.#{name} name="bug_ant" label="report bug" />
     ```
 
     In this example, the icon component will use `Heroicons.bug_ant/1` to render
@@ -72,13 +72,13 @@ defmodule Doggo.Components.Icon do
     on to the referenced function component.
 
     ```heex
-    <.icon name="circle-question" label="help" />
+    <.#{name} name="circle-question" label="help" />
     ```
 
     In this example, the generated markup will be similar to:
 
     ```heex
-    <span class="icon">
+    <span class="#{base_class}">
       <MyIcons.render name="circle-question" />
     </span>
     ```
@@ -88,19 +88,19 @@ defmodule Doggo.Components.Icon do
     Render an icon with a visually hidden label:
 
     ```heex
-    <.icon name="bug_ant" label="report bug" />
+    <.#{name} name="bug_ant" label="report bug" />
     ```
 
     To display the label visibly:
 
     ```heex
-    <.icon name="bug_ant" label="report bug" label_position="after" />
+    <.#{name} name="bug_ant" label="report bug" label_position="after" />
     ```
 
     Or:
 
     ```heex
-    <.icon name="bug_ant" label="report bug" label_position="before" />
+    <.#{name} name="bug_ant" label="report bug" label_position="before" />
     ```
 
     The `label_position` attribute values are chosen to work with both

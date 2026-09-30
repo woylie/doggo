@@ -13,7 +13,7 @@ defmodule Doggo.Components.Steps do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Completed steps get accessibility text marked with the
     `data-visually-hidden` attribute, which needs a CSS rule. See
@@ -22,7 +22,7 @@ defmodule Doggo.Components.Steps do
     With patch navigation:
 
     ```heex
-    <.steps current_step={0} label="Order process">
+    <.#{name} current_step={0} label="Order process">
       <:step on_click={JS.patch(to: ~p"/form/step/personal-information")}>
         Profile
       </:step>
@@ -32,13 +32,13 @@ defmodule Doggo.Components.Steps do
       <:step on_click={JS.patch(to: ~p"/form/step/confirmation")}>
         Confirmation
       </:step>
-    </.steps>
+    </.#{name}>
     ```
 
     With push events:
 
     ```heex
-    <.steps current_step={0} label="Order process">
+    <.#{name} current_step={0} label="Order process">
       <:step on_click={JS.push("go-to-step", value: %{step: "profile"})}>
         Profile
       </:step>
@@ -48,7 +48,7 @@ defmodule Doggo.Components.Steps do
       <:step on_click={JS.push("go-to-step", value: %{step: "confirmation"})}>
         Confirmation
       </:step>
-    </.steps>
+    </.#{name}>
     ```
     """
   end

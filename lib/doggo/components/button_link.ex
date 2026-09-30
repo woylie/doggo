@@ -20,16 +20,16 @@ defmodule Doggo.Components.ButtonLink do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.button_link patch={~p"/confirm"}>
+    <.#{name} patch={~p"/confirm"}>
       Confirm
-    </.button_link>
+    </.#{name}>
 
-    <.button_link navigate={~p"/registration"}>
+    <.#{name} navigate={~p"/registration"}>
       Registration
-    </.button_link>
+    </.#{name}>
     ```
     """
   end

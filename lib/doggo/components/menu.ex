@@ -19,13 +19,13 @@ defmodule Doggo.Components.Menu do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     If the menu is always visible or can only be toggled by a keyboard shortcut,
     set the `label` attribute.
 
     ```heex
-    <.menu id="actions-menu" label="Actions">
+    <.#{name} id="actions-menu" label="Actions">
       <:item>
         <.menu_item on_click={JS.push("copy")}>Copy</.menu_item>
       </:item>
@@ -36,7 +36,7 @@ defmodule Doggo.Components.Menu do
       <:item>
         <.menu_item on_click={JS.push("sort")}>Sort lines</.menu_item>
       </:item>
-    </.menu>
+    </.#{name}>
     ```
 
     If the menu is toggled by a `menu_button/1`, ensure that the `controls`
@@ -46,7 +46,7 @@ defmodule Doggo.Components.Menu do
     <.menu_button controls="actions-menu" id="actions-button">
       Actions
     </.menu_button>
-    <.menu id="actions-menu" labelledby="actions-button" hidden></.menu>
+    <.#{name} id="actions-menu" labelledby="actions-button" hidden></.#{name}>
 
     This component needs the `Doggo.Menu` JavaScript hook. See
     [Phoenix LiveView Hooks](readme.html#phoenix-liveview-hooks) for

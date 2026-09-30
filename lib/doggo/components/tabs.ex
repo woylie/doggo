@@ -17,10 +17,10 @@ defmodule Doggo.Components.Tabs do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.tabs id="dog-breed-profiles" label="Dog Breed Profiles">
+    <.#{name} id="dog-breed-profiles" label="Dog Breed Profiles">
       <:panel label="Golden Retriever">
         <p>
           Friendly, intelligent, great with families. Origin: Scotland. Needs
@@ -38,7 +38,7 @@ defmodule Doggo.Components.Tabs do
           Playful, stubborn, small size. Origin: Germany. Enjoys sniffing games.
         </p>
       </:panel>
-    </.tabs>
+    </.#{name}>
     ```
 
     This component needs the `Doggo.Tabs` JavaScript hook. See

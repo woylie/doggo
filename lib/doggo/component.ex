@@ -20,7 +20,7 @@ defmodule Doggo.Component do
 
   Used for both the component builder macro and the compiled component.
   """
-  @callback usage() :: String.t()
+  @callback usage(%{name: atom(), base_class: String.t()}) :: String.t()
 
   @doc """
   Returns the 'Keyboard' section of the documentation.

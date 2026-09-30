@@ -16,10 +16,10 @@ defmodule Doggo.Components.ActionBar do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.action_bar id="dog-actions" label="Dog actions">
+    <.#{name} id="dog-actions" label="Dog actions">
       <:item label="Edit" on_click={JS.push("edit")}>
         <.icon><Lucideicons.pencil aria-hidden /></.icon>
       </:item>
@@ -29,7 +29,7 @@ defmodule Doggo.Components.ActionBar do
       <:item label="Archive" on_click={JS.push("archive")}>
         <.icon><Lucideicons.archive aria-hidden /></.icon>
       </:item>
-    </.action_bar>
+    </.#{name}>
     ```
 
     This component needs the `Doggo.Toolbar` JavaScript hook. See

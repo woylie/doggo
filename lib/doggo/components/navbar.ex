@@ -13,10 +13,10 @@ defmodule Doggo.Components.Navbar do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name, base_class: base_class}) do
     """
     ```heex
-    <.navbar label="Main">
+    <.#{name} label="Main">
       <:brand><.link navigate={~p"/"}>Pet Clinic</.link></:brand>
       <.navbar_items>
         <:item><.link navigate={~p"/about"}>About</.link></:item>
@@ -25,15 +25,15 @@ defmodule Doggo.Components.Navbar do
           <.link navigate={~p"/login"} class="button">Log in</.link>
         </:item>
       </.navbar_items>
-    </.navbar>
+    </.#{name}>
     ```
 
     You can place multiple navigation item lists in the inner block. If the
-    `.navbar` is styled as a flex box, you can use the CSS `order` property to
+    `.#{base_class}` is styled as a flex box, you can use the CSS `order` property to
     control the display order of the brand and lists.
 
     ```heex
-    <.navbar label="Main">
+    <.#{name} label="Main">
       <:brand><.link navigate={~p"/"}>Pet Clinic</.link></:brand>
       <.navbar_items class="navbar-main-links">
         <:item><.link navigate={~p"/about"}>About</.link></:item>
@@ -44,7 +44,7 @@ defmodule Doggo.Components.Navbar do
           <.button_link navigate={~p"/login"}>Log in</.button_link>
         </:item>
       </.navbar_items>
-    </.navbar>
+    </.#{name}>
     ```
 
     If a visible heading already names the navigation, point `labelledby` at it
@@ -52,9 +52,9 @@ defmodule Doggo.Components.Navbar do
 
     ```heex
     <h2 id="site-nav-heading">Pet Clinic</h2>
-    <.navbar labelledby="site-nav-heading">
+    <.#{name} labelledby="site-nav-heading">
       <!-- ... -->
-    </.navbar>
+    </.#{name}>
     ```
     """
   end

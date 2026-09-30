@@ -14,25 +14,25 @@ defmodule Doggo.Components.Tag do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.tag>Well-Trained</.tag>
+    <.#{name}>Well-Trained</.#{name}>
     ```
 
     With icon:
 
     ```heex
-    <.tag>
+    <.#{name}>
       Puppy
       <.icon><Heroicons.edit /></.icon>
-    </.tag>
+    </.#{name}>
     ```
 
     With delete button:
 
     ```heex
-    <.tag>
+    <.#{name}>
       High Energy
       <.button
         phx-click="remove-tag"
@@ -41,7 +41,7 @@ defmodule Doggo.Components.Tag do
       >
         <.icon><Heroicons.x /></.icon>
       </.button>
-    </.tag>
+    </.#{name}>
     ```
     """
   end
