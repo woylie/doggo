@@ -107,7 +107,7 @@ defmodule Doggo.Components.MenuBar do
       attr :label, :string,
         default: nil,
         doc: """
-        A accessibility label for the menubar. Set as `aria-label` attribute.
+        An accessibility label for the menu bar. Set as `aria-label` attribute.
 
         You should ensure that either the `label` or the `labelledby` attribute
         is set.
