@@ -22,18 +22,18 @@ defmodule Doggo.Components.Toolbar do
     <.toolbar id="dog-toolbar" label="Actions for the dog">
       <div role="group">
         <button phx-click="feed-dog">
-          <.icon text="Feed dog"><Icons.feed /></.icon>
+          <.icon label="Feed dog"><Icons.feed /></.icon>
         </button>
         <button phx-click="walk-dog">
-          <.icon text="Walk dog"><Icons.walk /></.icon>
+          <.icon label="Walk dog"><Icons.walk /></.icon>
         </button>
       </div>
       <div role="group">
         <button phx-click="teach-trick">
-          <.icon text="Teach a Trick"><Icons.teach /></.icon>
+          <.icon label="Teach a Trick"><Icons.teach /></.icon>
         </button>
         <button phx-click="groom-dog">
-          <.icon text="Groom dog"><Icons.groom /></.icon>
+          <.icon label="Groom dog"><Icons.groom /></.icon>
         </button>
       </div>
     </.toolbar>

@@ -485,7 +485,7 @@ defmodule Doggo.FixturesTest do
 
     assert_fixture(
       ~H"""
-      <FixtureComponents.icon name="info" text="Info" />
+      <FixtureComponents.icon name="info" label="Info" />
       """,
       "icon.html"
     )
@@ -496,7 +496,7 @@ defmodule Doggo.FixturesTest do
 
     assert_fixture(
       ~H"""
-      <FixtureComponents.icon_sprite name="edit" text="Edit" />
+      <FixtureComponents.icon_sprite name="edit" label="Edit" />
       """,
       "icon_sprite.html"
     )

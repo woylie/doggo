@@ -589,12 +589,12 @@ defmodule Doggo.MacrosTest do
     test "writes a literal default into the declaration" do
       [{module, _}] =
         compile(LiteralDefault, ~S"""
-        build_icon(icon_module: Doggo.FixtureIcons, defaults: [text_position: "after"])
+        build_icon(icon_module: Doggo.FixtureIcons, defaults: [label_position: "after"])
         """)
 
       %{attrs: attrs} = module.__components__()[:icon]
 
-      assert Enum.find(attrs, &(&1.name == :text_position)).opts[:default] ==
+      assert Enum.find(attrs, &(&1.name == :label_position)).opts[:default] ==
                "after"
     end
 
@@ -604,7 +604,7 @@ defmodule Doggo.MacrosTest do
                    fn ->
                      compile(
                        InvalidLiteralDefault,
-                       ~S|build_icon(icon_module: Doggo.FixtureIcons, defaults: [text_position: "above"])|
+                       ~S|build_icon(icon_module: Doggo.FixtureIcons, defaults: [label_position: "above"])|
                      )
                    end
     end

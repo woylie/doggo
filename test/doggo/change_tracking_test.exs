@@ -32,7 +32,7 @@ defmodule Doggo.ChangeTrackingTest do
 
   defp icon(assigns) do
     ~H"""
-    <FixtureComponents.icon name={@name} text={@text} data-probe="x" />
+    <FixtureComponents.icon name={@name} label={@label} data-probe="x" />
     """
   end
 
@@ -128,10 +128,10 @@ defmodule Doggo.ChangeTrackingTest do
   end
 
   describe "icon/1" do
-    @assigns %{name: "info", text: "Info"}
+    @assigns %{name: "info", label: "Info"}
 
-    test "sends only the text if the text changed" do
-      assert render(&icon/1, @assigns, %{text: true}) ==
+    test "sends only the label if the label changed" do
+      assert render(&icon/1, @assigns, %{label: true}) ==
                [~s( data-probe="x"), "Info"]
     end
   end

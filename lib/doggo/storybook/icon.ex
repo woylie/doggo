@@ -19,24 +19,24 @@ defmodule Doggo.Storybook.Icon do
             id: :after,
             attributes: %{
               name: first_name,
-              text: "text after icon",
-              text_position: "after"
+              label: "text after icon",
+              label_position: "after"
             }
           },
           %Variation{
             id: :before,
             attributes: %{
               name: first_name,
-              text: "text before icon",
-              text_position: "before"
+              label: "text before icon",
+              label_position: "before"
             }
           },
           %Variation{
             id: :hidden,
             attributes: %{
               name: first_name,
-              text: "text hidden",
-              text_position: "hidden"
+              label: "text hidden",
+              label_position: "hidden"
             }
           }
         ]
@@ -49,24 +49,24 @@ defmodule Doggo.Storybook.Icon do
             id: :after,
             attributes: %{
               name: first_name,
-              text: "متن بعد از نماد",
-              text_position: "after"
+              label: "متن بعد از نماد",
+              label_position: "after"
             }
           },
           %Variation{
             id: :before,
             attributes: %{
               name: first_name,
-              text: "متن قبل از نماد",
-              text_position: "before"
+              label: "متن قبل از نماد",
+              label_position: "before"
             }
           },
           %Variation{
             id: :hidden,
             attributes: %{
               name: first_name,
-              text: "متن مخفی",
-              text_position: "hidden"
+              label: "متن مخفی",
+              label_position: "hidden"
             }
           }
         ],
