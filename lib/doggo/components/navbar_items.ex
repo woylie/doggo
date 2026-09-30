@@ -15,16 +15,16 @@ defmodule Doggo.Components.NavbarItems do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.navbar_items>
+    <.#{name}>
       <:item><.link navigate={~p"/about"}>About</.link></:item>
       <:item><.link navigate={~p"/services"}>Services</.link></:item>
       <:item>
         <.link navigate={~p"/login"} class="button">Log in</.link>
       </:item>
-    </.navbar_items>
+    </.#{name}>
     ```
     """
   end

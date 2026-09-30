@@ -15,19 +15,19 @@ defmodule Doggo.Components.MenuItemRadioGroup do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
     <.menu id="actions-menu" labelledby="actions-button" hidden>
       <:item>
-        <.menu_item_radio_group label="Theme">
+        <.#{name} label="Theme">
           <:item on_click={JS.dispatch("switch-theme-light")}>
             Light
           </:item>
           <:item on_click={JS.dispatch("switch-theme-dark")} checked>
             Dark
           </:item>
-        </.menu_item_radio_group>
+        </.#{name}>
       </:item>
     </.menu>
     ```

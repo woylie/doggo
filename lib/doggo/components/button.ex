@@ -22,23 +22,23 @@ defmodule Doggo.Components.Button do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.button>Confirm</.button>
+    <.#{name}>Confirm</.#{name}>
 
-    <.button type="submit">
+    <.#{name} type="submit">
       Submit
-    </.button>
+    </.#{name}>
     ```
 
     To indicate a loading state, for example when submitting a form, use the
     `aria-busy` attribute:
 
     ```heex
-    <.button aria-label="Saving..." aria-busy>
+    <.#{name} aria-label="Saving..." aria-busy>
       click me
-    </.button>
+    </.#{name}>
     ```
     """
   end

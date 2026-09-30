@@ -14,12 +14,12 @@ defmodule Doggo.Components.VerticalNavNested do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
     <.vertical_nav id="main-nav" label="Main">
       <:item>
-        <.vertical_nav_nested id="content-nav">
+        <.#{name} id="content-nav">
           <:title>Content</:title>
           <:item current_page>
             <.link navigate={~p"/posts"}>Posts</.link>
@@ -27,7 +27,7 @@ defmodule Doggo.Components.VerticalNavNested do
           <:item>
             <.link navigate={~p"/comments"}>Comments</.link>
           </:item>
-        </.vertical_nav_nested>
+        </.#{name}>
       </:item>
     </.vertical_nav>
     ```

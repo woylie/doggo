@@ -1,6 +1,8 @@
 defmodule Doggo.MacrosTest do
   use ExUnit.Case, async: true
 
+  alias Doggo.Components.Table
+
   defp compile(module, body) do
     Code.compile_string("""
     defmodule Doggo.MacrosTest.#{module} do
@@ -182,6 +184,24 @@ defmodule Doggo.MacrosTest do
   end
 
   describe "build macros" do
+    test "write usage examples with the configured name" do
+      for {macro, 1} <- Doggo.Components.__info__(:macros),
+          "build_" <> component <- [Atom.to_string(macro)] do
+        module = Module.concat(Doggo.Components, Macro.camelize(component))
+        usage = module.usage(%{name: :renamed, base_class: "renamed"})
+
+        assert usage =~ "<.renamed", component
+        refute usage =~ ~r/<\.#{component}(?!\w)/, component
+      end
+    end
+
+    test "write usage examples with the configured base class" do
+      usage = Table.usage(%{name: :data_grid, base_class: "grid"})
+
+      assert usage =~ ".grid-container {"
+      refute usage =~ ".table-container"
+    end
+
     test "depend on the component module at compile time" do
       env = %{__ENV__ | requires: [Doggo.Components | __ENV__.requires]}
       ast = Macro.expand_once(quote(do: Doggo.Components.build_button()), env)

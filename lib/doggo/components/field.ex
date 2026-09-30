@@ -47,7 +47,7 @@ defmodule Doggo.Components.Field do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name, base_class: base_class}) do
     """
     ### Custom types
 
@@ -63,7 +63,7 @@ defmodule Doggo.Components.Field do
     The additional types can be rendered like any other types.
 
     ```heex
-    <.field field={@form[:rank]} type="ranked" label="Rank" />
+    <.#{name} field={@form[:rank]} type="ranked" label="Rank" />
     ```
 
     The map is merged into the built-in types. You can set an entry to `nil` to
@@ -204,11 +204,11 @@ defmodule Doggo.Components.Field do
     </.form>
     ```
 
-    Then, in your CSS, apply the necessary styles to the `.field` class within
+    Then, in your CSS, apply the necessary styles to the `.#{base_class}` class within
     forms having the `is-horizontal` class:
 
     ```css
-    form.is-horizontal .field {
+    form.is-horizontal .#{base_class} {
       // styles to position label left of the input
     }
     ```
@@ -230,11 +230,11 @@ defmodule Doggo.Components.Field do
     ### Examples
 
     ```heex
-    <.field field={@form[:name]} />
+    <.#{name} field={@form[:name]} />
     ```
 
     ```heex
-    <.field field={@form[:email]} type="email" />
+    <.#{name} field={@form[:email]} type="email" />
     ```
 
     #### Radio group and checkbox group
@@ -245,7 +245,7 @@ defmodule Doggo.Components.Field do
     `select` type, except that options may not be nested.
 
     ```heex
-    <.field
+    <.#{name}
       field={@form[:email]}
       type="checkbox-group"
       label="Cuisine"

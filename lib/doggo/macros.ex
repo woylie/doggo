@@ -36,7 +36,12 @@ defmodule Doggo.Macros do
 
     type = Keyword.fetch!(opts, :type)
     since = Keyword.fetch!(opts, :since)
-    docstring = assemble_builder_doc(module, builder_name, defaults, opts)
+
+    docstring =
+      assemble_builder_doc(module, builder_name, defaults, opts, %{
+        name: defaults[:name],
+        base_class: base_class
+      })
 
     quote do
       unquote(module).module_info(:module)
@@ -133,7 +138,12 @@ defmodule Doggo.Macros do
 
     name = Keyword.fetch!(opts, :name)
     modifiers = Keyword.fetch!(opts, :modifiers)
-    docstring = assemble_component_doc(module)
+
+    docstring =
+      assemble_component_doc(module, %{
+        name: name,
+        base_class: Keyword.fetch!(opts, :base_class)
+      })
 
     modifier_data = build_data_attrs(Keyword.keys(modifiers))
 
@@ -448,9 +458,9 @@ defmodule Doggo.Macros do
     name |> to_string() |> String.replace("_", "-")
   end
 
-  defp assemble_builder_doc(module, builder_name, defaults, opts) do
+  defp assemble_builder_doc(module, builder_name, defaults, opts, names) do
     doc = module.doc()
-    usage = module.usage()
+    usage = module.usage(names)
 
     builder_doc =
       if function_exported?(module, :builder_doc, 0) do
@@ -502,8 +512,8 @@ defmodule Doggo.Macros do
     |> Enum.join("\n\n")
   end
 
-  def assemble_component_doc(module) do
-    usage = module.usage()
+  def assemble_component_doc(module, names) do
+    usage = module.usage(names)
     doc = module.doc()
     config = module.config()
 

@@ -24,7 +24,7 @@ defmodule Doggo.Components.Tooltip do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     A tooltip describes a control that already has a purpose of its own, such
     as an icon button. Render the control in the inner block and spread the
@@ -32,17 +32,17 @@ defmodule Doggo.Components.Tooltip do
     tooltip:
 
     ```heex
-    <.tooltip id="delete-info" :let={trigger}>
+    <.#{name} id="delete-info" :let={trigger}>
       <.button phx-click="delete" {trigger}>Delete</.button>
       <:tooltip>Deletes the row and its history.</:tooltip>
-    </.tooltip>
+    </.#{name}>
     ```
 
     If the control already has a description, list both ids in one
     `aria-describedby`, since a second attribute of the same name is ignored:
 
     ```heex
-    <.tooltip id="delete-info" :let={trigger}>
+    <.#{name} id="delete-info" :let={trigger}>
       <.button
         phx-click="delete"
         aria-describedby={"delete-hint " <> trigger["aria-describedby"]}
@@ -50,7 +50,7 @@ defmodule Doggo.Components.Tooltip do
         Delete
       </.button>
       <:tooltip>Deletes the row and its history.</:tooltip>
-    </.tooltip>
+    </.#{name}>
     ```
 
     Do not use a tooltip to explain text or to hide information behind an

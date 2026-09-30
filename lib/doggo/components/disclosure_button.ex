@@ -19,7 +19,7 @@ defmodule Doggo.Components.DisclosureButton do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Set the `controls` attribute to the DOM ID of the element that you want to
     toggle with the button.
@@ -29,9 +29,9 @@ defmodule Doggo.Components.DisclosureButton do
     with the `aria-expanded` attribute of the button.
 
     ```heex
-    <.disclosure_button controls="data-table">
+    <.#{name} controls="data-table">
       Data Table
-    </.disclosure_button>
+    </.#{name}>
 
     <table id="data-table" hidden></table>
     ```

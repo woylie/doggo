@@ -17,15 +17,15 @@ defmodule Doggo.Components.FieldGroup do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Visual grouping of inputs:
 
     ```heex
-    <.field_group>
+    <.#{name}>
       <.field field={@form[:given_name]} label="Given name" />
       <.field field={@form[:family_name]} label="Family name"/>
-    </.field_group>
+    </.#{name}>
     ```
 
     Semantic grouping (for reference):

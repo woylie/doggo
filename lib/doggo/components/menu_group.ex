@@ -15,12 +15,12 @@ defmodule Doggo.Components.MenuGroup do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
     <.menu id="actions-menu" labelledby="actions-button" hidden>
       <:item>
-        <.menu_group label="Dog actions">
+        <.#{name} label="Dog actions">
           <:item>
             <.menu_item on_click={JS.push("view-dog-profiles")}>
               View Dog Profiles
@@ -36,7 +36,7 @@ defmodule Doggo.Components.MenuGroup do
               Dog Care Tips
             </.menu_item>
           </:item>
-        </.menu_group>
+        </.#{name}>
       </:item>
       <:item role="separator" />
       <:item>

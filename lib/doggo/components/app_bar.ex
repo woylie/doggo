@@ -14,10 +14,10 @@ defmodule Doggo.Components.AppBar do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.app_bar id="app-bar">
+    <.#{name} id="app-bar">
       <:title>Page title</:title>
       <:navigation label="Open menu" on_click={JS.push("toggle-menu")}>
         <.icon><Lucideicons.menu aria-hidden /></.icon>
@@ -28,7 +28,7 @@ defmodule Doggo.Components.AppBar do
       <:action label="Like" on_click={JS.push("like")}>
         <.icon><Lucideicons.heart aria-hidden /></.icon>
       </:action>
-    </.app_bar>
+    </.#{name}>
     ```
     """
   end

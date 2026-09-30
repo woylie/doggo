@@ -13,13 +13,13 @@ defmodule Doggo.Components.Toolbar do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Direct children of this component can be any types buttons or groups of
     buttons.
 
     ```heex
-    <.toolbar id="dog-toolbar" label="Actions for the dog">
+    <.#{name} id="dog-toolbar" label="Actions for the dog">
       <div role="group">
         <button phx-click="feed-dog">
           <.icon label="Feed dog"><Icons.feed /></.icon>
@@ -36,7 +36,7 @@ defmodule Doggo.Components.Toolbar do
           <.icon label="Groom dog"><Icons.groom /></.icon>
         </button>
       </div>
-    </.toolbar>
+    </.#{name}>
     ```
 
     This component needs the `Doggo.Toolbar` JavaScript hook. See

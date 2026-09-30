@@ -13,10 +13,10 @@ defmodule Doggo.Components.BottomNavigation do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.bottom_navigation current_value={@view} label="Main">
+    <.#{name} current_value={@view} label="Main">
       <:item
         label="Profile"
         navigate={~p"/pets/\#{@pet}"}
@@ -38,7 +38,7 @@ defmodule Doggo.Components.BottomNavigation do
       >
         <Lucideicons.mails aria-hidden="true" />
       </:item>
-    </.bottom_navigation>
+    </.#{name}>
     ```
     """
   end

@@ -13,20 +13,20 @@ defmodule Doggo.Components.Box do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Minimal example with only a box body:
 
     ```heex
-    <.box>
+    <.#{name}>
       <p>This is a box.</p>
-    </.box>
+    </.#{name}>
     ```
 
     With title, banner, action, and footer:
 
     ```heex
-    <.box>
+    <.#{name}>
       <:title>Profile</:title>
       <:banner>
         <img src="banner-image.png" alt="" />
@@ -40,17 +40,17 @@ defmodule Doggo.Components.Box do
       <:footer>
         <p>Last edited: <%= @profile.updated_at %></p>
       </:footer>
-    </.box>
+    </.#{name}>
     ```
 
     A box is not a named landmark by default. To turn it into one, set `id`
     and point `aria-labelledby` at its title:
 
     ```heex
-    <.box id="profile" aria-labelledby="profile-title">
+    <.#{name} id="profile" aria-labelledby="profile-title">
       <:title>Profile</:title>
       <p>This is a profile.</p>
-    </.box>
+    </.#{name}>
     ```
 
     In this example, the body has the ID `profile-body`. You pass the ID to a

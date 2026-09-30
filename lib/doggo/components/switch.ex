@@ -20,10 +20,10 @@ defmodule Doggo.Components.Switch do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.switch
+    <.#{name}
       label="Subscribe"
       checked={true}
       phx-click="toggle-subscription"

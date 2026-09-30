@@ -16,19 +16,19 @@ defmodule Doggo.Components.MenuItem do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
     <.menu id="actions-menu" label="Actions">
       <:item>
-        <.menu_item on_click={JS.dispatch("myapp:copy")}>
+        <.#{name} on_click={JS.dispatch("myapp:copy")}>
           Copy
-        </.menu_item>
+        </.#{name}>
       </:item>
       <:item>
-        <.menu_item on_click={JS.dispatch("myapp:paste")}>
+        <.#{name} on_click={JS.dispatch("myapp:paste")}>
           Paste
-        </.menu_item>
+        </.#{name}>
       </:item>
     </.menu>
     ```

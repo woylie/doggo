@@ -24,10 +24,10 @@ defmodule Doggo.Components.AlertDialog do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.alert_dialog id="end-session-modal">
+    <.#{name} id="end-session-modal">
       <:title>End Training Session Early?</:title>
       <p>
         Are you sure you want to end the current training session with Bella?
@@ -41,7 +41,7 @@ defmodule Doggo.Components.AlertDialog do
           No, continue training
         </.button>
       </:footer>
-    </.alert_dialog>
+    </.#{name}>
     ```
 
     To open the dialog, use the `show_modal/1` function.

@@ -17,16 +17,16 @@ defmodule Doggo.Components.PropertyList do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Each property is specified using the `:prop` slot with a `label` attribute
     and an inner block.
 
     ```heex
-    <.property_list>
+    <.#{name}>
       <:prop label={gettext("Name")}>George</:prop>
       <:prop label={gettext("Age")}>42</:prop>
-    </.property_list>
+    </.#{name}>
     ```
     """
   end

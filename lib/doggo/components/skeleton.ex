@@ -17,23 +17,23 @@ defmodule Doggo.Components.Skeleton do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     Render one of the primitive types in isolation:
 
     ```heex
-    <.skeleton type="text-line" />
+    <.#{name} type="text-line" />
     ```
 
     Combine primitives for complex layouts:
 
     ```heex
     <div class="card-skeleton" aria-busy="true">
-      <.skeleton type="image" />
-      <.skeleton type="text-line" />
-      <.skeleton type="text-line" />
-      <.skeleton type="text-line" />
-      <.skeleton type="rectangle" />
+      <.#{name} type="image" />
+      <.#{name} type="text-line" />
+      <.#{name} type="text-line" />
+      <.#{name} type="text-line" />
+      <.#{name} type="rectangle" />
     </div>
     ```
 
@@ -41,7 +41,7 @@ defmodule Doggo.Components.Skeleton do
     additional modifiers or use CSS properties:
 
     ```heex
-    <.skeleton type="text-line" variant="header" />
+    <.#{name} type="text-line" variant="header" />
     ```
 
     ```css

@@ -16,10 +16,10 @@ defmodule Doggo.Components.RadioGroup do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.radio_group
+    <.#{name}
       id="favorite-dog"
       name="favorite-dog"
       label="Favorite Dog"

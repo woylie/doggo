@@ -16,19 +16,19 @@ defmodule Doggo.Components.Datetime do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name, base_class: base_class}) do
     """
     By default, the given value is formatted for display with `to_string/1`.
     This:
 
     ```heex
-    <.datetime value={~U[2023-02-05 12:22:06.003Z]} />
+    <.#{name} value={~U[2023-02-05 12:22:06.003Z]} />
     ```
 
     Will be rendered as:
 
     ```html
-    <time class="datetime" datetime="2023-02-05T12:22:06.003Z">
+    <time class="#{base_class}" datetime="2023-02-05T12:22:06.003Z">
       2023-02-05 12:22:06.003Z
     </time>
     ```
@@ -38,7 +38,7 @@ defmodule Doggo.Components.Datetime do
     application, you could do this:
 
     ```heex
-    <.datetime
+    <.#{name}
       value={~U[2023-02-05 14:22:06.003Z]}
       formatter={&MyApp.Cldr.DateTime.to_string!/1}
     />
@@ -47,7 +47,7 @@ defmodule Doggo.Components.Datetime do
     Which, depending on your locale, may be rendered as:
 
     ```html
-    <time class="datetime" datetime="2023-02-05T14:22:06.003Z">
+    <time class="#{base_class}" datetime="2023-02-05T14:22:06.003Z">
       Feb 2, 2023, 14:22:06 PM
     </time>
     ```
@@ -56,7 +56,7 @@ defmodule Doggo.Components.Datetime do
     formatter.
 
     ```heex
-    <.datetime
+    <.#{name}
       value={~U[2023-02-05 12:22:06.003Z]}
       precision={:minute}
     />
@@ -70,7 +70,7 @@ defmodule Doggo.Components.Datetime do
     attribute that is always added.
 
     ```heex
-    <.datetime
+    <.#{name}
       value={@datetime}
       formatter={&relative_date/1}
       title_formatter={&MyApp.Cldr.DateTime.to_string!/1}
@@ -80,7 +80,7 @@ defmodule Doggo.Components.Datetime do
     Finally, the component can shift a `DateTime` to a different time zone:
 
     ```heex
-    <.datetime
+    <.#{name}
       value={~U[2023-02-05 23:22:05Z]}
       timezone="Asia/Tokyo"
     />
@@ -89,7 +89,7 @@ defmodule Doggo.Components.Datetime do
     Which would be rendered as:
 
     ```html
-    <time class="datetime" datetime="2023-02-06T08:22:05+09:00">
+    <time class="#{base_class}" datetime="2023-02-06T08:22:05+09:00">
       2023-02-06 08:22:05+09:00 JST Asia/Tokyo
     </time>
     ```

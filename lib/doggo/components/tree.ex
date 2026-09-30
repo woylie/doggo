@@ -16,10 +16,10 @@ defmodule Doggo.Components.Tree do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.tree id="dog-tree" label="Dogs">
+    <.#{name} id="dog-tree" label="Dogs">
       <.tree_item>
         Breeds
         <:items>
@@ -34,7 +34,7 @@ defmodule Doggo.Components.Tree do
           <.tree_item>Loyal</.tree_item>
         </:items>
       </.tree_item>
-    </.tree>
+    </.#{name}>
     ```
 
     ## From data
@@ -44,9 +44,9 @@ defmodule Doggo.Components.Tree do
     attribute.
 
     ```heex
-    <.tree id="breed-tree" label="Breeds">
+    <.#{name} id="breed-tree" label="Breeds">
       <.breed_node :for={node <- @nodes} node={node} />
-    </.tree>
+    </.#{name}>
     ```
 
     ```elixir

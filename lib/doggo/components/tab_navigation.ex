@@ -17,10 +17,10 @@ defmodule Doggo.Components.TabNavigation do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.tab_navigation current_value={@live_action} label="Dog Profile Sections">
+    <.#{name} current_value={@live_action} label="Dog Profile Sections">
       <:item
         patch={~p"/pets/\#{@pet}"}
         value={[:show, :edit]}
@@ -39,7 +39,7 @@ defmodule Doggo.Components.TabNavigation do
       >
         Messages
       </:item>
-    </.tab_navigation>
+    </.#{name}>
     ```
 
     ### Current Item

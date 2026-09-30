@@ -19,22 +19,22 @@ defmodule Doggo.Components.Cluster do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.cluster>
+    <.#{name}>
       <div>some item</div>
       <div>some other item</div>
-    </.cluster>
+    </.#{name}>
     ```
 
     With a role and a label:
 
     ```heex
-    <.cluster role="group" aria-label="Actions">
+    <.#{name} role="group" aria-label="Actions">
       <.button>Edit</.button>
       <.button>Delete</.button>
-    </.cluster>
+    </.#{name}>
     ```
     """
   end

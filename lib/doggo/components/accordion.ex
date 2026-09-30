@@ -14,10 +14,10 @@ defmodule Doggo.Components.Accordion do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.accordion id="dog-breeds">
+    <.#{name} id="dog-breeds">
       <:section title="Golden Retriever">
         <p>
           Friendly, intelligent, great with families. Origin: Scotland. Needs
@@ -35,7 +35,7 @@ defmodule Doggo.Components.Accordion do
           Playful, stubborn, small size. Origin: Germany. Enjoys sniffing games.
         </p>
       </:section>
-    </.accordion>
+    </.#{name}>
     ```
 
     This component needs the `Doggo.Accordion` JavaScript hook for the arrow

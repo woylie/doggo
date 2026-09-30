@@ -13,13 +13,13 @@ defmodule Doggo.Components.Stack do
   end
 
   @impl true
-  def usage do
+  def usage(%{name: name}) do
     """
     ```heex
-    <.stack>
+    <.#{name}>
       <div>some block</div>
       <div>some other block</div>
-    </.stack>
+    </.#{name}>
     ```
 
     By default, the margin is only applied to the direct children of the
@@ -27,13 +27,13 @@ defmodule Doggo.Components.Stack do
     the `recursive` attribute.
 
     ```heex
-    <.stack recursive>
+    <.#{name} recursive>
       <div>
         <div>some nested block</div>
         <div>another nested block</div>
       </div>
       <div>some other block</div>
-    </.stack>
+    </.#{name}>
     ```
     """
   end
