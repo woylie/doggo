@@ -79,7 +79,8 @@ defmodule Doggo.Components.Table do
   end
 
   @impl true
-  def own_attributes, do: ["aria-labelledby": nil, role: nil, tabindex: nil]
+  def own_attributes,
+    do: ["aria-labelledby": :labelledby, role: nil, tabindex: nil]
 
   @impl true
   def nested_classes(_) do
@@ -105,8 +106,15 @@ defmodule Doggo.Components.Table do
         Names the scroll container, which is in the tab order so that the table
         can be scrolled by keyboard.
 
-        If not set, the caption is used to name the container. A scrollable
-        container needs one of the two.
+        If neither `label` nor `labelledby` is set, the caption is used to name
+        the container. A scrollable container needs one of the three.
+        """
+
+      attr :labelledby, :string,
+        default: nil,
+        doc: """
+        The DOM ID of an element that names the scroll container, such as the
+        heading above the table. Set either `label` or `labelledby`, not both.
         """
 
       attr :scrollable, :boolean,
@@ -217,20 +225,41 @@ defmodule Doggo.Components.Table do
   end
 
   @doc false
-  def ensure_name!(%{scrollable: true, label: label, caption: caption}, name) do
-    if Doggo.named?(label) or Doggo.named?(caption) do
-      :ok
-    else
-      raise ArgumentError, """
-      missing name for scrollable #{name}
+  def ensure_name!(
+        %{
+          scrollable: true,
+          label: label,
+          labelledby: labelledby,
+          caption: caption
+        },
+        name
+      ) do
+    cond do
+      Doggo.named?(label) and Doggo.named?(labelledby) ->
+        raise ArgumentError, """
+        two names for scrollable #{name}
 
-      The container of a scrollable table is in the tab order, so it needs a
-      name. Set `caption` or `label`, or set `scrollable={false}` for a table
-      that fits its container.
+        Set either `label` or `labelledby`, not both.
 
-          label: #{inspect(label)}
-          caption: #{inspect(caption)}
-      """
+            label: #{inspect(label)}
+            labelledby: #{inspect(labelledby)}
+        """
+
+      Doggo.named?(label) or Doggo.named?(labelledby) or Doggo.named?(caption) ->
+        :ok
+
+      true ->
+        raise ArgumentError, """
+        missing name for scrollable #{name}
+
+        The container of a scrollable table is in the tab order, so it needs a
+        name. Set `caption`, `label` or `labelledby`, or set
+        `scrollable={false}` for a table that fits its container.
+
+            label: #{inspect(label)}
+            labelledby: #{inspect(labelledby)}
+            caption: #{inspect(caption)}
+        """
     end
   end
 
@@ -257,13 +286,16 @@ defmodule Doggo.Components.Table do
         class={[Doggo.build(:base_class) | List.wrap(@class)]}
         tabindex={@scrollable && "0"}
         role={
-          @scrollable && (Doggo.named?(@label) || Doggo.named?(@caption)) &&
-            "region"
+          @scrollable &&
+            (Doggo.named?(@label) || Doggo.named?(@labelledby) ||
+               Doggo.named?(@caption)) && "region"
         }
         aria-label={@scrollable && Doggo.named?(@label) && @label}
         aria-labelledby={
-          @scrollable && !Doggo.named?(@label) && Doggo.named?(@caption) &&
-            "#{@id}-caption"
+          @scrollable &&
+            ((Doggo.named?(@labelledby) && @labelledby) ||
+               (!Doggo.named?(@label) && Doggo.named?(@caption) &&
+                  "#{@id}-caption"))
         }
         {@data_attrs}
         {@rest}

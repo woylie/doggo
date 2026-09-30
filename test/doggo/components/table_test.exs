@@ -131,6 +131,40 @@ defmodule Doggo.Components.TableTest do
       assert attribute(div, "aria-labelledby") == "pets-caption"
     end
 
+    test "names region by labelledby" do
+      assigns = %{pets: [%{id: 1, name: "George"}]}
+
+      html =
+        parse_heex(~H"""
+        <h2 id="pets-heading">Pets</h2>
+        <TestComponents.table
+          id="pets"
+          rows={@pets}
+          labelledby="pets-heading"
+          caption="All pets"
+        >
+          <:col :let={p} label="Name">{p.name}</:col>
+        </TestComponents.table>
+        """)
+
+      div = find_one(html, "div")
+      assert attribute(div, "role") == "region"
+      assert attribute(div, "aria-label") == nil
+      assert attribute(div, "aria-labelledby") == "pets-heading"
+    end
+
+    test "raises for label and labelledby if scrollable" do
+      assert_raise ArgumentError, ~r/two names for scrollable/, fn ->
+        assigns = %{pets: [%{id: 1, name: "George"}]}
+
+        parse_heex(~H"""
+        <TestComponents.table id="pets" rows={@pets} label="Pets" labelledby="h">
+          <:col :let={p} label="Name">{p.name}</:col>
+        </TestComponents.table>
+        """)
+      end
+    end
+
     test "raises without name if scrollable" do
       assert_raise ArgumentError, ~r/missing name for scrollable/, fn ->
         assigns = %{pets: [%{id: 1, name: "George"}]}
