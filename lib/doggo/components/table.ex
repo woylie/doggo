@@ -215,11 +215,12 @@ defmodule Doggo.Components.Table do
         You can optionally add a `foot`. The inner block will be rendered inside
         a `tfoot` element.
 
-            <Flop.Phoenix.table>
+            <.table id="pets" rows={@pets}>
+              <:col :let={p} label="Name">{p.name}</:col>
               <:foot>
-                <tr><td>Total: <span class="total"><%= @total %></span></td></tr>
+                <tr><td>Total: <span class="total">{@total}</span></td></tr>
               </:foot>
-            </Flop.Phoenix.table>
+            </.table>
         """
     end
   end
