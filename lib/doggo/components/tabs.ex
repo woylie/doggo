@@ -128,7 +128,12 @@ defmodule Doggo.Components.Tabs do
       attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :panel, required: true do
-        attr :label, :string, required: true
+        attr :label, :any,
+          required: true,
+          doc: """
+          The label of the tab, as a string or HEEx, such as
+          `label={~H"Messages <.badge>3</.badge>"}`.
+          """
       end
     end
   end

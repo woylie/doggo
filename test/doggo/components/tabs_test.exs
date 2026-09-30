@@ -182,5 +182,18 @@ defmodule Doggo.Components.TabsTest do
         """)
       end
     end
+
+    test "renders label with markup" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tabs id="my-tabs" label="My Tabs">
+          <:panel label={~H"Panel <b>1</b>"}>some text</:panel>
+        </TestComponents.tabs>
+        """)
+
+      assert text(html, "button#my-tabs-tab-1 > b") == "1"
+    end
   end
 end

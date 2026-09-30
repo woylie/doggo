@@ -119,7 +119,12 @@ defmodule Doggo.Components.Accordion do
       attr :rest, :global, doc: "Any additional HTML attributes."
 
       slot :section, required: true do
-        attr :title, :string, required: true
+        attr :title, :any,
+          required: true,
+          doc: """
+          The title of the section, as a string or HEEx, such as
+          `title={~H"<.icon name="paw" /> Dogs"}`.
+          """
       end
     end
   end

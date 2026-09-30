@@ -303,5 +303,20 @@ defmodule Doggo.Components.TableTest do
       assert text(html, "tbody tr:first-child td") == "pets-1 George"
       assert text(html, "tbody tr:last-child td") == "pets-2 Mary"
     end
+
+    test "renders labels with markup" do
+      assigns = %{pets: [%{id: 1, name: "George"}]}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.table id="pets" rows={@pets} label="Pets">
+          <:col :let={p} label={~H"<b>Name</b>"}>{p.name}</:col>
+          <:action :let={p} label={~H"<b>Link</b>"}>link-to-{p.id}</:action>
+        </TestComponents.table>
+        """)
+
+      assert text(html, "thead > tr > th:first-child > b") == "Name"
+      assert text(html, "thead > tr > th:last-child > b") == "Link"
+    end
   end
 end
