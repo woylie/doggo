@@ -395,7 +395,7 @@ defmodule Doggo.FixturesTest do
       ~H"""
       <FixtureComponents.drawer id="drawer-1">
         <:header>Doggo</:header>
-        <:main>main</:main>
+        <:body>body</:body>
         <:footer>footer</:footer>
       </FixtureComponents.drawer>
       """,

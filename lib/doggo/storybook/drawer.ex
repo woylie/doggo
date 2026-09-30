@@ -24,17 +24,17 @@ defmodule Doggo.Storybook.Drawer do
       %Variation{
         id: :default,
         attributes: %{id: "dog-drawer-default"},
-        slots: [header(), main("default", opts), footer("default", opts)]
+        slots: [header(), body("default", opts), footer("default", opts)]
       },
       %Variation{
         id: :without_header,
         attributes: %{id: "dog-drawer-without-header"},
-        slots: [main("without-header", opts), footer("without-header", opts)]
+        slots: [body("without-header", opts), footer("without-header", opts)]
       },
       %Variation{
         id: :without_footer,
         attributes: %{id: "dog-drawer-without-footer"},
-        slots: [header(), main("without-footer", opts)]
+        slots: [header(), body("without-footer", opts)]
       },
       %Variation{
         id: :with_header_and_footer,
@@ -47,7 +47,7 @@ defmodule Doggo.Storybook.Drawer do
   def modifier_variation_base(id, _name, _value, opts) do
     %{
       attributes: %{id: id},
-      slots: [header(), main(id, opts), footer(id, opts)]
+      slots: [header(), body(id, opts), footer(id, opts)]
     }
   end
 
@@ -59,14 +59,14 @@ defmodule Doggo.Storybook.Drawer do
     """
   end
 
-  defp main(id, opts) do
+  defp body(id, opts) do
     nav = opts[:dependent_components][:vertical_nav]
     nested = opts[:dependent_components][:vertical_nav_nested]
     section = opts[:dependent_components][:vertical_nav_section]
 
     if nav && nested && section do
       """
-      <:main>
+      <:body>
         <.#{nav} id="#{id}-main-nav" label="Main">
           <:item>
             <Phoenix.Component.link navigate="/dashboard">
@@ -93,15 +93,15 @@ defmodule Doggo.Storybook.Drawer do
           <:title>Search</:title>
           <:item><input type="search" placeholder="Search" aria-label="Search" /></:item>
         </.#{section}>
-      </:main>
+      </:body>
       """
     else
       """
-      <:main>
+      <:body>
         <p>
           Compile the vertical navigation components for a complete preview.
         </p>
-      </:main>
+      </:body>
       """
     end
   end
