@@ -17,6 +17,7 @@ defmodule Doggo.Macros do
         :maturity,
         :maturity_note,
         :modifiers,
+        :render_options,
         :since,
         :type
       ])
@@ -38,6 +39,8 @@ defmodule Doggo.Macros do
     docstring = assemble_builder_doc(module, builder_name, defaults, opts)
 
     quote do
+      unquote(module).module_info(:module)
+
       @doc unquote(docstring)
       @doc type: unquote(type)
       @doc since: unquote(since)
@@ -48,7 +51,13 @@ defmodule Doggo.Macros do
         defaults = unquote(Macro.escape(defaults))
         data_attrs = unquote(data_attrs)
         type = unquote(type)
-        {opts, expressions} = Doggo.Defaults.split(opts)
+        {opts, expressions} = Doggo.BuildOptions.split(opts)
+
+        {opts, render} =
+          Doggo.BuildOptions.split_render_options(
+            opts,
+            Keyword.get(module.config(), :render_options, [])
+          )
 
         quote do
           unquote(module).module_info(:module)
@@ -63,7 +72,7 @@ defmodule Doggo.Macros do
               unquote(Macro.escape(defaults)),
               unquote(data_attrs),
               unquote(type),
-              unquote(Macro.escape(expressions))
+              unquote(Macro.escape(%{defaults: expressions, render: render}))
             ),
             [],
             __ENV__
@@ -82,7 +91,7 @@ defmodule Doggo.Macros do
         defaults,
         data_attrs,
         type,
-        expressions
+        unevaluated
       ) do
     builder = :"build_#{component}"
     opts = Keyword.validate!(opts, [{:defaults, []} | defaults])
@@ -107,11 +116,11 @@ defmodule Doggo.Macros do
     validate_build!(component, opts, attrs_and_slots)
 
     {attrs_and_slots, default_code} =
-      Doggo.Defaults.apply(
+      Doggo.BuildOptions.apply(
         builder,
         caller,
         attrs_and_slots,
-        Doggo.Defaults.escape!(builder, literals) ++ expressions,
+        Doggo.BuildOptions.escape!(builder, literals) ++ unevaluated.defaults,
         Keyword.fetch!(opts, :modifiers)
       )
 
@@ -127,11 +136,26 @@ defmodule Doggo.Macros do
     docstring = assemble_component_doc(module)
 
     modifier_data = build_data_attrs(Keyword.keys(modifiers))
-    template = Doggo.Template.compile(module, Keyword.merge(opts, extra))
+
+    render =
+      Doggo.BuildOptions.render_options!(
+        builder,
+        Keyword.get(module.config(), :render_options, []),
+        extra,
+        unevaluated.render
+      )
+
+    values =
+      opts
+      |> Keyword.merge(extra)
+      |> Keyword.merge(for {key, _} <- render, do: {key, {:render, key}})
+
+    template = Doggo.Template.compile(module, values)
 
     quote do
       @dog_components unquote(Macro.escape(component_info))
-      @__dog_build__ unquote(Macro.escape(Keyword.merge(opts, extra)))
+      @__dog_build__ unquote(Macro.escape(values))
+      @__dog_render__ unquote(Macro.escape(Map.new(render)))
 
       @doc unquote(docstring)
       @doc type: unquote(type)

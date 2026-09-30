@@ -47,15 +47,6 @@ defmodule Doggo.Storybook.Alert do
         slots: slots()
       },
       %Variation{
-        id: :close_button_with_icon,
-        attributes: %{
-          close_label: "Dismiss",
-          on_close:
-            {:eval, ~s|JS.hide(to: "#alert-single-close-button-with-icon")|}
-        },
-        slots: slots_with_close(opts)
-      },
-      %Variation{
         id: :action,
         attributes: %{title: "Session expired"},
         slots: slots_with_action(opts)
@@ -77,15 +68,6 @@ defmodule Doggo.Storybook.Alert do
     [
       "Your session has expired. Sign in again to continue.",
       "<:action>#{button("Sign in", ~s|type="button"|, opts[:dependent_components])}</:action>"
-    ]
-  end
-
-  defp slots_with_close(opts) do
-    dependent_components = opts[:dependent_components]
-
-    [
-      "This is an alert.",
-      "<:close>#{icon(:close, dependent_components)}</:close>"
     ]
   end
 

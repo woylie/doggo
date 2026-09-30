@@ -15,6 +15,27 @@ defmodule Doggo.Components.IconSpriteTest do
     build_icon_sprite()
   end
 
+  describe "build_icon_sprite/1 with an expression as sprite_url" do
+    test "evaluates the URL at render time" do
+      defmodule WithRenderURL do
+        use Doggo.Components
+        use Phoenix.Component
+
+        build_icon_sprite(sprite_url: Process.get(:sprite_url, "/icons.svg"))
+      end
+
+      assigns = %{}
+      Process.put(:sprite_url, "/icons-3f2a.svg")
+
+      html =
+        parse_heex(~H"""
+        <WithRenderURL.icon_sprite name="edit" />
+        """)
+
+      assert attribute(find_one(html, "use"), "href") == "/icons-3f2a.svg#edit"
+    end
+  end
+
   describe "icon_sprite/1" do
     test "renders icon from sprite" do
       assigns = %{}

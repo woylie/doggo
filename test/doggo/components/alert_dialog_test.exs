@@ -15,6 +15,9 @@ defmodule Doggo.Components.AlertDialogTest do
     use Phoenix.Component
 
     build_alert_dialog()
+    build_alert_dialog(name: :alert_dialog_with_close_1, close: ~H"X")
+    build_alert_dialog(name: :alert_dialog_with_close_2, close_label: "Cancel")
+    build_alert_dialog(name: :alert_dialog_with_close_3, close_label: " ")
   end
 
   describe "alert_dialog/1" do
@@ -121,11 +124,10 @@ defmodule Doggo.Components.AlertDialogTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.alert_dialog id="pet-alert" closedby="any">
+        <TestComponents.alert_dialog_with_close_1 id="pet-alert" closedby="any">
           <:title>Edit dog</:title>
           dog-form
-          <:close>X</:close>
-        </TestComponents.alert_dialog>
+        </TestComponents.alert_dialog_with_close_1>
         """)
 
       assert text(html, "button.alert-dialog-close") == "X"
@@ -136,10 +138,10 @@ defmodule Doggo.Components.AlertDialogTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.alert_dialog id="pet-alert" close_label="Cancel" closedby="any">
+        <TestComponents.alert_dialog_with_close_2 id="pet-alert" closedby="any">
           <:title>Edit dog</:title>
           dog-form
-        </TestComponents.alert_dialog>
+        </TestComponents.alert_dialog_with_close_2>
         """)
 
       assert attribute(html, "button.alert-dialog-close", "aria-label") ==
@@ -184,10 +186,10 @@ defmodule Doggo.Components.AlertDialogTest do
         assigns = %{}
 
         parse_heex(~H"""
-        <TestComponents.alert_dialog id="pet-alert" close_label=" ">
+        <TestComponents.alert_dialog_with_close_3 id="pet-alert">
           <:title>Edit dog</:title>
           dog-form
-        </TestComponents.alert_dialog>
+        </TestComponents.alert_dialog_with_close_3>
         """)
       end
     end

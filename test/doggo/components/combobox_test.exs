@@ -15,6 +15,12 @@ defmodule Doggo.Components.ComboboxTest do
     use Phoenix.Component
 
     build_combobox()
+
+    build_combobox(
+      name: :combobox_with_icons,
+      clear: ~H"clear-icon",
+      toggle: ~H"toggle-icon"
+    )
   end
 
   describe "combobox/1" do
@@ -489,17 +495,14 @@ defmodule Doggo.Components.ComboboxTest do
 
       html =
         parse_heex_without_name_check(~H"""
-        <TestComponents.combobox
+        <TestComponents.combobox_with_icons
           id="color-selector"
           name="color"
           list_label="Colors"
           clearable
           options={[{"Blue", "blue"}]}
           value="blue"
-        >
-          <:clear>clear-icon</:clear>
-          <:toggle>toggle-icon</:toggle>
-        </TestComponents.combobox>
+        />
         """)
 
       clear = find_one(html, "button#color-selector-clear")

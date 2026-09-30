@@ -11,7 +11,7 @@ defmodule Doggo.FixtureComponents do
 
   build_accordion()
   build_action_bar()
-  build_alert()
+  build_alert(close_label: "Dismiss", close: ~H"close-icon")
   build_alert_dialog()
   build_app_bar()
   build_avatar()
@@ -31,7 +31,7 @@ defmodule Doggo.FixtureComponents do
   build_disclosure_button()
   build_drawer()
   build_fallback()
-  build_field(gettext_module: Doggo.Gettext)
+  build_field()
   build_field_group()
   build_frame()
   build_icon(icon_module: Doggo.FixtureIcons)

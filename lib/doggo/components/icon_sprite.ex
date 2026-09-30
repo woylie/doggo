@@ -15,7 +15,9 @@ defmodule Doggo.Components.IconSprite do
   @impl true
   def builder_doc do
     """
-    - `:sprite_url` - URL of the icon sprite.
+    - `:sprite_url` - URL of the icon sprite. An expression such as
+      `~p"/images/icons.svg"` is evaluated at render time, so a digested static
+      path works.
     """
   end
 
@@ -51,7 +53,8 @@ defmodule Doggo.Components.IconSprite do
       modifiers: [],
       extra: [
         sprite_url: "/assets/icons/sprite.svg"
-      ]
+      ],
+      render_options: [sprite_url: :string]
     ]
   end
 

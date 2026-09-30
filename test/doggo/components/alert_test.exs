@@ -13,6 +13,9 @@ defmodule Doggo.Components.AlertTest do
     use Phoenix.Component
 
     build_alert()
+    build_alert(name: :alert_with_close_1, close_label: "klose")
+    build_alert(name: :alert_with_close_2, close_label: "Dismiss", close: ~H"X")
+    build_alert(name: :alert_with_close_3, close_label: "")
   end
 
   describe "alert/1" do
@@ -119,9 +122,9 @@ defmodule Doggo.Components.AlertTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.alert id="some-alert" on_close="close-alert" close_label="klose">
+        <TestComponents.alert_with_close_1 id="some-alert" on_close="close-alert">
           message
-        </TestComponents.alert>
+        </TestComponents.alert_with_close_1>
         """)
 
       button = find_one(html, ":root > button")
@@ -134,14 +137,12 @@ defmodule Doggo.Components.AlertTest do
 
       html =
         parse_heex(~H"""
-        <TestComponents.alert
+        <TestComponents.alert_with_close_2
           id="some-alert"
           on_close="close-alert"
-          close_label="Dismiss"
         >
           message
-          <:close>X</:close>
-        </TestComponents.alert>
+        </TestComponents.alert_with_close_2>
         """)
 
       button = find_one(html, ":root > button")
@@ -204,9 +205,9 @@ defmodule Doggo.Components.AlertTest do
         assigns = %{}
 
         parse_heex(~H"""
-        <TestComponents.alert id="some-alert" close_label="">
+        <TestComponents.alert_with_close_3 id="some-alert">
           message
-        </TestComponents.alert>
+        </TestComponents.alert_with_close_3>
         """)
       end
     end

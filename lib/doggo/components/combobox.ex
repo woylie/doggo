@@ -152,19 +152,13 @@ defmodule Doggo.Components.Combobox do
     ```
 
     Both the toggle button and the clear button have default content that can
-    be overridden with the `:toggle` and `:clear` slots.
+    be replaced with the build options `clear` and `toggle`:
 
-    ```heex
-    <.combobox
-      id="dog-breed-selector"
-      name="breed"
-      list_label="Dog breeds"
-      clearable
-      options={@breeds}
-    >
-      <:clear><Heroicon.x_mark /></:clear>
-      <:toggle><Heroicon.chevron_down /></:toggle>
-    </.combobox>
+    ```elixir
+    build_combobox(
+      clear: ~H|<Heroicon.x_mark />|,
+      toggle: ~H|<Heroicon.chevron_down />|
+    )
     ```
 
     ## With free text
@@ -239,6 +233,21 @@ defmodule Doggo.Components.Combobox do
   end
 
   @impl true
+  def builder_doc do
+    """
+    - `:clear` - The content of the clear button. Defaults to `nil`, which
+      renders a multiplication sign. The accessible name comes from
+      `clear_label`.
+    - `:toggle` - The content of the button that opens the listbox. Defaults to
+      `nil`, which renders a downwards-pointing triangle. The accessible name
+      comes from `list_label`.
+
+    Both take a remote capture of a function component or inline HEEx, such as
+    `~H|<.icon name="x" />|`.
+    """
+  end
+
+  @impl true
   def config do
     [
       type: :form,
@@ -251,6 +260,8 @@ defmodule Doggo.Components.Combobox do
       The level stays at `:developing` because the API is new and has not been
       proven in production yet.
       """,
+      extra: [clear: nil, toggle: nil],
+      render_options: [clear: :content, toggle: :content],
       modifiers: []
     ]
   end
@@ -410,21 +421,6 @@ defmodule Doggo.Components.Combobox do
 
         `disabled` and `form` are set on the hidden input as well.
         """
-
-      slot :clear,
-        doc: """
-        The content for the clear button. Defaults to a multiplication sign.
-
-        The accessible name comes from `clear_label` either way.
-        """
-
-      slot :toggle,
-        doc: """
-        The content for the button that opens the listbox. Defaults to a
-        downwards-pointing triangle.
-
-        The accessible name comes from `list_label` either way.
-        """
     end
   end
 
@@ -490,8 +486,11 @@ defmodule Doggo.Components.Combobox do
             aria-label={@clear_label}
             hidden={@value in [nil, ""]}
           >
-            {render_slot(@clear)}
-            <span :if={@clear == []}>×</span>
+            <Doggo.control_content
+              content={Doggo.build(:clear)}
+              modifiers={@data_attrs.data}
+              label="×"
+            />
           </button>
           <button
             id={"#{@id}-button"}
@@ -502,8 +501,11 @@ defmodule Doggo.Components.Combobox do
             aria-expanded="false"
             aria-controls={"#{@id}-listbox"}
           >
-            {render_slot(@toggle)}
-            <span :if={@toggle == []}>▼</span>
+            <Doggo.control_content
+              content={Doggo.build(:toggle)}
+              modifiers={@data_attrs.data}
+              label="▼"
+            />
           </button>
         </div>
         <div id={"#{@id}-listbox"} role="listbox" aria-label={@list_label} hidden>
