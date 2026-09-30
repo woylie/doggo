@@ -139,11 +139,6 @@ defmodule Doggo.Components.TabNavigation do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
   def example_label, do: "Dog Profile Sections"
 
   @impl true

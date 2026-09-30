@@ -125,23 +125,16 @@ defmodule Doggo.Components.Accordion do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         for entry <- var!(assigns).section do
           Doggo.ensure_name!(entry[:title], unquote(name), "title")
         end
       end
-    end
-  end
 
-  @impl true
-  def template(_opts) do
-    quote do
       ~H"""
       <div
         :if={@section != []}

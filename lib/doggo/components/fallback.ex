@@ -109,12 +109,10 @@ defmodule Doggo.Components.Fallback do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         Doggo.ensure_name!(
           var!(assigns).accessibility_text,
@@ -122,12 +120,7 @@ defmodule Doggo.Components.Fallback do
           "accessibility_text"
         )
       end
-    end
-  end
 
-  @impl true
-  def template(_opts) do
-    quote do
       var!(assigns) =
         Phoenix.Component.assign(
           var!(assigns),

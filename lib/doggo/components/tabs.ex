@@ -134,26 +134,19 @@ defmodule Doggo.Components.Tabs do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def example_label, do: "Dog Facts"
+
+  @impl true
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         for entry <- var!(assigns).panel do
           Doggo.ensure_name!(entry[:label], unquote(name), "label")
         end
       end
-    end
-  end
 
-  @impl true
-  def example_label, do: "Dog Facts"
-
-  @impl true
-  def template(_opts) do
-    quote do
       ~H"""
       <div
         :if={@panel != []}

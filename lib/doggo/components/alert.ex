@@ -140,12 +140,10 @@ defmodule Doggo.Components.Alert do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         Doggo.ensure_name!(
           var!(assigns).close_label,
@@ -155,12 +153,7 @@ defmodule Doggo.Components.Alert do
 
         Doggo.ensure_optional_name!(var!(assigns).title, unquote(name), "title")
       end
-    end
-  end
 
-  @impl true
-  def template(_opts) do
-    quote do
       ~H"""
       <div
         id={@id}

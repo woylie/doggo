@@ -66,23 +66,16 @@ defmodule Doggo.Components.PropertyList do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         for prop <- var!(assigns).prop do
           Doggo.ensure_name!(prop[:label], unquote(name), "label")
         end
       end
-    end
-  end
 
-  @impl true
-  def template(_opts) do
-    quote do
       ~H"""
       <dl
         :if={@prop != []}

@@ -169,24 +169,9 @@ defmodule Doggo.Components.Icon do
     end
   end
 
-  @impl true
-  def init_block(opts, extra) do
-    name = ".#{Keyword.fetch!(opts, :name)}"
-
-    quote do
-      require Doggo
-
-      Doggo.diagnostic do
-        Doggo.ensure_optional_name!(var!(assigns).text, unquote(name), "text")
-      end
-
-      unquote(icon_block(extra))
-    end
-  end
-
-  defp icon_block(extra) do
-    icon_module = Keyword.fetch!(extra, :icon_module)
-    icon_fun = Keyword.fetch!(extra, :icon_fun)
+  defp icon_block(opts) do
+    icon_module = Keyword.fetch!(opts, :icon_module)
+    icon_fun = Keyword.fetch!(opts, :icon_fun)
 
     if is_nil(icon_module) do
       raise """
@@ -232,8 +217,16 @@ defmodule Doggo.Components.Icon do
   end
 
   @impl true
-  def template(_opts) do
+  def template(opts) do
+    name = ".#{Keyword.fetch!(opts, :name)}"
+
     quote do
+      Doggo.diagnostic do
+        Doggo.ensure_optional_name!(var!(assigns).text, unquote(name), "text")
+      end
+
+      unquote(icon_block(opts))
+
       ~H"""
       <span
         class={[Doggo.build(:base_class) | List.wrap(@class)]}

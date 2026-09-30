@@ -86,21 +86,14 @@ defmodule Doggo.Components.Switch do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         Doggo.ensure_name!(var!(assigns).label, unquote(name), "label")
       end
-    end
-  end
 
-  @impl true
-  def template(_opts) do
-    quote do
       ~H"""
       <button
         class={[Doggo.build(:base_class) | List.wrap(@class)]}

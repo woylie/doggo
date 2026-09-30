@@ -55,14 +55,11 @@ defmodule Doggo.Component do
   @callback attrs_and_slots(opts :: keyword) :: Macro.t()
 
   @doc """
-  Returns a quoted block with code that evaluates compile-time options for the
-  component.
-  """
-  @callback init_block(opts :: Keyword.t(), extra :: Keyword.t()) :: Macro.t()
-
-  @doc """
   Returns the quoted HEEx template that the build compiles in the module that
   builds the component.
+
+  Code before the template runs in the generated function: checks, and values
+  derived from attributes.
   """
   @callback template(opts :: keyword) :: Macro.t()
 

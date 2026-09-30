@@ -108,23 +108,16 @@ defmodule Doggo.Components.AppBar do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         for entry <- var!(assigns).navigation ++ var!(assigns).action do
           Doggo.ensure_name!(entry[:label], unquote(name), "label")
         end
       end
-    end
-  end
 
-  @impl true
-  def template(_opts) do
-    quote do
       ~H"""
       <header
         id={@id}

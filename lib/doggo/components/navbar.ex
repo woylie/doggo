@@ -123,11 +123,6 @@ defmodule Doggo.Components.Navbar do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
   def example_label, do: "Main"
 
   @impl true

@@ -429,12 +429,10 @@ defmodule Doggo.Components.Combobox do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         Doggo.ensure_name!(
           var!(assigns).list_label,
@@ -457,12 +455,7 @@ defmodule Doggo.Components.Combobox do
         unquote(__MODULE__).ensure_free_text_label!(var!(assigns))
         unquote(__MODULE__).ensure_option_keys!(var!(assigns).options)
       end
-    end
-  end
 
-  @impl true
-  def template(_opts) do
-    quote do
       var!(assigns) = unquote(__MODULE__).prepare(var!(assigns))
 
       ~H"""

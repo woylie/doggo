@@ -216,19 +216,6 @@ defmodule Doggo.Components.Table do
     end
   end
 
-  @impl true
-  def init_block(opts, _extra) do
-    name = ".#{Keyword.fetch!(opts, :name)}"
-
-    quote do
-      require Doggo
-
-      Doggo.diagnostic do
-        unquote(__MODULE__).ensure_name!(var!(assigns), unquote(name))
-      end
-    end
-  end
-
   @doc false
   def ensure_name!(%{scrollable: true, label: label, caption: caption}, name) do
     if Doggo.named?(label) or Doggo.named?(caption) do
@@ -250,8 +237,14 @@ defmodule Doggo.Components.Table do
   def ensure_name!(_assigns, _name), do: :ok
 
   @impl true
-  def template(_opts) do
+  def template(opts) do
+    name = ".#{Keyword.fetch!(opts, :name)}"
+
     quote do
+      Doggo.diagnostic do
+        unquote(__MODULE__).ensure_name!(var!(assigns), unquote(name))
+      end
+
       var!(assigns) =
         with %{rows: %Phoenix.LiveView.LiveStream{}} <- var!(assigns) do
           Phoenix.Component.assign(var!(assigns),

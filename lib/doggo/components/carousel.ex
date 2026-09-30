@@ -334,12 +334,13 @@ defmodule Doggo.Components.Carousel do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def example_label, do: "Our Dogs"
+
+  @impl true
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         Doggo.ensure_name!(
           var!(assigns).pagination_label,
@@ -365,15 +366,7 @@ defmodule Doggo.Components.Carousel do
             do:
               Doggo.ensure_optional_name!(entry[:label], unquote(name), "label")
       end
-    end
-  end
 
-  @impl true
-  def example_label, do: "Our Dogs"
-
-  @impl true
-  def template(_opts) do
-    quote do
       multiple_items = length(var!(assigns).item) > 1
 
       var!(assigns) =

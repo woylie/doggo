@@ -132,7 +132,6 @@ defmodule Doggo.Macros do
         unquote(label_check(module, name))
         unquote(own_attributes_check(module, name))
         unquote(modifier_data)
-        unquote(module.init_block(opts, extra))
         unquote(template)
       end
     end

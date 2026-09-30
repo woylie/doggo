@@ -84,9 +84,9 @@ defmodule Doggo.Components.Frame do
   end
 
   @impl true
-  def init_block(_opts, extra) do
+  def template(opts) do
     ratio_parts =
-      extra |> Keyword.fetch!(:ratios) |> ratio_parts() |> Macro.escape()
+      opts |> Keyword.fetch!(:ratios) |> ratio_parts() |> Macro.escape()
 
     quote do
       {numerator, denominator} =
@@ -98,12 +98,7 @@ defmodule Doggo.Components.Frame do
           [numerator: numerator, denominator: denominator],
           [:ratio]
         )
-    end
-  end
 
-  @impl true
-  def template(_opts) do
-    quote do
       ~H"""
       <div
         class={[Doggo.build(:base_class) | List.wrap(@class)]}

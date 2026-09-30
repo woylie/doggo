@@ -117,12 +117,10 @@ defmodule Doggo.Components.PageHeader do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         Doggo.ensure_name!(var!(assigns).title, unquote(name), "title")
 
@@ -130,12 +128,7 @@ defmodule Doggo.Components.PageHeader do
             do:
               Doggo.ensure_optional_name!(entry[:label], unquote(name), "label")
       end
-    end
-  end
 
-  @impl true
-  def template(_opts) do
-    quote do
       ~H"""
       <header
         class={[Doggo.build(:base_class) | List.wrap(@class)]}

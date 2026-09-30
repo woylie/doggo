@@ -89,21 +89,14 @@ defmodule Doggo.Components.IconSprite do
   end
 
   @impl true
-  def init_block(opts, _extra) do
+  def template(opts) do
     name = ".#{Keyword.fetch!(opts, :name)}"
 
     quote do
-      require Doggo
-
       Doggo.diagnostic do
         Doggo.ensure_optional_name!(var!(assigns).text, unquote(name), "text")
       end
-    end
-  end
 
-  @impl true
-  def template(_opts) do
-    quote do
       ~H"""
       <span
         class={[Doggo.build(:base_class) | List.wrap(@class)]}

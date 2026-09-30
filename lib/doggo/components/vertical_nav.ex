@@ -135,19 +135,6 @@ defmodule Doggo.Components.VerticalNav do
     end
   end
 
-  @impl true
-  def init_block(opts, _extra) do
-    name = ".#{Keyword.fetch!(opts, :name)}"
-
-    quote do
-      require Doggo
-
-      Doggo.diagnostic do
-        unquote(__MODULE__).ensure_one_name!(var!(assigns), unquote(name))
-      end
-    end
-  end
-
   @doc false
   def ensure_one_name!(assigns, name) do
     count =
@@ -178,8 +165,14 @@ defmodule Doggo.Components.VerticalNav do
   end
 
   @impl true
-  def template(_opts) do
+  def template(opts) do
+    name = ".#{Keyword.fetch!(opts, :name)}"
+
     quote do
+      Doggo.diagnostic do
+        unquote(__MODULE__).ensure_one_name!(var!(assigns), unquote(name))
+      end
+
       var!(assigns) =
         Doggo.assign_derived(
           var!(assigns),

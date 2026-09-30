@@ -573,25 +573,6 @@ defmodule Doggo.Components.Field do
     """
   end
 
-  @impl true
-  def init_block(_opts, extra) do
-    types = extra |> types!() |> Map.keys()
-
-    option_types =
-      (@built_in_types -- ["checkbox-group", "radio-group"]) -- types
-
-    quote do
-      require Doggo
-
-      Doggo.diagnostic do
-        unquote(__MODULE__).ensure_no_option_descriptions!(
-          var!(assigns),
-          unquote(option_types)
-        )
-      end
-    end
-  end
-
   @doc false
   def ensure_no_option_descriptions!(%{type: type, options: options}, types)
       when is_list(options) or is_map(options) do
@@ -680,9 +661,20 @@ defmodule Doggo.Components.Field do
       |> types!()
       |> Map.filter(fn {_name, entry} -> entry not in [nil, :default] end)
 
+    option_types =
+      (@built_in_types -- ["checkbox-group", "radio-group"]) --
+        (opts |> types!() |> Map.keys())
+
     {:case, meta, [subject, [do: clauses]]} = builtin_case()
 
     quote do
+      Doggo.diagnostic do
+        unquote(__MODULE__).ensure_no_option_descriptions!(
+          var!(assigns),
+          unquote(option_types)
+        )
+      end
+
       var!(assigns) =
         unquote(__MODULE__).prepare(
           var!(assigns),

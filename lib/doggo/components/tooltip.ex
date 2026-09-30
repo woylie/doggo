@@ -131,11 +131,6 @@ defmodule Doggo.Components.Tooltip do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
   def template(_opts) do
     quote do
       ~H"""

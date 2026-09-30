@@ -181,11 +181,6 @@ defmodule Doggo.Components.SplitPane do
   end
 
   @impl true
-  def init_block(_opts, _extra) do
-    []
-  end
-
-  @impl true
   def example_label, do: "Sidebar"
 
   @impl true
