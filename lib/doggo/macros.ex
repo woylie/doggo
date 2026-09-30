@@ -48,6 +48,7 @@ defmodule Doggo.Macros do
         defaults = unquote(Macro.escape(defaults))
         data_attrs = unquote(data_attrs)
         type = unquote(type)
+        {opts, expressions} = Doggo.Defaults.split(opts)
 
         quote do
           unquote(module).module_info(:module)
@@ -61,7 +62,8 @@ defmodule Doggo.Macros do
               unquote(opts),
               unquote(Macro.escape(defaults)),
               unquote(data_attrs),
-              unquote(type)
+              unquote(type),
+              unquote(Macro.escape(expressions))
             ),
             [],
             __ENV__
@@ -72,12 +74,30 @@ defmodule Doggo.Macros do
   end
 
   @doc false
-  def build(caller, component, module, opts, defaults, data_attrs, type) do
-    validate_functions!(:"build_#{component}", opts)
-    opts = Keyword.validate!(opts, defaults)
+  def build(
+        caller,
+        component,
+        module,
+        opts,
+        defaults,
+        data_attrs,
+        type,
+        expressions
+      ) do
+    builder = :"build_#{component}"
+    opts = Keyword.validate!(opts, [{:defaults, []} | defaults])
+    validate_functions!(builder, Keyword.delete(opts, :defaults))
 
     {opts, extra} =
-      Keyword.split(opts, [:name, :base_class, :data_attrs, :modifiers])
+      Keyword.split(opts, [
+        :name,
+        :base_class,
+        :data_attrs,
+        :modifiers,
+        :defaults
+      ])
+
+    {literals, opts} = Keyword.pop!(opts, :defaults)
 
     {extra, callees} = resolve_callees!(caller, component, module, opts, extra)
 
@@ -85,6 +105,15 @@ defmodule Doggo.Macros do
       module.attrs_and_slots(Keyword.put(extra, :callees, callees))
 
     validate_build!(component, opts, attrs_and_slots)
+
+    {attrs_and_slots, default_code} =
+      Doggo.Defaults.apply(
+        builder,
+        caller,
+        attrs_and_slots,
+        Doggo.Defaults.escape!(builder, literals) ++ expressions,
+        Keyword.fetch!(opts, :modifiers)
+      )
 
     component_info =
       opts
@@ -129,15 +158,16 @@ defmodule Doggo.Macros do
       unquote(attrs_and_slots)
 
       def unquote(name)(var!(assigns)) do
+        unquote(modifier_data)
+        unquote_splicing(default_code)
         unquote(label_check(module, name))
         unquote(own_attributes_check(module, name))
-        unquote(modifier_data)
         unquote(template)
       end
     end
   end
 
-  defp validate_functions!(builder, opts) when is_list(opts) do
+  defp validate_functions!(builder, opts) do
     for {key, value} <- opts, fun = anonymous_function(value) do
       raise ArgumentError, """
       invalid #{key} option for #{builder}/1
@@ -153,8 +183,6 @@ defmodule Doggo.Macros do
 
     :ok
   end
-
-  defp validate_functions!(_builder, _opts), do: :ok
 
   defp anonymous_function(fun) when is_function(fun) do
     if Function.info(fun, :type) == {:type, :local}, do: fun
@@ -404,7 +432,7 @@ defmodule Doggo.Macros do
       if function_exported?(module, :builder_doc, 0) do
         """
         In addition to the [common options](`m:Doggo.Components#module-common-options`)
-        `name`, `base_class`, and `modifiers`, the build macro
+        `name`, `base_class`, `modifiers`, and `defaults`, the build macro
         also supports the following options.
 
         #{module.builder_doc()}
@@ -412,7 +440,7 @@ defmodule Doggo.Macros do
       else
         """
         The build macro supports the [common options](`m:Doggo.Components#module-common-options`)
-        `name`, `base_class`, and `modifiers`.
+        `name`, `base_class`, `modifiers`, and `defaults`.
         """
       end
 

@@ -56,6 +56,35 @@ defmodule Doggo do
   def assign_derived(assigns, derived, _inputs), do: assign(assigns, derived)
 
   @doc false
+  def attr_default(assigns, name, fun) do
+    if Map.has_key?(assigns, name),
+      do: assigns,
+      else: Map.put(assigns, name, fun.())
+  end
+
+  @doc false
+  def slot_default(
+        %{data_attrs: %{data: modifiers}} = assigns,
+        name,
+        fun,
+        attrs
+      ) do
+    case assigns do
+      %{^name => []} ->
+        entry =
+          Map.merge(attrs.(), %{
+            __slot__: name,
+            inner_block: fn _changed, _arg -> fun.(Map.new(modifiers)) end
+          })
+
+        assign_derived(assigns, [{name, [entry]}], Keyword.keys(modifiers))
+
+      _ ->
+        assigns
+    end
+  end
+
+  @doc false
   def assign_time(assigns, value, to_iso) do
     assign_derived(
       assigns,
