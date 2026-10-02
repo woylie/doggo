@@ -1,133 +1,135 @@
-defmodule Doggo.Storybook.Drawer do
-  @moduledoc false
-  alias PhoenixStorybook.Stories.Variation
+if Code.ensure_loaded?(PhoenixStorybook.Story) do
+  defmodule Doggo.Storybook.Drawer do
+    @moduledoc false
+    alias PhoenixStorybook.Stories.Variation
 
-  def dependent_components do
-    [:vertical_nav, :vertical_nav_nested, :vertical_nav_section]
-  end
+    def dependent_components do
+      [:vertical_nav, :vertical_nav_nested, :vertical_nav_section]
+    end
 
-  def layout, do: :one_column
+    def layout, do: :one_column
 
-  def template do
-    """
-    <div style="display: flex; align-self: stretch; block-size: 32rem">
-      <div style="inline-size: 16rem; flex: none">
-        <.psb-variation/>
+    def template do
+      """
+      <div style="display: flex; align-self: stretch; block-size: 32rem">
+        <div style="inline-size: 16rem; flex: none">
+          <.psb-variation/>
+        </div>
+        <p style="min-inline-size: 0; padding: 1rem">Page content sits beside the drawer.</p>
       </div>
-      <p style="min-inline-size: 0; padding: 1rem">Page content sits beside the drawer.</p>
-    </div>
-    """
-  end
-
-  def variations(opts) do
-    [
-      %Variation{
-        id: :default,
-        attributes: %{id: "dog-drawer-default"},
-        slots: [header(), body("default", opts), footer("default", opts)]
-      },
-      %Variation{
-        id: :without_header,
-        attributes: %{id: "dog-drawer-without-header"},
-        slots: [body("without-header", opts), footer("without-header", opts)]
-      },
-      %Variation{
-        id: :without_footer,
-        attributes: %{id: "dog-drawer-without-footer"},
-        slots: [header(), body("without-footer", opts)]
-      },
-      %Variation{
-        id: :with_header_and_footer,
-        attributes: %{id: "dog-drawer-header-and-footer"},
-        slots: [header(), footer("footer-only", opts)]
-      }
-    ]
-  end
-
-  def modifier_variation_base(id, _name, _value, opts) do
-    %{
-      attributes: %{id: id},
-      slots: [header(), body(id, opts), footer(id, opts)]
-    }
-  end
-
-  defp header do
-    """
-    <:header>
-      <Phoenix.Component.link navigate="/">Pet Clinic</Phoenix.Component.link>
-    </:header>
-    """
-  end
-
-  defp body(id, opts) do
-    nav = opts[:dependent_components][:vertical_nav]
-    nested = opts[:dependent_components][:vertical_nav_nested]
-    section = opts[:dependent_components][:vertical_nav_section]
-
-    if nav && nested && section do
-      """
-      <:body>
-        <.#{nav} id="#{id}-main-nav" label="Main">
-          <:item>
-            <Phoenix.Component.link navigate="/dashboard">
-              Dashboard
-            </Phoenix.Component.link>
-          </:item>
-          <:item>
-            <.#{nested} id="#{id}-main-nav-content">
-              <:title>Content</:title>
-              <:item current_page>
-                <Phoenix.Component.link navigate="/posts">
-                  Posts
-                </Phoenix.Component.link>
-              </:item>
-              <:item>
-                <Phoenix.Component.link navigate="/comments">
-                  Comments
-                </Phoenix.Component.link>
-              </:item>
-            </.#{nested}>
-          </:item>
-        </.#{nav}>
-        <.#{section} id="#{id}-search">
-          <:title>Search</:title>
-          <:item><input type="search" placeholder="Search" aria-label="Search" /></:item>
-        </.#{section}>
-      </:body>
-      """
-    else
-      """
-      <:body>
-        <p>
-          Compile the vertical navigation components for a complete preview.
-        </p>
-      </:body>
       """
     end
-  end
 
-  defp footer(id, opts) do
-    nav = opts[:dependent_components][:vertical_nav]
+    def variations(opts) do
+      [
+        %Variation{
+          id: :default,
+          attributes: %{id: "dog-drawer-default"},
+          slots: [header(), body("default", opts), footer("default", opts)]
+        },
+        %Variation{
+          id: :without_header,
+          attributes: %{id: "dog-drawer-without-header"},
+          slots: [body("without-header", opts), footer("without-header", opts)]
+        },
+        %Variation{
+          id: :without_footer,
+          attributes: %{id: "dog-drawer-without-footer"},
+          slots: [header(), body("without-footer", opts)]
+        },
+        %Variation{
+          id: :with_header_and_footer,
+          attributes: %{id: "dog-drawer-header-and-footer"},
+          slots: [header(), footer("footer-only", opts)]
+        }
+      ]
+    end
 
-    if nav do
+    def modifier_variation_base(id, _name, _value, opts) do
+      %{
+        attributes: %{id: id},
+        slots: [header(), body(id, opts), footer(id, opts)]
+      }
+    end
+
+    defp header do
       """
-      <:footer>
-        <.#{nav} id="#{id}-user-menu" label="User menu">
-          <:item>
-            <Phoenix.Component.link navigate="/settings">
-              Settings
-            </Phoenix.Component.link>
-          </:item>
-          <:item>
-            <Phoenix.Component.link navigate="/logout">
-              Logout
-            </Phoenix.Component.link>
-          </:item>
-        </.#{nav}>
-      </:footer>
+      <:header>
+        <Phoenix.Component.link navigate="/">Pet Clinic</Phoenix.Component.link>
+      </:header>
       """
-    else
-      "<:footer>Footer</:footer>"
+    end
+
+    defp body(id, opts) do
+      nav = opts[:dependent_components][:vertical_nav]
+      nested = opts[:dependent_components][:vertical_nav_nested]
+      section = opts[:dependent_components][:vertical_nav_section]
+
+      if nav && nested && section do
+        """
+        <:body>
+          <.#{nav} id="#{id}-main-nav" label="Main">
+            <:item>
+              <Phoenix.Component.link navigate="/dashboard">
+                Dashboard
+              </Phoenix.Component.link>
+            </:item>
+            <:item>
+              <.#{nested} id="#{id}-main-nav-content">
+                <:title>Content</:title>
+                <:item current_page>
+                  <Phoenix.Component.link navigate="/posts">
+                    Posts
+                  </Phoenix.Component.link>
+                </:item>
+                <:item>
+                  <Phoenix.Component.link navigate="/comments">
+                    Comments
+                  </Phoenix.Component.link>
+                </:item>
+              </.#{nested}>
+            </:item>
+          </.#{nav}>
+          <.#{section} id="#{id}-search">
+            <:title>Search</:title>
+            <:item><input type="search" placeholder="Search" aria-label="Search" /></:item>
+          </.#{section}>
+        </:body>
+        """
+      else
+        """
+        <:body>
+          <p>
+            Compile the vertical navigation components for a complete preview.
+          </p>
+        </:body>
+        """
+      end
+    end
+
+    defp footer(id, opts) do
+      nav = opts[:dependent_components][:vertical_nav]
+
+      if nav do
+        """
+        <:footer>
+          <.#{nav} id="#{id}-user-menu" label="User menu">
+            <:item>
+              <Phoenix.Component.link navigate="/settings">
+                Settings
+              </Phoenix.Component.link>
+            </:item>
+            <:item>
+              <Phoenix.Component.link navigate="/logout">
+                Logout
+              </Phoenix.Component.link>
+            </:item>
+          </.#{nav}>
+        </:footer>
+        """
+      else
+        "<:footer>Footer</:footer>"
+      end
     end
   end
 end

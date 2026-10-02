@@ -1,90 +1,92 @@
-defmodule Doggo.Storybook.Accordion do
-  @moduledoc false
-  alias PhoenixStorybook.Stories.Variation
+if Code.ensure_loaded?(PhoenixStorybook.Story) do
+  defmodule Doggo.Storybook.Accordion do
+    @moduledoc false
+    alias PhoenixStorybook.Stories.Variation
 
-  def layout, do: :one_column
+    def layout, do: :one_column
 
-  def template do
-    """
-    <div style="inline-size: 100%">
-      <.psb-variation/>
-    </div>
-    """
-  end
+    def template do
+      """
+      <div style="inline-size: 100%">
+        <.psb-variation/>
+      </div>
+      """
+    end
 
-  def variations(_opts) do
-    [
-      %Variation{
-        id: :all_expanded,
-        attributes: %{
-          id: "dog-breeds-all-exp"
+    def variations(_opts) do
+      [
+        %Variation{
+          id: :all_expanded,
+          attributes: %{
+            id: "dog-breeds-all-exp"
+          },
+          slots: slots()
         },
-        slots: slots()
-      },
-      %Variation{
-        id: :first_expanded,
+        %Variation{
+          id: :first_expanded,
+          attributes: %{
+            id: "dog-breeds-first-exp",
+            expanded: :first
+          },
+          slots: slots()
+        },
+        %Variation{
+          id: :all_collapsed,
+          attributes: %{
+            id: "dog-breeds-all-col",
+            expanded: :none
+          },
+          slots: slots()
+        },
+        %Variation{
+          id: :heading_level,
+          note:
+            "The `heading` should be chosen to follow the header hierarchy in the document outline.",
+          attributes: %{
+            id: "dog-breeds-heading",
+            heading: "h2"
+          },
+          slots: slots()
+        }
+      ]
+    end
+
+    def modifier_variation_base(id, _name, _value, _opts) do
+      %{
         attributes: %{
-          id: "dog-breeds-first-exp",
+          id: id,
           expanded: :first
         },
         slots: slots()
-      },
-      %Variation{
-        id: :all_collapsed,
-        attributes: %{
-          id: "dog-breeds-all-col",
-          expanded: :none
-        },
-        slots: slots()
-      },
-      %Variation{
-        id: :heading_level,
-        note:
-          "The `heading` should be chosen to follow the header hierarchy in the document outline.",
-        attributes: %{
-          id: "dog-breeds-heading",
-          heading: "h2"
-        },
-        slots: slots()
       }
-    ]
-  end
+    end
 
-  def modifier_variation_base(id, _name, _value, _opts) do
-    %{
-      attributes: %{
-        id: id,
-        expanded: :first
-      },
-      slots: slots()
-    }
-  end
-
-  defp slots do
-    [
-      """
-      <:section title="Golden Retriever">
-        <p>
-          Friendly, intelligent, great with families. Origin: Scotland. Needs
-          regular exercise.
-        </p>
-      </:section>
-      """,
-      """
-      <:section title="Siberian Husky">
-        <p>
-          Energetic, outgoing, distinctive appearance. Origin: Northeast Asia.
-          Loves cold climates.
-        </p>
-      </:section>
-      """,
-      """
-      <:section title="Dachshund">
-        <p>
-          Playful, stubborn, small size. Origin: Germany. Enjoys sniffing games.
-        </p>
-      </:section>
-      """
-    ]
+    defp slots do
+      [
+        """
+        <:section title="Golden Retriever">
+          <p>
+            Friendly, intelligent, great with families. Origin: Scotland. Needs
+            regular exercise.
+          </p>
+        </:section>
+        """,
+        """
+        <:section title="Siberian Husky">
+          <p>
+            Energetic, outgoing, distinctive appearance. Origin: Northeast Asia.
+            Loves cold climates.
+          </p>
+        </:section>
+        """,
+        """
+        <:section title="Dachshund">
+          <p>
+            Playful, stubborn, small size. Origin: Germany. Enjoys sniffing games.
+          </p>
+        </:section>
+        """
+      ]
+    end
   end
 end

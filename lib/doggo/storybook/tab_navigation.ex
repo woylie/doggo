@@ -1,34 +1,36 @@
-defmodule Doggo.Storybook.TabNavigation do
-  @moduledoc false
-  alias PhoenixStorybook.Stories.Variation
+if Code.ensure_loaded?(PhoenixStorybook.Story) do
+  defmodule Doggo.Storybook.TabNavigation do
+    @moduledoc false
+    alias PhoenixStorybook.Stories.Variation
 
-  def layout, do: :one_column
+    def layout, do: :one_column
 
-  def variations(_opts) do
-    [
-      %Variation{
-        id: :default,
-        attributes: %{
-          label: "Dog Profile Sections",
-          current_value: :owners
-        },
+    def variations(_opts) do
+      [
+        %Variation{
+          id: :default,
+          attributes: %{
+            label: "Dog Profile Sections",
+            current_value: :owners
+          },
+          slots: slots()
+        }
+      ]
+    end
+
+    def modifier_variation_base(_id, _name, _value, _opts) do
+      %{
+        attributes: %{label: "Dog Profile Sections", current_value: :owners},
         slots: slots()
       }
-    ]
-  end
+    end
 
-  def modifier_variation_base(_id, _name, _value, _opts) do
-    %{
-      attributes: %{label: "Dog Profile Sections", current_value: :owners},
-      slots: slots()
-    }
-  end
-
-  defp slots do
-    [
-      ~s(<:item patch="/owners" value={:owners}>Owners</:item>),
-      ~s(<:item patch="/pets" value={:pets}>Pets</:item>),
-      ~s(<:item patch="/appointments" value={:appointments}>Appointments</:item>)
-    ]
+    defp slots do
+      [
+        ~s(<:item patch="/owners" value={:owners}>Owners</:item>),
+        ~s(<:item patch="/pets" value={:pets}>Pets</:item>),
+        ~s(<:item patch="/appointments" value={:appointments}>Appointments</:item>)
+      ]
+    end
   end
 end

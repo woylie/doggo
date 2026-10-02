@@ -1,63 +1,65 @@
-defmodule Doggo.Storybook.ToggleButton do
-  @moduledoc false
+if Code.ensure_loaded?(PhoenixStorybook.Story) do
+  defmodule Doggo.Storybook.ToggleButton do
+    @moduledoc false
 
-  alias Phoenix.LiveView.JS
-  alias PhoenixStorybook.Stories.Variation
+    alias Phoenix.LiveView.JS
+    alias PhoenixStorybook.Stories.Variation
 
-  def variations(_opts) do
-    [
-      %Variation{
-        id: :default,
-        attributes: %{
-          on_click: toggle_indicator(:default),
-          pressed: false
+    def variations(_opts) do
+      [
+        %Variation{
+          id: :default,
+          attributes: %{
+            on_click: toggle_indicator(:default),
+            pressed: false
+          },
+          slots: ["click me"],
+          template: indicator_template(:default)
         },
-        slots: ["click me"],
-        template: indicator_template(:default)
-      },
-      %Variation{
-        id: :disabled,
+        %Variation{
+          id: :disabled,
+          attributes: %{
+            on_click: %JS{},
+            disabled: true
+          },
+          slots: ["click me"]
+        }
+      ]
+    end
+
+    def modifier_variation_group_template(name, _opts) do
+      indicator_template(name)
+    end
+
+    def modifier_variation_base(_id, name, value, _opts) do
+      %{
         attributes: %{
-          on_click: %JS{},
-          disabled: true
+          :on_click => toggle_indicator(name),
+          :pressed => false
         },
-        slots: ["click me"]
+        slots: [to_string(value || "nil")]
       }
-    ]
-  end
+    end
 
-  def modifier_variation_group_template(name, _opts) do
-    indicator_template(name)
-  end
-
-  def modifier_variation_base(_id, name, value, _opts) do
-    %{
-      attributes: %{
-        :on_click => toggle_indicator(name),
-        :pressed => false
-      },
-      slots: [to_string(value || "nil")]
-    }
-  end
-
-  defp indicator_template(id) do
-    """
-    <div style="display: flex; flex-direction: column; gap: 1.5rem">
-      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem"><.psb-variation-group/></div>
-      <div>
-        <div id="indicator-on-#{id}" hidden>on</div>
-        <div id="indicator-off-#{id}">off</div>
+    defp indicator_template(id) do
+      """
+      <div style="display: flex; flex-direction: column; gap: 1.5rem">
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem"><.psb-variation-group/></div>
+        <div>
+          <div id="indicator-on-#{id}" hidden>on</div>
+          <div id="indicator-off-#{id}">off</div>
+        </div>
       </div>
-    </div>
-    """
-  end
+      """
+    end
 
-  defp toggle_indicator(id) do
-    {:eval,
-     """
-     %JS{}
-     |> JS.toggle_attribute({"hidden", "true"}, to: "#indicator-on-#{id}")
-     |> JS.toggle_attribute({"hidden", "true"}, to: "#indicator-off-#{id}")
-     """}
+    defp toggle_indicator(id) do
+      {:eval,
+       """
+       %JS{}
+       |> JS.toggle_attribute({"hidden", "true"}, to: "#indicator-on-#{id}")
+       |> JS.toggle_attribute({"hidden", "true"}, to: "#indicator-off-#{id}")
+       """}
+    end
   end
 end

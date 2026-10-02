@@ -76,7 +76,7 @@ defmodule Doggo.MixProject do
       {:makeup_diff, "0.1.1", only: :dev},
       {:makeup_js, "== 0.1.0", only: :dev},
       {:phoenix_live_view, "~> 1.1"},
-      {:phoenix_storybook, "~> 1.1"},
+      {:phoenix_storybook, "~> 1.1", optional: true},
       {:tz, "== 0.28.2", only: :test}
     ]
   end

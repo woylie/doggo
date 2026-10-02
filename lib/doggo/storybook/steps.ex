@@ -1,77 +1,79 @@
-defmodule Doggo.Storybook.Steps do
-  @moduledoc false
-  alias PhoenixStorybook.Stories.Variation
+if Code.ensure_loaded?(PhoenixStorybook.Story) do
+  defmodule Doggo.Storybook.Steps do
+    @moduledoc false
+    alias PhoenixStorybook.Stories.Variation
 
-  def layout, do: :one_column
+    def layout, do: :one_column
 
-  def variations(_opts) do
-    [
-      %Variation{
-        id: :without_links,
-        attributes: %{
-          label: "Order process",
-          current_step: 1
+    def variations(_opts) do
+      [
+        %Variation{
+          id: :without_links,
+          attributes: %{
+            label: "Order process",
+            current_step: 1
+          },
+          slots: steps_without_links()
         },
-        slots: steps_without_links()
-      },
-      %Variation{
-        id: :non_linear,
-        attributes: %{
-          label: "Order process",
-          current_step: 1
+        %Variation{
+          id: :non_linear,
+          attributes: %{
+            label: "Order process",
+            current_step: 1
+          },
+          slots: steps_with_links()
         },
-        slots: steps_with_links()
-      },
-      %Variation{
-        id: :linear,
-        attributes: %{
-          label: "Order process",
-          current_step: 1,
-          linear: true
-        },
+        %Variation{
+          id: :linear,
+          attributes: %{
+            label: "Order process",
+            current_step: 1,
+            linear: true
+          },
+          slots: steps_with_links()
+        }
+      ]
+    end
+
+    def modifier_variation_base(_id, _name, _value, _opts) do
+      %{
+        attributes: %{label: "Order process", current_step: 1},
         slots: steps_with_links()
       }
-    ]
-  end
+    end
 
-  def modifier_variation_base(_id, _name, _value, _opts) do
-    %{
-      attributes: %{label: "Order process", current_step: 1},
-      slots: steps_with_links()
-    }
-  end
+    defp steps_without_links do
+      [
+        """
+        <:step>Profile</:step>
+        """,
+        """
+        <:step>Delivery</:step>
+        """,
+        """
+        <:step>Confirmation</:step>
+        """
+      ]
+    end
 
-  defp steps_without_links do
-    [
-      """
-      <:step>Profile</:step>
-      """,
-      """
-      <:step>Delivery</:step>
-      """,
-      """
-      <:step>Confirmation</:step>
-      """
-    ]
-  end
-
-  defp steps_with_links do
-    [
-      """
-      <:step on_click={Phoenix.LiveView.JS.push("go-to-step", value: %{step: "profile"})}>
-        Profile
-      </:step>
-      """,
-      """
-      <:step on_click={Phoenix.LiveView.JS.push("go-to-step", value: %{step: "delivery"})}>
-        Delivery
-      </:step>
-      """,
-      """
-      <:step on_click={Phoenix.LiveView.JS.push("go-to-step", value: %{step: "confirmation"})}>
-        Confirmation
-      </:step>
-      """
-    ]
+    defp steps_with_links do
+      [
+        """
+        <:step on_click={Phoenix.LiveView.JS.push("go-to-step", value: %{step: "profile"})}>
+          Profile
+        </:step>
+        """,
+        """
+        <:step on_click={Phoenix.LiveView.JS.push("go-to-step", value: %{step: "delivery"})}>
+          Delivery
+        </:step>
+        """,
+        """
+        <:step on_click={Phoenix.LiveView.JS.push("go-to-step", value: %{step: "confirmation"})}>
+          Confirmation
+        </:step>
+        """
+      ]
+    end
   end
 end

@@ -1,130 +1,132 @@
-defmodule Doggo.Storybook.Modal do
-  @moduledoc false
+if Code.ensure_loaded?(PhoenixStorybook.Story) do
+  defmodule Doggo.Storybook.Modal do
+    @moduledoc false
 
-  import Doggo.Storybook.Shared
+    import Doggo.Storybook.Shared
 
-  alias PhoenixStorybook.Stories.Variation
+    alias PhoenixStorybook.Stories.Variation
 
-  def dependent_components, do: [:button]
+    def dependent_components, do: [:button]
 
-  def template(opts) do
-    """
-    <div>
-      #{button("Open modal", ~s|type="button" phx-click={Doggo.show_modal(":variation_id")}|, opts[:dependent_components])}
-      <.psb-variation/>
-    </div>
-    """
-  end
+    def template(opts) do
+      """
+      <div>
+        #{button("Open modal", ~s|type="button" phx-click={Doggo.show_modal(":variation_id")}|, opts[:dependent_components])}
+        <.psb-variation/>
+      </div>
+      """
+    end
 
-  def variations(opts) do
-    [
-      %Variation{
-        id: :default,
-        note:
-          "`Doggo.show_modal/1` opens the dialog, which works on every " <>
-            "browser and needs the hook. The close button in the footer uses " <>
-            "`Doggo.hide_modal/1`.",
-        attributes: %{id: "dog-modal-default"},
-        slots: slots("modal-single-default", opts)
-      },
-      %Variation{
-        id: :without_javascript,
-        note:
-          "The button has `command` and `commandfor` attributes, " <>
-            "which are part of the Invoker Commands API. This works with only " <>
-            "HTML attributes without any JavaScript. " <>
-            "If the browser doesn't support it, the hook fills the functionality.",
-        template: command_template(opts),
-        attributes: %{id: "dog-modal-declarative"},
-        slots: slots("modal-single-without-javascript", opts)
-      },
-      %Variation{
-        id: :long_content,
-        attributes: %{id: "dog-modal-long"},
-        slots: long_slots("modal-single-long-content", opts)
-      },
-      %Variation{
-        id: :closedby_closerequest,
-        note:
-          "With `closedby=\"closerequest\"`, a close button is rendered and " <>
-            "`Esc` closes the dialog, but a click outside does not. Use it " <>
-            "for a form that should not lose its input to a stray click.",
-        attributes: %{
-          id: "dog-modal-closedby-closerequest",
-          closedby: "closerequest"
+    def variations(opts) do
+      [
+        %Variation{
+          id: :default,
+          note:
+            "`Doggo.show_modal/1` opens the dialog, which works on every " <>
+              "browser and needs the hook. The close button in the footer uses " <>
+              "`Doggo.hide_modal/1`.",
+          attributes: %{id: "dog-modal-default"},
+          slots: slots("modal-single-default", opts)
         },
-        slots: slots("modal-single-closedby-closerequest", opts)
-      },
-      %Variation{
-        id: :closedby_none,
-        note:
-          "With `closedby=\"none\"`, no close button is rendered and neither " <>
-            "`Esc` nor a click outside closes it.",
-        attributes: %{id: "dog-modal-closedby-none", closedby: "none"},
-        slots: slots("modal-single-closedby-none", opts)
+        %Variation{
+          id: :without_javascript,
+          note:
+            "The button has `command` and `commandfor` attributes, " <>
+              "which are part of the Invoker Commands API. This works with only " <>
+              "HTML attributes without any JavaScript. " <>
+              "If the browser doesn't support it, the hook fills the functionality.",
+          template: command_template(opts),
+          attributes: %{id: "dog-modal-declarative"},
+          slots: slots("modal-single-without-javascript", opts)
+        },
+        %Variation{
+          id: :long_content,
+          attributes: %{id: "dog-modal-long"},
+          slots: long_slots("modal-single-long-content", opts)
+        },
+        %Variation{
+          id: :closedby_closerequest,
+          note:
+            "With `closedby=\"closerequest\"`, a close button is rendered and " <>
+              "`Esc` closes the dialog, but a click outside does not. Use it " <>
+              "for a form that should not lose its input to a stray click.",
+          attributes: %{
+            id: "dog-modal-closedby-closerequest",
+            closedby: "closerequest"
+          },
+          slots: slots("modal-single-closedby-closerequest", opts)
+        },
+        %Variation{
+          id: :closedby_none,
+          note:
+            "With `closedby=\"none\"`, no close button is rendered and neither " <>
+              "`Esc` nor a click outside closes it.",
+          attributes: %{id: "dog-modal-closedby-none", closedby: "none"},
+          slots: slots("modal-single-closedby-none", opts)
+        }
+      ]
+    end
+
+    defp command_template(opts) do
+      """
+      <div>
+        #{button("Open modal", ~s|type="button" command="show-modal" commandfor=":variation_id"|, opts[:dependent_components])}
+        <.psb-variation/>
+      </div>
+      """
+    end
+
+    def modifier_variation_group_template(_name, opts) do
+      template(opts)
+    end
+
+    def modifier_variation_base(id, name, value, opts) do
+      %{
+        attributes: %{id: id},
+        slots: slots("modal-#{name}-dog-mod-var-#{name}-#{value}", opts)
       }
-    ]
-  end
+    end
 
-  defp command_template(opts) do
-    """
-    <div>
-      #{button("Open modal", ~s|type="button" command="show-modal" commandfor=":variation_id"|, opts[:dependent_components])}
-      <.psb-variation/>
-    </div>
-    """
-  end
+    defp long_slots(id, opts) do
+      [title | rest] = slots(id, opts, "")
 
-  def modifier_variation_group_template(_name, opts) do
-    template(opts)
-  end
+      paragraphs =
+        Enum.map_join(1..20, "\n", fn i ->
+          attrs = if i == 1, do: ~s| tabindex="-1" autofocus|, else: ""
 
-  def modifier_variation_base(id, name, value, opts) do
-    %{
-      attributes: %{id: id},
-      slots: slots("modal-#{name}-dog-mod-var-#{name}-#{value}", opts)
-    }
-  end
+          "<p#{attrs}>Johnny was rehomed in #{2010 + i}. He is house trained, walks " <>
+            "well on a lead, and is happiest with a garden and someone at " <>
+            "home during the day. He does not get on with cats.</p>"
+        end)
 
-  defp long_slots(id, opts) do
-    [title | rest] = slots(id, opts, "")
+      [title, paragraphs | tl(rest)]
+    end
 
-    paragraphs =
-      Enum.map_join(1..20, "\n", fn i ->
-        attrs = if i == 1, do: ~s| tabindex="-1" autofocus|, else: ""
+    defp slots(id, opts, close_attrs \\ " autofocus") do
+      dependent_components = opts[:dependent_components]
 
-        "<p#{attrs}>Johnny was rehomed in #{2010 + i}. He is house trained, walks " <>
-          "well on a lead, and is happiest with a garden and someone at " <>
-          "home during the day. He does not get on with cats.</p>"
-      end)
+      tag_name =
+        if function_name = dependent_components[:button] do
+          ".#{function_name}"
+        else
+          "button"
+        end
 
-    [title, paragraphs | tl(rest)]
-  end
-
-  defp slots(id, opts, close_attrs \\ " autofocus") do
-    dependent_components = opts[:dependent_components]
-
-    tag_name =
-      if function_name = dependent_components[:button] do
-        ".#{function_name}"
-      else
-        "button"
-      end
-
-    [
-      """
-      <:title>Show pet</:title>
-      """,
-      """
-      <p>My pet is called Johnny.</p>
-      """,
-      """
-      <:footer>
-        <#{tag_name}#{close_attrs} phx-click={Doggo.hide_modal("#{id}")}>
-          Close
-        </#{tag_name}>
-      </:footer>
-      """
-    ]
+      [
+        """
+        <:title>Show pet</:title>
+        """,
+        """
+        <p>My pet is called Johnny.</p>
+        """,
+        """
+        <:footer>
+          <#{tag_name}#{close_attrs} phx-click={Doggo.hide_modal("#{id}")}>
+            Close
+          </#{tag_name}>
+        </:footer>
+        """
+      ]
+    end
   end
 end

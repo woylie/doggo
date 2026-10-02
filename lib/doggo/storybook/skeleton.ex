@@ -1,13 +1,15 @@
-defmodule Doggo.Storybook.Skeleton do
-  @moduledoc false
+if Code.ensure_loaded?(PhoenixStorybook.Story) do
+  defmodule Doggo.Storybook.Skeleton do
+    @moduledoc false
 
-  def variations(_opts) do
-    # The skeleton component only becomes useful through the type modifier,
-    # which is covered by the modifier variation groups.
-    []
-  end
+    def variations(_opts) do
+      # The skeleton component only becomes useful through the type modifier,
+      # which is covered by the modifier variation groups.
+      []
+    end
 
-  def modifier_variation_base(_id, _name, _value, _opts) do
-    %{attributes: %{}}
+    def modifier_variation_base(_id, _name, _value, _opts) do
+      %{attributes: %{}}
+    end
   end
 end

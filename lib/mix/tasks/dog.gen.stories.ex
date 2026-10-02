@@ -26,6 +26,8 @@ defmodule Mix.Tasks.Dog.Gen.Stories do
 
   use Mix.Task
 
+  @compile {:no_warn_undefined, Doggo.Storybook}
+
   alias Mix.Tasks
 
   @switches [
@@ -43,6 +45,16 @@ defmodule Mix.Tasks.Dog.Gen.Stories do
 
   @impl Mix.Task
   def run(args) do
+    if not Code.ensure_loaded?(Doggo.Storybook) do
+      Mix.raise("""
+      mix dog.gen.stories requires phoenix_storybook
+
+      Add it to the dependencies in your mix.exs:
+
+          {:phoenix_storybook, "~> 1.1"}
+      """)
+    end
+
     {opts, []} = OptionParser.parse!(args, @switches)
 
     with {:ok, module} <- Keyword.fetch(opts, :module),
