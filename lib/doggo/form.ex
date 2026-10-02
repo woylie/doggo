@@ -91,7 +91,7 @@ defmodule Doggo.Form do
   @doc false
   def normalize_value("date", %struct{} = value)
       when struct in [Date, NaiveDateTime, DateTime] do
-    value |> Doggo.to_date() |> Date.to_iso8601()
+    value |> Doggo.Time.to_date() |> Date.to_iso8601()
   end
 
   def normalize_value("date", <<date::10-binary, _::binary>>) do
