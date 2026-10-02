@@ -268,6 +268,26 @@ defmodule Doggo.Components.DateTest do
       assert attribute(time, "data-localize-style") == "long"
     end
 
+    test "raises for localize list that is not a keyword list" do
+      assigns = %{}
+
+      assert_raise ArgumentError, ~r/invalid localize value for \.date/, fn ->
+        parse_heex(~H"""
+        <TestComponents.date value={~D[2023-12-27]} localize={[:long]} />
+        """)
+      end
+    end
+
+    test "raises for localize value of another type" do
+      assigns = %{}
+
+      assert_raise ArgumentError, ~r/invalid localize value for \.date/, fn ->
+        parse_heex(~H"""
+        <TestComponents.date value={~D[2023-12-27]} localize={42} />
+        """)
+      end
+    end
+
     test "raises for localize pattern with time directive" do
       assigns = %{}
 

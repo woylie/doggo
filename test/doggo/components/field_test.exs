@@ -108,6 +108,82 @@ defmodule Doggo.Components.FieldTest do
   end
 
   describe "field/1 with options given as keyword lists" do
+    test "raises without key for a select" do
+      assigns = %{form: to_form(%{})}
+
+      assert_raise ArgumentError,
+                   ~r/expected :key key when building <option>/,
+                   fn ->
+                     parse_heex(~H"""
+                     <.form for={@form}>
+                       <TestComponents.field
+                         field={@form[:pet]}
+                         type="select"
+                         label="Pet"
+                         options={[[value: "dog"]]}
+                       />
+                     </.form>
+                     """)
+                   end
+    end
+
+    test "raises without key for a radio group" do
+      assigns = %{form: to_form(%{})}
+
+      assert_raise ArgumentError,
+                   ~r/expected :key key when building an option/,
+                   fn ->
+                     parse_heex(~H"""
+                     <.form for={@form}>
+                       <TestComponents.field
+                         field={@form[:pet]}
+                         type="radio-group"
+                         label="Pet"
+                         options={[[value: "dog"]]}
+                       />
+                     </.form>
+                     """)
+                   end
+    end
+
+    test "raises without value for a select" do
+      assigns = %{form: to_form(%{})}
+
+      assert_raise ArgumentError,
+                   ~r/expected :value key when building <option>/,
+                   fn ->
+                     parse_heex(~H"""
+                     <.form for={@form}>
+                       <TestComponents.field
+                         field={@form[:pet]}
+                         type="select"
+                         label="Pet"
+                         options={[[key: "Dog"]]}
+                       />
+                     </.form>
+                     """)
+                   end
+    end
+
+    test "raises without value for a radio group" do
+      assigns = %{form: to_form(%{})}
+
+      assert_raise ArgumentError,
+                   ~r/expected :value key when building an option/,
+                   fn ->
+                     parse_heex(~H"""
+                     <.form for={@form}>
+                       <TestComponents.field
+                         field={@form[:pet]}
+                         type="radio-group"
+                         label="Pet"
+                         options={[[key: "Dog"]]}
+                       />
+                     </.form>
+                     """)
+                   end
+    end
+
     test "renders extra keys as attributes" do
       assigns = %{form: to_form(%{})}
 

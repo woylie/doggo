@@ -409,5 +409,4 @@ defmodule Doggo.Time do
   def to_time(%Time{} = t), do: t
   def to_time(%DateTime{} = dt), do: DateTime.to_time(dt)
   def to_time(%NaiveDateTime{} = dt), do: NaiveDateTime.to_time(dt)
-  def to_time(nil), do: nil
 end
