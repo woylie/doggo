@@ -47,12 +47,22 @@ defmodule Doggo.Components.RelativeTime do
     />
     ```
 
-    The `title` contains the absolute value. A `Date` is compared by calendar
-    day, so the text reads "yesterday" or "in 2 days".
+    The `title` contains the absolute value.
+
+    A `Date` is compared by calendar day, so the text reads "yesterday" or
+    "in 2 days".
 
     To stop the relative times inside an element from updating, for example as
     a user setting, set `data-relative-sync="false"` on that element. It
     overrides `sync`.
+
+    VoiceOver on macOS announces the element as a group named by the `title`,
+    then reads the text and the `title` again. Without JavaScript, past the
+    threshold and when printing, the text is the absolute value. VoiceOver and
+    Orca read the default ISO 8601 text as separate numbers and dashes. To
+    write the month as a word, set `localize` to `:long`, or pass a
+    `formatter` that uses the locale data of your application. Only a
+    `formatter` changes the text for users without JavaScript.
     """
   end
 

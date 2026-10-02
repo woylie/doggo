@@ -66,9 +66,7 @@ defmodule Doggo.Components.Time do
     If you pass a `title_formatter`, a `title` attribute is added to the
     element. This can be useful if you want to render the value in a shortened
     or relative format, but still give the user access to the complete value.
-    Note that the title attribute is only accessible to users who use
-    a pointer device. Some screen readers may however announce the `datetime`
-    attribute that is always added.
+    Touch devices do not show the `title`.
 
     ```heex
     <.#{name}
@@ -77,6 +75,12 @@ defmodule Doggo.Components.Time do
       title_formatter={&MyApp.Cldr.Time.to_string!/1}
     />
     ```
+
+    VoiceOver and Orca do not announce the `datetime` attribute. VoiceOver on
+    iOS and Orca do not announce the `title` either. VoiceOver on macOS
+    announces an element with a `title` as a group named by the `title`, then
+    reads the text and the `title` again. Make sure that the text is
+    understandable on its own.
 
     Finally, the component can shift a `DateTime` to a different time zone:
 
@@ -104,10 +108,10 @@ defmodule Doggo.Components.Time do
       since: "0.6.0",
       maturity: :refining,
       maturity_note: """
-      The API of this component can be considered fairly stable, but there
-      are still uncertainties about accessibility aspects, such as the
-      handling of the `<time>` element and its `datetime` attribute by screen
-      readers and the limited accessibility of the title attribute.
+      The API of this component can be considered fairly stable. As measured
+      in October 2026, VoiceOver and Orca read ISO 8601 text such as
+      `2023-02-05` as separate numbers and dashes, and Orca reads `08:23` as
+      separate numbers and colons. NVDA, JAWS and TalkBack have not been tested.
       """,
       modifiers: []
     ]
