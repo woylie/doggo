@@ -109,9 +109,10 @@ defmodule Doggo.Components.Time do
       maturity: :refining,
       maturity_note: """
       The API of this component can be considered fairly stable. As measured
-      in October 2026, VoiceOver and Orca read ISO 8601 text such as
-      `2023-02-05` as separate numbers and dashes, and Orca reads `08:23` as
-      separate numbers and colons. NVDA, JAWS and TalkBack have not been tested.
+      in October 2026, Orca reads ISO 8601 text such as `2023-02-05` as
+      separate numbers and dashes and `08:23` as separate numbers and colons.
+      VoiceOver reads ISO 8601 dates, but not dates with slashes such as
+      `2/5/23`. NVDA, JAWS and TalkBack have not been tested.
       """,
       modifiers: []
     ]
