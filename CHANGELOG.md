@@ -6,9 +6,119 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-10-02
+
+### Added
+
+- `Doggo.Components`: Add a `defaults` build option that sets the defaults of attributes and slots. Expressions written in the build call are evaluated at render time.
+- `Doggo.Form`: New module with `Doggo.Form.field_errors_id/1`, `Doggo.Form.field_description_id/1`, `Doggo.Form.input_aria_describedby/3`, `Doggo.Form.input_aria_errormessage/2` and `Doggo.Form.translate_error/1`, for form controls with the same ids and ARIA attributes as `field`.
+- `Doggo.JS`: New module with `Doggo.JS.show_modal/2`, `Doggo.JS.hide_modal/2` and `Doggo.JS.show_tab/3`.
+- `accordion`, `property_list`, `table`, `tabs`: Accept HEEx in the section title, the label of a property, the label of an action and the label of a panel.
+- `date`: Add a `precision` attribute.
+- `date`, `datetime`, `time`: Add a `localize` attribute that formats the value in the browser, in the language of the page and the time zone of the user.
+- `field`: Add a `translate_error` build option.
+- `field`, `radio_group`: Accept HEEx in the labels and descriptions of checkbox and radio options.
+- `relative_time`: New component.
+- `table`: Add a `labelledby` attribute.
+- `@woylie/doggo`: Add `localizeTimes()` and `relativeTimes()`.
+
+### Changed
+
+- `Doggo.Components`: Evaluate the texts and contents set in the build call at render time, so a `gettext` call returns the text for the current locale.
+- `alert`, `alert_dialog`, `modal`: Replace the `close_label` attribute and the `close` slot with build options.
+- `alert`, `app_bar`, `callout`, `page_header`: Replace the `title` attribute with a `:title` slot.
+- `carousel`: Replace the `carousel_roledescription`, `slide_roledescription`, `pagination_label` and `pagination_slide_label` attributes with build options.
+- `combobox`: Replace the `:clear` and `:toggle` slots with build options.
+- `date`: Write the full value of a `DateTime` or `NaiveDateTime` in the `datetime` attribute.
+- `date`, `datetime`, `time`: Add the default base classes `date`, `datetime` and `time`.
+- `datetime`, `time`: Leave out the seconds with `precision={:minute}`.
+- `drawer`: Rename the `:main` slot to `:body`, and the `drawer-main` class to `drawer-body`.
+- `field`: Rename the `:addon_left` and `:addon_right` slots to `:addon_start` and `:addon_end`, the classes to `field-input-addon-start` and `field-input-addon-end`, and the `data-addon` values to `start` and `end`.
+- `icon`, `icon_sprite`: Rename `text` to `label` and `text_position` to `label_position`, the `data-text-position` attribute to `data-label-position`, and the `icon-text` class to `icon-label`.
+- `time`: Pass a `DateTime` or `NaiveDateTime` to the formatters as given, and write its full value in the `datetime` attribute.
+- Dependencies: Require Elixir `~> 1.17`.
+- Dependencies: Make `phoenix_storybook` an optional dependency.
+
+### Deprecated
+
+- `Doggo`: Deprecate `Doggo.show_modal/2`, `Doggo.hide_modal/2` and `Doggo.show_tab/3` in favour of `Doggo.JS.show_modal/2`, `Doggo.JS.hide_modal/2` and `Doggo.JS.show_tab/3`.
+
+### Removed
+
+- `field`: Remove the `gettext` attribute and the `gettext_module` build option.
+
 ### Fixed
 
-- `alert_dialog`, `modal`: Remove the focus ring Safari draws around a focused `tabindex="-1"` element in the example CSS.
+- `Doggo.Components`: Recompile a module that builds components when a component module of Doggo changes.
+- `date`, `datetime`, `time`: Raise an `ArgumentError` that names the accepted structs for a value of another type, instead of a `FunctionClauseError`.
+- `date`, `datetime`, `time`: Write a valid `datetime` attribute: at most three fractional digits, no attribute for a year before 1, and an offset with seconds in UTC.
+
+### How to upgrade
+
+- Add `phoenix_storybook` to your dependencies if you use the Doggo stories.
+
+  ```diff
+  + {:phoenix_storybook, "~> 1.1"}
+  ```
+
+- `Doggo`: Replace `Doggo.show_modal/2`, `Doggo.hide_modal/2` and `Doggo.show_tab/3` with `Doggo.JS.show_modal/2`, `Doggo.JS.hide_modal/2` and `Doggo.JS.show_tab/3`.
+
+  ```diff
+  - <.link phx-click={Doggo.show_modal("pet-modal")}>Open</.link>
+  + <.link phx-click={Doggo.JS.show_modal("pet-modal")}>Open</.link>
+  ```
+
+- `alert`, `alert_dialog`, `modal`: Move `close_label` and the `:close` slot to the build call.
+
+  ```diff
+  - <.modal id="pet-modal" close_label={gettext("Close")}>
+  + build_modal(close_label: gettext("Close"))
+  ```
+
+- `alert`, `app_bar`, `callout`, `page_header`: Pass the title in a slot.
+
+  ```diff
+  - <.alert title="Saved">
+  + <.alert>
+  +   <:title>Saved</:title>
+  ```
+
+- `carousel`: Move `carousel_roledescription`, `slide_roledescription`, `pagination_label` and `pagination_slide_label` to the build call.
+- `combobox`: Move the `:clear` and `:toggle` slots to the build call.
+- `date`, `datetime`, `time`: Update CSS and tests that expect `class=""` or six fractional digits, and tests that expect `:00` seconds with `precision={:minute}`.
+- `date`, `time`: Update tests that expect a date-only or time-only `datetime` attribute for a `DateTime` or `NaiveDateTime` value.
+- `time`: Update formatters that match a `%Time{}`, since a `DateTime` or `NaiveDateTime` value is passed as given.
+- `drawer`: Rename the `:main` slot and the `.drawer-main` selectors.
+
+  ```diff
+  - <:main>…</:main>
+  + <:body>…</:body>
+  ```
+
+- `field`: Rename the addon slots, classes and `data-addon` values.
+
+  ```diff
+  - <:addon_left>…</:addon_left>
+  + <:addon_start>…</:addon_start>
+  - .field-input-addon-right, [data-addon="right"]
+  + .field-input-addon-end, [data-addon="end"]
+  ```
+
+- `field`: Replace the `gettext` attribute and the `gettext_module` build option with the `translate_error` build option.
+
+  ```diff
+  - build_field(gettext_module: MyAppWeb.Gettext)
+  + build_field(translate_error: &MyAppWeb.CoreComponents.translate_error/1)
+  ```
+
+- `icon`, `icon_sprite`: Rename `text` and `text_position`, and the selectors.
+
+  ```diff
+  - <.icon name="info" text="Info" text_position="after" />
+  + <.icon name="info" label="Info" label_position="after" />
+  - [data-text-position], .icon-text
+  + [data-label-position], .icon-label
+  ```
 
 ## [0.17.0] - 2026-09-29
 
@@ -913,7 +1023,8 @@ After:
 
 Initial release.
 
-[Unreleased]: https://github.com/woylie/doggo/compare/0.17.0...HEAD
+[Unreleased]: https://github.com/woylie/doggo/compare/0.18.0...HEAD
+[0.18.0]: https://github.com/woylie/doggo/compare/0.17.0...0.18.0
 [0.17.0]: https://github.com/woylie/doggo/compare/0.16.1...0.17.0
 [0.16.1]: https://github.com/woylie/doggo/compare/0.16.0...0.16.1
 [0.16.0]: https://github.com/woylie/doggo/compare/0.15.1...0.16.0
