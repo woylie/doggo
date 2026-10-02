@@ -55,7 +55,7 @@ defmodule Doggo.Components.FieldTest do
   }
 
   def translate_error({msg, opts}) do
-    Doggo.translate_error({Map.get(@translations, msg, msg), opts})
+    Doggo.Form.translate_error({Map.get(@translations, msg, msg), opts})
   end
 
   def ranked_input(assigns) do
@@ -96,7 +96,7 @@ defmodule Doggo.Components.FieldTest do
         name={@name <> "[]"}
         id={@id <> "_" <> value}
         value={value}
-        checked={Doggo.checked?(value, @value)}
+        checked={Doggo.Form.checked?(value, @value)}
         aria-describedby={@describedby}
         aria-errormessage={@errormessage}
         aria-invalid={@invalid && "true"}

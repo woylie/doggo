@@ -180,21 +180,21 @@ defmodule Doggo.Components.RadioGroup do
     assigns =
       assigns
       |> assign(
-        describedby: Doggo.input_aria_describedby(id, description, errors),
-        errormessage: Doggo.input_aria_errormessage(id, errors),
+        describedby: Doggo.Form.input_aria_describedby(id, description, errors),
+        errormessage: Doggo.Form.input_aria_errormessage(id, errors),
         invalid: errors != [] && "true"
       )
       |> Map.put_new(:option_extra, [])
-      |> Doggo.describe_option()
+      |> Doggo.Form.describe_option()
 
     ~H"""
     <label class={"#{@base_class}-radio"}>
       <input
         type="radio"
         name={@name}
-        id={@id <> "_" <> Doggo.id_fragment(@option_value)}
+        id={@id <> "_" <> Doggo.Form.id_fragment(@option_value)}
         value={@option_value}
-        checked={Doggo.checked?(@option_value, @value)}
+        checked={Doggo.Form.checked?(@option_value, @value)}
         aria-describedby={@describedby}
         aria-errormessage={@errormessage}
         aria-invalid={@invalid}
@@ -214,7 +214,7 @@ defmodule Doggo.Components.RadioGroup do
   end
 
   def radio(%{option: option} = assigns) when is_list(option) do
-    {label, value, description, extra} = Doggo.option_from_keyword(option)
+    {label, value, description, extra} = Doggo.Form.option_from_keyword(option)
 
     assigns
     |> assign(
@@ -258,7 +258,7 @@ defmodule Doggo.Components.RadioGroup do
   def radio(%{option: option_value} = assigns) do
     assigns
     |> assign(
-      label: Doggo.humanize(option_value),
+      label: Doggo.Form.humanize(option_value),
       option_value: option_value,
       option: nil
     )

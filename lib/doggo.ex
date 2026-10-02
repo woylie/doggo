@@ -7,7 +7,6 @@ defmodule Doggo do
 
   use Phoenix.Component
 
-  alias Phoenix.HTML.Form
   alias Phoenix.LiveView.JS
 
   @doc false
@@ -535,126 +534,6 @@ defmodule Doggo do
   def to_time(%NaiveDateTime{} = dt), do: NaiveDateTime.to_time(dt)
   def to_time(nil), do: nil
 
-  @doc false
-  def normalize_value("date", %struct{} = value)
-      when struct in [Date, NaiveDateTime, DateTime] do
-    value |> to_date() |> Date.to_iso8601()
-  end
-
-  def normalize_value("date", <<date::10-binary, _::binary>>) do
-    case Date.from_iso8601(date) do
-      {:ok, _} -> date
-      {:error, _} -> ""
-    end
-  end
-
-  def normalize_value("date", _), do: ""
-  def normalize_value(type, value), do: Form.normalize_value(type, value)
-
-  # The error id is added to both `aria-describedby` and `aria-errormessage`,
-  # because `aria-errormessage` support is patchy. The order matches the DOM.
-  @doc false
-  def input_aria_describedby(_id, [], []), do: nil
-  def input_aria_describedby(id, [], _errors), do: field_errors_id(id)
-  def input_aria_describedby(id, _description, []), do: field_description_id(id)
-
-  def input_aria_describedby(id, _description, _errors) do
-    "#{field_errors_id(id)} #{field_description_id(id)}"
-  end
-
-  @doc false
-  def option_from_keyword(option) do
-    {key, option} = Keyword.pop(option, :key)
-
-    key ||
-      raise ArgumentError,
-            "expected :key key when building an option from a keyword list: #{inspect(option)}"
-
-    {value, option} = Keyword.pop(option, :value)
-
-    value ||
-      raise ArgumentError,
-            "expected :value key when building an option from a keyword list: #{inspect(option)}"
-
-    {description, extra} = Keyword.pop(option, :description)
-    {key, value, description, extra}
-  end
-
-  @doc false
-  def describe_option(assigns) do
-    description = Map.get(assigns, :option_description)
-
-    id =
-      if description do
-        "#{assigns.id}_#{id_fragment(assigns.option_value)}-description"
-      end
-
-    Map.merge(assigns, %{
-      option_description: description,
-      option_description_id: id,
-      describedby: join_ids([assigns.describedby, id])
-    })
-  end
-
-  defp join_ids(ids) do
-    case Enum.reject(ids, &is_nil/1) do
-      [] -> nil
-      ids -> Enum.join(ids, " ")
-    end
-  end
-
-  @doc false
-  def input_aria_errormessage(_, []), do: nil
-  def input_aria_errormessage(id, _), do: field_errors_id(id)
-
-  @doc false
-  def checked?(option, value) when is_list(value) do
-    Phoenix.HTML.html_escape(option) in Enum.map(
-      value,
-      &Phoenix.HTML.html_escape/1
-    )
-  end
-
-  def checked?(option, value) do
-    Phoenix.HTML.html_escape(option) == Phoenix.HTML.html_escape(value)
-  end
-
-  @doc false
-  def field_errors_id(id) when is_binary(id), do: "#{id}-errors"
-
-  @doc false
-  def field_description_id(id) when is_binary(id), do: "#{id}-description"
-
-  @doc false
-  def translate_error({msg, opts}) do
-    Enum.reduce(opts, msg, fn {key, value}, acc ->
-      String.replace(acc, "%{#{key}}", fn _ -> to_string(value) end)
-    end)
-  end
-
-  ## Helpers
-
-  @doc false
-  def humanize(atom) when is_atom(atom) do
-    atom
-    |> Atom.to_string()
-    |> humanize()
-  end
-
-  def humanize(s) when is_binary(s) do
-    if String.ends_with?(s, "_id") do
-      s |> binary_part(0, byte_size(s) - 3) |> to_titlecase()
-    else
-      to_titlecase(s)
-    end
-  end
-
-  defp to_titlecase(s) do
-    s
-    |> String.replace("_", " ")
-    |> :string.titlecase()
-  end
-
   ## JS functions
 
   @doc """
@@ -741,12 +620,6 @@ defmodule Doggo do
     %JS{}
     |> JS.toggle_attribute({"aria-expanded", "true", "false"})
     |> JS.toggle_attribute({"hidden", ""}, to: id_selector(target_id))
-  end
-
-  @doc false
-  def id_fragment(value) do
-    {:safe, value} = Phoenix.HTML.html_escape(value)
-    value |> IO.iodata_to_binary() |> String.replace(~r/\W/u, "_")
   end
 
   @doc false
