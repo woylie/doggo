@@ -40,7 +40,7 @@ defmodule Doggo.Components.DateTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "2023-12-27"
+      assert attribute(time, "datetime") == "2023-12-27T18:30:21Z"
       assert text(time) == "2023-12-27"
     end
 
@@ -54,7 +54,7 @@ defmodule Doggo.Components.DateTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "2023-12-27"
+      assert attribute(time, "datetime") == "2023-12-27T18:30:21"
       assert text(time) == "2023-12-27"
     end
 
@@ -87,7 +87,7 @@ defmodule Doggo.Components.DateTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "2023-12-27"
+      assert attribute(time, "datetime") == "2023-12-27T18:30:21"
       assert text(time) == "2023/12/27"
     end
 
@@ -118,7 +118,7 @@ defmodule Doggo.Components.DateTest do
 
       time = find_one(html, "time")
 
-      assert attribute(time, "datetime") == "2023-12-28"
+      assert attribute(time, "datetime") == "2023-12-28T03:30:21+09:00"
       assert text(time) == "2023-12-28"
     end
 
@@ -252,6 +252,30 @@ defmodule Doggo.Components.DateTest do
                      <TestComponents.date value={~D[1980-05-17]} precision={@precision} />
                      """)
                    end
+    end
+
+    test "renders localize attributes" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.date value={~D[2023-12-27]} localize={:long} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "data-localize") == "date"
+      assert attribute(time, "data-localize-style") == "long"
+    end
+
+    test "raises for localize pattern with time directive" do
+      assigns = %{}
+
+      assert_raise ArgumentError, ~r/invalid localize pattern for \.date/, fn ->
+        parse_heex(~H"""
+        <TestComponents.date value={~D[2023-12-27]} localize="%Y %H" />
+        """)
+      end
     end
   end
 end

@@ -164,6 +164,10 @@ defmodule Doggo.Components.Datetime do
         user input or the browser before you pass it to this component.
         """
 
+      attr :localize, :any,
+        default: nil,
+        doc: unquote(Doggo.localize_doc(:datetime))
+
       attr :rest, :global, doc: "Any additional HTML attributes."
     end
   end
@@ -185,7 +189,8 @@ defmodule Doggo.Components.Datetime do
           var!(assigns),
           value,
           ".datetime",
-          &Doggo.datetime_string(&1, precision)
+          &Doggo.datetime_string(&1, precision),
+          kind: :datetime
         )
 
       ~H"""
@@ -194,6 +199,7 @@ defmodule Doggo.Components.Datetime do
         class={[Doggo.build(:base_class) | List.wrap(@class)]}
         datetime={@datetime}
         title={@title}
+        {@localize_attrs}
         {@data_attrs}
         {@rest}
       >

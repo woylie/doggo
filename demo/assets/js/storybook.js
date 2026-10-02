@@ -46,7 +46,12 @@ import {
   Toolbar,
   Tooltip,
   Tree,
+  localizeTimes,
+  relativeTimes,
 } from "@woylie/doggo";
+
+localizeTimes();
+relativeTimes();
 
 (function () {
   window.storybook = {

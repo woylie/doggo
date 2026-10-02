@@ -748,6 +748,17 @@ defmodule Doggo.FixturesTest do
     )
   end
 
+  test "matches relative_time fixture" do
+    assigns = %{}
+
+    assert_fixture(
+      ~H"""
+      <FixtureComponents.relative_time value={~U[2023-12-27T18:30:21Z]} />
+      """,
+      "relative_time.html"
+    )
+  end
+
   test "matches skeleton fixture" do
     assigns = %{}
 

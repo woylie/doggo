@@ -1,38 +1,57 @@
 defmodule Doggo.Storybook.Time do
   @moduledoc false
   alias PhoenixStorybook.Stories.Variation
+  alias PhoenixStorybook.Stories.VariationGroup
+
+  @value ~T[18:05:09.003]
+  @datetime ~U[2023-02-05 18:05:09.003Z]
 
   def variations(_opts) do
     [
-      %Variation{
-        id: :default,
-        attributes: %{value: ~T[12:22:06.003Z]}
+      %VariationGroup{
+        id: :values,
+        description: "Values",
+        note: """
+        For `DateTime` and `NaiveDateTime` values, only the time is rendered,
+        but the `datetime` attribute contains the full value.
+        """,
+        variations: [
+          %Variation{id: :time, attributes: %{value: @value}},
+          %Variation{
+            id: :datetime,
+            attributes: %{value: ~U[2023-02-05 12:22:06.003Z]}
+          }
+        ]
       },
-      %Variation{
-        id: :datetime,
-        attributes: %{value: ~U[2023-02-05 12:22:06.003Z]}
+      %VariationGroup{
+        id: :formatters,
+        description: "Formatters",
+        note: "Hover over the second time to see the title.",
+        variations: [
+          %Variation{
+            id: :formatter,
+            attributes: %{formatter: &__MODULE__.format/1, value: @value}
+          },
+          %Variation{
+            id: :title_formatter,
+            attributes: %{title_formatter: &__MODULE__.format/1, value: @value}
+          }
+        ]
       },
-      %Variation{
-        id: :formatter,
-        attributes: %{
-          formatter: &__MODULE__.format/1,
-          value: ~T[12:22:06.003Z]
-        }
-      },
-      %Variation{
-        id: :title_formatter,
-        description: "Hover over the time to see the title",
-        attributes: %{
-          title_formatter: &__MODULE__.format/1,
-          value: ~T[12:22:06.003Z]
-        }
-      },
-      %Variation{
+      %VariationGroup{
         id: :precision,
-        attributes: %{
-          value: ~T[12:22:06.003Z],
-          precision: :minute
-        }
+        description: "Precision",
+        note: """
+        `precision` truncates the value for both the display text and the
+        `datetime` attribute.
+        """,
+        variations:
+          for precision <- [:minute, :second, :millisecond] do
+            %Variation{
+              id: precision,
+              attributes: %{value: @value, precision: precision}
+            }
+          end
       },
       %Variation{
         id: :timezone,
@@ -52,13 +71,107 @@ defmodule Doggo.Storybook.Time do
             </p>
             """
           end
+      },
+      %VariationGroup{
+        id: :localize_styles,
+        description: "Localized styles",
+        note: """
+        A `Time` has no time zone, so the styles that use one fall back to
+        `:medium`.
+        """,
+        variations:
+          for style <- [true, :short, :medium, :long, :full] do
+            %Variation{
+              id: if(style == true, do: :default_style, else: style),
+              attributes: %{value: @value, localize: style}
+            }
+          end
+      },
+      %VariationGroup{
+        id: :localize_styles_datetime,
+        description: "Localized styles of a DateTime",
+        note: """
+        The value is 18:05:09 UTC, shown in your time zone. `:long` and `:full`
+        include the zone.
+        """,
+        variations:
+          for style <- [true, :short, :medium, :long, :full] do
+            %Variation{
+              id:
+                if(style == true,
+                  do: :datetime_default_style,
+                  else: :"datetime_#{style}"
+                ),
+              attributes: %{value: @datetime, localize: style}
+            }
+          end
+      },
+      %VariationGroup{
+        id: :localize_options,
+        description: "Localized options and patterns",
+        note: """
+        Pass options to choose the parts, pass a pattern to enforce a fixed
+        format.
+        """,
+        variations: [
+          %Variation{
+            id: :options,
+            attributes: %{
+              value: @value,
+              localize: [hour: :"2-digit"]
+            }
+          },
+          %Variation{
+            id: :pattern,
+            attributes: %{value: @value, localize: "%I:%M %p"}
+          },
+          %Variation{
+            id: :hour_cycle_h23,
+            attributes: %{
+              value: @value,
+              localize: [style: :short, hour_cycle: :h23]
+            }
+          },
+          %Variation{
+            id: :hour_cycle_h12,
+            attributes: %{
+              value: @value,
+              localize: [style: :short, hour_cycle: :h12]
+            }
+          },
+          %Variation{
+            id: :server_zone,
+            attributes: %{
+              value: @datetime,
+              timezone:
+                if time_zone_db_configured?() do
+                  "Asia/Tokyo"
+                end,
+              localize: [style: :short, zone: :server]
+            }
+          },
+          %Variation{
+            id: :title,
+            attributes: %{
+              value: @datetime,
+              localize: [style: :short, title: :full]
+            }
+          },
+          %Variation{
+            id: :title_pattern,
+            attributes: %{
+              value: @value,
+              localize: [style: :short, title: "%H:%M:%S"]
+            }
+          }
+        ]
       }
     ]
   end
 
   def modifier_variation_base(_id, _name, _value, _opts) do
     %{
-      attributes: %{value: ~T[12:22:06.003Z]}
+      attributes: %{value: @value}
     }
   end
 
