@@ -1,131 +1,133 @@
-defmodule Doggo.Storybook.Icon do
-  @moduledoc false
-  alias PhoenixStorybook.Stories.Variation
-  alias PhoenixStorybook.Stories.VariationGroup
+if Code.ensure_loaded?(PhoenixStorybook.Story) do
+  defmodule Doggo.Storybook.Icon do
+    @moduledoc false
+    alias PhoenixStorybook.Stories.Variation
+    alias PhoenixStorybook.Stories.VariationGroup
 
-  def variations(opts) do
-    [first_name | _] = names = get_names(opts)
+    def variations(opts) do
+      [first_name | _] = names = get_names(opts)
 
-    [
-      %Variation{
-        id: :default,
-        attributes: %{name: first_name}
-      },
-      %VariationGroup{
-        id: :text_ltr,
-        description: "With text (ltr)",
-        variations: [
-          %Variation{
-            id: :after,
-            attributes: %{
-              name: first_name,
-              label: "text after icon",
-              label_position: "after"
-            }
-          },
-          %Variation{
-            id: :before,
-            attributes: %{
-              name: first_name,
-              label: "text before icon",
-              label_position: "before"
-            }
-          },
-          %Variation{
-            id: :hidden,
-            attributes: %{
-              name: first_name,
-              label: "text hidden",
-              label_position: "hidden"
-            }
-          }
-        ]
-      },
-      %VariationGroup{
-        id: :text_rtl,
-        description: "With text (rtl)",
-        variations: [
-          %Variation{
-            id: :after,
-            attributes: %{
-              name: first_name,
-              label: "متن بعد از نماد",
-              label_position: "after"
-            }
-          },
-          %Variation{
-            id: :before,
-            attributes: %{
-              name: first_name,
-              label: "متن قبل از نماد",
-              label_position: "before"
-            }
-          },
-          %Variation{
-            id: :hidden,
-            attributes: %{
-              name: first_name,
-              label: "متن مخفی",
-              label_position: "hidden"
-            }
-          }
-        ],
-        template: """
-        <div dir="rtl">
-          <.psb-variation />
-        </div>
-        """
-      },
-      %VariationGroup{
-        id: :names,
-        variations:
-          for name <- names do
+      [
+        %Variation{
+          id: :default,
+          attributes: %{name: first_name}
+        },
+        %VariationGroup{
+          id: :text_ltr,
+          description: "With text (ltr)",
+          variations: [
             %Variation{
-              id: :"name_#{name}",
+              id: :after,
               attributes: %{
-                name: name
+                name: first_name,
+                label: "text after icon",
+                label_position: "after"
+              }
+            },
+            %Variation{
+              id: :before,
+              attributes: %{
+                name: first_name,
+                label: "text before icon",
+                label_position: "before"
+              }
+            },
+            %Variation{
+              id: :hidden,
+              attributes: %{
+                name: first_name,
+                label: "text hidden",
+                label_position: "hidden"
               }
             }
-          end
-      }
-    ]
-  end
-
-  def modifier_variation_base(_id, _name, _value, opts) do
-    [first_name | _] = get_names(opts)
-
-    %{
-      attributes: %{name: first_name}
-    }
-  end
-
-  defp get_names(opts) do
-    names = opts |> Keyword.get(:extra, []) |> Keyword.get(:names, [])
-
-    names =
-      case names do
-        names when is_list(names) -> names
-        fun when is_function(fun) -> fun.()
-      end
-
-    if names == [] do
-      raise """
-      no names configured
-
-      To render a preview for the icon component, you need to pass a list of
-      icon names as a build option.
-
-          build_icon(icon_module: MyIcons, names: ["info", "question-mark"])
-
-      It is also possible to pass a function that returns such a list.
-
-          build_icon(icon_module: MyIcons, names: &MyIcons.names/0)
-
-      The list of names is only used in the storybook and does not have to be
-      comprehensive.
-      """
+          ]
+        },
+        %VariationGroup{
+          id: :text_rtl,
+          description: "With text (rtl)",
+          variations: [
+            %Variation{
+              id: :after,
+              attributes: %{
+                name: first_name,
+                label: "متن بعد از نماد",
+                label_position: "after"
+              }
+            },
+            %Variation{
+              id: :before,
+              attributes: %{
+                name: first_name,
+                label: "متن قبل از نماد",
+                label_position: "before"
+              }
+            },
+            %Variation{
+              id: :hidden,
+              attributes: %{
+                name: first_name,
+                label: "متن مخفی",
+                label_position: "hidden"
+              }
+            }
+          ],
+          template: """
+          <div dir="rtl">
+            <.psb-variation />
+          </div>
+          """
+        },
+        %VariationGroup{
+          id: :names,
+          variations:
+            for name <- names do
+              %Variation{
+                id: :"name_#{name}",
+                attributes: %{
+                  name: name
+                }
+              }
+            end
+        }
+      ]
     end
 
-    names
+    def modifier_variation_base(_id, _name, _value, opts) do
+      [first_name | _] = get_names(opts)
+
+      %{
+        attributes: %{name: first_name}
+      }
+    end
+
+    defp get_names(opts) do
+      names = opts |> Keyword.get(:extra, []) |> Keyword.get(:names, [])
+
+      names =
+        case names do
+          names when is_list(names) -> names
+          fun when is_function(fun) -> fun.()
+        end
+
+      if names == [] do
+        raise """
+        no names configured
+
+        To render a preview for the icon component, you need to pass a list of
+        icon names as a build option.
+
+            build_icon(icon_module: MyIcons, names: ["info", "question-mark"])
+
+        It is also possible to pass a function that returns such a list.
+
+            build_icon(icon_module: MyIcons, names: &MyIcons.names/0)
+
+        The list of names is only used in the storybook and does not have to be
+        comprehensive.
+        """
+      end
+
+      names
+    end
   end
 end

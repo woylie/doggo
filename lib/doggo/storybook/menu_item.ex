@@ -1,48 +1,50 @@
-defmodule Doggo.Storybook.MenuItem do
-  @moduledoc false
+if Code.ensure_loaded?(PhoenixStorybook.Story) do
+  defmodule Doggo.Storybook.MenuItem do
+    @moduledoc false
 
-  alias Phoenix.LiveView.JS
-  alias PhoenixStorybook.Stories.Variation
+    alias Phoenix.LiveView.JS
+    alias PhoenixStorybook.Stories.Variation
 
-  def dependent_components, do: [:menu]
+    def dependent_components, do: [:menu]
 
-  def template(opts) do
-    dependent_components = opts[:dependent_components]
-    menu_fun = dependent_components[:menu]
+    def template(opts) do
+      dependent_components = opts[:dependent_components]
+      menu_fun = dependent_components[:menu]
 
-    if menu_fun do
-      """
-      <.#{menu_fun} id="menu-:variation_id" label="Actions">
-        <:item>
-          <.psb-variation/>
-        </:item>
-      </.#{menu_fun}>
-      """
-    else
-      """
-      <p>Please compile the <code>menu</code> component to see a complete preview.</p>
-      """
+      if menu_fun do
+        """
+        <.#{menu_fun} id="menu-:variation_id" label="Actions">
+          <:item>
+            <.psb-variation/>
+          </:item>
+        </.#{menu_fun}>
+        """
+      else
+        """
+        <p>Please compile the <code>menu</code> component to see a complete preview.</p>
+        """
+      end
     end
-  end
 
-  def variations(_opts) do
-    [
-      %Variation{
-        id: :default,
+    def variations(_opts) do
+      [
+        %Variation{
+          id: :default,
+          attributes: %{
+            on_click: JS.dispatch("myapp:copy")
+          },
+          slots: ["Copy"]
+        }
+      ]
+    end
+
+    def modifier_variation_base(_id, _name, _value, _opts) do
+      %{
         attributes: %{
           on_click: JS.dispatch("myapp:copy")
         },
         slots: ["Copy"]
       }
-    ]
-  end
-
-  def modifier_variation_base(_id, _name, _value, _opts) do
-    %{
-      attributes: %{
-        on_click: JS.dispatch("myapp:copy")
-      },
-      slots: ["Copy"]
-    }
+    end
   end
 end

@@ -277,8 +277,15 @@ ones. They need no hook and no id. Import only the one you use, and call it in
 
 Doggo can generate
 [Phoenix Storybook](https://hex.pm/packages/phoenix_storybook) stories for the
-generated components. After you followed the installation instructions of
-Phoenix Storybook, you can run a mix task to generate the stories:
+generated components. Phoenix Storybook is an optional dependency of Doggo. To
+use the stories, add it to the dependencies in your `mix.exs`:
+
+```elixir
+{:phoenix_storybook, "~> 1.1"}
+```
+
+After you followed the installation instructions of Phoenix Storybook, you can
+run a mix task to generate the stories:
 
 ```bash
 mix dog.gen.stories -m MyAppWeb.CoreComponents -o storybook --all

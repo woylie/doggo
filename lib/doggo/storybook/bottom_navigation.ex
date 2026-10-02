@@ -1,60 +1,66 @@
-defmodule Doggo.Storybook.BottomNavigation do
-  @moduledoc false
+if Code.ensure_loaded?(PhoenixStorybook.Story) do
+  defmodule Doggo.Storybook.BottomNavigation do
+    @moduledoc false
 
-  import Doggo.Storybook.Shared
-  alias PhoenixStorybook.Stories.Variation
+    import Doggo.Storybook.Shared
+    alias PhoenixStorybook.Stories.Variation
 
-  def dependent_components, do: [:icon]
+    def dependent_components, do: [:icon]
 
-  def template do
-    """
-    <div style="inline-size: 100%">
-      <.psb-variation/>
-    </div>
-    """
-  end
+    def template do
+      """
+      <div style="inline-size: 100%">
+        <.psb-variation/>
+      </div>
+      """
+    end
 
-  def variations(opts) do
-    [
-      %Variation{
-        id: :default,
+    def variations(opts) do
+      [
+        %Variation{
+          id: :default,
+          attributes: %{label: "Main", current_value: Profile},
+          slots: slots(opts)
+        },
+        %Variation{
+          id: :hidden_labels,
+          attributes: %{
+            label: "Main",
+            current_value: Profile,
+            hide_labels: true
+          },
+          slots: slots(opts)
+        }
+      ]
+    end
+
+    def modifier_variation_base(_id, _name, _value, opts) do
+      %{
         attributes: %{label: "Main", current_value: Profile},
         slots: slots(opts)
-      },
-      %Variation{
-        id: :hidden_labels,
-        attributes: %{label: "Main", current_value: Profile, hide_labels: true},
-        slots: slots(opts)
       }
-    ]
-  end
+    end
 
-  def modifier_variation_base(_id, _name, _value, opts) do
-    %{
-      attributes: %{label: "Main", current_value: Profile},
-      slots: slots(opts)
-    }
-  end
+    defp slots(opts) do
+      dependent_components = opts[:dependent_components]
 
-  defp slots(opts) do
-    dependent_components = opts[:dependent_components]
-
-    [
-      """
-      <:item label="Profile" navigate="/profile" value={Profile}>
-        #{icon(:user, dependent_components)}
-      </:item>
-      """,
-      """
-      <:item label="Appointments" navigate="/appointments" value={Appointments}>
-        #{icon(:calendar, dependent_components)}
-      </:item>
-      """,
-      """
-      <:item label="Messages" navigate="/messages" value={Messages}>
-        #{icon(:mails, dependent_components)}
-      </:item>
-      """
-    ]
+      [
+        """
+        <:item label="Profile" navigate="/profile" value={Profile}>
+          #{icon(:user, dependent_components)}
+        </:item>
+        """,
+        """
+        <:item label="Appointments" navigate="/appointments" value={Appointments}>
+          #{icon(:calendar, dependent_components)}
+        </:item>
+        """,
+        """
+        <:item label="Messages" navigate="/messages" value={Messages}>
+          #{icon(:mails, dependent_components)}
+        </:item>
+        """
+      ]
+    end
   end
 end

@@ -193,4 +193,16 @@ defmodule Doggo.StorybookTest do
     assert StoryWithAlias.function()
     assert [_ | _] = StoryWithAlias.variations()
   end
+
+  test "compiles story modules only with phoenix_storybook" do
+    files = [
+      "lib/doggo/storybook.ex" | Path.wildcard("lib/doggo/storybook/*.ex")
+    ]
+
+    guard = "if Code.ensure_loaded?(PhoenixStorybook.Story) do\n"
+
+    for file <- files do
+      assert String.starts_with?(File.read!(file), guard), file
+    end
+  end
 end

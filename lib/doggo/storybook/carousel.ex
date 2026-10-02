@@ -1,141 +1,143 @@
-defmodule Doggo.Storybook.Carousel do
-  @moduledoc false
+if Code.ensure_loaded?(PhoenixStorybook.Story) do
+  defmodule Doggo.Storybook.Carousel do
+    @moduledoc false
 
-  import Doggo.Storybook.Shared
-  alias PhoenixStorybook.Stories.Variation
+    import Doggo.Storybook.Shared
+    alias PhoenixStorybook.Stories.Variation
 
-  def dependent_components, do: [:icon, :image]
+    def dependent_components, do: [:icon, :image]
 
-  def layout, do: :one_column
+    def layout, do: :one_column
 
-  def variations(opts) do
-    [
-      %Variation{
-        id: :default,
-        description: "Auto rotation, looping, and pagination",
-        attributes: %{label: "Our Dogs", pagination: true},
-        slots: slots(opts)
-      },
-      %Variation{
-        id: :without_looping,
-        note: """
-        If looping is disabled, auto rotation stops when the last slide is
-        reached. When the pause/resume button is clicked, the slide show starts
-        again on the first slide.
-        """,
-        attributes: %{label: "Our Dogs", pagination: true, loop: false},
-        slots: slots(opts)
-      },
-      %Variation{
-        id: :without_auto_rotation,
-        attributes: %{label: "Our Dogs", pagination: true},
-        slots: slots_without_auto_rotation(opts)
-      },
-      %Variation{
-        id: :slow_rotation,
-        attributes: %{
-          label: "Our Dogs",
-          pagination: true,
-          rotation_interval_ms: 10_000
+    def variations(opts) do
+      [
+        %Variation{
+          id: :default,
+          description: "Auto rotation, looping, and pagination",
+          attributes: %{label: "Our Dogs", pagination: true},
+          slots: slots(opts)
         },
-        slots: slots(opts)
-      },
-      %Variation{
-        id: :without_pagination,
-        attributes: %{label: "Our Dogs"},
-        slots: slots(opts)
-      },
-      %Variation{
-        id: :with_a_single_item,
-        note: "If there is only a single slide, no controls are rendered.",
+        %Variation{
+          id: :without_looping,
+          note: """
+          If looping is disabled, auto rotation stops when the last slide is
+          reached. When the pause/resume button is clicked, the slide show starts
+          again on the first slide.
+          """,
+          attributes: %{label: "Our Dogs", pagination: true, loop: false},
+          slots: slots(opts)
+        },
+        %Variation{
+          id: :without_auto_rotation,
+          attributes: %{label: "Our Dogs", pagination: true},
+          slots: slots_without_auto_rotation(opts)
+        },
+        %Variation{
+          id: :slow_rotation,
+          attributes: %{
+            label: "Our Dogs",
+            pagination: true,
+            rotation_interval_ms: 10_000
+          },
+          slots: slots(opts)
+        },
+        %Variation{
+          id: :without_pagination,
+          attributes: %{label: "Our Dogs"},
+          slots: slots(opts)
+        },
+        %Variation{
+          id: :with_a_single_item,
+          note: "If there is only a single slide, no controls are rendered.",
+          attributes: %{label: "Our Dogs", pagination: true},
+          slots: single_item_slots(opts)
+        },
+        %Variation{
+          id: :without_pagination_or_auto_rotation,
+          attributes: %{label: "Our Dogs"},
+          slots: slots_without_auto_rotation(opts)
+        }
+      ]
+    end
+
+    def modifier_variation_base(_id, _name, _value, opts) do
+      %{
         attributes: %{label: "Our Dogs", pagination: true},
-        slots: single_item_slots(opts)
-      },
-      %Variation{
-        id: :without_pagination_or_auto_rotation,
-        attributes: %{label: "Our Dogs"},
-        slots: slots_without_auto_rotation(opts)
+        slots: slots(opts)
       }
-    ]
-  end
+    end
 
-  def modifier_variation_base(_id, _name, _value, opts) do
-    %{
-      attributes: %{label: "Our Dogs", pagination: true},
-      slots: slots(opts)
-    }
-  end
+    defp slots(opts) do
+      [pause_slot(opts) | slots_without_auto_rotation(opts)]
+    end
 
-  defp slots(opts) do
-    [pause_slot(opts) | slots_without_auto_rotation(opts)]
-  end
+    defp pause_slot(opts) do
+      """
+      <:pause label="Pause slide show" resume_label="Resume slide show">
+        #{icon(:pause, opts[:dependent_components])}
+        #{icon(:play, opts[:dependent_components])}
+      </:pause>
+      """
+    end
 
-  defp pause_slot(opts) do
-    """
-    <:pause label="Pause slide show" resume_label="Resume slide show">
-      #{icon(:pause, opts[:dependent_components])}
-      #{icon(:play, opts[:dependent_components])}
-    </:pause>
-    """
-  end
+    defp single_item_slots(opts) do
+      [pause_slot(opts) | Enum.take(slots_without_auto_rotation(opts), 3)]
+    end
 
-  defp single_item_slots(opts) do
-    [pause_slot(opts) | Enum.take(slots_without_auto_rotation(opts), 3)]
-  end
+    defp slots_without_auto_rotation(opts) do
+      dependent_components = opts[:dependent_components]
 
-  defp slots_without_auto_rotation(opts) do
-    dependent_components = opts[:dependent_components]
+      image_function =
+        if fun = dependent_components[:image] do
+          ".#{fun}"
+        else
+          "img"
+        end
 
-    image_function =
-      if fun = dependent_components[:image] do
-        ".#{fun}"
-      else
-        "img"
-      end
-
-    [
-      """
-      <:previous label="Previous Slide">
-        #{icon(:chevron_left, dependent_components)}
-      </:previous>
-      """,
-      """
-      <:next label="Next Slide">
-        #{icon(:chevron_right, dependent_components)}
-      </:next>
-      """,
-      """
-      <:item label="1 of 4">
-        <#{image_function}
-          src="https://github.com/woylie/doggo/blob/main/assets/images/dog_1.webp?raw=true"
-          alt="A gray-muzzled dog in a camouflage coat and harness."
-        />
-      </:item>
-      """,
-      """
-      <:item label="2 of 4">
-        <#{image_function}
-          src="https://github.com/woylie/doggo/blob/main/assets/images/dog_2.webp?raw=true"
-          alt="A small curly-haired white dog seen from the side."
-        />
-      </:item>
-      """,
-      """
-      <:item label="3 of 4">
-        <#{image_function}
-          src="https://github.com/woylie/doggo/blob/main/assets/images/dog_3.webp?raw=true"
-          alt="A large cream-colored dog on a leash, looking up."
-        />
-      </:item>
-      """,
-      """
-      <:item label="4 of 4">
-        <#{image_function}
-          src="https://github.com/woylie/doggo/blob/main/assets/images/dog_4.webp?raw=true"
-          alt="A white terrier walking along a paved street."
-        />
-      </:item>
-      """
-    ]
+      [
+        """
+        <:previous label="Previous Slide">
+          #{icon(:chevron_left, dependent_components)}
+        </:previous>
+        """,
+        """
+        <:next label="Next Slide">
+          #{icon(:chevron_right, dependent_components)}
+        </:next>
+        """,
+        """
+        <:item label="1 of 4">
+          <#{image_function}
+            src="https://github.com/woylie/doggo/blob/main/assets/images/dog_1.webp?raw=true"
+            alt="A gray-muzzled dog in a camouflage coat and harness."
+          />
+        </:item>
+        """,
+        """
+        <:item label="2 of 4">
+          <#{image_function}
+            src="https://github.com/woylie/doggo/blob/main/assets/images/dog_2.webp?raw=true"
+            alt="A small curly-haired white dog seen from the side."
+          />
+        </:item>
+        """,
+        """
+        <:item label="3 of 4">
+          <#{image_function}
+            src="https://github.com/woylie/doggo/blob/main/assets/images/dog_3.webp?raw=true"
+            alt="A large cream-colored dog on a leash, looking up."
+          />
+        </:item>
+        """,
+        """
+        <:item label="4 of 4">
+          <#{image_function}
+            src="https://github.com/woylie/doggo/blob/main/assets/images/dog_4.webp?raw=true"
+            alt="A white terrier walking along a paved street."
+          />
+        </:item>
+        """
+      ]
+    end
   end
 end

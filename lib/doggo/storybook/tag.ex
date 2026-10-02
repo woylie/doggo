@@ -1,19 +1,21 @@
-defmodule Doggo.Storybook.Tag do
-  @moduledoc false
-  alias PhoenixStorybook.Stories.Variation
+if Code.ensure_loaded?(PhoenixStorybook.Story) do
+  defmodule Doggo.Storybook.Tag do
+    @moduledoc false
+    alias PhoenixStorybook.Stories.Variation
 
-  def variations(_opts) do
-    [
-      %Variation{
-        id: :default,
-        slots: ["puppy"]
+    def variations(_opts) do
+      [
+        %Variation{
+          id: :default,
+          slots: ["puppy"]
+        }
+      ]
+    end
+
+    def modifier_variation_base(_id, _name, value, _opts) do
+      %{
+        slots: [to_string(value || "nil")]
       }
-    ]
-  end
-
-  def modifier_variation_base(_id, _name, value, _opts) do
-    %{
-      slots: [to_string(value || "nil")]
-    }
+    end
   end
 end
