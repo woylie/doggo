@@ -58,10 +58,12 @@ defmodule Doggo.Components.RelativeTime do
 
     VoiceOver on macOS announces the element as a group named by the `title`,
     then reads the text and the `title` again. Without JavaScript, past the
-    threshold and when printing, the text is the absolute value. VoiceOver and
-    Orca read the default ISO 8601 text as separate numbers and dashes. To
-    write the month as a word, set `localize` to `:long`, or pass a
-    `formatter` that uses the locale data of your application. Only a
+    threshold and when printing, the text is the absolute value. Orca reads
+    the default ISO 8601 text as separate numbers and dashes. VoiceOver reads
+    it as a date, but not a date with slashes such as `2/5/23`, which
+    `localize={:short}` writes in some locales. To write the month as a word,
+    set `localize` to `:long`, or pass a `formatter` that uses the locale data
+    of your application. Only a
     `formatter` changes the text for users without JavaScript.
     """
   end

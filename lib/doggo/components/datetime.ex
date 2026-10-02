@@ -81,9 +81,11 @@ defmodule Doggo.Components.Datetime do
     reads the text and the `title` again. Make sure that the text is
     understandable on its own.
 
-    VoiceOver and Orca read the default ISO 8601 text as separate numbers and
-    dashes. To write the month as a word, set `localize` to `:long`, or pass a
-    `formatter` that uses the locale data of your application. Only a
+    Orca reads the default ISO 8601 text as separate numbers and dashes.
+    VoiceOver reads it as a date, but not a date with slashes such as `2/5/23`,
+    which `localize={:short}` writes in some locales. To write the month as a
+    word, set `localize` to `:long`, or pass a `formatter` that uses the locale
+    data of your application. Only a
     `formatter` changes the text for users without JavaScript. A long format
     takes more space, for example in a table column.
 
@@ -114,9 +116,10 @@ defmodule Doggo.Components.Datetime do
       maturity: :refining,
       maturity_note: """
       The API of this component can be considered fairly stable. As measured
-      in October 2026, VoiceOver and Orca read ISO 8601 text such as
-      `2023-02-05` as separate numbers and dashes, and Orca reads `08:23` as
-      separate numbers and colons. NVDA, JAWS and TalkBack have not been tested.
+      in October 2026, Orca reads ISO 8601 text such as `2023-02-05` as
+      separate numbers and dashes and `08:23` as separate numbers and colons.
+      VoiceOver reads ISO 8601 dates, but not dates with slashes such as
+      `2/5/23`. NVDA, JAWS and TalkBack have not been tested.
       """,
       modifiers: []
     ]
