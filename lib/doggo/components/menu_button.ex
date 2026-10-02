@@ -165,7 +165,7 @@ defmodule Doggo.Components.MenuButton do
         aria-expanded="false"
         phx-hook="Doggo.MenuButton"
         aria-controls={@controls}
-        phx-click={Doggo.toggle_disclosure(@controls)}
+        phx-click={Doggo.JS.toggle_disclosure(@controls)}
         {@data_attrs}
         {@rest}
       >

@@ -37,18 +37,18 @@ defmodule Doggo.Components.AlertDialog do
         <.button phx-click="end-session">
           Yes, end session
         </.button>
-        <.button phx-click={Doggo.hide_modal("end-session-modal")}>
+        <.button phx-click={Doggo.JS.hide_modal("end-session-modal")}>
           No, continue training
         </.button>
       </:footer>
     </.#{name}>
     ```
 
-    To open the dialog, use the `show_modal/1` function.
+    To open the dialog, use the `Doggo.JS.show_modal/1` function.
 
     ```heex
     <.button
-      phx-click={Doggo.show_modal("end-session-modal")}
+      phx-click={Doggo.JS.show_modal("end-session-modal")}
       aria-haspopup="dialog"
     >
       show
@@ -71,7 +71,7 @@ defmodule Doggo.Components.AlertDialog do
 
     The alert dialog can be closed by:
 
-    - using `hide_modal/1`,
+    - using `Doggo.JS.hide_modal/1`,
     - using the close button or `Esc`, unless `closedby` is `"none"`, or
     - clicking outside it, if `closedby` is `"any"`.
 
@@ -101,7 +101,7 @@ defmodule Doggo.Components.AlertDialog do
       <.button phx-click="end-session">Yes, end session</.button>
       <.button
         autofocus
-        phx-click={Doggo.hide_modal("end-session-modal")}
+        phx-click={Doggo.JS.hide_modal("end-session-modal")}
       >
         No, continue training
       </.button>
@@ -243,9 +243,9 @@ defmodule Doggo.Components.AlertDialog do
         aria-describedby={"#{@id}-content"}
         closedby={@closedby}
         phx-hook="Doggo.Dialog"
-        phx-mounted={Doggo.dialog_mounted(@id, @open)}
-        phx-remove={Doggo.hide_modal(@id)}
-        data-cancel={Doggo.to_js!(@on_cancel, :on_cancel, ".alert_dialog")}
+        phx-mounted={Doggo.JS.dialog_mounted(@id, @open)}
+        phx-remove={Doggo.JS.hide_modal(@id)}
+        data-cancel={Doggo.JS.to_js!(@on_cancel, :on_cancel, ".alert_dialog")}
         {@data_attrs}
         {@rest}
       >

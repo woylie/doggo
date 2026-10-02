@@ -11,7 +11,7 @@ if Code.ensure_loaded?(PhoenixStorybook.Story) do
     def template(opts) do
       """
       <div>
-        #{button("Open modal", ~s|type="button" phx-click={Doggo.show_modal(":variation_id")}|, opts[:dependent_components])}
+        #{button("Open modal", ~s|type="button" phx-click={Doggo.JS.show_modal(":variation_id")}|, opts[:dependent_components])}
         <.psb-variation/>
       </div>
       """
@@ -22,9 +22,9 @@ if Code.ensure_loaded?(PhoenixStorybook.Story) do
         %Variation{
           id: :default,
           note:
-            "`Doggo.show_modal/1` opens the dialog, which works on every " <>
+            "`Doggo.JS.show_modal/1` opens the dialog, which works on every " <>
               "browser and needs the hook. The close button in the footer uses " <>
-              "`Doggo.hide_modal/1`.",
+              "`Doggo.JS.hide_modal/1`.",
           attributes: %{id: "dog-modal-default"},
           slots: slots("modal-single-default", opts)
         },
@@ -121,7 +121,7 @@ if Code.ensure_loaded?(PhoenixStorybook.Story) do
         """,
         """
         <:footer>
-          <#{tag_name}#{close_attrs} phx-click={Doggo.hide_modal("#{id}")}>
+          <#{tag_name}#{close_attrs} phx-click={Doggo.JS.hide_modal("#{id}")}>
             Close
           </#{tag_name}>
         </:footer>

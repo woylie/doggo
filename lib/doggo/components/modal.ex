@@ -22,7 +22,7 @@ defmodule Doggo.Components.Modal do
   def usage(%{name: name}) do
     """
     The dialog is opened with `showModal()` in one of three ways: from the URL,
-    with the `show_modal/1` and `hide_modal/1` functions, or with a button that
+    with the `Doggo.JS.show_modal/1` and `Doggo.JS.hide_modal/1` functions, or with a button that
     uses the Invoker Commands API.
 
     ### With URL
@@ -47,7 +47,7 @@ defmodule Doggo.Components.Modal do
       <:title>Show pet</:title>
       <p>My pet is called Johnny.</p>
       <:footer>
-        <.link phx-click={Doggo.hide_modal("pet-modal")}>
+        <.link phx-click={Doggo.JS.hide_modal("pet-modal")}>
           Close
         </.link>
       </:footer>
@@ -66,7 +66,7 @@ defmodule Doggo.Components.Modal do
     To toggle the modal visibility dynamically:
 
     1. Omit the `open` attribute in the template.
-    2. Use the `show_modal/1` and `hide_modal/1` functions to change the
+    2. Use the `Doggo.JS.show_modal/1` and `Doggo.JS.hide_modal/1` functions to change the
        visibility.
 
     #### Example
@@ -76,18 +76,18 @@ defmodule Doggo.Components.Modal do
       <:title>Show pet</:title>
       <p>My pet is called Johnny.</p>
       <:footer>
-        <.link phx-click={Doggo.hide_modal("pet-modal")}>
+        <.link phx-click={Doggo.JS.hide_modal("pet-modal")}>
           Close
         </.link>
       </:footer>
     </.#{name}>
     ```
 
-    To open the modal, use the `show_modal/1` function.
+    To open the modal, use the `Doggo.JS.show_modal/1` function.
 
     ```heex
     <.button
-      phx-click={Doggo.show_modal("pet-modal")}
+      phx-click={Doggo.JS.show_modal("pet-modal")}
       aria-haspopup="dialog"
     >
       show
@@ -113,7 +113,7 @@ defmodule Doggo.Components.Modal do
     - the close button the component renders, which uses `command="close"`,
       and `Esc`, unless `closedby` is `"none"`
     - a click outside, if `closedby` is `"any"`
-    - `hide_modal/1`
+    - `Doggo.JS.hide_modal/1`
 
     ## Semantics
 
@@ -313,9 +313,9 @@ defmodule Doggo.Components.Modal do
         aria-labelledby={"#{@id}-title"}
         closedby={@closedby}
         phx-hook="Doggo.Dialog"
-        phx-mounted={Doggo.dialog_mounted(@id, @open)}
-        phx-remove={Doggo.hide_modal(@id)}
-        data-cancel={Doggo.to_js!(@on_cancel, :on_cancel, ".modal")}
+        phx-mounted={Doggo.JS.dialog_mounted(@id, @open)}
+        phx-remove={Doggo.JS.hide_modal(@id)}
+        data-cancel={Doggo.JS.to_js!(@on_cancel, :on_cancel, ".modal")}
         {@data_attrs}
         {@rest}
       >

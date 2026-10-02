@@ -116,8 +116,7 @@ defmodule Doggo.MixProject do
         Media: &(&1[:type] == :media),
         Menu: &(&1[:type] == :menu),
         Miscellaneous: &(&1[:type] == :miscellaneous),
-        Navigation: &(&1[:type] == :navigation),
-        JS: &(&1[:type] == :js)
+        Navigation: &(&1[:type] == :navigation)
       ]
     ]
   end

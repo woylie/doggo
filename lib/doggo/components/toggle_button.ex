@@ -137,7 +137,7 @@ defmodule Doggo.Components.ToggleButton do
         type="button"
         phx-click={
           Phoenix.LiveView.JS.toggle_attribute(
-            Doggo.to_js!(@on_click, :on_click, ".toggle_button"),
+            Doggo.JS.to_js!(@on_click, :on_click, ".toggle_button"),
             {"aria-pressed", "true", "false"}
           )
         }

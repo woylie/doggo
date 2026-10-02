@@ -182,7 +182,7 @@ defmodule Doggo.Components.Accordion do
           type="button"
           aria-expanded={@aria_expanded}
           aria-controls={"#{@id}-section-#{@index}"}
-          phx-click={Doggo.toggle_accordion_section(@id, @index)}
+          phx-click={Doggo.JS.toggle_accordion_section(@id, @index)}
         >
           <span>{@section.title}</span>
         </button>

@@ -1,4 +1,4 @@
 [
   # `Phoenix.LiveView.JS` declares its `ops` field with an opaque type
-  {"lib/doggo.ex", :contract_with_opaque}
+  {"lib/doggo/js.ex", :contract_with_opaque}
 ]

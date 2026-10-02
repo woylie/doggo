@@ -156,7 +156,7 @@ defmodule Doggo.Components.ActionBar do
           :for={item <- @item}
           type="button"
           class={Doggo.build(:base_class, "-item")}
-          phx-click={Doggo.callback!(item.on_click, :on_click, ".action_bar")}
+          phx-click={Doggo.JS.callback!(item.on_click, :on_click, ".action_bar")}
           aria-label={item.label}
           title={item.label}
         >
