@@ -10,3 +10,5 @@ export { default as Tree, initTree } from "./hooks/tree.js";
 export { default as Toolbar, initToolbar } from "./hooks/toolbar.js";
 export { default as Toggletip, initToggletip } from "./hooks/toggletip.js";
 export { default as Tooltip, initTooltip } from "./hooks/tooltip.js";
+export { localizeTimes } from "./localize.js";
+export { relativeTimes } from "./relative_time.js";

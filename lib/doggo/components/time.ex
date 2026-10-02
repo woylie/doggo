@@ -20,7 +20,7 @@ defmodule Doggo.Components.Time do
     """
     By default, the time part of the given value is formatted for display with
     `to_string/1`. For a `DateTime` or `NaiveDateTime`, the `datetime` attribute
-    holds the full value. This:
+    contains the full value. This:
 
     ```heex
     <.#{name} value={~T[12:22:06.003]} />
@@ -168,6 +168,10 @@ defmodule Doggo.Components.Time do
         user input or the browser before you pass it to this component.
         """
 
+      attr :localize, :any,
+        default: nil,
+        doc: unquote(Doggo.localize_doc(:time))
+
       attr :rest, :global, doc: "Any additional HTML attributes."
     end
   end
@@ -189,7 +193,8 @@ defmodule Doggo.Components.Time do
           var!(assigns),
           value,
           ".time",
-          &(&1 |> Doggo.to_time() |> Doggo.datetime_string(precision))
+          &(&1 |> Doggo.to_time() |> Doggo.datetime_string(precision)),
+          kind: :time
         )
 
       ~H"""
@@ -198,6 +203,7 @@ defmodule Doggo.Components.Time do
         class={[Doggo.build(:base_class) | List.wrap(@class)]}
         datetime={@datetime}
         title={@title}
+        {@localize_attrs}
         {@data_attrs}
         {@rest}
       >

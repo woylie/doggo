@@ -50,6 +50,7 @@ defmodule Doggo.FixtureComponents do
   build_page_header()
   build_property_list()
   build_radio_group()
+  build_relative_time()
   build_skeleton()
   build_split_pane()
   build_stack()

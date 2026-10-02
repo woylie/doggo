@@ -333,5 +333,188 @@ defmodule Doggo.Components.DatetimeTest do
                      """)
                    end
     end
+
+    test "renders localize attributes" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.datetime value={~U[2023-12-27T18:30:21Z]} localize />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "data-localize") == "datetime"
+      assert attribute(time, "translate") == "no"
+      assert attribute(time, "data-localize-zone") == nil
+      assert attribute(time, "data-localize-title") == nil
+      assert text(time) == "2023-12-27 18:30:21Z"
+    end
+
+    test "renders localize style, options, zone and title" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.datetime
+          value={~U[2023-12-27T18:30:21Z]}
+          timezone="Asia/Tokyo"
+          localize={[weekday: :short, hour_cycle: :h23, zone: :server, title: :full]}
+        />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "data-localize-weekday") == "short"
+      assert attribute(time, "data-localize-hour-cycle") == "h23"
+      assert attribute(time, "data-localize-zone") == "server"
+      assert attribute(time, "data-timezone") == "Asia/Tokyo"
+      assert attribute(time, "data-localize-title") == "full"
+      assert attribute(time, "title") == nil
+    end
+
+    test "renders localize title pattern as server title" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.datetime
+          value={~U[2023-12-27T18:30:21Z]}
+          localize={[style: :short, title: "%Y-%m-%d %H:%M"]}
+        />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "data-localize-title") == "%Y-%m-%d %H:%M"
+      assert attribute(time, "title") == "2023-12-27 18:30"
+    end
+
+    test "renders title formatter instead of localize title pattern" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.datetime
+          value={~U[2023-12-27T18:30:21Z]}
+          title_formatter={fn _ -> "custom" end}
+          localize={[style: :short, title: "%Y-%m-%d"]}
+        />
+        """)
+
+      assert attribute(html, "time", "title") == "custom"
+    end
+
+    test "renders localize style with hour cycle" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.datetime
+          value={~U[2023-12-27T18:30:21Z]}
+          localize={[style: :medium, hour_cycle: :h23]}
+        />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "data-localize-style") == "medium"
+      assert attribute(time, "data-localize-hour-cycle") == "h23"
+    end
+
+    test "renders localize pattern as server text" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.datetime
+          value={~U[2023-12-27T18:30:21Z]}
+          timezone="Asia/Tokyo"
+          localize="%Y-%m-%d %H:%M"
+        />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "data-localize-pattern") == "%Y-%m-%d %H:%M"
+      assert text(time) == "2023-12-28 03:30"
+    end
+
+    test "renders formatter instead of localize pattern" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.datetime
+          value={~U[2023-12-27T18:30:21Z]}
+          localize="%Y-%m-%d"
+          formatter={fn _ -> "custom" end}
+        />
+        """)
+
+      assert text(html, "time") == "custom"
+    end
+
+    test "renders no localize attributes with localize false" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.datetime value={~U[2023-12-27T18:30:21Z]} localize={false} />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "data-localize") == nil
+      assert attribute(time, "translate") == nil
+    end
+
+    test "raises for localize title pattern with unsupported directive" do
+      assigns = %{}
+
+      assert_raise ArgumentError,
+                   ~r/invalid localize pattern for \.datetime.*%b/s,
+                   fn ->
+                     parse_heex(~H"""
+                     <TestComponents.datetime
+                       value={~U[2023-12-27T18:30:21Z]}
+                       localize={[style: :short, title: "%d %b"]}
+                     />
+                     """)
+                   end
+    end
+
+    test "raises for localize pattern with unsupported directive" do
+      assigns = %{}
+
+      assert_raise ArgumentError,
+                   ~r/invalid localize pattern for \.datetime.*%b/s,
+                   fn ->
+                     parse_heex(~H"""
+                     <TestComponents.datetime value={~U[2023-12-27T18:30:21Z]} localize="%d %b" />
+                     """)
+                   end
+    end
+
+    test "raises for invalid localize value" do
+      for localize <- [
+            :tiny,
+            [style: :medium, weekday: :short],
+            [zone: 1],
+            [colour: :red],
+            [pattern: 1],
+            [title: :tiny]
+          ] do
+        assigns = %{localize: localize}
+
+        assert_raise ArgumentError,
+                     ~r/invalid localize value for \.datetime/,
+                     fn ->
+                       parse_heex(~H"""
+                       <TestComponents.datetime value={~U[2023-12-27T18:30:21Z]} localize={@localize} />
+                       """)
+                     end
+      end
+    end
   end
 end

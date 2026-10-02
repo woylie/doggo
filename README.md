@@ -253,6 +253,26 @@ import {
 })();
 ```
 
+### Localized dates and times
+
+The `date`, `datetime` and `time` components can format their text in the
+page's language and the user's time zone when you set the `localize`
+attribute. The `relative_time` component writes text such as "3 minutes ago".
+Call `localizeTimes` for the former and `relativeTimes` for the latter in your
+`app.js`, before you connect the LiveSocket:
+
+```js
+import { localizeTimes, relativeTimes } from "@woylie/doggo";
+
+localizeTimes();
+relativeTimes();
+liveSocket.connect();
+```
+
+The functions format the elements on the page and watch for new and changed
+ones. They need no hook and no id. Import only the one you use, and call it in
+`storybook.js` as well.
+
 ### Storybook
 
 Doggo can generate

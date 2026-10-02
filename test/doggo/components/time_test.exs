@@ -344,5 +344,19 @@ defmodule Doggo.Components.TimeTest do
                      """)
                    end
     end
+
+    test "renders localize pattern as server text" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.time value={~T[18:30:21]} localize="%H:%M" />
+        """)
+
+      time = find_one(html, "time")
+
+      assert attribute(time, "data-localize") == "time"
+      assert text(time) == "18:30"
+    end
   end
 end

@@ -85,7 +85,8 @@ defmodule Doggo.Components.Date do
     ```
 
     Finally, the component can shift a `DateTime` to a different time zone
-    before converting it to a date:
+    before converting it to a date. The `datetime` attribute contains the full
+    value, unless `precision` is set:
 
     ```heex
     <.#{name}
@@ -97,7 +98,7 @@ defmodule Doggo.Components.Date do
     Which would be rendered as:
 
     ```html
-    <time class="#{base_class}" datetime="2023-02-06">
+    <time class="#{base_class}" datetime="2023-02-06T08:22:05+09:00">
       2023-02-06
     </time>
     ```
@@ -178,6 +179,10 @@ defmodule Doggo.Components.Date do
         user input or the browser before you pass it to this component.
         """
 
+      attr :localize, :any,
+        default: nil,
+        doc: unquote(Doggo.localize_doc(:date))
+
       attr :rest, :global, doc: "Any additional HTML attributes."
     end
   end
@@ -188,18 +193,21 @@ defmodule Doggo.Components.Date do
       precision =
         Doggo.time_precision!(var!(assigns), unquote(@precisions), ".date")
 
-      value =
+      shifted =
         var!(assigns).value
         |> Doggo.time_value!([Date, DateTime, NaiveDateTime], ".date")
         |> Doggo.shift_zone(var!(assigns).timezone)
-        |> Doggo.to_date()
+
+      value = Doggo.to_date(shifted)
 
       var!(assigns) =
         Doggo.assign_time(
           var!(assigns),
           value,
           ".date",
-          &Doggo.date_string(&1, precision)
+          &Doggo.date_string(&1, precision),
+          kind: :date,
+          datetime: if(precision, do: value, else: shifted)
         )
 
       ~H"""
@@ -208,6 +216,7 @@ defmodule Doggo.Components.Date do
         class={[Doggo.build(:base_class) | List.wrap(@class)]}
         datetime={@datetime}
         title={@title}
+        {@localize_attrs}
         {@data_attrs}
         {@rest}
       >

@@ -33,6 +33,8 @@ import {
   Toolbar,
   Tooltip,
   Tree,
+  localizeTimes,
+  relativeTimes,
 } from "@woylie/doggo";
 import topbar from "topbar";
 
@@ -63,6 +65,9 @@ let liveSocket = new LiveSocket("/live", Socket, {
 topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" });
 window.addEventListener("phx:page-loading-start", (_info) => topbar.show(300));
 window.addEventListener("phx:page-loading-stop", (_info) => topbar.hide());
+
+localizeTimes();
+relativeTimes();
 
 // connect if there are any LiveViews on the page
 liveSocket.connect();

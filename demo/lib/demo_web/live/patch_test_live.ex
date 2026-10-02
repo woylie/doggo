@@ -25,15 +25,26 @@ defmodule DemoWeb.PatchTestLive do
     {"disclosure_button", "Disclosure button"},
     {"toggle_button", "Toggle button"},
     {"toggletip", "Toggletip"},
-    {"tree", "Tree"}
+    {"tree", "Tree"},
+    {"localize", "Dates and times"}
   ]
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
+    names = Enum.map(@components, &elem(&1, 0))
+
+    component =
+      if params["component"] in names do
+        params["component"]
+      else
+        hd(names)
+      end
+
     {:ok,
      assign(socket,
        components: @components,
-       component: @components |> hd() |> elem(0),
+       component: component,
+       now: DateTime.truncate(DateTime.utc_now(), :second),
        tick: 0,
        auto: false,
        inside: true,
@@ -204,6 +215,7 @@ defmodule DemoWeb.PatchTestLive do
             tick={@tick}
             inside={@inside}
             slides={@slides}
+            now={@now}
           />
         </div>
         <.components
@@ -212,6 +224,7 @@ defmodule DemoWeb.PatchTestLive do
           tick={@tick}
           inside={@inside}
           slides={@slides}
+          now={@now}
         />
       </CoreComponents.stack>
     </div>
@@ -228,6 +241,7 @@ defmodule DemoWeb.PatchTestLive do
   attr :tick, :integer, required: true
   attr :inside, :boolean, required: true
   attr :slides, :list, required: true
+  attr :now, DateTime, required: true
 
   defp components(assigns) do
     ~H"""
@@ -433,6 +447,47 @@ defmodule DemoWeb.PatchTestLive do
         module={DemoWeb.PatchTestTreeInComponent}
         id="test-tree-in-component"
       />
+    </CoreComponents.stack>
+
+    <CoreComponents.stack :if={@component == "localize"}>
+      <h2>Dates and times</h2>
+      <p>
+        Open <code>/patch-test?component=localize</code>
+        with the network throttled to see the server text before the script
+        runs. <strong>Bump</strong>
+        changes the value of the last two, so that the patch restores the
+        server text.
+      </p>
+      <p>Date: <CoreComponents.date value={@now} localize={:long} /></p>
+      <p>Datetime: <CoreComponents.datetime value={@now} localize={:long} /></p>
+      <p>
+        Time, 24-hour:
+        <CoreComponents.time
+          value={@now}
+          localize={[style: :short, hour_cycle: :h23]}
+        />
+      </p>
+      <p>
+        Datetime with a title, hover:
+        <CoreComponents.datetime
+          value={@now}
+          localize={[style: :short, title: :full]}
+        />
+      </p>
+      <p>
+        Pattern, changes with Bump:
+        <CoreComponents.datetime
+          value={DateTime.add(@now, @tick, :minute)}
+          localize="%Y-%m-%d %H:%M"
+        />
+      </p>
+      <p>
+        Relative, updating, changes with Bump:
+        <CoreComponents.relative_time
+          value={DateTime.add(@now, -@tick, :minute)}
+          sync
+        />
+      </p>
     </CoreComponents.stack>
     """
   end
