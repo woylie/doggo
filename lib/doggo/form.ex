@@ -35,18 +35,33 @@ defmodule Doggo.Form do
   and the description, if the field has them, or `nil`.
 
   `description` and `errors` are lists, such as the entries of a description
-  slot and the error messages.
+  slot and the error messages. The id of the error list comes first, as in the
+  markup of `field`.
 
-  ## Example
+  The id of the error list is also the `aria-errormessage` value (see
+  `input_aria_errormessage/2`). It is included here as well, since screen
+  readers support `aria-errormessage` inconsistently.
+
+  ## Examples
+
+      iex> Doggo.Form.input_aria_describedby("pet-name", [], [])
+      nil
 
       iex> Doggo.Form.input_aria_describedby("pet-name", [], ["is too short"])
       "pet-name-errors"
+
+      iex> Doggo.Form.input_aria_describedby("pet-name", ["Your pet's name"], [])
+      "pet-name-description"
+
+      iex> Doggo.Form.input_aria_describedby(
+      ...>   "pet-name",
+      ...>   ["Your pet's name"],
+      ...>   ["is too short"]
+      ...> )
+      "pet-name-errors pet-name-description"
   """
   @doc since: "0.18.0"
   @spec input_aria_describedby(String.t(), list(), list()) :: String.t() | nil
-
-  # The error id is added to both `aria-describedby` and `aria-errormessage`,
-  # because `aria-errormessage` support is patchy. The order matches the DOM.
   def input_aria_describedby(_id, [], []), do: nil
   def input_aria_describedby(id, [], _errors), do: field_errors_id(id)
   def input_aria_describedby(id, _description, []), do: field_description_id(id)
@@ -91,7 +106,7 @@ defmodule Doggo.Form do
   @doc false
   def normalize_value("date", %struct{} = value)
       when struct in [Date, NaiveDateTime, DateTime] do
-    value |> Doggo.to_date() |> Date.to_iso8601()
+    value |> Doggo.Time.to_date() |> Date.to_iso8601()
   end
 
   def normalize_value("date", <<date::10-binary, _::binary>>) do

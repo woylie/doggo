@@ -179,7 +179,7 @@ defmodule Doggo.Components.Datetime do
 
       attr :localize, :any,
         default: nil,
-        doc: unquote(Doggo.localize_doc(:datetime))
+        doc: unquote(Doggo.Time.localize_doc(:datetime))
 
       attr :rest, :global, doc: "Any additional HTML attributes."
     end
@@ -189,20 +189,24 @@ defmodule Doggo.Components.Datetime do
   def template(_opts) do
     quote do
       precision =
-        Doggo.time_precision!(var!(assigns), unquote(@precisions), ".datetime")
+        Doggo.Time.time_precision!(
+          var!(assigns),
+          unquote(@precisions),
+          ".datetime"
+        )
 
       value =
         var!(assigns).value
-        |> Doggo.time_value!([DateTime, NaiveDateTime], ".datetime")
-        |> Doggo.shift_zone(var!(assigns).timezone)
-        |> Doggo.truncate_datetime(precision)
+        |> Doggo.Time.time_value!([DateTime, NaiveDateTime], ".datetime")
+        |> Doggo.Time.shift_zone(var!(assigns).timezone)
+        |> Doggo.Time.truncate_datetime(precision)
 
       var!(assigns) =
-        Doggo.assign_time(
+        Doggo.Time.assign_time(
           var!(assigns),
           value,
           ".datetime",
-          &Doggo.datetime_string(&1, precision),
+          &Doggo.Time.datetime_string(&1, precision),
           kind: :datetime
         )
 

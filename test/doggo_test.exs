@@ -128,6 +128,29 @@ defmodule DoggoTest do
     end
   end
 
+  describe "show_tab/3" do
+    test "dispatches doggo:show-tab with the index" do
+      assert %Phoenix.LiveView.JS{ops: ops} = Doggo.show_tab("pet-tabs", 2)
+
+      assert [
+               [
+                 "dispatch",
+                 %{
+                   event: "doggo:show-tab",
+                   to: "#pet-tabs",
+                   detail: %{index: 2}
+                 }
+               ]
+             ] = ops
+    end
+  end
+
+  describe "slide_label/1" do
+    test "names the slide by its number" do
+      assert Doggo.slide_label(2) == "Slide 2"
+    end
+  end
+
   describe "id_selector/1" do
     test "keeps ids that need no escaping" do
       assert Doggo.id_selector("pet-modal_1") == "#pet-modal_1"
@@ -141,6 +164,14 @@ defmodule DoggoTest do
     test "escapes a leading digit" do
       assert Doggo.id_selector("1pet") == "#\\31 pet"
       assert Doggo.id_selector("-1pet") == "#-\\31 pet"
+    end
+
+    test "escapes a lone hyphen" do
+      assert Doggo.id_selector("-") == "#\\-"
+    end
+
+    test "escapes control characters" do
+      assert Doggo.id_selector("a\tb") == "#a\\9 b"
     end
 
     test "keeps non-ASCII characters" do

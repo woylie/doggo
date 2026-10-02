@@ -173,18 +173,18 @@ defmodule Doggo.Components.RelativeTime do
   def template(_opts) do
     quote do
       value =
-        Doggo.time_value!(
+        Doggo.Time.time_value!(
           var!(assigns).value,
           [DateTime, Date],
           ".relative_time"
         )
 
-      shifted = Doggo.shift_zone(value, var!(assigns).timezone)
+      shifted = Doggo.Time.shift_zone(value, var!(assigns).timezone)
 
       relative_attrs = unquote(__MODULE__).relative_attrs(var!(assigns))
 
       var!(assigns) =
-        Doggo.assign_time(
+        Doggo.Time.assign_time(
           var!(assigns),
           shifted,
           ".relative_time",
@@ -267,7 +267,8 @@ defmodule Doggo.Components.RelativeTime do
 
   defp now!(nil), do: nil
 
-  defp now!(%DateTime{} = now), do: now |> instant() |> Doggo.datetime_attr(nil)
+  defp now!(%DateTime{} = now),
+    do: now |> instant() |> Doggo.Time.datetime_attr(nil)
 
   defp now!(value) do
     raise ArgumentError, """
