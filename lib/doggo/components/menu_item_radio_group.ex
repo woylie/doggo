@@ -112,7 +112,7 @@ defmodule Doggo.Components.MenuItemRadioGroup do
             type="button"
             role="menuitemradio"
             phx-click={
-              Doggo.callback!(item.on_click, :on_click, ".menu_item_radio_group")
+              Doggo.JS.callback!(item.on_click, :on_click, ".menu_item_radio_group")
             }
             aria-checked={to_string(item[:checked] || false)}
           >

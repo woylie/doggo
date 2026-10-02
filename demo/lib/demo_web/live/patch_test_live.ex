@@ -254,7 +254,7 @@ defmodule DemoWeb.PatchTestLive do
         or start the auto-tick before opening.
       </p>
       <div>
-        <CoreComponents.button phx-click={Doggo.show_modal("test-modal")}>
+        <CoreComponents.button phx-click={Doggo.JS.show_modal("test-modal")}>
           Open modal
         </CoreComponents.button>
       </div>
@@ -275,7 +275,7 @@ defmodule DemoWeb.PatchTestLive do
             Bump from inside
           </CoreComponents.button>
           <CoreComponents.button phx-click="resend">Re-send from inside</CoreComponents.button>
-          <CoreComponents.button phx-click={Doggo.hide_modal("test-modal")}>
+          <CoreComponents.button phx-click={Doggo.JS.hide_modal("test-modal")}>
             Close
           </CoreComponents.button>
         </:footer>
@@ -284,7 +284,7 @@ defmodule DemoWeb.PatchTestLive do
     <CoreComponents.stack :if={@component == "alert_dialog"}>
       <h2>alert_dialog</h2>
       <div>
-        <CoreComponents.button phx-click={Doggo.show_modal("test-alert-dialog")}>
+        <CoreComponents.button phx-click={Doggo.JS.show_modal("test-alert-dialog")}>
           Open alert dialog
         </CoreComponents.button>
       </div>
@@ -297,7 +297,9 @@ defmodule DemoWeb.PatchTestLive do
             Bump from inside
           </CoreComponents.button>
           <CoreComponents.button phx-click="resend">Re-send from inside</CoreComponents.button>
-          <CoreComponents.button phx-click={Doggo.hide_modal("test-alert-dialog")}>
+          <CoreComponents.button phx-click={
+            Doggo.JS.hide_modal("test-alert-dialog")
+          }>
             Close
           </CoreComponents.button>
         </:footer>

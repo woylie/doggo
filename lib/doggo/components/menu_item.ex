@@ -79,7 +79,7 @@ defmodule Doggo.Components.MenuItem do
         class={[Doggo.build(:base_class) | List.wrap(@class)]}
         type="button"
         role="menuitem"
-        phx-click={Doggo.callback!(@on_click, :on_click, ".menu_item")}
+        phx-click={Doggo.JS.callback!(@on_click, :on_click, ".menu_item")}
         {@data_attrs}
         {@rest}
       >

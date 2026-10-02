@@ -187,7 +187,7 @@ defmodule Doggo.Components.Steps do
       </span>
       <.link
         :if={@clickable}
-        phx-click={Doggo.callback!(@step[:on_click], :on_click, ".steps")}
+        phx-click={Doggo.JS.callback!(@step[:on_click], :on_click, ".steps")}
       >
         {render_slot(@step)}
       </.link>

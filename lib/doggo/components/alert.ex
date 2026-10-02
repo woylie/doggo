@@ -196,7 +196,7 @@ defmodule Doggo.Components.Alert do
           type="button"
           class={Doggo.build(:base_class, "-close")}
           aria-label={Doggo.build(:close_label)}
-          phx-click={Doggo.callback!(@on_close, :on_close, ".alert")}
+          phx-click={Doggo.JS.callback!(@on_close, :on_close, ".alert")}
         >
           <Doggo.control_content
             content={Doggo.build(:close)}

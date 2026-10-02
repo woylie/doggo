@@ -101,7 +101,7 @@ defmodule Doggo.Components.MenuItemCheckbox do
         type="button"
         role="menuitemcheckbox"
         aria-checked={@checked}
-        phx-click={Doggo.callback!(@on_click, :on_click, ".menu_item_checkbox")}
+        phx-click={Doggo.JS.callback!(@on_click, :on_click, ".menu_item_checkbox")}
         {@data_attrs}
         {@rest}
       >

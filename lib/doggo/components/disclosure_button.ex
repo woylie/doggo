@@ -129,7 +129,7 @@ defmodule Doggo.Components.DisclosureButton do
         type="button"
         aria-expanded="false"
         aria-controls={@controls}
-        phx-click={Doggo.toggle_disclosure(@controls)}
+        phx-click={Doggo.JS.toggle_disclosure(@controls)}
         class={[Doggo.build(:base_class) | List.wrap(@class)]}
         {@data_attrs}
         {@rest}

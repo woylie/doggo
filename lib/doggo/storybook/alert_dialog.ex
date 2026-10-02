@@ -11,7 +11,7 @@ if Code.ensure_loaded?(PhoenixStorybook.Story) do
     def template(opts) do
       """
       <div>
-        #{button("Open alert dialog", ~s|type="button" phx-click={Doggo.show_modal(":variation_id")}|, opts[:dependent_components])}
+        #{button("Open alert dialog", ~s|type="button" phx-click={Doggo.JS.show_modal(":variation_id")}|, opts[:dependent_components])}
         <.psb-variation/>
       </div>
       """
@@ -105,10 +105,10 @@ if Code.ensure_loaded?(PhoenixStorybook.Story) do
         """,
         """
         <:footer>
-          <#{tag_name} phx-click={Doggo.hide_modal("#{id}")}>
+          <#{tag_name} phx-click={Doggo.JS.hide_modal("#{id}")}>
             Yes, end session
           </#{tag_name}>
-          <#{tag_name} autofocus phx-click={Doggo.hide_modal("#{id}")}>
+          <#{tag_name} autofocus phx-click={Doggo.JS.hide_modal("#{id}")}>
             No, continue training
           </#{tag_name}>
         </:footer>

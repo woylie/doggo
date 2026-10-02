@@ -666,7 +666,7 @@ defmodule Doggo.FixturesTest do
         <:title>Edit dog</:title>
         <p>Dog form</p>
         <:footer>
-          <button phx-click={Doggo.hide_modal("modal")}>Cancel</button>
+          <button phx-click={Doggo.JS.hide_modal("modal")}>Cancel</button>
         </:footer>
       </FixtureComponents.modal>
       """,
