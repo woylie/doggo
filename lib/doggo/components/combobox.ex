@@ -691,7 +691,7 @@ defmodule Doggo.Components.Combobox do
   end
 
   defp normalize_option(option, counters) when is_list(option) do
-    {label, value, description, extra} = Doggo.option_from_keyword(option)
+    {label, value, description, extra} = Doggo.Form.option_from_keyword(option)
     {disabled, _extra} = Keyword.pop(extra, :disabled, false)
 
     build_option(label, value, description, disabled, counters)
@@ -770,7 +770,9 @@ defmodule Doggo.Components.Combobox do
   end
 
   defp ensure_keys_of_option!(option) when is_list(option) do
-    {_label, _value, _description, extra} = Doggo.option_from_keyword(option)
+    {_label, _value, _description, extra} =
+      Doggo.Form.option_from_keyword(option)
+
     ensure_no_extra_keys!(Keyword.delete(extra, :disabled), option)
   end
 

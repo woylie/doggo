@@ -659,7 +659,7 @@ defmodule Doggo.Components.Field do
         Phoenix.Component.used_input?(field) ->
           Enum.map(
             field.errors,
-            translate_error || (&Doggo.translate_error/1)
+            translate_error || (&Doggo.Form.translate_error/1)
           )
 
         true ->
@@ -1070,7 +1070,7 @@ defmodule Doggo.Components.Field do
                 id={@id}
                 list={@options && "#{@id}-datalist"}
                 type={@type}
-                value={@type != "file" && Doggo.normalize_value(@type, @value)}
+                value={@type != "file" && Doggo.Form.normalize_value(@type, @value)}
                 multiple={@type == "file" && @multiple}
                 aria-describedby={@describedby}
                 aria-errormessage={@errormessage}
@@ -1258,8 +1258,8 @@ defmodule Doggo.Components.Field do
         field: nil,
         id: id,
         describedby:
-          Doggo.input_aria_describedby(id, assigns.description, errors),
-        errormessage: Doggo.input_aria_errormessage(id, errors)
+          Doggo.Form.input_aria_describedby(id, assigns.description, errors),
+        errormessage: Doggo.Form.input_aria_errormessage(id, errors)
       ] ++ defaults,
       @derived_from
     )
@@ -1282,7 +1282,7 @@ defmodule Doggo.Components.Field do
 
   @doc false
   def field_description(%{for: for} = assigns) do
-    assigns = assign(assigns, :id, Doggo.field_description_id(for))
+    assigns = assign(assigns, :id, Doggo.Form.field_description_id(for))
 
     ~H"""
     <div id={@id} class={"#{@base_class}-description"}>
@@ -1297,7 +1297,7 @@ defmodule Doggo.Components.Field do
 
   @doc false
   def field_errors(%{for: for} = assigns) do
-    assigns = assign(assigns, :id, Doggo.field_errors_id(for))
+    assigns = assign(assigns, :id, Doggo.Form.field_errors_id(for))
 
     ~H"""
     <ul id={@id} class={"#{@base_class}-errors"} aria-live="polite">
@@ -1476,16 +1476,16 @@ defmodule Doggo.Components.Field do
     assigns =
       assigns
       |> Map.put_new(:option_extra, [])
-      |> Doggo.describe_option()
+      |> Doggo.Form.describe_option()
 
     ~H"""
     <label class={"#{@base_class}-checkbox"}>
       <input
         type="checkbox"
         name={@name <> "[]"}
-        id={@id <> "_" <> Doggo.id_fragment(@option_value)}
+        id={@id <> "_" <> Doggo.Form.id_fragment(@option_value)}
         value={@option_value}
-        checked={Doggo.checked?(@option_value, @value)}
+        checked={Doggo.Form.checked?(@option_value, @value)}
         aria-describedby={@describedby}
         aria-errormessage={@errormessage}
         aria-invalid={@errors != [] && "true"}
@@ -1504,7 +1504,7 @@ defmodule Doggo.Components.Field do
   end
 
   def checkbox(%{option: option} = assigns) when is_list(option) do
-    {label, value, description, extra} = Doggo.option_from_keyword(option)
+    {label, value, description, extra} = Doggo.Form.option_from_keyword(option)
 
     assigns
     |> assign(
@@ -1549,7 +1549,7 @@ defmodule Doggo.Components.Field do
   def checkbox(%{option: option_value} = assigns) do
     assigns
     |> assign(
-      label: Doggo.humanize(option_value),
+      label: Doggo.Form.humanize(option_value),
       option_value: option_value,
       option: nil
     )

@@ -4,8 +4,6 @@ defmodule DoggoTest do
 
   import Phoenix.LiveViewTest, only: [rendered_to_string: 1]
 
-  alias Phoenix.HTML.Form
-
   defmodule TestComponents do
     @moduledoc """
     Generates components for tests.
@@ -147,15 +145,6 @@ defmodule DoggoTest do
 
     test "keeps non-ASCII characters" do
       assert Doggo.id_selector("hündchen") == "#hündchen"
-    end
-  end
-
-  describe "id_fragment/1" do
-    test "matches Phoenix.HTML.Form.input_id/3" do
-      for value <- ["golden retriever", "a&b", "hündchen", "sit.stay", 42] do
-        assert "dog_breeds_" <> Doggo.id_fragment(value) ==
-                 Form.input_id(:dog, :breeds, value)
-      end
     end
   end
 
