@@ -79,11 +79,38 @@ defmodule DemoWeb.PatchTestLiveTest do
     assert live |> element("#resend") |> render_click() =~ "re-sends 1"
   end
 
+  test "reordering moves the modal to the other end", %{conn: conn} do
+    {:ok, live, _html} = live(conn, ~p"/patch-test")
+    assert order(live) == ~w(reorder-first reorder-second reorder-dialog)
+
+    live |> element("#reorder") |> render_click()
+    assert order(live) == ~w(reorder-dialog reorder-first reorder-second)
+
+    live |> element("#reorder") |> render_click()
+    assert order(live) == ~w(reorder-first reorder-second reorder-dialog)
+  end
+
+  test "the note before the live component can be toggled", %{conn: conn} do
+    {:ok, live, _html} = live(conn, ~p"/patch-test")
+    refute has_element?(live, "#note")
+
+    live |> element("#toggle-note") |> render_click()
+    assert has_element?(live, "#note + [data-phx-component]")
+  end
+
   test "the tick can be moved out of the component subtrees", %{conn: conn} do
     {:ok, live, html} = live(conn, ~p"/patch-test")
     assert html =~ "Tick inside the modal"
 
     html = live |> element("#toggle-inside") |> render_click()
     refute html =~ "Tick inside the modal"
+  end
+
+  defp order(live) do
+    live
+    |> render()
+    |> LazyHTML.from_fragment()
+    |> LazyHTML.query("[id^=reorder-]")
+    |> LazyHTML.attribute("id")
   end
 end

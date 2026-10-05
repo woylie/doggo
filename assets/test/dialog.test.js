@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { initDialog } from "../js/hooks/dialog.js";
 import fixture from "../../test/fixtures/modal.html?raw";
 import { render } from "./dom.js";
@@ -30,6 +30,8 @@ describe("initDialog", () => {
     execJS = vi.fn();
     hook = initDialog(el, { execJS });
   });
+
+  afterEach(() => hook.destroy());
 
   it("opens as a modal when Doggo.show_modal dispatches", () => {
     dispatch(el, "doggo:open");
@@ -71,42 +73,534 @@ describe("initDialog", () => {
     expect(execJS).not.toHaveBeenCalled();
   });
 
-  // happy-dom does not match `:modal`, so an open dialog here behaves like one
-  // that a patch moved out of the top layer.
-  describe("after a patch", () => {
-    it("shows a moved dialog as a modal again", () => {
+  // happy-dom has no top layer, so these tests keep a fake one that behaves
+  // like Chrome's.
+  describe("after a move", () => {
+    let topLayer;
+    let removals;
+    let beforetoggle;
+
+    // MutationObserver callbacks run after the code that moved the node.
+    const settle = () => new Promise((resolve) => setTimeout(resolve));
+
+    const drop = (records) => {
+      for (const record of records) {
+        for (const node of record.removedNodes) {
+          topLayer = topLayer.filter((dialog) => !node.contains(dialog));
+        }
+      }
+    };
+
+    // Also read on demand, so that the order of the observers does not matter.
+    const sync = () => drop(removals.takeRecords());
+
+    // The way morphdom moves a node: something new goes in, and the node is
+    // appended after it.
+    const move = (node) => {
+      node.parentNode.append(document.createElement("p"));
+      node.parentNode.append(node);
+    };
+
+    const open = async () => {
       dispatch(el, "doggo:open");
-      document.body.appendChild(el);
-      const showModal = vi.spyOn(el, "showModal");
+      await settle();
+      el.showModal.mockClear();
+    };
 
-      hook.update();
+    const fakeTopLayer = (dialog) => {
+      const matches = dialog.matches.bind(dialog);
+      const showModal = dialog.showModal.bind(dialog);
+      const close = dialog.close.bind(dialog);
 
-      expect(showModal).toHaveBeenCalledOnce();
-      expect(el.open).toBe(true);
+      vi.spyOn(dialog, "matches").mockImplementation((selector) => {
+        if (selector !== ":modal") return matches(selector);
+
+        sync();
+        return dialog.open && topLayer.includes(dialog);
+      });
+
+      vi.spyOn(dialog, "showModal").mockImplementation(() => {
+        if (dialog.open) {
+          throw new window.DOMException("open", "InvalidStateError");
+        }
+
+        sync();
+        if (beforetoggle) toggle(dialog, "open");
+        showModal();
+        if (!topLayer.includes(dialog)) topLayer.push(dialog);
+        (dialog.querySelector(focusable) ?? dialog).focus();
+      });
+
+      vi.spyOn(dialog, "close").mockImplementation(() => {
+        close();
+        topLayer = topLayer.filter((other) => other !== dialog);
+      });
+    };
+
+    beforeEach(() => {
+      topLayer = [];
+      beforetoggle = false;
+      removals = new MutationObserver(drop);
+      removals.observe(document.documentElement, {
+        childList: true,
+        subtree: true,
+      });
+      fakeTopLayer(el);
     });
 
-    it("does not run on_cancel when it shows the dialog again", () => {
-      dispatch(el, "doggo:open");
+    afterEach(() => removals.disconnect());
 
-      hook.update();
+    // The first focusable descendant, as Chromium chooses it.
+    const focusable =
+      "[autofocus], button:not([disabled]), a[href], input, select, textarea, [tabindex]";
+
+    const toggle = (dialog, newState) => {
+      const event = new window.Event("beforetoggle");
+      event.newState = newState;
+      dialog.dispatchEvent(event);
+    };
+
+    const opener = () => {
+      const button = document.createElement("button");
+      document.body.append(button);
+      button.focus();
+      return button;
+    };
+
+    // The element `showModal()` records as the one to return focus to.
+    const recordReturn = () => {
+      const recorded = {};
+      const fake = el.showModal.getMockImplementation();
+      el.showModal.mockImplementation(() => {
+        recorded.returnTo = document.activeElement;
+        fake();
+      });
+      return recorded;
+    };
+
+    it("shows a moved dialog as a modal again", async () => {
+      await open();
+
+      move(el);
+      await settle();
+
+      expect(el.showModal).toHaveBeenCalledOnce();
+      expect(el.matches(":modal")).toBe(true);
+    });
+
+    it("does not run on_cancel when it shows the dialog again", async () => {
+      await open();
+
+      move(el);
+      await settle();
 
       expect(execJS).not.toHaveBeenCalled();
     });
 
-    it("leaves a modal dialog alone", () => {
-      dispatch(el, "doggo:open");
-      vi.spyOn(el, "matches").mockImplementation((s) => s === ":modal");
-      const showModal = vi.spyOn(el, "showModal");
+    it("keeps focus inside the dialog", async () => {
+      el.innerHTML = "<button>First</button><button>Second</button>";
+      await open();
+      const button = el.querySelectorAll("button")[1];
+      button.focus();
 
-      hook.update();
+      move(el);
+      await settle();
 
-      expect(showModal).not.toHaveBeenCalled();
+      expect(document.activeElement).toBe(button);
     });
 
-    it("leaves a closed dialog closed", () => {
-      hook.update();
+    it("keeps focus off the autofocus element", async () => {
+      el.innerHTML = "<button autofocus>First</button><button>Second</button>";
+      await open();
+      const second = el.querySelectorAll("button")[1];
+      second.focus();
+
+      move(el);
+      await settle();
+
+      expect(document.activeElement).toBe(second);
+    });
+
+    it("focuses the opener before it shows the dialog again", async () => {
+      const button = opener();
+      el.innerHTML = "<button>Inside</button>";
+      await open();
+      el.querySelector("button").focus();
+      const recorded = recordReturn();
+
+      move(el);
+      await settle();
+
+      expect(recorded.returnTo).toBe(button);
+    });
+
+    it("does not scroll to the opener", async () => {
+      const button = opener();
+      await open();
+      const focus = vi.spyOn(button, "focus");
+
+      move(el);
+      await settle();
+
+      expect(focus).toHaveBeenCalledWith({ preventScroll: true });
+    });
+
+    it("records the opener when the command fill opens it", async () => {
+      const button = opener();
+      button.setAttribute("command", "show-modal");
+      button.setAttribute("commandfor", el.id);
+      el.innerHTML = "<button>Inside</button>";
+      button.click();
+      el.querySelector("button").focus();
+      await settle();
+      const recorded = recordReturn();
+
+      move(el);
+      await settle();
+
+      expect(recorded.returnTo).toBe(button);
+    });
+
+    it("takes the opener from beforetoggle when the browser opens it", async () => {
+      beforetoggle = true;
+      const button = opener();
+      el.innerHTML = "<button>Inside</button>";
+      el.showModal();
+      el.querySelector("button").focus();
+      await settle();
+      const recorded = recordReturn();
+
+      move(el);
+      await settle();
+
+      expect(recorded.returnTo).toBe(button);
+    });
+
+    it("keeps the opener when focus comes back from outside", async () => {
+      const button = opener();
+      el.innerHTML = "<button>Inside</button>";
+      await open();
+      opener();
+      el.querySelector("button").focus();
+      const recorded = recordReturn();
+
+      move(el);
+      await settle();
+
+      expect(recorded.returnTo).toBe(button);
+    });
+
+    it("keeps the opener when it cannot take focus during the re-show", async () => {
+      beforetoggle = true;
+      const button = opener();
+      el.innerHTML = "<button>Inside</button>";
+      await open();
+      el.querySelector("button").focus();
+      const focus = vi.spyOn(button, "focus").mockImplementation(() => {});
+      move(el);
+      await settle();
+      focus.mockRestore();
+      const recorded = recordReturn();
+
+      move(el);
+      await settle();
+
+      expect(recorded.returnTo).toBe(button);
+    });
+
+    it("forgets the opener once the dialog closes", async () => {
+      const button = opener();
+      await open();
+      el.close();
+      await settle();
+      button.blur();
+      el.showModal();
+      await settle();
+      const recorded = recordReturn();
+
+      move(el);
+      await settle();
+
+      expect(recorded.returnTo).not.toBe(button);
+    });
+
+    it("shows the dialog again when an element around it moves", async () => {
+      const outer = document.createElement("div");
+      const inner = document.createElement("div");
+      document.body.append(outer);
+      outer.append(inner);
+      inner.append(el);
+      await open();
+
+      move(outer);
+      await settle();
+
+      expect(el.showModal).toHaveBeenCalledOnce();
+    });
+
+    it("ignores changes elsewhere on the page", async () => {
+      await open();
+
+      document.body.append(document.createElement("p"));
+      await settle();
+
+      expect(el.showModal).not.toHaveBeenCalled();
+    });
+
+    it("leaves a dialog opened without showModal alone", async () => {
+      el.setAttribute("open", "");
+      await settle();
+
+      move(el);
+      await settle();
+
+      expect(el.showModal).not.toHaveBeenCalled();
+    });
+
+    it("leaves a closed dialog closed", async () => {
+      move(el);
+      await settle();
 
       expect(el.open).toBe(false);
+    });
+
+    it("leaves a dialog closed if it closes in the same task as the move", async () => {
+      await open();
+
+      move(el);
+      el.close();
+      await settle();
+
+      expect(el.showModal).not.toHaveBeenCalled();
+      expect(el.open).toBe(false);
+    });
+
+    it("stops watching once the dialog closes", async () => {
+      await open();
+      el.close();
+      await settle();
+      el.setAttribute("open", "");
+
+      move(el);
+      await settle();
+
+      expect(el.showModal).not.toHaveBeenCalled();
+    });
+
+    it("watches a dialog that is open when the hook starts", async () => {
+      hook.destroy();
+      el.showModal();
+      hook = initDialog(el, { execJS });
+      el.showModal.mockClear();
+
+      move(el);
+      await settle();
+
+      expect(el.showModal).toHaveBeenCalledOnce();
+    });
+
+    it("does not show a removed dialog", async () => {
+      await open();
+
+      el.remove();
+      await settle();
+
+      expect(el.showModal).not.toHaveBeenCalled();
+    });
+
+    it("stops watching once destroyed", async () => {
+      await open();
+
+      hook.destroy();
+      move(el);
+      await settle();
+
+      expect(el.showModal).not.toHaveBeenCalled();
+    });
+
+    it("does not watch a dialog opened after it is destroyed", async () => {
+      hook.destroy();
+      el.showModal();
+      await settle();
+      el.showModal.mockClear();
+
+      move(el);
+      await settle();
+
+      expect(el.showModal).not.toHaveBeenCalled();
+    });
+
+    describe("with a dialog opened over it", () => {
+      let over;
+      let overHook;
+
+      beforeEach(() => {
+        over = el.cloneNode(true);
+        over.id = "over";
+        document.body.append(over);
+        fakeTopLayer(over);
+        overHook = initDialog(over, { execJS });
+      });
+
+      afterEach(() => overHook.destroy());
+
+      const openBoth = async () => {
+        await open();
+        dispatch(over, "doggo:open");
+        await settle();
+        over.showModal.mockClear();
+      };
+
+      it("keeps the dialog above on top", async () => {
+        await openBoth();
+        const inside = over.querySelectorAll("button")[1];
+        inside.focus();
+
+        move(el);
+        await settle();
+
+        expect(topLayer).toEqual([el, over]);
+        expect(document.activeElement).toBe(inside);
+      });
+
+      it("shows each dialog again once when both move", async () => {
+        const wrapper = document.createElement("div");
+        document.body.append(wrapper);
+        wrapper.append(el, over);
+        await openBoth();
+
+        move(wrapper);
+        await settle();
+
+        expect(topLayer).toEqual([el, over]);
+        expect(el.showModal).toHaveBeenCalledOnce();
+        expect(over.showModal).toHaveBeenCalledOnce();
+      });
+
+      it("keeps the order through repeated moves", async () => {
+        await openBoth();
+
+        move(el);
+        await settle();
+        move(el);
+        await settle();
+
+        expect(topLayer).toEqual([el, over]);
+        expect(el.showModal).toHaveBeenCalledTimes(2);
+        expect(over.showModal).toHaveBeenCalledTimes(2);
+      });
+
+      it("leaves the dialog above alone when the one below is removed", async () => {
+        await openBoth();
+
+        el.remove();
+        await settle();
+
+        expect(over.showModal).not.toHaveBeenCalled();
+      });
+
+      it("leaves the dialog above alone once the one below is destroyed", async () => {
+        await openBoth();
+
+        hook.destroy();
+        move(el);
+        await settle();
+
+        expect(el.showModal).not.toHaveBeenCalled();
+        expect(over.showModal).not.toHaveBeenCalled();
+      });
+
+      it("leaves the dialog below alone when the one above moves", async () => {
+        await openBoth();
+
+        move(over);
+        await settle();
+
+        expect(el.showModal).not.toHaveBeenCalled();
+        expect(topLayer).toEqual([el, over]);
+      });
+
+      it("keeps the order when a closed dialog's hook mounts", async () => {
+        await open();
+        const closed = el.cloneNode(true);
+        closed.id = "closed";
+        document.body.append(closed);
+        initDialog(closed).destroy();
+
+        move(el);
+        await settle();
+
+        expect(el.showModal).toHaveBeenCalledOnce();
+      });
+
+      it("shows the dialogs above when one of them fails", async () => {
+        const reportError = vi.fn();
+        vi.stubGlobal("reportError", reportError);
+        const third = el.cloneNode(true);
+        third.id = "third";
+        document.body.append(third);
+        fakeTopLayer(third);
+        const thirdHook = initDialog(third, { execJS });
+        await openBoth();
+        dispatch(third, "doggo:open");
+        await settle();
+        over.showModal.mockImplementation(() => {
+          throw new Error("failed");
+        });
+
+        move(el);
+        await settle();
+
+        expect(reportError).toHaveBeenCalledOnce();
+        expect(topLayer).toEqual([el, third]);
+        thirdHook.destroy();
+        vi.unstubAllGlobals();
+      });
+
+      it("leaves out a dialog that closed", async () => {
+        await openBoth();
+        over.close();
+        await settle();
+
+        move(el);
+        await settle();
+
+        expect(over.showModal).not.toHaveBeenCalled();
+        expect(topLayer).toEqual([el]);
+      });
+
+      it("leaves out a dialog that was removed", async () => {
+        await openBoth();
+        over.remove();
+        await settle();
+
+        move(el);
+        await settle();
+
+        expect(over.showModal).not.toHaveBeenCalled();
+        expect(topLayer).toEqual([el]);
+      });
+
+      it("leaves out a dialog whose hook was destroyed", async () => {
+        await openBoth();
+        overHook.destroy();
+
+        move(el);
+        await settle();
+
+        expect(over.showModal).not.toHaveBeenCalled();
+      });
+
+      it("leaves out a dialog opened without showModal", async () => {
+        await open();
+        over.setAttribute("open", "");
+        await settle();
+
+        move(el);
+        await settle();
+
+        expect(over.showModal).not.toHaveBeenCalled();
+      });
     });
   });
 

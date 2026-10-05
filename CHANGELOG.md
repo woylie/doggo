@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.18.2] - 2026-10-05
+
+### Fixed
+
+- `alert_dialog`, `modal`: Show an open dialog as a modal again when a patch moves it without changing it, which 0.18.1 missed. Dialogs opened over it stay on top. Focus stays where it was, and goes back to the opener when the dialog closes.
+
 ## [0.18.1] - 2026-10-05
 
 ### Fixed
@@ -1029,7 +1035,8 @@ After:
 
 Initial release.
 
-[Unreleased]: https://github.com/woylie/doggo/compare/0.18.1...HEAD
+[Unreleased]: https://github.com/woylie/doggo/compare/0.18.2...HEAD
+[0.18.2]: https://github.com/woylie/doggo/compare/0.18.1...0.18.2
 [0.18.1]: https://github.com/woylie/doggo/compare/0.18.0...0.18.1
 [0.18.0]: https://github.com/woylie/doggo/compare/0.17.0...0.18.0
 [0.17.0]: https://github.com/woylie/doggo/compare/0.16.1...0.17.0

@@ -1,6 +1,6 @@
 {
   "name": "@woylie/doggo",
-  "version": "0.18.1",
+  "version": "0.18.2",
   "description": "JavaScript hooks for the Doggo component library",
   "keywords": ["phoenix", "liveview", "hooks", "components", "accessibility"],
   "homepage": "https://hexdocs.pm/doggo",
