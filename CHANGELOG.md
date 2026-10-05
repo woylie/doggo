@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- `alert_dialog`, `modal`: Show an open dialog as a modal again after a patch moves it in the DOM, instead of leaving it open in the page.
+
 ## [0.18.0] - 2026-10-02
 
 ### Added

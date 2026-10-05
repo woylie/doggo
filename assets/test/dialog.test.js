@@ -71,6 +71,45 @@ describe("initDialog", () => {
     expect(execJS).not.toHaveBeenCalled();
   });
 
+  // happy-dom does not match `:modal`, so an open dialog here behaves like one
+  // that a patch moved out of the top layer.
+  describe("after a patch", () => {
+    it("shows a moved dialog as a modal again", () => {
+      dispatch(el, "doggo:open");
+      document.body.appendChild(el);
+      const showModal = vi.spyOn(el, "showModal");
+
+      hook.update();
+
+      expect(showModal).toHaveBeenCalledOnce();
+      expect(el.open).toBe(true);
+    });
+
+    it("does not run on_cancel when it shows the dialog again", () => {
+      dispatch(el, "doggo:open");
+
+      hook.update();
+
+      expect(execJS).not.toHaveBeenCalled();
+    });
+
+    it("leaves a modal dialog alone", () => {
+      dispatch(el, "doggo:open");
+      vi.spyOn(el, "matches").mockImplementation((s) => s === ":modal");
+      const showModal = vi.spyOn(el, "showModal");
+
+      hook.update();
+
+      expect(showModal).not.toHaveBeenCalled();
+    });
+
+    it("leaves a closed dialog closed", () => {
+      hook.update();
+
+      expect(el.open).toBe(false);
+    });
+  });
+
   describe("without the command attribute", () => {
     it("opens from a button outside the dialog", () => {
       const opener = document.createElement("button");
