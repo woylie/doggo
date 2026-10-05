@@ -57,7 +57,23 @@ export function initDialog(dialog, { execJS = () => {} } = {}) {
     });
   }
 
+  // A patch that moves the dialog takes it out of the top layer and leaves it
+  // open but not modal. Removing `open` instead of calling `close()` keeps
+  // `on_cancel` from running.
+  const update = () => {
+    if (!dialog.open || dialog.matches(":modal")) return;
+
+    const focused = document.activeElement;
+
+    dialog.removeAttribute("open");
+    dialog.showModal();
+
+    if (dialog.contains(focused)) focused.focus();
+  };
+
   return {
+    update,
+
     destroy() {
       if (invoke) document.removeEventListener("click", invoke);
     },
@@ -69,6 +85,10 @@ export default {
     this.instance = initDialog(this.el, {
       execJS: (el, command) => this.liveSocket.execJS(el, command),
     });
+  },
+
+  updated() {
+    this.instance.update();
   },
 
   destroyed() {

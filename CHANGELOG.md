@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.18.1] - 2026-10-05
+
+### Fixed
+
+- `alert_dialog`, `modal`: Show an open dialog as a modal again after a patch moves it in the DOM, instead of leaving it open in the page.
+
 ## [0.18.0] - 2026-10-02
 
 ### Added
@@ -1023,7 +1029,8 @@ After:
 
 Initial release.
 
-[Unreleased]: https://github.com/woylie/doggo/compare/0.18.0...HEAD
+[Unreleased]: https://github.com/woylie/doggo/compare/0.18.1...HEAD
+[0.18.1]: https://github.com/woylie/doggo/compare/0.18.0...0.18.1
 [0.18.0]: https://github.com/woylie/doggo/compare/0.17.0...0.18.0
 [0.17.0]: https://github.com/woylie/doggo/compare/0.16.1...0.17.0
 [0.16.1]: https://github.com/woylie/doggo/compare/0.16.0...0.16.1
