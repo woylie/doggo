@@ -50,6 +50,8 @@ defmodule DemoWeb.PatchTestLive do
        inside: true,
        wrap: false,
        resend: 0,
+       order: [:first, :second, :dialog],
+       note: false,
        slides: [1, 2, 3]
      )}
   end
@@ -79,6 +81,14 @@ defmodule DemoWeb.PatchTestLive do
 
   def handle_event("resend", _params, socket) do
     {:noreply, update(socket, :resend, &(&1 + 1))}
+  end
+
+  def handle_event("reorder", _params, socket) do
+    {:noreply, update(socket, :order, &move_dialog/1)}
+  end
+
+  def handle_event("toggle_note", _params, socket) do
+    {:noreply, assign(socket, :note, not socket.assigns.note)}
   end
 
   def handle_event("add_slide", _params, socket) do
@@ -215,6 +225,8 @@ defmodule DemoWeb.PatchTestLive do
             tick={@tick}
             inside={@inside}
             slides={@slides}
+            order={@order}
+            note={@note}
             now={@now}
           />
         </div>
@@ -224,12 +236,18 @@ defmodule DemoWeb.PatchTestLive do
           tick={@tick}
           inside={@inside}
           slides={@slides}
+          order={@order}
+          note={@note}
           now={@now}
         />
       </CoreComponents.stack>
     </div>
     """
   end
+
+  # The dialog goes to the other end of the list, so every reorder moves it.
+  defp move_dialog([:dialog | notes]), do: notes ++ [:dialog]
+  defp move_dialog(order), do: [:dialog | List.delete(order, :dialog)]
 
   # An empty list renders the unwrapped branch instead. The counter is the
   # element rather than the length, so that a re-send changes the comprehension
@@ -241,6 +259,8 @@ defmodule DemoWeb.PatchTestLive do
   attr :tick, :integer, required: true
   attr :inside, :boolean, required: true
   attr :slides, :list, required: true
+  attr :order, :list, required: true
+  attr :note, :boolean, required: true
   attr :now, DateTime, required: true
 
   defp components(assigns) do
@@ -280,6 +300,55 @@ defmodule DemoWeb.PatchTestLive do
           </CoreComponents.button>
         </:footer>
       </CoreComponents.modal>
+      <h3>Reorder</h3>
+      <p>
+        <strong>Reorder from inside</strong>
+        moves the modal to the other end of a keyed comprehension. The patch
+        moves the modal without changing it.
+      </p>
+      <div>
+        <CoreComponents.button phx-click={Doggo.JS.show_modal("test-modal-reorder")}>
+          Open the reorder modal
+        </CoreComponents.button>
+      </div>
+      <div :for={item <- @order} :key={item} id={"reorder-#{item}"}>
+        <p :if={item != :dialog}>A note in the comprehension.</p>
+        <CoreComponents.modal :if={item == :dialog} id="test-modal-reorder">
+          <:title>Reorder</:title>
+          <p>Reorder and see whether this stays a modal.</p>
+          <:footer>
+            <CoreComponents.button id="reorder" phx-click="reorder">
+              Reorder from inside
+            </CoreComponents.button>
+            <CoreComponents.button phx-click={
+              Doggo.JS.hide_modal("test-modal-reorder")
+            }>
+              Close
+            </CoreComponents.button>
+          </:footer>
+        </CoreComponents.modal>
+      </div>
+      <h3>In a live component</h3>
+      <p>
+        <strong>Toggle the note from inside</strong>
+        renders a note before a live component that holds the modal. The live
+        component does not change, so LiveView skips it, and the patch moves
+        its root.
+      </p>
+      <div>
+        <CoreComponents.button phx-click={
+          Doggo.JS.show_modal("test-modal-in-component")
+        }>
+          Open the modal in a component
+        </CoreComponents.button>
+      </div>
+      <div>
+        <p :if={@note} id="note">A note before the live component.</p>
+        <.live_component
+          module={DemoWeb.PatchTestModalInComponent}
+          id="test-modal-component"
+        />
+      </div>
     </CoreComponents.stack>
     <CoreComponents.stack :if={@component == "alert_dialog"}>
       <h2>alert_dialog</h2>

@@ -4,16 +4,36 @@
 const hasCommand = () => "command" in HTMLButtonElement.prototype;
 const hasClosedBy = () => "closedBy" in HTMLDialogElement.prototype;
 
+// The modals of every instance in opening order, so that one shown again goes
+// back under the ones opened after it.
+const opened = [];
+
 // `execJS` is the one thing a framework has to supply: the dialog runs the
 // caller's `on_cancel` when it closes, and only the framework knows how.
 export function initDialog(dialog, { execJS = () => {} } = {}) {
   let invoke;
+  let opener;
 
   const closedBy = () => dialog.getAttribute("closedby");
 
+  // The element the browser returns focus to on close.
+  const remember = () => {
+    opener = document.activeElement;
+  };
+
+  const showModal = () => {
+    remember();
+    dialog.showModal();
+  };
+
+  // Opening paths other than Doggo's, in browsers that fire it for dialogs.
+  dialog.addEventListener("beforetoggle", (e) => {
+    if (e.newState === "open") remember();
+  });
+
   // Dispatched by `Doggo.show_modal/2`.
   dialog.addEventListener("doggo:open", () => {
-    if (!dialog.open) dialog.showModal();
+    if (!dialog.open) showModal();
   });
 
   // Dispatched by `Doggo.hide_modal/2`.
@@ -36,7 +56,7 @@ export function initDialog(dialog, { execJS = () => {} } = {}) {
 
       const command = button.getAttribute("command");
 
-      if (command === "show-modal" && !dialog.open) dialog.showModal();
+      if (command === "show-modal" && !dialog.open) showModal();
       else if (command === "close") dialog.close();
     };
 
@@ -57,24 +77,83 @@ export function initDialog(dialog, { execJS = () => {} } = {}) {
     });
   }
 
-  // A patch that moves the dialog takes it out of the top layer and leaves it
-  // open but not modal. Removing `open` instead of calling `close()` keeps
-  // `on_cancel` from running.
-  const update = () => {
-    if (!dialog.open || dialog.matches(":modal")) return;
+  // A move takes focus out of the dialog before the observer runs.
+  let focused;
 
-    const focused = document.activeElement;
+  dialog.addEventListener("focusin", (e) => {
+    focused = e.target;
+  });
 
+  const hide = () => {
+    if (!dialog.isConnected) return () => {};
+
+    const restore = focused;
+    const returnTo = opener;
+    // A dialog still in the top layer keeps its place there on `showModal()`.
+    dialog.parentNode.insertBefore(dialog, dialog.nextSibling);
+    // Not `close()`, which runs `on_cancel`.
     dialog.removeAttribute("open");
-    dialog.showModal();
 
-    if (dialog.contains(focused)) focused.focus();
+    return () => {
+      // `showModal()` records the focused element as the one to return to.
+      returnTo?.focus({ preventScroll: true });
+      dialog.showModal();
+      opener = returnTo;
+      restore?.focus();
+    };
   };
 
-  return {
-    update,
+  // A move takes the dialog out of the top layer and leaves it open. A patch
+  // can move it without changing it, and LiveView then calls no `updated`.
+  const moves = new MutationObserver(() => {
+    // Browsers that notify in creation order run this before `toggles`.
+    if (toggles.takeRecords().length) return toggled();
+    if (!dialog.isConnected || !dialog.open || dialog.matches(":modal")) return;
 
+    const index = opened.indexOf(hide);
+    if (index < 0) return;
+
+    // All leave the top layer before the first is shown, so that no opener is
+    // inert when it takes focus.
+    for (const show of opened.slice(index).map((other) => other())) {
+      try {
+        show();
+      } catch (error) {
+        reportError(error);
+      }
+    }
+  });
+
+  const forget = () => {
+    const index = opened.indexOf(hide);
+    if (index >= 0) opened.splice(index, 1);
+  };
+
+  const toggled = () => {
+    if (!dialog.open) opener = undefined;
+
+    if (dialog.matches(":modal")) {
+      if (!opened.includes(hide)) opened.push(hide);
+
+      moves.observe(document.documentElement, {
+        childList: true,
+        subtree: true,
+      });
+    } else {
+      forget();
+      moves.disconnect();
+    }
+  };
+
+  const toggles = new MutationObserver(toggled);
+  toggles.observe(dialog, { attributes: true, attributeFilter: ["open"] });
+  toggled();
+
+  return {
     destroy() {
+      forget();
+      toggles.disconnect();
+      moves.disconnect();
       if (invoke) document.removeEventListener("click", invoke);
     },
   };
@@ -85,10 +164,6 @@ export default {
     this.instance = initDialog(this.el, {
       execJS: (el, command) => this.liveSocket.execJS(el, command),
     });
-  },
-
-  updated() {
-    this.instance.update();
   },
 
   destroyed() {

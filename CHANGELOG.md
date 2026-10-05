@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- `alert_dialog`, `modal`: Show an open dialog as a modal again when a patch moves it without changing it, which 0.18.1 missed. Dialogs opened over it stay on top. Focus stays where it was, and goes back to the opener when the dialog closes.
+
 ## [0.18.1] - 2026-10-05
 
 ### Fixed
