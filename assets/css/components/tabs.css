@@ -11,6 +11,7 @@
     --tabs-tab-color: var(--color-text-muted);
     --tabs-tab-color-selected: var(--color-text-default);
     --tabs-tab-background-hover: var(--color-background-surface);
+    --tabs-tab-color-disabled: var(--color-text-disabled);
     --tabs-outline-width: var(--border-width-md);
     --tabs-outline-color: var(--color-border-primary-solid);
     --tabs-outline-offset: var(--border-width-sm);
@@ -34,8 +35,13 @@
         border: none;
         border-block-end: var(--tabs-indicator-width) solid transparent;
 
-        &:hover {
+        &:not([aria-disabled="true"]):hover {
           background: var(--tabs-tab-background-hover);
+        }
+
+        &[aria-disabled="true"] {
+          color: var(--tabs-tab-color-disabled);
+          cursor: not-allowed;
         }
 
         &:focus-visible {
