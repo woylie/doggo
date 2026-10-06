@@ -559,6 +559,13 @@ defmodule DemoWeb.PatchTestLive do
           sync
         />
       </p>
+      <p>
+        Relative with a pattern, hover:
+        <CoreComponents.relative_time
+          value={DateTime.add(@now, -@tick, :minute)}
+          localize="%Y-%m-%d %H:%M"
+        />
+      </p>
     </CoreComponents.stack>
     """
   end

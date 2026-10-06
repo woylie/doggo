@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `tabs`: Add a `disabled` attribute to the `:panel` slot. A disabled tab can be focused with the arrow keys but not selected.
 
+### Fixed
+
+- `relative_time`: With `localize`, show the `title` in the same format and time zone as the text.
+
 ## [0.18.2] - 2026-10-05
 
 ### Fixed

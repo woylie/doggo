@@ -100,8 +100,7 @@ defmodule Doggo.Components.RelativeTime do
 
         The absolute value is the text without JavaScript and before the
         script runs. The browser also shows it past the `threshold` and when
-        printing, unless `localize` is set, and in the `title`, unless
-        `localize` has `:title`.
+        printing and in the `title`, unless `localize` is set.
         """
 
       attr :timezone, :string,
@@ -162,7 +161,9 @@ defmodule Doggo.Components.RelativeTime do
         default: nil,
         doc: """
         The format of the absolute value in the browser, past the `threshold`
-        and in the `title`. Takes the same values as for `datetime`.
+        and in the `title`. Takes the same values as for `datetime`. The
+        `title` has the format of `:title` if given, and the format of the
+        text otherwise, in the same time zone as the text.
         """
 
       attr :rest, :global, doc: "Any additional HTML attributes."
