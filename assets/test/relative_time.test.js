@@ -133,6 +133,34 @@ describe("relativeTimes", () => {
     });
   });
 
+  describe("with localize", () => {
+    it("writes the title in the format and zone of localize", () => {
+      const el = relative(
+        `datetime="${at(-3 * 3600)}" data-relative="datetime"
+         data-localize="datetime" data-localize-pattern="%Y-%m-%d %H:%M" data-localize-zone="Europe/Copenhagen"`,
+        "2026-09-30 09:00",
+      );
+
+      relativeTimes(el.parentElement);
+
+      expect(el.textContent).toBe("3 hours ago");
+      expect(el.title).toBe("2026-09-30 11:00");
+    });
+
+    it("writes the title in the title format of localize", () => {
+      const el = relative(
+        `datetime="${at(-3 * 3600)}" data-relative="datetime"
+         data-localize="datetime" data-localize-pattern="%Y-%m-%d" data-localize-title="%Y-%m-%d %H:%M"
+         data-localize-zone="Europe/Copenhagen"`,
+        "2026-09-30",
+      );
+
+      relativeTimes(el.parentElement);
+
+      expect(el.title).toBe("2026-09-30 11:00");
+    });
+  });
+
   describe("with sync", () => {
     it("updates the text as time passes", async () => {
       const el = relative(

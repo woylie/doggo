@@ -124,7 +124,7 @@ function absoluteOrFallback(el) {
     try {
       const result = absolute(el, el.dataset.localize);
       if (result) {
-        return { text: result.text, title: result.title || fallbacks.get(el) };
+        return { text: result.text, title: result.title || result.text };
       }
     } catch {
       // An unknown zone or option falls back to the server text.
