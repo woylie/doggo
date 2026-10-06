@@ -52,6 +52,39 @@ if Code.ensure_loaded?(PhoenixStorybook.Story) do
             labelledby: "dog-breed-profiles-heading"
           },
           slots: slots()
+        },
+        %Variation{
+          id: :disabled_tab,
+          attributes: %{
+            id: "dog-breed-profiles",
+            label: "Dog Breed Profiles"
+          },
+          slots: [
+            """
+            <:panel label="Golden Retriever">
+              <p>
+                Friendly, intelligent, great with families. Origin: Scotland.
+                Needs regular exercise.
+              </p>
+            </:panel>
+            """,
+            """
+            <:panel label="Siberian Husky" disabled>
+              <p>
+                Energetic, outgoing, distinctive appearance. Origin: Northeast
+                Asia. Loves cold climates.
+              </p>
+            </:panel>
+            """,
+            """
+            <:panel label="Dachshund">
+              <p>
+                Playful, stubborn, small size. Origin: Germany. Enjoys sniffing
+                games.
+              </p>
+            </:panel>
+            """
+          ]
         }
       ]
     end

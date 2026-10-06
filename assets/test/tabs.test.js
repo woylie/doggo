@@ -140,4 +140,61 @@ describe("initTabs", () => {
 
     expect(selected(el)).toBe(1);
   });
+
+  describe("with a disabled tab", () => {
+    beforeEach(() => {
+      el.querySelector("#tabs-tab-2").setAttribute("aria-disabled", "true");
+    });
+
+    it("focuses a disabled tab without selecting it", () => {
+      press(document.activeElement, "ArrowRight");
+
+      expect(document.activeElement.id).toBe("tabs-tab-2");
+      expect(selected(el)).toBe(0);
+      expect(visiblePanels(el)).toEqual(["tabs-panel-1"]);
+      expect(tabOrder(el)).toEqual(["-1", "0", "-1"]);
+    });
+
+    it("selects the next enabled tab past a disabled one", () => {
+      press(document.activeElement, "ArrowRight");
+      press(document.activeElement, "ArrowRight");
+
+      expect(selected(el)).toBe(2);
+      expect(document.activeElement.id).toBe("tabs-tab-3");
+    });
+
+    it("ignores a click on a disabled tab", () => {
+      el.querySelector("#tabs-tab-2").click();
+
+      expect(selected(el)).toBe(0);
+    });
+
+    it("ignores doggo:show-tab for a disabled tab", () => {
+      el.dispatchEvent(
+        new window.CustomEvent("doggo:show-tab", { detail: { index: 2 } }),
+      );
+
+      expect(selected(el)).toBe(0);
+    });
+
+    it("moves the selection off a tab disabled by a patch", () => {
+      el.querySelector("#tabs-tab-3").click();
+      el.querySelector("#tabs-tab-3").setAttribute("aria-disabled", "true");
+      hook.update();
+
+      expect(selected(el)).toBe(0);
+      expect(visiblePanels(el)).toEqual(["tabs-panel-1"]);
+    });
+  });
+
+  it("keeps the selection the server rendered on mount", () => {
+    el = render(fixture);
+    el.querySelector("#tabs-tab-1").setAttribute("aria-selected", "false");
+    el.querySelector("#tabs-tab-2").setAttribute("aria-selected", "true");
+    hook = initTabs(el);
+
+    hook.update();
+
+    expect(selected(el)).toBe(1);
+  });
 });

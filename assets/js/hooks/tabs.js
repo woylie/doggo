@@ -1,4 +1,11 @@
-import { clamp, selectTab, targetIndex } from "../navigation.js";
+import {
+  clamp,
+  selectTab,
+  setRovingTabindex,
+  targetIndex,
+} from "../navigation.js";
+
+const isDisabled = (tab) => tab.getAttribute("aria-disabled") === "true";
 
 export function initTabs(tabs) {
   const getTabs = () =>
@@ -9,7 +16,10 @@ export function initTabs(tabs) {
   const getPanels = () =>
     Array.from(tabs.querySelectorAll(':scope > [role="tabpanel"]'));
 
-  let selectedIdx = 0;
+  let selectedIdx = Math.max(
+    getTabs().findIndex((tab) => tab.getAttribute("aria-selected") === "true"),
+    0,
+  );
 
   const select = (idx) => {
     selectedIdx = idx;
@@ -26,16 +36,18 @@ export function initTabs(tabs) {
   };
 
   tabs.addEventListener("click", (e) => {
-    const idx = getTabs().indexOf(e.target.closest('[role="tab"]'));
+    const tab = e.target.closest('[role="tab"]');
+    const idx = getTabs().indexOf(tab);
 
-    if (idx >= 0) select(idx);
+    if (idx >= 0 && !isDisabled(tab)) select(idx);
   });
 
   // Dispatched by `Doggo.show_tab/3`. One-based index.
   tabs.addEventListener("doggo:show-tab", (e) => {
     const idx = e.detail.index - 1;
+    const tab = getTabs()[idx];
 
-    if (idx >= 0 && idx < getTabs().length) select(idx);
+    if (tab && !isDisabled(tab)) select(idx);
   });
 
   tabs.addEventListener("keydown", (e) => {
@@ -55,14 +67,27 @@ export function initTabs(tabs) {
     if (nextIdx === null) return;
 
     e.preventDefault();
-    select(nextIdx);
-    getTabs()[nextIdx].focus();
+
+    const allTabs = getTabs();
+
+    if (isDisabled(allTabs[nextIdx])) {
+      setRovingTabindex(allTabs, nextIdx);
+    } else {
+      select(nextIdx);
+    }
+
+    allTabs[nextIdx].focus();
   });
 
   const restoreSelection = () => {
-    const total = getTabs().length;
+    const allTabs = getTabs();
 
-    if (total > 0) select(clamp(selectedIdx, total));
+    if (allTabs.length === 0) return;
+
+    const idx = clamp(selectedIdx, allTabs.length);
+    const enabledIdx = allTabs.findIndex((tab) => !isDisabled(tab));
+
+    select(isDisabled(allTabs[idx]) && enabledIdx >= 0 ? enabledIdx : idx);
   };
 
   return { update: restoreSelection };

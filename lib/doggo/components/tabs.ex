@@ -56,7 +56,8 @@ defmodule Doggo.Components.Tabs do
     - `Home` and `End` - first and last tab.
     - `Enter` or `Space` - select the focused tab.
 
-    The tab list is a single tab stop.
+    The tab list is a single tab stop. The arrow keys, `Home` and `End` move
+    focus to a disabled tab but do not select it.
     """
   end
 
@@ -134,6 +135,15 @@ defmodule Doggo.Components.Tabs do
           The label of the tab, as a string or HEEx, such as
           `label={~H"Messages <.badge>3</.badge>"}`.
           """
+
+        attr :disabled, :boolean,
+          doc: """
+          Disables the tab. The tab is rendered with `aria-disabled="true"`
+          and cannot be selected, but it stays focusable so that keyboard
+          users can find it.
+
+          If the first tab is disabled, the first enabled tab is selected.
+          """
       end
     end
   end
@@ -151,6 +161,16 @@ defmodule Doggo.Components.Tabs do
           Doggo.ensure_name!(entry[:label], unquote(name), "label")
         end
       end
+
+      var!(assigns) =
+        Doggo.assign_derived(
+          var!(assigns),
+          [
+            selected:
+              (Enum.find_index(var!(assigns).panel, &(!&1[:disabled])) || 0) + 1
+          ],
+          [:panel]
+        )
 
       ~H"""
       <div
@@ -172,9 +192,10 @@ defmodule Doggo.Components.Tabs do
             type="button"
             role="tab"
             id={"#{@id}-tab-#{index}"}
-            aria-selected={to_string(index == 1)}
+            aria-selected={to_string(index == @selected)}
             aria-controls={"#{@id}-panel-#{index}"}
-            tabindex={if index == 1, do: "0", else: "-1"}
+            aria-disabled={panel[:disabled] && "true"}
+            tabindex={if index == @selected, do: "0", else: "-1"}
           >
             {panel.label}
           </button>
@@ -184,7 +205,7 @@ defmodule Doggo.Components.Tabs do
           id={"#{@id}-panel-#{index}"}
           role="tabpanel"
           aria-labelledby={"#{@id}-tab-#{index}"}
-          hidden={index != 1}
+          hidden={index != @selected}
         >
           {render_slot(panel)}
         </div>

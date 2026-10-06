@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- `tabs`: Add a `disabled` attribute to the `:panel` slot. A disabled tab can be focused with the arrow keys but not selected.
+
 ## [0.18.2] - 2026-10-05
 
 ### Fixed

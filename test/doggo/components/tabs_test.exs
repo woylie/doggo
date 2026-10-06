@@ -101,6 +101,67 @@ defmodule Doggo.Components.TabsTest do
       assert tabindexes == ["0", "-1", "-1"]
     end
 
+    test "renders a disabled tab" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tabs id="my-tabs" label="My Tabs">
+          <:panel label="Panel 1">some text</:panel>
+          <:panel label="Panel 2" disabled>some other text</:panel>
+        </TestComponents.tabs>
+        """)
+
+      assert attribute(html, "#my-tabs-tab-1", "aria-disabled") == nil
+      assert attribute(html, "#my-tabs-tab-2", "aria-disabled") == "true"
+    end
+
+    test "selects the first enabled tab" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tabs id="my-tabs" label="My Tabs">
+          <:panel label="Panel 1" disabled>some text</:panel>
+          <:panel label="Panel 2">some other text</:panel>
+          <:panel label="Panel 3">some more text</:panel>
+        </TestComponents.tabs>
+        """)
+
+      tabs = Floki.find(html, "button[role='tab']")
+
+      assert Enum.map(tabs, &attribute(&1, "aria-selected")) == [
+               "false",
+               "true",
+               "false"
+             ]
+
+      assert Enum.map(tabs, &attribute(&1, "tabindex")) == ["-1", "0", "-1"]
+
+      panels = Floki.find(html, "[role='tabpanel']")
+
+      assert Enum.map(panels, &attribute(&1, "hidden")) == [
+               "hidden",
+               nil,
+               "hidden"
+             ]
+    end
+
+    test "selects the first tab if every tab is disabled" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.tabs id="my-tabs" label="My Tabs">
+          <:panel label="Panel 1" disabled>some text</:panel>
+          <:panel label="Panel 2" disabled>some other text</:panel>
+        </TestComponents.tabs>
+        """)
+
+      assert attribute(html, "#my-tabs-tab-1", "aria-selected") == "true"
+      assert attribute(html, "#my-tabs-panel-1", "hidden") == nil
+    end
+
     test "renders labelledby as aria-labelledby" do
       assigns = %{}
 
