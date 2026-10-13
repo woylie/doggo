@@ -825,6 +825,7 @@ defmodule Doggo.Components.Field do
                   required={@required}
                   required_text={Doggo.build(:required_text)}
                   optional_text={Doggo.build(:optional_text)}
+                  announced
                   base_class={Doggo.build(:base_class)}
                 />
               </legend>
@@ -1209,6 +1210,7 @@ defmodule Doggo.Components.Field do
               required={@required}
               required_text={Doggo.build(:required_text)}
               optional_text={Doggo.build(:optional_text)}
+              announced
               base_class={Doggo.build(:base_class)}
             />
           </legend>
@@ -1461,11 +1463,13 @@ defmodule Doggo.Components.Field do
 
   # Inputs are announced as required by screen readers if the `required`
   # attribute is set. This makes this mark purely visual. `aria-hidden="true"`
-  # is added so that screen readers don't announce redundant information.
+  # is added so that screen readers don't announce redundant information,
+  # unless no input of the field has the attribute.
 
   attr :required, :boolean, required: true
   attr :required_text, :any, required: true
   attr :optional_text, :any, required: true
+  attr :announced, :boolean, default: false
   attr :base_class, :string, required: true
 
   @doc false
@@ -1474,7 +1478,11 @@ defmodule Doggo.Components.Field do
     assigns = assign(assigns, kind: kind, text: text)
 
     ~H"""
-    <span :if={@text} class={"#{@base_class}-#{@kind}-mark"} aria-hidden="true">
+    <span
+      :if={@text}
+      class={"#{@base_class}-#{@kind}-mark"}
+      aria-hidden={!@announced && "true"}
+    >
       {@text}
     </span>
     """
