@@ -116,7 +116,7 @@ defmodule Doggo.Components.Field do
     | `invalid` | whether the field has errors, for `aria-invalid` |
     | `describedby` | for `aria-describedby`, `nil` without a description |
     | `errormessage` | for `aria-errormessage`, `nil` without errors |
-    | `validations` | the validation attributes derived from the changeset |
+    | `validations` | the validation attributes, without those the caller passed in `rest` |
     | `rest` | the global attributes the caller passed |
 
     The component you referenced renders the control:
@@ -174,10 +174,10 @@ defmodule Doggo.Components.Field do
 
     Note that the `class` attribute is applied to the outer container, while
     the `rest` global attribute is applied to the `<input>` element. In
-    `checkbox-group` and `radio-group`, it is applied to each control, and the
-    extra keys of a keyword option are applied after it. The exception is
-    `required` in a `checkbox-group`, where adding `required` to every checkbox
-    would require the user to check all of them. `autofocus` is applied to one
+    `checkbox-group` and `radio-group`, it is applied to each control. The extra
+    keys of a keyword option override it, except `required` and `autofocus`. A
+    `checkbox-group` does not apply `required` to its checkboxes, which would
+    require the user to check all of them. `autofocus` is applied to one
     control: the first checked one, otherwise the first one that is not
     disabled.
 
