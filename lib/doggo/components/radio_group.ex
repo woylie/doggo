@@ -165,6 +165,8 @@ defmodule Doggo.Components.RadioGroup do
           errors={[]}
           description={[]}
           required={@required}
+          rest={%{}}
+          autofocus_value={nil}
           base_class={Doggo.build(:base_class)}
         />
       </div>
@@ -199,7 +201,8 @@ defmodule Doggo.Components.RadioGroup do
         aria-errormessage={@errormessage}
         aria-invalid={@invalid}
         required={@required}
-        {@option_extra}
+        autofocus={@autofocus_value == {:value, @option_value}}
+        {Map.merge(@rest, Map.new(@option_extra))}
       />
       {@label}
     </label>
@@ -243,6 +246,8 @@ defmodule Doggo.Components.RadioGroup do
         errors={@errors}
         description={@description}
         required={@required}
+        rest={@rest}
+        autofocus_value={@autofocus_value}
         base_class={@base_class}
       />
     </fieldset>

@@ -951,6 +951,200 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input[value='blue']", "disabled") == nil
     end
 
+    test "renders global attributes on each control of a group" do
+      for type <- ~w(checkbox-group radio-group) do
+        assigns = %{form: to_form(%{}), type: type}
+
+        html =
+          parse_heex(~H"""
+          <.form for={@form}>
+            <TestComponents.field
+              field={@form[:size]}
+              type={@type}
+              label="Size"
+              options={[{"Small", "s"}, {"Big", [{"Large", "l"}]}]}
+              phx-change="validate"
+            />
+          </.form>
+          """)
+
+        for value <- ~w(s l) do
+          input = "input[value='#{value}']"
+          assert attribute(html, input, "phx-change") == "validate"
+        end
+
+        assert Floki.attribute(html, "fieldset", "phx-change") == []
+      end
+    end
+
+    test "renders autofocus on the first control of a group" do
+      for type <- ~w(checkbox-group radio-group) do
+        assigns = %{form: to_form(%{}), type: type}
+
+        html =
+          parse_heex(~H"""
+          <.form for={@form}>
+            <TestComponents.field
+              field={@form[:size]}
+              type={@type}
+              label="Size"
+              options={[{"Big", [{"Large", "l"}]}, {"Small", "s"}]}
+              autofocus
+            />
+          </.form>
+          """)
+
+        assert Floki.attribute(html, "input[autofocus]", "value") == ["l"]
+      end
+    end
+
+    test "renders autofocus on the checked radio" do
+      assigns = %{form: to_form(%{"size" => "s"})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:size]}
+            type="radio-group"
+            label="Size"
+            options={["l", "s"]}
+            autofocus
+          />
+        </.form>
+        """)
+
+      assert Floki.attribute(html, "input[autofocus]", "value") == ["s"]
+    end
+
+    test "renders autofocus on the first enabled control" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:size]}
+            type="checkbox-group"
+            label="Size"
+            options={[[key: "L", value: "l", disabled: true], {"S", "s"}]}
+            autofocus
+          />
+        </.form>
+        """)
+
+      assert Floki.attribute(html, "input[autofocus]", "value") == ["s"]
+    end
+
+    test "renders autofocus only on the option that sets it" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:size]}
+            type="radio-group"
+            label="Size"
+            options={[{"L", "l"}, [key: "S", value: "s", autofocus: true]]}
+            autofocus
+          />
+        </.form>
+        """)
+
+      assert Floki.attribute(html, "input[autofocus]", "value") == ["s"]
+    end
+
+    test "disables the hidden input of a disabled checkbox group" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:size]}
+            type="checkbox-group"
+            label="Size"
+            options={["l", "s"]}
+            disabled
+            form="sizes"
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "input[type='hidden']", "disabled") == "disabled"
+      assert attribute(html, "input[type='hidden']", "form") == "sizes"
+    end
+
+    test "marks a checkbox group as required instead of each checkbox" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:size]}
+            type="checkbox-group"
+            label="Size"
+            options={[{"Small", "s"}, {"Big", [{"Large", "l"}]}]}
+            required
+          />
+        </.form>
+        """)
+
+      assert Floki.attribute(html, "input", "required") == []
+      assert text(html, "legend > .field-required-mark") == "(required)"
+    end
+
+    test "renders required on each radio of a radio group" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:size]}
+            type="radio-group"
+            label="Size"
+            options={["s", "l"]}
+            required
+          />
+        </.form>
+        """)
+
+      assert Floki.attribute(html, "input", "required") == [
+               "required",
+               "required"
+             ]
+    end
+
+    test "renders option attributes over global attributes in a group" do
+      for type <- ~w(checkbox-group radio-group) do
+        assigns = %{form: to_form(%{}), type: type}
+
+        html =
+          parse_heex(~H"""
+          <.form for={@form}>
+            <TestComponents.field
+              field={@form[:size]}
+              type={@type}
+              label="Size"
+              options={[
+                [key: "Small", value: "s"],
+                [key: "Large", value: "l", "phx-change": "pick_large"]
+              ]}
+              phx-change="validate"
+            />
+          </.form>
+          """)
+
+        assert attribute(html, "input[value='s']", "phx-change") == "validate"
+
+        assert attribute(html, "input[value='l']", "phx-change") ==
+                 "pick_large"
+      end
+    end
+
     test "renders option descriptions in radio group" do
       assigns = %{form: to_form(%{})}
 
