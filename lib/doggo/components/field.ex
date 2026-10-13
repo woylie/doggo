@@ -1340,7 +1340,7 @@ defmodule Doggo.Components.Field do
   end
 
   @doc false
-  def assign_autofocus(%{rest: rest, options: options, value: value} = assigns) do
+  def assign_autofocus(%{rest: rest, options: options} = assigns) do
     {autofocus, rest} = Map.pop(rest, :autofocus)
     entries = Enum.flat_map(options, &option_entries/1)
 
@@ -1349,7 +1349,7 @@ defmodule Doggo.Components.Field do
 
     autofocus_value =
       if autofocus && not option_autofocus?,
-        do: autofocus_target(entries, value)
+        do: autofocus_target(entries, assigns[:value])
 
     Doggo.assign_derived(
       assigns,
