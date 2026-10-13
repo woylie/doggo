@@ -587,6 +587,26 @@ defmodule Doggo.Components.FieldTest do
                "data-visually-hidden"
     end
 
+    test "renders required text in legend for screen readers" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_with_group_type
+            field={@form[:perms]}
+            type="permissions"
+            label="Permissions"
+            options={[{"Read", "read", "See everything"}]}
+            required
+          />
+        </.form>
+        """)
+
+      assert text(html, "legend > .field-required-mark") == "(required)"
+      assert attribute(html, ".field-required-mark", "aria-hidden") == nil
+    end
+
     test "names group with legend" do
       assigns = %{form: to_form(%{"perms" => ["read"]})}
 
@@ -1164,6 +1184,26 @@ defmodule Doggo.Components.FieldTest do
 
       assert Floki.attribute(html, "input", "required") == []
       assert text(html, "legend > .field-required-mark") == "(required)"
+      assert attribute(html, ".field-required-mark", "aria-hidden") == nil
+    end
+
+    test "hides required text in a radio group from screen readers" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:size]}
+            type="radio-group"
+            label="Size"
+            options={["s", "l"]}
+            required
+          />
+        </.form>
+        """)
+
+      assert attribute(html, ".field-required-mark", "aria-hidden") == "true"
     end
 
     test "renders required on each radio of a radio group" do
