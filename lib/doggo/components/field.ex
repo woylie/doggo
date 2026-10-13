@@ -394,7 +394,8 @@ defmodule Doggo.Components.Field do
         doc: """
         If `true`, a hidden input with a `false` value is rendered before each
         checkbox, so that the form payload always has a parameter for that
-        field.
+        field. The hidden input has the same `disabled` and `form` attributes
+        as the checkbox. A disabled checkbox sends no parameter.
         """
 
       attr :on_text, :string,
@@ -755,7 +756,13 @@ defmodule Doggo.Components.Field do
               class={Doggo.build(:base_class, "-checkbox")}
               base_class={Doggo.build(:base_class)}
             >
-              <input :if={@hidden_input} type="hidden" name={@name} value="false" />
+              <input
+                :if={@hidden_input}
+                type="hidden"
+                name={@name}
+                value="false"
+                {Doggo.Form.hidden_input_attrs(@rest)}
+              />
               <input
                 type="checkbox"
                 name={@name}
@@ -960,7 +967,13 @@ defmodule Doggo.Components.Field do
               base_class={Doggo.build(:base_class)}
             >
               <span class={Doggo.build(:base_class, "-switch-label")} dir="auto">{@label}</span>
-              <input :if={@hidden_input} type="hidden" name={@name} value="false" />
+              <input
+                :if={@hidden_input}
+                type="hidden"
+                name={@name}
+                value="false"
+                {Doggo.Form.hidden_input_attrs(@rest)}
+              />
               <input
                 type="checkbox"
                 role="switch"
