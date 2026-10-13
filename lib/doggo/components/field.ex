@@ -173,7 +173,13 @@ defmodule Doggo.Components.Field do
     ### Class and Global Attribute
 
     Note that the `class` attribute is applied to the outer container, while
-    the `rest` global attribute is applied to the `<input>` element.
+    the `rest` global attribute is applied to the `<input>` element. In
+    `checkbox-group` and `radio-group`, it is applied to each control, and the
+    extra keys of a keyword option are applied after it. The exception is
+    `required` in a `checkbox-group`, where adding `required` to every checkbox
+    would require the user to check all of them. `autofocus` is applied to one
+    control: the first checked one, otherwise the first one that is not
+    disabled.
 
     ### Translations
 
@@ -794,6 +800,8 @@ defmodule Doggo.Components.Field do
           """
 
         %{type: "checkbox-group"} ->
+          var!(assigns) = unquote(__MODULE__).assign_autofocus(var!(assigns))
+
           ~H"""
           <div
             class={[Doggo.build(:base_class) | List.wrap(@class)]}
@@ -807,7 +815,7 @@ defmodule Doggo.Components.Field do
               >
                 {@label}
                 <Doggo.Components.Field.required_optional_mark
-                  required={@validations[:required] || false}
+                  required={@validations[:required] || @rest[:required] || false}
                   required_text={Doggo.build(:required_text)}
                   optional_text={Doggo.build(:optional_text)}
                   base_class={Doggo.build(:base_class)}
@@ -821,7 +829,12 @@ defmodule Doggo.Components.Field do
                 {render_slot(@description)}
               </Doggo.Components.Field.field_description>
               <div>
-                <input type="hidden" name={@name <> "[]"} value="" />
+                <input
+                  type="hidden"
+                  name={@name <> "[]"}
+                  value=""
+                  {Doggo.Form.hidden_input_attrs(@rest)}
+                />
                 <Doggo.Components.Field.checkbox
                   :for={option <- @options}
                   option={option}
@@ -832,6 +845,8 @@ defmodule Doggo.Components.Field do
                   description={@description}
                   describedby={@describedby}
                   errormessage={@errormessage}
+                  rest={Map.delete(@rest, :required)}
+                  autofocus_value={@autofocus_value}
                   base_class={Doggo.build(:base_class)}
                 />
               </div>
@@ -855,6 +870,8 @@ defmodule Doggo.Components.Field do
           """
 
         %{type: "radio-group"} ->
+          var!(assigns) = unquote(__MODULE__).assign_autofocus(var!(assigns))
+
           ~H"""
           <div
             class={[Doggo.build(:base_class) | List.wrap(@class)]}
@@ -891,6 +908,8 @@ defmodule Doggo.Components.Field do
                   errors={@errors}
                   description={@description}
                   required={@validations[:required] || false}
+                  rest={@rest}
+                  autofocus_value={@autofocus_value}
                   base_class={Doggo.build(:base_class)}
                 />
               </div>
@@ -1299,6 +1318,54 @@ defmodule Doggo.Components.Field do
     )
   end
 
+  @doc false
+  def assign_autofocus(%{rest: rest, options: options, value: value} = assigns) do
+    {autofocus, rest} = Map.pop(rest, :autofocus)
+    entries = Enum.flat_map(options, &option_entries/1)
+
+    option_autofocus? =
+      Enum.any?(entries, fn {_value, extra} -> extra[:autofocus] end)
+
+    autofocus_value =
+      if autofocus && not option_autofocus?,
+        do: autofocus_target(entries, value)
+
+    Doggo.assign_derived(
+      assigns,
+      [rest: rest, autofocus_value: autofocus_value],
+      [:rest, :options, :value]
+    )
+  end
+
+  defp option_entries({_group_label, options})
+       when is_list(options) or is_map(options) do
+    Enum.flat_map(options, &option_entries/1)
+  end
+
+  defp option_entries(option) when is_list(option) do
+    {_label, value, _description, extra} =
+      Doggo.Form.option_from_keyword(option)
+
+    [{value, extra}]
+  end
+
+  defp option_entries({_label, value}), do: [{value, []}]
+  defp option_entries(value), do: [{value, []}]
+
+  defp autofocus_target(entries, value) do
+    enabled = Enum.reject(entries, fn {_value, extra} -> extra[:disabled] end)
+
+    checked =
+      Enum.find(enabled, fn {option_value, _extra} ->
+        Doggo.Form.checked?(option_value, value)
+      end)
+
+    case checked || List.first(enabled) do
+      {option_value, _extra} -> {:value, option_value}
+      nil -> nil
+    end
+  end
+
   attr :for, :string, required: true, doc: "The ID of the input."
   attr :base_class, :string, required: true
   slot :inner_block, required: true
@@ -1512,7 +1579,8 @@ defmodule Doggo.Components.Field do
         aria-describedby={@describedby}
         aria-errormessage={@errormessage}
         aria-invalid={@errors != [] && "true"}
-        {@option_extra}
+        autofocus={@autofocus_value == {:value, @option_value}}
+        {Map.merge(@rest, Map.new(@option_extra))}
       />
       {@label}
     </label>
@@ -1557,6 +1625,8 @@ defmodule Doggo.Components.Field do
         description={@description}
         describedby={@describedby}
         errormessage={@errormessage}
+        rest={@rest}
+        autofocus_value={@autofocus_value}
         base_class={@base_class}
       />
     </fieldset>

@@ -452,6 +452,7 @@ defmodule Doggo.FixturesTest do
         label="Size"
         type="radio-group"
         options={[{"Small", "small"}, {"Large", "large"}]}
+        phx-change="validate"
       />
       """,
       "field.html"
