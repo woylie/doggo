@@ -10,7 +10,11 @@ const ORIENTATIONS = { menubar: "horizontal", menu: "vertical" };
 // example.
 const SEARCH_MS = 500;
 
-export function initMenu(menu) {
+const domWriter = {
+  setAttribute: (el, attr, value) => el.setAttribute(attr, value),
+};
+
+export function initMenu(menu, writer = domWriter) {
   const role = menu.getAttribute("role");
 
   // Read on demand, and only the items of this menu: `menu_group` and
@@ -74,13 +78,22 @@ export function initMenu(menu) {
 
     if (!button) return false;
 
-    menu.setAttribute("hidden", "");
-    button.setAttribute("aria-expanded", "false");
+    writer.setAttribute(menu, "hidden", "");
+    writer.setAttribute(button, "aria-expanded", "false");
 
     if (focusButton) button.focus();
 
     return true;
   };
+
+  // The ARIA Authoring Practices close a menu when an item is chosen, but not
+  // for checkbox and radio items. Enter and Space arrive as clicks, since the
+  // items are buttons.
+  menu.addEventListener("click", (e) => {
+    const item = e.target.closest('[role="menuitem"]:not([aria-haspopup])');
+
+    if (item && getItems().includes(item)) close();
+  });
 
   const closeOnClickOutside = (e) => {
     if (menu.hidden) return;
@@ -165,8 +178,14 @@ export function initMenu(menu) {
 }
 
 export default {
+  // The button opens the menu with a JS command that a patch applies again,
+  // so closing has to go through the same API.
   mounted() {
-    this.instance = initMenu(this.el);
+    const js = this.js();
+
+    this.instance = initMenu(this.el, {
+      setAttribute: (el, attr, value) => js.setAttribute(el, attr, value),
+    });
   },
 
   updated() {

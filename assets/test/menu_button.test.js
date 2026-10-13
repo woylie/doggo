@@ -51,4 +51,31 @@ describe("initMenuButton", () => {
 
     expect(button.getAttribute("aria-expanded")).toBe("false");
   });
+
+  describe("with a writer", () => {
+    it("writes the open state through the writer", () => {
+      const writes = [];
+      const opener = button.cloneNode(true);
+      button.replaceWith(opener);
+
+      initMenuButton(opener, {
+        setAttribute: (target, attr, value) => {
+          writes.push(["set", target.id, attr, value]);
+          target.setAttribute(attr, value);
+        },
+        removeAttribute: (target, attr) => {
+          writes.push(["remove", target.id, attr]);
+          target.removeAttribute(attr);
+        },
+      });
+
+      opener.focus();
+      press(opener, "ArrowDown");
+
+      expect(writes).toEqual([
+        ["remove", "menu", "hidden"],
+        ["set", "opener", "aria-expanded", "true"],
+      ]);
+    });
+  });
 });

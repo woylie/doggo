@@ -229,10 +229,46 @@ describe("initMenu", () => {
       );
     });
 
-    it("stays open when the click is inside the menu", () => {
-      el.querySelector('[role="menuitem"]').dispatchEvent(
-        new window.MouseEvent("click", { bubbles: true }),
+    const click = (selector) =>
+      el
+        .querySelector(selector)
+        .dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
+
+    it("closes when an item is chosen and focuses the button", () => {
+      click('[role="menuitem"]');
+
+      const button = document.getElementById("opener");
+
+      expect(el.hasAttribute("hidden")).toBe(true);
+      expect(button.getAttribute("aria-expanded")).toBe("false");
+      expect(document.activeElement).toBe(button);
+    });
+
+    it("stays open when a checkbox item is chosen", () => {
+      click('[role="menuitemcheckbox"]');
+
+      expect(el.hasAttribute("hidden")).toBe(false);
+    });
+
+    it("stays open when a radio item is chosen", () => {
+      click('[role="menuitemradio"]');
+
+      expect(el.hasAttribute("hidden")).toBe(false);
+    });
+
+    it("stays open when an item that opens a submenu is chosen", () => {
+      el.querySelector('[role="menuitem"]').setAttribute(
+        "aria-haspopup",
+        "true",
       );
+
+      click('[role="menuitem"]');
+
+      expect(el.hasAttribute("hidden")).toBe(false);
+    });
+
+    it("leaves the items of a submenu to its own hook", () => {
+      click('#submenu [role="menuitem"]');
 
       expect(el.hasAttribute("hidden")).toBe(false);
     });
@@ -278,12 +314,46 @@ describe("initMenu", () => {
     });
   });
 
+  describe("with a writer", () => {
+    it("writes the closed state through the writer", () => {
+      const writes = [];
+      document.body.innerHTML =
+        '<button id="opener" aria-controls="menu" aria-expanded="true">' +
+        "Actions</button>";
+      document.body.insertAdjacentHTML("beforeend", fixture);
+      const el = document.getElementById("menu");
+
+      initMenu(el, {
+        setAttribute: (target, attr, value) => {
+          writes.push([target.id, attr, value]);
+          target.setAttribute(attr, value);
+        },
+      });
+
+      el.querySelector('[role="menuitem"]').focus();
+      press(document.activeElement, "Escape");
+
+      expect(writes).toEqual([
+        ["menu", "hidden", ""],
+        ["opener", "aria-expanded", "false"],
+      ]);
+    });
+  });
+
   describe("with a menu bar", () => {
     let el;
 
     beforeEach(() => {
       el = render(barFixture);
       initMenu(el);
+    });
+
+    it("stays open when an item is chosen", () => {
+      el.querySelector('[role="menuitem"]').dispatchEvent(
+        new window.MouseEvent("click", { bubbles: true }),
+      );
+
+      expect(el.hasAttribute("hidden")).toBe(false);
     });
 
     it("moves with the horizontal keys", () => {

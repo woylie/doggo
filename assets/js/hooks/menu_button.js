@@ -1,4 +1,9 @@
-export function initMenuButton(button) {
+const domWriter = {
+  setAttribute: (el, attr, value) => el.setAttribute(attr, value),
+  removeAttribute: (el, attr) => el.removeAttribute(attr),
+};
+
+export function initMenuButton(button, writer = domWriter) {
   const getMenu = () =>
     document.getElementById(button.getAttribute("aria-controls"));
 
@@ -9,8 +14,8 @@ export function initMenuButton(button) {
 
     if (!menu) return;
 
-    menu.removeAttribute("hidden");
-    button.setAttribute("aria-expanded", "true");
+    writer.removeAttribute(menu, "hidden");
+    writer.setAttribute(button, "aria-expanded", "true");
 
     const items = menu.querySelectorAll(
       '[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]',
@@ -29,7 +34,14 @@ export function initMenuButton(button) {
 }
 
 export default {
+  // The click opens the menu with a JS command that a patch applies again, so
+  // opening from the keyboard has to go through the same API.
   mounted() {
-    initMenuButton(this.el);
+    const js = this.js();
+
+    initMenuButton(this.el, {
+      setAttribute: (el, attr, value) => js.setAttribute(el, attr, value),
+      removeAttribute: (el, attr) => js.removeAttribute(el, attr),
+    });
   },
 };

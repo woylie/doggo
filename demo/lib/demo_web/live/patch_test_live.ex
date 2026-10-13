@@ -25,6 +25,7 @@ defmodule DemoWeb.PatchTestLive do
     {"disclosure_button", "Disclosure button"},
     {"toggle_button", "Toggle button"},
     {"toggletip", "Toggletip"},
+    {"menu_button", "Menu button"},
     {"tree", "Tree"},
     {"localize", "Dates and times"}
   ]
@@ -52,13 +53,23 @@ defmodule DemoWeb.PatchTestLive do
        resend: 0,
        order: [:first, :second, :dialog],
        note: false,
-       slides: [1, 2, 3]
+       slides: [1, 2, 3],
+       chosen: nil,
+       checked: false
      )}
   end
 
   @impl true
   def handle_event("select_component", %{"component" => name}, socket) do
     {:noreply, assign(socket, :component, name)}
+  end
+
+  def handle_event("choose", %{"item" => item}, socket) do
+    {:noreply, assign(socket, chosen: item)}
+  end
+
+  def handle_event("toggle_checked", _params, socket) do
+    {:noreply, update(socket, :checked, &(not &1))}
   end
 
   def handle_event("bump", _params, socket) do
@@ -228,6 +239,8 @@ defmodule DemoWeb.PatchTestLive do
             order={@order}
             note={@note}
             now={@now}
+            chosen={@chosen}
+            checked={@checked}
           />
         </div>
         <.components
@@ -239,6 +252,8 @@ defmodule DemoWeb.PatchTestLive do
           order={@order}
           note={@note}
           now={@now}
+          chosen={@chosen}
+          checked={@checked}
         />
       </CoreComponents.stack>
     </div>
@@ -262,6 +277,8 @@ defmodule DemoWeb.PatchTestLive do
   attr :order, :list, required: true
   attr :note, :boolean, required: true
   attr :now, DateTime, required: true
+  attr :chosen, :string, default: nil
+  attr :checked, :boolean, required: true
 
   defp components(assigns) do
     ~H"""
@@ -478,6 +495,40 @@ defmodule DemoWeb.PatchTestLive do
         </CoreComponents.toggletip>
       </div>
       <p>Text after the toggletip.</p>
+    </CoreComponents.stack>
+    <CoreComponents.stack :if={@component == "menu_button"}>
+      <h2>menu_button</h2>
+      <p>Open the menu and choose an item.</p>
+      <div>
+        <CoreComponents.menu_button controls="test-menu" id="test-menu-button">
+          Actions
+        </CoreComponents.menu_button>
+        <CoreComponents.menu id="test-menu" labelledby="test-menu-button" hidden>
+          <:item>
+            <CoreComponents.menu_item on_click={
+              JS.push("choose", value: %{item: "Adopt"})
+            }>
+              Adopt
+            </CoreComponents.menu_item>
+          </:item>
+          <:item>
+            <CoreComponents.menu_item on_click={
+              JS.push("choose", value: %{item: "Foster"})
+            }>
+              Foster
+            </CoreComponents.menu_item>
+          </:item>
+          <:item>
+            <CoreComponents.menu_item_checkbox
+              checked={@checked}
+              on_click={JS.push("toggle_checked")}
+            >
+              Wrap lines
+            </CoreComponents.menu_item_checkbox>
+          </:item>
+        </CoreComponents.menu>
+      </div>
+      <p id="chosen">Chosen: {@chosen || "nothing"}</p>
     </CoreComponents.stack>
     <CoreComponents.stack :if={@component == "tree"}>
       <h2>tree</h2>
