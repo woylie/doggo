@@ -556,9 +556,12 @@ if Code.ensure_loaded?(PhoenixStorybook.Story) do
       ]
     end
 
-    def modifier_variation_base(_id, _name, value, _opts) do
+    def modifier_variation_base(id, _name, value, _opts) do
       %{
         attributes: %{
+          id: to_string(id),
+          name: to_string(id),
+          value: "",
           type: "text",
           label: "Text",
           placeholder: to_string(value || "nil")
