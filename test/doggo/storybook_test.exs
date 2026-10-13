@@ -2,6 +2,8 @@ defmodule Doggo.StorybookTest do
   use ExUnit.Case, async: true
   use Phoenix.Component
 
+  import Phoenix.LiveViewTest, only: [render_component: 2]
+
   defmodule Icons do
     use Phoenix.Component
 
@@ -64,7 +66,7 @@ defmodule Doggo.StorybookTest do
 
     build_drawer(modifiers: [variant: [values: [nil, "yes"], default: nil]])
     build_fallback(modifiers: [variant: [values: [nil, "yes"], default: nil]])
-    build_field()
+    build_field(modifiers: [optional_mark: [type: :boolean, default: false]])
 
     build_field_group(
       modifiers: [variant: [values: [nil, "yes"], default: nil]]
@@ -192,6 +194,33 @@ defmodule Doggo.StorybookTest do
 
     assert StoryWithAlias.function()
     assert [_ | _] = StoryWithAlias.variations()
+  end
+
+  test "renders the modifier variations of field" do
+    defmodule StoryFieldWithModifier do
+      use PhoenixStorybook.Story, :component
+
+      use Doggo.Storybook,
+        module: Doggo.StorybookTest.TestComponents,
+        name: :field
+    end
+
+    group =
+      Enum.find(StoryFieldWithModifier.variations(), &(&1.id == :optional_mark))
+
+    ids =
+      for variation <- group.variations do
+        html =
+          render_component(
+            &TestComponents.field/1,
+            variation.attributes
+          )
+
+        [id] = html |> Floki.parse_fragment!() |> Floki.attribute("input", "id")
+        id
+      end
+
+    assert length(Enum.uniq(ids)) == length(group.variations)
   end
 
   test "compiles story modules only with phoenix_storybook" do
