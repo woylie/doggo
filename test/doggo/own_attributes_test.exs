@@ -36,6 +36,22 @@ defmodule Doggo.OwnAttributesTest do
     end
   end
 
+  describe "field/1" do
+    test "raises for an error state the component sets" do
+      for attr <- ~w(aria-invalid aria-errormessage) do
+        assigns = %{attrs: %{String.to_atom(attr) => "false"}}
+
+        assert_raise ArgumentError,
+                     ~r/#{attr} is set by .field.*Use the errors attribute instead/s,
+                     fn ->
+                       rendered_to_string(~H"""
+                       <FixtureComponents.field name="size" label="Size" {@attrs} />
+                       """)
+                     end
+      end
+    end
+  end
+
   describe "toolbar/1" do
     test "raises for a role the component sets" do
       assigns = %{}

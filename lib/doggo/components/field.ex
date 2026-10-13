@@ -314,7 +314,13 @@ defmodule Doggo.Components.Field do
   end
 
   @impl true
-  def own_attributes, do: ["aria-describedby": nil]
+  def own_attributes do
+    [
+      "aria-describedby": nil,
+      "aria-errormessage": :errors,
+      "aria-invalid": :errors
+    ]
+  end
 
   @impl true
   def nested_classes(base_class) do
