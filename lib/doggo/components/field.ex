@@ -358,8 +358,9 @@ defmodule Doggo.Components.Field do
       attr :hide_label, :boolean,
         default: false,
         doc: """
-        Adds a `data-visually-hidden` attribute to the `<label>`. This option
-        does not apply to checkbox and radio inputs.
+        Adds a `data-visually-hidden` attribute to the `<label>` or the
+        `<legend>` of a group type. This option does not apply to the
+        `checkbox` and `switch` types.
 
         This requires a CSS rule for the `data-visually-hidden` attribute. See
         [Visually hidden text](readme.html#visually-hidden-text).
@@ -800,7 +801,10 @@ defmodule Doggo.Components.Field do
             {@data_attrs}
           >
             <fieldset class={Doggo.build(:base_class, "-checkbox-group")}>
-              <legend class={Doggo.build(:base_class, "-label")}>
+              <legend
+                class={Doggo.build(:base_class, "-label")}
+                data-visually-hidden={@hide_label}
+              >
                 {@label}
                 <Doggo.Components.Field.required_optional_mark
                   required={@validations[:required] || false}
@@ -858,7 +862,10 @@ defmodule Doggo.Components.Field do
             {@data_attrs}
           >
             <fieldset class={Doggo.build(:base_class, "-radio-group")}>
-              <legend class={Doggo.build(:base_class, "-label")}>
+              <legend
+                class={Doggo.build(:base_class, "-label")}
+                data-visually-hidden={@hide_label}
+              >
                 {@label}
                 <Doggo.Components.Field.required_optional_mark
                   required={@validations[:required] || false}
@@ -1167,7 +1174,10 @@ defmodule Doggo.Components.Field do
         {@data_attrs}
       >
         <fieldset class={"#{Doggo.build(:base_class)}-#{@type}"}>
-          <legend class={Doggo.build(:base_class, "-label")}>
+          <legend
+            class={Doggo.build(:base_class, "-label")}
+            data-visually-hidden={@hide_label}
+          >
             {@label}
             <Doggo.Components.Field.required_optional_mark
               required={@validations[:required] || false}
