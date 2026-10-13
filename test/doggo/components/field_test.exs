@@ -817,6 +817,76 @@ defmodule Doggo.Components.FieldTest do
       assert text(span) == "(required)"
     end
 
+    test "renders required text for required attribute" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field field={@form[:age]} label="Age" required />
+        </.form>
+        """)
+
+      assert text(html, "label > span.field-required-mark") == "(required)"
+    end
+
+    test "renders attribute over validation" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:name]}
+            label="Name"
+            validations={[required: true, maxlength: 10]}
+            maxlength="5"
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "input", "maxlength") == "5"
+    end
+
+    test "removes derived required with required false" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:notes]}
+            type="textarea"
+            label="Notes"
+            validations={[required: true]}
+            required={false}
+          />
+        </.form>
+        """)
+
+      assert Floki.attribute(html, "textarea", "required") == []
+      assert Floki.find(html, ".field-required-mark") == []
+    end
+
+    test "renders required text in legend for required attribute" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:size]}
+            type="radio-group"
+            label="Size"
+            options={["s", "l"]}
+            required
+          />
+        </.form>
+        """)
+
+      assert text(html, "legend > .field-required-mark") == "(required)"
+    end
+
     test "renders optional text" do
       assigns = %{form: to_form(%{})}
 
