@@ -567,6 +567,26 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, ".ranked", "data-type") == "select"
     end
 
+    test "hides legend visually with hide_label" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_with_group_type
+            field={@form[:perms]}
+            type="permissions"
+            label="Permissions"
+            options={[{"Read", "read", "See everything"}]}
+            hide_label
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "legend", "data-visually-hidden") ==
+               "data-visually-hidden"
+    end
+
     test "names group with legend" do
       assigns = %{form: to_form(%{"perms" => ["read"]})}
 
@@ -755,6 +775,28 @@ defmodule Doggo.Components.FieldTest do
 
       label = find_one(html, "label")
       assert attribute(label, "data-visually-hidden") == "data-visually-hidden"
+    end
+
+    test "hides legend of group visually with hide_label" do
+      for type <- ~w(checkbox-group radio-group) do
+        assigns = %{form: to_form(%{}), type: type}
+
+        html =
+          parse_heex(~H"""
+          <.form for={@form}>
+            <TestComponents.field
+              field={@form[:size]}
+              type={@type}
+              label="Size"
+              options={["s", "l"]}
+              hide_label
+            />
+          </.form>
+          """)
+
+        assert attribute(html, "legend", "data-visually-hidden") ==
+                 "data-visually-hidden"
+      end
     end
 
     test "renders required text" do
