@@ -10,8 +10,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `tabs`: Add a `disabled` attribute to the `:panel` slot. A disabled tab can be focused with the arrow keys but not selected.
 
+### Changed
+
+- `field`: Raise for `aria-errormessage` and `aria-invalid` in `:rest` when diagnostics are enabled.
+
 ### Fixed
 
+- `field`: Render global attributes, such as `phx-change`, on each control of a `checkbox-group` or `radio-group`.
+- `field`: Render `autofocus` on one control of a `checkbox-group` or `radio-group`.
+- `field`: With `required`, mark the legend of a `checkbox-group` as required.
+- `field`: Submit nothing for a disabled `checkbox`, `switch` or `checkbox-group`.
+- `field`: Send the hidden input of a `checkbox`, `switch` or `checkbox-group` to the form named by `form`.
+- `field`: With `hide_label`, visually hide the legend of a `checkbox-group`, `radio-group` or registered group type.
+- `field`: Let an attribute passed to the field, such as `maxlength` or `required={false}`, replace the one in `validations` or derived from the changeset.
+- `field`: Show the required mark for a `required` attribute passed to the field.
+- `field`: Let screen readers read the required mark in the legend of a `checkbox-group` or registered group type.
 - `relative_time`: With `localize`, show the `title` in the same format and time zone as the text.
 
 ## [0.18.2] - 2026-10-05
