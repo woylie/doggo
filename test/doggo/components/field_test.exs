@@ -1145,6 +1145,68 @@ defmodule Doggo.Components.FieldTest do
       assert Floki.attribute(html, "input[autofocus]", "value") == ["s"]
     end
 
+    test "renders autofocus on the checked checkbox" do
+      assigns = %{form: to_form(%{"size" => ["s"]})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:size]}
+            type="checkbox-group"
+            label="Size"
+            options={["l", "s"]}
+            autofocus
+          />
+        </.form>
+        """)
+
+      assert Floki.attribute(html, "input[autofocus]", "value") == ["s"]
+    end
+
+    test "renders autofocus only on the checkbox that sets it" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:size]}
+            type="checkbox-group"
+            label="Size"
+            options={[{"L", "l"}, [key: "S", value: "s", autofocus: true]]}
+            autofocus
+          />
+        </.form>
+        """)
+
+      assert Floki.attribute(html, "input[autofocus]", "value") == ["s"]
+    end
+
+    test "renders no other global attributes on the hidden inputs" do
+      for type <- ~w(checkbox switch checkbox-group) do
+        assigns = %{form: to_form(%{}), type: type}
+
+        html =
+          parse_heex(~H"""
+          <.form for={@form}>
+            <TestComponents.field
+              field={@form[:size]}
+              type={@type}
+              label="Size"
+              options={["l"]}
+              phx-change="validate"
+              disabled
+            />
+          </.form>
+          """)
+
+        hidden = find_one(html, "input[type='hidden']")
+        assert attribute(hidden, "disabled") == "disabled"
+        assert attribute(hidden, "phx-change") == nil
+      end
+    end
+
     test "disables the hidden input of a disabled checkbox group" do
       assigns = %{form: to_form(%{})}
 
