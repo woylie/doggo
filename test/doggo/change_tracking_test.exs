@@ -54,6 +54,29 @@ defmodule Doggo.ChangeTrackingTest do
     """
   end
 
+  defp required_field(assigns) do
+    ~H"""
+    <FixtureComponents.field
+      name="dog"
+      label="Dog"
+      value=""
+      required={@required}
+    />
+    """
+  end
+
+  defp radio_group(assigns) do
+    ~H"""
+    <FixtureComponents.field
+      field={@form[:size]}
+      label="Size"
+      type="radio-group"
+      options={["s", "l"]}
+      autofocus
+    />
+    """
+  end
+
   defp checkbox(assigns) do
     ~H"""
     <FixtureComponents.field field={@form[:good]} label={@label} type="checkbox" />
@@ -170,6 +193,22 @@ defmodule Doggo.ChangeTrackingTest do
       parts = render(&form_field/1, %{form: form, label: "Dog"}, %{label: true})
       assert "Dog" in parts
       refute ~s( value="Rex") in parts
+    end
+  end
+
+  describe "field/1 with required" do
+    test "sends the required mark if required changed" do
+      parts = render(&required_field/1, %{required: true}, %{required: true})
+      assert " required" in parts
+      assert "(required)" in parts
+    end
+  end
+
+  describe "field/1 with type radio-group" do
+    test "sends autofocus if the form changed" do
+      form = to_form(%{"size" => "l"})
+      parts = render(&radio_group/1, %{form: form}, %{form: true})
+      assert Enum.any?(parts, &(&1 =~ ~s(value="l" checked autofocus)))
     end
   end
 
