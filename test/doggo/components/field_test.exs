@@ -1701,6 +1701,39 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(input, "multiple") == nil
     end
 
+    test "renders password input without value" do
+      assigns = %{form: to_form(%{"password" => "secret"})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:password]}
+            label="Password"
+            type="password"
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "input", "value") == nil
+    end
+
+    test "renders password input without explicit value" do
+      assigns = %{}
+
+      html =
+        parse_heex(~H"""
+        <TestComponents.field
+          name="password"
+          label="Password"
+          type="password"
+          value="secret"
+        />
+        """)
+
+      assert attribute(html, "input", "value") == nil
+    end
+
     test "renders multiple on file input with multiple" do
       assigns = %{form: to_form(%{})}
 

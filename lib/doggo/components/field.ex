@@ -1117,7 +1117,10 @@ defmodule Doggo.Components.Field do
                 id={@id}
                 list={@options && "#{@id}-datalist"}
                 type={@type}
-                value={@type != "file" && Doggo.Form.normalize_value(@type, @value)}
+                value={
+                  @type not in ["file", "password"] &&
+                    Doggo.Form.normalize_value(@type, @value)
+                }
                 multiple={@type == "file" && @multiple}
                 aria-describedby={@describedby}
                 aria-errormessage={@errormessage}
