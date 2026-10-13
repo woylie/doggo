@@ -393,7 +393,8 @@ defmodule Doggo.Components.Field do
         doc: """
         A list of HTML input validation attributes (`required`, `minlength`,
         `maxlength`, `min`, `max`, `pattern`). The attributes are derived
-        automatically from the form.
+        automatically from the form. An attribute you pass directly replaces
+        the derived one, so `required={false}` removes a derived `required`.
         """
 
       attr :checked_value, :string,
@@ -763,7 +764,7 @@ defmodule Doggo.Components.Field do
             {@data_attrs}
           >
             <Doggo.Components.Field.label
-              required={@validations[:required] || false}
+              required={@required}
               required_text={Doggo.build(:required_text)}
               optional_text={Doggo.build(:optional_text)}
               class={Doggo.build(:base_class, "-checkbox")}
@@ -821,7 +822,7 @@ defmodule Doggo.Components.Field do
               >
                 {@label}
                 <Doggo.Components.Field.required_optional_mark
-                  required={@validations[:required] || @rest[:required] || false}
+                  required={@required}
                   required_text={Doggo.build(:required_text)}
                   optional_text={Doggo.build(:optional_text)}
                   base_class={Doggo.build(:base_class)}
@@ -891,7 +892,7 @@ defmodule Doggo.Components.Field do
               >
                 {@label}
                 <Doggo.Components.Field.required_optional_mark
-                  required={@validations[:required] || false}
+                  required={@required}
                   required_text={Doggo.build(:required_text)}
                   optional_text={Doggo.build(:optional_text)}
                   base_class={Doggo.build(:base_class)}
@@ -913,8 +914,8 @@ defmodule Doggo.Components.Field do
                   value={@value}
                   errors={@errors}
                   description={@description}
-                  required={@validations[:required] || false}
-                  rest={@rest}
+                  required={@required}
+                  rest={Map.delete(@rest, :required)}
                   autofocus_value={@autofocus_value}
                   base_class={Doggo.build(:base_class)}
                 />
@@ -940,7 +941,7 @@ defmodule Doggo.Components.Field do
           >
             <Doggo.Components.Field.label
               for={@id}
-              required={@validations[:required] || false}
+              required={@required}
               required_text={Doggo.build(:required_text)}
               optional_text={Doggo.build(:optional_text)}
               base_class={Doggo.build(:base_class)}
@@ -992,7 +993,7 @@ defmodule Doggo.Components.Field do
             {@data_attrs}
           >
             <Doggo.Components.Field.label
-              required={@validations[:required] || false}
+              required={@required}
               required_text={Doggo.build(:required_text)}
               optional_text={Doggo.build(:optional_text)}
               class={Doggo.build(:base_class, "-switch")}
@@ -1058,7 +1059,7 @@ defmodule Doggo.Components.Field do
           >
             <Doggo.Components.Field.label
               for={@id}
-              required={@validations[:required] || false}
+              required={@required}
               required_text={Doggo.build(:required_text)}
               optional_text={Doggo.build(:optional_text)}
               base_class={Doggo.build(:base_class)}
@@ -1101,7 +1102,7 @@ defmodule Doggo.Components.Field do
           >
             <Doggo.Components.Field.label
               for={@id}
-              required={@validations[:required] || false}
+              required={@required}
               required_text={Doggo.build(:required_text)}
               optional_text={Doggo.build(:optional_text)}
               base_class={Doggo.build(:base_class)}
@@ -1205,7 +1206,7 @@ defmodule Doggo.Components.Field do
           >
             {@label}
             <Doggo.Components.Field.required_optional_mark
-              required={@validations[:required] || false}
+              required={@required}
               required_text={Doggo.build(:required_text)}
               optional_text={Doggo.build(:optional_text)}
               base_class={Doggo.build(:base_class)}
@@ -1240,7 +1241,7 @@ defmodule Doggo.Components.Field do
       >
         <Doggo.Components.Field.label
           for={@id}
-          required={@validations[:required] || false}
+          required={@required}
           required_text={Doggo.build(:required_text)}
           optional_text={Doggo.build(:optional_text)}
           base_class={Doggo.build(:base_class)}
@@ -1300,8 +1301,8 @@ defmodule Doggo.Components.Field do
   end
 
   defp assign_input(assigns, id, errors, defaults) do
-    Doggo.assign_derived(
-      assigns,
+    assigns
+    |> Doggo.assign_derived(
       [
         field: nil,
         id: id,
@@ -1310,6 +1311,18 @@ defmodule Doggo.Components.Field do
         errormessage: Doggo.Form.input_aria_errormessage(id, errors)
       ] ++ defaults,
       @derived_from
+    )
+    |> resolve_validations()
+  end
+
+  defp resolve_validations(%{validations: validations, rest: rest} = assigns) do
+    validations = Keyword.drop(validations, Map.keys(rest))
+    required = Keyword.get(validations, :required, rest[:required])
+
+    Doggo.assign_derived(
+      assigns,
+      [validations: validations, required: required not in [nil, false]],
+      [:validations, :rest]
     )
   end
 
