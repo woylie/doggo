@@ -305,6 +305,49 @@ defmodule Doggo.Components.FieldTest do
 
       assert attribute(html, "input[type='hidden']", "value") == "false"
     end
+
+    test "disables the false input of a disabled checkbox" do
+      for type <- ~w(checkbox switch) do
+        assigns = %{form: to_form(%{}), type: type}
+
+        html =
+          parse_heex(~H"""
+          <.form for={@form}>
+            <TestComponents.field
+              field={@form[:subscribe]}
+              type={@type}
+              label="Subscribe"
+              disabled
+            />
+          </.form>
+          """)
+
+        assert attribute(html, "input[type='hidden']", "disabled") ==
+                 "disabled"
+
+        assert attribute(html, "input[type='checkbox']", "disabled") ==
+                 "disabled"
+      end
+    end
+
+    test "renders the form attribute on the false input" do
+      for type <- ~w(checkbox switch) do
+        assigns = %{form: to_form(%{}), type: type}
+
+        html =
+          parse_heex(~H"""
+          <TestComponents.field
+            field={@form[:subscribe]}
+            type={@type}
+            label="Subscribe"
+            form="settings"
+          />
+          """)
+
+        assert attribute(html, "input[type='hidden']", "form") == "settings"
+        assert attribute(html, "input[type='checkbox']", "form") == "settings"
+      end
+    end
   end
 
   describe "field/1 without a form field" do

@@ -164,6 +164,9 @@ defmodule Doggo.Form do
   end
 
   @doc false
+  def hidden_input_attrs(rest), do: Map.take(rest, [:disabled, :form])
+
+  @doc false
   def checked?(option, value) when is_list(value) do
     HTML.html_escape(option) in Enum.map(
       value,
