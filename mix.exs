@@ -68,16 +68,16 @@ defmodule Doggo.MixProject do
   defp deps do
     [
       {:credo, "== 1.7.19", runtime: false, only: [:dev, :test]},
-      {:dialyxir, "1.4.7", runtime: false, only: [:dev, :test]},
-      {:ex_doc, "0.40.3", only: :dev, runtime: false},
+      {:dialyxir, "1.4.8", runtime: false, only: [:dev, :test]},
+      {:ex_doc, "0.40.4", only: :dev, runtime: false},
       {:excoveralls, "0.18.5", runtime: false, only: [:test]},
       {:floki, "== 0.38.4", only: :test},
-      {:lazy_html, "== 0.1.12", only: :test},
+      {:lazy_html, "== 0.1.13", only: :test},
       {:makeup_diff, "0.1.1", only: :dev},
       {:makeup_js, "== 0.1.0", only: :dev},
       {:phoenix_live_view, "~> 1.1"},
       {:phoenix_storybook, "~> 1.1", optional: true},
-      {:tz, "== 0.28.2", only: :test}
+      {:tz, "== 0.28.4", only: :test}
     ]
   end
 
