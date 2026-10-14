@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.18.3] - 2026-10-14
+
 ### Added
 
 - `tabs`: Add a `disabled` attribute to the `:panel` slot. A disabled tab can be focused with the arrow keys but not selected.
@@ -16,16 +18,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Fixed
 
+- `Doggo.Storybook`: Render the modifier variations of the `field` story.
 - `field`: Render global attributes, such as `phx-change`, on each control of a `checkbox-group` or `radio-group`.
 - `field`: Render `autofocus` on one control of a `checkbox-group` or `radio-group`.
-- `field`: With `required`, mark the legend of a `checkbox-group` as required.
-- `field`: Submit nothing for a disabled `checkbox`, `switch` or `checkbox-group`.
+- `field`: Mark the legend of a `checkbox-group` as required when `required` is set.
+- `field`: Don't submit any value for a disabled `checkbox`, `switch` or `checkbox-group`.
 - `field`: Send the hidden input of a `checkbox`, `switch` or `checkbox-group` to the form named by `form`.
-- `field`: With `hide_label`, visually hide the legend of a `checkbox-group`, `radio-group` or registered group type.
+- `field`: Visually hide the legend of a `checkbox-group`, `radio-group` or registered group type when `hide_label` is set.
 - `field`: Let an attribute passed to the field, such as `maxlength` or `required={false}`, replace the one in `validations` or derived from the changeset.
 - `field`: Show the required mark for a `required` attribute passed to the field.
 - `field`: Let screen readers read the required mark in the legend of a `checkbox-group` or registered group type.
-- `relative_time`: With `localize`, show the `title` in the same format and time zone as the text.
+- `field`: Render a `password` input without a `value`.
+- `menu`: Close a menu opened by a `menu_button` and focus the button when an item is chosen.
+- `menu_button`: Keep a menu opened with the keyboard open after a patch.
+- `relative_time`: Show the `title` in the same format and time zone as the text when `localize` is set.
 
 ## [0.18.2] - 2026-10-05
 
@@ -1056,7 +1062,8 @@ After:
 
 Initial release.
 
-[Unreleased]: https://github.com/woylie/doggo/compare/0.18.2...HEAD
+[Unreleased]: https://github.com/woylie/doggo/compare/0.18.3...HEAD
+[0.18.3]: https://github.com/woylie/doggo/compare/0.18.2...0.18.3
 [0.18.2]: https://github.com/woylie/doggo/compare/0.18.1...0.18.2
 [0.18.1]: https://github.com/woylie/doggo/compare/0.18.0...0.18.1
 [0.18.0]: https://github.com/woylie/doggo/compare/0.17.0...0.18.0
