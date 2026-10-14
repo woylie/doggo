@@ -89,10 +89,22 @@ export function initMenu(menu, writer = domWriter) {
   // The ARIA Authoring Practices close a menu when an item is chosen, but not
   // for checkbox and radio items. Enter and Space arrive as clicks, since the
   // items are buttons.
+  //
+  // Closing waits for LiveView's click handler on the window, which skips
+  // `phx-click-away` for a click on a hidden element. The button only gets
+  // the focus if the item did not move it, for example to a dialog.
   menu.addEventListener("click", (e) => {
     const item = e.target.closest('[role="menuitem"]:not([aria-haspopup])');
 
-    if (item && getItems().includes(item)) close();
+    if (!item || !getItems().includes(item)) return;
+
+    setTimeout(() => {
+      const focused = document.activeElement;
+
+      close({
+        focusButton: menu.contains(focused) || focused === document.body,
+      });
+    });
   });
 
   const closeOnClickOutside = (e) => {

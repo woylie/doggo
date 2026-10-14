@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { initMenu } from "../js/hooks/menu.js";
 import barFixture from "../../test/fixtures/menu_bar.html?raw";
 import fixture from "../../test/fixtures/menu.html?raw";
@@ -229,48 +229,88 @@ describe("initMenu", () => {
       );
     });
 
-    const click = (selector) =>
-      el
-        .querySelector(selector)
-        .dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
+    describe("when an item is chosen", () => {
+      beforeEach(() => {
+        vi.useFakeTimers();
+      });
 
-    it("closes when an item is chosen and focuses the button", () => {
-      click('[role="menuitem"]');
+      afterEach(() => {
+        vi.useRealTimers();
+      });
 
-      const button = document.getElementById("opener");
+      const click = (selector) => {
+        el.querySelector(selector).dispatchEvent(
+          new window.MouseEvent("click", { bubbles: true }),
+        );
+        vi.runAllTimers();
+      };
 
-      expect(el.hasAttribute("hidden")).toBe(true);
-      expect(button.getAttribute("aria-expanded")).toBe("false");
-      expect(document.activeElement).toBe(button);
-    });
+      it("closes and focuses the button", () => {
+        el.querySelector('[role="menuitem"]').focus();
+        click('[role="menuitem"]');
 
-    it("stays open when a checkbox item is chosen", () => {
-      click('[role="menuitemcheckbox"]');
+        const button = document.getElementById("opener");
 
-      expect(el.hasAttribute("hidden")).toBe(false);
-    });
+        expect(el.hasAttribute("hidden")).toBe(true);
+        expect(button.getAttribute("aria-expanded")).toBe("false");
+        expect(document.activeElement).toBe(button);
+      });
 
-    it("stays open when a radio item is chosen", () => {
-      click('[role="menuitemradio"]');
+      it("closes after the click has reached the window", () => {
+        let hiddenOnTheWindow;
+        const onWindowClick = () => {
+          hiddenOnTheWindow = el.hasAttribute("hidden");
+        };
+        window.addEventListener("click", onWindowClick);
 
-      expect(el.hasAttribute("hidden")).toBe(false);
-    });
+        click('[role="menuitem"]');
+        window.removeEventListener("click", onWindowClick);
 
-    it("stays open when an item that opens a submenu is chosen", () => {
-      el.querySelector('[role="menuitem"]').setAttribute(
-        "aria-haspopup",
-        "true",
-      );
+        expect(hiddenOnTheWindow).toBe(false);
+        expect(el.hasAttribute("hidden")).toBe(true);
+      });
 
-      click('[role="menuitem"]');
+      it("leaves the focus where the item moved it", () => {
+        const dialog = document.createElement("button");
+        document.body.append(dialog);
+        el.querySelector('[role="menuitem"]').addEventListener("click", () =>
+          dialog.focus(),
+        );
 
-      expect(el.hasAttribute("hidden")).toBe(false);
-    });
+        click('[role="menuitem"]');
 
-    it("leaves the items of a submenu to its own hook", () => {
-      click('#submenu [role="menuitem"]');
+        expect(el.hasAttribute("hidden")).toBe(true);
+        expect(document.activeElement).toBe(dialog);
+      });
 
-      expect(el.hasAttribute("hidden")).toBe(false);
+      it("stays open when a checkbox item is chosen", () => {
+        click('[role="menuitemcheckbox"]');
+
+        expect(el.hasAttribute("hidden")).toBe(false);
+      });
+
+      it("stays open when a radio item is chosen", () => {
+        click('[role="menuitemradio"]');
+
+        expect(el.hasAttribute("hidden")).toBe(false);
+      });
+
+      it("stays open when the item opens a submenu", () => {
+        el.querySelector('[role="menuitem"]').setAttribute(
+          "aria-haspopup",
+          "true",
+        );
+
+        click('[role="menuitem"]');
+
+        expect(el.hasAttribute("hidden")).toBe(false);
+      });
+
+      it("leaves the items of a submenu to its own hook", () => {
+        click('#submenu [role="menuitem"]');
+
+        expect(el.hasAttribute("hidden")).toBe(false);
+      });
     });
 
     it("leaves a click on the button to the button's own toggle", () => {
