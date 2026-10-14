@@ -1,6 +1,6 @@
 {
   "name": "@woylie/doggo",
-  "version": "0.18.3",
+  "version": "0.18.4",
   "description": "JavaScript hooks for the Doggo component library",
   "keywords": [
     "phoenix",
