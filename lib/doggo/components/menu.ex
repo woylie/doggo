@@ -48,6 +48,11 @@ defmodule Doggo.Components.Menu do
     </.menu_button>
     <.#{name} id="actions-menu" labelledby="actions-button" hidden></.#{name}>
 
+    When an item is chosen, the menu closes and the focus returns to the
+    button. Checkbox and radio items and items that open a submenu leave the
+    menu open. If the item moves the focus, for example to a dialog, the focus
+    stays there.
+
     This component needs the `Doggo.Menu` JavaScript hook. See
     [Phoenix LiveView Hooks](readme.html#phoenix-liveview-hooks) for
     registering it.
