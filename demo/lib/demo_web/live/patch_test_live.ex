@@ -55,7 +55,8 @@ defmodule DemoWeb.PatchTestLive do
        note: false,
        slides: [1, 2, 3],
        chosen: nil,
-       checked: false
+       checked: false,
+       clicked_away: 0
      )}
   end
 
@@ -70,6 +71,10 @@ defmodule DemoWeb.PatchTestLive do
 
   def handle_event("toggle_checked", _params, socket) do
     {:noreply, update(socket, :checked, &(not &1))}
+  end
+
+  def handle_event("click_away", _params, socket) do
+    {:noreply, update(socket, :clicked_away, &(&1 + 1))}
   end
 
   def handle_event("bump", _params, socket) do
@@ -241,6 +246,7 @@ defmodule DemoWeb.PatchTestLive do
             now={@now}
             chosen={@chosen}
             checked={@checked}
+            clicked_away={@clicked_away}
           />
         </div>
         <.components
@@ -254,6 +260,7 @@ defmodule DemoWeb.PatchTestLive do
           now={@now}
           chosen={@chosen}
           checked={@checked}
+          clicked_away={@clicked_away}
         />
       </CoreComponents.stack>
     </div>
@@ -279,6 +286,7 @@ defmodule DemoWeb.PatchTestLive do
   attr :now, DateTime, required: true
   attr :chosen, :string, default: nil
   attr :checked, :boolean, required: true
+  attr :clicked_away, :integer, required: true
 
   defp components(assigns) do
     ~H"""
@@ -529,6 +537,9 @@ defmodule DemoWeb.PatchTestLive do
         </CoreComponents.menu>
       </div>
       <p id="chosen">Chosen: {@chosen || "nothing"}</p>
+      <p id="clicked-away" phx-click-away="click_away">
+        Clicked away: {@clicked_away}
+      </p>
     </CoreComponents.stack>
     <CoreComponents.stack :if={@component == "tree"}>
       <h2>tree</h2>

@@ -26,6 +26,16 @@ test.describe("menu_button", () => {
     await expect(button(page)).toBeFocused();
   });
 
+  test("lets a click-away binding fire when an item is chosen", async ({
+    page,
+  }) => {
+    await button(page).click();
+    await page.getByRole("menuitem", { name: "Foster" }).click();
+    await expect(page.locator("#chosen")).toHaveText("Chosen: Foster");
+
+    await expect(page.locator("#clicked-away")).toHaveText("Clicked away: 2");
+  });
+
   test("opens the menu again after an item is chosen", async ({ page }) => {
     await button(page).click();
     await page.getByRole("menuitem", { name: "Foster" }).click();
