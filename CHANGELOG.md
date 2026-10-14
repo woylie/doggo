@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.18.4] - 2026-10-14
+
 ### Fixed
 
 - `menu`: Run `phx-click-away` bindings when an item is chosen.
@@ -1067,7 +1069,8 @@ After:
 
 Initial release.
 
-[Unreleased]: https://github.com/woylie/doggo/compare/0.18.3...HEAD
+[Unreleased]: https://github.com/woylie/doggo/compare/0.18.4...HEAD
+[0.18.4]: https://github.com/woylie/doggo/compare/0.18.3...0.18.4
 [0.18.3]: https://github.com/woylie/doggo/compare/0.18.2...0.18.3
 [0.18.2]: https://github.com/woylie/doggo/compare/0.18.1...0.18.2
 [0.18.1]: https://github.com/woylie/doggo/compare/0.18.0...0.18.1
