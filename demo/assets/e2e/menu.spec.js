@@ -99,7 +99,8 @@ test.describe("menu_button", () => {
     page,
   }) => {
     await button(page).click();
-    await page.getByRole("menuitemcheckbox", { name: "Wrap lines" }).click();
+    await wrapLines(page).click();
+    await expect(wrapLines(page)).toHaveAttribute("aria-checked", "true");
 
     await expect(menu(page)).toBeVisible();
   });

@@ -108,6 +108,20 @@ const components = [
     },
   },
   {
+    name: "menu_button",
+    async arrange(page) {
+      await page.getByRole("button", { name: "Actions" }).click();
+      await page.getByRole("menuitem", { name: "Foster" }).click();
+      await expect(page.locator("#test-menu")).toBeHidden();
+    },
+    async assert(page) {
+      await expect(page.locator("#test-menu")).toBeHidden();
+      await expect(
+        page.getByRole("button", { name: "Actions" }),
+      ).toHaveAttribute("aria-expanded", "false");
+    },
+  },
+  {
     name: "toggle_button",
     async arrange(page) {
       await page.getByRole("button", { name: "Toggle" }).click();
