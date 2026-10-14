@@ -2,7 +2,13 @@
   "name": "@woylie/doggo",
   "version": "0.18.3",
   "description": "JavaScript hooks for the Doggo component library",
-  "keywords": ["phoenix", "liveview", "hooks", "components", "accessibility"],
+  "keywords": [
+    "phoenix",
+    "liveview",
+    "hooks",
+    "components",
+    "accessibility"
+  ],
   "homepage": "https://hexdocs.pm/doggo",
   "repository": {
     "type": "git",
@@ -41,16 +47,18 @@
     "./dialog": "./assets/js/hooks/dialog.js",
     "./split_pane": "./assets/js/hooks/split_pane.js"
   },
-  "files": ["assets/js"],
+  "files": [
+    "assets/js"
+  ],
   "sideEffects": false,
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "eslint": "^10.9.1",
+    "eslint": "^10.12.0",
     "eslint-config-prettier": "^10.1.8",
-    "globals": "^17.11.0",
-    "happy-dom": "^20.11.15",
-    "prettier": "^3.9.6",
-    "vitest": "^4.1.11"
+    "globals": "^17.13.0",
+    "happy-dom": "^20.14.5",
+    "prettier": "^3.9.9",
+    "vitest": "^5.0.3"
   },
-  "packageManager": "pnpm@11.24.0+sha512.bd27e345e976dcb0be0b7a1228217b049a817e21b1f355c90dbe7dc46671895a8bc1e6d06c24554505ea93ea0b45f489a27ec1bfbc8de6a9659fca0f16fa0000"
+  "packageManager": "pnpm@12.11.2+sha512.25a51652a196785af5f28bda6dfe8dc582ebefa4ac1d180221ce1390231c5fb76637822ea4b6e4633ce74acdcb0a77f725af11bad38177fdeddaee818a955cb9"
 }

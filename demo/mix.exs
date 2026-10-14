@@ -51,21 +51,21 @@ defmodule Demo.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "== 1.8.13"},
-      {:phoenix_html, "4.3.0"},
-      {:phoenix_live_reload, "== 1.7.0", only: :dev},
-      {:phoenix_live_view, "== 1.2.11"},
-      {:lazy_html, "== 0.1.12", only: :test},
+      {:bandit, "== 1.12.5"},
+      {:credo, "== 1.7.19", runtime: false, only: [:dev, :test]},
+      {:dialyxir, "1.4.8", runtime: false, only: [:dev, :test]},
+      {:doggo, path: ".."},
       {:floki, "== 0.38.4", only: :test},
       {:gettext, "1.0.2"},
-      {:jason, "1.4.5"},
-      {:bandit, "== 1.12.5"},
-      {:phoenix_storybook, "1.5.0"},
       {:heroicons, "0.5.7"},
-      {:doggo, path: ".."},
-      {:tz, "~> 0.28"},
-      {:credo, "== 1.7.19", runtime: false, only: [:dev, :test]},
-      {:dialyxir, "1.4.7", runtime: false, only: [:dev, :test]}
+      {:jason, "1.4.5"},
+      {:lazy_html, "== 0.1.13", only: :test},
+      {:phoenix, "== 1.8.15"},
+      {:phoenix_html, "4.3.0"},
+      {:phoenix_live_reload, "== 1.7.0", only: :dev},
+      {:phoenix_live_view, "== 1.2.12"},
+      {:phoenix_storybook, "1.5.0"},
+      {:tz, "~> 0.28"}
     ]
   end
 
