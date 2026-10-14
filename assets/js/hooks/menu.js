@@ -164,8 +164,14 @@ export function initMenu(menu, writer = domWriter) {
     }
 
     // A single printable character, and no modifier, is a search rather than
-    // a shortcut.
-    if (e.key.length === 1 && !e.metaKey && !e.ctrlKey && !e.altKey) {
+    // a shortcut. Space chooses the item, unless a search is running.
+    if (
+      e.key.length === 1 &&
+      (e.key !== " " || search !== "") &&
+      !e.metaKey &&
+      !e.ctrlKey &&
+      !e.altKey
+    ) {
       e.preventDefault();
       typeAhead(e.key);
     }

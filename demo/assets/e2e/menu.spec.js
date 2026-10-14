@@ -26,6 +26,19 @@ test.describe("menu_button", () => {
     await expect(button(page)).toBeFocused();
   });
 
+  test("closes the menu and focuses the button on Space", async ({ page }) => {
+    await button(page).click();
+    await expect(menu(page)).toBeVisible();
+
+    await page.getByRole("menuitem", { name: "Adopt" }).focus();
+    await page.keyboard.press(" ");
+
+    await expect(page.locator("#chosen")).toHaveText("Chosen: Adopt");
+    await expect(menu(page)).toBeHidden();
+    await expect(button(page)).toHaveAttribute("aria-expanded", "false");
+    await expect(button(page)).toBeFocused();
+  });
+
   test("lets a click-away binding fire when an item is chosen", async ({
     page,
   }) => {

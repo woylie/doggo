@@ -131,6 +131,29 @@ describe("initMenu", () => {
       expect(focused()).toBe("Copy");
     });
 
+    it("leaves Space to the item", () => {
+      item("Copy").focus();
+      const event = new window.KeyboardEvent("keydown", {
+        key: " ",
+        bubbles: true,
+        cancelable: true,
+      });
+
+      document.activeElement.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(false);
+      expect(focused()).toBe("Copy");
+    });
+
+    it("adds Space to a running search", () => {
+      item("Paste").focus();
+      for (const key of ["c", "o", "p", "y", " ", "l"]) {
+        press(document.activeElement, key);
+      }
+
+      expect(focused()).toBe("Copy link");
+    });
+
     it("stays on a match when the search grows", () => {
       item("Copy").focus();
 
