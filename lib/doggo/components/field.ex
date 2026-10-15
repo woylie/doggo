@@ -110,6 +110,8 @@ defmodule Doggo.Components.Field do
     | `id` | the `id` attribute, from `id` or the form field |
     | `value` | the field value |
     | `type` | the type you registered |
+    | `label` | the field label, or `nil` |
+    | `hide_label` | whether the field label is visually hidden |
     | `options` | the options the caller passed, or `nil` |
     | `prompt` | the prompt the caller passed, or `nil` |
     | `multiple` | whether the field takes more than one value |
@@ -126,6 +128,8 @@ defmodule Doggo.Components.Field do
     attr :id, :string, required: true
     attr :value, :any, required: true
     attr :type, :string, required: true
+    attr :label, :string, required: true
+    attr :hide_label, :boolean, required: true
     attr :options, :list, required: true
     attr :prompt, :string, required: true
     attr :multiple, :boolean, required: true
@@ -1686,7 +1690,9 @@ defmodule Doggo.Components.Field do
       :__changed__,
       :describedby,
       :errormessage,
+      :hide_label,
       :id,
+      :label,
       :multiple,
       :name,
       :options,
