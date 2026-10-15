@@ -39,7 +39,7 @@ defmodule Demo.MixProject do
   end
 
   def hex do
-    [ignore_advisories: ["EEF-CVE-2026-92106"]]
+    [ignore_advisories: ["EEF-CVE-2026-92106", "EEF-CVE-2026-105659"]]
   end
 
   # Specifies which paths to compile per environment.
