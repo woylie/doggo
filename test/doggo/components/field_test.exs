@@ -1032,7 +1032,12 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input[value='blue']", "aria-describedby") ==
                "color_blue-description"
 
-      assert text(html, "label:first-of-type") == "Blue"
+      assert text(html, ".field-option:first-of-type label") == "Blue"
+
+      assert text(
+               html,
+               ".field-option:first-of-type .field-option-description"
+             ) == "The colour of the sky"
     end
 
     test "raises for select option with description" do

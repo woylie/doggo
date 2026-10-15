@@ -37,19 +37,23 @@ defmodule Doggo.Components.RadioGroupTest do
       assert attribute(html, ":root", "id") == "favorite_dog_rg"
       assert attribute(html, ":root", "aria-label") == "Favorite Dog"
 
-      input = find_one(html, "label:first-child input")
+      input = find_one(html, ".radio-group-option:first-child input")
       assert attribute(input, "type") == "radio"
       assert attribute(input, "id") == "favorite_dog_rg_labrador"
       assert attribute(input, "name") == "favorite_dog_name"
       assert attribute(input, "checked") == nil
-      assert text(html, "label:first-child") == "Labrador Retriever"
 
-      input = find_one(html, "label:last-child input")
+      assert text(html, ".radio-group-option:first-child label") ==
+               "Labrador Retriever"
+
+      input = find_one(html, ".radio-group-option:last-child input")
       assert attribute(input, "type") == "radio"
       assert attribute(input, "id") == "favorite_dog_rg_german_shepherd"
       assert attribute(input, "name") == "favorite_dog_name"
       assert attribute(input, "checked") == "checked"
-      assert text(html, "label:last-child") == "German Shepherd"
+
+      assert text(html, ".radio-group-option:last-child label") ==
+               "German Shepherd"
     end
 
     test "renders labelledby as aria-labelledby" do

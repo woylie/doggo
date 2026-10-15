@@ -341,6 +341,7 @@ defmodule Doggo.Components.Field do
       "#{base_class}-input-addon-end",
       "#{base_class}-input-wrapper",
       "#{base_class}-label",
+      "#{base_class}-option",
       "#{base_class}-option-description",
       "#{base_class}-option-group",
       "#{base_class}-optional-mark",
@@ -1641,28 +1642,30 @@ defmodule Doggo.Components.Field do
       |> Doggo.Form.describe_option()
 
     ~H"""
-    <label class={"#{@base_class}-checkbox"}>
-      <input
-        type="checkbox"
-        name={@name <> "[]"}
-        id={@id <> "_" <> Doggo.Form.id_fragment(@option_value)}
-        value={@option_value}
-        checked={Doggo.Form.checked?(@option_value, @value)}
-        aria-describedby={@describedby}
-        aria-errormessage={@errormessage}
-        aria-invalid={@errors != [] && "true"}
-        autofocus={@autofocus_value == {:value, @option_value}}
-        {Map.merge(@rest, Map.new(@option_extra))}
-      />
-      {@label}
-    </label>
-    <span
-      :if={@option_description}
-      id={@option_description_id}
-      class={"#{@base_class}-option-description"}
-    >
-      {@option_description}
-    </span>
+    <div class={"#{@base_class}-option"}>
+      <label class={"#{@base_class}-checkbox"}>
+        <input
+          type="checkbox"
+          name={@name <> "[]"}
+          id={@id <> "_" <> Doggo.Form.id_fragment(@option_value)}
+          value={@option_value}
+          checked={Doggo.Form.checked?(@option_value, @value)}
+          aria-describedby={@describedby}
+          aria-errormessage={@errormessage}
+          aria-invalid={@errors != [] && "true"}
+          autofocus={@autofocus_value == {:value, @option_value}}
+          {Map.merge(@rest, Map.new(@option_extra))}
+        />
+        {@label}
+      </label>
+      <span
+        :if={@option_description}
+        id={@option_description_id}
+        class={"#{@base_class}-option-description"}
+      >
+        {@option_description}
+      </span>
+    </div>
     """
   end
 

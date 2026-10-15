@@ -101,15 +101,19 @@
     
     <div>
       <input type="hidden" name="tricks[]" value="">
-      <label class="field-checkbox">
-  <input type="checkbox" name="tricks[]" id="tricks_sit" value="sit">
-  Sit
-</label>
-<label class="field-checkbox">
-  <input type="checkbox" name="tricks[]" id="tricks_roll_over" value="roll-over">
-  Roll over
-</label>
-
+      <div class="field-option">
+  <label class="field-checkbox">
+    <input type="checkbox" name="tricks[]" id="tricks_sit" value="sit">
+    Sit
+  </label>
+  
+</div><div class="field-option">
+  <label class="field-checkbox">
+    <input type="checkbox" name="tricks[]" id="tricks_roll_over" value="roll-over">
+    Roll over
+  </label>
+  
+</div>
     </div>
   </fieldset>
   <ul id="tricks-errors" class="field-errors" aria-live="polite">
@@ -124,15 +128,19 @@
     </legend>
     
     <div>
-      <label class="field-radio">
-  <input type="radio" name="size" id="size_small" value="small" phx-change="validate">
-  Small
-</label>
-<label class="field-radio">
-  <input type="radio" name="size" id="size_large" value="large" phx-change="validate">
-  Large
-</label>
-
+      <div class="field-option">
+  <label class="field-radio">
+    <input type="radio" name="size" id="size_small" value="small" phx-change="validate">
+    Small
+  </label>
+  
+</div><div class="field-option">
+  <label class="field-radio">
+    <input type="radio" name="size" id="size_large" value="large" phx-change="validate">
+    Large
+  </label>
+  
+</div>
     </div>
   </fieldset>
   <ul id="size-errors" class="field-errors" aria-live="polite">
