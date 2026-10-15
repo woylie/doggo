@@ -8,11 +8,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- `Doggo.Storybook`: Add disabled, filled and form-error variations to the `field` story.
 - `field`: Pass `label` and `hide_label` to the control of a registered type.
 
 ### Fixed
 
 - `field`: Render `id` and global attributes on the inputs of the `hidden` type.
+- `field`: Style disabled controls in the example stylesheet.
 
 ## [0.18.4] - 2026-10-14
 

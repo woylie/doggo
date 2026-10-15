@@ -11,6 +11,9 @@
     --field-input-border-width: var(--border-width-sm);
     --field-input-border-color: var(--color-border-control);
     --field-input-border-color-invalid: var(--color-border-danger-solid);
+    --field-input-color-disabled: var(--color-text-disabled-solid);
+    --field-input-background-disabled: var(--color-background-disabled-solid);
+    --field-input-border-color-disabled: var(--color-border-disabled-solid);
     --field-input-border-radius: var(--radius-sm);
     --field-addon-color: var(--color-text-muted);
     --field-addon-icon-size: var(--size-font-lg);
@@ -32,6 +35,9 @@
     --field-switch-track-background-checked: var(
       --color-background-primary-solid
     );
+    --field-switch-track-background-disabled: var(
+      --color-border-disabled-solid
+    );
     --field-switch-thumb-size: 1rem;
     --field-switch-thumb-inset: var(--spacer-1);
 
@@ -44,6 +50,7 @@
       var(--field-control-size) + var(--field-option-gap)
     );
     --field-options-gap: var(--spacer-2);
+    --field-option-color-disabled: var(--color-text-disabled);
     --field-description-color: var(--color-text-muted);
     --field-description-font-size: var(--size-font-sm);
     --field-error-color: var(--color-text-danger);
@@ -96,9 +103,16 @@
         outline: var(--field-outline-width) solid var(--field-outline-color);
         outline-offset: var(--field-outline-offset);
       }
+
+      &:disabled {
+        color: var(--field-input-color-disabled);
+        cursor: not-allowed;
+        background-color: var(--field-input-background-disabled);
+        border-color: var(--field-input-border-color-disabled);
+      }
     }
 
-    &[data-invalid] :is(input, textarea, select) {
+    &[data-invalid] :is(input, textarea, select):not(:disabled) {
       border-color: var(--field-input-border-color-invalid);
     }
 
@@ -155,6 +169,13 @@
         border: var(--field-input-border-width) solid
           var(--field-file-button-border-color);
         border-radius: var(--field-input-border-radius);
+      }
+
+      &:disabled::file-selector-button {
+        color: var(--field-input-color-disabled);
+        cursor: not-allowed;
+        background-color: var(--field-input-background-disabled);
+        border-color: var(--field-input-border-color-disabled);
       }
     }
 
@@ -220,6 +241,11 @@
         background-position-x: var(--field-switch-thumb-travel);
       }
 
+      &:disabled {
+        cursor: not-allowed;
+        background-color: var(--field-switch-track-background-disabled);
+      }
+
       &:dir(rtl) {
         scale: -1 1;
       }
@@ -254,6 +280,15 @@
         gap: var(--field-option-gap);
         align-items: center;
         font-weight: var(--weight-normal);
+      }
+    }
+
+    :is(.field-checkbox, .field-radio, .field-switch):has(input:disabled) {
+      color: var(--field-option-color-disabled);
+      cursor: not-allowed;
+
+      .field-switch-state {
+        color: inherit;
       }
     }
 
