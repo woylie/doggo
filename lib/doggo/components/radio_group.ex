@@ -75,7 +75,11 @@ defmodule Doggo.Components.RadioGroup do
 
   @impl true
   def nested_classes(base_class) do
-    ["#{base_class}-option-description", "#{base_class}-radio"]
+    [
+      "#{base_class}-option",
+      "#{base_class}-option-description",
+      "#{base_class}-radio"
+    ]
   end
 
   @impl true
@@ -190,29 +194,31 @@ defmodule Doggo.Components.RadioGroup do
       |> Doggo.Form.describe_option()
 
     ~H"""
-    <label class={"#{@base_class}-radio"}>
-      <input
-        type="radio"
-        name={@name}
-        id={@id <> "_" <> Doggo.Form.id_fragment(@option_value)}
-        value={@option_value}
-        checked={Doggo.Form.checked?(@option_value, @value)}
-        aria-describedby={@describedby}
-        aria-errormessage={@errormessage}
-        aria-invalid={@invalid}
-        required={@required}
-        autofocus={@autofocus_value == {:value, @option_value}}
-        {Map.merge(@rest, Map.new(@option_extra))}
-      />
-      {@label}
-    </label>
-    <span
-      :if={@option_description}
-      id={@option_description_id}
-      class={"#{@base_class}-option-description"}
-    >
-      {@option_description}
-    </span>
+    <div class={"#{@base_class}-option"}>
+      <label class={"#{@base_class}-radio"}>
+        <input
+          type="radio"
+          name={@name}
+          id={@id <> "_" <> Doggo.Form.id_fragment(@option_value)}
+          value={@option_value}
+          checked={Doggo.Form.checked?(@option_value, @value)}
+          aria-describedby={@describedby}
+          aria-errormessage={@errormessage}
+          aria-invalid={@invalid}
+          required={@required}
+          autofocus={@autofocus_value == {:value, @option_value}}
+          {Map.merge(@rest, Map.new(@option_extra))}
+        />
+        {@label}
+      </label>
+      <span
+        :if={@option_description}
+        id={@option_description_id}
+        class={"#{@base_class}-option-description"}
+      >
+        {@option_description}
+      </span>
+    </div>
     """
   end
 

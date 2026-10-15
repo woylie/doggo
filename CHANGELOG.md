@@ -12,10 +12,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `field`: Raise for a type that the build does not allow when diagnostics are enabled.
 - `field`: Pass `label` and `hide_label` to the control of a registered type.
 
+### Changed
+
+- `field`, `radio_group`: Wrap each option of a `checkbox-group`, a `radio-group` and a `radio_group` in a `div` with an `-option` class, around its label and its description.
+
 ### Fixed
 
 - `field`: Render `id` and global attributes on the inputs of the `hidden` type.
 - `field`: Style disabled controls in the example stylesheet.
+
+### How to upgrade
+
+- `field`, `radio_group`: If your CSS or tests select an option's label or description as a direct child of the options container, or by position (`label:first-child`), select them inside `.field-option` or `.radio-group-option` instead. Run `mix dog.safelist` again to list the new class.
 
 ## [0.18.4] - 2026-10-14
 

@@ -268,11 +268,8 @@
 
       > div {
         display: grid;
+        gap: var(--field-options-gap);
         margin-block-start: var(--field-gap);
-
-        > :is(.field-checkbox, .field-radio):not(:first-of-type) {
-          margin-block-start: var(--field-options-gap);
-        }
       }
 
       :is(.field-checkbox, .field-radio) {
