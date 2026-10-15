@@ -174,6 +174,10 @@ defmodule Doggo.Components.Field do
     - `"radio-group"`
     - `"switch"`
 
+    The `"hidden"` type renders the attributes in `rest`, but no validation
+    attributes. If the value is a list, it renders one hidden input per element,
+    and appends the index of the element to the `id` (`pet-0`, `pet-1`).
+
     ### Class and Global Attribute
 
     Note that the `class` attribute is applied to the outer container, while
@@ -873,12 +877,19 @@ defmodule Doggo.Components.Field do
 
         %{type: "hidden", value: value} when is_list(value) ->
           ~H"""
-          <input :for={value <- @value} type="hidden" name={@name <> "[]"} value={value} />
+          <input
+            :for={{value, index} <- Enum.with_index(@value)}
+            type="hidden"
+            name={@name <> "[]"}
+            id={"#{@id}-#{index}"}
+            value={value}
+            {@rest}
+          />
           """
 
         %{type: "hidden"} ->
           ~H"""
-          <input type="hidden" name={@name} value={@value} />
+          <input type="hidden" name={@name} id={@id} value={@value} {@rest} />
           """
 
         %{type: "radio-group"} ->
