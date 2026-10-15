@@ -359,11 +359,6 @@ defmodule Doggo.Components.Field do
   @impl true
   def attrs_and_slots(opts) do
     replaced_gettext_module!(opts)
-    built_in_types = @built_in_types
-
-    types = types!(opts)
-    removed = for {name, nil} <- types, do: name
-    added = for {name, entry} <- types, entry != nil, do: name
 
     quote do
       attr :id, :any, default: nil
@@ -390,7 +385,7 @@ defmodule Doggo.Components.Field do
 
       attr :type, :string,
         default: "text",
-        values: unquote(Enum.uniq((built_in_types -- removed) ++ added))
+        values: unquote(allowed_types(opts))
 
       attr :field, Phoenix.HTML.FormField,
         doc: "A form field struct, for example: @form[:name]"
@@ -632,6 +627,33 @@ defmodule Doggo.Components.Field do
     """
   end
 
+  defp allowed_types(opts) do
+    types = types!(opts)
+    removed = for {name, nil} <- types, do: name
+    added = for {name, entry} <- types, entry != nil, do: name
+    Enum.uniq((@built_in_types -- removed) ++ added)
+  end
+
+  @doc false
+  def ensure_allowed_type!(%{type: type}, types) do
+    if type not in types do
+      raise ArgumentError, """
+      invalid type for .field
+
+      The build does not allow this type. Pass one of the allowed types, or add
+      the type to the `:types` option of `build_field/1`.
+
+      Allowed types:
+
+      #{Enum.map_join(types, "\n", &"    #{inspect(&1)}")}
+
+      Got:
+
+          #{inspect(type)}
+      """
+    end
+  end
+
   @doc false
   def ensure_no_option_descriptions!(%{type: type, options: options}, types)
       when is_list(options) or is_map(options) do
@@ -728,6 +750,11 @@ defmodule Doggo.Components.Field do
 
     quote do
       Doggo.diagnostic do
+        unquote(__MODULE__).ensure_allowed_type!(
+          var!(assigns),
+          unquote(allowed_types(opts))
+        )
+
         unquote(__MODULE__).ensure_no_option_descriptions!(
           var!(assigns),
           unquote(option_types)
