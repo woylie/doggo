@@ -746,10 +746,10 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input", "type") == "email"
     end
 
-    test "renders an input for an unregistered type" do
+    test "raises for an unregistered type" do
       assigns = %{form: to_form(%{}), type: "unregistered"}
 
-      html =
+      assert_raise ArgumentError, ~r/invalid type for .field/, fn ->
         parse_heex(~H"""
         <.form for={@form}>
           <TestComponents.field_with_extra_types
@@ -759,8 +759,23 @@ defmodule Doggo.Components.FieldTest do
           />
         </.form>
         """)
+      end
+    end
 
-      assert attribute(html, "input", "type") == "unregistered"
+    test "raises for a removed type" do
+      assigns = %{form: to_form(%{}), type: "week"}
+
+      assert_raise ArgumentError, ~r/invalid type for .field/, fn ->
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_with_removed_types
+            field={@form[:x]}
+            type={@type}
+            label="X"
+          />
+        </.form>
+        """)
+      end
     end
   end
 
