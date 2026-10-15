@@ -1812,6 +1812,54 @@ defmodule Doggo.Components.FieldTest do
       assert attribute(html, "input:last-child", "value") == "ne"
     end
 
+    test "renders id and global attributes on hidden input" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:content]}
+            type="hidden"
+            value="text"
+            phx-ref="rich-content"
+            form="editor"
+            validations={[required: true, maxlength: 10]}
+          />
+        </.form>
+        """)
+
+      input = find_one(html, "input")
+      assert attribute(input, "id") == "content"
+      assert attribute(input, "phx-ref") == "rich-content"
+      assert attribute(input, "form") == "editor"
+      assert attribute(input, "required") == nil
+      assert attribute(input, "maxlength") == nil
+    end
+
+    test "renders indexed ids and global attributes per hidden list value" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field
+            field={@form[:tags]}
+            type="hidden"
+            value={["ja", "ne"]}
+            disabled
+            validations={[required: true]}
+          />
+        </.form>
+        """)
+
+      assert attribute(html, "input:first-child", "id") == "tags-0"
+      assert attribute(html, "input:last-child", "id") == "tags-1"
+      assert attribute(html, "input:first-child", "disabled") == "disabled"
+      assert attribute(html, "input:last-child", "disabled") == "disabled"
+      assert attribute(html, "input:first-child", "required") == nil
+    end
+
     test "renders add-ons" do
       assigns = %{form: to_form(%{})}
 

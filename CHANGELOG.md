@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `field`: Pass `label` and `hide_label` to the control of a registered type.
 
+### Fixed
+
+- `field`: Render `id` and global attributes on the inputs of the `hidden` type.
+
 ## [0.18.4] - 2026-10-14
 
 ### Fixed
