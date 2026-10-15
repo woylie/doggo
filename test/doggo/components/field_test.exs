@@ -63,6 +63,8 @@ defmodule Doggo.Components.FieldTest do
     <div
       class="ranked"
       data-type={@type}
+      data-label={@label}
+      data-hide-label={@hide_label}
       data-keys={Enum.join(Enum.sort(Map.keys(assigns)), ",")}
     >
       <select
@@ -704,8 +706,27 @@ defmodule Doggo.Components.FieldTest do
         """)
 
       assert attribute(html, ".ranked", "data-keys") ==
-               "__changed__,describedby,errormessage,id,invalid,multiple," <>
-                 "name,options,prompt,rest,type,validations,value"
+               "__changed__,describedby,errormessage,hide_label,id,invalid," <>
+                 "label,multiple,name,options,prompt,rest,type,validations,value"
+    end
+
+    test "passes the label to the registered type" do
+      assigns = %{form: to_form(%{})}
+
+      html =
+        parse_heex(~H"""
+        <.form for={@form}>
+          <TestComponents.field_with_extra_types
+            field={@form[:rank]}
+            type="ranked"
+            label="Rank"
+            hide_label
+          />
+        </.form>
+        """)
+
+      assert attribute(html, ".ranked", "data-label") == "Rank"
+      assert attribute(html, ".ranked", "data-hide-label") == "data-hide-label"
     end
 
     test "keeps the built-in types" do
