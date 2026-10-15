@@ -223,6 +223,36 @@ defmodule Doggo.StorybookTest do
     assert length(Enum.uniq(ids)) == length(group.variations)
   end
 
+  test "keeps the generated variations of an overridden variations/0" do
+    defmodule StoryWithAddedVariations do
+      use PhoenixStorybook.Story, :component
+
+      use Doggo.Storybook,
+        module: Doggo.StorybookTest.TestComponents,
+        name: :field
+
+      alias PhoenixStorybook.Stories.Variation
+      alias PhoenixStorybook.Stories.VariationGroup
+
+      def variations do
+        super() ++
+          [
+            %VariationGroup{
+              id: :registered_types,
+              variations: [
+                %Variation{id: :ranked, attributes: %{type: "text"}}
+              ]
+            }
+          ]
+      end
+    end
+
+    ids = Enum.map(StoryWithAddedVariations.variations(), & &1.id)
+
+    assert :basic_inputs in ids
+    assert List.last(ids) == :registered_types
+  end
+
   test "compiles story modules only with phoenix_storybook" do
     files = [
       "lib/doggo/storybook.ex" | Path.wildcard("lib/doggo/storybook/*.ex")

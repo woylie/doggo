@@ -20,6 +20,39 @@ if Code.ensure_loaded?(PhoenixStorybook.Story) do
 
     You can automatically generate story modules for all configured components
     with `mix dog.gen.stories`.
+
+    ## Adding variations
+
+    The functions defined by `use Doggo.Storybook` are overridable. Call
+    `super()` to keep the generated variations, for example to add a variation
+    group for the field types your application registers:
+
+        defmodule Storybook.Components.Field do
+          use PhoenixStorybook.Story, :component
+          use Doggo.Storybook, module: MyAppWeb.CoreComponents, name: :field
+
+          alias PhoenixStorybook.Stories.Variation
+          alias PhoenixStorybook.Stories.VariationGroup
+
+          def variations do
+            super() ++
+              [
+                %VariationGroup{
+                  id: :registered_types,
+                  variations: [
+                    %Variation{
+                      id: :ranked,
+                      attributes: %{
+                        type: "ranked",
+                        label: "Rank",
+                        options: ["Gold", "Silver", "Bronze"]
+                      }
+                    }
+                  ]
+                }
+              ]
+          end
+        end
     """
 
     alias PhoenixStorybook.Stories.Variation
@@ -58,6 +91,20 @@ if Code.ensure_loaded?(PhoenixStorybook.Story) do
           dependent_components: dependent_components,
           name: name
         )
+
+      overridable =
+        [
+          imports: imports != nil,
+          function: true,
+          container: function_exported?(storybook_module, :container, 0),
+          layout: function_exported?(storybook_module, :layout, 0),
+          template:
+            function_exported?(storybook_module, :template, 0) or
+              function_exported?(storybook_module, :template, 1),
+          variations: true
+        ]
+        |> Enum.filter(fn {_name, defined?} -> defined? end)
+        |> Enum.map(fn {name, _} -> {name, 0} end)
 
       quote do
         if unquote(imports) do
@@ -98,6 +145,8 @@ if Code.ensure_loaded?(PhoenixStorybook.Story) do
               unquote(Macro.escape(story_opts))
             )
         end
+
+        defoverridable unquote(overridable)
       end
     end
 
