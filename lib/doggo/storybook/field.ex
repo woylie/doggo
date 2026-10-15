@@ -254,6 +254,122 @@ if Code.ensure_loaded?(PhoenixStorybook.Story) do
           ]
         },
         %VariationGroup{
+          id: :autocomplete,
+          description: "Autocomplete with datalist",
+          variations: [
+            %Variation{
+              id: :only_values,
+              attributes: %{
+                type: "text",
+                label: "Dog breed",
+                placeholder: "Beagle",
+                options: [
+                  "Labrador Retriever",
+                  "German Shepherd",
+                  "Golden Retriever",
+                  "Bulldog",
+                  "Beagle",
+                  "Poodle",
+                  "Rottweiler",
+                  "Yorkshire Terrier",
+                  "Boxer",
+                  "Dachshund"
+                ]
+              }
+            },
+            %Variation{
+              id: :labels_and_values,
+              attributes: %{
+                type: "text",
+                label: "Dog breed",
+                placeholder: "Poodle",
+                options: [
+                  {"Labrador Retriever", "labrador_retriever"},
+                  {"German Shepherd", "german_shepherd"},
+                  {"Golden Retriever", "golden_retriever"},
+                  {"Bulldog", "bulldog"},
+                  {"Beagle", "beagle"},
+                  {"Poodle", "poodle"},
+                  {"Rottweiler", "rottweiler"},
+                  {"Yorkshire Terrier", "yorkshire_terrier"},
+                  {"Boxer", "boxer"},
+                  {"Dachshund", "dachshund"}
+                ]
+              }
+            }
+          ]
+        },
+        %VariationGroup{
+          id: :filled_inputs,
+          variations: [
+            %Variation{
+              id: :text,
+              attributes: %{
+                type: "text",
+                label: "Text",
+                value: "Rex"
+              }
+            },
+            %Variation{
+              id: :checkbox,
+              attributes: %{
+                label: "Checkbox",
+                type: "checkbox",
+                value: "true"
+              }
+            },
+            %Variation{
+              id: :switch,
+              attributes: %{
+                label: "Switch",
+                type: "switch",
+                value: "true"
+              }
+            },
+            %Variation{
+              id: :select,
+              attributes: %{
+                label: "Select",
+                type: "select",
+                options: ["Small", "Medium", "Large"],
+                value: "Medium"
+              }
+            },
+            %Variation{
+              id: :multiple_select,
+              attributes: %{
+                label: "Multiple select",
+                type: "select",
+                multiple: true,
+                options: ["Playful", "Loyal", "Energetic"],
+                value: ["Playful", "Energetic"]
+              }
+            },
+            %Variation{
+              id: :radio_group,
+              attributes: %{
+                label: "Radio group",
+                type: "radio-group",
+                options: ["Puppy", "Adult", "Senior"],
+                value: "Adult"
+              }
+            },
+            %Variation{
+              id: :checkbox_group,
+              attributes: %{
+                label: "Checkbox group",
+                type: "checkbox-group",
+                options: [
+                  "Garden required",
+                  "Good with cats",
+                  "Good with children"
+                ],
+                value: ["Good with cats", "Good with children"]
+              }
+            }
+          ]
+        },
+        %VariationGroup{
           id: :required_inputs,
           variations: [
             %Variation{
@@ -358,178 +474,6 @@ if Code.ensure_loaded?(PhoenixStorybook.Story) do
                 type: "radio-group",
                 options: ["Puppy", "Adult", "Senior"],
                 disabled: true
-              }
-            }
-          ]
-        },
-        %VariationGroup{
-          id: :filled_inputs,
-          variations: [
-            %Variation{
-              id: :text,
-              attributes: %{
-                type: "text",
-                label: "Text",
-                value: "Rex"
-              }
-            },
-            %Variation{
-              id: :checkbox,
-              attributes: %{
-                label: "Checkbox",
-                type: "checkbox",
-                value: "true"
-              }
-            },
-            %Variation{
-              id: :switch,
-              attributes: %{
-                label: "Switch",
-                type: "switch",
-                value: "true"
-              }
-            },
-            %Variation{
-              id: :select,
-              attributes: %{
-                label: "Select",
-                type: "select",
-                options: ["Small", "Medium", "Large"],
-                value: "Medium"
-              }
-            },
-            %Variation{
-              id: :multiple_select,
-              attributes: %{
-                label: "Multiple select",
-                type: "select",
-                multiple: true,
-                options: ["Playful", "Loyal", "Energetic"],
-                value: ["Playful", "Energetic"]
-              }
-            },
-            %Variation{
-              id: :radio_group,
-              attributes: %{
-                label: "Radio group",
-                type: "radio-group",
-                options: ["Puppy", "Adult", "Senior"],
-                value: "Adult"
-              }
-            },
-            %Variation{
-              id: :checkbox_group,
-              attributes: %{
-                label: "Checkbox group",
-                type: "checkbox-group",
-                options: [
-                  "Garden required",
-                  "Good with cats",
-                  "Good with children"
-                ],
-                value: ["Good with cats", "Good with children"]
-              }
-            }
-          ]
-        },
-        %VariationGroup{
-          id: :form_errors,
-          description: "Errors from the form field",
-          template: """
-          <Phoenix.Component.form
-            for={
-              Phoenix.Component.to_form(%{"field" => ""},
-                as: :story,
-                errors: [field: {"can't be blank", [validation: :required]}]
-              )
-            }
-            :let={f}
-            style="display: grid; gap: 1rem; inline-size: 100%"
-          >
-            <.psb-variation-group field={f[:field]} />
-          </Phoenix.Component.form>
-          """,
-          variations: [
-            %Variation{
-              id: :text,
-              attributes: %{
-                type: "text",
-                label: "Text"
-              }
-            },
-            %Variation{
-              id: :select,
-              attributes: %{
-                label: "Select",
-                type: "select",
-                prompt: "Choose a size",
-                options: ["Small", "Medium", "Large"]
-              }
-            },
-            %Variation{
-              id: :radio_group,
-              attributes: %{
-                label: "Radio group",
-                type: "radio-group",
-                options: ["Puppy", "Adult", "Senior"]
-              }
-            },
-            %Variation{
-              id: :checkbox_group,
-              attributes: %{
-                label: "Checkbox group",
-                type: "checkbox-group",
-                options: [
-                  "Garden required",
-                  "Good with cats",
-                  "Good with children"
-                ]
-              }
-            }
-          ]
-        },
-        %VariationGroup{
-          id: :autocomplete,
-          description: "Autocomplete with datalist",
-          variations: [
-            %Variation{
-              id: :only_values,
-              attributes: %{
-                type: "text",
-                label: "Dog breed",
-                placeholder: "Beagle",
-                options: [
-                  "Labrador Retriever",
-                  "German Shepherd",
-                  "Golden Retriever",
-                  "Bulldog",
-                  "Beagle",
-                  "Poodle",
-                  "Rottweiler",
-                  "Yorkshire Terrier",
-                  "Boxer",
-                  "Dachshund"
-                ]
-              }
-            },
-            %Variation{
-              id: :labels_and_values,
-              attributes: %{
-                type: "text",
-                label: "Dog breed",
-                placeholder: "Poodle",
-                options: [
-                  {"Labrador Retriever", "labrador_retriever"},
-                  {"German Shepherd", "german_shepherd"},
-                  {"Golden Retriever", "golden_retriever"},
-                  {"Bulldog", "bulldog"},
-                  {"Beagle", "beagle"},
-                  {"Poodle", "poodle"},
-                  {"Rottweiler", "rottweiler"},
-                  {"Yorkshire Terrier", "yorkshire_terrier"},
-                  {"Boxer", "boxer"},
-                  {"Dachshund", "dachshund"}
-                ]
               }
             }
           ]

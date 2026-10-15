@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
-- `Doggo.Storybook`: Add disabled, filled and form-error variations to the `field` story.
+- `Doggo.Storybook`: Add disabled and filled variations to the `field` story.
 - `field`: Raise for a type that the build does not allow when diagnostics are enabled.
 - `field`: Pass `label` and `hide_label` to the control of a registered type.
 
