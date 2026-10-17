@@ -24,14 +24,14 @@
   ],
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
-    "@playwright/test": "^1.63.0",
+    "@playwright/test": "^1.64.0",
     "autoprefixer": "10.6.1",
     "css-loader": "7.1.5",
     "esbuild": "0.28.2",
     "esbuild-sass-plugin": "3.7.0",
     "postcss": "8.5.29",
     "postcss-scss": "4.0.9",
-    "prettier": "3.9.9",
+    "prettier": "3.9.10",
     "stylelint": "17.16.0",
     "stylelint-config-recess-order": "7.8.0",
     "stylelint-config-standard-scss": "17.0.0",
@@ -45,5 +45,5 @@
     "phoenix_live_view": "1.2.12",
     "topbar": "^3.0.1"
   },
-  "packageManager": "pnpm@12.11.2+sha512.25a51652a196785af5f28bda6dfe8dc582ebefa4ac1d180221ce1390231c5fb76637822ea4b6e4633ce74acdcb0a77f725af11bad38177fdeddaee818a955cb9"
+  "packageManager": "pnpm@12.14.0+sha512.c18ba6d87993d3d164cb5e8948f32b2c06ee854487e06cd8d86781342fb3e5bb4634367034711e86802baa9c37bea906ce1929ad08d70884c97d801df13389a6"
 }
