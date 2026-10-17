@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `field`: Render `id` and global attributes on the inputs of the `hidden` type.
 - `field`: Style disabled controls in the example stylesheet.
+- `field`: Outline a `select` in the example stylesheet when a click on its label focuses it.
 
 ### How to upgrade
 
