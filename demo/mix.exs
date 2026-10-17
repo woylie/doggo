@@ -51,7 +51,7 @@ defmodule Demo.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:bandit, "== 1.12.5"},
+      {:bandit, "== 1.13.1"},
       {:credo, "== 1.7.19", runtime: false, only: [:dev, :test]},
       {:dialyxir, "1.4.8", runtime: false, only: [:dev, :test]},
       {:doggo, path: ".."},
