@@ -99,7 +99,7 @@
         var(--field-input-border-color);
       border-radius: var(--field-input-border-radius);
 
-      &:focus-visible {
+      &:focus {
         outline: var(--field-outline-width) solid var(--field-outline-color);
         outline-offset: var(--field-outline-offset);
       }
