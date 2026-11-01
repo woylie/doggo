@@ -60,7 +60,7 @@ defmodule Demo.MixProject do
       {:heroicons, "0.5.7"},
       {:jason, "1.4.5"},
       {:lazy_html, "== 0.1.13", only: :test},
-      {:phoenix, "== 1.8.15"},
+      {:phoenix, "== 1.8.16"},
       {:phoenix_html, "4.3.0"},
       {:phoenix_live_reload, "== 1.7.0", only: :dev},
       {:phoenix_live_view, "== 1.2.12"},

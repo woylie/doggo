@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@woylie/doggo": "link:../..",
-    "phoenix": "1.8.15",
+    "phoenix": "1.8.16",
     "phoenix_html": "link:../deps/phoenix_html",
     "phoenix_live_view": "1.2.12",
     "topbar": "^3.0.1"
