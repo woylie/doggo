@@ -178,8 +178,8 @@ importers:
         specifier: link:../deps/phoenix_html
         version: link:../deps/phoenix_html
       phoenix_live_view:
-        specifier: 1.2.12
-        version: 1.2.12
+        specifier: 1.2.13
+        version: 1.2.13
       topbar:
         specifier: ^3.0.1
         version: 3.0.1
@@ -1191,8 +1191,8 @@ packages:
   phoenix@1.8.15:
     resolution: {integrity: sha512-AU2t9smrLcSy7DF1ic3VKDVNmjnhcsOgdeXBiVrR29BgFLmO4EN+tyGx/lRY3naxl7eJtyLrnlBOfJu8gYvXdQ==}
 
-  phoenix_live_view@1.2.12:
-    resolution: {integrity: sha512-MmJSXZrqThk4mTzyvxSujzdRj6OHdVf5P5IS+qLPKdquCzHBYC7YXCkltBPCaom4uKS1cBKGahU7fGhU3Vyo4w==}
+  phoenix_live_view@1.2.13:
+    resolution: {integrity: sha512-HsDIXeM5R6p8ZBrcND6qZm5LtWnmp3pVF4K+zqBRsvEpL7CWPr7brJQyFXhuGhU5LuyEtOk8E2sFkomR6lz2Kw==}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -2638,7 +2638,7 @@ snapshots:
 
   phoenix@1.8.15: {}
 
-  phoenix_live_view@1.2.12: {}
+  phoenix_live_view@1.2.13: {}
 
   picocolors@1.1.1: {}
 

@@ -63,7 +63,7 @@ defmodule Demo.MixProject do
       {:phoenix, "== 1.8.15"},
       {:phoenix_html, "4.3.0"},
       {:phoenix_live_reload, "== 1.7.0", only: :dev},
-      {:phoenix_live_view, "== 1.2.12"},
+      {:phoenix_live_view, "== 1.2.13"},
       {:phoenix_storybook, "1.5.0"},
       {:tz, "~> 0.28"}
     ]
