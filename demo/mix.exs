@@ -39,7 +39,7 @@ defmodule Demo.MixProject do
   end
 
   def hex do
-    [ignore_advisories: ["EEF-CVE-2026-92106", "EEF-CVE-2026-105659"]]
+    [ignore_advisories: []]
   end
 
   # Specifies which paths to compile per environment.
@@ -61,7 +61,7 @@ defmodule Demo.MixProject do
       {:jason, "1.4.5"},
       {:lazy_html, "== 0.1.13", only: :test},
       {:phoenix, "== 1.8.16"},
-      {:phoenix_html, "4.3.0"},
+      {:phoenix_html, "4.4.0"},
       {:phoenix_live_reload, "== 1.7.0", only: :dev},
       {:phoenix_live_view, "== 1.2.13"},
       {:phoenix_storybook, "1.5.0"},

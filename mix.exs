@@ -54,7 +54,7 @@ defmodule Doggo.MixProject do
   end
 
   def hex do
-    [ignore_advisories: ["EEF-CVE-2026-92106"]]
+    [ignore_advisories: []]
   end
 
   # Run "mix help compile.app" to learn about applications.
