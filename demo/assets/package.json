@@ -23,26 +23,26 @@
     "baseline widely available"
   ],
   "devDependencies": {
-    "@axe-core/playwright": "^4.13.0",
-    "@playwright/test": "^1.64.0",
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1",
     "autoprefixer": "10.6.1",
     "css-loader": "7.1.5",
     "esbuild": "0.28.2",
     "esbuild-sass-plugin": "3.7.0",
-    "postcss": "8.5.29",
+    "postcss": "8.5.31",
     "postcss-scss": "4.0.9",
     "prettier": "3.9.10",
     "stylelint": "17.16.0",
-    "stylelint-config-recess-order": "7.8.0",
+    "stylelint-config-recess-order": "7.9.0",
     "stylelint-config-standard-scss": "17.0.0",
     "stylelint-declaration-strict-value": "1.12.1",
     "stylelint-value-no-unknown-custom-properties": "^6.1.1"
   },
   "dependencies": {
     "@woylie/doggo": "link:../..",
-    "phoenix": "1.8.15",
+    "phoenix": "1.8.16",
     "phoenix_html": "link:../deps/phoenix_html",
-    "phoenix_live_view": "1.2.12",
+    "phoenix_live_view": "1.2.13",
     "topbar": "^3.0.1"
   },
   "packageManager": "pnpm@12.14.0+sha512.c18ba6d87993d3d164cb5e8948f32b2c06ee854487e06cd8d86781342fb3e5bb4634367034711e86802baa9c37bea906ce1929ad08d70884c97d801df13389a6"

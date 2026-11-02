@@ -172,27 +172,27 @@ importers:
         specifier: link:../..
         version: link:../..
       phoenix:
-        specifier: 1.8.15
-        version: 1.8.15
+        specifier: 1.8.16
+        version: 1.8.16
       phoenix_html:
         specifier: link:../deps/phoenix_html
         version: link:../deps/phoenix_html
       phoenix_live_view:
-        specifier: 1.2.12
-        version: 1.2.12
+        specifier: 1.2.13
+        version: 1.2.13
       topbar:
         specifier: ^3.0.1
         version: 3.0.1
     devDependencies:
       '@axe-core/playwright':
-        specifier: ^4.13.0
-        version: 4.13.0(playwright-core@1.64.0)
+        specifier: ^4.14.0
+        version: 4.14.0(playwright-core@1.64.1)
       '@playwright/test':
-        specifier: ^1.64.0
-        version: 1.64.0
+        specifier: ^1.64.1
+        version: 1.64.1
       autoprefixer:
         specifier: 10.6.1
-        version: 10.6.1(postcss@8.5.29)
+        version: 10.6.1(postcss@8.5.31)
       css-loader:
         specifier: 7.1.5
         version: 7.1.5
@@ -203,11 +203,11 @@ importers:
         specifier: 3.7.0
         version: 3.7.0(esbuild@0.28.2)(sass-embedded@1.103.1)
       postcss:
-        specifier: 8.5.29
-        version: 8.5.29
+        specifier: 8.5.31
+        version: 8.5.31
       postcss-scss:
         specifier: 4.0.9
-        version: 4.0.9(postcss@8.5.29)
+        version: 4.0.9(postcss@8.5.31)
       prettier:
         specifier: 3.9.10
         version: 3.9.10
@@ -215,11 +215,11 @@ importers:
         specifier: 17.16.0
         version: 17.16.0(supports-color@10.2.2)
       stylelint-config-recess-order:
-        specifier: 7.8.0
-        version: 7.8.0(stylelint-order@8.1.1(stylelint@17.16.0(supports-color@10.2.2)))(stylelint@17.16.0(supports-color@10.2.2))
+        specifier: 7.9.0
+        version: 7.9.0(stylelint-order@8.1.1(stylelint@17.16.0(supports-color@10.2.2)))(stylelint@17.16.0(supports-color@10.2.2))
       stylelint-config-standard-scss:
         specifier: 17.0.0
-        version: 17.0.0(postcss@8.5.29)(stylelint@17.16.0(supports-color@10.2.2))
+        version: 17.0.0(postcss@8.5.31)(stylelint@17.16.0(supports-color@10.2.2))
       stylelint-declaration-strict-value:
         specifier: 1.12.1
         version: 1.12.1(stylelint@17.16.0(supports-color@10.2.2))
@@ -229,8 +229,9 @@ importers:
 
 packages:
 
-  '@axe-core/playwright@4.13.0':
-    resolution: {integrity: sha512-6YLx+kxXu5GJceG4ozFg+33a2EMTdjYwWGloJ3sb9Kta5pp+ZNS53uxGVog5JetIY8s++P5UrtX+cri+u0VAVg==}
+  '@axe-core/playwright@4.14.0':
+    resolution: {integrity: sha512-SGUhG5PIHd2eMdpgBF2PyQLOhX+qyDR2PT4cmoS4Qk2ak+jX/rrSvst9l0PGv5WTHolKpUMvVmoHpr4cZgf1RQ==}
+    engines: {node: '>=22.12.0'}
     peerDependencies:
       playwright-core: '>= 1.0.0'
 
@@ -562,8 +563,8 @@ packages:
     resolution: {integrity: sha512-7FNeNl8NCE7aINx7WXiKQrPYZWC/hvrTsmk6zmxbI7LTXE7hVek/n8AfVgpe2y82zl3w0HvCHN0bVKMBoJcC0w==}
     engines: {node: '>= 10.0.0'}
 
-  '@playwright/test@1.64.0':
-    resolution: {integrity: sha512-oTN9FNYuN6bqQMwiho6jJKLCG2/QOYCixGXuCjRmzOq23eODeukuY2XiAVoVpAECbuezMt1MHQjAiQxK8F+Y+g==}
+  '@playwright/test@1.64.1':
+    resolution: {integrity: sha512-IaYGml/nSOiZWROfPtuIL7neuu9qDOZ3TNvNljUIrhDMxiGTgPjzj/g9p9RxpS2tSepPDRY+UwAaEeiKtUvIAg==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -616,8 +617,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  axe-core@4.13.0:
-    resolution: {integrity: sha512-UzGt8zg7Ny8djbYMhxl2zuEevVa7r2gJjYY5Lwr1xM7+XU2nd6CkIWFTVcCIbAP63vSz71NaVyyuSk9lHKcy0A==}
+  axe-core@4.14.0:
+    resolution: {integrity: sha512-9WTZxEjsZ7b13TH8JPmbV2z8CHbl80/2hm3XPEG4JgNdQLK81IBRXmSxHfMAOkSqQeRxT/0dwNDz2GOm3zzpcQ==}
     engines: {node: '>=4'}
 
   baseline-browser-mapping@2.11.27:
@@ -807,8 +808,8 @@ packages:
     resolution: {integrity: sha512-7MptL8U0cqcFdzIzwOTHoilX9x5BrNqye7Z/LuC7kCMRio1EMSyqRK3BEAUD7sXRq4iT4AzTVuZdhgQ2TCvYLg==}
     engines: {node: '>=8.6.0'}
 
-  fast-uri@3.1.7:
-    resolution: {integrity: sha512-dOvZVzjdZdz7phd9v6jCbwxrBW3fK6n8Rc0CtdmM4bumzMnxywBYhuph6J819RRw/ku+rLbelwfMunktuzVVHg==}
+  fast-uri@3.1.9:
+    resolution: {integrity: sha512-hS/0Wt3Ya043oKXs0sIxrMpKQITXhMLIrVAKKXi4gozGC9v7YRWVnXIZzjNPTO02M9BdxLCWqK1yRXgNziVyJQ==}
 
   fastest-levenshtein@1.0.16:
     resolution: {integrity: sha512-eRnCtTTtGZFpQCwhJiUOuxPQWRXVKYDn0b2PeHfXL6/Zi53SLAzAHfVhVWK2AryC/WH05kGfxhFIPvTF0SXQzg==}
@@ -1188,11 +1189,11 @@ packages:
   path-parse@1.0.7:
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
 
-  phoenix@1.8.15:
-    resolution: {integrity: sha512-AU2t9smrLcSy7DF1ic3VKDVNmjnhcsOgdeXBiVrR29BgFLmO4EN+tyGx/lRY3naxl7eJtyLrnlBOfJu8gYvXdQ==}
+  phoenix@1.8.16:
+    resolution: {integrity: sha512-bNNJkYBnES2MHo8XjBg6ROK7iU7FeYfkANpTnYzh2ecOipI+8ZF1wiiWdvqv2YfV4MVb9yFJBE2BPF+RXgXXuw==}
 
-  phoenix_live_view@1.2.12:
-    resolution: {integrity: sha512-MmJSXZrqThk4mTzyvxSujzdRj6OHdVf5P5IS+qLPKdquCzHBYC7YXCkltBPCaom4uKS1cBKGahU7fGhU3Vyo4w==}
+  phoenix_live_view@1.2.13:
+    resolution: {integrity: sha512-HsDIXeM5R6p8ZBrcND6qZm5LtWnmp3pVF4K+zqBRsvEpL7CWPr7brJQyFXhuGhU5LuyEtOk8E2sFkomR6lz2Kw==}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -1205,13 +1206,13 @@ packages:
     resolution: {integrity: sha512-RvwwcruNjI1ncT5xRakeyS9Lf8lcItv34KD+aif+VH9kduAyfYBipGh12274xtenIPZ119/R9BdTBa8gAwSh0A==}
     engines: {node: '>=12'}
 
-  playwright-core@1.64.0:
-    resolution: {integrity: sha512-T9r+MZkTECl2+oUcZ26YgZzTrYidTsIhYYkJix+6iDOymOb1FB2RLLSOxRGnZGv5DStt+aduIVbt+E8WygXYpg==}
+  playwright-core@1.64.1:
+    resolution: {integrity: sha512-BC4s8y6SEVA6Q1rSxZTto8hI1KUI3xXlHGZgvGqP4IqPdI/a6FX9H29IDNz7vKo9l21b6LfYosScPL6M3xxyDQ==}
     engines: {node: '>=20'}
     hasBin: true
 
-  playwright@1.64.0:
-    resolution: {integrity: sha512-kVzTnYFYEyQ9RGzBjNCd2+yEqWmVbxl3AHPynv3qQ6JTjv4a+kwRcnqQwIpuP3NnrnIrE/Q6wWAIAvMfIE2/Yg==}
+  playwright@1.64.1:
+    resolution: {integrity: sha512-HCrVhHr5QQuwYoswEUGTb7gGp522yflbv/ST8nF4sFWGuLjQCt17Q/EubpGGSNKYn1tsTCPZxqHhHCfVURu7UA==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -1261,10 +1262,6 @@ packages:
     peerDependencies:
       postcss: ^8.4.29
 
-  postcss-selector-parser@7.1.5:
-    resolution: {integrity: sha512-KvvtD7SrlBP7dlgkBghEE3r84CABm5SmV2aNcG4oCA+qDnJ/tvKonFVvwWAyyWUEwxuNawdfEAZKP9zM3oZ2Uw==}
-    engines: {node: '>=4'}
-
   postcss-selector-parser@7.1.6:
     resolution: {integrity: sha512-7qASPzhKF2l2KLboRZux8CCTRMdGiV08vWmyKzPz22qZ7ZjQBOeY7rNzNoCLSUiftJ7HUq0GERHmxw/t0dCdMw==}
     engines: {node: '>=4'}
@@ -1277,8 +1274,8 @@ packages:
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
-  postcss@8.5.29:
-    resolution: {integrity: sha512-49cGhUbXj8Qenv0iTMxA1cFBzxXoctpC9Ujd77t1WcbJIr6nF/eI7g/8MgxrYldFRuAXvja7xQRwavoW7kgrxQ==}
+  postcss@8.5.31:
+    resolution: {integrity: sha512-YUbWYCgErwnMAVkjUnYa+KlMBzGpHwiIt/DE7f0G33AuX2LH9UcTk6KgWxd3zRU+pN3u/C+Xl3EnMLM4Hea7Sg==}
     engines: {node: ^10 || ^12 || >=14}
 
   prettier@3.9.10:
@@ -1511,10 +1508,6 @@ packages:
     resolution: {integrity: sha512-qMCMfhY040cVHT43K9BFygqYbUPFZKHOg7K73mtTWJRb8pyP3fzf4Ixd5SzdEJQ6MRUg/WBnOLxghZtKKurENQ==}
     engines: {node: '>=10'}
 
-  source-map-js@1.2.1:
-    resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
-    engines: {node: '>=0.10.0'}
-
   source-map-js@1.2.2:
     resolution: {integrity: sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==}
     engines: {node: '>=0.10.0'}
@@ -1551,8 +1544,8 @@ packages:
     resolution: {integrity: sha512-yDPMNjp4WyfYBkHnjIRLfca1i6KMyGCtsVgoKe/z1+6vukgaENdgGBZt+ZmKPc4gavvEZ5OgHfHdrazhgNyG7w==}
     engines: {node: '>=12'}
 
-  stylelint-config-recess-order@7.8.0:
-    resolution: {integrity: sha512-ObYusdkXavm8ulgb5xvmU1l8wgCdveNYG12hOTUEdjS8bNhSRggl4or0mE0JaOnQz+Ve2xZemVpwqERCgJbntg==}
+  stylelint-config-recess-order@7.9.0:
+    resolution: {integrity: sha512-Pu3zhefjou7PYNkEtx4uLnsCSmXpiNIx8ALd20r+PGO1LApcf2Gowh2pKEaY9h8gdR8Wp6rUGqhqEIAhdyoHxg==}
     peerDependencies:
       stylelint: ^16.18.0 || ^17.0.0
       stylelint-order: ^7.0.0 || ^8.0.0
@@ -1721,10 +1714,10 @@ packages:
 
 snapshots:
 
-  '@axe-core/playwright@4.13.0(playwright-core@1.64.0)':
+  '@axe-core/playwright@4.14.0(playwright-core@1.64.1)':
     dependencies:
-      axe-core: 4.13.0
-      playwright-core: 1.64.0
+      axe-core: 4.14.0
+      playwright-core: 1.64.1
 
   '@babel/code-frame@7.29.7':
     dependencies:
@@ -1935,16 +1928,16 @@ snapshots:
       '@parcel/watcher-win32-x64': 2.6.0
     optional: true
 
-  '@playwright/test@1.64.0':
+  '@playwright/test@1.64.1':
     dependencies:
-      playwright: 1.64.0
+      playwright: 1.64.1
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
   ajv@8.20.0:
     dependencies:
       fast-deep-equal: 3.1.3
-      fast-uri: 3.1.7
+      fast-uri: 3.1.9
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
 
@@ -1977,20 +1970,20 @@ snapshots:
 
   async-function@1.0.0: {}
 
-  autoprefixer@10.6.1(postcss@8.5.29):
+  autoprefixer@10.6.1(postcss@8.5.31):
     dependencies:
       browserslist: 4.29.3
       caniuse-lite: 1.0.30001814
       fraction.js: 5.3.4
       picocolors: 1.1.1
-      postcss: 8.5.29
+      postcss: 8.5.31
       postcss-value-parser: 4.2.0
 
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  axe-core@4.13.0: {}
+  axe-core@4.14.0: {}
 
   baseline-browser-mapping@2.11.27: {}
 
@@ -2060,19 +2053,19 @@ snapshots:
 
   css-loader@7.1.5:
     dependencies:
-      icss-utils: 5.1.0(postcss@8.5.29)
-      postcss: 8.5.29
-      postcss-modules-extract-imports: 3.1.0(postcss@8.5.29)
-      postcss-modules-local-by-default: 4.2.0(postcss@8.5.29)
-      postcss-modules-scope: 3.2.1(postcss@8.5.29)
-      postcss-modules-values: 4.0.0(postcss@8.5.29)
+      icss-utils: 5.1.0(postcss@8.5.31)
+      postcss: 8.5.31
+      postcss-modules-extract-imports: 3.1.0(postcss@8.5.31)
+      postcss-modules-local-by-default: 4.2.0(postcss@8.5.31)
+      postcss-modules-scope: 3.2.1(postcss@8.5.31)
+      postcss-modules-values: 4.0.0(postcss@8.5.31)
       postcss-value-parser: 4.2.0
       semver: 7.8.5
 
   css-tree@3.2.1:
     dependencies:
       mdn-data: 2.27.1
-      source-map-js: 1.2.1
+      source-map-js: 1.2.2
 
   cssesc@3.0.0: {}
 
@@ -2267,7 +2260,7 @@ snapshots:
       merge2: 1.4.1
       micromatch: 4.0.8
 
-  fast-uri@3.1.7: {}
+  fast-uri@3.1.9: {}
 
   fastest-levenshtein@1.0.16: {}
 
@@ -2408,9 +2401,9 @@ snapshots:
 
   html-tags@5.1.0: {}
 
-  icss-utils@5.1.0(postcss@8.5.29):
+  icss-utils@5.1.0(postcss@8.5.31):
     dependencies:
-      postcss: 8.5.29
+      postcss: 8.5.31
 
   ignore@7.0.6: {}
 
@@ -2636,9 +2629,9 @@ snapshots:
 
   path-parse@1.0.7: {}
 
-  phoenix@1.8.15: {}
+  phoenix@1.8.16: {}
 
-  phoenix_live_view@1.2.12: {}
+  phoenix_live_view@1.2.13: {}
 
   picocolors@1.1.1: {}
 
@@ -2647,64 +2640,59 @@ snapshots:
   picomatch@4.0.5:
     optional: true
 
-  playwright-core@1.64.0: {}
+  playwright-core@1.64.1: {}
 
-  playwright@1.64.0:
+  playwright@1.64.1:
     dependencies:
-      playwright-core: 1.64.0
+      playwright-core: 1.64.1
 
   possible-typed-array-names@1.1.0: {}
 
   postcss-media-query-parser@0.2.3: {}
 
-  postcss-modules-extract-imports@3.1.0(postcss@8.5.29):
+  postcss-modules-extract-imports@3.1.0(postcss@8.5.31):
     dependencies:
-      postcss: 8.5.29
+      postcss: 8.5.31
 
-  postcss-modules-local-by-default@4.2.0(postcss@8.5.29):
+  postcss-modules-local-by-default@4.2.0(postcss@8.5.31):
     dependencies:
-      icss-utils: 5.1.0(postcss@8.5.29)
-      postcss: 8.5.29
+      icss-utils: 5.1.0(postcss@8.5.31)
+      postcss: 8.5.31
       postcss-selector-parser: 7.1.6
       postcss-value-parser: 4.2.0
 
-  postcss-modules-scope@3.2.1(postcss@8.5.29):
+  postcss-modules-scope@3.2.1(postcss@8.5.31):
     dependencies:
-      postcss: 8.5.29
+      postcss: 8.5.31
       postcss-selector-parser: 7.1.6
 
-  postcss-modules-values@4.0.0(postcss@8.5.29):
+  postcss-modules-values@4.0.0(postcss@8.5.31):
     dependencies:
-      icss-utils: 5.1.0(postcss@8.5.29)
-      postcss: 8.5.29
+      icss-utils: 5.1.0(postcss@8.5.31)
+      postcss: 8.5.31
 
   postcss-resolve-nested-selector@0.1.6: {}
 
-  postcss-safe-parser@7.0.1(postcss@8.5.29):
+  postcss-safe-parser@7.0.1(postcss@8.5.31):
     dependencies:
-      postcss: 8.5.29
+      postcss: 8.5.31
 
-  postcss-scss@4.0.9(postcss@8.5.29):
+  postcss-scss@4.0.9(postcss@8.5.31):
     dependencies:
-      postcss: 8.5.29
-
-  postcss-selector-parser@7.1.5:
-    dependencies:
-      cssesc: 3.0.0
-      util-deprecate: 1.0.2
+      postcss: 8.5.31
 
   postcss-selector-parser@7.1.6:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss-sorting@10.0.0(postcss@8.5.29):
+  postcss-sorting@10.0.0(postcss@8.5.31):
     dependencies:
-      postcss: 8.5.29
+      postcss: 8.5.31
 
   postcss-value-parser@4.2.0: {}
 
-  postcss@8.5.29:
+  postcss@8.5.31:
     dependencies:
       nanoid: 3.3.20
       picocolors: 1.1.1
@@ -2880,7 +2868,7 @@ snapshots:
     dependencies:
       chokidar: 5.0.0
       immutable: 5.1.9
-      source-map-js: 1.2.1
+      source-map-js: 1.2.2
     optionalDependencies:
       '@parcel/watcher': 2.6.0
 
@@ -2946,8 +2934,6 @@ snapshots:
       astral-regex: 2.0.0
       is-fullwidth-code-point: 3.0.0
 
-  source-map-js@1.2.1: {}
-
   source-map-js@1.2.2: {}
 
   stop-iteration-iterator@1.1.0:
@@ -2998,31 +2984,31 @@ snapshots:
     dependencies:
       ansi-regex: 6.3.0
 
-  stylelint-config-recess-order@7.8.0(stylelint-order@8.1.1(stylelint@17.16.0(supports-color@10.2.2)))(stylelint@17.16.0(supports-color@10.2.2)):
+  stylelint-config-recess-order@7.9.0(stylelint-order@8.1.1(stylelint@17.16.0(supports-color@10.2.2)))(stylelint@17.16.0(supports-color@10.2.2)):
     dependencies:
       stylelint: 17.16.0(supports-color@10.2.2)
       stylelint-order: 8.1.1(stylelint@17.16.0(supports-color@10.2.2))
 
-  stylelint-config-recommended-scss@17.0.1(postcss@8.5.29)(stylelint@17.16.0(supports-color@10.2.2)):
+  stylelint-config-recommended-scss@17.0.1(postcss@8.5.31)(stylelint@17.16.0(supports-color@10.2.2)):
     dependencies:
-      postcss-scss: 4.0.9(postcss@8.5.29)
+      postcss-scss: 4.0.9(postcss@8.5.31)
       stylelint: 17.16.0(supports-color@10.2.2)
       stylelint-config-recommended: 18.0.0(stylelint@17.16.0(supports-color@10.2.2))
       stylelint-scss: 7.2.0(stylelint@17.16.0(supports-color@10.2.2))
     optionalDependencies:
-      postcss: 8.5.29
+      postcss: 8.5.31
 
   stylelint-config-recommended@18.0.0(stylelint@17.16.0(supports-color@10.2.2)):
     dependencies:
       stylelint: 17.16.0(supports-color@10.2.2)
 
-  stylelint-config-standard-scss@17.0.0(postcss@8.5.29)(stylelint@17.16.0(supports-color@10.2.2)):
+  stylelint-config-standard-scss@17.0.0(postcss@8.5.31)(stylelint@17.16.0(supports-color@10.2.2)):
     dependencies:
       stylelint: 17.16.0(supports-color@10.2.2)
-      stylelint-config-recommended-scss: 17.0.1(postcss@8.5.29)(stylelint@17.16.0(supports-color@10.2.2))
+      stylelint-config-recommended-scss: 17.0.1(postcss@8.5.31)(stylelint@17.16.0(supports-color@10.2.2))
       stylelint-config-standard: 40.0.0(stylelint@17.16.0(supports-color@10.2.2))
     optionalDependencies:
-      postcss: 8.5.29
+      postcss: 8.5.31
 
   stylelint-config-standard@40.0.0(stylelint@17.16.0(supports-color@10.2.2)):
     dependencies:
@@ -3036,8 +3022,8 @@ snapshots:
 
   stylelint-order@8.1.1(stylelint@17.16.0(supports-color@10.2.2)):
     dependencies:
-      postcss: 8.5.29
-      postcss-sorting: 10.0.0(postcss@8.5.29)
+      postcss: 8.5.31
+      postcss-sorting: 10.0.0(postcss@8.5.31)
       stylelint: 17.16.0(supports-color@10.2.2)
 
   stylelint-scss@7.2.0(stylelint@17.16.0(supports-color@10.2.2)):
@@ -3051,13 +3037,13 @@ snapshots:
       known-css-properties: 0.37.0
       postcss-media-query-parser: 0.2.3
       postcss-resolve-nested-selector: 0.1.6
-      postcss-selector-parser: 7.1.5
+      postcss-selector-parser: 7.1.6
       postcss-value-parser: 4.2.0
       stylelint: 17.16.0(supports-color@10.2.2)
 
   stylelint-value-no-unknown-custom-properties@6.1.1(stylelint@17.16.0(supports-color@10.2.2)):
     dependencies:
-      postcss: 8.5.29
+      postcss: 8.5.31
       postcss-value-parser: 4.2.0
       resolve: 1.22.12
       stylelint: 17.16.0(supports-color@10.2.2)
@@ -3090,8 +3076,8 @@ snapshots:
       micromatch: 4.0.8
       normalize-path: 3.0.0
       picocolors: 1.1.1
-      postcss: 8.5.29
-      postcss-safe-parser: 7.0.1(postcss@8.5.29)
+      postcss: 8.5.31
+      postcss-safe-parser: 7.0.1(postcss@8.5.31)
       postcss-selector-parser: 7.1.6
       postcss-value-parser: 4.2.0
       string-width: 8.2.2

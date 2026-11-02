@@ -104,7 +104,7 @@ defmodule Doggo.ChangeTrackingTest do
 
     test "sends only the content if the content changed" do
       assert render(&button/1, @assigns, %{label: true}) ==
-               [~s( data-probe="x"), "Save"]
+               ["Save"]
     end
 
     test "sends the data attributes if a modifier changed" do
@@ -125,7 +125,7 @@ defmodule Doggo.ChangeTrackingTest do
 
     test "sends only the content if the content changed" do
       assert render(&frame/1, @assigns, %{content: true}) ==
-               [~s( data-probe="x"), "Content"]
+               ["Content"]
     end
 
     test "sends the ratio if the ratio changed" do
@@ -140,7 +140,7 @@ defmodule Doggo.ChangeTrackingTest do
 
     test "sends only the caption if the caption changed" do
       assert render(&image/1, @assigns, %{caption: true}) ==
-               [~s( data-probe="x"), "A caption"]
+               ["A caption"]
     end
 
     test "sends the frame's ratio if the ratio changed" do
@@ -155,7 +155,7 @@ defmodule Doggo.ChangeTrackingTest do
 
     test "sends only the label if the label changed" do
       assert render(&icon/1, @assigns, %{label: true}) ==
-               [~s( data-probe="x"), "Info"]
+               ["Info"]
     end
   end
 
@@ -232,7 +232,7 @@ defmodule Doggo.ChangeTrackingTest do
       assigns = %{pressed: true, label: "Mute"}
 
       assert render(&toggle_button/1, assigns, %{label: true}) ==
-               [~s( data-probe="x"), "Mute"]
+               ["Mute"]
     end
 
     test "sends aria-pressed if pressed changed" do
