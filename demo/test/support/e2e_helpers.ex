@@ -92,12 +92,14 @@ defmodule DemoWeb.E2EHelpers do
     Expect.to_be_visible!(Page.get_by_text(page, "re-sends 1"))
   end
 
+  @axe_path Path.expand("../../assets/node_modules/axe-core/axe.min.js", __DIR__)
+
   # `new AxeBuilder({ page }).include(selector).analyze()` from
-  # @axe-core/playwright: inject axe-core (a devDependency of `assets`; tests run
-  # from `demo`) and run it on the page. The
+  # @axe-core/playwright: evaluate axe-core (a devDependency of `assets`) in the
+  # page, as AxeBuilder does, and run it. The
   # storybook has no iframes, so there are no partial results to merge.
   def axe_violations(page, include) do
-    Page.add_script_tag!(page, path: "assets/node_modules/axe-core/axe.min.js")
+    Page.evaluate!(page, File.read!(@axe_path))
 
     %{"violations" => violations} =
       Page.evaluate!(page, "(context) => axe.run(context)", %{
