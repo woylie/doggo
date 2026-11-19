@@ -93,10 +93,11 @@ defmodule DemoWeb.E2EHelpers do
   end
 
   # `new AxeBuilder({ page }).include(selector).analyze()` from
-  # @axe-core/playwright: inject axe-core and run it on the page. The
+  # @axe-core/playwright: inject axe-core (a devDependency of `assets`; tests run
+  # from `demo`) and run it on the page. The
   # storybook has no iframes, so there are no partial results to merge.
   def axe_violations(page, include) do
-    Page.evaluate!(page, axe_source())
+    Page.add_script_tag!(page, path: "assets/node_modules/axe-core/axe.min.js")
 
     %{"violations" => violations} =
       Page.evaluate!(page, "(context) => axe.run(context)", %{
@@ -104,15 +105,5 @@ defmodule DemoWeb.E2EHelpers do
       })
 
     violations
-  end
-
-  # pnpm doesn't hoist axe-core, so ask node where `assets` resolves it.
-  defp axe_source do
-    {path, 0} =
-      System.cmd("node", ["-p", "require.resolve('axe-core/axe.min.js')"],
-        cd: Path.expand("../../assets", __DIR__)
-      )
-
-    path |> String.trim() |> File.read!()
   end
 end

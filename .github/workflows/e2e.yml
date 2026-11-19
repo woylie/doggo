@@ -81,10 +81,11 @@ jobs:
       - name: Run end-to-end tests
         # Failed tests are rerun, at most twice.
         run: |
+          set -o pipefail
           mix test --only e2e \
             --formatter ExUnit.CLIFormatter --formatter Playwright.Test.GitHubFormatter \
-            || { [ $? -eq 2 ] && mix test --only e2e --failed; } \
-            || { [ $? -eq 2 ] && mix test --only e2e --failed; }
+            || { [ $? -eq 2 ] && mix test --only e2e --failed | tee retry.log && ! grep -q "There are no tests to run" retry.log; } \
+            || { [ $? -eq 2 ] && mix test --only e2e --failed | tee retry.log && ! grep -q "There are no tests to run" retry.log; }
         working-directory: ./demo
         env:
           MIX_ENV: test

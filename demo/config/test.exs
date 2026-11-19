@@ -23,3 +23,6 @@ config :demo, DemoWeb.Endpoint, check_origin: false
 config :playwright, :test,
   base_url: "http://127.0.0.1:4002",
   trace: :retain_on_failure
+
+# One worker on CI, as the JS config had.
+if System.get_env("CI"), do: config(:playwright, :test, workers: 1)
