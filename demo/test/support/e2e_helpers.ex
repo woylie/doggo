@@ -92,7 +92,10 @@ defmodule DemoWeb.E2EHelpers do
     Expect.to_be_visible!(Page.get_by_text(page, "re-sends 1"))
   end
 
-  @axe_path Path.expand("../../assets/node_modules/axe-core/axe.min.js", __DIR__)
+  @axe_path Path.expand(
+              "../../assets/node_modules/axe-core/axe.min.js",
+              __DIR__
+            )
 
   # `new AxeBuilder({ page }).include(selector).analyze()` from
   # @axe-core/playwright: evaluate axe-core (a devDependency of `assets`) in the
