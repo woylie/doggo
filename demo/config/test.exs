@@ -15,3 +15,11 @@ config :logger, level: :warning
 config :phoenix, :plug_init_mode, :runtime
 
 config :doggo, :diagnostics, true
+
+# End-to-end tests (`mix test --only e2e`): test_helper.exs starts the server.
+# check_origin: the browser reaches the endpoint at 127.0.0.1, its host is localhost.
+config :demo, DemoWeb.Endpoint, check_origin: false
+
+config :playwright, :test,
+  base_url: "http://127.0.0.1:4002",
+  trace: :retain_on_failure
