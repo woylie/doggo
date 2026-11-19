@@ -1,6 +1,6 @@
 defmodule DemoWeb.E2EHelpers do
   @moduledoc """
-  Ported from `assets/e2e/helpers.js`.
+  Helpers of the end-to-end tests.
   """
 
   alias Playwright.Expect

@@ -1,8 +1,7 @@
 defmodule DemoWeb.BrowserCase do
   @moduledoc """
-  The case template of the end-to-end tests, ported from the Playwright suite
-  in `assets/e2e`. Each module runs once per project of
-  `assets/playwright.config.js`.
+  The case template of the end-to-end tests. Each module runs once per
+  project (`projects/0`): Desktop Chrome, with and without reduced motion.
   """
 
   use ExUnit.CaseTemplate

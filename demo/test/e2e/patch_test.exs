@@ -1,6 +1,6 @@
 defmodule DemoWeb.E2E.PatchComponents do
   @moduledoc false
-  # The `components` of patch.spec.js: each one's `arrange` and `assert`.
+  # The patch test's `components`: each one's `arrange` and `assert`.
 
   import DemoWeb.E2EHelpers
 
