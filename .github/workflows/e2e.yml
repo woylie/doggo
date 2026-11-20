@@ -79,12 +79,24 @@ jobs:
       - name: Build assets
         run: pnpm build:dev
       - name: Run end-to-end tests
-        # Failed tests are rerun, at most twice.
+        # Failed tests are rerun, at most twice. One project per run until
+        # Elixir 1.21: elixir-lang/elixir#15820.
         run: |
-          mix test --only e2e \
-            --formatter ExUnit.CLIFormatter --formatter Playwright.Test.GitHubFormatter \
-            || { [ $? -eq 2 ] && mix test --only e2e --failed; } \
-            || { [ $? -eq 2 ] && mix test --only e2e --failed; }
+          retry() {
+            mix test --only e2e --failed 2>&1 | tee retry.log; s=${PIPESTATUS[0]}
+            if grep -q "^There are no tests to run" retry.log; then
+              echo "::error::mix test --failed found no failures to rerun after a failed run"; return 1
+            fi
+            return $s
+          }
+          status=0
+          for project in chromium chromium-reduced-motion; do
+            export E2E_PROJECT=$project
+            mix test --only e2e \
+              --formatter ExUnit.CLIFormatter --formatter Playwright.Test.GitHubFormatter \
+              || { [ $? -eq 2 ] && retry; } || { [ $? -eq 2 ] && retry; } || status=1
+          done
+          exit $status
         working-directory: ./demo
         env:
           MIX_ENV: test
