@@ -1,7 +1,5 @@
 defmodule DemoWeb.E2E.CarouselTest do
-  use DemoWeb.BrowserCase,
-    async: true,
-    parameterize: DemoWeb.BrowserCase.projects()
+  use DemoWeb.BrowserCase, async: true
 
   setup %{page: page} do
     open_harness(page)

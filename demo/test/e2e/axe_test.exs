@@ -1,7 +1,5 @@
 defmodule DemoWeb.E2E.AxeTest do
-  use DemoWeb.BrowserCase,
-    async: true,
-    parameterize: DemoWeb.BrowserCase.projects()
+  use DemoWeb.BrowserCase, async: true
 
   @storybook_dir Path.expand("../../storybook", __DIR__)
 

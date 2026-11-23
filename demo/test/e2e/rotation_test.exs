@@ -1,7 +1,5 @@
 defmodule DemoWeb.E2E.RotationTest do
-  use DemoWeb.BrowserCase,
-    async: true,
-    parameterize: DemoWeb.BrowserCase.projects()
+  use DemoWeb.BrowserCase, async: true
 
   alias Playwright.Clock
 

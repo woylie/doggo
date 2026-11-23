@@ -25,6 +25,8 @@ jobs:
     name: End-to-end
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      MIX_ENV: test
     defaults:
       run:
         working-directory: ./demo/assets
@@ -50,8 +52,6 @@ jobs:
       - name: Compile Elixir Application
         run: mix compile
         working-directory: ./demo
-        env:
-          MIX_ENV: test
       - name: Install pnpm
         uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
         with:
@@ -74,8 +74,6 @@ jobs:
       - name: Install Playwright driver, browsers and system dependencies
         run: mix playwright.install chromium --with-deps
         working-directory: ./demo
-        env:
-          MIX_ENV: test
       - name: Build assets
         run: pnpm build:dev
       - name: Run end-to-end tests
@@ -99,8 +97,6 @@ jobs:
           done
           exit $status
         working-directory: ./demo
-        env:
-          MIX_ENV: test
       - name: Upload test results
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: ${{ !cancelled() }}

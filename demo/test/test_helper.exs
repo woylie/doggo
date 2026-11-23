@@ -5,10 +5,6 @@ if :e2e in ExUnit.configuration()[:include] do
   # Playwright Test's default test timeout.
   ExUnit.configure(timeout: 30_000)
 
-  # One test at a time on CI, as `workers: 1`: queued tests would spend
-  # their timeout waiting for the browser.
-  if System.get_env("CI"), do: ExUnit.configure(max_cases: 1)
-
   config = Application.fetch_env!(:demo, DemoWeb.Endpoint)
 
   Application.put_env(

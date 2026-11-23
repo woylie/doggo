@@ -35,6 +35,13 @@ defmodule DemoWeb.BrowserCase do
   end
 
   using opts do
+    opts =
+      Keyword.put_new(
+        opts,
+        :parameterize,
+        quote(do: DemoWeb.BrowserCase.projects())
+      )
+
     quote do
       use Playwright.Case, unquote(opts)
 

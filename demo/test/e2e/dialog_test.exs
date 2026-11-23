@@ -1,8 +1,6 @@
 defmodule DemoWeb.E2E.DialogTest do
   # describe "modal"
-  use DemoWeb.BrowserCase,
-    async: true,
-    parameterize: DemoWeb.BrowserCase.projects()
+  use DemoWeb.BrowserCase, async: true
 
   defp modal?(dialog),
     do: Locator.evaluate!(dialog, ~s|(el) => el.matches(":modal")|)

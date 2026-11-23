@@ -1,8 +1,6 @@
 defmodule DemoWeb.E2E.ToggletipTest do
   # describe "toggletip"
-  use DemoWeb.BrowserCase,
-    async: true,
-    parameterize: DemoWeb.BrowserCase.projects()
+  use DemoWeb.BrowserCase, async: true
 
   alias Playwright.CDPSession
 

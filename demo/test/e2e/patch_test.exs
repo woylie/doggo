@@ -194,9 +194,7 @@ end
 # they run in parallel.
 for component <- DemoWeb.E2E.PatchComponents.components() do
   defmodule Module.concat(DemoWeb.E2E.PatchTest, component.module) do
-    use DemoWeb.BrowserCase,
-      async: true,
-      parameterize: DemoWeb.BrowserCase.projects()
+    use DemoWeb.BrowserCase, async: true
 
     alias DemoWeb.E2E.PatchComponents
 

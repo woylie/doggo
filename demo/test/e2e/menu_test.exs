@@ -1,8 +1,6 @@
 defmodule DemoWeb.E2E.MenuButtonTest do
   # describe "menu_button"
-  use DemoWeb.BrowserCase,
-    async: true,
-    parameterize: DemoWeb.BrowserCase.projects()
+  use DemoWeb.BrowserCase, async: true
 
   defp button(page), do: Page.get_by_role(page, :button, name: "Actions")
   defp menu(page), do: Page.locator(page, "#test-menu")
