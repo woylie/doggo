@@ -25,6 +25,8 @@ jobs:
     name: End-to-end
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      MIX_ENV: test
     defaults:
       run:
         working-directory: ./demo/assets
@@ -62,26 +64,43 @@ jobs:
           cache-dependency-path: ./demo/assets
       - name: Install dependencies
         run: pnpm install
-      - name: Restore Playwright browsers cache
+      - name: Restore Playwright driver and browsers cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        id: playwright-cache
         with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('demo/assets/pnpm-lock.yaml') }}
-      - name: Install Playwright browsers
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: pnpm exec playwright install --with-deps chromium
-      - name: Install Playwright system dependencies
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: pnpm exec playwright install-deps chromium
+          path: |
+            ~/.cache/playwright
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright_ex-${{ hashFiles('demo/mix.lock') }}
+      - name: Install Playwright driver, browsers and system dependencies
+        run: mix playwright.install chromium --with-deps
+        working-directory: ./demo
       - name: Build assets
         run: pnpm build:dev
       - name: Run end-to-end tests
-        run: pnpm test:e2e
-      - name: Upload report
+        # Failed tests are rerun, at most twice, annotated too (a test passing
+        # on a rerun is flaky). One project per run until Elixir 1.21:
+        # elixir-lang/elixir#15820.
+        run: |
+          f="--formatter ExUnit.CLIFormatter --formatter Playwright.Test.GitHubFormatter"
+          retry() {
+            mix test --only e2e --failed $f 2>&1 | tee retry.log; s=${PIPESTATUS[0]}
+            if grep -q "^There are no tests to run" retry.log; then
+              echo "::error::mix test --failed found no failures to rerun after a failed run"; return 1
+            fi
+            return $s
+          }
+          status=0
+          for project in chromium chromium-reduced-motion; do
+            export E2E_PROJECT=$project
+            mix test --only e2e $f \
+              || { [ $? -eq 2 ] && retry; } || { [ $? -eq 2 ] && retry; } || status=1
+          done
+          exit $status
+        working-directory: ./demo
+      - name: Upload test results
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report
-          path: demo/assets/playwright-report/
+          name: test-results
+          path: demo/test-results/
           retention-days: 7
